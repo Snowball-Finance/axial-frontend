@@ -9,10 +9,10 @@ import {
   formatBNToPercentString,
   getContract,
   getTokenSymbolForPoolType,
-} from "../utils"
+} from "../libs"
 import { useEffect, useState } from "react"
 
-import { AppState } from "../state"
+import { AppState } from "../store"
 import { BigNumber } from "@ethersproject/bignumber"
 import LPTOKEN_GUARDED_ABI from "../constants/abis/lpTokenGuarded.json"
 import LPTOKEN_UNGUARDED_ABI from "../constants/abis/lpTokenUnguarded.json"
@@ -21,7 +21,7 @@ import { LpTokenUnguarded } from "../../types/ethers-contracts/LpTokenUnguarded"
 import META_SWAP_ABI from "../constants/abis/metaSwap.json"
 import { MetaSwap } from "../../types/ethers-contracts/MetaSwap"
 import { SwapFlashLoanNoWithdrawFee } from "../../types/ethers-contracts/SwapFlashLoanNoWithdrawFee"
-import { getThirdPartyDataForPool } from "../utils/thirdPartyIntegrations"
+import { getThirdPartyDataForPool } from "../libs/thirdPartyIntegrations"
 import { parseUnits } from "@ethersproject/units"
 import { useActiveWeb3React } from "."
 import { useSelector } from "react-redux"

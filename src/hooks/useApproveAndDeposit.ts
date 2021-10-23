@@ -6,8 +6,8 @@ import {
   Token,
   isLegacySwapABIPool,
 } from "../constants"
-import { formatDeadlineToNumber, getContract } from "../utils"
-import { notifyCustomError, notifyHandler } from "../utils/notifyHandler"
+import { formatDeadlineToNumber, getContract } from "../libs"
+import { notifyCustomError, notifyHandler } from "../libs/notifyHandler"
 import {
   useAllContracts,
   useLPTokenContract,
@@ -15,21 +15,21 @@ import {
 } from "./useContract"
 import { useDispatch, useSelector } from "react-redux"
 
-import { AppState } from "../state"
+import { AppState } from "../store"
 import { BigNumber } from "@ethersproject/bignumber"
 import { Erc20 } from "../../types/ethers-contracts/Erc20"
-import { GasPrices } from "../state/user"
-import { IS_PRODUCTION } from "../utils/environment"
+import { GasPrices } from "../store/module/user"
+import { IS_PRODUCTION } from "../libs/environment"
 import META_SWAP_ABI from "../constants/abis/metaSwap.json"
 import { MetaSwap } from "../../types/ethers-contracts/MetaSwap"
-import { NumberInputState } from "../utils/numberInputState"
+import { NumberInputState } from "../libs/numberInputState"
 import { SwapFlashLoan } from "../../types/ethers-contracts/SwapFlashLoan"
 import { SwapFlashLoanNoWithdrawFee } from "../../types/ethers-contracts/SwapFlashLoanNoWithdrawFee"
 import { SwapGuarded } from "../../types/ethers-contracts/SwapGuarded"
-import checkAndApproveTokenForTrade from "../utils/checkAndApproveTokenForTrade"
+import checkAndApproveTokenForTrade from "../libs/checkAndApproveTokenForTrade"
 import { parseUnits } from "@ethersproject/units"
-import { subtractSlippage } from "../utils/slippage"
-import { updateLastTransactionTimes } from "../state/application"
+import { subtractSlippage } from "../libs/slippage"
+import { updateLastTransactionTimes } from "../store/application"
 import { useActiveWeb3React } from "."
 import { useMemo } from "react"
 

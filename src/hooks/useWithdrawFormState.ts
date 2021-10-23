@@ -1,7 +1,7 @@
 import {
   NumberInputState,
   numberInputStateCreator,
-} from "../utils/numberInputState"
+} from "../libs/numberInputState"
 import { POOLS_MAP, PoolName, isLegacySwapABIPool } from "../constants"
 import { useCallback, useMemo, useState } from "react"
 

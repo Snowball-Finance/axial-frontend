@@ -9,7 +9,7 @@ import {
 } from "../constants/index"
 import { useMemo, useState } from "react"
 
-import { intersection } from "../utils/index"
+import { intersection } from "../libs/index"
 import usePoolTVLs from "./usePoolsTVL"
 
 // swaptypes in order of least to most preferred (aka expensive)

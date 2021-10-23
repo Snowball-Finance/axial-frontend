@@ -6,44 +6,44 @@ import React, { ReactElement } from "react"
 const Headings = () => (
   <Stack spacing={6}>
     <Heading as="h1" size="4xl" isTruncated>
-      {`(4xl) It's time to Saddle Up!`}
+      {`(4xl) It's time to vault Up!`}
     </Heading>
     <Heading as="h2" size="3xl" isTruncated>
-      {`(3xl) It's time to Saddle Up!`}
+      {`(3xl) It's time to vault Up!`}
     </Heading>
     <Heading as="h2" size="2xl">
-      {`(2xl) It's time to Saddle Up!`}
+      {`(2xl) It's time to vault Up!`}
     </Heading>
     <Heading as="h2" size="xl">
-      {`(xl) It's time to Saddle Up!`}
+      {`(xl) It's time to vault Up!`}
     </Heading>
     <Heading as="h3" size="lg">
-      {`(lg) It's time to Saddle Up!`}
+      {`(lg) It's time to vault Up!`}
     </Heading>
     <Heading as="h4" size="md">
-      {`(md) It's time to Saddle Up!`}
+      {`(md) It's time to vault Up!`}
     </Heading>
     <Heading as="h5" size="sm">
-      {`(sm) It's time to Saddle Up!`}
+      {`(sm) It's time to vault Up!`}
     </Heading>
     <Heading as="h6" size="xs">
-      {`(xs) It's time to Saddle Up!`}
+      {`(xs) It's time to vault Up!`}
     </Heading>
   </Stack>
 )
 
 const Texts = () => (
   <Stack spacing={3}>
-    <Text fontSize="6xl">{`(6xl) It's time to Saddle Up!`}</Text>
-    <Text fontSize="5xl">{`(5xl) It's time to Saddle Up!`}</Text>
-    <Text fontSize="4xl">{`(4xl) It's time to Saddle Up!`}</Text>
-    <Text fontSize="3xl">{`(3xl) It's time to Saddle Up!`}</Text>
-    <Text fontSize="2xl">{`(2xl) It's time to Saddle Up!`}</Text>
-    <Text fontSize="xl">{`(xl) It's time to Saddle Up!`}</Text>
-    <Text fontSize="lg">{`(lg) It's time to Saddle Up!`}</Text>
-    <Text fontSize="md">{`(md) It's time to Saddle Up!`}</Text>
-    <Text fontSize="sm">{`(sm) It's time to Saddle Up!`}</Text>
-    <Text fontSize="xs">{`(xs) It's time to Saddle Up!`}</Text>
+    <Text fontSize="6xl">{`(6xl) It's time to vault Up!`}</Text>
+    <Text fontSize="5xl">{`(5xl) It's time to vault Up!`}</Text>
+    <Text fontSize="4xl">{`(4xl) It's time to vault Up!`}</Text>
+    <Text fontSize="3xl">{`(3xl) It's time to vault Up!`}</Text>
+    <Text fontSize="2xl">{`(2xl) It's time to vault Up!`}</Text>
+    <Text fontSize="xl">{`(xl) It's time to vault Up!`}</Text>
+    <Text fontSize="lg">{`(lg) It's time to vault Up!`}</Text>
+    <Text fontSize="md">{`(md) It's time to vault Up!`}</Text>
+    <Text fontSize="sm">{`(sm) It's time to vault Up!`}</Text>
+    <Text fontSize="xs">{`(xs) It's time to vault Up!`}</Text>
   </Stack>
 )
 

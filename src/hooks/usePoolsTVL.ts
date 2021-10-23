@@ -3,7 +3,7 @@ import { Contract, Provider } from "ethcall"
 import { MulticallContract, MulticallProvider } from "../types/ethcall"
 import { useEffect, useState } from "react"
 
-import { AppState } from "../state"
+import { AppState } from "../store"
 import { BigNumber } from "@ethersproject/bignumber"
 import LPTOKEN_UNGUARDED_ABI from "../constants/abis/lpTokenUnguarded.json"
 import { LpTokenUnguarded } from "../../types/ethers-contracts/LpTokenUnguarded"
@@ -34,9 +34,6 @@ export default function usePoolTVLs(): { [poolName in PoolName]?: BigNumber } {
       if (chainId == ChainId.HARDHAT) {
         ethcallProvider.multicallAddress =
           "0xa85233C63b9Ee964Add6F2cffe00Fd84eb32338f"
-      } else if (chainId == ChainId.ROPSTEN) {
-        ethcallProvider.multicallAddress =
-          "0x53c43764255c17bd724f74c4ef150724ac50a3ed"
       }
 
       const pools = Object.values(POOLS_MAP)

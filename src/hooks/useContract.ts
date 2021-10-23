@@ -62,7 +62,7 @@ import { SwapGuarded } from "../../types/ethers-contracts/SwapGuarded"
 import { SwapMigratorUSD } from "../../types/ethers-contracts/SwapMigratorUSD"
 import { SynthetixExchangeRate } from "../../types/ethers-contracts/SynthetixExchangeRate"
 import { SynthetixNetworkToken } from "../../types/ethers-contracts/SynthetixNetworkToken"
-import { getContract } from "../utils"
+import { getContract } from "../libs"
 import { useActiveWeb3React } from "./index"
 import { useMemo } from "react"
 
