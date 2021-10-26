@@ -1,7 +1,7 @@
 import {
   NumberInputState,
   numberInputStateCreator,
-} from "../utils/numberInputState"
+} from "../libs/numberInputState"
 import React, { useCallback, useMemo } from "react"
 
 import { BigNumber } from "@ethersproject/bignumber"

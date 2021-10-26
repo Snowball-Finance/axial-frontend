@@ -62,7 +62,7 @@ import { SwapGuarded } from "../../types/ethers-contracts/SwapGuarded"
 import { SwapMigratorUSD } from "../../types/ethers-contracts/SwapMigratorUSD"
 import { SynthetixExchangeRate } from "../../types/ethers-contracts/SynthetixExchangeRate"
 import { SynthetixNetworkToken } from "../../types/ethers-contracts/SynthetixNetworkToken"
-import { getContract } from "../utils"
+import { getContract } from "../libs"
 import { useActiveWeb3React } from "./index"
 import { useMemo } from "react"
 
@@ -201,6 +201,7 @@ export function useLPTokenContract<T extends PoolName>(
 ): T extends typeof BTC_POOL_NAME
   ? LpTokenGuarded | null
   : LpTokenUnguarded | null
+
 export function useLPTokenContract(
   poolName: PoolName,
 ): LpTokenUnguarded | LpTokenGuarded | null {
@@ -234,6 +235,7 @@ export function useLPTokenContract(
 interface AllContractsObject {
   [x: string]: LpTokenGuarded | LpTokenUnguarded | Erc20 | null
 }
+
 export function useAllContracts(): AllContractsObject | null {
   const susdContract = useTokenContract(SUSD) as Erc20
   const tbtcContract = useTokenContract(TBTC) as Erc20

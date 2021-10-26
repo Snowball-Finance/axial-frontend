@@ -37,14 +37,13 @@ ul {
 }
 
 :root {
-  --primary-foreground: #000;
+  --primary-foreground: #64C7FF;
   --primary-background: #fff;
   --background: #ffffe9;
   --background-lightgrey: #dfdde3;
   --background-element: rgba(255, 255, 244, 0.7);
   --background-element-hover: rgba(255, 255, 255, 0.88);
-  --background-main: #ffffe9 url("../assets/bg_light.svg") center/auto 60%
-    no-repeat fixed;
+  --background-main:radial-gradient(50.78% 64.46% at 51.08% 37.08%, rgba(100, 199, 255, 0.2) 0%, rgba(32, 171, 250, 0) 100%), #1E2644;
   --background-logo: #{$primary};
   --secondary-button: #{$light-blue};
   --outline: #000;
@@ -52,7 +51,7 @@ ul {
   --option-hover: #{$primary-blue-light};
   --tab: #{$black80};
 
-  --text: #000;
+  --text: #FFFFFF;
   --text-darker: #000;
   --text-lighter: #686868;
   --text-lightest: #a5a5a5;

@@ -2,12 +2,12 @@ import { STABLECOIN_POOL_NAME, TRANSACTION_TYPES } from "../constants"
 import { useDispatch, useSelector } from "react-redux"
 import { useLPTokenContract, useSwapMigratorUSDContract } from "./useContract"
 
-import { AppState } from "../state"
+import { AppState } from "../store"
 import { BigNumber } from "@ethersproject/bignumber"
-import checkAndApproveTokenForTrade from "../utils/checkAndApproveTokenForTrade"
-import { gasBNFromState } from "../utils/gas"
-import { notifyHandler } from "../utils/notifyHandler"
-import { updateLastTransactionTimes } from "../state/application"
+import checkAndApproveTokenForTrade from "../libs/checkAndApproveTokenForTrade"
+import { gasBNFromState } from "../libs/gas"
+import { notifyHandler } from "../libs/notifyHandler"
+import { updateLastTransactionTimes } from "../store/application"
 import { useActiveWeb3React } from "."
 
 export function useApproveAndMigrateUSD(): (

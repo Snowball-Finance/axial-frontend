@@ -1,6 +1,6 @@
 {
-  "name": "saddle-frontend",
-  "description": "The frontend for saddle.finance 🤠",
+  "name": "vault-frontend",
+  "description": "The frontend for vault 🤠",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -85,7 +85,7 @@
   },
   "scripts": {
     "lint": "eslint --max-warnings=0 --ext ts,tsx src/ && prettier --list-different 'src/**/*.{ts,tsx,scss}'",
-    "lint:fix": "eslint --max-warnings=0 --ext ts,tsx --fix src/ && prettier --write 'src/**/*.{ts,tsx,scss}'",
+    "format": "eslint --max-warnings=0 --ext ts,tsx --fix src/ && prettier --write 'src/**/*.{ts,tsx,scss}'",
     "start": "REACT_APP_GIT_SHA=`git rev-parse --short HEAD` react-scripts -r @cypress/instrument-cra start",
     "build": "REACT_APP_GIT_SHA=`git rev-parse --short HEAD` react-scripts build",
     "test": "react-scripts test",

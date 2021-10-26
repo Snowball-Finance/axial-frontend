@@ -3,7 +3,7 @@ import "./i18n"
 
 import { ChakraProvider, ColorModeScript } from "@chakra-ui/react"
 import { Web3ReactProvider, createWeb3ReactRoot } from "@web3-react/core"
-import { logError, sendWebVitalsToGA } from "./utils/googleAnalytics"
+import { logError, sendWebVitalsToGA } from "./libs/googleAnalytics"
 
 import App from "./pages/App"
 import { NetworkContextName } from "./constants"
@@ -12,10 +12,10 @@ import React from "react"
 import ReactDOM from "react-dom"
 import { HashRouter as Router } from "react-router-dom"
 import chakraTheme from "./theme/"
-import getLibrary from "./utils/getLibrary"
+import getLibrary from "./libs/getLibrary"
 import { getNetworkLibrary } from "./connectors"
 import reportWebVitals from "./reportWebVitals"
-import store from "./state"
+import store from "./store"
 
 const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName)
 

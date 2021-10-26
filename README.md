@@ -1,4 +1,4 @@
-# saddle-frontend
+# vault-frontend
 
 [![CI](https://github.com/saddle-finance/saddle-frontend/workflows/CI/badge.svg)](https://github.com/saddle-finance/saddle-frontend/actions?query=workflow%3ACI)
 
