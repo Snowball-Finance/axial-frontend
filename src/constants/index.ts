@@ -389,6 +389,7 @@ const SUSD_CONTRACT_ADDRESSES: { [chainId in ChainId]: string } = {
   [ChainId.MAINNET]: "0x57Ab1ec28D129707052df4dF418D58a2D46d5f51",
   [ChainId.HARDHAT]: "0x0E801D84Fa97b50751Dbf25036d067dCf18858bF",
 }
+
 export const SUSD = new Token(
   SUSD_CONTRACT_ADDRESSES,
   18,
@@ -403,6 +404,7 @@ const DAI_CONTRACT_ADDRESSES: { [chainId in ChainId]: string } = {
   [ChainId.MAINNET]: "0x6B175474E89094C44Da98b954EedeAC495271d0F",
   [ChainId.HARDHAT]: "0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0",
 }
+
 export const DAI = new Token(
   DAI_CONTRACT_ADDRESSES,
   18,
