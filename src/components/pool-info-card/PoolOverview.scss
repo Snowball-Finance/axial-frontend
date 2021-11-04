@@ -6,7 +6,6 @@ div.poolOverview {
   width: 100%;
   background: var(--background-element);
   box-shadow: var(--shadow);
-  border: 1px solid var(--outline);
   border-radius: 10px;
   padding: 24px 32px;
   display: grid;
@@ -43,7 +42,7 @@ div.poolOverview {
     margin-bottom: 8px;
     font-size: 30px;
     font-weight: $bold;
-    color: var(--text-title);
+    color: var(--text);
     margin-right: 16px;
   }
 
@@ -103,13 +102,14 @@ div.poolOverview {
     }
     span.label {
       display: block;
+      color: var(--primary-foreground);
       margin-bottom: 4px;
       font-weight: $bold;
     }
 
     .plus {
       font-weight: $medium;
-      color: var(--text-selected);
+      color: var(--text);
       display: block;
     }
     .minus {
@@ -136,7 +136,7 @@ div.poolOverview {
 }
 
 div.outdated {
-  border-color: $yellow2;
+  border-color: $orange;
 }
 
 .tag {
@@ -147,8 +147,8 @@ div.outdated {
   padding: 2px 4px;
 }
 .tag.warning {
-  border: 1px solid $yellow2;
-  color: $yellow2;
+  border: 1px solid $orange;
+  color: $orange;
 }
 .tag.error {
   border: 1px solid $error;

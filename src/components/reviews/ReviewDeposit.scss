@@ -1,17 +1,18 @@
 @import "../../styles/theme";
+@import "../../styles/global";
 @import "../../styles/viewports";
 
 div.reviewDeposit {
   margin-top: 0;
   padding: 40px;
-  background-color: $white;
-  color: $text-black;
+  background-color: $primary-focus;
+  color: var(--text);
   border-radius: 8px;
 
   h3 {
     font-size: 30px;
     font-weight: $bold;
-    color: $text-black;
+    color: var(--text);
     margin-top: 0;
     margin-bottom: 24px;
   }
@@ -70,6 +71,7 @@ div.reviewDeposit {
       flex-direction: row;
 
       & > .label {
+        color: $primary;
         width: 45%;
         @include breakpoint(md) {
           width: 73%;
@@ -96,11 +98,10 @@ div.reviewDeposit {
   }
 
   div.bottom {
-    background: $black;
+    background: $primary-shade;
     margin: 0 -40px -40px -40px;
     padding: 16px 40px 24px 40px;
     border-radius: 0px 0px 8px 8px;
-
     color: $text-white;
 
     p {
@@ -122,7 +123,7 @@ div.reviewDeposit {
   }
 
   .divider {
-    background-color: $divider-red;
+    background-color: $primary;
     margin: 12px 0 16px 0;
   }
 }

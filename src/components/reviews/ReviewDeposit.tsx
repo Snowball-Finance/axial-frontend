@@ -1,18 +1,12 @@
 import "./ReviewDeposit.scss"
 
 import React, { ReactElement, useState } from "react"
-import {
-  commify,
-  formatBNToPercentString,
-  formatBNToString,
-  formatDeadlineToNumber,
-} from "../../libs"
+import { commify, formatBNToPercentString, formatBNToString } from "../../libs"
 
 import { AppState } from "../../store/index"
 import Button from "../button/Button"
 import { DepositTransaction } from "../../interfaces/transactions"
 import HighPriceImpactConfirmation from "../highprice-impact-confirmation/HighPriceImpactConfirmation"
-import { formatGasToString } from "../../libs/gas"
 import { formatSlippageToString } from "../../libs/slippage"
 import { isHighPriceImpact } from "../../libs/priceImpact"
 import { useSelector } from "react-redux"
@@ -30,26 +24,16 @@ function ReviewDeposit({
   transactionData,
 }: Props): ReactElement {
   const { t } = useTranslation()
-  const {
-    slippageCustom,
-    slippageSelected,
-    gasPriceSelected,
-    gasCustom,
-    transactionDeadlineSelected,
-    transactionDeadlineCustom,
-  } = useSelector((state: AppState) => state.user)
-  const { gasStandard, gasFast, gasInstant } = useSelector(
-    (state: AppState) => state.application,
+  const { slippageCustom, slippageSelected } = useSelector(
+    (state: AppState) => state.user,
   )
   const [
     hasConfirmedHighPriceImpact,
     setHasConfirmedHighPriceImpact,
   ] = useState(false)
+
   const isHighPriceImpactTxn = isHighPriceImpact(transactionData.priceImpact)
-  const deadline = formatDeadlineToNumber(
-    transactionDeadlineSelected,
-    transactionDeadlineCustom,
-  )
+
   return (
     <div className="reviewDeposit">
       <h3>{t("reviewDeposit")}</h3>
@@ -109,17 +93,6 @@ function ReviewDeposit({
             {formatBNToPercentString(transactionData.shareOfPool, 18)}
           </span>
         </div>
-        <div className="depositInfoItem">
-          <span className="label">{t("gas")}</span>
-          <span className="value">
-            {formatGasToString(
-              { gasStandard, gasFast, gasInstant },
-              gasPriceSelected,
-              gasCustom,
-            )}{" "}
-            GWEI
-          </span>
-        </div>
         {transactionData.txnGasCost?.valueUSD && (
           <div className="depositInfoItem">
             <span className="label">{t("estimatedTxCost")}</span>
@@ -134,12 +107,6 @@ function ReviewDeposit({
           <span className="label">{t("maxSlippage")}</span>
           <span className="value">
             {formatSlippageToString(slippageSelected, slippageCustom)}%
-          </span>
-        </div>
-        <div className="depositInfoItem">
-          <span className="label">{t("deadline")}</span>
-          <span className="value">
-            {deadline} {t("minutes")}
           </span>
         </div>
         <div className="depositInfoItem">

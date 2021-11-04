@@ -1,8 +1,8 @@
 export
 AWS_PROFILE=snowball
-dev_S3_BUCKET=dev-vault.snowapi.net
-staging_S3_BUCKET=dev-vault.snowapi.net
-prod_S3_BUCKET=dev-vault.snowapi.net
+dev_S3_BUCKET=dev-app.axial.exchange
+staging_S3_BUCKET=dev-stg.axial.exchange
+prod_S3_BUCKET=dev-app.axial.exchange
 dev_DISTRIBUTION_ID=E1896O31DT0GF5
 staging_DISTRIBUTION_ID=
 prod_DISTRIBUTION_ID=

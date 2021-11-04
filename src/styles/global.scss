@@ -28,7 +28,7 @@ h5 {
 
 svg,
 img {
-  // TODO: get rid of this once chakra is more integrated
+
   display: inline !important;
 }
 
@@ -37,21 +37,22 @@ ul {
 }
 
 :root {
-  --primary-foreground: #64C7FF;
-  --primary-background: #fff;
-  --background: #ffffe9;
-  --background-lightgrey: #dfdde3;
-  --background-element: rgba(255, 255, 244, 0.7);
+  --background-main:#201F55;
+  --background-element:#0F0E3B;
+  --background: $primary;
+  --background-lightgrey: #3290FE;
+  --primary-foreground: #026AE7;
+  --primary-background:#107CFD;
   --background-element-hover: rgba(255, 255, 255, 0.88);
-  --background-main:radial-gradient(50.78% 64.46% at 51.08% 37.08%, rgba(100, 199, 255, 0.2) 0%, rgba(32, 171, 250, 0) 100%), #1E2644;
   --background-logo: #{$primary};
+
   --secondary-button: #{$light-blue};
-  --outline: #000;
+  --outline:#107CFD;
   --outline-gray: #{$black30};
   --option-hover: #{$primary-blue-light};
-  --tab: #{$black80};
+  --tab: #0F0E3B;
 
-  --text: #FFFFFF;
+  --text: #E5E6E7;
   --text-darker: #000;
   --text-lighter: #686868;
   --text-lightest: #a5a5a5;
@@ -65,37 +66,4 @@ ul {
 
   --shadow: 0px 2px 8px rgba(39, 14, 1, 0.1);
   --shadow-hover: 2px 2px 12px rgba(68, 64, 64, 0.2);
-}
-
-// Dark mode themes
-body.dark {
-  --primary-foreground: #fff;
-  --primary-background: #000;
-  --background: #000;
-  --background-lightgrey: #{$black80};
-  --background-element: rgba(0, 0, 0, 0.56);
-  --background-element-hover: rgba(0, 0, 0, 0.8);
-  --background-main: #000 url("../assets/bg.svg") center/auto 60% no-repeat
-    fixed;
-  --background-logo: #ffffe9;
-  --secondary-button: #{$dark-purple};
-  --outline: #fff;
-  --option-hover: #{$primary-blue-dark};
-  --outline-gray: #{$white30};
-  --tab: #{$white};
-
-  --text: #fff;
-  --text-darker: #ffffe9;
-  --text-lighter: #bbbbbb;
-  --text-lightest: #888888;
-  --text-title: #ffffe9;
-  --text-primary: #{$primary};
-  --text-selected: #{$primary};
-  --text-secondary-button: #{$blue};
-  --text-secondary-button-disabled: #{$blue40T};
-  --header-text: #{$primary};
-  --sign-graph: #{$primary-blue};
-
-  --shadow: 0px 2px 8px rgba(39, 14, 1, 0.18);
-  --shadow-hover: 2px 2px 12px rgba(68, 64, 64, 0.14);
 }

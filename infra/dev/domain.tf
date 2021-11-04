@@ -1,5 +1,5 @@
 data "aws_route53_zone" "snowapi_net" {
-  name = "snowapi.net"
+  name = "axial.exchange"
 }
 
 resource "aws_route53_record" "dev" {
@@ -15,7 +15,7 @@ resource "aws_route53_record" "dev" {
 
 module "acm" {
   source      = "../acm"
-  domain_name = "dev-vault.snowapi.net"
+  domain_name = local.domain
   aws_region  = "us-east-1"
   zone_id     = data.aws_route53_zone.snowapi_net.zone_id
   tags = {

@@ -2,7 +2,6 @@
 @import "../../styles/viewports";
 
 header.top {
-  // background-color: var(--background);
   height: 88px;
   padding-left: 56px;
   padding-right: 56px;
@@ -20,14 +19,13 @@ header.top {
     margin-right: auto;
 
     .logo {
-      background-color: #ffffe9;
-      border-radius: 52px;
       display: inline-block;
-      width: 50px;
-      height: 50px;
+      width: 215px;
+      height: 67px;
       margin-right: 0.4em;
       @include breakpoint(md) {
-        margin-right: 0.2em;
+        margin-right: 0.3em;
+        height: 40px;
       }
       &:hover {
         cursor: pointer;
@@ -60,7 +58,7 @@ header.top {
         margin-right: 0;
       }
       a {
-        color: var(--primary-foreground);
+        color: var(--text);
         text-decoration: none;
         font-style: normal;
         font-weight: $bold;
@@ -80,7 +78,7 @@ header.top {
 
         &.active {
           opacity: 1;
-           color: var(--primary-background);
+          color: var(--primary-background);
           font-weight: $bold;
         }
       }
@@ -91,9 +89,6 @@ header.top {
     width: 20%;
 
     .connection {
-      // padding: 8px;
-      // border: 1px solid;
-      // border-radius: 10px;
       &.success .indicator {
         filter: invert(1);
       }

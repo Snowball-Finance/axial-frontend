@@ -4,6 +4,8 @@
 .advancedOptions {
   width: 100%;
   margin-top: 24px;
+  margin-bottom: 24px;
+
   @include breakpoint(lg) {
     margin: 12px auto 20px;
     width: 434px;
@@ -12,6 +14,7 @@
     max-width: 90%;
   }
   svg.triangle {
+
     margin-left: 10px;
     transform: norotate(0deg);
   }
@@ -52,11 +55,11 @@
   div.inputGroup {
     input {
       width: 48px;
-      border: 1px solid $black;
+      border: 1px solid $primary;
       border-radius: 8px;
       height: 28px;
       font-size: 80%;
-      color: $text-black;
+      color: $primary;
       padding: 2px 4px;
       margin: 0 6px 0 8px;
       outline: none !important;
@@ -121,7 +124,7 @@
       }
 
       &.selected {
-        color: var(--text-selected);
+        color: var(--text);
         font-weight: $medium;
         border: 1px solid var(--text-selected);
         border-radius: 8px;

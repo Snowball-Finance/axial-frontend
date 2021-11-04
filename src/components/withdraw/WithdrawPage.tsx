@@ -1,12 +1,11 @@
 import "./WithdrawPage.scss"
-
-import { Button, Center } from "@chakra-ui/react"
 import { PoolDataType, UserShareType } from "../../hooks/usePoolData"
 import React, { ReactElement, useState } from "react"
 
 import AdvancedOptions from "../advance-options/AdvancedOptions"
 import { AppState } from "../../store"
 import { BigNumber } from "@ethersproject/bignumber"
+import Button from "../button/Button"
 import ConfirmTransaction from "../confirm-transaction/ConfirmTransaction"
 import Modal from "../modal/Modal"
 import MyShareCard from "../my-share-card/MyShareCard"
@@ -176,21 +175,17 @@ const WithdrawPage = (props: Props): ReactElement => {
             </div>
           </div>
           <AdvancedOptions />
-          <Center width="100%" py={6}>
-            <Button
-              variant="primary"
-              size="lg"
-              width="240px"
-              disabled={
-                noShare ||
-                !!formStateData.error ||
-                formStateData.lpTokenAmountToSpend.isZero()
-              }
-              onClick={onSubmit}
-            >
-              {t("withdraw")}
-            </Button>
-          </Center>
+          <Button
+            kind="primary"
+            disabled={
+              noShare ||
+              !!formStateData.error ||
+              formStateData.lpTokenAmountToSpend.isZero()
+            }
+            onClick={onSubmit}
+          >
+            {t("withdraw")}
+          </Button>
         </div>
         <div className="infoPanels">
           <MyShareCard data={myShareData} />

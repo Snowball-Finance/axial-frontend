@@ -3,8 +3,8 @@
 
 .searchSelect {
   padding: 16px 8px 0 8px;
-  background-color: var(--primary-background);
-  border: 1px solid var(--outline-gray);
+  background-color: $primary-shade;
+  border: 1px solid $primary;
   border-radius: 8px;
   max-height: 350px;
   max-width: 500px;
@@ -23,10 +23,10 @@
   input {
     flex: 1;
     height: 32px;
-    background-color: var(--primary-background);
+    background-color: clear;
     margin: 0 8px;
     padding: 0 8px;
-    color: var(--primary-foreground);
+    color: $primary;
     font-size: 16px;
     font-family: $font-family;
     font-style: normal;
@@ -70,7 +70,7 @@
   &.isAvailable {
     &:hover,
     &.isActive {
-      background-color: var(--option-hover);
+      background-color: $primary;
       cursor: pointer;
     }
   }
@@ -78,7 +78,7 @@
     b,
     p,
     span {
-      color: var(--text-lightest);
+      color: var(--text);
     }
     &:hover {
       cursor: not-allowed;
@@ -88,7 +88,7 @@
 
 .textMinor {
   font-size: 12px;
-  color: var(--text-lighter);
+  color: var(--text);
 }
 
 .tagWrapper {
@@ -96,6 +96,7 @@
   align-items: center;
   > .unavailableTag,
   .virtualSwapTag {
+    color: var(--text);
     border: 1px solid var(--text-lightest);
     border-radius: 4px;
     padding: 1px 2px;
@@ -109,10 +110,10 @@
 
 .unavailableTag {
   color: var(--text-lightest);
-  border: 1px solid var(--text-lightest);
+  border: 1px solid $primary;
 }
 
 .virtualSwapTag {
   color: $primary;
-  border: 1px solid var(--outline);
+  border: 1px solid $primary;
 }

@@ -1,12 +1,4 @@
-import {
-  POOLS_MAP,
-  SWAP_TYPES,
-  SYNTH_TRACKING_ID,
-  TRANSACTION_TYPES,
-} from "../constants"
-import { notifyCustomError, notifyHandler } from "../libs/notifyHandler"
-import { useAllContracts, useSynthetixContract } from "./useContract"
-
+import { POOLS_MAP, SWAP_TYPES, TRANSACTION_TYPES } from "../constants"
 import { AppState } from "../store"
 import { BigNumber } from "@ethersproject/bignumber"
 import { Bridge } from "../../types/ethers-contracts/Bridge"
@@ -22,6 +14,7 @@ import { parseUnits } from "@ethersproject/units"
 import { subtractSlippage } from "../libs/slippage"
 import { updateLastTransactionTimes } from "../store/application"
 import { useActiveWeb3React } from "."
+import { useAllContracts } from "./useContract"
 import { useDispatch } from "react-redux"
 import { useSelector } from "react-redux"
 import { utils } from "ethers"
@@ -54,7 +47,6 @@ export function useApproveAndSwap(): (
   const dispatch = useDispatch()
   const tokenContracts = useAllContracts()
   const { account, chainId } = useActiveWeb3React()
-  const baseSynthetixContract = useSynthetixContract()
   const { gasStandard, gasFast, gasInstant } = useSelector(
     (state: AppState) => state.application,
   )
@@ -94,8 +86,6 @@ export function useApproveAndSwap(): (
       let addressToApprove = ""
       if (state.swapType === SWAP_TYPES.DIRECT) {
         addressToApprove = state.swapContract?.address as string
-      } else if (state.swapType === SWAP_TYPES.SYNTH_TO_SYNTH) {
-        addressToApprove = baseSynthetixContract?.address as string
       } else {
         addressToApprove = state.bridgeContract?.address as string
       }
@@ -185,23 +175,8 @@ export function useApproveAndSwap(): (
         swapTransaction = await (state.swapContract as NonNullable<
           typeof state.swapContract // we already check for nonnull above
         >).swap(...args)
-      } else if (state.swapType === SWAP_TYPES.SYNTH_TO_SYNTH) {
-        const args = [
-          utils.formatBytes32String(state.from.symbol),
-          state.from.amount,
-          utils.formatBytes32String(state.to.symbol),
-          account,
-          SYNTH_TRACKING_ID,
-        ] as const
-        console.debug("swap - synthToSynth", args)
-        swapTransaction = await baseSynthetixContract?.exchangeWithTracking(
-          ...args,
-        )
       } else {
         throw new Error("Invalid Swap Type, or contract not loaded")
-      }
-      if (swapTransaction?.hash) {
-        notifyHandler(swapTransaction.hash, "swap")
       }
 
       await swapTransaction?.wait()
@@ -213,7 +188,6 @@ export function useApproveAndSwap(): (
       return Promise.resolve()
     } catch (e) {
       console.error(e)
-      notifyCustomError(e as Error)
     }
   }
 }

@@ -21,10 +21,12 @@ resource "aws_s3_bucket" "web_app" {
   bucket = local.bucket_name
   acl    = local.acl
   policy = local.policy_config_json
+  force_destroy = true
+  lifecycle {
+    prevent_destroy = false
+  }
   website {
     error_document = "error.html"
     index_document = "index.html"
   }
 }
-
-

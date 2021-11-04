@@ -11,7 +11,7 @@ div.riskpage {
     padding-top: 24px;
     margin: 0 auto;
     width: 888px;
-    color: var(--text-darker);
+    color: var(--text);
     @include breakpoint(lg) {
       display: flex;
       flex-flow: column nowrap;
@@ -29,7 +29,7 @@ div.riskpage {
   }
 
   a {
-    color: var(--text-selected);
+    color: $primary;
 
     &:hover {
       text-decoration: underline;

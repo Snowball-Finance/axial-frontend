@@ -1,12 +1,9 @@
-import { ChainId, POOLS_MAP, PoolName, PoolTypes } from "../constants"
-import { Contract, Provider } from "ethcall"
-import { MulticallContract, MulticallProvider } from "../types/ethcall"
+import { POOLS_MAP, PoolName, PoolTypes } from "../constants"
+import { getMultiContractData, getPoolsTVL } from "../libs/multicall"
 import { useEffect, useState } from "react"
 
 import { AppState } from "../store"
 import { BigNumber } from "@ethersproject/bignumber"
-import LPTOKEN_UNGUARDED_ABI from "../constants/abis/lpTokenUnguarded.json"
-import { LpTokenUnguarded } from "../../types/ethers-contracts/LpTokenUnguarded"
 import { parseUnits } from "@ethersproject/units"
 import { useActiveWeb3React } from "."
 import { useSelector } from "react-redux"
@@ -27,27 +24,16 @@ export default function usePoolTVLs(): { [poolName in PoolName]?: BigNumber } {
       return
     async function fetchTVLs() {
       if (!library || !chainId) return
-      const ethcallProvider = new Provider() as MulticallProvider
-
-      await ethcallProvider.init(library)
-      // override the contract address when using hardhat
-      if (chainId == ChainId.HARDHAT) {
-        ethcallProvider.multicallAddress =
-          "0xa85233C63b9Ee964Add6F2cffe00Fd84eb32338f"
-      }
 
       const pools = Object.values(POOLS_MAP)
-      const supplyCalls = pools
-        .map((p) => {
-          return new Contract(
-            p.lpToken.addresses[chainId],
-            LPTOKEN_UNGUARDED_ABI,
-          ) as MulticallContract<LpTokenUnguarded>
-        })
-        .map((c) => c.totalSupply())
-      const tvls = await ethcallProvider.all(supplyCalls, {})
-      const tvlsUSD = pools.map((pool, i) => {
-        const tvlAmount = tvls[i]
+      const contractCalls = pools.map((p) => {
+        return getPoolsTVL(p.lpToken.addresses[chainId])
+      })
+
+      const tvls = await getMultiContractData(library, contractCalls)
+
+      const tvlsUSD = pools.map((pool) => {
+        const tvlAmount = tvls[pool.lpToken.addresses[chainId]].totalSupply // eslint-disable-line
         let tokenValue = 0
         if (pool.type === PoolTypes.BTC) {
           tokenValue = tokenPricesUSD?.BTC || 0

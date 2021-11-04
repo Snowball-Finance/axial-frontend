@@ -8,7 +8,7 @@
   }
   a {
     font-weight: 700;
-    color: var(--text-selected);
+    color: var(--text);
     &:hover {
       cursor: pointer;
     }
@@ -16,13 +16,12 @@
 }
 
 .tokenInputContainer {
-  border: 1px solid var(--outline-gray);
   border-radius: 8px;
   padding: 8px;
   display: flex;
   width: 100%;
   position: relative;
-  background-color: var(--primary-background);
+  background-color: $primary-shade;
 
   .smallText {
     font-size: $smallFont;
@@ -54,14 +53,14 @@
   cursor: default;
 
   input {
-    cursor: default;
     outline: none;
+    border-radius: 4px;
     text-align: right;
-    background-color: var(--primary-background);
-    color: var(--primary-foreground);
+    background-color:$primary-shade;
+    color: var(--text);
     width: 100%;
     &::placeholder {
-      color: var(--text-lighter);
+      color: var(--text);
     }
 
     &:focus {

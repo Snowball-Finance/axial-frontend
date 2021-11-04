@@ -1,25 +1,22 @@
 import "./DepositPage.scss"
 
-import { ALETH_POOL_NAME, VETH2_POOL_NAME, isMetaPool } from "../../constants"
-import { Button, Center } from "@chakra-ui/react"
 import { PoolDataType, UserShareType } from "../../hooks/usePoolData"
 import React, { ReactElement, useState } from "react"
-import { Trans, useTranslation } from "react-i18next"
-
 import AdvancedOptions from "../../components/advance-options/AdvancedOptions"
+import Button from "../../components/button/Button"
+
 import CheckboxInput from "../../components/checkbox-input/CheckboxInput"
 import ConfirmTransaction from "../../components/confirm-transaction/ConfirmTransaction"
 import { DepositTransaction } from "../../interfaces/transactions"
-import LPStakingBanner from "../../components/lp-staking-banner/LPStakingBanner"
 import Modal from "../../components/modal/Modal"
 import MyShareCard from "../../components/my-share-card/MyShareCard"
 import PoolInfoCard from "../../components/pool-info-card/PoolInfoCard"
 import ReviewDeposit from "../../components/reviews/ReviewDeposit"
 import TokenInput from "../../components/token-input/TokenInput"
 import TopMenu from "../../components/menu/TopMenu"
-import { Zero } from "@ethersproject/constants"
 import { formatBNToPercentString } from "../../libs"
-import { logEvent } from "../../libs/googleAnalytics"
+//import { logEvent } from "../../libs/googleAnalytics"
+import { useTranslation } from "react-i18next"
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 interface Props {
@@ -60,25 +57,11 @@ const DepositPage = (props: Props): ReactElement => {
   const [currentModal, setCurrentModal] = useState<string | null>(null)
 
   const validDepositAmount = transactionData.to.totalAmount.gt(0)
-  const shouldDisplayWrappedOption = isMetaPool(poolData?.name)
+  const shouldDisplayWrappedOption = false
 
   return (
     <div className="deposit">
       <TopMenu activeTab={"deposit"} />
-      {poolData?.aprs?.keep?.apr.gt(Zero) &&
-        myShareData?.lpTokenBalance.gt(0) && (
-          <LPStakingBanner
-            stakingLink={"https://dashboard.keep.network/liquidity"}
-          />
-        )}
-      {poolData?.name === VETH2_POOL_NAME &&
-        myShareData?.lpTokenBalance.gt(0) && (
-          <LPStakingBanner stakingLink={"https://www.sharedstake.org/earn"} />
-        )}
-      {poolData?.name === ALETH_POOL_NAME &&
-        myShareData?.lpTokenBalance.gt(0) && (
-          <LPStakingBanner stakingLink={"https://app.alchemix.fi/farms"} />
-        )}
 
       <div className="content">
         <div className="left">
@@ -86,22 +69,6 @@ const DepositPage = (props: Props): ReactElement => {
             <h3>{t("addLiquidity")}</h3>
             {exceedsWallet ? (
               <div className="error">{t("depositBalanceExceeded")}</div>
-            ) : null}
-            {poolData?.isPaused && poolData?.name === VETH2_POOL_NAME ? (
-              <div className="error">
-                <Trans i18nKey="sgtPoolPaused" t={t}>
-                  This pool is paused, please see{" "}
-                  <a
-                    href="https://medium.com/immunefi/sharedstake-insider-exploit-postmortem-17fa93d5c90e"
-                    target="_blank"
-                    rel="noreferrer"
-                    style={{ textDecoration: "underline" }}
-                  >
-                    this postmortem
-                  </a>{" "}
-                  for more information.
-                </Trans>
-              </div>
             ) : null}
             {tokens.map((token, index) => (
               <div key={index}>
@@ -130,37 +97,6 @@ const DepositPage = (props: Props): ReactElement => {
             )}
             <div className={"transactionInfoContainer"}>
               <div className="transactionInfo">
-                {poolData?.aprs?.keep?.apr.gt(Zero) && (
-                  <div className="transactionInfoItem">
-                    <a
-                      href="https://docs.saddle.finance/faq#what-are-saddles-liquidity-provider-rewards"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <span>{`KEEP APR:`}</span>
-                    </a>{" "}
-                    <span className="value">
-                      {formatBNToPercentString(poolData.aprs.keep.apr, 18)}
-                    </span>
-                  </div>
-                )}
-                {poolData?.aprs?.sharedStake?.apr.gt(Zero) && (
-                  <div className="transactionInfoItem">
-                    <a
-                      href="https://docs.saddle.finance/faq#what-are-saddles-liquidity-provider-rewards"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <span>{`SGT APR:`}</span>
-                    </a>{" "}
-                    <span className="value">
-                      {formatBNToPercentString(
-                        poolData.aprs.sharedStake.apr,
-                        18,
-                      )}
-                    </span>
-                  </div>
-                )}
                 <div className="transactionInfoItem">
                   {transactionData.priceImpact.gte(0) ? (
                     <span className="bonus">{`${t("bonus")}: `}</span>
@@ -187,19 +123,15 @@ const DepositPage = (props: Props): ReactElement => {
             </div>
           </div>
           <AdvancedOptions />
-          <Center width="100%" py={6}>
-            <Button
-              variant="primary"
-              size="lg"
-              width="240px"
-              onClick={(): void => {
-                setCurrentModal("review")
-              }}
-              disabled={!validDepositAmount || poolData?.isPaused}
-            >
-              {t("deposit")}
-            </Button>
-          </Center>
+          <Button
+            kind="primary"
+            onClick={(): void => {
+              setCurrentModal("review")
+            }}
+            disabled={!validDepositAmount || poolData?.isPaused}
+          >
+            {t("deposit")}
+          </Button>
         </div>
         <div className="infoPanels">
           <MyShareCard data={myShareData} />
@@ -220,10 +152,6 @@ const DepositPage = (props: Props): ReactElement => {
               transactionData={transactionData}
               onConfirm={async (): Promise<void> => {
                 setCurrentModal("confirm")
-                logEvent(
-                  "deposit",
-                  (poolData && { pool: poolData?.name }) || {},
-                )
                 await onConfirmTransaction?.()
                 setCurrentModal(null)
               }}

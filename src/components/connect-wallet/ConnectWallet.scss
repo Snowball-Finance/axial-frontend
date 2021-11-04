@@ -3,7 +3,7 @@
 div.connectWallet {
   color: var(--text);
   padding: 40px;
-  background: var(--background);
+  background: $primary-focus;
   border-radius: 8px;
 
   & > h3 {
@@ -11,7 +11,7 @@ div.connectWallet {
     font-size: 20px;
     margin-top: 0;
     margin-bottom: 16px;
-    color: var(--text-darker);
+    color: var(--text);
   }
 
   div.walletList {
@@ -23,10 +23,10 @@ div.connectWallet {
     padding: 32px;
 
     & > button {
-      background: var(--background);
+      background: $primary-shade;
       color: var(--text);
       outline: none;
-      border: 1px solid var(--outline);
+
       border-radius: 10px;
       width: 100%;
       padding: 16px;

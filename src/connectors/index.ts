@@ -7,7 +7,7 @@ import { WalletLinkConnector } from "@web3-react/walletlink-connector"
 
 const NETWORK_URL = process.env.REACT_APP_NETWORK_URL
 export const NETWORK_CHAIN_ID: number = parseInt(
-  process.env.REACT_APP_CHAIN_ID ?? "1",
+  process.env.REACT_APP_CHAIN_ID ?? "43114",
 )
 
 if (typeof NETWORK_URL === "undefined") {
@@ -29,7 +29,7 @@ export function getNetworkLibrary(): BaseProvider {
 export const injected = new InjectedConnector({
   // mainnet, ropsten, rinkeby, goerli, kovan, local buidler
   // see: https://github.com/ethereum/EIPs/blob/master/EIPS/eip-155.md
-  supportedChainIds: [1, 31337],
+  supportedChainIds: [43114],
 })
 
 export const walletconnect = new WalletConnectConnector({

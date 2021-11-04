@@ -1,7 +1,6 @@
 import { POOLS_MAP, PoolName, TRANSACTION_TYPES } from "../constants"
 import { addSlippage, subtractSlippage } from "../libs/slippage"
 import { formatUnits, parseUnits } from "@ethersproject/units"
-import { notifyCustomError, notifyHandler } from "../libs/notifyHandler"
 import { useLPTokenContract, useSwapContract } from "./useContract"
 import { AppState } from "../store"
 import { BigNumber } from "@ethersproject/bignumber"
@@ -145,8 +144,6 @@ export function useApproveAndWithdraw(
         )
       }
 
-      notifyHandler(spendTransaction.hash, "withdraw")
-
       await spendTransaction.wait()
       dispatch(
         updateLastTransactionTimes({
@@ -155,7 +152,6 @@ export function useApproveAndWithdraw(
       )
     } catch (e) {
       console.error(e)
-      notifyCustomError(e as Error)
     }
   }
 }

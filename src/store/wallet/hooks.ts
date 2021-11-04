@@ -1,10 +1,6 @@
-import { BLOCK_TIME, ChainId, TOKENS_MAP } from "../../constants"
-import { Contract, Provider } from "ethcall"
-import { MulticallContract, MulticallProvider } from "../../types/ethcall"
-
+import { getMultiContractData, getUserBalance } from "../../libs/multicall"
 import { BigNumber } from "@ethersproject/bignumber"
-import ERC20_ABI from "../../constants/abis/erc20.json"
-import { Erc20 } from "../../../types/ethers-contracts/Erc20"
+import { TOKENS_MAP } from "../../constants"
 import { useActiveWeb3React } from "../../hooks"
 import usePoller from "../../hooks/usePoller"
 import { useState } from "react"
@@ -13,36 +9,23 @@ export function usePoolTokenBalances(): { [token: string]: BigNumber } | null {
   const { account, chainId, library } = useActiveWeb3React()
   const [balances, setBalances] = useState<{ [token: string]: BigNumber }>({})
 
-  const ethcallProvider = new Provider() as MulticallProvider
-
   usePoller((): void => {
     async function pollBalances(): Promise<void> {
       if (!library || !chainId || !account) return
 
-      await ethcallProvider.init(library)
-      // override the contract address when using hardhat
-      if (chainId == ChainId.HARDHAT) {
-        ethcallProvider.multicallAddress =
-          "0xa85233C63b9Ee964Add6F2cffe00Fd84eb32338f"
-      }
-
-      const tokens = Object.values(TOKENS_MAP)
-      const balanceCalls = tokens
-        .map((t) => {
-          return new Contract(
-            t.addresses[chainId],
-            ERC20_ABI,
-          ) as MulticallContract<Erc20>
-        })
-        .map((c) => c.balanceOf(account))
-      const balances = await ethcallProvider.all(balanceCalls, {})
-
       const ethBalance = await library.getBalance(account)
+      const tokens = Object.values(TOKENS_MAP)
+
+      const balanceCalls = tokens.map((token) => {
+        return getUserBalance(account, token.addresses[chainId])
+      })
+      const balances = await getMultiContractData(library, balanceCalls)
+
       setBalances(
         tokens.reduce(
-          (acc, t, i) => ({
+          (acc, t) => ({
             ...acc,
-            [t.symbol]: balances[i],
+            [t.symbol]: balances[t.addresses[chainId]].balanceOf,// eslint-disable-line
           }),
           { ETH: ethBalance },
         ),
@@ -51,7 +34,7 @@ export function usePoolTokenBalances(): { [token: string]: BigNumber } | null {
     if (account) {
       void pollBalances()
     }
-  }, BLOCK_TIME)
+  }, 15000)
 
   return balances
 }

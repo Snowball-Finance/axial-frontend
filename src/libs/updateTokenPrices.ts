@@ -1,12 +1,5 @@
-import { ChainId, TOKENS_MAP, VETH2_SWAP_ADDRESSES } from "../constants"
-import { formatUnits, parseUnits } from "@ethersproject/units"
-
 import { AppDispatch } from "../store"
-import { BigNumber } from "@ethersproject/bignumber"
-import SWAP_ABI from "../constants/abis/swapFlashLoan.json"
-import { SwapFlashLoan } from "../../types/ethers-contracts/SwapFlashLoan"
-import { Web3Provider } from "@ethersproject/providers"
-import { getContract } from "./index"
+import { TOKENS_MAP } from "../constants"
 import retry from "async-retry"
 import { updateTokensPricesUSD } from "../store/application"
 
@@ -18,20 +11,15 @@ interface CoinGeckoReponse {
   }
 }
 const otherTokens = {
-  ETH: "ethereum",
-  WETH: "ethereum",
-  VETH2: "ethereum", // TODO: pull vETH2 price once it's added to coingecko
-  BTC: "bitcoin",
-  KEEP: "keep-network",
-  SGT: "sharedstake-governance-token",
-  ALCX: "alchemix",
+  AVAX: "avalanche-2",
+  USDT: "tether",
+  DAI: "dai",
+  USDC: "usd-coin",
+  TUSD: "true-usd",
+  FRAX: "frax",
 }
 
-export default function fetchTokenPricesUSD(
-  dispatch: AppDispatch,
-  chainId?: ChainId,
-  library?: Web3Provider,
-): void {
+export default function fetchTokenPricesUSD(dispatch: AppDispatch): void {
   const tokens = Object.values(TOKENS_MAP)
   const tokenIds = Array.from(
     new Set(
@@ -45,7 +33,7 @@ export default function fetchTokenPricesUSD(
       )}&vs_currencies=usd
     `)
         .then((res) => res.json())
-        .then(async (body: CoinGeckoReponse) => {
+        .then((body: CoinGeckoReponse) => {
           const otherTokensResult = Object.keys(otherTokens).reduce(
             (acc, key) => {
               return {
@@ -58,43 +46,8 @@ export default function fetchTokenPricesUSD(
           const result = tokens.reduce((acc, token) => {
             return { ...acc, [token.symbol]: body?.[token.geckoId]?.usd }
           }, otherTokensResult)
-          result.alETH = result?.ETH || result.alETH || 0 // TODO: remove once CG price is fixed
-          if (chainId === ChainId.MAINNET) {
-            const vEth2Price = await getVeth2Price(
-              result?.ETH,
-              chainId,
-              library,
-            )
-            result.VETH2 = vEth2Price || result?.ETH | 0
-          }
           dispatch(updateTokensPricesUSD(result))
         }),
     { retries: 3 },
   )
-}
-
-async function getVeth2Price(
-  etherPrice: number,
-  chainId?: ChainId,
-  library?: Web3Provider,
-): Promise<number> {
-  if (!etherPrice || !library) return 0
-  try {
-    const swapContract = getContract(
-      chainId ? VETH2_SWAP_ADDRESSES[chainId] : "",
-      SWAP_ABI,
-      library,
-    ) as SwapFlashLoan
-    const veth2ToEthRate = await swapContract.calculateSwap(
-      1,
-      0,
-      BigNumber.from(10).pow(18),
-    )
-    const eth = parseUnits(etherPrice.toString(), 18)
-    const vEth2Price = parseFloat(formatUnits(veth2ToEthRate.mul(eth), 36))
-    return vEth2Price
-  } catch (e) {
-    console.error(e)
-    return etherPrice
-  }
 }

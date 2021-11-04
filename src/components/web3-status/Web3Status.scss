@@ -5,7 +5,7 @@ div.walletStatus {
   display: flex;
   justify-content: flex-end;
   & > button {
-    color: var(--text-darker);
+    color: $primary;
     border: none;
     padding: 0;
     background: none;
@@ -35,8 +35,8 @@ div.walletStatus {
     border: 1px solid var(--outline);
     border-radius: 8px;
     line-height: 40px;
-    color: var(--header-text);
-    font-weight: $normal;
+    color: $primary;
+    font-weight: $bold;
 
     @include breakpoint(lg) {
       display: flex;

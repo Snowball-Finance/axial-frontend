@@ -1,18 +1,24 @@
 @import "../../styles/theme";
+@import "../../styles/global";
 
 button.button {
+  font-family: $font-family;
   border-radius: 4px;
   border: none;
-  color: $text-black;
+  color: var(--background-main);
   font-weight: $bold;
   font-size: 16px;
   letter-spacing: 0.02em;
   cursor: pointer;
   padding: 1px 6px;
 
+  &:disabled:hover {
+    cursor: not-allowed;
+  }
+
   &:disabled {
     cursor: not-allowed;
-    color: rgba(0, 0, 0, 0.2);
+    color: rgba(0, 0, 0, 0.3);
   }
 
   &:hover,
@@ -26,16 +32,17 @@ button.button {
 
     &:enabled:hover,
     &:enabled:focus {
-      background-color: $primary-blue;
-      color: $text-white;
+      background-color: $secondary-focus;
+      color: var(--text);
       box-shadow: var(--shadow-hover);
     }
   }
 
   &.secondary {
-    background-color: var(--secondary-button);
-    color: var(--text-secondary-button);
-    font-weight: $normal;
+    background-color: clear;
+    color: $secondary-focus;
+    font-weight: $bold;
+    border: 1px solid var(--outline);
 
     &:disabled {
       cursor: not-allowed;
@@ -59,18 +66,18 @@ button.button {
   }
 
   &.temporary {
-    background: $yellow;
+    background: $orange;
     color: $black;
 
     &:disabled {
       cursor: not-allowed;
-      color: rgba(0, 0, 0, 0.2);
+      color: rgba(0, 0, 0, 0.3);
     }
 
     &:enabled:hover,
     &:enabled:focus {
-      background-color: $primary-blue;
-      color: $text-white;
+      background-color: $primary;
+      color: $primary;
       box-shadow: var(--shadow-hover);
     }
   }
@@ -80,7 +87,7 @@ button.button {
 
     &:enabled:hover,
     &:enabled:focus {
-      color: $primary-blue;
+      color: $primary;
     }
   }
 

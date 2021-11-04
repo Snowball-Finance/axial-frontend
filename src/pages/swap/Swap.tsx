@@ -1,6 +1,5 @@
 import {
   IS_VIRTUAL_SWAP_ACTIVE,
-  POOLS_MAP,
   PoolName,
   SWAP_TYPES,
   TOKENS_MAP,
@@ -8,7 +7,6 @@ import {
 import React, {
   ReactElement,
   useCallback,
-  useContext,
   useEffect,
   useMemo,
   useState,
@@ -24,15 +22,9 @@ import {
   shiftBNDecimals,
 } from "../../libs"
 import { formatUnits, parseUnits } from "@ethersproject/units"
-import {
-  useBridgeContract,
-  useSwapContract,
-  useSynthetixExchangeRatesContract,
-} from "../../hooks/useContract"
 
 import { AppState } from "../../store/index"
 import { BigNumber } from "@ethersproject/bignumber"
-import { PendingSwapsContext } from "../../providers/PendingSwapsProvider"
 import SwapPage from "./SwapPage"
 import { Zero } from "@ethersproject/constants"
 import { calculateGasEstimate } from "../../libs/gasEstimate"
@@ -43,8 +35,8 @@ import { useActiveWeb3React } from "../../hooks"
 import { useApproveAndSwap } from "../../hooks/useApproveAndSwap"
 import { usePoolTokenBalances } from "../../store/wallet/hooks"
 import { useSelector } from "react-redux"
+import { useSwapContract } from "../../hooks/useContract"
 import { useTranslation } from "react-i18next"
-import { utils } from "ethers"
 
 type FormState = {
   error: null | string
@@ -99,10 +91,7 @@ function Swap(): ReactElement {
   const { chainId } = useActiveWeb3React()
   const approveAndSwap = useApproveAndSwap()
   const tokenBalances = usePoolTokenBalances()
-  const bridgeContract = useBridgeContract()
-  const snxEchangeRatesContract = useSynthetixExchangeRatesContract()
   const calculateSwapPairs = useCalculateSwapPairs()
-  const pendingSwapData = useContext(PendingSwapsContext)
   const { tokenPricesUSD, gasStandard, gasFast, gasInstant } = useSelector(
     (state: AppState) => state.application,
   )
@@ -205,56 +194,12 @@ function Swap(): ReactElement {
       const tokenTo = TOKENS_MAP[formStateArg.to.symbol]
       let error: string | null = null
       let amountToReceive = Zero
-      let amountMediumSynth = Zero
+      const amountMediumSynth = Zero
       if (amountToGive.gt(tokenBalances[formStateArg.from.symbol] || Zero)) {
         error = t("insufficientBalance")
       }
       if (amountToGive.isZero()) {
         amountToReceive = Zero
-      } else if (
-        formStateArg.swapType === SWAP_TYPES.TOKEN_TO_TOKEN &&
-        bridgeContract != null
-      ) {
-        const originPool = POOLS_MAP[formStateArg.from.poolName]
-        const destinationPool = POOLS_MAP[formStateArg.to.poolName]
-        const [
-          amountOutSynth,
-          amountOutToken,
-        ] = await bridgeContract.calcTokenToToken(
-          [originPool.addresses[chainId], destinationPool.addresses[chainId]],
-          formStateArg.from.tokenIndex,
-          formStateArg.to.tokenIndex,
-          amountToGive,
-        )
-        amountToReceive = amountOutToken
-        amountMediumSynth = amountOutSynth
-      } else if (
-        formStateArg.swapType === SWAP_TYPES.SYNTH_TO_TOKEN &&
-        bridgeContract != null
-      ) {
-        const destinationPool = POOLS_MAP[formStateArg.to.poolName]
-        const [
-          amountOutSynth,
-          amountOutToken,
-        ] = await bridgeContract.calcSynthToToken(
-          destinationPool.addresses[chainId],
-          utils.formatBytes32String(formStateArg.from.symbol),
-          formStateArg.to.tokenIndex,
-          amountToGive,
-        )
-        amountToReceive = amountOutToken
-        amountMediumSynth = amountOutSynth
-      } else if (
-        formStateArg.swapType === SWAP_TYPES.TOKEN_TO_SYNTH &&
-        bridgeContract != null
-      ) {
-        const originPool = POOLS_MAP[formStateArg.from.poolName]
-        amountToReceive = await bridgeContract.calcTokenToSynth(
-          originPool.addresses[chainId],
-          formStateArg.from.tokenIndex,
-          utils.formatBytes32String(formStateArg.to.symbol),
-          amountToGive,
-        )
       } else if (
         formStateArg.swapType === SWAP_TYPES.DIRECT &&
         swapContract != null
@@ -263,15 +208,6 @@ function Swap(): ReactElement {
           formStateArg.from.tokenIndex,
           formStateArg.to.tokenIndex,
           amountToGive,
-        )
-      } else if (
-        formStateArg.swapType === SWAP_TYPES.SYNTH_TO_SYNTH &&
-        snxEchangeRatesContract != null
-      ) {
-        amountToReceive = await snxEchangeRatesContract.effectiveValue(
-          utils.formatBytes32String(formStateArg.from.symbol),
-          amountToGive,
-          utils.formatBytes32String(formStateArg.to.symbol),
         )
       }
       const toValueUSD = calculatePrice(
@@ -305,7 +241,7 @@ function Swap(): ReactElement {
         return newState
       })
     }, 250),
-    [tokenBalances, swapContract, bridgeContract, chainId, tokenPricesUSD],
+    [tokenBalances, swapContract, chainId, tokenPricesUSD],
   )
 
   useEffect(() => {
@@ -474,7 +410,7 @@ function Swap(): ReactElement {
       return
     }
     await approveAndSwap({
-      bridgeContract: bridgeContract,
+      bridgeContract: null,
       swapContract: swapContract,
       from: {
         amount: parseUnits(formState.from.value, fromToken.decimals),
@@ -532,7 +468,6 @@ function Swap(): ReactElement {
 
   return (
     <SwapPage
-      pendingSwaps={pendingSwapData}
       tokenOptions={tokenOptions}
       exchangeRateInfo={{
         pair: `${formState.from.symbol}/${formState.to.symbol}`,

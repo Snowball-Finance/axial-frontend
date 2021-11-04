@@ -60,5 +60,4 @@ resource "aws_cloudfront_distribution" "this" {
     minimum_protocol_version       = "TLSv1.1_2016"
     cloudfront_default_certificate = false
   }
-
 }

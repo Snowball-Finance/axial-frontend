@@ -1,124 +1,44 @@
 import {
-  ALETH_POOL_NAME,
-  BTC_POOL_NAME,
-  BTC_POOL_V2_NAME,
-  D4_POOL_NAME,
+  AXIAL_A4D_POOL_NAME,
   POOLS_MAP,
   PoolName,
   PoolTypes,
   STABLECOIN_POOL_NAME,
-  STABLECOIN_POOL_V2_NAME,
-  SUSD_METAPOOL_NAME,
-  TBTC_METAPOOL_NAME,
-  VETH2_POOL_NAME,
-  WCUSD_METAPOOL_NAME,
 } from "../../constants"
 import React, { ReactElement, useState } from "react"
 
 import ConfirmTransaction from "../../components/confirm-transaction/ConfirmTransaction"
 import Modal from "../../components/modal/Modal"
 import PoolOverview from "../../components/pool-info-card/PoolOverview"
-import ReviewMigration from "../../components/reviews/ReviewMigration"
 import TopMenu from "../../components/menu/TopMenu"
 import { Zero } from "@ethersproject/constants"
 import classNames from "classnames"
-import { logEvent } from "../../libs/googleAnalytics"
 import styles from "./Pools.module.scss"
-import { useApproveAndMigrateUSD } from "../../hooks/useApproveAndMigrateUSD"
 import usePoolData from "../../hooks/usePoolData"
 
 function Pools(): ReactElement | null {
-  const [d4PoolData, d4UserShareData] = usePoolData(D4_POOL_NAME)
-  const [alethPoolData, alethUserShareData] = usePoolData(ALETH_POOL_NAME)
-  const [btcPoolData, btcUserShareData] = usePoolData(BTC_POOL_NAME)
-  const [btcPoolV2Data, btcV2UsersShareData] = usePoolData(BTC_POOL_V2_NAME)
-  const [usdPoolV2Data, usdV2UserShareData] = usePoolData(
-    STABLECOIN_POOL_V2_NAME,
-  )
   const [usdPoolData, usdUserShareData] = usePoolData(STABLECOIN_POOL_NAME)
-  const [susdPoolData, susdUserShareData] = usePoolData(SUSD_METAPOOL_NAME)
-  const [tbtcPoolData, tbtcUserShareData] = usePoolData(TBTC_METAPOOL_NAME)
-  const [veth2PoolData, veth2UserShareData] = usePoolData(VETH2_POOL_NAME)
-  const [wcusdPoolData, wcusdUserShareData] = usePoolData(WCUSD_METAPOOL_NAME)
+  const [a4dPoolData, a4dUserShareData] = usePoolData(AXIAL_A4D_POOL_NAME)
   const [currentModal, setCurrentModal] = useState<string | null>(null)
-  const approveAndMigrateUSD = useApproveAndMigrateUSD()
-  const [activeMigration, setActiveMigration] = useState<PoolName | null>(null)
   const [filter, setFilter] = useState<PoolTypes | "all" | "outdated">("all")
-  const handleClickMigrate = (poolName: PoolName) => {
-    setActiveMigration(poolName)
+  const handleClickMigrate = () => {
     setCurrentModal("migrate")
   }
 
   function getPropsForPool(poolName: PoolName) {
-    if (poolName === D4_POOL_NAME) {
+    if (poolName === AXIAL_A4D_POOL_NAME) {
       return {
-        name: D4_POOL_NAME,
-        poolData: d4PoolData,
-        userShareData: d4UserShareData,
-        poolRoute: "/pools/d4",
-      }
-    } else if (poolName === ALETH_POOL_NAME) {
-      return {
-        name: ALETH_POOL_NAME,
-        poolData: alethPoolData,
-        userShareData: alethUserShareData,
-        poolRoute: "/pools/aleth",
-      }
-    } else if (poolName === BTC_POOL_NAME) {
-      return {
-        name: BTC_POOL_NAME,
-        poolData: btcPoolData,
-        userShareData: btcUserShareData,
-        poolRoute: "/pools/btc",
-      }
-    } else if (poolName === BTC_POOL_V2_NAME) {
-      return {
-        name: BTC_POOL_V2_NAME,
-        poolData: btcPoolV2Data,
-        userShareData: btcV2UsersShareData,
-        poolRoute: "/pools/btcv2",
-      }
-    } else if (poolName === STABLECOIN_POOL_NAME) {
-      return {
-        name: STABLECOIN_POOL_NAME,
+        name: AXIAL_A4D_POOL_NAME,
         poolData: usdPoolData,
         userShareData: usdUserShareData,
         poolRoute: "/pools/usd",
       }
-    } else if (poolName === STABLECOIN_POOL_V2_NAME) {
-      return {
-        name: STABLECOIN_POOL_V2_NAME,
-        poolData: usdPoolV2Data,
-        userShareData: usdV2UserShareData,
-        poolRoute: "/pools/usdv2",
-      }
-    } else if (poolName === SUSD_METAPOOL_NAME) {
-      return {
-        name: SUSD_METAPOOL_NAME,
-        poolData: susdPoolData,
-        userShareData: susdUserShareData,
-        poolRoute: "/pools/susd",
-      }
-    } else if (poolName === TBTC_METAPOOL_NAME) {
-      return {
-        name: TBTC_METAPOOL_NAME,
-        poolData: tbtcPoolData,
-        userShareData: tbtcUserShareData,
-        poolRoute: "/pools/tbtc",
-      }
-    } else if (poolName === WCUSD_METAPOOL_NAME) {
-      return {
-        name: WCUSD_METAPOOL_NAME,
-        poolData: wcusdPoolData,
-        userShareData: wcusdUserShareData,
-        poolRoute: "/pools/wcusd",
-      }
     } else {
       return {
-        name: VETH2_POOL_NAME,
-        poolData: veth2PoolData,
-        userShareData: veth2UserShareData,
-        poolRoute: "/pools/veth2",
+        name: STABLECOIN_POOL_NAME,
+        poolData: a4dPoolData,
+        userShareData: a4dUserShareData,
+        poolRoute: "/pools/a4d",
       }
     }
   }
@@ -131,13 +51,11 @@ function Pools(): ReactElement | null {
           [PoolTypes.BTC, "BTC"] as const,
           [PoolTypes.ETH, "ETH"] as const,
           [PoolTypes.USD, "USD"] as const,
-          ["outdated", "OUTDATED"] as const,
         ].map(([filterKey, text]) => (
           <li
             key={filterKey}
             className={classNames(styles.filterTab, {
               [styles.selected]: filter === filterKey,
-              [styles.outdated]: filterKey === "outdated",
             })}
             onClick={(): void => setFilter(filterKey)}
           >
@@ -187,9 +105,7 @@ function Pools(): ReactElement | null {
               key={poolProps.name}
               {...poolProps}
               onClickMigrate={
-                migrationPool
-                  ? () => handleClickMigrate(migrationPool)
-                  : undefined
+                migrationPool ? () => handleClickMigrate() : undefined
               }
             />
           ))}
@@ -198,24 +114,6 @@ function Pools(): ReactElement | null {
         isOpen={!!currentModal}
         onClose={(): void => setCurrentModal(null)}
       >
-        {currentModal === "migrate" ? (
-          <ReviewMigration
-            onClose={(): void => {
-              setCurrentModal(null)
-              setActiveMigration(null)
-            }}
-            onConfirm={async (): Promise<void> => {
-              setCurrentModal("confirm")
-              logEvent("migrate", {
-                pool: activeMigration,
-              })
-              await approveAndMigrateUSD(usdUserShareData?.lpTokenBalance)
-              setCurrentModal(null)
-              setActiveMigration(null)
-            }}
-            migrationAmount={usdUserShareData?.lpTokenBalance}
-          />
-        ) : null}
         {currentModal === "confirm" ? <ConfirmTransaction /> : null}
       </Modal>
     </div>

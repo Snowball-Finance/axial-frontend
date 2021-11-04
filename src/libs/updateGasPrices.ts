@@ -1,4 +1,5 @@
 import { AppDispatch } from "../store"
+import { ethers } from "ethers"
 import retry from "async-retry"
 import { updateGasPrices } from "../store/application"
 
@@ -7,27 +8,25 @@ interface GenericGasReponse {
   gasFast: number
   gasInstant: number
 }
-interface POAGasResponse {
-  standard: number
-  fast: number
-  instant: number
-  health: boolean
-}
 
-const fetchGasPricePOA = (): Promise<GenericGasReponse> =>
-  fetch("https://gasprice.poa.network/")
-    .then((res) => res.json())
-    .then((body: POAGasResponse) => {
-      const { standard, fast, instant, health } = body
-      if (health) {
-        return {
-          gasStandard: Math.round(standard),
-          gasFast: Math.round(fast),
-          gasInstant: Math.round(instant),
-        }
-      }
-      throw new Error("Unable to fetch gas price from POA Network")
-    })
+const fetchGasFromChain = async (): Promise<GenericGasReponse> => {
+  try {
+    const provider = new ethers.providers.StaticJsonRpcProvider(
+      process.env.REACT_APP_NETWORK_URL,
+    )
+    const gasPrice = Math.floor((await provider.getGasPrice()).toNumber() / 1e9)
+
+    const response: GenericGasReponse = {
+      gasStandard: gasPrice,
+      gasFast: gasPrice,
+      gasInstant: gasPrice,
+    }
+
+    return response
+  } catch (error) {
+    throw new Error(`Unable to fetch gas price`)
+  }
+}
 
 export default async function fetchGasPrices(
   dispatch: AppDispatch,
@@ -37,9 +36,9 @@ export default async function fetchGasPrices(
   }
   await retry(
     () =>
-      fetchGasPricePOA()
+      fetchGasFromChain()
         .then(dispatchUpdate)
-        .catch(() => fetchGasPricePOA().then(dispatchUpdate)), // else fall back to poa before retrying
+        .catch(() => fetchGasFromChain().then(dispatchUpdate)),
     {
       retries: 3,
     },

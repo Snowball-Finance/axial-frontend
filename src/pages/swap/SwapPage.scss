@@ -19,8 +19,7 @@ div.swapPage {
 
   .swapForm {
     width: 100%;
-    background: var(--background-element);
-    border: 1px solid var(--outline);
+    background: $primary-focus;
     border-radius: 10px;
     padding: 24px;
     .row {
@@ -37,7 +36,7 @@ div.swapPage {
       }
       a {
         font-weight: 700;
-        color: var(--text-selected);
+        color: var(--text);
         &:hover {
           cursor: pointer;
         }
@@ -76,7 +75,7 @@ div.swapPage {
     margin-top: 16px;
     border: 1px solid;
     border-radius: 8px;
-    background: $primary40T;
+    background: $primary-shade;
     width: 100%;
     > svg {
       fill: var(--primary-foreground);
@@ -123,9 +122,8 @@ div.swapPage {
 
     .table {
       width: 100%;
-      background: var(--background-element);
+      background: $primary;
       margin-top: 16px;
-      border: 1px solid var(--outline);
       border-radius: 10px;
       padding: 16px 24px;
 
@@ -167,9 +165,9 @@ div.swapPage {
     width: 100%;
     > .pendingSwapItem {
       width: 100%;
-      border: 1px solid $primary-blue;
+      border: 1px solid $primary-focus;
       border-radius: 10px;
-      background: var(--primary-background);
+      background: $primary-focus;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -177,7 +175,7 @@ div.swapPage {
       cursor: pointer;
       margin-bottom: 16px;
       .swapDetails {
-        color: $primary-blue;
+        color: $primary-focus;
         font-weight: 700;
         font-size: 16px;
       }

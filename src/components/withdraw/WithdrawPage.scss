@@ -1,4 +1,5 @@
 @import "../../styles/theme.scss";
+@import "../../styles/global.scss";
 @import "../../styles/viewports";
 
 div.withdraw {
@@ -28,7 +29,6 @@ div.withdraw {
       margin-top: 40px;
       width: 434px;
       padding: 24px 32px;
-      border: 1px solid var(--outline);
       border-radius: 10px;
       background: var(--background-element);
       box-sizing: border-box;
@@ -50,7 +50,6 @@ div.withdraw {
 
     .form {
       width: 434px;
-      border: 1px solid var(--outline);
       background: var(--background-element);
       border-radius: 10px;
       padding: 24px;
@@ -70,7 +69,7 @@ div.withdraw {
       margin-top: 0;
       margin-bottom: 48px;
       font-weight: $bold;
-      color: var(--text-darker);
+      color: var(--text);
       text-align: center;
     }
 
@@ -167,7 +166,7 @@ div.withdraw {
     }
 
     .selected {
-      color: var(--text-selected);
+      color: var(--text);
       font-weight: $medium;
       text-decoration: underline;
     }
@@ -178,7 +177,6 @@ div.withdraw {
       margin-left: 16px;
       border: none;
       border-radius: 0;
-      outline: 1px solid var(--outline);
     }
 
     > input.selected {
@@ -193,12 +191,12 @@ div.withdraw {
     row-gap: 8px;
 
     span.value {
-      color: var(--text-darker);
+      color: var(--text);
       font-weight: $bold;
     }
 
     span.bonus {
-      color: var(--text-selected);
+      color: var(--text);
     }
 
     span.slippage {
@@ -217,5 +215,5 @@ div.withdraw {
 }
 
 div.noShare {
-  background: var(--background);
+  background: var(--background-main);
 }

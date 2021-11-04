@@ -9,9 +9,9 @@ interface GasPrices {
 }
 interface SwapStats {
   [swapAddress: string]: {
-    oneDayVolume: string
-    apy: string
-    tvl: string
+    oneDayVolume: number
+    apy: number
+    tvl: number
     utilization: string
   }
 }
@@ -52,20 +52,19 @@ const applicationSlice = createSlice({
         ...action.payload,
       }
     },
-    updateSwapStats(state, action: PayloadAction<SwapStatsReponse>): void {
-      const formattedPayload = Object.keys(action.payload).reduce(
-        (acc, key) => {
-          const { APY, TVL, oneDayVolume: ODV } = action.payload[key]
-          if (isNaN(APY) || isNaN(TVL) || isNaN(ODV)) {
+    updateSwapStats(state, action: PayloadAction<SwapStatsReponse[]>): void {
+      const formattedPayload = Object.values(action.payload).reduce(
+        (acc, data) => {
+          if (isNaN(data.last_apr) || isNaN(data.last_vol)) {
             return acc
           }
-          const apy = APY.toFixed(18)
-          const tvl = TVL.toFixed(18)
-          const oneDayVolume = ODV.toFixed(18)
-          const utilization = (TVL > 0 ? ODV / TVL : 0).toFixed(18)
+          const apy = data.last_apr
+          const tvl = 0
+          const oneDayVolume = data.last_vol
+          const utilization = 0
           return {
             ...acc,
-            [key]: {
+            [data.swapaddress]: {
               apy,
               tvl,
               oneDayVolume,

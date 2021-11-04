@@ -1,10 +1,5 @@
 import { AddressZero, Zero } from "@ethersproject/constants"
-import {
-  BTC_POOL_NAME,
-  POOLS_MAP,
-  PoolName,
-  TRANSACTION_TYPES,
-} from "../constants"
+import { POOLS_MAP, PoolName, TRANSACTION_TYPES } from "../constants"
 import {
   formatBNToPercentString,
   getContract,
@@ -14,14 +9,10 @@ import { useEffect, useState } from "react"
 
 import { AppState } from "../store"
 import { BigNumber } from "@ethersproject/bignumber"
-import LPTOKEN_GUARDED_ABI from "../constants/abis/lpTokenGuarded.json"
 import LPTOKEN_UNGUARDED_ABI from "../constants/abis/lpTokenUnguarded.json"
-import { LpTokenGuarded } from "../../types/ethers-contracts/LpTokenGuarded"
 import { LpTokenUnguarded } from "../../types/ethers-contracts/LpTokenUnguarded"
 import META_SWAP_ABI from "../constants/abis/metaSwap.json"
 import { MetaSwap } from "../../types/ethers-contracts/MetaSwap"
-import { SwapFlashLoanNoWithdrawFee } from "../../types/ethers-contracts/SwapFlashLoanNoWithdrawFee"
-import { getThirdPartyDataForPool } from "../libs/thirdPartyIntegrations"
 import { parseUnits } from "@ethersproject/units"
 import { useActiveWeb3React } from "."
 import { useSelector } from "react-redux"
@@ -37,7 +28,7 @@ export type Partners = "keep" | "sharedStake" | "alchemix"
 export interface PoolDataType {
   adminFee: BigNumber
   aParameter: BigNumber
-  apy: BigNumber | null
+  apy: number | null
   name: string
   reserve: BigNumber | null
   swapFee: BigNumber
@@ -45,17 +36,8 @@ export interface PoolDataType {
   totalLocked: BigNumber
   utilization: BigNumber | null
   virtualPrice: BigNumber
-  volume: BigNumber | null
+  volume: number | null
   isPaused: boolean
-  aprs: Partial<
-    Record<
-      Partners,
-      {
-        apr: BigNumber
-        symbol: string
-      }
-    >
-  >
   lpTokenPriceUSD: BigNumber
   lpToken: string
 }
@@ -67,7 +49,6 @@ export interface UserShareType {
   tokens: TokenShareType[]
   usdBalance: BigNumber
   underlyingTokensAmount: BigNumber
-  amountsStaked: Partial<Record<Partners, BigNumber>>
 }
 
 export type PoolDataHookReturnType = [PoolDataType, UserShareType | null]
@@ -75,7 +56,7 @@ export type PoolDataHookReturnType = [PoolDataType, UserShareType | null]
 const emptyPoolData = {
   adminFee: Zero,
   aParameter: Zero,
-  apy: null,
+  apy: 0,
   name: "",
   reserve: null,
   swapFee: Zero,
@@ -83,7 +64,7 @@ const emptyPoolData = {
   totalLocked: Zero,
   utilization: null,
   virtualPrice: Zero,
-  volume: null,
+  volume: 0,
   aprs: {},
   lpTokenPriceUSD: Zero,
   lpToken: "",
@@ -133,8 +114,7 @@ export default function usePoolData(
           account ?? undefined,
         ) as MetaSwap
       }
-      const effectiveSwapContract =
-        metaSwapContract || (swapContract as SwapFlashLoanNoWithdrawFee)
+      const effectiveSwapContract = metaSwapContract || swapContract
 
       // Swap fees, price, and LP Token data
       const [swapStorage, aParameter, isPaused] = await Promise.all([
@@ -143,22 +123,12 @@ export default function usePoolData(
         effectiveSwapContract.paused(),
       ])
       const { adminFee, lpToken: lpTokenAddress, swapFee } = swapStorage
-      let lpTokenContract
-      if (poolName === BTC_POOL_NAME) {
-        lpTokenContract = getContract(
-          lpTokenAddress,
-          LPTOKEN_GUARDED_ABI,
-          library,
-          account ?? undefined,
-        ) as LpTokenGuarded
-      } else {
-        lpTokenContract = getContract(
-          lpTokenAddress,
-          LPTOKEN_UNGUARDED_ABI,
-          library,
-          account ?? undefined,
-        ) as LpTokenUnguarded
-      }
+      const lpTokenContract = getContract(
+        lpTokenAddress,
+        LPTOKEN_UNGUARDED_ABI,
+        library,
+        account ?? undefined,
+      ) as LpTokenUnguarded
       const [userLpTokenBalance, totalLpTokenBalance] = await Promise.all([
         lpTokenContract.balanceOf(account || AddressZero),
         lpTokenContract.totalSupply(),
@@ -199,14 +169,6 @@ export default function usePoolData(
         : tokenBalancesUSDSum
             .mul(BigNumber.from(10).pow(18))
             .div(tokenBalancesSum)
-      const { aprs, amountsStaked } = await getThirdPartyDataForPool(
-        library,
-        chainId,
-        account,
-        poolName,
-        tokenPricesUSD,
-        lpTokenPriceUSD,
-      )
 
       function calculatePctOfTotalShare(lpTokenAmount: BigNumber): BigNumber {
         // returns the % of total lpTokens
@@ -218,17 +180,9 @@ export default function usePoolData(
               : totalLpTokenBalance,
           )
       }
-      // User share data
-      const userLpTokenBalanceStakedElsewhere = Object.keys(
-        amountsStaked,
-      ).reduce(
-        (sum, key) => sum.add(amountsStaked[key as Partners] || Zero),
-        Zero,
-      )
+
       // lpToken balance in wallet as a % of total lpTokens, plus lpTokens staked elsewhere
-      const userShare = calculatePctOfTotalShare(userLpTokenBalance).add(
-        calculatePctOfTotalShare(userLpTokenBalanceStakedElsewhere),
-      )
+      const userShare = calculatePctOfTotalShare(userLpTokenBalance)
       const userPoolTokenBalances = tokenBalances.map((balance) => {
         return userShare.mul(balance).div(BigNumber.from(10).pow(18))
       })
@@ -270,7 +224,7 @@ export default function usePoolData(
         ),
         value: userPoolTokenBalances[i],
       }))
-      const poolAddress = POOL.addresses[chainId].toLowerCase()
+      const poolAddress = POOL.addresses[chainId]
       const { oneDayVolume, apy, utilization } =
         swapStats && poolAddress in swapStats
           ? swapStats[poolAddress]
@@ -284,10 +238,9 @@ export default function usePoolData(
         adminFee: adminFee,
         swapFee: swapFee,
         aParameter: aParameter,
-        volume: oneDayVolume ? parseUnits(oneDayVolume, 18) : null,
+        volume: oneDayVolume,
         utilization: utilization ? parseUnits(utilization, 18) : null,
-        apy: apy ? parseUnits(apy, 18) : null,
-        aprs,
+        apy: apy,
         lpTokenPriceUSD,
         lpToken: POOL.lpToken.symbol,
         isPaused,
@@ -300,17 +253,6 @@ export default function usePoolData(
             usdBalance: userPoolTokenBalancesUSDSum,
             tokens: userPoolTokens,
             lpTokenBalance: userLpTokenBalance,
-            amountsStaked: Object.keys(amountsStaked).reduce((acc, key) => {
-              const amount = amountsStaked[key as Partners]
-              return key
-                ? {
-                    ...acc,
-                    [key]: amount
-                      ?.mul(virtualPrice)
-                      .div(BigNumber.from(10).pow(18)),
-                  }
-                : acc
-            }, {}), // this is # of underlying tokens (eg btc), not lpTokens
           }
         : null
       setPoolData([poolData, userShareData])
