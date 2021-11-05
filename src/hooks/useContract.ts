@@ -5,8 +5,6 @@ import {
   FRAX,
   POOLS_MAP,
   PoolName,
-  STABLECOIN_POOL_NAME,
-  STABLECOIN_SWAP_TOKEN,
   TUSD,
   Token,
   USDC,
@@ -63,7 +61,7 @@ export function useTokenContract(
 
 export function useSwapContract<T extends PoolName>(
   poolName?: T,
-): T extends typeof STABLECOIN_POOL_NAME | typeof AXIAL_A4D_POOL_NAME
+): T extends typeof AXIAL_A4D_POOL_NAME
   ? SwapFlashLoanNoWithdrawFee | null
   : SwapFlashLoan | SwapGuarded | MetaSwapDeposit | null
 export function useSwapContract(
@@ -98,7 +96,7 @@ export function useSwapContract(
 
 export function useLPTokenContract<T extends PoolName>(
   poolName: T,
-): T extends typeof STABLECOIN_POOL_NAME | typeof AXIAL_A4D_POOL_NAME
+): T extends typeof AXIAL_A4D_POOL_NAME
   ? LpTokenGuarded | null
   : LpTokenUnguarded | null
 
@@ -134,10 +132,6 @@ export function useAllContracts(): AllContractsObject | null {
   const fraxContract = useTokenContract(FRAX) as Erc20
   const usdcContract = useTokenContract(USDC) as Erc20
 
-  const stablecoinSwapTokenContract = useTokenContract(
-    STABLECOIN_SWAP_TOKEN,
-  ) as LpTokenUnguarded
-
   const axiala4dSwapTokenContract = useTokenContract(
     AXIAL_A4D_SWAP_TOKEN,
   ) as LpTokenUnguarded
@@ -151,7 +145,6 @@ export function useAllContracts(): AllContractsObject | null {
         usdcContract,
         fraxContract,
         axiala4dSwapTokenContract,
-        stablecoinSwapTokenContract,
       ].some(Boolean)
     )
       return null
@@ -162,7 +155,6 @@ export function useAllContracts(): AllContractsObject | null {
       [USDC.symbol]: usdcContract,
       [FRAX.symbol]: fraxContract,
       [AXIAL_A4D_SWAP_TOKEN.symbol]: axiala4dSwapTokenContract,
-      [STABLECOIN_SWAP_TOKEN.symbol]: stablecoinSwapTokenContract,
     }
   }, [
     daiContract,
@@ -171,6 +163,5 @@ export function useAllContracts(): AllContractsObject | null {
     usdcContract,
     fraxContract,
     axiala4dSwapTokenContract,
-    stablecoinSwapTokenContract,
   ])
 }

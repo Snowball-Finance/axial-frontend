@@ -13,6 +13,7 @@ import LPTOKEN_UNGUARDED_ABI from "../constants/abis/lpTokenUnguarded.json"
 import { LpTokenUnguarded } from "../../types/ethers-contracts/LpTokenUnguarded"
 import META_SWAP_ABI from "../constants/abis/metaSwap.json"
 import { MetaSwap } from "../../types/ethers-contracts/MetaSwap"
+import { getVaultRewardApy } from "../libs/geta4dapy"
 import { parseUnits } from "@ethersproject/units"
 import { useActiveWeb3React } from "."
 import { useSelector } from "react-redux"
@@ -29,6 +30,7 @@ export interface PoolDataType {
   adminFee: BigNumber
   aParameter: BigNumber
   apy: number | null
+  rapy: number | null
   name: string
   reserve: BigNumber | null
   swapFee: BigNumber
@@ -57,6 +59,7 @@ const emptyPoolData = {
   adminFee: Zero,
   aParameter: Zero,
   apy: 0,
+  rapy: 0,
   name: "",
   reserve: null,
   swapFee: Zero,
@@ -122,6 +125,10 @@ export default function usePoolData(
         effectiveSwapContract.getA(),
         effectiveSwapContract.paused(),
       ])
+      const poolApy = await getVaultRewardApy(
+        POOL.lpToken.masterchefId,
+        POOL.name,
+      )
       const { adminFee, lpToken: lpTokenAddress, swapFee } = swapStorage
       const lpTokenContract = getContract(
         lpTokenAddress,
@@ -231,6 +238,7 @@ export default function usePoolData(
           : { oneDayVolume: null, apy: null, utilization: null }
       const poolData = {
         name: poolName,
+        rapy: poolApy,
         tokens: poolTokens,
         reserve: tokenBalancesUSDSum,
         totalLocked: totalLpTokenBalance,

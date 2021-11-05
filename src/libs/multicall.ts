@@ -1,5 +1,7 @@
+import { AXIAL_MASTERCHEF_CONTRACT_ADDRESS, ChainId } from "../constants"
 import ERC_20 from "../constants/abis/erc20.json"
 import LP_TOKEN_UNGUARDED from "../constants/abis/lpTokenUnguarded.json"
+import MASTERCHEF from "../constants/abis/masterchef.json"
 import { Multicall } from "ethereum-multicall"
 import { ethers } from "ethers"
 
@@ -60,6 +62,7 @@ class ContractCall {
 async function getMultiContractData(
   provider: ethers.providers.BaseProvider,
   contractArray: ContractCall[],
+  keys?: string[],
 ): Promise<ReturnValues> {
   const multicall = new Multicall({ ethersProvider: provider })
   const call = await multicall.call(contractArray)
@@ -67,7 +70,7 @@ async function getMultiContractData(
   const resultSet = {} as ReturnValues
 
   const contractNames = Object.keys(call.results)
-  contractNames.forEach((name) => {
+  contractNames.forEach((name, idx) => {
     const result = {} as ReturnValues
     call.results[name].callsReturnContext.forEach((values) => {
       //I don`t want an array when the result is not an array
@@ -79,7 +82,7 @@ async function getMultiContractData(
         throw new Error("Return not found!")
       }
     })
-    resultSet[name] = result
+    resultSet[keys ? keys[idx] : name] = result
   })
 
   //result is [contractName: [ result1,... ],...]
@@ -111,4 +114,24 @@ function getUserBalance(account: string, tokenAddress: string): ContractCall {
   return contractCall
 }
 
-export { ContractCall, getMultiContractData, getPoolsTVL, getUserBalance }
+function getUserMasterchefInfo(
+  account: string,
+  masterchefId: number,
+  chainId: ChainId,
+): ContractCall {
+  const contractCall = new ContractCall(
+    AXIAL_MASTERCHEF_CONTRACT_ADDRESS[chainId],
+    MASTERCHEF,
+  )
+  contractCall.setCall("userInfo", [masterchefId, account])
+
+  return contractCall
+}
+
+export {
+  ContractCall,
+  getMultiContractData,
+  getPoolsTVL,
+  getUserBalance,
+  getUserMasterchefInfo,
+}

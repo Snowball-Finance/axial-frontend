@@ -3,7 +3,6 @@ import {
   POOLS_MAP,
   PoolName,
   PoolTypes,
-  STABLECOIN_POOL_NAME,
 } from "../../constants"
 import React, { ReactElement, useState } from "react"
 
@@ -17,7 +16,6 @@ import styles from "./Pools.module.scss"
 import usePoolData from "../../hooks/usePoolData"
 
 function Pools(): ReactElement | null {
-  const [usdPoolData, usdUserShareData] = usePoolData(STABLECOIN_POOL_NAME)
   const [a4dPoolData, a4dUserShareData] = usePoolData(AXIAL_A4D_POOL_NAME)
   const [currentModal, setCurrentModal] = useState<string | null>(null)
   const [filter, setFilter] = useState<PoolTypes | "all" | "outdated">("all")
@@ -26,20 +24,11 @@ function Pools(): ReactElement | null {
   }
 
   function getPropsForPool(poolName: PoolName) {
-    if (poolName === AXIAL_A4D_POOL_NAME) {
-      return {
-        name: AXIAL_A4D_POOL_NAME,
-        poolData: usdPoolData,
-        userShareData: usdUserShareData,
-        poolRoute: "/pools/usd",
-      }
-    } else {
-      return {
-        name: STABLECOIN_POOL_NAME,
-        poolData: a4dPoolData,
-        userShareData: a4dUserShareData,
-        poolRoute: "/pools/a4d",
-      }
+    return {
+      name: AXIAL_A4D_POOL_NAME,
+      poolData: a4dPoolData,
+      userShareData: a4dUserShareData,
+      poolRoute: "/pools/a4d",
     }
   }
   return (
