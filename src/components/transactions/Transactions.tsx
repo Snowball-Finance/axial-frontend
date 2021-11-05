@@ -53,8 +53,7 @@ interface Transaction {
 }
 
 export default function Transactions(): ReactElement {
-  const SADDLE_SUBGRAPH_URL =
-    "https://api.thegraph.com/subgraphs/name/saddle-finance/saddle"
+  const axial_SUBGRAPH_URL = "#"
   const { t } = useTranslation()
   const { chainId, account } = useActiveWeb3React()
   const [transactionList, setTransactionList] = useState<Transaction[]>([])
@@ -92,7 +91,7 @@ export default function Transactions(): ReactElement {
       }
     `
 
-    await fetch(SADDLE_SUBGRAPH_URL, {
+    await fetch(axial_SUBGRAPH_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ query }),

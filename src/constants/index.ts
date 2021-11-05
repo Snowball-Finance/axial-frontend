@@ -309,7 +309,7 @@ export const SWAP_CONTRACT_GAS_ESTIMATES_MAP = {
   [SWAP_TYPES.TOKEN_TO_TOKEN]: BigNumber.from("2000000"), // 1,676,837
   [SWAP_TYPES.TOKEN_TO_SYNTH]: BigNumber.from("2000000"), // 1,655,502
   [SWAP_TYPES.SYNTH_TO_TOKEN]: BigNumber.from("1500000"), // 1,153,654
-  [SWAP_TYPES.SYNTH_TO_SYNTH]: BigNumber.from("700000"), // 681,128 // TODO: https://github.com/saddle-finance/saddle-frontend/issues/471
+  [SWAP_TYPES.SYNTH_TO_SYNTH]: BigNumber.from("700000"), // 681,128 //
   addLiquidity: BigNumber.from("400000"), // 386,555
   removeLiquidityImbalance: BigNumber.from("350000"), // 318,231
   removeLiquidityOneToken: BigNumber.from("250000"), // 232,947
@@ -341,7 +341,7 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
   },
 }
 
-// "SADDLE" in bytes32 form
+// "axial" in bytes32 form
 export const SYNTH_TRACKING_ID =
   "0x534144444c450000000000000000000000000000000000000000000000000000"
 

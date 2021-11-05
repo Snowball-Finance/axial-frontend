@@ -2,10 +2,10 @@ export
 AWS_PROFILE=snowball
 dev_S3_BUCKET=dev-app.axial.exchange
 staging_S3_BUCKET=dev-stg.axial.exchange
-prod_S3_BUCKET=dev-app.axial.exchange
+prod_S3_BUCKET=app.axial.exchange
 dev_DISTRIBUTION_ID=E1896O31DT0GF5
 staging_DISTRIBUTION_ID=
-prod_DISTRIBUTION_ID=
+prod_DISTRIBUTION_ID=E2N82FJBD6LE57
 
 test-envvars:
 	@[ "${env}" ] || ( echo "env var is not set"; exit 1 )
