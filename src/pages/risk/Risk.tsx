@@ -15,7 +15,7 @@ function Risk(): ReactElement {
         <h1 className="title">Risk</h1>
         <p data-testid="risk-intro">
           {t("riskIntro")}{" "}
-          <a href="https://github.com/saddle-finance/saddle-contract">
+          <a href="https://github.com/Snowball-Finance/axial-protocol">
             {t("riskIntro2")}
           </a>{" "}
           {t("riskIntro3")}
@@ -23,7 +23,7 @@ function Risk(): ReactElement {
         <h3>{t("audits")}</h3>
         <p data-testid="risk-audits">
           {t("riskAudits")}{" "}
-          <a href="https://github.com/saddle-finance/saddle-audits">
+          <a href="https://github.com/Snowball-Finance/axial-protocol">
             {t("riskAudits2")}
           </a>
           {"."}

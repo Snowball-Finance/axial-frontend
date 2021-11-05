@@ -55,7 +55,7 @@ function ReviewMigration({
               {commify(
                 formatBNToString(migrationAmount || BigNumber.from("0"), 18, 2),
               )}{" "}
-              saddleUSD
+              axialUSD
             </span>
           </div>
           <div className="row">

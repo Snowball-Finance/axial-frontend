@@ -202,7 +202,7 @@ const SwapPage = (props: Props): ReactElement => {
                   <span></span>
                   <span>
                     <a
-                      href="https://docs.saddle.finance/saddle-faq#what-is-virtual-swap"
+                      href="#"
                       style={{ textDecoration: "underline" }}
                       target="_blank"
                       rel="noreferrer"
@@ -231,11 +231,7 @@ const SwapPage = (props: Props): ReactElement => {
           <div className="virtualSwapInfoBubble">
             <InfoIcon />
             {t("crossAssetSwapsUseVirtualSwaps")} {"<"}
-            <a
-              href="https://docs.saddle.finance/saddle-faq#what-is-virtual-swap"
-              target="_blank"
-              rel="noreferrer"
-            >
+            <a href="#" target="_blank" rel="noreferrer">
               {t("learnMore")}
             </a>
             {">"}

@@ -1,45 +1,30 @@
-import { Deadlines, GasPrices, Slippages } from "../../store/module/user"
-import React, { ReactElement } from "react"
 import {
-  updateGasPriceCustom,
-  updateGasPriceSelected,
   updateInfiniteApproval,
   updatePoolAdvancedMode,
   updateSlippageCustom,
   updateSlippageSelected,
-  updateTransactionDeadlineCustom,
-  updateTransactionDeadlineSelected,
 } from "../../store/module/user"
-
 import { useDispatch, useSelector } from "react-redux"
-
 import { AppDispatch } from "../../store"
 import { AppState } from "../../store/index"
-
 import CheckboxInput from "../checkbox-input/CheckboxInput"
 import { PayloadAction } from "@reduxjs/toolkit"
-import ToolTip from "../tool-tip/ToolTip"
 import classNames from "classnames"
+import ToolTip from "../tool-tip/ToolTip"
+import React from "react"
+import { Slippages } from "../../store/module/user"
 import styles from "./AdvancedOptions.module.scss"
 import { useTranslation } from "react-i18next"
 
-export default function AdvancedOptions(): ReactElement {
+export default function AdvancedOptions(): React.ReactElement {
   const { t } = useTranslation()
   const dispatch = useDispatch<AppDispatch>()
   const {
     infiniteApproval,
     slippageCustom,
     slippageSelected,
-    transactionDeadlineSelected,
-    transactionDeadlineCustom,
-    gasCustom,
-    gasPriceSelected,
     userPoolAdvancedMode: advanced,
   } = useSelector((state: AppState) => state.user)
-
-  const { gasStandard, gasFast, gasInstant } = useSelector(
-    (state: AppState) => state.application,
-  )
 
   return (
     <div className={styles.advancedOptions}>
