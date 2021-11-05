@@ -52,9 +52,6 @@ export default async function checkAndApproveTokenForTrade(
       const approvalTransaction = await srcTokenContract.approve(
         swapAddress,
         amount,
-        {
-          gasPrice,
-        },
       )
       const confirmedTransaction = await approvalTransaction.wait()
       cleanupOnStart?.()

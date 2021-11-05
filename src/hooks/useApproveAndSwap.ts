@@ -102,7 +102,7 @@ export function useApproveAndSwap(): (
           },
         },
       )
-      const txnArgs = { gasPrice }
+      const txnArgs = {}
       let swapTransaction
       if (state.swapType === SWAP_TYPES.TOKEN_TO_TOKEN) {
         const originPool = POOLS_MAP[state.from.poolName]
