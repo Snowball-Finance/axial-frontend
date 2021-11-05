@@ -62,7 +62,7 @@ export default function AccountDetail({ openOptions }: Props): ReactElement {
               </a>
             )}
           </div>
-          <span className="data">{ethBalanceFormatted}&#926;</span>
+          <span className="data">{ethBalanceFormatted} AVAX</span>
           <div className="buttonGroup">
             {account && (
               <Copy toCopy={account}>
