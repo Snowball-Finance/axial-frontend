@@ -18,6 +18,9 @@ import fetchSwapStats from "../libs/getSwapStats"
 import fetchTokenPricesUSD from "../libs/updateTokenPrices"
 import { useDispatch } from "react-redux"
 import usePoller from "../hooks/usePoller"
+import Farm from "./farm/Farm"
+import FarmDeposit from "./farmDeposit/farmDeposit"
+import FarmWithdraw from "./farmWithdraw/farmWithdraw"
 
 export default function App(): ReactElement {
   return (
@@ -27,6 +30,9 @@ export default function App(): ReactElement {
           <Switch>
             <Route exact path="/" component={Swap} />
             <Route exact path="/pools" component={Pools} />
+            <Route exact path="/farm" component={Farm} />
+            <Route exact path="/farm/withdraw" component={FarmWithdraw} />
+            <Route exact path="/farm/deposit" component={FarmDeposit} />
             {Object.values(POOLS_MAP).map(({ name, route }) => (
               <Route
                 exact

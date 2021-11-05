@@ -59,7 +59,7 @@ export default async function checkAndApproveTokenForTrade(
       const confirmedTransaction = await approvalTransaction.wait()
       cleanupOnStart?.()
       callbacks.onTransactionSuccess?.(confirmedTransaction)
-    } catch (error) {
+    } catch (error: any) {
       callbacks.onTransactionError?.(error)
       throw error
     }

@@ -42,8 +42,8 @@ export default function PoolOverview({
       : "-",
     apy: poolData.apy
       ? `${poolData.apy.toLocaleString(undefined, {
-          maximumFractionDigits: 2,
-        })}%`
+        maximumFractionDigits: 2,
+      })}%`
       : "-",
     volume: poolData.volume ? `$${poolData.volume}` : "-",
     userBalanceUSD: formatBNToShortString(
@@ -85,7 +85,7 @@ export default function PoolOverview({
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     await masterchefContract.claim()
   }
-
+  console.log({ tokens: formattedData.tokens })
   return (
     <div
       className={classNames("poolOverview", {

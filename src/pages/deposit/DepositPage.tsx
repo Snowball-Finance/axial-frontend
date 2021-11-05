@@ -54,6 +54,7 @@ const DepositPage = (props: Props): ReactElement => {
     onToggleDepositWrapped,
   } = props
 
+
   const [currentModal, setCurrentModal] = useState<string | null>(null)
 
   const validDepositAmount = transactionData.to.totalAmount.gt(0)
@@ -140,7 +141,7 @@ const DepositPage = (props: Props): ReactElement => {
               display: myShareData ? "block" : "none",
             }}
             className="divider"
-          ></div>{" "}
+          ></div>
           <PoolInfoCard data={poolData} />
         </div>
         <Modal
