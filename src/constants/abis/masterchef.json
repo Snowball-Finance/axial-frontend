@@ -2,48 +2,18 @@
     {
         "inputs": [
             {
-                "internalType": "contract AxialToken",
+                "internalType": "contract IMasterChef",
+                "name": "_MASTER_CHEF_V2",
+                "type": "address"
+            },
+            {
+                "internalType": "contract IERC20",
                 "name": "_axial",
                 "type": "address"
             },
             {
-                "internalType": "address",
-                "name": "_devAddr",
-                "type": "address"
-            },
-            {
-                "internalType": "address",
-                "name": "_treasuryAddr",
-                "type": "address"
-            },
-            {
-                "internalType": "address",
-                "name": "_investorAddr",
-                "type": "address"
-            },
-            {
                 "internalType": "uint256",
-                "name": "_axialPerSec",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_startTimestamp",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_devPercent",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_treasuryPercent",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_investorPercent",
+                "name": "_MASTER_PID",
                 "type": "uint256"
             }
         ],
@@ -158,6 +128,12 @@
     },
     {
         "anonymous": false,
+        "inputs": [],
+        "name": "Init",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
         "inputs": [
             {
                 "indexed": true,
@@ -204,44 +180,6 @@
             }
         ],
         "name": "Set",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": true,
-                "internalType": "address",
-                "name": "oldAddress",
-                "type": "address"
-            },
-            {
-                "indexed": true,
-                "internalType": "address",
-                "name": "newAddress",
-                "type": "address"
-            }
-        ],
-        "name": "SetDevAddress",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": true,
-                "internalType": "address",
-                "name": "user",
-                "type": "address"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "_axialPerSec",
-                "type": "uint256"
-            }
-        ],
-        "name": "UpdateEmissionRate",
         "type": "event"
     },
     {
@@ -301,10 +239,49 @@
         "type": "event"
     },
     {
+        "inputs": [],
+        "name": "AXIAL",
+        "outputs": [
+            {
+                "internalType": "contract IERC20",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "MASTER_CHEF_V2",
+        "outputs": [
+            {
+                "internalType": "contract IMasterChef",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "MASTER_PID",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
         "inputs": [
             {
                 "internalType": "uint256",
-                "name": "_allocPoint",
+                "name": "allocPoint",
                 "type": "uint256"
             },
             {
@@ -325,24 +302,11 @@
     },
     {
         "inputs": [],
-        "name": "axial",
-        "outputs": [
-            {
-                "internalType": "contract AxialToken",
-                "name": "",
-                "type": "address"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
         "name": "axialPerSec",
         "outputs": [
             {
                 "internalType": "uint256",
-                "name": "",
+                "name": "amount",
                 "type": "uint256"
             }
         ],
@@ -353,12 +317,12 @@
         "inputs": [
             {
                 "internalType": "uint256",
-                "name": "_pid",
+                "name": "pid",
                 "type": "uint256"
             },
             {
                 "internalType": "uint256",
-                "name": "_amount",
+                "name": "amount",
                 "type": "uint256"
             }
         ],
@@ -370,47 +334,8 @@
     {
         "inputs": [
             {
-                "internalType": "address",
-                "name": "_devAddr",
-                "type": "address"
-            }
-        ],
-        "name": "dev",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "devAddr",
-        "outputs": [
-            {
-                "internalType": "address",
-                "name": "",
-                "type": "address"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "devPercent",
-        "outputs": [
-            {
                 "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "_pid",
+                "name": "pid",
                 "type": "uint256"
             }
         ],
@@ -421,32 +346,32 @@
     },
     {
         "inputs": [],
-        "name": "investorAddr",
-        "outputs": [
+        "name": "harvestFromMasterChef",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
             {
-                "internalType": "address",
-                "name": "",
+                "internalType": "contract IERC20",
+                "name": "dummyToken",
                 "type": "address"
             }
         ],
-        "stateMutability": "view",
+        "name": "init",
+        "outputs": [],
+        "stateMutability": "nonpayable",
         "type": "function"
     },
     {
-        "inputs": [],
-        "name": "investorPercent",
-        "outputs": [
+        "inputs": [
             {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
+                "internalType": "uint256[]",
+                "name": "pids",
+                "type": "uint256[]"
             }
         ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
         "name": "massUpdatePools",
         "outputs": [],
         "stateMutability": "nonpayable",
@@ -521,7 +446,7 @@
             },
             {
                 "internalType": "uint256",
-                "name": "allocPoint",
+                "name": "accAxialPerShare",
                 "type": "uint256"
             },
             {
@@ -531,7 +456,7 @@
             },
             {
                 "internalType": "uint256",
-                "name": "accAxialPerShare",
+                "name": "allocPoint",
                 "type": "uint256"
             },
             {
@@ -549,7 +474,7 @@
         "outputs": [
             {
                 "internalType": "uint256",
-                "name": "",
+                "name": "pools",
                 "type": "uint256"
             }
         ],
@@ -561,30 +486,6 @@
         "name": "renounceOwnership",
         "outputs": [],
         "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "_pid",
-                "type": "uint256"
-            }
-        ],
-        "name": "rewarderBonusTokenInfo",
-        "outputs": [
-            {
-                "internalType": "address",
-                "name": "bonusTokenAddress",
-                "type": "address"
-            },
-            {
-                "internalType": "string",
-                "name": "bonusTokenSymbol",
-                "type": "string"
-            }
-        ],
-        "stateMutability": "view",
         "type": "function"
     },
     {
@@ -616,84 +517,6 @@
         "type": "function"
     },
     {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "_newDevPercent",
-                "type": "uint256"
-            }
-        ],
-        "name": "setDevPercent",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "_investorAddr",
-                "type": "address"
-            }
-        ],
-        "name": "setInvestorAddr",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "_newInvestorPercent",
-                "type": "uint256"
-            }
-        ],
-        "name": "setInvestorPercent",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "_treasuryAddr",
-                "type": "address"
-            }
-        ],
-        "name": "setTreasuryAddr",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "_newTreasuryPercent",
-                "type": "uint256"
-            }
-        ],
-        "name": "setTreasuryPercent",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "startTimestamp",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
         "inputs": [],
         "name": "totalAllocPoint",
         "outputs": [
@@ -720,49 +543,10 @@
         "type": "function"
     },
     {
-        "inputs": [],
-        "name": "treasuryAddr",
-        "outputs": [
-            {
-                "internalType": "address",
-                "name": "",
-                "type": "address"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "treasuryPercent",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
         "inputs": [
             {
                 "internalType": "uint256",
-                "name": "_axialPerSec",
-                "type": "uint256"
-            }
-        ],
-        "name": "updateEmissionRate",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "_pid",
+                "name": "pid",
                 "type": "uint256"
             }
         ],
@@ -804,12 +588,12 @@
         "inputs": [
             {
                 "internalType": "uint256",
-                "name": "_pid",
+                "name": "pid",
                 "type": "uint256"
             },
             {
                 "internalType": "uint256",
-                "name": "_amount",
+                "name": "amount",
                 "type": "uint256"
             }
         ],

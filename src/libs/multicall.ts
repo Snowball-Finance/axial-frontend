@@ -124,6 +124,7 @@ function getUserMasterchefInfo(
     MASTERCHEF,
   )
   contractCall.setCall("userInfo", [masterchefId, account])
+  contractCall.setCall("pendingTokens", [masterchefId, account])
 
   return contractCall
 }

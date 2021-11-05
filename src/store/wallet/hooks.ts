@@ -10,15 +10,29 @@ import { useActiveWeb3React } from "../../hooks"
 import usePoller from "../../hooks/usePoller"
 import { useState } from "react"
 
-export interface userInfo {
+interface PoolInfo {
   amount: BigNumber
   rewardDebt: BigNumber
 }
 
-export function useMasterchefBalances(): { [token: string]: userInfo } | null {
+export interface PendingTokens {
+  pendingAxial: BigNumber
+  bonusTokenAddress: string
+  bonusTokenSymbol: string
+  pendingBonusToken: BigNumber
+}
+
+export interface MasterchefResponse {
+  poolInfo: PoolInfo
+  pendingTokens: PendingTokens
+}
+
+export function useMasterchefBalances(): {
+  [token: string]: MasterchefResponse
+} | null {
   const { account, chainId, library } = useActiveWeb3React()
   const [masterchefBalances, setMasterchefBalances] = useState<{
-    [token: string]: userInfo
+    [token: string]: MasterchefResponse
   }>({})
 
   usePoller((): void => {
@@ -43,16 +57,27 @@ export function useMasterchefBalances(): { [token: string]: userInfo } | null {
         tokenAddressList,
       )
 
-      const _info: userInfo = {
-        amount: BigNumber.from("0"),
-        rewardDebt: BigNumber.from("0"),
+      const _info: MasterchefResponse = {
+        poolInfo: {
+          amount: BigNumber.from("0"),
+          rewardDebt: BigNumber.from("0"),
+        },
+        pendingTokens: {
+          bonusTokenAddress: "",
+          bonusTokenSymbol: "",
+          pendingAxial: BigNumber.from("0"),
+          pendingBonusToken: BigNumber.from("0"),
+        },
       }
 
       setMasterchefBalances(
         tokens.reduce(
           (acc, t) => ({
             ...acc,
-            [t.symbol]: mBalances[t.addresses[chainId]]?.userInfo, // eslint-disable-line
+            [t.symbol]: {
+              userInfo: mBalances[t.addresses[chainId]]?.userInfo, // eslint-disable-line
+              pendingTokens: mBalances[t.addresses[chainId]]?.pendingTokens // eslint-disable-line
+            },
           }),
           { _info: _info },
         ),
