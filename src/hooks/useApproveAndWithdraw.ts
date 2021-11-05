@@ -104,9 +104,6 @@ export function useApproveAndWithdraw(
             ),
           ),
           deadline,
-          {
-            gasPrice,
-          },
         )
       } else if (state.withdrawType === "IMBALANCE") {
         spendTransaction = await swapContract.removeLiquidityImbalance(
@@ -119,9 +116,6 @@ export function useApproveAndWithdraw(
             slippageCustom,
           ),
           deadline,
-          {
-            gasPrice,
-          },
         )
       } else {
         // state.withdrawType === [TokenSymbol]
@@ -138,9 +132,6 @@ export function useApproveAndWithdraw(
             slippageCustom,
           ),
           deadline,
-          {
-            gasPrice,
-          },
         )
       }
 

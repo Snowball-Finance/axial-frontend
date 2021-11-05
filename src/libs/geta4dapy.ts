@@ -110,15 +110,12 @@ export async function getVaultRewardApy(
     const axialPerSecond: number = await masterchefContract.axialPerSec() / 1e18
 
     const poolFraction = +poolInfo.allocPoint / +totalAllocPoint
-
     const axialPrice = await getAXIALPriceWithLP()
-    const usdPerWeek = axialPerSecond * poolFraction * axialPrice * 604_800
 
+    const usdPerWeek = axialPerSecond * poolFraction * axialPrice * 604_800
     const APRYearly = (usdPerWeek / TVL) * 100 * 52
 
-    const interest = APRYearly / 100
-
-    return (Math.pow(1 + interest / 365, 365) - 1) * 100
+    return isNaN(APRYearly) ? 0 : APRYearly
   } catch (error) {
     console.error("Error fetching Pool Reward APY")
     return 0

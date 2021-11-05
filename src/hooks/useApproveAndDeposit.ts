@@ -146,9 +146,6 @@ export function useApproveAndDeposit(
         txnAmounts,
         minToMint,
         txnDeadline,
-        {
-          gasPrice,
-        },
       )
 
       await spendTransaction.wait()
