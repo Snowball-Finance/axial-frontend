@@ -66,10 +66,10 @@ function PoolInfoCard({ data }: Props): ReactElement | null {
           <h4 className="underline">{formattedData.name}</h4>
         </ToolTip>
       ) : (
-        <h4>{formattedData.name}</h4>
+        <h4>{/*formattedData.name*/}</h4>
       )}
       <div className="info">
-        <div className="infoItem">
+        {/*<div className="infoItem">
           <span className="label bold">{`${t("fee")}:`}</span>
           <span className="value">{formattedData.swapFee}</span>
         </div>
@@ -98,13 +98,12 @@ function PoolInfoCard({ data }: Props): ReactElement | null {
             <span className="label bold">{`${t("adminFee")}:`}</span>
             <span className="value">{formattedData.adminFee}</span>
           </div>
-          {/* <div className="infoItem">
+           <div className="infoItem">
             <span className="label bold">{t("dailyVolume") + ": "}</span>
             <span className="value">{formattedData.volume}</span>
-          </div> */}
-        </div>
+          </div> 
+        </div>*/}
       </div>
-      <div className="divider" />
       <div className="bottom">
         <h4>{t("currencyReserves")}</h4>
         <span>{`$${formattedData.reserve} ${t("inTotal")}`}</span>

@@ -18,3 +18,10 @@ export default function Button(
     <button className={classNames("button", kind, "large")} {...buttonProps} />
   )
 }
+
+export function MdButton(props: React.PropsWithChildren<Props>): ReactElement {
+  const { kind = "primary", ...buttonProps } = props
+  return (
+    <button className={classNames("button", kind, "md")} {...buttonProps} />
+  )
+}
