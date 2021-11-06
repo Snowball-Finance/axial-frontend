@@ -13,27 +13,21 @@ import { useTranslation } from "react-i18next"
 import FarmInfoCard from "../../components/farm-info-card/FarmInfoCard"
 import { BigNumber } from "ethers"
 import InfoSection from "../../components/info-section/infoSection"
+import { FarmDataRowType } from "../../components/farmWithdrawPage/types"
 
 interface FarmDataType {
-  adminFee: BigNumber
-  aParameter: BigNumber
-  apy: number | null
-  rapy: number | null
-  name: string
-  reserve: BigNumber | null
-  swapFee: BigNumber
+
+  reserve: string
   tokens: {
+    icon: string,
+    name?: string,
     symbol: string,
-    percent: string,
-    value: BigNumber
+    percent?: string,
+    value: string
   }[]
-  totalLocked: BigNumber
-  utilization: BigNumber | null
-  virtualPrice: BigNumber
-  volume: number | null
+
   isPaused: boolean
-  lpTokenPriceUSD: BigNumber
-  lpToken: string
+
 }
 
 
@@ -50,9 +44,9 @@ interface Props {
     max: string
     inputValue: string
   }>
-  exceedsWallet: boolean
-  selected?: { [key: string]: any }
-  farmData: FarmDataType | null | any
+  myShareDataRows: FarmDataRowType[]
+  stats: FarmDataRowType[],
+  farmData: FarmDataType | null
 
 }
 
@@ -62,6 +56,8 @@ const FarmDepositPage = (props: Props): ReactElement => {
   const {
     tokens,
     farmData,
+    myShareDataRows,
+    stats,
     onChangeTokenInputValue,
   } = props
 
@@ -104,45 +100,17 @@ const FarmDepositPage = (props: Props): ReactElement => {
         </div>
         <div className="infoPanels">
           <InfoSection title="My Share" rows={
-            [
-              {
-                title: "my TVL",
-                value: "2523($2523)",
-                sub: "0.0% of pool"
-              },
-              {
-                title: 'axial Rewards',
-                value: '2211($1212)'
-              },
-              {
-                title: 'AVAX Rewards',
-                value: '2211($1212)'
-              },
-            ]
+            myShareDataRows
           }
             withDivider
           />
           <InfoSection title="Stats" rows={
-            [
-              {
-                title: "fee APR",
-                value: "2523($2523)",
-
-              },
-              {
-                title: 'Revard APR',
-                value: '2211($1212)'
-              },
-              {
-                title: 'total APR',
-                value: '2211($1212)'
-              },
-            ]
+            stats
           }
             withDivider
           />
 
-          <FarmInfoCard tokens={farmData.tokens} reserve={farmData.reserve} />
+          {farmData && <FarmInfoCard tokens={farmData.tokens} reserve={farmData.reserve} />}
         </div>
         <Modal
           isOpen={!!currentModal}

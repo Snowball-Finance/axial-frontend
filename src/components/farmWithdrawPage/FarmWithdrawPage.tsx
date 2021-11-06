@@ -73,6 +73,7 @@ interface Props {
       value: string;
     }[];
     reserve: string;
+    isPaused?: boolean
   } | null
   myShareData: FarmUserShareData | null
   formStateData: WithdrawFormState
@@ -133,7 +134,6 @@ const FarmWithdrawPage = (props: Props): ReactElement => {
               <div key={index}>
                 <TokenInput
                   {...token}
-                  // inputValue={parseFloat(token.inputValue).toFixed(5)}
                   onChange={(value): void =>
                     onTokenValueChange({
                       tokenValue: value,

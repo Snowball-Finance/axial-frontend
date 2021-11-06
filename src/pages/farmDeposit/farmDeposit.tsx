@@ -1,7 +1,6 @@
 import React from 'react'
 import { ReactElement } from "react"
 
-import { BigNumber } from "@ethersproject/bignumber"
 
 import FarmDepositPage from './farmDepositPage'
 
@@ -21,10 +20,10 @@ function FarmDeposit(): ReactElement | null {
       },
 
     ],
-    exceedsWallet: false,
     farmData: {
       name: "A4D Stablecoins",
-      rapy: 0,
+      reserve: '1234.5678',
+      isPaused: false,
       tokens: [
         {
           icon: "/static/media/dai.664df0db.svg",
@@ -51,11 +50,37 @@ function FarmDeposit(): ReactElement | null {
           value: "1.0",
         }
       ],
-      reserve: BigNumber.from("0x15b2159fbe6b014f5c"),
 
     },
-
   }
+  const myShareDataRows = [{
+    title: "my TVL",
+    value: "2523($2523)",
+    sub: "0.0% of pool",
+  }, {
+    title: 'axial Rewards',
+    value: '2211($1212)',
+  }, {
+    title: 'AVAX Rewards',
+    value: '2211($1212)',
+  }]
+  const stats = [
+    {
+      title: "fee APR",
+      value: "2523($2523)",
+
+    },
+    {
+      title: 'Revard APR',
+      value: '2211($1212)'
+    },
+    {
+      title: 'total APR',
+      value: '2211($1212)'
+    },
+  ]
+
+
   const onConfirmTransaction = (): any => {
     console.log('confirmClick');
   }
@@ -69,9 +94,10 @@ function FarmDeposit(): ReactElement | null {
       onToggleDepositWrapped={() =>
         console.log('onToggleDepositWrapped')
       }
+      stats={stats}
+      myShareDataRows={myShareDataRows}
       title={data.farmName}
       tokens={data.tokens}
-      exceedsWallet={data.exceedsWallet}
       farmData={data.farmData}
     />
   )
