@@ -12,7 +12,7 @@ import TopMenu from "../../components/menu/TopMenu"
 import { useTranslation } from "react-i18next"
 import FarmInfoCard from "../../components/farm-info-card/FarmInfoCard"
 import { BigNumber } from "ethers"
-import InfoCard from "../../components/info-card/infoCard"
+import InfoSection from "../../components/info-section/infoSection"
 
 interface FarmDataType {
   adminFee: BigNumber
@@ -103,7 +103,7 @@ const FarmDepositPage = (props: Props): ReactElement => {
           </Button>
         </div>
         <div className="infoPanels">
-          <InfoCard title="My Share" rows={
+          <InfoSection title="My Share" rows={
             [
               {
                 title: "my TVL",
@@ -122,7 +122,7 @@ const FarmDepositPage = (props: Props): ReactElement => {
           }
             withDivider
           />
-          <InfoCard title="Stats" rows={
+          <InfoSection title="Stats" rows={
             [
               {
                 title: "fee APR",

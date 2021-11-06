@@ -46,7 +46,7 @@ export interface PoolDataType {
 
 export interface UserShareType {
   lpTokenBalance: BigNumber
-  name: PoolName // TODO: does this need to be on user share?
+  name: string // TODO: does this need to be on user share?
   share: BigNumber
   tokens: TokenShareType[]
   usdBalance: BigNumber
@@ -174,8 +174,8 @@ export default function usePoolData(
       const lpTokenPriceUSD = tokenBalancesSum.isZero()
         ? Zero
         : tokenBalancesUSDSum
-            .mul(BigNumber.from(10).pow(18))
-            .div(tokenBalancesSum)
+          .mul(BigNumber.from(10).pow(18))
+          .div(tokenBalancesSum)
 
       function calculatePctOfTotalShare(lpTokenAmount: BigNumber): BigNumber {
         // returns the % of total lpTokens
@@ -255,13 +255,13 @@ export default function usePoolData(
       }
       const userShareData = account
         ? {
-            name: poolName,
-            share: userShare,
-            underlyingTokensAmount: userPoolTokenBalancesSum,
-            usdBalance: userPoolTokenBalancesUSDSum,
-            tokens: userPoolTokens,
-            lpTokenBalance: userLpTokenBalance,
-          }
+          name: poolName,
+          share: userShare,
+          underlyingTokensAmount: userPoolTokenBalancesSum,
+          usdBalance: userPoolTokenBalancesUSDSum,
+          tokens: userPoolTokens,
+          lpTokenBalance: userLpTokenBalance,
+        }
         : null
       setPoolData([poolData, userShareData])
     }

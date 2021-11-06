@@ -1,4 +1,4 @@
-import "./infoCard.scss"
+import "./infoSection.scss"
 
 import React, { ReactElement } from "react"
 
@@ -11,7 +11,7 @@ interface Props {
   }[]
 }
 
-function InfoCard({ title, rows, withDivider }: Props): ReactElement | null {
+function InfoSection({ title, rows, withDivider }: Props): ReactElement | null {
 
   return (
     <>
@@ -43,4 +43,4 @@ function InfoCard({ title, rows, withDivider }: Props): ReactElement | null {
   )
 }
 
-export default InfoCard
+export default InfoSection

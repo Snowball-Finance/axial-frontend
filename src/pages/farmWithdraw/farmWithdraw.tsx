@@ -1,184 +1,131 @@
-import { POOLS_MAP, PoolName } from "../../constants"
-import React, { ReactElement, useEffect, useState } from "react"
-import WithdrawPage, {
-  ReviewWithdrawData,
-} from "../../components/withdraw/WithdrawPage"
-import { commify, formatUnits, parseUnits } from "@ethersproject/units"
+import { PoolName } from "../../constants"
+import React, { ReactElement } from "react"
 
-import { AppState } from "../../store"
 import { BigNumber } from "@ethersproject/bignumber"
-import { Zero } from "@ethersproject/constants"
-import { calculateGasEstimate } from "../../libs/gasEstimate"
-import { calculatePriceImpact } from "../../libs/priceImpact"
-import { formatGasToString } from "../../libs/gas"
-import { formatSlippageToString } from "../../libs/slippage"
-import { useActiveWeb3React } from "../../hooks"
-import { useApproveAndWithdraw } from "../../hooks/useApproveAndWithdraw"
-import usePoolData from "../../hooks/usePoolData"
-import { useSelector } from "react-redux"
-import { useSwapContract } from "../../hooks/useContract"
-import useWithdrawFormState from "../../hooks/useWithdrawFormState"
+
+import FarmWithdrawPage from "../../components/farmWithdrawPage/FarmWithdrawPage"
 
 interface Props {
   poolName: PoolName
 }
 function FarmWithdraw({ poolName }: Props): ReactElement {
-  const [poolData, userShareData] = usePoolData(poolName)
-  const [withdrawFormState, updateWithdrawFormState] = useWithdrawFormState(
-    poolName,
-  )
-  const {
-    slippageCustom,
-    slippageSelected,
-    gasPriceSelected,
-    gasCustom,
-  } = useSelector((state: AppState) => state.user)
-  const { tokenPricesUSD, gasStandard, gasFast, gasInstant } = useSelector(
-    (state: AppState) => state.application,
-  )
-  const approveAndWithdraw = useApproveAndWithdraw(poolName)
-  const swapContract = useSwapContract(poolName)
-  const { account } = useActiveWeb3React()
-  const POOL = POOLS_MAP[poolName]
+  const data = {
+    poolName: "A4D Stablecoins",
+    reviewWithdrawData: {
+      withdraw: [],
+      rates: [],
+      slippage: "0.1",
+      priceImpact: BigNumber.from("0x00"),
+      txnGasCost: {
+        amount: BigNumber.from("0x8583b0"),
+        valueUSD: null
+      }
+    },
+    tokensData: [
+      {
+        name: "Dai",
+        symbol: "DAI.e",
+        icon: "/static/media/dai.664df0db.svg",
+        inputValue: "0"
+      },
 
-  const [estWithdrawBonus, setEstWithdrawBonus] = useState(Zero)
-  useEffect(() => {
-    // evaluate if a new withdraw will exceed the pool's per-user limit
-    async function calculateWithdrawBonus(): Promise<void> {
-      if (
-        swapContract == null ||
-        userShareData == null ||
-        poolData == null ||
-        account == null
-      ) {
-        return
-      }
-      const tokenInputSum = parseUnits(
-        POOL.poolTokens
-          .reduce(
-            (sum, { symbol }) =>
-              sum + (+withdrawFormState.tokenInputs[symbol].valueRaw || 0),
-            0,
-          )
-          .toString(),
-        18,
-      )
-      let withdrawLPTokenAmount
-      if (poolData.totalLocked.gt(0) && tokenInputSum.gt(0)) {
-        withdrawLPTokenAmount = await swapContract.calculateTokenAmount(
-          POOL.poolTokens.map(
-            ({ symbol }) => withdrawFormState.tokenInputs[symbol].valueSafe,
-          ),
-          false,
-        )
-      } else {
-        // when pool is empty, estimate the lptokens by just summing the input instead of calling contract
-        withdrawLPTokenAmount = tokenInputSum
-      }
-      setEstWithdrawBonus(
-        calculatePriceImpact(
-          withdrawLPTokenAmount,
-          tokenInputSum,
-          poolData.virtualPrice,
-          true,
-        ),
-      )
+    ],
+    farmData: {
+      name: "A4D Stablecoins",
+      tokens: [
+        {
+          icon: "/static/media/dai.664df0db.svg",
+          name: "Dai",
+          symbol: "DAI.e",
+          value: "100.21"
+        },
+        {
+          icon: "/static/media/usdt.2499bf87.svg",
+          name: "Tether",
+          symbol: "USDT.e",
+          value: "4.0"
+        },
+        {
+          icon: "/static/media/tusd.b234bc44.svg",
+          name: "TUSD Coin",
+          symbol: "TUSD",
+          value: "99.99"
+        },
+        {
+          icon: "/static/media/usdc.1fa5e7f4.svg",
+          name: "USDC",
+          symbol: "USDC.e",
+          value: "1.0"
+        }
+      ],
+      reserve: '123.456',
+
+    },
+    //if userShareData is null or  userShareData.lpTokenBalance is equal to 0 then withdraw button will be disabled
+    userShareData: {
+      name: "A4D Stablecoins",
+      share: BigNumber.from("0x00"),
+      dataRows: [
+        {
+          title: "my TVL",
+          value: "2523($2523)",
+          sub: "0.0% of pool"
+        },
+        {
+          title: 'axial Rewards',
+          value: '2211($1212)'
+        },
+        {
+          title: 'AVAX Rewards',
+          value: '2211($1212)'
+        },
+      ],
+      lpTokenBalance: BigNumber.from("0x00")
+    },
+    //by changing the FarmWithdraw Percent or Farm Withdraw token value , this field should be updated
+    // and if in this field, error field has a value or lpTokenAmountToSpend field is equal to zero then withdraw button will be disabled
+    withdrawFormState: {
+      percentage: "",
+      tokenInputs: {
+        "DAI.e": {
+          isEmpty: false,
+          isValid: true,
+          precision: 18,
+          valueRaw: "0",
+          valueSafe: "0"
+        },
+      },
+      withdrawType: "ALL",
+      error: null,
+      lpTokenAmountToSpend: BigNumber.from("0x00")
     }
-    void calculateWithdrawBonus()
-  }, [
-    poolData,
-    withdrawFormState,
-    swapContract,
-    userShareData,
-    account,
-    POOL.poolTokens,
-  ])
-  async function onConfirmTransaction(): Promise<void> {
-    const {
-      withdrawType,
-      tokenInputs,
-      lpTokenAmountToSpend,
-    } = withdrawFormState
-    await approveAndWithdraw({
-      tokenFormState: tokenInputs,
-      withdrawType,
-      lpTokenAmountToSpend,
-    })
-    updateWithdrawFormState({ fieldName: "reset", value: "reset" })
   }
 
-  const tokensData = React.useMemo(
-    () =>
-      POOL.poolTokens.map(({ name, symbol, icon }) => ({
-        name,
-        symbol,
-        icon,
-        inputValue: withdrawFormState.tokenInputs[symbol].valueRaw,
-      })),
-    [withdrawFormState, POOL.poolTokens],
-  )
-  const gasPrice = BigNumber.from(
-    formatGasToString(
-      { gasStandard, gasFast, gasInstant },
-      gasPriceSelected,
-      gasCustom,
-    ),
-  )
-  const gasAmount = calculateGasEstimate("removeLiquidityImbalance").mul(
-    gasPrice,
-  ) // units of gas * GWEI/Unit of gas
-
-  const txnGasCost = {
-    amount: gasAmount,
-    valueUSD: tokenPricesUSD?.ETH
-      ? parseUnits(tokenPricesUSD.ETH.toFixed(2), 18) // USD / ETH  * 10^18
-        .mul(gasAmount) // GWEI
-        .div(BigNumber.from(10).pow(25)) // USD / ETH * GWEI * ETH / GWEI = USD
-      : null,
+  const onConfirmTransaction = async () => {
+    await Promise.resolve(1)
+    console.log('handle Confirm transaction in farmWithdraw')
   }
 
-  const reviewWithdrawData: ReviewWithdrawData = {
-    withdraw: [],
-    rates: [],
-    slippage: formatSlippageToString(slippageSelected, slippageCustom),
-    priceImpact: estWithdrawBonus,
-    txnGasCost: txnGasCost,
+  const handleWithdrawPercentChange = (percent: string) => {
+    console.log("on FarmWithdraw Percent Change", percent);
   }
-  POOL.poolTokens.forEach(({ name, decimals, icon, symbol }) => {
-    if (BigNumber.from(withdrawFormState.tokenInputs[symbol].valueSafe).gt(0)) {
-      reviewWithdrawData.withdraw.push({
-        name,
-        value: commify(
-          formatUnits(
-            withdrawFormState.tokenInputs[symbol].valueSafe,
-            decimals,
-          ),
-        ),
-        icon,
-      })
-      if (tokenPricesUSD != null) {
-        reviewWithdrawData.rates.push({
-          name,
-          value: formatUnits(
-            withdrawFormState.tokenInputs[symbol].valueSafe,
-            decimals,
-          ),
-          rate: commify(tokenPricesUSD[symbol]?.toFixed(2)),
-        })
-      }
-    }
-  })
+  const handleTokenValueChange = ({ tokenValue, tokenSymbol }: { tokenValue: string, tokenSymbol: string }) => {
+    console.log('on Farm Withdraw token value change', { tokenValue, tokenSymbol });
+  }
+
+  //if myShareData is null or  myShareData.lpTokenBalance is equal to 0 then withdraw button will be disabled
 
   return (
-    <WithdrawPage
+    <FarmWithdrawPage
       title={poolName}
-      reviewData={reviewWithdrawData}
-      tokensData={tokensData}
-      poolData={poolData}
-      myShareData={userShareData}
-      formStateData={withdrawFormState}
+      reviewData={data.reviewWithdrawData}
+      tokensData={data.tokensData}
+      farmData={data.farmData}
+      myShareData={data.userShareData}
+      formStateData={data.withdrawFormState}
+      onTokenValueChange={handleTokenValueChange}
+      onWithdrawPercentChange={handleWithdrawPercentChange}
       onConfirmTransaction={onConfirmTransaction}
-      onFormChange={updateWithdrawFormState}
     />
   )
 }

@@ -132,8 +132,8 @@ function Withdraw({ poolName }: Props): ReactElement {
     amount: gasAmount,
     valueUSD: tokenPricesUSD?.ETH
       ? parseUnits(tokenPricesUSD.ETH.toFixed(2), 18) // USD / ETH  * 10^18
-          .mul(gasAmount) // GWEI
-          .div(BigNumber.from(10).pow(25)) // USD / ETH * GWEI * ETH / GWEI = USD
+        .mul(gasAmount) // GWEI
+        .div(BigNumber.from(10).pow(25)) // USD / ETH * GWEI * ETH / GWEI = USD
       : null,
   }
 
@@ -168,6 +168,8 @@ function Withdraw({ poolName }: Props): ReactElement {
       }
     }
   })
+
+  console.log({ poolName, reviewWithdrawData, tokensData, poolData, userShareData, withdrawFormState })
 
   return (
     <WithdrawPage
