@@ -169,7 +169,6 @@ function Withdraw({ poolName }: Props): ReactElement {
     }
   })
 
-  console.log({ poolName, reviewWithdrawData, tokensData, poolData, userShareData, withdrawFormState })
 
   return (
     <WithdrawPage

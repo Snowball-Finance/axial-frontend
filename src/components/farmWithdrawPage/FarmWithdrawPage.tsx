@@ -1,23 +1,26 @@
 import "./FarmWithdrawPage.scss"
+import { PoolDataType, UserShareType } from "../../hooks/usePoolData"
 import React, { ReactElement, useState } from "react"
+
 import AdvancedOptions from "../advance-options/AdvancedOptions"
 import { AppState } from "../../store"
 import { BigNumber } from "@ethersproject/bignumber"
 import Button from "../button/Button"
 import ConfirmTransaction from "../confirm-transaction/ConfirmTransaction"
 import Modal from "../modal/Modal"
-
+import MyShareCard from "../my-share-card/MyShareCard"
+import PoolInfoCard from "../pool-info-card/PoolInfoCard"
+import RadioButton from "../button/RadioButton"
 import ReviewWithdraw from "../reviews/ReviewWithdraw"
 import TokenInput from "../token-input/TokenInput"
 import TopMenu from "../menu/TopMenu"
 import { WithdrawFormState } from "../../hooks/useWithdrawFormState"
 import { Zero } from "@ethersproject/constants"
 import classNames from "classnames"
+import { formatBNToPercentString } from "../../libs"
 import { logEvent } from "../../libs/googleAnalytics"
 import { useSelector } from "react-redux"
 import { useTranslation } from "react-i18next"
-import FarmInfoCard from "../farm-info-card/FarmInfoCard"
-import InfoSection from "../info-section/infoSection"
 
 export interface ReviewWithdrawData {
   withdraw: {
@@ -38,21 +41,6 @@ export interface ReviewWithdrawData {
   }
 }
 
-interface FarmUserShareData {
-  name: string;
-  share: BigNumber;
-  dataRows: ({
-    title: string;
-    value: string;
-    sub: string;
-  } | {
-    title: string;
-    value: string;
-  })[];
-  lpTokenBalance: BigNumber;
-}
-
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
 interface Props {
   title: string
@@ -64,21 +52,10 @@ interface Props {
   }>
   reviewData: ReviewWithdrawData
   selected?: { [key: string]: any }
-  farmData: {
-    name: string;
-    tokens: {
-      icon: string;
-      name: string;
-      symbol: string;
-      value: string;
-    }[];
-    reserve: string;
-    isPaused?: boolean
-  } | null
-  myShareData: FarmUserShareData | null
+  poolData: PoolDataType | null
+  myShareData: UserShareType | null
   formStateData: WithdrawFormState
-  onWithdrawPercentChange: (percent: string) => void
-  onTokenValueChange: ({ tokenValue, tokenSymbol }: { tokenValue: string, tokenSymbol: string }) => void
+  onFormChange: (action: any) => void
   onConfirmTransaction: () => Promise<void>
 }
 /* eslint-enable @typescript-eslint/no-explicit-any */
@@ -87,10 +64,9 @@ const FarmWithdrawPage = (props: Props): ReactElement => {
   const { t } = useTranslation()
   const {
     tokensData,
-    farmData,
+    poolData,
     myShareData,
-    onTokenValueChange,
-    onWithdrawPercentChange,
+    onFormChange,
     formStateData,
     reviewData,
     onConfirmTransaction,
@@ -116,9 +92,10 @@ const FarmWithdrawPage = (props: Props): ReactElement => {
               <input
                 placeholder="100"
                 onChange={(e: React.FormEvent<HTMLInputElement>): void =>
-                  onWithdrawPercentChange(
-                    e.currentTarget.value,
-                  )
+                  onFormChange({
+                    fieldName: "percentage",
+                    value: e.currentTarget.value,
+                  })
                 }
                 onFocus={(e: React.ChangeEvent<HTMLInputElement>): void =>
                   e.target.select()
@@ -134,9 +111,11 @@ const FarmWithdrawPage = (props: Props): ReactElement => {
               <div key={index}>
                 <TokenInput
                   {...token}
+                  // inputValue={parseFloat(token.inputValue).toFixed(5)}
                   onChange={(value): void =>
-                    onTokenValueChange({
-                      tokenValue: value,
+                    onFormChange({
+                      fieldName: "tokenInputs",
+                      value: value,
                       tokenSymbol: token.symbol,
                     })
                   }
@@ -164,8 +143,14 @@ const FarmWithdrawPage = (props: Props): ReactElement => {
           </Button>
         </div>
         <div className="infoPanels">
-          {myShareData && <InfoSection title="My Share" rows={myShareData.dataRows} />}
-          {farmData && <FarmInfoCard tokens={farmData.tokens} reserve={farmData.reserve} />}
+          <MyShareCard data={myShareData} />
+          <div
+            style={{
+              display: myShareData ? "block" : "none",
+            }}
+            className="divider"
+          ></div>{" "}
+          <PoolInfoCard data={poolData} />
         </div>
         <Modal
           isOpen={!!currentModal}
@@ -179,7 +164,7 @@ const FarmWithdrawPage = (props: Props): ReactElement => {
                 setCurrentModal("confirm")
                 logEvent(
                   "withdraw",
-                  (farmData && { pool: farmData?.name }) || {},
+                  (poolData && { pool: poolData?.name }) || {},
                 )
                 await onConfirmTransaction?.()
                 setCurrentModal(null)
