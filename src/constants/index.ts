@@ -83,8 +83,8 @@ export const AXIAL_A4D_SWAP_TOKEN_CONTRACT_ADDRESSES: {
 export const AXIAL_MASTERCHEF_CONTRACT_ADDRESS: {
   [chainId in ChainId]: string
 } = {
-  [ChainId.MAINNET]: "0xdc35F62A8f958dcdA19C33955837D4426332C311",
-  [ChainId.HARDHAT]: "0xdc35F62A8f958dcdA19C33955837D4426332C311",
+  [ChainId.MAINNET]: "0x958C0d0baA8F220846d3966742D4Fb5edc5493D3",
+  [ChainId.HARDHAT]: "0x958C0d0baA8F220846d3966742D4Fb5edc5493D3",
 }
 
 export const AXIAL_TOKEN_ADDRESS: {
@@ -191,7 +191,7 @@ export const USDC = new Token(
   false,
 )
 
-export const AXIAL_A4D_POOL_TOKENS = [DAI, USDT, TUSD, USDC]
+export const AXIAL_A4D_POOL_TOKENS = [TUSD, USDC, DAI, USDT]
 
 export type Pool = {
   name: PoolName

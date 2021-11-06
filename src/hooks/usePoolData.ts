@@ -1,4 +1,8 @@
 import { AddressZero, Zero } from "@ethersproject/constants"
+import {
+  MasterchefResponse,
+  useMasterchefBalances,
+} from "../store/wallet/hooks"
 import { POOLS_MAP, PoolName, TRANSACTION_TYPES } from "../constants"
 import {
   formatBNToPercentString,
@@ -6,7 +10,6 @@ import {
   getTokenSymbolForPoolType,
 } from "../libs"
 import { useEffect, useState } from "react"
-
 import { AppState } from "../store"
 import { BigNumber } from "@ethersproject/bignumber"
 import LPTOKEN_UNGUARDED_ABI from "../constants/abis/lpTokenUnguarded.json"
@@ -51,6 +54,7 @@ export interface UserShareType {
   tokens: TokenShareType[]
   usdBalance: BigNumber
   underlyingTokensAmount: BigNumber
+  masterchefBalance: MasterchefResponse | null
 }
 
 export type PoolDataHookReturnType = [PoolDataType, UserShareType | null]
@@ -86,7 +90,7 @@ export default function usePoolData(
   const lastWithdrawTime = lastTransactionTimes[TRANSACTION_TYPES.WITHDRAW]
   const lastSwapTime = lastTransactionTimes[TRANSACTION_TYPES.SWAP]
   const lastMigrateTime = lastTransactionTimes[TRANSACTION_TYPES.MIGRATE]
-
+  const masterchefBalances = useMasterchefBalances()
   const [poolData, setPoolData] = useState<PoolDataHookReturnType>([
     {
       ...emptyPoolData,
@@ -106,6 +110,9 @@ export default function usePoolData(
       )
         return
       const POOL = POOLS_MAP[poolName]
+      const userMasterchefBalances = masterchefBalances
+        ? masterchefBalances[POOL.addresses[43114]]
+        : null
       const effectivePoolTokens = POOL.underlyingPoolTokens || POOL.poolTokens
       const isMetaSwap = POOL.metaSwapAddresses != null
       let metaSwapContract = null as MetaSwap | null
@@ -255,13 +262,14 @@ export default function usePoolData(
       }
       const userShareData = account
         ? {
-          name: poolName,
-          share: userShare,
-          underlyingTokensAmount: userPoolTokenBalancesSum,
-          usdBalance: userPoolTokenBalancesUSDSum,
-          tokens: userPoolTokens,
-          lpTokenBalance: userLpTokenBalance,
-        }
+            name: poolName,
+            share: userShare,
+            underlyingTokensAmount: userPoolTokenBalancesSum,
+            usdBalance: userPoolTokenBalancesUSDSum,
+            tokens: userPoolTokens,
+            lpTokenBalance: userLpTokenBalance,
+            masterchefBalance: userMasterchefBalances,
+          }
         : null
       setPoolData([poolData, userShareData])
     }
@@ -274,6 +282,7 @@ export default function usePoolData(
     poolName,
     swapContract,
     tokenPricesUSD,
+    masterchefBalances,
     account,
     library,
     chainId,
