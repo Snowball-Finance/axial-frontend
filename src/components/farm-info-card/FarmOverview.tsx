@@ -138,7 +138,7 @@ export default function FarmOverview({
           )*/}
         </div>
         <div className="buttons">
-          <Link to={`${poolRoute}/withdraw`}>
+          <Link to={`farm/withdraw`}>
             <Button kind="secondary">{t("withdraw")}</Button>
           </Link>
           {shouldMigrate ? (
@@ -150,7 +150,7 @@ export default function FarmOverview({
               {t("migrate")}
             </Button>
           ) : (
-            <Link to={`${poolRoute}/deposit`}>
+            <Link to={`farm/deposit`}>
               <Button
                 kind="primary"
                 disabled={poolData?.isPaused || isOutdated}
