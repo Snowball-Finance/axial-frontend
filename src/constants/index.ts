@@ -2,7 +2,7 @@ import { injected, walletconnect, walletlink } from "../connectors"
 
 import { AbstractConnector } from "@web3-react/abstract-connector"
 import { BigNumber } from "@ethersproject/bignumber"
-import axialLogo from "../assets/icons/logo.svg" // this needs a smaller icon logo(24)
+import axialLogo from "../assets/icons/logo_icon.svg" // this needs a smaller icon logo(24)
 import coinbasewalletIcon from "../assets/icons/coinbasewallet.svg"
 import daiLogo from "../assets/icons/dai.svg"
 import fraxLogo from "../assets/icons/frax.svg"
