@@ -44,11 +44,11 @@ function MyShareCard({ data }: Props): ReactElement | null {
           </span>
         </div>
         <div className="infoItem">
-          <span className="label bold">{`${t("usdBalance")}: `}</span>
+          <span className="bold">{`${t("usdBalance")}: `}</span>
           <span className="value">{`$${formattedData.usdBalance}`}</span>
         </div>
         <div className="infoItem">
-          <span className="label bold">{`${t("totalAmount")}: `}</span>
+          <span className="bold">{`${t("totalAmount")}: `}</span>
           <span className="value">{formattedData.amount}</span>
         </div>
       </div>
