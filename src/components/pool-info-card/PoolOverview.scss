@@ -52,6 +52,7 @@ div.poolOverview {
   .tokens {
     grid-row: 5/6;
     display: flex;
+    align-items: center;
     flex-direction: row;
     @include breakpoint(md) {
       width: 100%;
