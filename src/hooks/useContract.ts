@@ -1,10 +1,14 @@
 import {
   AXIAL_A4D_POOL_NAME,
   AXIAL_A4D_SWAP_TOKEN,
+  AXIAL_AC4D_POOL_NAME,
+  AXIAL_AC4D_SWAP_TOKEN,
   DAI,
   FRAX,
+  MIM,
   POOLS_MAP,
   PoolName,
+  TSD,
   TUSD,
   Token,
   USDC,
@@ -61,7 +65,7 @@ export function useTokenContract(
 
 export function useSwapContract<T extends PoolName>(
   poolName?: T,
-): T extends typeof AXIAL_A4D_POOL_NAME
+): T extends typeof AXIAL_A4D_POOL_NAME | typeof AXIAL_AC4D_POOL_NAME
   ? SwapFlashLoanNoWithdrawFee | null
   : SwapFlashLoan | SwapGuarded | MetaSwapDeposit | null
 export function useSwapContract(
@@ -96,7 +100,7 @@ export function useSwapContract(
 
 export function useLPTokenContract<T extends PoolName>(
   poolName: T,
-): T extends typeof AXIAL_A4D_POOL_NAME
+): T extends typeof AXIAL_A4D_POOL_NAME | typeof AXIAL_AC4D_POOL_NAME
   ? LpTokenGuarded | null
   : LpTokenUnguarded | null
 
@@ -131,9 +135,15 @@ export function useAllContracts(): AllContractsObject | null {
   const usdtContract = useTokenContract(USDT) as Erc20
   const fraxContract = useTokenContract(FRAX) as Erc20
   const usdcContract = useTokenContract(USDC) as Erc20
+  const tsdContract = useTokenContract(TSD) as Erc20
+  const mimContract = useTokenContract(MIM) as Erc20
 
   const axiala4dSwapTokenContract = useTokenContract(
     AXIAL_A4D_SWAP_TOKEN,
+  ) as LpTokenUnguarded
+
+  const axialac4dSwapTokenContract = useTokenContract(
+    AXIAL_AC4D_SWAP_TOKEN,
   ) as LpTokenUnguarded
 
   return useMemo(() => {
@@ -144,7 +154,10 @@ export function useAllContracts(): AllContractsObject | null {
         usdtContract,
         usdcContract,
         fraxContract,
+        tsdContract,
+        mimContract,
         axiala4dSwapTokenContract,
+        axialac4dSwapTokenContract,
       ].some(Boolean)
     )
       return null
@@ -154,7 +167,10 @@ export function useAllContracts(): AllContractsObject | null {
       [USDT.symbol]: usdtContract,
       [USDC.symbol]: usdcContract,
       [FRAX.symbol]: fraxContract,
+      [TSD.symbol]: tsdContract,
+      [MIM.symbol]: mimContract,
       [AXIAL_A4D_SWAP_TOKEN.symbol]: axiala4dSwapTokenContract,
+      [AXIAL_AC4D_SWAP_TOKEN.symbol]: axialac4dSwapTokenContract,
     }
   }, [
     daiContract,
@@ -162,6 +178,9 @@ export function useAllContracts(): AllContractsObject | null {
     usdtContract,
     usdcContract,
     fraxContract,
+    tsdContract,
+    mimContract,
     axiala4dSwapTokenContract,
+    axialac4dSwapTokenContract,
   ])
 }

@@ -1,5 +1,6 @@
 import {
   AXIAL_A4D_POOL_NAME,
+  AXIAL_AC4D_POOL_NAME,
   POOLS_MAP,
   PoolName,
   PoolTypes,
@@ -17,6 +18,7 @@ import usePoolData from "../../hooks/usePoolData"
 
 function Pools(): ReactElement | null {
   const [a4dPoolData, a4dUserShareData] = usePoolData(AXIAL_A4D_POOL_NAME)
+  const [ac4dPoolData, ac4dUserShareData] = usePoolData(AXIAL_AC4D_POOL_NAME)
   const [currentModal, setCurrentModal] = useState<string | null>(null)
   const [filter, setFilter] = useState<PoolTypes | "all" | "outdated">("all")
   const handleClickMigrate = () => {
@@ -24,11 +26,20 @@ function Pools(): ReactElement | null {
   }
 
   function getPropsForPool(poolName: PoolName) {
-    return {
-      name: AXIAL_A4D_POOL_NAME,
-      poolData: a4dPoolData,
-      userShareData: a4dUserShareData,
-      poolRoute: "/pools/a4d",
+    if (poolName === AXIAL_A4D_POOL_NAME) {
+      return {
+        name: AXIAL_A4D_POOL_NAME,
+        poolData: a4dPoolData,
+        userShareData: a4dUserShareData,
+        poolRoute: "/pools/a4d",
+      }
+    } else {
+      return {
+        name: AXIAL_AC4D_POOL_NAME,
+        poolData: ac4dPoolData,
+        userShareData: ac4dUserShareData,
+        poolRoute: "/pools/ac4d",
+      }
     }
   }
   return (
