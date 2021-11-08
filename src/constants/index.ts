@@ -6,6 +6,8 @@ import axialLogo from "../assets/icons/logo_icon.svg" // this needs a smaller ic
 import coinbasewalletIcon from "../assets/icons/coinbasewallet.svg"
 import daiLogo from "../assets/icons/dai.svg"
 import fraxLogo from "../assets/icons/frax.svg"
+import tsdLogo from "../assets/icons/tsd.svg"
+import mimLogo from "../assets/icons/mim.svg"
 import metamaskIcon from "../assets/icons/metamask.svg"
 import tusdLogo from "../assets/icons/tusd.svg"
 import usdcLogo from "../assets/icons/usdc.svg"
@@ -181,7 +183,7 @@ export const TSD = new Token(
   "TSD",
   "teddy-dollar",
   "Teddy Dollar",
-  tusdLogo,
+  tsdLogo,
   false,
   false,
 )
@@ -196,7 +198,7 @@ export const MIM = new Token(
   "MIM",
   "magic-internet-money",
   "Magic Internet Money",
-  tusdLogo,
+  mimLogo,
   false,
   false,
 )
@@ -274,7 +276,7 @@ export const POOLS_MAP: PoolsMap = {
     poolTokens: AXIAL_A4D_POOL_TOKENS,
     isSynthetic: false,
     type: PoolTypes.USD,
-    route: "a4d",
+    route: "a4d"
   },
   [AXIAL_AC4D_POOL_NAME]: {
     name: AXIAL_AC4D_POOL_NAME,
@@ -283,7 +285,7 @@ export const POOLS_MAP: PoolsMap = {
     poolTokens: AXIAL_AC4D_POOL_TOKENS,
     isSynthetic: false,
     type: PoolTypes.USD,
-    route: "ac4d",
+    route: "ac4d"
   },
 }
 

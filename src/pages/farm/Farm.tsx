@@ -1,5 +1,6 @@
 import {
   AXIAL_A4D_POOL_NAME,
+  AXIAL_AC4D_POOL_NAME,
   POOLS_MAP,
   PoolName,
   PoolTypes,
@@ -8,17 +9,16 @@ import React, { ReactElement, useState } from "react"
 
 import ConfirmTransaction from "../../components/confirm-transaction/ConfirmTransaction"
 import Modal from "../../components/modal/Modal"
-import PoolOverview from "../../components/pool-info-card/PoolOverview"
 import TopMenu from "../../components/menu/TopMenu"
 import { Zero } from "@ethersproject/constants"
 import classNames from "classnames"
 import styles from "./Farm.module.scss"
 import usePoolData from "../../hooks/usePoolData"
-import { BigNumber } from "ethers"
 import FarmOverview from "../../components/farm-info-card/FarmOverview"
 
 function Farm(): ReactElement | null {
   const [a4dPoolData, a4dUserShareData] = usePoolData(AXIAL_A4D_POOL_NAME)
+  const [ac4dPoolData, ac4dUserShareData] = usePoolData(AXIAL_AC4D_POOL_NAME)
   const [currentModal, setCurrentModal] = useState<string | null>(null)
   const [filter, setFilter] = useState<PoolTypes | "all" | "outdated">("all")
   const handleClickMigrate = () => {
@@ -26,16 +26,25 @@ function Farm(): ReactElement | null {
   }
 
   function getPropsForPool(poolName: PoolName) {
-    return {
-      name: AXIAL_A4D_POOL_NAME,
-      poolData: a4dPoolData,
-      userShareData: a4dUserShareData,
-      poolRoute: "/pools/a4d",
+    if (poolName === AXIAL_A4D_POOL_NAME) {
+      return {
+        name: AXIAL_A4D_POOL_NAME,
+        poolData: a4dPoolData,
+        userShareData: a4dUserShareData,
+        poolRoute: "/farms/a4d",
+      }
+    } else {
+      return {
+        name: AXIAL_AC4D_POOL_NAME,
+        poolData: ac4dPoolData,
+        userShareData: ac4dUserShareData,
+        poolRoute: "/farms/ac4d",
+      }
     }
   }
   return (
     <div className={styles.poolsPage}>
-      <TopMenu activeTab="farm" />
+      <TopMenu activeTab="farms" />
       <ul className={styles.filters}>
         {[
           ["all", "ALL"] as const,

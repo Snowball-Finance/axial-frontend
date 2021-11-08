@@ -123,7 +123,7 @@ const DepositPage = (props: Props): ReactElement => {
               </div>
             </div>
           </div>
-          <AdvancedOptions />
+          <AdvancedOptions noApprovalCheckbox={false} noSlippageCheckbox={false}/>
           <Button
             kind="primary"
             onClick={(): void => {

@@ -237,7 +237,7 @@ const SwapPage = (props: Props): ReactElement => {
             {">"}
           </div>
         )}
-        <AdvancedOptions />
+        <AdvancedOptions noApprovalCheckbox={false}  noSlippageCheckbox={false}/>
         <Button
           kind="primary"
           onClick={(): void => {

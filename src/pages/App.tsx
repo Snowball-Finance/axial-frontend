@@ -30,9 +30,23 @@ export default function App(): ReactElement {
           <Switch>
             <Route exact path="/" component={Swap} />
             <Route exact path="/pools" component={Pools} />
-            <Route exact path="/farm" component={Farm} />
-            <Route exact path="/farm/withdraw" component={FarmWithdraw} />
-            <Route exact path="/farm/deposit" component={FarmDeposit} />
+            <Route exact path="/farms" component={Farm} />
+            {Object.values(POOLS_MAP).map(({ name, route }) => (
+              <Route
+                exact
+                path={`/farms/${route}/withdraw`}
+                render={(props) => <FarmWithdraw {...props} poolName={name} />}
+                key={`${name}-farmswithdraw`}
+              />
+            ))}
+            {Object.values(POOLS_MAP).map(({ name, route }) => (
+              <Route
+                exact
+                path={`/farms/${route}/deposit`}
+                render={(props) => <FarmDeposit {...props} poolName={name} />}
+                key={`${name}-farmsdeposit`}
+              />
+            ))}
             {Object.values(POOLS_MAP).map(({ name, route }) => (
               <Route
                 exact
