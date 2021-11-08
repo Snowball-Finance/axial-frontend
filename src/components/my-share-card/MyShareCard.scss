@@ -4,7 +4,6 @@
 $margin-top: 16px;
 
 div.myShareCard {
-  color: var(--text-darker);
   font-size: 16px;
 
   h4 {
@@ -27,10 +26,6 @@ div.myShareCard {
 
   .poolShare {
     width: 100%;
-  }
-
-  .poolShare span {
-    color: var(--text-selected);
   }
 
   div.currency {
