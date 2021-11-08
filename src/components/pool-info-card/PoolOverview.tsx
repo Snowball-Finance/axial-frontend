@@ -1,20 +1,12 @@
 import "./PoolOverview.scss"
-import {
-  AXIAL_MASTERCHEF_CONTRACT_ADDRESS,
-  POOLS_MAP,
-  PoolTypes,
-  TOKENS_MAP,
-} from "../../constants"
-import Button, { MdButton } from "../button/Button"
+import { POOLS_MAP, PoolTypes, TOKENS_MAP } from "../../constants"
 import { PoolDataType, UserShareType } from "../../hooks/usePoolData"
 import React, { ReactElement } from "react"
 import { formatBNToShortString, formatBNToString } from "../../libs"
+import Button from "../button/Button"
 import { Link } from "react-router-dom"
 import { Zero } from "@ethersproject/constants"
 import classNames from "classnames"
-import { ethers } from "ethers"
-import masterchef from "../../constants/abis/masterchef.json"
-import { useActiveWeb3React } from "../../hooks"
 import { useTranslation } from "react-i18next"
 
 interface Props {
@@ -31,21 +23,16 @@ export default function PoolOverview({
   onClickMigrate,
 }: Props): ReactElement | null {
   const { t } = useTranslation()
-  const { type: poolType, isOutdated, lpToken } = POOLS_MAP[poolData.name]
+  const { type: poolType, isOutdated } = POOLS_MAP[poolData.name]
   const formattedDecimals = poolType === PoolTypes.USD ? 2 : 4
   const shouldMigrate = !!onClickMigrate
-  const { library } = useActiveWeb3React()
   const formattedData = {
     name: poolData.name,
     reserve: poolData.reserve
       ? formatBNToShortString(poolData.reserve, 18)
       : "-",
-    apy: poolData.apy
-      ? `${poolData.apy.toLocaleString(undefined, {
-          maximumFractionDigits: 2,
-        })}%`
-      : "-",
-    volume: poolData.volume ? `$${poolData.volume}` : "-",
+    apy: poolData.apy ? `${Number(poolData.apy).toFixed(2)}%` : "-",
+    volume: poolData.volume ? `$${Number(poolData.volume).toFixed(2)}` : "-",
     userBalanceUSD: formatBNToShortString(
       userShareData?.usdBalance || Zero,
       18,
@@ -61,30 +48,6 @@ export default function PoolOverview({
     }),
   }
   const hasShare = !!userShareData?.usdBalance.gt("0")
-
-  const masterchefContract = new ethers.Contract(
-    AXIAL_MASTERCHEF_CONTRACT_ADDRESS[43114],
-    masterchef,
-    library,
-  )
-
-  async function onClickWithdraw() {
-    console.log("withdraw")
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    await masterchefContract.withdrawAll()
-  }
-
-  async function onClickDeposit() {
-    console.log("deposit")
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    await masterchefContract.depositAll()
-  }
-
-  async function onClickClaim() {
-    console.log("claim")
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    await masterchefContract.claim()
-  }
 
   return (
     <div
@@ -128,12 +91,12 @@ export default function PoolOverview({
             <span className="label">TVL</span>
             <span>{`$${formattedData.reserve}`}</span>
           </div>
-          {/*formattedData.volume && (
+          {formattedData.volume && (
             <div>
               <span className="label">{`${t("24HrVolume")}`}</span>
               <span>{formattedData.volume}</span>
             </div>
-          )*/}
+          )}
         </div>
         <div className="buttons">
           <Link to={`${poolRoute}/withdraw`}>
@@ -157,27 +120,6 @@ export default function PoolOverview({
               </Button>
             </Link>
           )}
-        </div>
-        <span style={{ marginTop: "8px" }}></span>
-        <div className="poolInfo">
-          <span className="label">Rewards: </span>
-          <span style={{ marginLeft: "8px" }}></span>
-          <MdButton kind="temporary" onClick={onClickClaim}>
-            {t("claim")}
-          </MdButton>
-          <span style={{ marginLeft: "8px" }}></span>
-          <MdButton kind="secondary" onClick={onClickWithdraw}>
-            {t("withdraw")}
-          </MdButton>
-          <span style={{ marginLeft: "8px" }}></span>
-          <span style={{ marginTop: "8px" }}></span>
-          <MdButton
-            kind="primary"
-            onClick={onClickDeposit}
-            disabled={!hasShare}
-          >
-            {t("deposit")}
-          </MdButton>
         </div>
       </div>
     </div>
