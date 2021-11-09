@@ -34,7 +34,7 @@ interface Props {
   poolName: PoolName
 }
 
-function FarmDeposit({ poolName = 'A4D Stablecoins' }: Props): ReactElement | null {
+function FarmDeposit({ poolName = 'AS4D Stablecoins' }: Props): ReactElement | null {
   const POOL = POOLS_MAP[poolName]
   const { account } = useActiveWeb3React()
   const approveAndDeposit = useApproveAndDeposit(poolName)

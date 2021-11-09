@@ -1,5 +1,5 @@
 import {
-  AXIAL_A4D_POOL_NAME,
+  AXIAL_AS4D_POOL_NAME,
   AXIAL_AC4D_POOL_NAME,
   POOLS_MAP,
   PoolName,
@@ -17,7 +17,7 @@ import usePoolData from "../../hooks/usePoolData"
 import FarmOverview from "../../components/farm-info-card/FarmOverview"
 
 function Farm(): ReactElement | null {
-  const [a4dPoolData, a4dUserShareData] = usePoolData(AXIAL_A4D_POOL_NAME)
+  const [as4dPoolData, as4dUserShareData] = usePoolData(AXIAL_AS4D_POOL_NAME)
   const [ac4dPoolData, ac4dUserShareData] = usePoolData(AXIAL_AC4D_POOL_NAME)
   const [currentModal, setCurrentModal] = useState<string | null>(null)
   const [filter, setFilter] = useState<PoolTypes | "all" | "outdated">("all")
@@ -26,12 +26,12 @@ function Farm(): ReactElement | null {
   }
 
   function getPropsForPool(poolName: PoolName) {
-    if (poolName === AXIAL_A4D_POOL_NAME) {
+    if (poolName === AXIAL_AS4D_POOL_NAME) {
       return {
-        name: AXIAL_A4D_POOL_NAME,
-        poolData: a4dPoolData,
-        userShareData: a4dUserShareData,
-        poolRoute: "/farms/a4d",
+        name: AXIAL_AS4D_POOL_NAME,
+        poolData: as4dPoolData,
+        userShareData: as4dUserShareData,
+        poolRoute: "/farms/as4d",
       }
     } else {
       return {
