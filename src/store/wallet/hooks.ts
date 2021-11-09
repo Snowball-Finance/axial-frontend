@@ -23,7 +23,7 @@ export interface PendingTokens {
 }
 
 export interface MasterchefResponse {
-  poolInfo: PoolInfo
+  userInfo: PoolInfo
   pendingTokens: PendingTokens
 }
 
@@ -58,7 +58,7 @@ export function useMasterchefBalances(): {
       )
 
       const _info: MasterchefResponse = {
-        poolInfo: {
+        userInfo: {
           amount: BigNumber.from("0"),
           rewardDebt: BigNumber.from("0"),
         },
@@ -75,8 +75,16 @@ export function useMasterchefBalances(): {
           (acc, t) => ({
             ...acc,
             [t.symbol]: {
-              userInfo: mBalances[t.addresses[chainId]]?.userInfo, // eslint-disable-line
-              pendingTokens: mBalances[t.addresses[chainId]]?.pendingTokens // eslint-disable-line
+              userInfo:{
+                amount: mBalances[t.addresses[chainId]]?.userInfo[0], // eslint-disable-line
+                rewardDebt: mBalances[t.addresses[chainId]]?.userInfo[1] // eslint-disable-line
+              }, 
+              pendingTokens: {
+                bonusTokenAddress: mBalances[t.addresses[chainId]]?.pendingTokens[0], // eslint-disable-line
+                bonusTokenSymbol: mBalances[t.addresses[chainId]]?.pendingTokens[1], // eslint-disable-line
+                pendingAxial: mBalances[t.addresses[chainId]]?.pendingTokens[2], // eslint-disable-line
+                pendingBonusToken: mBalances[t.addresses[chainId]]?.pendingTokens[3], // eslint-disable-line
+              }
             },
           }),
           { _info: _info },

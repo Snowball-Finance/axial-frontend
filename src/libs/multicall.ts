@@ -36,8 +36,13 @@ class ContractCall {
   abi: any[]
   calls: MethodBase[] = []
 
-  constructor(address: string, abi: any[], calls?: MethodBase[]) {
-    this.reference = address
+  constructor(
+    address: string,
+    abi: any[],
+    reference?: string,
+    calls?: MethodBase[],
+  ) {
+    this.reference = reference ?? address
     this.contractAddress = address
     this.abi = abi
 
@@ -65,6 +70,7 @@ async function getMultiContractData(
   keys?: string[],
 ): Promise<ReturnValues> {
   const multicall = new Multicall({ ethersProvider: provider })
+
   const call = await multicall.call(contractArray)
 
   const resultSet = {} as ReturnValues
@@ -122,6 +128,7 @@ function getUserMasterchefInfo(
   const contractCall = new ContractCall(
     AXIAL_MASTERCHEF_CONTRACT_ADDRESS[chainId],
     MASTERCHEF,
+    masterchefId.toString(),
   )
   contractCall.setCall("userInfo", [masterchefId, account])
   contractCall.setCall("pendingTokens", [masterchefId, account])

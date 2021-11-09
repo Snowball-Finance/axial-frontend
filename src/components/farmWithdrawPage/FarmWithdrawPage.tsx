@@ -78,7 +78,7 @@ const FarmWithdrawPage = (props: Props): ReactElement => {
   const onSubmit = (): void => {
     setCurrentModal("review")
   }
-  const noShare = !myShareData || myShareData.lpTokenBalance.eq(Zero)
+  const noShare = !myShareData || myShareData.masterchefBalance?.userInfo.amount.eq("0x0")
 
   return (
     <div className={"withdraw " + classNames({ noShare: noShare })}>
@@ -137,8 +137,17 @@ const FarmWithdrawPage = (props: Props): ReactElement => {
               !!formStateData.error ||
               formStateData.lpTokenAmountToSpend.isZero()
             }
-            onClick={onSubmit}
-          >
+            onClick={async () => {
+              //onSubmit
+              setCurrentModal("confirm")
+              logEvent(
+                "withdraw",
+                (poolData && { pool: poolData?.name }) || {},
+              )
+              await onConfirmTransaction?.()
+              setCurrentModal(null)
+              }
+            }>
             {t("withdraw")}
           </Button>
         </div>

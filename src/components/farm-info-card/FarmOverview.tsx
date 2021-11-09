@@ -86,7 +86,6 @@ export default function FarmOverview({
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     await masterchefContract.claim()
   }
-  console.log({ tokens: formattedData.tokens })
   return (
     <div
       className={classNames("poolOverview", {

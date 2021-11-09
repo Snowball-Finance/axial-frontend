@@ -21,6 +21,7 @@ interface ApproveAndWithdrawStateArgument {
 
 export function useApproveAndWithdraw(
   poolName: PoolName,
+  mastechefWithdraw = false
 ): (state: ApproveAndWithdrawStateArgument) => Promise<void> {
   const dispatch = useDispatch()
   const swapContract = useSwapContract(poolName)

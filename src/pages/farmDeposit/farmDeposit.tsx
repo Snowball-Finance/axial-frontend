@@ -52,7 +52,7 @@ function FarmDeposit({ poolName = 'A4D Stablecoins' }: Props): ReactElement | nu
     return arr
   }, [POOL.poolTokens, POOL.underlyingPoolTokens, POOL.lpToken])
   const [tokenFormState, updateTokenFormState] = useTokenFormState(allTokens)
-  const [shouldDepositWrapped, setShouldDepositWrapped] = useState(true)
+  const [shouldDepositWrapped, setShouldDepositWrapped] = useState(false)
   useEffect(() => {
     // empty out previous token state when switchng between wrapped and unwrapped
     if (shouldDepositWrapped) {
@@ -192,7 +192,7 @@ function FarmDeposit({ poolName = 'A4D Stablecoins' }: Props): ReactElement | nu
   })
 
   async function onConfirmTransaction(): Promise<void> {
-    await approveAndDeposit(tokenFormState, shouldDepositWrapped)
+    await approveAndDeposit(tokenFormState, shouldDepositWrapped, true)
     // Clear input after deposit
     updateTokenFormState(
       allTokens.reduce(
@@ -210,7 +210,7 @@ function FarmDeposit({ poolName = 'A4D Stablecoins' }: Props): ReactElement | nu
   const depositTransaction = buildTransactionData(
     tokenFormState,
     poolData,
-    shouldDepositWrapped ? POOL.underlyingPoolTokens || [] : POOL.poolTokens,
+    [POOL.lpToken],
     POOL.lpToken,
     priceImpact,
     estDepositLPTokenAmount,

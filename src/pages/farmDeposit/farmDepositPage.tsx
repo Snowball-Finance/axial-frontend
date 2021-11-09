@@ -55,7 +55,7 @@ const FarmDepositPage = (props: Props): ReactElement => {
 
   const [currentModal, setCurrentModal] = useState<string | null>(null)
 
-  const validDepositAmount = transactionData.to.totalAmount.gt(0)
+  const validDepositAmount = true
   const shouldDisplayWrappedOption = false
 
   return (
@@ -98,8 +98,11 @@ const FarmDepositPage = (props: Props): ReactElement => {
           <AdvancedOptions noApprovalCheckbox={false}  noSlippageCheckbox={true}/>
           <Button
             kind="primary"
-            onClick={(): void => {
-              setCurrentModal("review")
+            onClick={async () => {
+              setCurrentModal("confirm")
+              await onConfirmTransaction?.()
+              setCurrentModal(null)
+              //setCurrentModal("review")
             }}
             disabled={!validDepositAmount || poolData?.isPaused}
           >

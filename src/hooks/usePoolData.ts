@@ -111,7 +111,7 @@ export default function usePoolData(
         return
       const POOL = POOLS_MAP[poolName]
       const userMasterchefBalances = masterchefBalances
-        ? masterchefBalances[POOL.addresses[43114]]
+        ? masterchefBalances[POOL.lpToken.symbol]
         : null
       const effectivePoolTokens = POOL.underlyingPoolTokens || POOL.poolTokens
       const isMetaSwap = POOL.metaSwapAddresses != null

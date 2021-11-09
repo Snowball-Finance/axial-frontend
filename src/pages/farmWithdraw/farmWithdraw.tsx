@@ -37,7 +37,7 @@ function FarmWithdraw({ poolName }: Props): ReactElement {
   const { tokenPricesUSD, gasStandard, gasFast, gasInstant } = useSelector(
     (state: AppState) => state.application,
   )
-  const approveAndWithdraw = useApproveAndWithdraw(poolName)
+  const approveAndWithdraw = useApproveAndWithdraw(poolName, true)
   const swapContract = useSwapContract(poolName)
   const { account } = useActiveWeb3React()
   const POOL = POOLS_MAP[poolName]
@@ -45,7 +45,7 @@ function FarmWithdraw({ poolName }: Props): ReactElement {
   const [estWithdrawBonus, setEstWithdrawBonus] = useState(Zero)
   useEffect(() => {
     // evaluate if a new withdraw will exceed the pool's per-user limit
-    async function calculateWithdrawBonus(): Promise<void> {
+    function calculateWithdrawBonus(): void {
       if (
         swapContract == null ||
         userShareData == null ||
@@ -54,28 +54,10 @@ function FarmWithdraw({ poolName }: Props): ReactElement {
       ) {
         return
       }
-      const tokenInputSum = parseUnits(
-        [POOL.lpToken]
-          .reduce(
-            (sum, { symbol }) =>
-              sum + (+withdrawFormState.tokenInputs[symbol].valueRaw || 0),
-            0,
-          )
-          .toString(),
-        18,
-      )
-      let withdrawLPTokenAmount
-      if (poolData.totalLocked.gt(0) && tokenInputSum.gt(0)) {
-        withdrawLPTokenAmount = await swapContract.calculateTokenAmount(
-          [POOL.lpToken].map(
-            ({ symbol }) => withdrawFormState.tokenInputs[symbol].valueSafe,
-          ),
-          false,
-        )
-      } else {
-        // when pool is empty, estimate the lptokens by just summing the input instead of calling contract
-        withdrawLPTokenAmount = tokenInputSum
-      }
+      const tokenInputSum =
+        userShareData.masterchefBalance?.userInfo.amount ?? BigNumber.from("0")
+
+      const withdrawLPTokenAmount = tokenInputSum
       setEstWithdrawBonus(
         calculatePriceImpact(
           withdrawLPTokenAmount,
@@ -166,11 +148,11 @@ function FarmWithdraw({ poolName }: Props): ReactElement {
             withdrawFormState.tokenInputs[POOL.lpToken.symbol].valueSafe,
             POOL.lpToken.decimals,
           ),
-          rate: commify(tokenPricesUSD[POOL.lpToken.symbol]?.toFixed(2)),
+          rate: "0",
         })
       }
     }
-
+    console.log(userShareData)
   return (
     <FarmWithdrawPage
       title={poolName}
