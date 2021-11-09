@@ -109,51 +109,6 @@ function Farm(): ReactElement | null {
               }
             />
           ))}
-        {/* <FarmOverview
-          farmName="A4D Stablecoins"
-          farmRoute="/farm"
-          feeAPR="10%"
-          tvl="$400.0m"
-          myTVL="42.2k"
-          hasShare
-          isOutdated={false}
-          isPaused={false}
-          shouldMigrate={false}
-          onClickMigrate={() => {
-            console.log('migrate clicked')
-          }}
-          reserve="jkhkjh"
-          totalAPR="234"
-          userBalanceUSD="zs"
-          tokens={[
-            {
-              icon: "/static/media/dai.664df0db.svg",
-              name: "Dai",
-              symbol: "DAI.e",
-              value: "100.21",
-            },
-            {
-              icon: "/static/media/usdt.2499bf87.svg",
-              name: "Tether",
-              symbol: "USDT.e",
-              value: "99999999000000.0",
-            },
-            {
-              icon: "/static/media/tusd.b234bc44.svg",
-              name: "TUSD Coin",
-              symbol: "TUSD",
-              value: "99.99",
-            },
-            {
-              icon: "/static/media/usdc.1fa5e7f4.svg",
-              name: "USDC",
-              symbol: "USDC.e",
-              value: "99999974000000.0",
-            }
-          ]}
-
-
-        /> */}
       </div>
       <Modal
         isOpen={!!currentModal}

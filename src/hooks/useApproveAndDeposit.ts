@@ -167,7 +167,7 @@ export function useApproveAndDeposit(
         }),
       )
       return Promise.resolve()
-      }else {
+      } else {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         await masterchefContract.deposit(
           POOL.lpToken.masterchefId,

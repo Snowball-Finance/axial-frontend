@@ -152,7 +152,6 @@ function FarmWithdraw({ poolName }: Props): ReactElement {
         })
       }
     }
-    console.log(userShareData)
   return (
     <FarmWithdrawPage
       title={poolName}
