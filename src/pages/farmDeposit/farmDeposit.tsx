@@ -1,3 +1,7 @@
+
+
+import FarmDepositPage from './farmDepositPage'
+
 import {
   DepositTransaction,
   TransactionItem,
@@ -13,7 +17,6 @@ import usePoolData, { PoolDataType } from "../../hooks/usePoolData"
 
 import { AppState } from "../../store"
 import { BigNumber } from "@ethersproject/bignumber"
-import DepositPage from "./DepositPage"
 import { TokenPricesUSD } from "../../store/application"
 import { Zero } from "@ethersproject/constants"
 import { calculateGasEstimate } from "../../libs/gasEstimate"
@@ -30,25 +33,30 @@ interface Props {
   poolName: PoolName
 }
 
-function Deposit({ poolName }: Props): ReactElement | null {
-  
+function FarmDeposit({ poolName = 'AS4D Stablecoins' }: Props): ReactElement | null {
   const POOL = POOLS_MAP[poolName]
   const { account } = useActiveWeb3React()
   const approveAndDeposit = useApproveAndDeposit(poolName)
   const [poolData, userShareData] = usePoolData(poolName)
   const swapContract = useSwapContract(poolName)
   const allTokens = useMemo(() => {
-    return Array.from(
-      new Set(POOL.poolTokens.concat(POOL.underlyingPoolTokens || [])),
+    const arr = Array.from(
+      new Set(
+        POOL.poolTokens
+          .concat(POOL.underlyingPoolTokens || [])
+          ,
+      ),
     )
-  }, [POOL.poolTokens, POOL.underlyingPoolTokens])
+    arr.push(POOL.lpToken)
+    return arr
+  }, [POOL.poolTokens, POOL.underlyingPoolTokens, POOL.lpToken])
   const [tokenFormState, updateTokenFormState] = useTokenFormState(allTokens)
   const [shouldDepositWrapped, setShouldDepositWrapped] = useState(false)
   useEffect(() => {
     // empty out previous token state when switchng between wrapped and unwrapped
     if (shouldDepositWrapped) {
       updateTokenFormState(
-        POOL.poolTokens.reduce(
+        [POOL.lpToken].reduce(
           (acc, { symbol }) => ({
             ...acc,
             [symbol]: "",
@@ -72,6 +80,7 @@ function Deposit({ poolName }: Props): ReactElement | null {
     updateTokenFormState,
     POOL.poolTokens,
     POOL.underlyingPoolTokens,
+    POOL.lpToken
   ])
   const tokenBalances = usePoolTokenBalances()
   const { tokenPricesUSD, gasStandard, gasFast, gasInstant } = useSelector(
@@ -161,16 +170,18 @@ function Deposit({ poolName }: Props): ReactElement | null {
   ])
 
   // A represention of tokens used for UI
-  const tokens = (shouldDepositWrapped
-    ? POOL.underlyingPoolTokens || []
-    : POOL.poolTokens
-  ).map(({ symbol, name, icon, decimals }) => ({
-    symbol,
-    name,
-    icon,
-    max: formatBNToString(tokenBalances?.[symbol] || Zero, decimals),
-    inputValue: tokenFormState[symbol].valueRaw,
-  }))
+  const tokens = [
+    {
+      symbol: POOL.lpToken.symbol,
+      name: POOL.lpToken.name,
+      icon: POOL.lpToken.icon,
+      max: formatBNToString(
+        tokenBalances?.[POOL.lpToken.symbol] || Zero,
+        POOL.lpToken.decimals,
+      ),
+      inputValue: tokenFormState[POOL.lpToken.symbol].valueRaw,
+    },
+  ]
 
   const exceedsWallet = allTokens.some(({ symbol }) => {
     const exceedsBoolean = (tokenBalances?.[symbol] || Zero).lt(
@@ -180,7 +191,7 @@ function Deposit({ poolName }: Props): ReactElement | null {
   })
 
   async function onConfirmTransaction(): Promise<void> {
-    await approveAndDeposit(tokenFormState, shouldDepositWrapped)
+    await approveAndDeposit(tokenFormState, shouldDepositWrapped, true)
     // Clear input after deposit
     updateTokenFormState(
       allTokens.reduce(
@@ -198,7 +209,7 @@ function Deposit({ poolName }: Props): ReactElement | null {
   const depositTransaction = buildTransactionData(
     tokenFormState,
     poolData,
-    shouldDepositWrapped ? POOL.underlyingPoolTokens || [] : POOL.poolTokens,
+    [POOL.lpToken],
     POOL.lpToken,
     priceImpact,
     estDepositLPTokenAmount,
@@ -207,7 +218,7 @@ function Deposit({ poolName }: Props): ReactElement | null {
   )
 
   return (
-    <DepositPage
+    <FarmDepositPage
       onConfirmTransaction={onConfirmTransaction}
       onChangeTokenInputValue={updateTokenFormValue}
       onToggleDepositWrapped={() =>
@@ -223,6 +234,7 @@ function Deposit({ poolName }: Props): ReactElement | null {
     />
   )
 }
+
 
 function buildTransactionData(
   tokenFormState: TokensStateType,
@@ -277,8 +289,8 @@ function buildTransactionData(
   }
   const shareOfPool = poolData?.totalLocked.gt(0)
     ? estDepositLPTokenAmount
-        .mul(BigNumber.from(10).pow(18))
-        .div(estDepositLPTokenAmount.add(poolData?.totalLocked))
+      .mul(BigNumber.from(10).pow(18))
+      .div(estDepositLPTokenAmount.add(poolData?.totalLocked))
     : BigNumber.from(10).pow(18)
   const gasAmount = calculateGasEstimate("addLiquidity").mul(gasPrice) // units of gas * GWEI/Unit of gas
 
@@ -286,8 +298,8 @@ function buildTransactionData(
     amount: gasAmount,
     valueUSD: tokenPricesUSD?.ETH
       ? parseUnits(tokenPricesUSD.ETH.toFixed(2), 18) // USD / ETH  * 10^18
-          .mul(gasAmount) // GWEI
-          .div(BigNumber.from(10).pow(25)) // USD / ETH * GWEI * ETH / GWEI = USD
+        .mul(gasAmount) // GWEI
+        .div(BigNumber.from(10).pow(25)) // USD / ETH * GWEI * ETH / GWEI = USD
       : null,
   }
 
@@ -300,4 +312,5 @@ function buildTransactionData(
   }
 }
 
-export default Deposit
+
+export default FarmDeposit

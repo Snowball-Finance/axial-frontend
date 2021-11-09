@@ -7,7 +7,7 @@
   "advancedOptions": "高级选项",
   "aParameter": "放大系数",
   "aParameterTooltip": "放大系数的影响为：价格越高，低滑点的兑换区间越大；而价格低时它会帮助池内资产恢复平衡",
-  "apy": "年化率",
+  "apr": "年化率",
   "audits": "审计",
   "averagedBalance": "平均余额",
   "balance": "余额",

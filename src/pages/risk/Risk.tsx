@@ -22,11 +22,14 @@ function Risk(): ReactElement {
         </p>
         <h3>{t("audits")}</h3>
         <p data-testid="risk-audits">
-          {t("riskAudits")}{" "}
-          <a href="https://github.com/Snowball-Finance/axial-protocol">
-            {t("riskAudits2")}
+          {t("riskAudits1")}{" "}
+          <a href="https://saddle.finance/">
+            {t("riskAudits1LinkTitle")}
           </a>
-          {"."}
+          {t("riskAudits2")}{" "}
+          <a href="https://github.com/saddle-finance/saddle-audits">
+            {t("riskAudits2LinkTitle")}
+          </a>
           <br />
           <br />
           {t("riskAudits3")}
@@ -35,7 +38,18 @@ function Risk(): ReactElement {
           {t("riskAudits4")}
         </p>
         <h3>{t("adminKeys")}</h3>
-        <p data-testid="risk-adminkeys">{t("riskAdminKeys")}</p>
+        <p data-testid="risk-adminkeys">
+
+          {t("riskAdminKeys")}
+          <a href="https://snowballs.gitbook.io/snowball-docs/resources/security#2-council">
+            {t("riskAdminKeysLinkTitle")}
+          </a>
+          {t("riskAdminKeys2")}
+          <a href="https://snowtrace.io/address/0xfdCcf6D49A29f435E509DFFAAFDecB0ADD93f8C0">
+            {t("riskAdminKeys2LinkTitle")}
+          </a>
+          {t("riskAdminKeys3")}
+        </p>
         <h3>{t("lossOfPeg")}</h3>
         <p data-testid="risk-lossofpeg">{t("riskLossOfPeg")}</p>
         <h3>{t("unnecessaryApprovalAskQ")}</h3>

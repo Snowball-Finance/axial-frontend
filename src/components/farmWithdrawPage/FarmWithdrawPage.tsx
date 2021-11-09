@@ -1,4 +1,4 @@
-import "./WithdrawPage.scss"
+import "./FarmWithdrawPage.scss"
 import { PoolDataType, UserShareType } from "../../hooks/usePoolData"
 import React, { ReactElement, useState } from "react"
 
@@ -14,7 +14,7 @@ import RadioButton from "../button/RadioButton"
 import ReviewWithdraw from "../reviews/ReviewWithdraw"
 import TokenInput from "../token-input/TokenInput"
 import TopMenu from "../menu/TopMenu"
-import { WithdrawFormState } from "../../hooks/useWithdrawFormState"
+import { WithdrawFormState } from "../../hooks/useFarmWithdrawFormState"
 import { Zero } from "@ethersproject/constants"
 import classNames from "classnames"
 import { formatBNToPercentString } from "../../libs"
@@ -60,7 +60,7 @@ interface Props {
 }
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
-const WithdrawPage = (props: Props): ReactElement => {
+const FarmWithdrawPage = (props: Props): ReactElement => {
   const { t } = useTranslation()
   const {
     tokensData,
@@ -78,11 +78,12 @@ const WithdrawPage = (props: Props): ReactElement => {
   const onSubmit = (): void => {
     setCurrentModal("review")
   }
-  const noShare = !myShareData || myShareData.lpTokenBalance.eq(Zero)
+  /* eslint-disable @typescript-eslint/no-unsafe-call */
+  const noShare = !myShareData || myShareData.masterchefBalance?.userInfo.amount.eq("0x0")
 
   return (
     <div className={"withdraw " + classNames({ noShare: noShare })}>
-      <TopMenu activeTab={"withdraw"} />
+      <TopMenu activeTab={"farms"} />
       <div className="content">
         <div className="left">
           <div className="form">
@@ -106,33 +107,7 @@ const WithdrawPage = (props: Props): ReactElement => {
                 <div className="error">{formStateData.error.message}</div>
               )}
             </div>
-            <div className="horizontalDisplay">
-              <RadioButton
-                checked={formStateData.withdrawType === "ALL"}
-                onChange={(): void =>
-                  onFormChange({
-                    fieldName: "withdrawType",
-                    value: "ALL",
-                  })
-                }
-                label="Combo"
-              />
-              {tokensData.map((t) => {
-                return (
-                  <RadioButton
-                    key={t.symbol}
-                    checked={formStateData.withdrawType === t.symbol}
-                    onChange={(): void =>
-                      onFormChange({
-                        fieldName: "withdrawType",
-                        value: t.symbol,
-                      })
-                    }
-                    label={t.name}
-                  />
-                )
-              })}
-            </div>
+
             {tokensData.map((token, index) => (
               <div key={index}>
                 <TokenInput
@@ -153,28 +128,11 @@ const WithdrawPage = (props: Props): ReactElement => {
                 )}
               </div>
             ))}
-            <div className={"transactionInfoContainer"}>
-              <div className="transactionInfo">
-                <div className="transactionInfoItem">
-                  {reviewData.priceImpact.gte(0) ? (
-                    <span className="bonus">{t("bonus")}: </span>
-                  ) : (
-                    <span className="slippage">{t("priceImpact")}</span>
-                  )}
-                  <span
-                    className={
-                      "value " +
-                      (reviewData.priceImpact.gte(0) ? "bonus" : "slippage")
-                    }
-                  >
-                    {" "}
-                    {formatBNToPercentString(reviewData.priceImpact, 18, 4)}
-                  </span>
-                </div>
-              </div>
-            </div>
           </div>
-          <AdvancedOptions noApprovalCheckbox={true}  noSlippageCheckbox={true}/>
+          <AdvancedOptions
+            noApprovalCheckbox={true}
+            noSlippageCheckbox={true}
+          />
           <Button
             kind="primary"
             disabled={
@@ -182,13 +140,25 @@ const WithdrawPage = (props: Props): ReactElement => {
               !!formStateData.error ||
               formStateData.lpTokenAmountToSpend.isZero()
             }
-            onClick={onSubmit}
+            onClick={async () => {
+              //onSubmit
+              setCurrentModal("confirm")
+              logEvent("withdraw", (poolData && { pool: poolData?.name }) || {})
+              await onConfirmTransaction?.()
+              setCurrentModal(null)
+            }}
           >
             {t("withdraw")}
           </Button>
         </div>
         <div className="infoPanels">
-          <MyShareCard data={myShareData} />
+          <MyShareCard
+            data={myShareData}
+            useMasterchefAmount={true}
+            usePercent={false}
+            useUsd={false}
+            usePendingMasterchef={true}
+          />
           <div
             style={{
               display: myShareData ? "block" : "none",
@@ -224,4 +194,4 @@ const WithdrawPage = (props: Props): ReactElement => {
   )
 }
 
-export default WithdrawPage
+export default FarmWithdrawPage

@@ -92,6 +92,18 @@ button.button {
     }
   }
 
+  &.small {
+    width: unset;
+    min-height: 30px;
+    min-width: 40px;
+  }
+
+  &.medium {
+    width: unset;
+    min-height: 40px;
+    min-width: 110px;
+  }
+
   &.large {
     width: 176px;
     min-height: 40px;
@@ -99,4 +111,6 @@ button.button {
       width: 140px;
     }
   }
+
+
 }

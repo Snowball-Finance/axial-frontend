@@ -1,5 +1,11 @@
-import "./PoolOverview.scss"
-import { POOLS_MAP, PoolTypes, TOKENS_MAP } from "../../constants"
+import "./FarmOverview.scss"
+
+import {
+  AXIAL_MASTERCHEF_CONTRACT_ADDRESS,
+  POOLS_MAP,
+  PoolTypes,
+  TOKENS_MAP,
+} from "../../constants"
 import { PoolDataType, UserShareType } from "../../hooks/usePoolData"
 import React, { ReactElement } from "react"
 import { formatBNToShortString, formatBNToString } from "../../libs"
@@ -7,6 +13,9 @@ import Button from "../button/Button"
 import { Link } from "react-router-dom"
 import { Zero } from "@ethersproject/constants"
 import classNames from "classnames"
+import { ethers } from "ethers"
+import masterchef from "../../constants/abis/masterchef.json"
+import { useActiveWeb3React } from "../../hooks"
 import { useTranslation } from "react-i18next"
 
 interface Props {
@@ -16,7 +25,7 @@ interface Props {
   onClickMigrate?: (e: React.MouseEvent<HTMLButtonElement>) => void
 }
 
-export default function PoolOverview({
+export default function FarmOverview({
   poolData,
   poolRoute,
   userShareData,
@@ -26,15 +35,25 @@ export default function PoolOverview({
   const { type: poolType, isOutdated } = POOLS_MAP[poolData.name]
   const formattedDecimals = poolType === PoolTypes.USD ? 2 : 4
   const shouldMigrate = !!onClickMigrate
+  const { library } = useActiveWeb3React()
   const formattedData = {
     name: poolData.name,
+    myShare: formatBNToShortString(userShareData?.share || Zero, 18),
+    TVL: formatBNToShortString(poolData?.totalLocked || Zero, 18),
     reserve: poolData.reserve
       ? formatBNToShortString(poolData.reserve, 18)
       : "-",
     apr: poolData.apr ? `${Number(poolData.apr).toFixed(2)}%` : "-",
+    rapr: poolData.rapr ? `${Number(poolData.rapr).toFixed(2)}%` : "-",
+    totalapr: poolData.rapr
+      ? `${(Number(poolData.rapr) + (poolData.apr
+        ? Number(poolData.apr)
+        : 0)
+      ).toFixed(2)}%`
+      : "-",
     volume: poolData.volume ? `$${Number(poolData.volume).toFixed(2)}` : "-",
     userBalanceUSD: formatBNToShortString(
-      userShareData?.usdBalance || Zero,
+      userShareData?.masterchefBalance?.userInfo.amount || Zero,
       18,
     ),
     tokens: poolData.tokens.map((coin) => {
@@ -47,7 +66,28 @@ export default function PoolOverview({
       }
     }),
   }
-  const hasShare = !!userShareData?.usdBalance.gt("0")
+  const hasShare = !!userShareData?.masterchefBalance?.userInfo.amount.gt("0")
+
+  const masterchefContract = new ethers.Contract(
+    AXIAL_MASTERCHEF_CONTRACT_ADDRESS[43114],
+    masterchef,
+    library?.getSigner(),
+  )
+
+  const info = [
+    {
+      title: "Fee APR",
+      value: `$${formattedData.apr}`,
+    },
+    {
+      title: "Total APR",
+      value: `$${formattedData.totalapr}`,
+    },
+    {
+      title: "TVL",
+      value: `$${formattedData.TVL}`,
+    },
+  ]
 
   return (
     <div
@@ -81,26 +121,35 @@ export default function PoolOverview({
 
       <div className="right">
         <div className="poolInfo">
-          {formattedData.apr && (
-            <div className="margin">
-              <span className="label">{`${t("apr")}`}</span>
-              <span>{formattedData.apr}</span>
-            </div>
-          )}
-          <div className="margin">
-            <span className="label">TVL</span>
-            <span>{`$${formattedData.reserve}`}</span>
-          </div>
-          {formattedData.volume && (
-            <div>
-              <span className="label">{`${t("24HrVolume")}`}</span>
-              <span>{formattedData.volume}</span>
-            </div>
-          )}
+          {info.map((item, index) => {
+            return (
+              <div key={index} className="margin">
+                <span className="label">{item.title}</span>
+                <span>{item.value}</span>
+              </div>
+            )
+          })}
         </div>
         <div className="buttons">
+          <Button
+            size="medium"
+            onClick={async () => {
+              const POOL = POOLS_MAP[poolData.name]
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+              await masterchefContract.withdraw(POOL.lpToken.masterchefId, 0)
+            }}
+            disabled={userShareData?.masterchefBalance?.pendingTokens.pendingAxial.eq(
+              "0x0",
+            )}
+            kind="secondary"
+          >
+            {t("claim")}
+          </Button>
           <Link to={`${poolRoute}/withdraw`}>
-            <Button kind="secondary">{t("withdraw")}</Button>
+            <Button size="medium" kind="secondary">
+              {t("withdraw")}
+            </Button>
           </Link>
           {shouldMigrate ? (
             <Button
@@ -113,6 +162,7 @@ export default function PoolOverview({
           ) : (
             <Link to={`${poolRoute}/deposit`}>
               <Button
+                size="medium"
                 kind="primary"
                 disabled={poolData?.isPaused || isOutdated}
               >

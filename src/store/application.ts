@@ -10,7 +10,7 @@ interface GasPrices {
 interface SwapStats {
   [swapAddress: string]: {
     oneDayVolume: number
-    apy: number
+    apr: number
     tvl: number
     utilization: string
   }
@@ -58,14 +58,14 @@ const applicationSlice = createSlice({
           if (isNaN(data.last_apr) || isNaN(data.last_vol)) {
             return acc
           }
-          const apy = data.last_apr
+          const apr = data.last_apr
           const tvl = 0
           const oneDayVolume = data.last_vol
           const utilization = 0
           return {
             ...acc,
             [data.swapaddress]: {
-              apy,
+              apr,
               tvl,
               oneDayVolume,
               utilization,

@@ -3,7 +3,7 @@
 
 $margin-top: 16px;
 
-div.myShareCard {
+div.infoCard {
   color: $text-white;
   font-size: 16px;
 
@@ -15,7 +15,7 @@ div.myShareCard {
     margin-bottom: 24px;
     font-size: 30px;
     font-weight: $bold;
-    color: $light-blue;
+    color: var(--text-title);
   }
 
   div.info {
@@ -25,13 +25,18 @@ div.myShareCard {
     row-gap: 8px;
   }
 
-  .poolShare {
+  .topInfo {
     width: 100%;
   }
 
-
-  .poolShare span {
+  .topInfo span {
     color: $light-blue;
+  }
+
+  span.label {
+    margin-right: 6px;
+    color: $light-blue;
+    font-size: 16px;
   }
 
   div.currency {

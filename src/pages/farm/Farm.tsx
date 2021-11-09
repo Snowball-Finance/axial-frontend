@@ -9,14 +9,14 @@ import React, { ReactElement, useState } from "react"
 
 import ConfirmTransaction from "../../components/confirm-transaction/ConfirmTransaction"
 import Modal from "../../components/modal/Modal"
-import PoolOverview from "../../components/pool-info-card/PoolOverview"
 import TopMenu from "../../components/menu/TopMenu"
 import { Zero } from "@ethersproject/constants"
 import classNames from "classnames"
-import styles from "./Pools.module.scss"
+import styles from "./Farm.module.scss"
 import usePoolData from "../../hooks/usePoolData"
+import FarmOverview from "../../components/farm-info-card/FarmOverview"
 
-function Pools(): ReactElement | null {
+function Farm(): ReactElement | null {
   const [as4dPoolData, as4dUserShareData] = usePoolData(AXIAL_AS4D_POOL_NAME)
   const [ac4dPoolData, ac4dUserShareData] = usePoolData(AXIAL_AC4D_POOL_NAME)
   const [currentModal, setCurrentModal] = useState<string | null>(null)
@@ -31,20 +31,20 @@ function Pools(): ReactElement | null {
         name: AXIAL_AS4D_POOL_NAME,
         poolData: as4dPoolData,
         userShareData: as4dUserShareData,
-        poolRoute: "/pools/as4d",
+        poolRoute: "/farms/as4d",
       }
     } else {
       return {
         name: AXIAL_AC4D_POOL_NAME,
         poolData: ac4dPoolData,
         userShareData: ac4dUserShareData,
-        poolRoute: "/pools/ac4d",
+        poolRoute: "/farms/ac4d",
       }
     }
   }
   return (
     <div className={styles.poolsPage}>
-      <TopMenu activeTab="pools" />
+      <TopMenu activeTab="farms" />
       <ul className={styles.filters}>
         {[
           ["all", "ALL"] as const,
@@ -101,7 +101,7 @@ function Pools(): ReactElement | null {
             },
           )
           .map(([poolProps, migrationPool]) => (
-            <PoolOverview
+            <FarmOverview
               key={poolProps.name}
               {...poolProps}
               onClickMigrate={
@@ -120,4 +120,4 @@ function Pools(): ReactElement | null {
   )
 }
 
-export default Pools
+export default Farm

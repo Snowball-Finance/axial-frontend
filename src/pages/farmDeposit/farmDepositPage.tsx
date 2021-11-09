@@ -1,4 +1,4 @@
-import "./DepositPage.scss"
+import "./farmDepositPage.scss"
 
 import { PoolDataType, UserShareType } from "../../hooks/usePoolData"
 import React, { ReactElement, useState } from "react"
@@ -17,8 +17,8 @@ import TopMenu from "../../components/menu/TopMenu"
 import { formatBNToPercentString } from "../../libs"
 //import { logEvent } from "../../libs/googleAnalytics"
 import { useTranslation } from "react-i18next"
-
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import InfoSection, { InfoSectionProps } from "../../components/info-section/infoSection"
+import FarmInfoCard from "../../components/farm-info-card/FarmInfoCard"
 interface Props {
   title: string
   onConfirmTransaction: () => Promise<void>
@@ -40,7 +40,7 @@ interface Props {
 }
 
 /* eslint-enable @typescript-eslint/no-explicit-any */
-const DepositPage = (props: Props): ReactElement => {
+const FarmDepositPage = (props: Props): ReactElement => {
   const { t } = useTranslation()
   const {
     tokens,
@@ -57,17 +57,38 @@ const DepositPage = (props: Props): ReactElement => {
 
   const [currentModal, setCurrentModal] = useState<string | null>(null)
 
-  const validDepositAmount = transactionData.to.totalAmount.gt(0)
+  const validDepositAmount = true
   const shouldDisplayWrappedOption = false
+
+
+  const statsDataRows: InfoSectionProps['rows'] = [
+    {
+      title: "Fee APR",
+      value: poolData?.apr ? `${Number(poolData?.apr).toFixed(2)}%` : "-"
+    },
+    {
+      title: "Rewards APR",
+      value: poolData?.rapr ? `${Number(poolData?.rapr).toFixed(2)}%` : "-"
+    },
+    {
+      title: "Total APR",
+      value: poolData?.rapr
+      ? `${(Number(poolData?.rapr) + (poolData.apr
+          ? Number(poolData?.apr)
+          : 0)
+        ).toFixed(2)}%`
+      : "-"
+    },
+  ]
 
   return (
     <div className="deposit">
-      <TopMenu activeTab={"deposit"} />
+      <TopMenu activeTab={"farms"} />
 
       <div className="content">
         <div className="left">
           <div className="form">
-            <h3>{t("addLiquidity")}</h3>
+            <h3>{t("depositWrapped")}</h3>
             {exceedsWallet ? (
               <div className="error">{t("depositBalanceExceeded")}</div>
             ) : null}
@@ -96,38 +117,15 @@ const DepositPage = (props: Props): ReactElement => {
                 <span>{t("depositWrapped")}</span>
               </div>
             )}
-            <div className={"transactionInfoContainer"}>
-              <div className="transactionInfo">
-                <div className="transactionInfoItem">
-                  {transactionData.priceImpact.gte(0) ? (
-                    <span className="bonus">{`${t("bonus")}: `}</span>
-                  ) : (
-                    <span className="slippage">{t("priceImpact")}</span>
-                  )}
-                  <span
-                    className={
-                      "value " +
-                      (transactionData.priceImpact.gte(0)
-                        ? "bonus"
-                        : "slippage")
-                    }
-                  >
-                    {" "}
-                    {formatBNToPercentString(
-                      transactionData.priceImpact,
-                      18,
-                      4,
-                    )}
-                  </span>
-                </div>
-              </div>
-            </div>
           </div>
-          <AdvancedOptions noApprovalCheckbox={false} noSlippageCheckbox={false}/>
+          <AdvancedOptions noApprovalCheckbox={false} noSlippageCheckbox={true} />
           <Button
             kind="primary"
-            onClick={(): void => {
-              setCurrentModal("review")
+            onClick={async () => {
+              setCurrentModal("confirm")
+              await onConfirmTransaction?.()
+              setCurrentModal(null)
+              //setCurrentModal("review")
             }}
             disabled={!validDepositAmount || poolData?.isPaused}
           >
@@ -135,14 +133,16 @@ const DepositPage = (props: Props): ReactElement => {
           </Button>
         </div>
         <div className="infoPanels">
-          <MyShareCard data={myShareData} />
+          <MyShareCard data={myShareData} usePendingMasterchef={true} />
           <div
             style={{
               display: myShareData ? "block" : "none",
             }}
             className="divider"
           ></div>
-          <PoolInfoCard data={poolData} />
+          <InfoSection title="Stats" withDivider rows={statsDataRows} />
+
+          <FarmInfoCard data={poolData} />
         </div>
         <Modal
           isOpen={!!currentModal}
@@ -166,4 +166,4 @@ const DepositPage = (props: Props): ReactElement => {
   )
 }
 
-export default DepositPage
+export default FarmDepositPage

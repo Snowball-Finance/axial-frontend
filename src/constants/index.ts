@@ -6,6 +6,8 @@ import axialLogo from "../assets/icons/logo_icon.svg" // this needs a smaller ic
 import coinbasewalletIcon from "../assets/icons/coinbasewallet.svg"
 import daiLogo from "../assets/icons/dai.svg"
 import fraxLogo from "../assets/icons/frax.svg"
+import tsdLogo from "../assets/icons/tsd.svg"
+import mimLogo from "../assets/icons/mim.svg"
 import metamaskIcon from "../assets/icons/metamask.svg"
 import tusdLogo from "../assets/icons/tusd.svg"
 import usdcLogo from "../assets/icons/usdc.svg"
@@ -13,9 +15,9 @@ import usdtLogo from "../assets/icons/usdt.svg"
 import walletconnectIcon from "../assets/icons/walletconnect.svg"
 
 export const NetworkContextName = "NETWORK"
-export const AXIAL_A4D_POOL_NAME = "A4D Stablecoins"
+export const AXIAL_AS4D_POOL_NAME = "AS4D Stablecoins"
 export const AXIAL_AC4D_POOL_NAME = "AC4D Stablecoins"
-export type PoolName = typeof AXIAL_A4D_POOL_NAME | typeof AXIAL_AC4D_POOL_NAME
+export type PoolName = typeof AXIAL_AS4D_POOL_NAME | typeof AXIAL_AC4D_POOL_NAME
 
 export enum ChainId {
   MAINNET = 43114,
@@ -64,7 +66,7 @@ export class Token {
 
 export const BLOCK_TIME = 500 // ms
 
-export const AXIAL_A4D_SWAP_ADDRESSES: { [chainId in ChainId]: string } = {
+export const AXIAL_AS4D_SWAP_ADDRESSES: { [chainId in ChainId]: string } = {
   [ChainId.MAINNET]: "0x2a716c4933A20Cd8B9f9D9C39Ae7196A85c24228",
   [ChainId.HARDHAT]: "0x2a716c4933A20Cd8B9f9D9C39Ae7196A85c24228",
 }
@@ -79,7 +81,7 @@ export const MERKLETREE_DATA: { [chainId in ChainId]: string } = {
   [ChainId.HARDHAT]: "hardhat.json",
 }
 
-export const AXIAL_A4D_SWAP_TOKEN_CONTRACT_ADDRESSES: {
+export const AXIAL_AS4D_SWAP_TOKEN_CONTRACT_ADDRESSES: {
   [chainId in ChainId]: string
 } = {
   [ChainId.MAINNET]: "0x3A7387f8BA3ebFFa4A0ECcB1733e940CE2275D3f",
@@ -107,6 +109,7 @@ export const AXIAL_TOKEN_ADDRESS: {
   [ChainId.HARDHAT]: "0xcF8419A615c57511807236751c0AF38Db4ba3351",
 }
 
+//needs to be changed
 export const AXIAL_LP_ADDRESS: {
   [chainId in ChainId]: string
 } = {
@@ -114,12 +117,12 @@ export const AXIAL_LP_ADDRESS: {
   [ChainId.HARDHAT]: "0xf0d7EC33147Ec3bEfd24B880472307bF3a01BB8A",
 }
 
-export const AXIAL_A4D_SWAP_TOKEN = new Token(
-  AXIAL_A4D_SWAP_TOKEN_CONTRACT_ADDRESSES,
+export const AXIAL_AS4D_SWAP_TOKEN = new Token(
+  AXIAL_AS4D_SWAP_TOKEN_CONTRACT_ADDRESSES,
   18,
-  "a4dUSD",
-  "a4dusd",
-  "A4D DAI.e/USDC.e/USDT.e/TUSD",
+  "as4dUSD",
+  "as4dusd",
+  "AS4D DAI.e/USDC.e/USDT.e/TUSD",
   axialLogo,
   false,
   true,
@@ -181,7 +184,7 @@ export const TSD = new Token(
   "TSD",
   "teddy-dollar",
   "Teddy Dollar",
-  tusdLogo,
+  tsdLogo,
   false,
   false,
 )
@@ -196,7 +199,7 @@ export const MIM = new Token(
   "MIM",
   "magic-internet-money",
   "Magic Internet Money",
-  tusdLogo,
+  mimLogo,
   false,
   false,
 )
@@ -246,7 +249,7 @@ export const USDC = new Token(
   false,
 )
 
-export const AXIAL_A4D_POOL_TOKENS = [TUSD, USDC, DAI, USDT]
+export const AXIAL_AS4D_POOL_TOKENS = [TUSD, USDC, DAI, USDT]
 export const AXIAL_AC4D_POOL_TOKENS = [TSD, MIM, FRAX, DAI]
 
 export type Pool = {
@@ -267,14 +270,14 @@ export type PoolsMap = {
   [poolName: string]: Pool
 }
 export const POOLS_MAP: PoolsMap = {
-  [AXIAL_A4D_POOL_NAME]: {
-    name: AXIAL_A4D_POOL_NAME,
-    addresses: AXIAL_A4D_SWAP_ADDRESSES,
-    lpToken: AXIAL_A4D_SWAP_TOKEN,
-    poolTokens: AXIAL_A4D_POOL_TOKENS,
+  [AXIAL_AS4D_POOL_NAME]: {
+    name: AXIAL_AS4D_POOL_NAME,
+    addresses: AXIAL_AS4D_SWAP_ADDRESSES,
+    lpToken: AXIAL_AS4D_SWAP_TOKEN,
+    poolTokens: AXIAL_AS4D_POOL_TOKENS,
     isSynthetic: false,
     type: PoolTypes.USD,
-    route: "a4d",
+    route: "as4d"
   },
   [AXIAL_AC4D_POOL_NAME]: {
     name: AXIAL_AC4D_POOL_NAME,
@@ -283,7 +286,7 @@ export const POOLS_MAP: PoolsMap = {
     poolTokens: AXIAL_AC4D_POOL_TOKENS,
     isSynthetic: false,
     type: PoolTypes.USD,
-    route: "ac4d",
+    route: "ac4d"
   },
 }
 

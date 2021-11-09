@@ -16,7 +16,13 @@ import classNames from "classnames"
 import styles from "./AdvancedOptions.module.scss"
 import { useTranslation } from "react-i18next"
 
-export default function AdvancedOptions(): React.ReactElement {
+/* eslint-disable @typescript-eslint/no-explicit-any */
+interface Props {
+  noApprovalCheckbox: boolean
+  noSlippageCheckbox: boolean
+}
+
+export default function AdvancedOptions(props: Props): React.ReactElement {
   const { t } = useTranslation()
   const dispatch = useDispatch<AppDispatch>()
   const {
@@ -28,7 +34,7 @@ export default function AdvancedOptions(): React.ReactElement {
 
   return (
     <div className={styles.advancedOptions}>
-      <span
+      { (props.noApprovalCheckbox && props.noSlippageCheckbox) ? null : (<span
         className={styles.title}
         onClick={(): PayloadAction<boolean> =>
           dispatch(updatePoolAdvancedMode(!advanced))
@@ -52,7 +58,7 @@ export default function AdvancedOptions(): React.ReactElement {
             fill="#3290FE"
           />
         </svg>
-      </span>
+      </span>)}
       <div className={styles.divider}></div>
       <div
         className={classNames(styles.tableContainer, {
@@ -60,20 +66,22 @@ export default function AdvancedOptions(): React.ReactElement {
         })}
       >
         <div className={styles.parameter}>
-          <div className={styles.infiniteApproval}>
-            <CheckboxInput
-              checked={infiniteApproval}
-              onChange={(): PayloadAction<boolean> =>
-                dispatch(updateInfiniteApproval(!infiniteApproval))
-              }
-            />
-            <ToolTip content={t("infiniteApprovalTooltip")}>
-              <span className={styles.label}>{t("infiniteApproval")}</span>
-            </ToolTip>
-          </div>
+          {!props.noApprovalCheckbox ? (
+            <div className={styles.infiniteApproval}>
+              <CheckboxInput
+                checked={infiniteApproval}
+                onChange={(): PayloadAction<boolean> =>
+                  dispatch(updateInfiniteApproval(!infiniteApproval))
+                }
+              />
+              <ToolTip content={t("infiniteApprovalTooltip")}>
+                <span className={styles.label}>{t("infiniteApproval")}</span>
+              </ToolTip>
+            </div>
+          ) : null}
         </div>
         <div className={styles.parameter}>
-          <div className={styles.inputGroup}>
+        {!props.noSlippageCheckbox ? (<div className={styles.inputGroup}>
             <div className={styles.options}>
               <div className={styles.label}>{t("maxSlippage")}: </div>
               <button
@@ -115,7 +123,7 @@ export default function AdvancedOptions(): React.ReactElement {
               </div>
             </div>
           </div>
-        </div>
+        ):null}</div>
       </div>
     </div>
   )
