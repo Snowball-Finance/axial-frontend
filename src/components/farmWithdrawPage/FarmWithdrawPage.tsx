@@ -78,6 +78,7 @@ const FarmWithdrawPage = (props: Props): ReactElement => {
   const onSubmit = (): void => {
     setCurrentModal("review")
   }
+  /* eslint-disable @typescript-eslint/no-unsafe-call */
   const noShare = !myShareData || myShareData.masterchefBalance?.userInfo.amount.eq("0x0")
 
   return (
