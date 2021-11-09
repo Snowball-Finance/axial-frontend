@@ -47,9 +47,9 @@ export default function FarmOverview({
     rapr: poolData.rapr ? `${Number(poolData.rapr).toFixed(2)}%` : "-",
     totalapr: poolData.rapr
       ? `${(Number(poolData.rapr) + (poolData.apr
-          ? Number(poolData.apr)
-          : 0)
-        ).toFixed(2)}%`
+        ? Number(poolData.apr)
+        : 0)
+      ).toFixed(2)}%`
       : "-",
     volume: poolData.volume ? `$${Number(poolData.volume).toFixed(2)}` : "-",
     userBalanceUSD: formatBNToShortString(
