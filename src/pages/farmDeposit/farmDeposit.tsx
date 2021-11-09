@@ -28,6 +28,7 @@ import { useApproveAndDeposit } from "../../hooks/useApproveAndDeposit"
 import { usePoolTokenBalances } from "../../store/wallet/hooks"
 import { useSelector } from "react-redux"
 import { useSwapContract } from "../../hooks/useContract"
+import { symbolName } from 'typescript'
 
 interface Props {
   poolName: PoolName
@@ -40,17 +41,23 @@ function FarmDeposit({ poolName = 'A4D Stablecoins' }: Props): ReactElement | nu
   const [poolData, userShareData] = usePoolData(poolName)
   const swapContract = useSwapContract(poolName)
   const allTokens = useMemo(() => {
-    return Array.from(
-      new Set(POOL.poolTokens.concat(POOL.underlyingPoolTokens || [])),
+    const arr = Array.from(
+      new Set(
+        POOL.poolTokens
+          .concat(POOL.underlyingPoolTokens || [])
+          ,
+      ),
     )
-  }, [POOL.poolTokens, POOL.underlyingPoolTokens])
+    arr.push(POOL.lpToken)
+    return arr
+  }, [POOL.poolTokens, POOL.underlyingPoolTokens, POOL.lpToken])
   const [tokenFormState, updateTokenFormState] = useTokenFormState(allTokens)
   const [shouldDepositWrapped, setShouldDepositWrapped] = useState(false)
   useEffect(() => {
     // empty out previous token state when switchng between wrapped and unwrapped
     if (shouldDepositWrapped) {
       updateTokenFormState(
-        POOL.poolTokens.reduce(
+        [POOL.lpToken].reduce(
           (acc, { symbol }) => ({
             ...acc,
             [symbol]: "",
@@ -74,6 +81,7 @@ function FarmDeposit({ poolName = 'A4D Stablecoins' }: Props): ReactElement | nu
     updateTokenFormState,
     POOL.poolTokens,
     POOL.underlyingPoolTokens,
+    POOL.lpToken
   ])
   const tokenBalances = usePoolTokenBalances()
   const { tokenPricesUSD, gasStandard, gasFast, gasInstant } = useSelector(
@@ -163,16 +171,18 @@ function FarmDeposit({ poolName = 'A4D Stablecoins' }: Props): ReactElement | nu
   ])
 
   // A represention of tokens used for UI
-  const tokens = (shouldDepositWrapped
-    ? POOL.underlyingPoolTokens || []
-    : POOL.poolTokens
-  ).map(({ symbol, name, icon, decimals }) => ({
-    symbol,
-    name,
-    icon,
-    max: formatBNToString(tokenBalances?.[symbol] || Zero, decimals),
-    inputValue: tokenFormState[symbol].valueRaw,
-  }))
+  const tokens = [
+    {
+      symbol: POOL.lpToken.symbol,
+      name: POOL.lpToken.name,
+      icon: POOL.lpToken.icon,
+      max: formatBNToString(
+        tokenBalances?.[POOL.lpToken.symbol] || Zero,
+        POOL.lpToken.decimals,
+      ),
+      inputValue: tokenFormState[POOL.lpToken.symbol].valueRaw,
+    },
+  ]
 
   const exceedsWallet = allTokens.some(({ symbol }) => {
     const exceedsBoolean = (tokenBalances?.[symbol] || Zero).lt(
@@ -182,7 +192,7 @@ function FarmDeposit({ poolName = 'A4D Stablecoins' }: Props): ReactElement | nu
   })
 
   async function onConfirmTransaction(): Promise<void> {
-    await approveAndDeposit(tokenFormState, shouldDepositWrapped)
+    await approveAndDeposit(tokenFormState, shouldDepositWrapped, true)
     // Clear input after deposit
     updateTokenFormState(
       allTokens.reduce(
@@ -200,7 +210,7 @@ function FarmDeposit({ poolName = 'A4D Stablecoins' }: Props): ReactElement | nu
   const depositTransaction = buildTransactionData(
     tokenFormState,
     poolData,
-    shouldDepositWrapped ? POOL.underlyingPoolTokens || [] : POOL.poolTokens,
+    [POOL.lpToken],
     POOL.lpToken,
     priceImpact,
     estDepositLPTokenAmount,

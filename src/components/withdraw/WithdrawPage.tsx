@@ -174,7 +174,7 @@ const WithdrawPage = (props: Props): ReactElement => {
               </div>
             </div>
           </div>
-          <AdvancedOptions />
+          <AdvancedOptions noApprovalCheckbox={true}  noSlippageCheckbox={true}/>
           <Button
             kind="primary"
             disabled={

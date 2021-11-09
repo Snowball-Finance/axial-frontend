@@ -17,9 +17,9 @@ export default function usePoolTVLs(): { [poolName in PoolName]?: BigNumber } {
 
   useEffect(() => {
     if (
-      Object.keys(poolTvls).length > 0 && // only run once
-      tokenPricesUSD?.BTC &&
-      tokenPricesUSD?.ETH
+      Object.keys(poolTvls).length > 0 //&& // only run once
+      //tokenPricesUSD?.BTC &&
+      //tokenPricesUSD?.ETH
     )
       return
     async function fetchTVLs() {

@@ -14,7 +14,7 @@ import RadioButton from "../button/RadioButton"
 import ReviewWithdraw from "../reviews/ReviewWithdraw"
 import TokenInput from "../token-input/TokenInput"
 import TopMenu from "../menu/TopMenu"
-import { WithdrawFormState } from "../../hooks/useWithdrawFormState"
+import { WithdrawFormState } from "../../hooks/useFarmWithdrawFormState"
 import { Zero } from "@ethersproject/constants"
 import classNames from "classnames"
 import { formatBNToPercentString } from "../../libs"
@@ -78,11 +78,11 @@ const FarmWithdrawPage = (props: Props): ReactElement => {
   const onSubmit = (): void => {
     setCurrentModal("review")
   }
-  const noShare = !myShareData || myShareData.lpTokenBalance.eq(Zero)
+  const noShare = !myShareData || myShareData.masterchefBalance?.userInfo.amount.eq("0x0")
 
   return (
     <div className={"withdraw " + classNames({ noShare: noShare })}>
-      <TopMenu activeTab={"farm"} />
+      <TopMenu activeTab={"farms"} />
       <div className="content">
         <div className="left">
           <div className="form">
@@ -129,7 +129,7 @@ const FarmWithdrawPage = (props: Props): ReactElement => {
             ))}
 
           </div>
-          <AdvancedOptions />
+          <AdvancedOptions noApprovalCheckbox={true}  noSlippageCheckbox={true}/>
           <Button
             kind="primary"
             disabled={
@@ -137,8 +137,17 @@ const FarmWithdrawPage = (props: Props): ReactElement => {
               !!formStateData.error ||
               formStateData.lpTokenAmountToSpend.isZero()
             }
-            onClick={onSubmit}
-          >
+            onClick={async () => {
+              //onSubmit
+              setCurrentModal("confirm")
+              logEvent(
+                "withdraw",
+                (poolData && { pool: poolData?.name }) || {},
+              )
+              await onConfirmTransaction?.()
+              setCurrentModal(null)
+              }
+            }>
             {t("withdraw")}
           </Button>
         </div>

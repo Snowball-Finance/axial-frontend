@@ -55,17 +55,17 @@ const FarmDepositPage = (props: Props): ReactElement => {
 
   const [currentModal, setCurrentModal] = useState<string | null>(null)
 
-  const validDepositAmount = transactionData.to.totalAmount.gt(0)
+  const validDepositAmount = true
   const shouldDisplayWrappedOption = false
 
   return (
     <div className="deposit">
-      <TopMenu activeTab={"farm"} />
+      <TopMenu activeTab={"farms"} />
 
       <div className="content">
         <div className="left">
           <div className="form">
-            <h3>{t("addLiquidity")}</h3>
+            <h3>{t("depositWrapped")}</h3>
             {exceedsWallet ? (
               <div className="error">{t("depositBalanceExceeded")}</div>
             ) : null}
@@ -94,38 +94,15 @@ const FarmDepositPage = (props: Props): ReactElement => {
                 <span>{t("depositWrapped")}</span>
               </div>
             )}
-            <div className={"transactionInfoContainer"}>
-              <div className="transactionInfo">
-                <div className="transactionInfoItem">
-                  {transactionData.priceImpact.gte(0) ? (
-                    <span className="bonus">{`${t("bonus")}: `}</span>
-                  ) : (
-                    <span className="slippage">{t("priceImpact")}</span>
-                  )}
-                  <span
-                    className={
-                      "value " +
-                      (transactionData.priceImpact.gte(0)
-                        ? "bonus"
-                        : "slippage")
-                    }
-                  >
-                    {" "}
-                    {formatBNToPercentString(
-                      transactionData.priceImpact,
-                      18,
-                      4,
-                    )}
-                  </span>
-                </div>
-              </div>
-            </div>
           </div>
-          <AdvancedOptions />
+          <AdvancedOptions noApprovalCheckbox={false}  noSlippageCheckbox={true}/>
           <Button
             kind="primary"
-            onClick={(): void => {
-              setCurrentModal("review")
+            onClick={async () => {
+              setCurrentModal("confirm")
+              await onConfirmTransaction?.()
+              setCurrentModal(null)
+              //setCurrentModal("review")
             }}
             disabled={!validDepositAmount || poolData?.isPaused}
           >

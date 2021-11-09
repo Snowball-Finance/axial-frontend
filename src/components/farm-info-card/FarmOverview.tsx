@@ -6,10 +6,10 @@ import {
   PoolTypes,
   TOKENS_MAP,
 } from "../../constants"
-import Button, { MdButton } from "../button/Button"
 import { PoolDataType, UserShareType } from "../../hooks/usePoolData"
 import React, { ReactElement } from "react"
 import { formatBNToShortString, formatBNToString } from "../../libs"
+import Button from "../button/Button"
 import { Link } from "react-router-dom"
 import { Zero } from "@ethersproject/constants"
 import classNames from "classnames"
@@ -25,7 +25,6 @@ interface Props {
   onClickMigrate?: (e: React.MouseEvent<HTMLButtonElement>) => void
 }
 
-
 export default function FarmOverview({
   poolData,
   poolRoute,
@@ -33,7 +32,7 @@ export default function FarmOverview({
   onClickMigrate,
 }: Props): ReactElement | null {
   const { t } = useTranslation()
-  const { type: poolType, isOutdated, lpToken } = POOLS_MAP[poolData.name]
+  const { type: poolType, isOutdated } = POOLS_MAP[poolData.name]
   const formattedDecimals = poolType === PoolTypes.USD ? 2 : 4
   const shouldMigrate = !!onClickMigrate
   const { library } = useActiveWeb3React()
@@ -67,27 +66,9 @@ export default function FarmOverview({
   const masterchefContract = new ethers.Contract(
     AXIAL_MASTERCHEF_CONTRACT_ADDRESS[43114],
     masterchef,
-    library,
+    library?.getSigner(),
   )
 
-  async function onClickWithdraw() {
-    console.log("withdraw")
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    await masterchefContract.withdrawAll()
-  }
-
-  async function onClickDeposit() {
-    console.log("deposit")
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    await masterchefContract.depositAll()
-  }
-
-  async function onClickClaim() {
-    console.log("claim")
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    await masterchefContract.claim()
-  }
-  console.log({ tokens: formattedData.tokens })
   return (
     <div
       className={classNames("poolOverview", {
@@ -138,7 +119,22 @@ export default function FarmOverview({
           )*/}
         </div>
         <div className="buttons">
-          <Link to={`farm/withdraw`}>
+          <Button
+            onClick={async () => {
+              const POOL = POOLS_MAP[poolData.name]
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+              await masterchefContract.withdraw(POOL.lpToken.masterchefId, 0)
+            }}
+            //uncomment on prod
+            //disabled={userShareData?.masterchefBalance?.pendingTokens.pendingAxial.eq(
+            //  "0x0",
+            //)}
+            kind="secondary"
+          >
+            {t("claim")}
+          </Button>
+          <Link to={`${poolRoute}/withdraw`}>
             <Button kind="secondary">{t("withdraw")}</Button>
           </Link>
           {shouldMigrate ? (
@@ -150,7 +146,7 @@ export default function FarmOverview({
               {t("migrate")}
             </Button>
           ) : (
-            <Link to={`farm/deposit`}>
+            <Link to={`${poolRoute}/deposit`}>
               <Button
                 kind="primary"
                 disabled={poolData?.isPaused || isOutdated}
