@@ -1,5 +1,6 @@
 @import "../../styles/theme";
 @import "../../styles/global";
+@import "../../styles/viewports";
 
 button.button {
   font-family: $font-family;
@@ -94,5 +95,8 @@ button.button {
   &.large {
     width: 176px;
     min-height: 40px;
+    @include breakpoint(sm) {
+      width: 140px;
+    }
   }
 }

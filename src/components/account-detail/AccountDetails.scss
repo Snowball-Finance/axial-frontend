@@ -23,6 +23,7 @@ div.accountControl {
   align-items: center;
   justify-items: start;
 }
+
 .data {
   grid-row: 3/4;
   font-weight: $bold;
@@ -41,7 +42,7 @@ span.address {
 }
 span.label {
   font-size: $smallFont;
-  color: var(--text-lighter);
+  color: var(--text-primary);
 }
 
 div.titleRow {
