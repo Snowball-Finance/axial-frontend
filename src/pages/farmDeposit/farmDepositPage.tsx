@@ -17,6 +17,8 @@ import TopMenu from "../../components/menu/TopMenu"
 import { formatBNToPercentString } from "../../libs"
 //import { logEvent } from "../../libs/googleAnalytics"
 import { useTranslation } from "react-i18next"
+import InfoSection, { InfoSectionProps } from "../../components/info-section/infoSection"
+import FarmInfoCard from "../../components/farm-info-card/FarmInfoCard"
 interface Props {
   title: string
   onConfirmTransaction: () => Promise<void>
@@ -58,6 +60,25 @@ const FarmDepositPage = (props: Props): ReactElement => {
   const validDepositAmount = true
   const shouldDisplayWrappedOption = false
 
+
+  const statsDataRows: InfoSectionProps['rows'] = [
+    {
+      title: "Fee APR",
+      value: '-'
+    },
+    {
+      title: "Rewards APR",
+      value: '-'
+    },
+    {
+      title: "Total APR",
+      value: '-'
+    },
+  ]
+
+  console.log({ exceedsWallet, poolData })
+
+
   return (
     <div className="deposit">
       <TopMenu activeTab={"farms"} />
@@ -95,7 +116,7 @@ const FarmDepositPage = (props: Props): ReactElement => {
               </div>
             )}
           </div>
-          <AdvancedOptions noApprovalCheckbox={false}  noSlippageCheckbox={true}/>
+          <AdvancedOptions noApprovalCheckbox={false} noSlippageCheckbox={true} />
           <Button
             kind="primary"
             onClick={async () => {
@@ -117,7 +138,9 @@ const FarmDepositPage = (props: Props): ReactElement => {
             }}
             className="divider"
           ></div>
-          <PoolInfoCard data={poolData} />
+          <InfoSection title="Stats" withDivider rows={statsDataRows} />
+
+          <FarmInfoCard data={poolData} />
         </div>
         <Modal
           isOpen={!!currentModal}

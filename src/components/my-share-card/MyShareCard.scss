@@ -15,7 +15,7 @@ div.myShareCard {
     margin-bottom: 24px;
     font-size: 30px;
     font-weight: $bold;
-    color: var(--text-title);
+    color: $light-blue;
   }
 
   div.info {
@@ -33,7 +33,7 @@ div.myShareCard {
   .poolShare span {
     color: $light-blue;
   }
-  
+
   div.currency {
     width: 100%;
     margin-top: 24px;

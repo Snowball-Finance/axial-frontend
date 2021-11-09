@@ -10,6 +10,7 @@ div.poolOverview {
   padding: 24px 32px;
   display: grid;
   grid-template-columns: 45% 55%;
+
   @include breakpoint(md) {
     grid-template-columns: 100%;
     grid-template-rows: auto auto;
@@ -17,10 +18,12 @@ div.poolOverview {
     padding: 24px 6%;
     width: 80%;
   }
+
   @include breakpoint(sm) {
     width: 90%;
     padding: 24px 2%;
   }
+
   @include breakpoint(xs) {
     width: 100%;
     padding: 24px 2%;
@@ -49,10 +52,12 @@ div.poolOverview {
   .balance {
     grid-row: 3/4;
   }
+
   .tokens {
     grid-row: 5/6;
     display: flex;
     flex-direction: row;
+
     @include breakpoint(md) {
       width: 100%;
       justify-content: space-between;
@@ -66,7 +71,7 @@ div.poolOverview {
       margin-right: 0;
     }
 
-    & > img {
+    &>img {
       margin-right: 4px;
       vertical-align: sub;
       height: 18px;
@@ -77,6 +82,7 @@ div.poolOverview {
   div.right {
     display: grid;
     justify-content: end;
+
     @include breakpoint(md) {
       justify-content: space-between;
       row-gap: 24px;
@@ -85,21 +91,25 @@ div.poolOverview {
 
     .margin {
       margin-right: 24px;
+
       @include breakpoint(md) {
         margin-right: auto;
       }
     }
+
     .poolInfo {
       display: flex;
       flex-flow: row wrap;
       align-items: flex-start;
       justify-self: end;
+
       @include breakpoint(md) {
         justify-self: start;
         width: 100%;
         justify-content: space-between;
       }
     }
+
     span.label {
       display: block;
       color: var(--primary-foreground);
@@ -112,17 +122,18 @@ div.poolOverview {
       color: var(--text);
       display: block;
     }
+
     .minus {
       font-weight: $medium;
       color: $error;
     }
 
     .buttons {
-      align-self: end;
-      justify-self: end;
-      display: grid;
-      grid-template-columns: 176px 176px;
-      column-gap: 16px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+
       @include breakpoint(md) {
         display: flex;
         width: 100%;
@@ -130,6 +141,7 @@ div.poolOverview {
       }
     }
   }
+
   .underline {
     border-bottom: 1px dotted var(--text);
   }
@@ -146,10 +158,12 @@ div.outdated {
   align-self: center;
   padding: 2px 4px;
 }
+
 .tag.warning {
   border: 1px solid $orange;
   color: $orange;
 }
+
 .tag.error {
   border: 1px solid $error;
   color: $error;

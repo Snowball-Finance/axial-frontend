@@ -38,6 +38,8 @@ export default function FarmOverview({
   const { library } = useActiveWeb3React()
   const formattedData = {
     name: poolData.name,
+    myShare: formatBNToShortString(userShareData?.share || Zero, 18),
+    TVL: formatBNToShortString(poolData?.totalLocked || Zero, 18),
     reserve: poolData.reserve
       ? formatBNToShortString(poolData.reserve, 18)
       : "-",
@@ -68,6 +70,29 @@ export default function FarmOverview({
     masterchef,
     library?.getSigner(),
   )
+
+
+  console.log({ poolData, userShareData });
+
+  const info = [
+    {
+      title: "Fee APR",
+      value: `$${formattedData.reserve}`
+    },
+    {
+      title: "Total APR",
+      value: `$${formattedData.reserve}`
+    },
+    {
+      title: "TVL",
+      value: `$${formattedData.TVL}`
+    },
+    {
+      title: "My TVL",
+      value: `$${formattedData.reserve}`
+    },
+
+  ]
 
   return (
     <div
@@ -101,32 +126,26 @@ export default function FarmOverview({
 
       <div className="right">
         <div className="poolInfo">
-          {formattedData.apy && (
-            <div className="margin">
-              <span className="label">{`${t("apy")}`}</span>
-              <span>{formattedData.apy}</span>
-            </div>
-          )}
-          <div className="margin">
-            <span className="label">TVL</span>
-            <span>{`$${formattedData.reserve}`}</span>
-          </div>
-          {/*formattedData.volume && (
-            <div>
-              <span className="label">{`${t("24HrVolume")}`}</span>
-              <span>{formattedData.volume}</span>
-            </div>
-          )*/}
+          {info.map((item, index) => {
+            return (
+              <div key={index} className="margin">
+                <span className="label">{item.title}</span>
+                <span>{item.value}</span>
+              </div>
+            )
+          })}
+
         </div>
         <div className="buttons">
           <Button
+            size='medium'
             onClick={async () => {
               const POOL = POOLS_MAP[poolData.name]
               // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
               // eslint-disable-next-line @typescript-eslint/no-unsafe-call
               await masterchefContract.withdraw(POOL.lpToken.masterchefId, 0)
             }}
-            //uncomment on prod
+            //FIXME: uncomment on prod
             //disabled={userShareData?.masterchefBalance?.pendingTokens.pendingAxial.eq(
             //  "0x0",
             //)}
@@ -135,7 +154,7 @@ export default function FarmOverview({
             {t("claim")}
           </Button>
           <Link to={`${poolRoute}/withdraw`}>
-            <Button kind="secondary">{t("withdraw")}</Button>
+            <Button size='medium' kind="secondary">{t("withdraw")}</Button>
           </Link>
           {shouldMigrate ? (
             <Button
@@ -148,6 +167,7 @@ export default function FarmOverview({
           ) : (
             <Link to={`${poolRoute}/deposit`}>
               <Button
+                size='medium'
                 kind="primary"
                 disabled={poolData?.isPaused || isOutdated}
               >
@@ -156,27 +176,6 @@ export default function FarmOverview({
             </Link>
           )}
         </div>
-        {/* <span style={{ marginTop: "8px" }}></span> */}
-        {/* <div className="poolInfo">
-          <span className="label">Rewards: </span>
-          <span style={{ marginLeft: "8px" }}></span>
-          <MdButton kind="temporary" onClick={onClickClaim}>
-            {t("claim")}
-          </MdButton>
-          <span style={{ marginLeft: "8px" }}></span>
-          <MdButton kind="secondary" onClick={onClickWithdraw}>
-            {t("withdraw")}
-          </MdButton>
-          <span style={{ marginLeft: "8px" }}></span>
-          <span style={{ marginTop: "8px" }}></span>
-          <MdButton
-            kind="primary"
-            onClick={onClickDeposit}
-            disabled={!hasShare}
-          >
-            {t("deposit")}
-          </MdButton>
-        </div> */}
       </div>
     </div>
   )

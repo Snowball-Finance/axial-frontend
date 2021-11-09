@@ -3,7 +3,7 @@ import "./infoSection.scss"
 import React, { ReactElement } from "react"
 
 
-interface Props {
+export interface InfoSectionProps {
   title: string,
   withDivider?: boolean
   rows: {
@@ -11,7 +11,7 @@ interface Props {
   }[]
 }
 
-function InfoSection({ title, rows, withDivider }: Props): ReactElement | null {
+function InfoSection({ title, rows, withDivider }: InfoSectionProps): ReactElement | null {
 
   return (
     <>
@@ -22,8 +22,10 @@ function InfoSection({ title, rows, withDivider }: Props): ReactElement | null {
           {
             rows.map((item, index) => {
               return <div key={index} className="infoItem">
-                <span className="label bold">{item.title}</span>
-                <span className="value">{item.value}</span>
+                {item.value && <>
+                  <span className="label bold">{item.title} : </span>
+                  <span className="value">{item.value}</span>
+                </>}
                 {
                   item.sub && <div className="topInfo">
                     <span>
