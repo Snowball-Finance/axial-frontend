@@ -139,10 +139,9 @@ export default function FarmOverview({
               // eslint-disable-next-line @typescript-eslint/no-unsafe-call
               await masterchefContract.withdraw(POOL.lpToken.masterchefId, 0)
             }}
-            //FIXME: uncomment on prod
-            //disabled={userShareData?.masterchefBalance?.pendingTokens.pendingAxial.eq(
-            //  "0x0",
-            //)}
+            disabled={userShareData?.masterchefBalance?.pendingTokens.pendingAxial.eq(
+              "0x0",
+            )}
             kind="secondary"
           >
             {t("claim")}
