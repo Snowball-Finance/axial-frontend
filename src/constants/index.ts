@@ -109,6 +109,7 @@ export const AXIAL_TOKEN_ADDRESS: {
   [ChainId.HARDHAT]: "0xcF8419A615c57511807236751c0AF38Db4ba3351",
 }
 
+//needs to be changed
 export const AXIAL_LP_ADDRESS: {
   [chainId in ChainId]: string
 } = {

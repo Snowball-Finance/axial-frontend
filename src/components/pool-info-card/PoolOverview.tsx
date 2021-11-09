@@ -31,7 +31,7 @@ export default function PoolOverview({
     reserve: poolData.reserve
       ? formatBNToShortString(poolData.reserve, 18)
       : "-",
-    apy: poolData.apy ? `${Number(poolData.apy).toFixed(2)}%` : "-",
+    apr: poolData.apr ? `${Number(poolData.apr).toFixed(2)}%` : "-",
     volume: poolData.volume ? `$${Number(poolData.volume).toFixed(2)}` : "-",
     userBalanceUSD: formatBNToShortString(
       userShareData?.usdBalance || Zero,
@@ -81,10 +81,10 @@ export default function PoolOverview({
 
       <div className="right">
         <div className="poolInfo">
-          {formattedData.apy && (
+          {formattedData.apr && (
             <div className="margin">
-              <span className="label">{`${t("apy")}`}</span>
-              <span>{formattedData.apy}</span>
+              <span className="label">{`${t("apr")}`}</span>
+              <span>{formattedData.apr}</span>
             </div>
           )}
           <div className="margin">

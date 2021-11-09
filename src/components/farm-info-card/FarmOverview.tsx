@@ -43,14 +43,17 @@ export default function FarmOverview({
     reserve: poolData.reserve
       ? formatBNToShortString(poolData.reserve, 18)
       : "-",
-    apy: poolData.apy
-      ? `${poolData.apy.toLocaleString(undefined, {
-        maximumFractionDigits: 2,
-      })}%`
+    apr: poolData.apr ? `${Number(poolData.apr).toFixed(2)}%` : "-",
+    rapr: poolData.rapr ? `${Number(poolData.rapr).toFixed(2)}%` : "-",
+    totalapr: poolData.rapr
+      ? `${(Number(poolData.rapr) + (poolData.apr
+          ? Number(poolData.apr)
+          : 0)
+        ).toFixed(2)}%`
       : "-",
-    volume: poolData.volume ? `$${poolData.volume}` : "-",
+    volume: poolData.volume ? `$${Number(poolData.volume).toFixed(2)}` : "-",
     userBalanceUSD: formatBNToShortString(
-      userShareData?.usdBalance || Zero,
+      userShareData?.masterchefBalance?.userInfo.amount || Zero,
       18,
     ),
     tokens: poolData.tokens.map((coin) => {
@@ -63,7 +66,7 @@ export default function FarmOverview({
       }
     }),
   }
-  const hasShare = !!userShareData?.usdBalance.gt("0")
+  const hasShare = !!userShareData?.masterchefBalance?.userInfo.amount.gt("0")
 
   const masterchefContract = new ethers.Contract(
     AXIAL_MASTERCHEF_CONTRACT_ADDRESS[43114],
@@ -71,27 +74,21 @@ export default function FarmOverview({
     library?.getSigner(),
   )
 
-
-  console.log({ poolData, userShareData });
+  console.log({ poolData, userShareData })
 
   const info = [
     {
       title: "Fee APR",
-      value: `$${formattedData.reserve}`
+      value: `$${formattedData.apr}`,
     },
     {
       title: "Total APR",
-      value: `$${formattedData.reserve}`
+      value: `$${formattedData.totalapr}`,
     },
     {
       title: "TVL",
-      value: `$${formattedData.TVL}`
+      value: `$${formattedData.TVL}`,
     },
-    {
-      title: "My TVL",
-      value: `$${formattedData.reserve}`
-    },
-
   ]
 
   return (
@@ -134,11 +131,10 @@ export default function FarmOverview({
               </div>
             )
           })}
-
         </div>
         <div className="buttons">
           <Button
-            size='medium'
+            size="medium"
             onClick={async () => {
               const POOL = POOLS_MAP[poolData.name]
               // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -154,7 +150,9 @@ export default function FarmOverview({
             {t("claim")}
           </Button>
           <Link to={`${poolRoute}/withdraw`}>
-            <Button size='medium' kind="secondary">{t("withdraw")}</Button>
+            <Button size="medium" kind="secondary">
+              {t("withdraw")}
+            </Button>
           </Link>
           {shouldMigrate ? (
             <Button
@@ -167,7 +165,7 @@ export default function FarmOverview({
           ) : (
             <Link to={`${poolRoute}/deposit`}>
               <Button
-                size='medium'
+                size="medium"
                 kind="primary"
                 disabled={poolData?.isPaused || isOutdated}
               >
