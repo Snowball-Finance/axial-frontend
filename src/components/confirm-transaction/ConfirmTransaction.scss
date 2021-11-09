@@ -4,7 +4,7 @@ div.confirmTransaction {
   margin-top: 0;
   padding: 40px 40px 40px 40px;
   text-align: center;
-  background: var(--background-element-hover);
+  background: var(--background-main);
   border-radius: 8px;
 
   h3 {
@@ -20,7 +20,7 @@ div.confirmTransaction {
 
     fill: var(--sign-graph);
 
-    background-color: var(--background-logo);
+    background-color: var(--primary-background);
     border-radius: 240px;
   }
 
