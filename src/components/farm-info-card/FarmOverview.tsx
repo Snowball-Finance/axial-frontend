@@ -74,8 +74,6 @@ export default function FarmOverview({
     library?.getSigner(),
   )
 
-  console.log({ poolData, userShareData })
-
   const info = [
     {
       title: "Fee APR",

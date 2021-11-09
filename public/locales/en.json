@@ -9,6 +9,8 @@
   "aParameterTooltip": "Amplification coefficient. Higher values widen the range of low-slippages swaps, while lower values help keep the pool's composition balanced.",
   "apr": "Swap APR",
   "rapr": "Rewards APR",
+  "axialRewards": "AXIAL Rewards",
+  "avaxRewards": "AVAX Rewards",
   "audits": "Audits",
   "averagedBalance": "Averaged balance",
   "balance": "Balance",

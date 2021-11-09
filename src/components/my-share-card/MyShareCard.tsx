@@ -6,12 +6,23 @@ import { formatBNToPercentString, formatBNToString } from "../../libs"
 import { UserShareType } from "../../hooks/usePoolData"
 import { commify } from "@ethersproject/units"
 import { useTranslation } from "react-i18next"
+import { BigNumber } from "@ethersproject/bignumber"
 
 interface Props {
   data: UserShareType | null
+  useUsd?: boolean | null
+  usePercent?: boolean | null
+  useMasterchefAmount?: boolean | null
+  usePendingMasterchef?: boolean | null
 }
 
-function MyShareCard({ data }: Props): ReactElement | null {
+function MyShareCard({
+  data,
+  useUsd = true,
+  usePercent = true,
+  useMasterchefAmount = false,
+  usePendingMasterchef = false,
+}: Props): ReactElement | null {
   const { t } = useTranslation()
 
   if (!data) return null
@@ -22,7 +33,15 @@ function MyShareCard({ data }: Props): ReactElement | null {
     share: formatBNToPercentString(data.share, 18),
     usdBalance: commify(formatBNToString(data.usdBalance, 18, 2)),
     amount: commify(
-      formatBNToString(data.underlyingTokensAmount, 18, formattedDecimals),
+      formatBNToString(
+        useMasterchefAmount && data.masterchefBalance?.userInfo.amount
+          ? data.masterchefBalance?.userInfo.amount
+          : useMasterchefAmount
+          ? BigNumber.from("0")
+          : data.underlyingTokensAmount,
+        18,
+        formattedDecimals,
+      ),
     ),
     tokens: data.tokens.map((coin) => {
       const token = TOKENS_MAP[coin.symbol]
@@ -32,26 +51,63 @@ function MyShareCard({ data }: Props): ReactElement | null {
         value: commify(formatBNToString(coin.value, 18, formattedDecimals)),
       }
     }),
+    rewards: {
+      avaxRewards: commify(
+        formatBNToString(
+          data.masterchefBalance?.pendingTokens
+            ? data.masterchefBalance?.pendingTokens.pendingBonusToken
+            : BigNumber.from("0"),
+          18,
+          formattedDecimals,
+        ),
+      ),
+      axialRewards: commify(
+        formatBNToString(
+          data.masterchefBalance?.pendingTokens
+            ? data.masterchefBalance?.pendingTokens.pendingAxial
+            : BigNumber.from("0"),
+          18,
+          formattedDecimals,
+        ),
+      ),
+    },
   }
 
   return (
     <div className="myShareCard">
       <h4>{t("myShare")}</h4>
       <div className="info">
-        <div className="poolShare">
-          <span>
-            {formattedData.share} {t("ofPool")}
-          </span>
-        </div>
-        <div className="infoItem">
-          <span className="bold">{`${t("usdBalance")}: `}</span>
-          <span className="value">{`$${formattedData.usdBalance}`}</span>
-        </div>
+        {usePercent ? (
+          <div className="poolShare">
+            <span>
+              {formattedData.share} {t("ofPool")}
+            </span>
+          </div>
+        ) : null}
+        {useUsd ? (
+          <div className="infoItem">
+            <span className="bold">{`${t("usdBalance")}: `}</span>
+            <span className="value">{`$${formattedData.usdBalance}`}</span>
+          </div>
+        ) : null}
         <div className="infoItem">
           <span className="bold">{`${t("totalAmount")}: `}</span>
           <span className="value">{formattedData.amount}</span>
         </div>
+        {usePendingMasterchef ? (
+          <div className="infoItem">
+            <span className="bold">{`${t("axialRewards")}: `}</span>
+            <span className="value">{formattedData.rewards.axialRewards}</span>
+          </div>
+        ) : null}
+        {usePendingMasterchef ? (
+          <div className="infoItem">
+            <span className="bold">{`${t("avaxRewards")}: `}</span>
+            <span className="value">{formattedData.rewards.avaxRewards}</span>
+          </div>
+        ) : null}
       </div>
+
       <div className="currency">
         {/*formattedData.tokens.map((coin) => (
           <div key={coin.symbol}>

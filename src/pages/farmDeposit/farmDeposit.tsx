@@ -28,7 +28,6 @@ import { useApproveAndDeposit } from "../../hooks/useApproveAndDeposit"
 import { usePoolTokenBalances } from "../../store/wallet/hooks"
 import { useSelector } from "react-redux"
 import { useSwapContract } from "../../hooks/useContract"
-import { symbolName } from 'typescript'
 
 interface Props {
   poolName: PoolName

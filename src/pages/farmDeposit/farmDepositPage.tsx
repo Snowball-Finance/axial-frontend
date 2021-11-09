@@ -64,20 +64,22 @@ const FarmDepositPage = (props: Props): ReactElement => {
   const statsDataRows: InfoSectionProps['rows'] = [
     {
       title: "Fee APR",
-      value: '-'
+      value: poolData?.apr ? `${Number(poolData?.apr).toFixed(2)}%` : "-"
     },
     {
       title: "Rewards APR",
-      value: '-'
+      value: poolData?.rapr ? `${Number(poolData?.rapr).toFixed(2)}%` : "-"
     },
     {
       title: "Total APR",
-      value: '-'
+      value: poolData?.rapr
+      ? `${(Number(poolData?.rapr) + (poolData.apr
+          ? Number(poolData?.apr)
+          : 0)
+        ).toFixed(2)}%`
+      : "-"
     },
   ]
-
-  console.log({ exceedsWallet, poolData })
-
 
   return (
     <div className="deposit">
@@ -131,7 +133,7 @@ const FarmDepositPage = (props: Props): ReactElement => {
           </Button>
         </div>
         <div className="infoPanels">
-          <MyShareCard data={myShareData} />
+          <MyShareCard data={myShareData} usePendingMasterchef={true} />
           <div
             style={{
               display: myShareData ? "block" : "none",

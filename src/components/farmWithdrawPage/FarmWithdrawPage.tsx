@@ -128,9 +128,11 @@ const FarmWithdrawPage = (props: Props): ReactElement => {
                 )}
               </div>
             ))}
-
           </div>
-          <AdvancedOptions noApprovalCheckbox={true}  noSlippageCheckbox={true}/>
+          <AdvancedOptions
+            noApprovalCheckbox={true}
+            noSlippageCheckbox={true}
+          />
           <Button
             kind="primary"
             disabled={
@@ -141,19 +143,22 @@ const FarmWithdrawPage = (props: Props): ReactElement => {
             onClick={async () => {
               //onSubmit
               setCurrentModal("confirm")
-              logEvent(
-                "withdraw",
-                (poolData && { pool: poolData?.name }) || {},
-              )
+              logEvent("withdraw", (poolData && { pool: poolData?.name }) || {})
               await onConfirmTransaction?.()
               setCurrentModal(null)
-              }
-            }>
+            }}
+          >
             {t("withdraw")}
           </Button>
         </div>
         <div className="infoPanels">
-          <MyShareCard data={myShareData} />
+          <MyShareCard
+            data={myShareData}
+            useMasterchefAmount={true}
+            usePercent={false}
+            useUsd={false}
+            usePendingMasterchef={true}
+          />
           <div
             style={{
               display: myShareData ? "block" : "none",
