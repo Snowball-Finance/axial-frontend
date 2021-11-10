@@ -12,7 +12,7 @@ function Risk(): ReactElement {
     <div className="riskpage">
       <TopMenu activeTab={t("risk")} />
       <div className="content">
-        <h1 className="title">Risk</h1>
+        <h3>{t("risk")}</h3>
         <p data-testid="risk-intro">
           {t("riskIntro")}{" "}
           <a href="https://github.com/Snowball-Finance/axial-protocol">
@@ -23,7 +23,7 @@ function Risk(): ReactElement {
         <h3>{t("audits")}</h3>
         <p data-testid="risk-audits">
           {t("riskAudits1")}{" "}
-          <a href="https://app.axial.exchange/">
+          <a href="https://saddle.finance/">
             {t("riskAudits1LinkTitle")}
           </a>
           {t("riskAudits2")}{" "}
@@ -52,7 +52,7 @@ function Risk(): ReactElement {
         </p>
         <h3>{t("lossOfPeg")}</h3>
         <p data-testid="risk-lossofpeg">{t("riskLossOfPeg")}</p>
-        <h3>{t("unnecessaryApprovalAskQ")}</h3>
+        <h3>{t("riskTokenApproval")}</h3>
         <p>
           {t("unnecessaryApprovalAskA")} <br />
           <br />
