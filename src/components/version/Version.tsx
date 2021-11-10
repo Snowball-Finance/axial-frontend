@@ -4,7 +4,7 @@ import styles from "./Version.module.scss"
 function Version(): ReactElement | null {
   return (
     <div className={styles.version}>
-      VERSION {process.env.REACT_APP_GIT_SHA}
+      VERSION {1.0}
     </div>
   )
 }
