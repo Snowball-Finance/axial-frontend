@@ -54,6 +54,8 @@ function Farm(): ReactElement | null {
   return (
     <div className={styles.poolsPage}>
       <TopMenu activeTab="farms" />
+      {/*
+      THis code is being temporarly commented out until we have move pools to filter by
       <ul className={styles.filters}>
         {[
           ["all", "ALL"] as const,
@@ -71,7 +73,7 @@ function Farm(): ReactElement | null {
             {text}
           </li>
         ))}
-      </ul>
+      </ul> */}
       <div className={styles.content}>
         {visibleFarmList
           .map(

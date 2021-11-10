@@ -54,6 +54,8 @@ function Pools(): ReactElement | null {
   return (
     <div className={styles.poolsPage}>
       <TopMenu activeTab="pools" />
+      {/*
+       THis code is being temporarly commented out until we have move pools to filter by
       <ul className={styles.filters}>
         {[
           ["all", "ALL"] as const,
@@ -71,7 +73,7 @@ function Pools(): ReactElement | null {
             {text}
           </li>
         ))}
-      </ul>
+      </ul> */}
       <div className={styles.content}>
         {visiblePoolList
           .map(
