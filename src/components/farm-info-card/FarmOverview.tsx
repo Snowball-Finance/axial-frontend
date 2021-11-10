@@ -77,7 +77,7 @@ export default function FarmOverview({
   const info = [
     {
       title: "Fee APR",
-      value: `$${formattedData.apr}`,
+      value: `${formattedData.apr}`,
     },
     {
       title: "Total APR",

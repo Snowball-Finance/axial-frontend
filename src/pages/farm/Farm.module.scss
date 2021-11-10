@@ -49,6 +49,12 @@ div.poolsPage {
     justify-content: center;
     @include breakpoint(sm) {
       width: 100%;
+      padding: 0 8px;
     }
+  }
+
+  .noFarms {
+    color: $text-red;
+    margin-top: 20px;
   }
 }

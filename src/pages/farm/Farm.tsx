@@ -42,6 +42,15 @@ function Farm(): ReactElement | null {
       }
     }
   }
+
+  const visibleFarmList = Object.values(POOLS_MAP)
+    .filter(
+      ({ type, migration, isOutdated }) =>
+        filter === "all" ||
+        type === filter ||
+        (filter === "outdated" && (migration || isOutdated)),
+    )
+
   return (
     <div className={styles.poolsPage}>
       <TopMenu activeTab="farms" />
@@ -64,13 +73,7 @@ function Farm(): ReactElement | null {
         ))}
       </ul>
       <div className={styles.content}>
-        {Object.values(POOLS_MAP)
-          .filter(
-            ({ type, migration, isOutdated }) =>
-              filter === "all" ||
-              type === filter ||
-              (filter === "outdated" && (migration || isOutdated)),
-          )
+        {visibleFarmList
           .map(
             ({ name, migration, isOutdated }) =>
               [getPropsForPool(name), migration, isOutdated] as const,
@@ -109,6 +112,7 @@ function Farm(): ReactElement | null {
               }
             />
           ))}
+        {visibleFarmList.length === 0 && <p className={styles.noFarms}>No farms were found.</p>}
       </div>
       <Modal
         isOpen={!!currentModal}
