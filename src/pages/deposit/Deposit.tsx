@@ -111,9 +111,7 @@ function Deposit({ poolName }: Props): ReactElement | null {
     async function calculateMaxDeposits(): Promise<void> {
       if (
         swapContract == null ||
-        userShareData == null ||
-        poolData == null ||
-        account == null
+        poolData == null 
       ) {
         setEstDepositLPTokenAmount(Zero)
         return
