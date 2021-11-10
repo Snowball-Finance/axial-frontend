@@ -54,7 +54,7 @@ export default function useWithdrawFormState(
         }),
         {},
       ),
-    [userShareData?.masterchefBalance],
+    [POOL.lpToken],
   )
   const tokenInputsEmptyState = useMemo(
     () =>
@@ -65,7 +65,7 @@ export default function useWithdrawFormState(
         }),
         {},
       ),
-    [userShareData?.masterchefBalance, tokenInputStateCreators],
+    [tokenInputStateCreators, POOL.lpToken],
   )
   const formEmptyState = useMemo(
     () => ({

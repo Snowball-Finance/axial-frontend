@@ -10,14 +10,11 @@ import ConfirmTransaction from "../confirm-transaction/ConfirmTransaction"
 import Modal from "../modal/Modal"
 import MyShareCard from "../my-share-card/MyShareCard"
 import PoolInfoCard from "../pool-info-card/PoolInfoCard"
-import RadioButton from "../button/RadioButton"
 import ReviewWithdraw from "../reviews/ReviewWithdraw"
 import TokenInput from "../token-input/TokenInput"
 import TopMenu from "../menu/TopMenu"
 import { WithdrawFormState } from "../../hooks/useFarmWithdrawFormState"
-import { Zero } from "@ethersproject/constants"
 import classNames from "classnames"
-import { formatBNToPercentString } from "../../libs"
 import { logEvent } from "../../libs/googleAnalytics"
 import { useSelector } from "react-redux"
 import { useTranslation } from "react-i18next"
@@ -75,9 +72,6 @@ const FarmWithdrawPage = (props: Props): ReactElement => {
   const { gasPriceSelected } = useSelector((state: AppState) => state.user)
   const [currentModal, setCurrentModal] = useState<string | null>(null)
 
-  const onSubmit = (): void => {
-    setCurrentModal("review")
-  }
   /* eslint-disable @typescript-eslint/no-unsafe-call */
   const noShare = !myShareData || myShareData.masterchefBalance?.userInfo.amount.eq("0x0")
 
