@@ -45,12 +45,10 @@ export default function FarmOverview({
       : "-",
     apr: poolData.apr ? `${Number(poolData.apr).toFixed(2)}%` : "-",
     rapr: poolData.rapr ? `${Number(poolData.rapr).toFixed(2)}%` : "-",
-    totalapr: poolData.rapr
-      ? `${(Number(poolData.rapr) + (poolData.apr
-        ? Number(poolData.apr)
-        : 0)
-      ).toFixed(2)}%`
-      : "-",
+    totalapr: Number(poolData.apr) 
+    ? (Number(poolData.apr) + (poolData.rapr ? Number(poolData.rapr) 
+    : 0)).toFixed(2)+"%" 
+    : "-",
     volume: poolData.volume ? `$${Number(poolData.volume).toFixed(2)}` : "-",
     userBalanceUSD: formatBNToShortString(
       userShareData?.masterchefBalance?.userInfo.amount || Zero,
@@ -76,12 +74,12 @@ export default function FarmOverview({
 
   const info = [
     {
-      title: "Fee APR",
-      value: `${formattedData.apr}`,
+      title: "Rewards APR",
+      value: `${formattedData.rapr}`,
     },
     {
       title: "Total APR",
-      value: `$${formattedData.totalapr}`,
+      value: `${formattedData.totalapr}`,
     },
     {
       title: "TVL",

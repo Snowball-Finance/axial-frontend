@@ -129,7 +129,7 @@ const DepositPage = (props: Props): ReactElement => {
             onClick={(): void => {
               setCurrentModal("review")
             }}
-            disabled={!validDepositAmount || poolData?.isPaused}
+            disabled={!validDepositAmount || poolData?.isPaused || exceedsWallet}
           >
             {t("deposit")}
           </Button>
