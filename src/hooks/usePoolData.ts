@@ -16,7 +16,6 @@ import LPTOKEN_UNGUARDED_ABI from "../constants/abis/lpTokenUnguarded.json"
 import { LpTokenUnguarded } from "../../types/ethers-contracts/LpTokenUnguarded"
 import META_SWAP_ABI from "../constants/abis/metaSwap.json"
 import { MetaSwap } from "../../types/ethers-contracts/MetaSwap"
-import { getVaultRewardApy } from "../libs/geta4dapy"
 import { parseUnits } from "@ethersproject/units"
 import { useActiveWeb3React } from "."
 import { useSelector } from "react-redux"
@@ -83,7 +82,7 @@ export default function usePoolData(
 ): PoolDataHookReturnType {
   const { account, library, chainId } = useActiveWeb3React()
   const swapContract = useSwapContract(poolName)
-  const { tokenPricesUSD, lastTransactionTimes, swapStats } = useSelector(
+  const { tokenPricesUSD, lastTransactionTimes, swapStats, masterchefApr } = useSelector(
     (state: AppState) => state.application,
   )
   const lastDepositTime = lastTransactionTimes[TRANSACTION_TYPES.DEPOSIT]
@@ -132,10 +131,11 @@ export default function usePoolData(
         effectiveSwapContract.getA(),
         effectiveSwapContract.paused(),
       ])
-      const poolApr = await getVaultRewardApy(
-        POOL.lpToken.masterchefId,
-        POOL.name,
-      )
+      
+      let poolApr = 0
+      if( masterchefApr ){
+        poolApr = masterchefApr[POOL.addresses[43114]] ?? 0
+      }
       const { adminFee, lpToken: lpTokenAddress, swapFee } = swapStorage
       const lpTokenContract = getContract(
         lpTokenAddress,

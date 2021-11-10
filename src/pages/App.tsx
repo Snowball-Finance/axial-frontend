@@ -21,6 +21,7 @@ import usePoller from "../hooks/usePoller"
 import Farm from "./farm/Farm"
 import FarmDeposit from "./farmDeposit/farmDeposit"
 import FarmWithdraw from "./farmWithdraw/farmWithdraw"
+import fetchAprStats from "../libs/getMasterchefApy"
 
 export default function App(): ReactElement {
   return (
@@ -86,14 +87,18 @@ function GasAndTokenPrices({
     fetchTokenPricesUSD(dispatch)
   }, [dispatch])
 
-  //this one still needs api work
   const fetchAndUpdateSwapStats = useCallback(() => {
     void fetchSwapStats(dispatch)
+  }, [dispatch])
+
+  const fetchAndUpdateMasterchefApy = useCallback(() => {
+    void fetchAprStats(dispatch)
   }, [dispatch])
 
   usePoller(fetchAndUpdateGasPrice, 5 * 1000)
   usePoller(fetchAndUpdateTokensPrice, BLOCK_TIME * 120)
   usePoller(fetchAndUpdateSwapStats, BLOCK_TIME * 2 * 60 * 60) // ~ 1hr
+  usePoller(fetchAndUpdateMasterchefApy, BLOCK_TIME * 2 * 60 * 60) // ~ 1hr
 
   return <>{children}</>
 }

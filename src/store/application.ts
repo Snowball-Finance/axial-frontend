@@ -1,5 +1,4 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
-
 import { SwapStatsReponse } from "../libs/getSwapStats"
 
 interface GasPrices {
@@ -15,6 +14,9 @@ interface SwapStats {
     utilization: string
   }
 }
+interface MastechefApr {
+  [swapAddress: string]: number
+}
 export interface TokenPricesUSD {
   [tokenSymbol: string]: number
 }
@@ -24,7 +26,7 @@ interface LastTransactionTimes {
 
 type ApplicationState = GasPrices & { tokenPricesUSD?: TokenPricesUSD } & {
   lastTransactionTimes: LastTransactionTimes
-} & { swapStats?: SwapStats }
+} & { swapStats?: SwapStats } & {masterchefApr?: MastechefApr}
 
 const initialState: ApplicationState = {
   lastTransactionTimes: {},
@@ -51,6 +53,9 @@ const applicationSlice = createSlice({
         ...state.lastTransactionTimes,
         ...action.payload,
       }
+    },
+    updateMasterchefApr(state, action: PayloadAction<MastechefApr>): void {
+      state.masterchefApr = action.payload
     },
     updateSwapStats(state, action: PayloadAction<SwapStatsReponse[]>): void {
       const formattedPayload = Object.values(action.payload).reduce(
@@ -84,6 +89,7 @@ export const {
   updateTokensPricesUSD,
   updateLastTransactionTimes,
   updateSwapStats,
+  updateMasterchefApr
 } = applicationSlice.actions
 
 export default applicationSlice.reducer

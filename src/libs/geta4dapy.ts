@@ -72,52 +72,63 @@ export async function getAXIALPriceWithLP(): Promise<number> {
   }
 }
 
-export async function getVaultRewardApy(
-  poolId: number,
-  poolName: string,
-): Promise<number> {
+interface MastechefApr {
+  [swapAddress: string]: number
+}
+
+export async function getVaultRewardAprNow(): Promise<MastechefApr> {
+
+  let APRData:MastechefApr = {}
   try {
-    const pool = POOLS_MAP[poolName]
-    const provider = new ethers.providers.StaticJsonRpcProvider(
-      process.env.REACT_APP_NETWORK_URL ?? "",
-    )
-    const masterchefContract = new ethers.Contract(
-      AXIAL_MASTERCHEF_CONTRACT_ADDRESS[43114],
-      masterchef,
-      provider,
-    )
-    const swapTokenContract = new ethers.Contract(
-      pool.addresses[43114],
-      swap,
-      provider,
-    )
-    const tokenContract = new ethers.Contract(
-      pool.lpToken.addresses[43114],
-      erc20,
-      provider,
-    )
-    // eslint-disable-next-line
-    const balanceToken = await tokenContract.balanceOf(AXIAL_MASTERCHEF_CONTRACT_ADDRESS[43114]) / 1e18
-    // eslint-disable-next-line
-    const virtualPrice: BigNumber = await swapTokenContract.getVirtualPrice()
-    const TVL = (+virtualPrice / 1e18) * balanceToken
+    for (const pool of Object.values(POOLS_MAP)) {
+      console.log(pool)
 
-    // eslint-disable-next-line
-    const totalAllocPoint: BigNumber = await masterchefContract.totalAllocPoint()
-    // eslint-disable-next-line
-    const poolInfo: poolInfo = await masterchefContract.poolInfo(poolId)
-    // eslint-disable-next-line
-    const axialPerSecond: number = await masterchefContract.axialPerSec() / 1e18
+      const provider = new ethers.providers.StaticJsonRpcProvider(
+        process.env.REACT_APP_NETWORK_URL ?? "",
+      )
+      const masterchefContract = new ethers.Contract(
+        AXIAL_MASTERCHEF_CONTRACT_ADDRESS[43114],
+        masterchef,
+        provider,
+      )
+      const swapTokenContract = new ethers.Contract(
+        pool.addresses[43114],
+        swap,
+        provider,
+      )
+      const tokenContract = new ethers.Contract(
+        pool.lpToken.addresses[43114],
+        erc20,
+        provider,
+      )
+      // eslint-disable-next-line
+      const balanceToken = await tokenContract.balanceOf(AXIAL_MASTERCHEF_CONTRACT_ADDRESS[43114]) / 1e18
+      // eslint-disable-next-line
+      const virtualPrice: BigNumber = await swapTokenContract.getVirtualPrice()
+      const TVL = (+virtualPrice / 1e18) * balanceToken
 
-    const poolFraction = +poolInfo.allocPoint / +totalAllocPoint
-    const axialPrice = await getAXIALPriceWithLP()
+      // eslint-disable-next-line
+      const totalAllocPoint: BigNumber = await masterchefContract.totalAllocPoint()
+      // eslint-disable-next-line
+      const poolInfo: poolInfo = await masterchefContract.poolInfo(pool.lpToken.masterchefId)
+      // eslint-disable-next-line
+      const axialPerSecond: number = await masterchefContract.axialPerSec() / 1e18
 
-    const usdPerWeek = axialPerSecond * poolFraction * axialPrice * 604_800
-    const APRYearly = (usdPerWeek / TVL) * 100 * 52
+      const poolFraction = +poolInfo.allocPoint / +totalAllocPoint
+      const axialPrice = await getAXIALPriceWithLP()
 
-    return isNaN(APRYearly) ? 0 : APRYearly
+      const usdPerWeek = axialPerSecond * poolFraction * axialPrice * 604_800
+      const APRYearly = (usdPerWeek / TVL) * 100 * 52
+
+      APRData = {
+        ...APRData,
+        [pool.addresses[43114]]: APRYearly
+      }
+
+    }
+    return APRData
   } catch (error) {
     console.error("Error fetching Pool Reward APY")
-    return 0
+    return {}
   }
 }
