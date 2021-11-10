@@ -9,8 +9,8 @@ header.top {
   justify-content: center;
   align-items: center;
   @include breakpoint(sm) {
-    padding-left: 56px;
-    padding-right: 70px;
+    padding-left: 16px;
+    padding-right: 30px;
   }
 
   h1 {
