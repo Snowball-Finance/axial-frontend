@@ -98,7 +98,7 @@
   "risk": "Risk",
   "farm": "Farm",
   "riskAudits1": "The Axial smart contracts were forked from",
-  "riskAudits1LinkTitle": "Saddle Finance",
+  "riskAudits1LinkTitle": "Axial",
   "riskAudits2": ", whom has been thoroughly audited by ",
   "riskAudits2LinkTitle": "OpenZeppelin, Quantstamp, and Certik",
   "riskAudits3": "Please keep in mind that security audits don’t completely eliminate risks. Do not supply assets that you cannot afford to lose by using Axial or any other AMM as a liquidity provider.",

@@ -23,11 +23,11 @@ function Risk(): ReactElement {
         <h3>{t("audits")}</h3>
         <p data-testid="risk-audits">
           {t("riskAudits1")}{" "}
-          <a href="https://saddle.finance/">
+          <a href="https://app.axial.exchange/">
             {t("riskAudits1LinkTitle")}
           </a>
           {t("riskAudits2")}{" "}
-          <a href="https://github.com/saddle-finance/saddle-audits">
+          <a href="https://github.com/Snowball-Finance/axial-protocol">
             {t("riskAudits2LinkTitle")}
           </a>
           <br />
