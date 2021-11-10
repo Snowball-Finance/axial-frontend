@@ -42,6 +42,15 @@ function Pools(): ReactElement | null {
       }
     }
   }
+
+  const visiblePoolList = Object.values(POOLS_MAP)
+    .filter(
+      ({ type, migration, isOutdated }) =>
+        filter === "all" ||
+        type === filter ||
+        (filter === "outdated" && (migration || isOutdated)),
+    )
+
   return (
     <div className={styles.poolsPage}>
       <TopMenu activeTab="pools" />
@@ -64,13 +73,7 @@ function Pools(): ReactElement | null {
         ))}
       </ul>
       <div className={styles.content}>
-        {Object.values(POOLS_MAP)
-          .filter(
-            ({ type, migration, isOutdated }) =>
-              filter === "all" ||
-              type === filter ||
-              (filter === "outdated" && (migration || isOutdated)),
-          )
+        {visiblePoolList
           .map(
             ({ name, migration, isOutdated }) =>
               [getPropsForPool(name), migration, isOutdated] as const,
@@ -109,6 +112,7 @@ function Pools(): ReactElement | null {
               }
             />
           ))}
+        {visiblePoolList.length === 0 && <p className={styles.noPools}>No pools were found.</p>}
       </div>
       <Modal
         isOpen={!!currentModal}
