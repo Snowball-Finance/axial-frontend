@@ -59,9 +59,9 @@ export async function getAXIALPriceWithLP(): Promise<number> {
   // eslint-disable-next-line
   const reserves = await lpContract.getReserves()
   // eslint-disable-next-line
-  const AxialQt = reserves._reserve0
+  const AxialQt = reserves._reserve1
   // eslint-disable-next-line
-  const AVAXQt = reserves._reserve1
+  const AVAXQt = reserves._reserve0
   // eslint-disable-next-line
   const axialAVAXPrice = AVAXQt / AxialQt
   const AVAXPrice = await getAVAXPrice()
