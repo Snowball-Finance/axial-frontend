@@ -10,11 +10,9 @@ import ConfirmTransaction from "../../components/confirm-transaction/ConfirmTran
 import { DepositTransaction } from "../../interfaces/transactions"
 import Modal from "../../components/modal/Modal"
 import MyShareCard from "../../components/my-share-card/MyShareCard"
-import PoolInfoCard from "../../components/pool-info-card/PoolInfoCard"
 import ReviewDeposit from "../../components/reviews/ReviewDeposit"
 import TokenInput from "../../components/token-input/TokenInput"
 import TopMenu from "../../components/menu/TopMenu"
-import { formatBNToPercentString } from "../../libs"
 //import { logEvent } from "../../libs/googleAnalytics"
 import { useTranslation } from "react-i18next"
 import InfoSection, { InfoSectionProps } from "../../components/info-section/infoSection"
@@ -33,7 +31,6 @@ interface Props {
     inputValue: string
   }>
   exceedsWallet: boolean
-  selected?: { [key: string]: any }
   poolData: PoolDataType | null
   myShareData: UserShareType | null
   transactionData: DepositTransaction
