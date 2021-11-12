@@ -10,9 +10,7 @@ import React, { ReactElement, useState } from "react"
 import ConfirmTransaction from "../../components/confirm-transaction/ConfirmTransaction"
 import Modal from "../../components/modal/Modal"
 import PoolOverview from "../../components/pool-info-card/PoolOverview"
-import TopMenu from "../../components/menu/TopMenu"
 import { Zero } from "@ethersproject/constants"
-import classNames from "classnames"
 import styles from "./Pools.module.scss"
 import usePoolData from "../../hooks/usePoolData"
 
@@ -20,7 +18,7 @@ function Pools(): ReactElement | null {
   const [as4dPoolData, as4dUserShareData] = usePoolData(AXIAL_AS4D_POOL_NAME)
   const [ac4dPoolData, ac4dUserShareData] = usePoolData(AXIAL_AC4D_POOL_NAME)
   const [currentModal, setCurrentModal] = useState<string | null>(null)
-  const [filter, setFilter] = useState<PoolTypes | "all" | "outdated">("all")
+  const [filter] = useState<PoolTypes | "all" | "outdated">("all")
   const handleClickMigrate = () => {
     setCurrentModal("migrate")
   }

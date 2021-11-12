@@ -1,4 +1,4 @@
-import React from "react"
+import React, { ReactElement } from "react"
 import Version from "../../components/version/Version"
 import styles from './Footer.module.scss'
 
@@ -29,7 +29,7 @@ const socialLinks = [
   },
 ]
 
-export default function Footer() {
+export default function Footer(): ReactElement {
   return (
     <footer className={styles.socialLinks}>
       <Version />

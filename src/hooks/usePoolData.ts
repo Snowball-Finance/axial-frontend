@@ -287,6 +287,7 @@ export default function usePoolData(
     library,
     chainId,
     swapStats,
+    masterchefApr,
   ])
 
   return poolData
