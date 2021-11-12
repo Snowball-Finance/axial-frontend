@@ -12,7 +12,6 @@ import Modal from "../../components/modal/Modal"
 import MyShareCard from "../../components/my-share-card/MyShareCard"
 import ReviewDeposit from "../../components/reviews/ReviewDeposit"
 import TokenInput from "../../components/token-input/TokenInput"
-import TopMenu from "../../components/menu/TopMenu"
 //import { logEvent } from "../../libs/googleAnalytics"
 import { useTranslation } from "react-i18next"
 import InfoSection, { InfoSectionProps } from "../../components/info-section/infoSection"
@@ -80,8 +79,6 @@ const FarmDepositPage = (props: Props): ReactElement => {
 
   return (
     <div className="deposit">
-      <TopMenu activeTab={"farms"} />
-
       <div className="content">
         <div className="left">
           <div className="form">

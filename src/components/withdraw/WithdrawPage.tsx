@@ -13,7 +13,6 @@ import PoolInfoCard from "../pool-info-card/PoolInfoCard"
 import RadioButton from "../button/RadioButton"
 import ReviewWithdraw from "../reviews/ReviewWithdraw"
 import TokenInput from "../token-input/TokenInput"
-import TopMenu from "../menu/TopMenu"
 import { WithdrawFormState } from "../../hooks/useWithdrawFormState"
 import { Zero } from "@ethersproject/constants"
 import classNames from "classnames"
@@ -82,7 +81,6 @@ const WithdrawPage = (props: Props): ReactElement => {
 
   return (
     <div className={"withdraw " + classNames({ noShare: noShare })}>
-      <TopMenu activeTab={"withdraw"} />
       <div className="content">
         <div className="left">
           <div className="form">

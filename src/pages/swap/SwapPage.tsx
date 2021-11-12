@@ -13,7 +13,6 @@ import ReviewSwap from "../../components/reviews/ReviewSwap"
 import { Slippages } from "../../store/module/user"
 import SwapInput from "../../components/swap-input/SwapInput"
 import type { TokenOption } from "../../pages/swap/Swap"
-import TopMenu from "../../components/menu/TopMenu"
 import { Zero } from "@ethersproject/constants"
 import classNames from "classnames"
 import { commify } from "../../libs"
@@ -103,7 +102,6 @@ const SwapPage = (props: Props): ReactElement => {
 
   return (
     <div className="swapPage">
-      <TopMenu activeTab={"swap"} />
       <div className="content">
         <div className="swapForm">
           <div className="row">

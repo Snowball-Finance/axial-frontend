@@ -2,7 +2,6 @@
 @import "../../styles/viewports";
 
 div.riskpage {
-  min-height: 100vh;
   background: var(--background-main);
   padding-bottom: 80px;
   box-sizing: border-box; // Make the padding included in height calculation

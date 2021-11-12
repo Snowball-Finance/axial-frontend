@@ -53,7 +53,6 @@ function Pools(): ReactElement | null {
 
   return (
     <div className={styles.poolsPage}>
-      <TopMenu activeTab="pools" />
       {/*
        THis code is being temporarly commented out until we have move pools to filter by
       <ul className={styles.filters}>

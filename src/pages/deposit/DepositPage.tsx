@@ -13,7 +13,6 @@ import MyShareCard from "../../components/my-share-card/MyShareCard"
 import PoolInfoCard from "../../components/pool-info-card/PoolInfoCard"
 import ReviewDeposit from "../../components/reviews/ReviewDeposit"
 import TokenInput from "../../components/token-input/TokenInput"
-import TopMenu from "../../components/menu/TopMenu"
 import { formatBNToPercentString } from "../../libs"
 //import { logEvent } from "../../libs/googleAnalytics"
 import { useTranslation } from "react-i18next"
@@ -62,8 +61,6 @@ const DepositPage = (props: Props): ReactElement => {
 
   return (
     <div className="deposit">
-      <TopMenu activeTab={"deposit"} />
-
       <div className="content">
         <div className="left">
           <div className="form">
