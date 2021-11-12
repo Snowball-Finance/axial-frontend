@@ -12,7 +12,6 @@ import MyShareCard from "../my-share-card/MyShareCard"
 import PoolInfoCard from "../pool-info-card/PoolInfoCard"
 import ReviewWithdraw from "../reviews/ReviewWithdraw"
 import TokenInput from "../token-input/TokenInput"
-import TopMenu from "../menu/TopMenu"
 import { WithdrawFormState } from "../../hooks/useFarmWithdrawFormState"
 import classNames from "classnames"
 import { logEvent } from "../../libs/googleAnalytics"
@@ -77,7 +76,6 @@ const FarmWithdrawPage = (props: Props): ReactElement => {
 
   return (
     <div className={"withdraw " + classNames({ noShare: noShare })}>
-      <TopMenu activeTab={"farms"} />
       <div className="content">
         <div className="left">
           <div className="form">
