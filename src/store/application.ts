@@ -1,4 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
+import { MasterchefApr } from "../libs/geta4dapy"
 import { SwapStatsReponse } from "../libs/getSwapStats"
 
 interface GasPrices {
@@ -14,9 +15,6 @@ interface SwapStats {
     utilization: string
   }
 }
-interface MastechefApr {
-  [swapAddress: string]: number
-}
 export interface TokenPricesUSD {
   [tokenSymbol: string]: number
 }
@@ -26,7 +24,7 @@ interface LastTransactionTimes {
 
 type ApplicationState = GasPrices & { tokenPricesUSD?: TokenPricesUSD } & {
   lastTransactionTimes: LastTransactionTimes
-} & { swapStats?: SwapStats } & {masterchefApr?: MastechefApr}
+} & { swapStats?: SwapStats } & {masterchefApr?: MasterchefApr}
 
 const initialState: ApplicationState = {
   lastTransactionTimes: {},
@@ -54,7 +52,7 @@ const applicationSlice = createSlice({
         ...action.payload,
       }
     },
-    updateMasterchefApr(state, action: PayloadAction<MastechefApr>): void {
+    updateMasterchefApr(state, action: PayloadAction<MasterchefApr>): void {
       state.masterchefApr = action.payload
     },
     updateSwapStats(state, action: PayloadAction<SwapStatsReponse[]>): void {

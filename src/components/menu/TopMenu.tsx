@@ -39,18 +39,18 @@ function TopMenu({ activeTab }: Props): ReactElement {
                 activeTab === "withdraw",
             })}
           >
-            {t("pools")}
+            {t("liquidity")}
           </Link>
         </li>
         <li>
           <Link
-            to="/farms"
+            to="/rewards"
             className={classNames({
               active:
-                activeTab === "farms"
+                activeTab === "rewards"
             })}
           >
-            {t("farm")}
+            {t("rewards")}
           </Link>
         </li>
         <li>

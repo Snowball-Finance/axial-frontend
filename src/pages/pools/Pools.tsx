@@ -44,9 +44,10 @@ function Pools(): ReactElement | null {
   const visiblePoolList = Object.values(POOLS_MAP)
     .filter(
       ({ type, migration, isOutdated }) =>
-        filter === "all" ||
+        (filter === "all" ||
         type === filter ||
-        (filter === "outdated" && (migration || isOutdated)),
+        (filter === "outdated" && (migration || isOutdated)))
+        && type !== PoolTypes.LP,
     )
 
   return (

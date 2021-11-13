@@ -7,7 +7,7 @@ import "./index.scss"
 export default function Layout({
   children,
 }: React.PropsWithChildren<unknown>): ReactElement {
-  const { pathname } = useLocation()
+  const { pathname }: { pathname: string } = useLocation()
   const activeTab = pathname.split('/')[1] || 'swap';
 
   return <div className="layout">

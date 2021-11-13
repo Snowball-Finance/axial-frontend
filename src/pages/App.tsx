@@ -32,11 +32,11 @@ export default function App(): ReactElement {
             <Layout>
               <Route exact path="/" component={Swap} />
               <Route exact path="/pools" component={Pools} />
-              <Route exact path="/farms" component={Farm} />
+              <Route exact path="/rewards" component={Farm} />
               {Object.values(POOLS_MAP).map(({ name, route }) => (
                 <Route
                   exact
-                  path={`/farms/${route}/withdraw`}
+                  path={`/rewards/${route}/withdraw`}
                   render={(props) => <FarmWithdraw {...props} poolName={name} />}
                   key={`${name}-farmswithdraw`}
                 />
@@ -44,7 +44,7 @@ export default function App(): ReactElement {
               {Object.values(POOLS_MAP).map(({ name, route }) => (
                 <Route
                   exact
-                  path={`/farms/${route}/deposit`}
+                  path={`/rewards/${route}/deposit`}
                   render={(props) => <FarmDeposit {...props} poolName={name} />}
                   key={`${name}-farmsdeposit`}
                 />
