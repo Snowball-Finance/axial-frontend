@@ -10,9 +10,7 @@ import React, { ReactElement, useState } from "react"
 import ConfirmTransaction from "../../components/confirm-transaction/ConfirmTransaction"
 import Modal from "../../components/modal/Modal"
 import PoolOverview from "../../components/pool-info-card/PoolOverview"
-import TopMenu from "../../components/menu/TopMenu"
 import { Zero } from "@ethersproject/constants"
-import classNames from "classnames"
 import styles from "./Pools.module.scss"
 import usePoolData from "../../hooks/usePoolData"
 
@@ -20,7 +18,7 @@ function Pools(): ReactElement | null {
   const [as4dPoolData, as4dUserShareData] = usePoolData(AXIAL_AS4D_POOL_NAME)
   const [ac4dPoolData, ac4dUserShareData] = usePoolData(AXIAL_AC4D_POOL_NAME)
   const [currentModal, setCurrentModal] = useState<string | null>(null)
-  const [filter, setFilter] = useState<PoolTypes | "all" | "outdated">("all")
+  const [filter] = useState<PoolTypes | "all" | "outdated">("all")
   const handleClickMigrate = () => {
     setCurrentModal("migrate")
   }
@@ -46,14 +44,14 @@ function Pools(): ReactElement | null {
   const visiblePoolList = Object.values(POOLS_MAP)
     .filter(
       ({ type, migration, isOutdated }) =>
-        filter === "all" ||
+        (filter === "all" ||
         type === filter ||
-        (filter === "outdated" && (migration || isOutdated)),
+        (filter === "outdated" && (migration || isOutdated)))
+        && type !== PoolTypes.LP,
     )
 
   return (
     <div className={styles.poolsPage}>
-      <TopMenu activeTab="pools" />
       {/*
        THis code is being temporarly commented out until we have move pools to filter by
       <ul className={styles.filters}>

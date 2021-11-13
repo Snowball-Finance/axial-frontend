@@ -4,14 +4,13 @@ import {
   POOLS_MAP,
   PoolName,
   PoolTypes,
+  AXIAL_JLP_POOL_NAME,
 } from "../../constants"
 import React, { ReactElement, useState } from "react"
 
 import ConfirmTransaction from "../../components/confirm-transaction/ConfirmTransaction"
 import Modal from "../../components/modal/Modal"
-import TopMenu from "../../components/menu/TopMenu"
 import { Zero } from "@ethersproject/constants"
-import classNames from "classnames"
 import styles from "./Farm.module.scss"
 import usePoolData from "../../hooks/usePoolData"
 import FarmOverview from "../../components/farm-info-card/FarmOverview"
@@ -19,8 +18,9 @@ import FarmOverview from "../../components/farm-info-card/FarmOverview"
 function Farm(): ReactElement | null {
   const [as4dPoolData, as4dUserShareData] = usePoolData(AXIAL_AS4D_POOL_NAME)
   const [ac4dPoolData, ac4dUserShareData] = usePoolData(AXIAL_AC4D_POOL_NAME)
+  const [jlpPoolData, jlpUserShareData] = usePoolData(AXIAL_JLP_POOL_NAME)
   const [currentModal, setCurrentModal] = useState<string | null>(null)
-  const [filter, setFilter] = useState<PoolTypes | "all" | "outdated">("all")
+  const [filter] = useState<PoolTypes | "all" | "outdated">("all")
   const handleClickMigrate = () => {
     setCurrentModal("migrate")
   }
@@ -31,14 +31,21 @@ function Farm(): ReactElement | null {
         name: AXIAL_AS4D_POOL_NAME,
         poolData: as4dPoolData,
         userShareData: as4dUserShareData,
-        poolRoute: "/farms/as4d",
+        poolRoute: "/rewards/as4d",
       }
-    } else {
+    } else if (poolName === AXIAL_AC4D_POOL_NAME) {
       return {
         name: AXIAL_AC4D_POOL_NAME,
         poolData: ac4dPoolData,
         userShareData: ac4dUserShareData,
-        poolRoute: "/farms/ac4d",
+        poolRoute: "/rewards/ac4d",
+      }
+    } else {
+      return {
+        name: AXIAL_JLP_POOL_NAME,
+        poolData: jlpPoolData,
+        userShareData: jlpUserShareData,
+        poolRoute: "/rewards/jlp",
       }
     }
   }
@@ -53,7 +60,6 @@ function Farm(): ReactElement | null {
 
   return (
     <div className={styles.poolsPage}>
-      <TopMenu activeTab="farms" />
       {/*
       THis code is being temporarly commented out until we have move pools to filter by
       <ul className={styles.filters}>

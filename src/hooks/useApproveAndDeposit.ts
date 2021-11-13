@@ -1,28 +1,25 @@
+import { useDispatch, useSelector } from "react-redux"
+import { ethers } from "ethers"
+import { BigNumber } from "@ethersproject/bignumber"
+
 import { POOLS_MAP, PoolName, TRANSACTION_TYPES, Token, AXIAL_MASTERCHEF_CONTRACT_ADDRESS } from "../constants"
-import { formatDeadlineToNumber, getContract } from "../libs"
+import { formatDeadlineToNumber } from "../libs"
 import {
   useAllContracts,
   useLPTokenContract,
   useSwapContract,
 } from "./useContract"
-import { useDispatch, useSelector } from "react-redux"
-
 import { AppState } from "../store"
-import { BigNumber } from "@ethersproject/bignumber"
 import { Erc20 } from "../../types/ethers-contracts/Erc20"
 import { GasPrices } from "../store/module/user"
 import { IS_PRODUCTION } from "../libs/environment"
-import META_SWAP_ABI from "../constants/abis/metaSwap.json"
 import MASTERCHEF_ABI from "../constants/abis/masterchef.json"
-import { MetaSwap } from "../../types/ethers-contracts/MetaSwap"
 import { NumberInputState } from "../libs/numberInputState"
 import checkAndApproveTokenForTrade from "../libs/checkAndApproveTokenForTrade"
 import { parseUnits } from "@ethersproject/units"
 import { subtractSlippage } from "../libs/slippage"
 import { updateLastTransactionTimes } from "../store/application"
 import { useActiveWeb3React } from "."
-import { useMemo } from "react"
-import { ethers } from "ethers"
 import { SwapFlashLoanNoWithdrawFee } from "../../types/ethers-contracts/SwapFlashLoanNoWithdrawFee"
 
 interface ApproveAndDepositStateArgument {
@@ -40,7 +37,7 @@ export function useApproveAndDeposit(
   const swapContract = useSwapContract(poolName)
   const lpTokenContract = useLPTokenContract(poolName)
   const tokenContracts = useAllContracts()
-  const { account, chainId, library } = useActiveWeb3React()
+  const { account, library } = useActiveWeb3React()
   const { gasStandard, gasFast, gasInstant } = useSelector(
     (state: AppState) => state.application,
   )
@@ -54,17 +51,6 @@ export function useApproveAndDeposit(
     infiniteApproval,
   } = useSelector((state: AppState) => state.user)
   const POOL = POOLS_MAP[poolName]
-  const metaSwapContract = useMemo(() => {
-    if (POOL.metaSwapAddresses && chainId && library) {
-      return getContract(
-        POOL.metaSwapAddresses?.[chainId],
-        META_SWAP_ABI,
-        library,
-        account ?? undefined,
-      ) as MetaSwap
-    }
-    return null
-  }, [chainId, library, POOL.metaSwapAddresses, account])
 
   return async function approveAndDeposit(
     state: ApproveAndDepositStateArgument,

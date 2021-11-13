@@ -8,6 +8,7 @@ header.top {
   display: flex;
   justify-content: center;
   align-items: center;
+  background: var(--background-main);
   @include breakpoint(sm) {
     padding-left: 16px;
     padding-right: 30px;

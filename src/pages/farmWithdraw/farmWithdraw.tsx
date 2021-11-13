@@ -1,8 +1,6 @@
 import { POOLS_MAP, PoolName } from "../../constants"
 import React, { ReactElement, useEffect, useState } from "react"
-import WithdrawPage, {
-  ReviewWithdrawData,
-} from "../../components/withdraw/WithdrawPage"
+import { ReviewWithdrawData } from "../../components/withdraw/WithdrawPage"
 import { commify, formatUnits, parseUnits } from "@ethersproject/units"
 
 import { AppState } from "../../store"

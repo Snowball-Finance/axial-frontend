@@ -10,17 +10,14 @@ import ConfirmTransaction from "../confirm-transaction/ConfirmTransaction"
 import Modal from "../modal/Modal"
 import MyShareCard from "../my-share-card/MyShareCard"
 import PoolInfoCard from "../pool-info-card/PoolInfoCard"
-import RadioButton from "../button/RadioButton"
 import ReviewWithdraw from "../reviews/ReviewWithdraw"
 import TokenInput from "../token-input/TokenInput"
-import TopMenu from "../menu/TopMenu"
 import { WithdrawFormState } from "../../hooks/useFarmWithdrawFormState"
-import { Zero } from "@ethersproject/constants"
 import classNames from "classnames"
-import { formatBNToPercentString } from "../../libs"
 import { logEvent } from "../../libs/googleAnalytics"
 import { useSelector } from "react-redux"
 import { useTranslation } from "react-i18next"
+import { POOLS_MAP, PoolTypes } from "../../constants"
 
 export interface ReviewWithdrawData {
   withdraw: {
@@ -72,18 +69,20 @@ const FarmWithdrawPage = (props: Props): ReactElement => {
     onConfirmTransaction,
   } = props
 
+  let poolType = PoolTypes.USD
+  if(poolData){
+    const POOL = POOLS_MAP[poolData?.name]
+    poolType = POOL.type
+  }
+
   const { gasPriceSelected } = useSelector((state: AppState) => state.user)
   const [currentModal, setCurrentModal] = useState<string | null>(null)
 
-  const onSubmit = (): void => {
-    setCurrentModal("review")
-  }
   /* eslint-disable @typescript-eslint/no-unsafe-call */
   const noShare = !myShareData || myShareData.masterchefBalance?.userInfo.amount.eq("0x0")
 
   return (
     <div className={"withdraw " + classNames({ noShare: noShare })}>
-      <TopMenu activeTab={"farms"} />
       <div className="content">
         <div className="left">
           <div className="form">
@@ -165,7 +164,7 @@ const FarmWithdrawPage = (props: Props): ReactElement => {
             }}
             className="divider"
           ></div>{" "}
-          <PoolInfoCard data={poolData} />
+          {poolType !== PoolTypes.LP && (<PoolInfoCard data={poolData} />)}
         </div>
         <Modal
           isOpen={!!currentModal}

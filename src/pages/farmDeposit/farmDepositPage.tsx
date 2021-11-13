@@ -10,15 +10,13 @@ import ConfirmTransaction from "../../components/confirm-transaction/ConfirmTran
 import { DepositTransaction } from "../../interfaces/transactions"
 import Modal from "../../components/modal/Modal"
 import MyShareCard from "../../components/my-share-card/MyShareCard"
-import PoolInfoCard from "../../components/pool-info-card/PoolInfoCard"
 import ReviewDeposit from "../../components/reviews/ReviewDeposit"
 import TokenInput from "../../components/token-input/TokenInput"
-import TopMenu from "../../components/menu/TopMenu"
-import { formatBNToPercentString } from "../../libs"
 //import { logEvent } from "../../libs/googleAnalytics"
 import { useTranslation } from "react-i18next"
 import InfoSection, { InfoSectionProps } from "../../components/info-section/infoSection"
 import FarmInfoCard from "../../components/farm-info-card/FarmInfoCard"
+import { POOLS_MAP, PoolTypes } from "../../constants"
 interface Props {
   title: string
   onConfirmTransaction: () => Promise<void>
@@ -33,7 +31,6 @@ interface Props {
     inputValue: string
   }>
   exceedsWallet: boolean
-  selected?: { [key: string]: any }
   poolData: PoolDataType | null
   myShareData: UserShareType | null
   transactionData: DepositTransaction
@@ -60,16 +57,13 @@ const FarmDepositPage = (props: Props): ReactElement => {
   const validDepositAmount = true
   const shouldDisplayWrappedOption = false
 
+  let poolType = PoolTypes.USD
+  if(poolData){
+    const POOL = POOLS_MAP[poolData?.name]
+    poolType = POOL.type
+  }
 
   const statsDataRows: InfoSectionProps['rows'] = [
-    {
-      title: "Fee APR",
-      value: poolData?.apr ? `${Number(poolData?.apr).toFixed(2)}%` : "-"
-    },
-    {
-      title: "Rewards APR",
-      value: poolData?.rapr ? `${Number(poolData?.rapr).toFixed(2)}%` : "-"
-    },
     {
       title: "Total APR",
       value: poolData?.rapr
@@ -81,10 +75,21 @@ const FarmDepositPage = (props: Props): ReactElement => {
     },
   ]
 
+  if(poolType !== PoolTypes.LP) {
+    statsDataRows.push(
+      {
+        title: "Fee APR",
+        value: poolData?.apr ? `${Number(poolData?.apr).toFixed(2)}%` : "-"
+      },
+      {
+        title: "Rewards APR",
+        value: poolData?.rapr ? `${Number(poolData?.rapr).toFixed(2)}%` : "-"
+      },
+    )
+  }
+
   return (
     <div className="deposit">
-      <TopMenu activeTab={"farms"} />
-
       <div className="content">
         <div className="left">
           <div className="form">
@@ -142,7 +147,7 @@ const FarmDepositPage = (props: Props): ReactElement => {
           ></div>
           <InfoSection title="Stats" withDivider rows={statsDataRows} />
 
-          <FarmInfoCard data={poolData} />
+          {poolType !== PoolTypes.LP && (<FarmInfoCard data={poolData} />)}
         </div>
         <Modal
           isOpen={!!currentModal}
