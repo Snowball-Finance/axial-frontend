@@ -13,6 +13,8 @@ import {
   Token,
   USDC,
   USDT,
+  AXIAL_JLP_POOL_TOKEN,
+  PoolTypes,
 } from "../constants"
 
 import { Contract } from "@ethersproject/contracts"
@@ -65,9 +67,11 @@ export function useTokenContract(
 
 export function useSwapContract<T extends PoolName>(
   poolName?: T,
-): T extends typeof AXIAL_AS4D_POOL_NAME | typeof AXIAL_AC4D_POOL_NAME
-  ? SwapFlashLoanNoWithdrawFee | null
-  : SwapFlashLoan | SwapGuarded | MetaSwapDeposit | null
+): 
+ SwapFlashLoanNoWithdrawFee | null
+ //we want to change this if we put different pools kind
+ //T extends  typeof AXIAL_AS4D_POOL_NAME | typeof AXIAL_AC4D_POOL_NAME
+ // : SwapFlashLoan | SwapGuarded | MetaSwapDeposit | null
 export function useSwapContract(
   poolName?: PoolName,
 ):
@@ -81,6 +85,9 @@ export function useSwapContract(
     if (!poolName || !library || !chainId) return null
     try {
       const pool = POOLS_MAP[poolName]
+      if(pool.type === PoolTypes.LP) {
+        return null
+      }
       if (pool) {
         return getContract(
           pool.addresses[chainId],
@@ -146,6 +153,10 @@ export function useAllContracts(): AllContractsObject | null {
     AXIAL_AC4D_SWAP_TOKEN,
   ) as LpTokenUnguarded
 
+  const axialjlpTokenContract = useTokenContract(
+    AXIAL_JLP_POOL_TOKEN,
+  ) as LpTokenUnguarded
+
   return useMemo(() => {
     if (
       ![
@@ -158,6 +169,7 @@ export function useAllContracts(): AllContractsObject | null {
         mimContract,
         axialas4dSwapTokenContract,
         axialac4dSwapTokenContract,
+        axialjlpTokenContract,
       ].some(Boolean)
     )
       return null
@@ -171,6 +183,7 @@ export function useAllContracts(): AllContractsObject | null {
       [MIM.symbol]: mimContract,
       [AXIAL_AS4D_SWAP_TOKEN.symbol]: axialas4dSwapTokenContract,
       [AXIAL_AC4D_SWAP_TOKEN.symbol]: axialac4dSwapTokenContract,
+      [AXIAL_JLP_POOL_TOKEN.symbol]: axialjlpTokenContract,
     }
   }, [
     daiContract,
@@ -182,5 +195,6 @@ export function useAllContracts(): AllContractsObject | null {
     mimContract,
     axialas4dSwapTokenContract,
     axialac4dSwapTokenContract,
+    axialjlpTokenContract,
   ])
 }

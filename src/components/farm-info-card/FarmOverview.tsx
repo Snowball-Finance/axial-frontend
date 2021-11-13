@@ -45,15 +45,16 @@ export default function FarmOverview({
       : "-",
     apr: poolData.apr ? `${Number(poolData.apr).toFixed(2)}%` : "-",
     rapr: poolData.rapr ? `${Number(poolData.rapr).toFixed(2)}%` : "-",
-    totalapr: Number(poolData.apr) 
-    ? (Number(poolData.apr) + (poolData.rapr ? Number(poolData.rapr) 
+    totalapr: Number(poolData.rapr) 
+    ? (Number(poolData.rapr) + (poolData.apr ? Number(poolData.apr) 
     : 0)).toFixed(2)+"%" 
     : "-",
     volume: poolData.volume ? `$${Number(poolData.volume).toFixed(2)}` : "-",
-    userBalanceUSD: formatBNToShortString(
-      userShareData?.masterchefBalance?.userInfo.amount || Zero,
-      18,
-    ),
+    userBalanceUSD: userShareData ? formatBNToShortString(
+      poolType === PoolTypes.LP 
+      ? userShareData.usdBalance 
+      : userShareData.masterchefBalance?.userInfo.amount || Zero
+    ,18) : "",
     tokens: poolData.tokens.map((coin) => {
       const token = TOKENS_MAP[coin.symbol]
       return {
@@ -74,10 +75,6 @@ export default function FarmOverview({
 
   const info = [
     {
-      title: "Rewards APR",
-      value: `${formattedData.rapr}`,
-    },
-    {
       title: "Total APR",
       value: `${formattedData.totalapr}`,
     },
@@ -86,6 +83,15 @@ export default function FarmOverview({
       value: `$${formattedData.TVL}`,
     },
   ]
+
+  if(poolType !== PoolTypes.LP) {
+    info.unshift(
+      {
+        title: "Rewards APR",
+        value: `${formattedData.rapr}`,
+      },
+    )
+  }
 
   return (
     <div
@@ -105,7 +111,7 @@ export default function FarmOverview({
             <span>{`$${formattedData.userBalanceUSD}`}</span>
           </div>
         )}
-        <div className="tokens">
+        {poolData.tokens.length > 0 && (<div className="tokens">
           <span style={{ marginRight: "8px" }}>[</span>
           {formattedData.tokens.map(({ symbol, icon }) => (
             <div className="token" key={symbol}>
@@ -114,7 +120,7 @@ export default function FarmOverview({
             </div>
           ))}
           <span style={{ marginLeft: "-8px" }}>]</span>
-        </div>
+        </div>)}
       </div>
 
       <div className="right">

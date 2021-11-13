@@ -17,6 +17,7 @@ import classNames from "classnames"
 import { logEvent } from "../../libs/googleAnalytics"
 import { useSelector } from "react-redux"
 import { useTranslation } from "react-i18next"
+import { POOLS_MAP, PoolTypes } from "../../constants"
 
 export interface ReviewWithdrawData {
   withdraw: {
@@ -67,6 +68,12 @@ const FarmWithdrawPage = (props: Props): ReactElement => {
     reviewData,
     onConfirmTransaction,
   } = props
+
+  let poolType = PoolTypes.USD
+  if(poolData){
+    const POOL = POOLS_MAP[poolData?.name]
+    poolType = POOL.type
+  }
 
   const { gasPriceSelected } = useSelector((state: AppState) => state.user)
   const [currentModal, setCurrentModal] = useState<string | null>(null)
@@ -157,7 +164,7 @@ const FarmWithdrawPage = (props: Props): ReactElement => {
             }}
             className="divider"
           ></div>{" "}
-          <PoolInfoCard data={poolData} />
+          {poolType !== PoolTypes.LP && (<PoolInfoCard data={poolData} />)}
         </div>
         <Modal
           isOpen={!!currentModal}

@@ -39,7 +39,7 @@ function TopMenu({ activeTab }: Props): ReactElement {
                 activeTab === "withdraw",
             })}
           >
-            {t("pools")}
+            {t("liquidity")}
           </Link>
         </li>
         <li>
@@ -50,7 +50,7 @@ function TopMenu({ activeTab }: Props): ReactElement {
                 activeTab === "farms"
             })}
           >
-            {t("farm")}
+            {t("rewards")}
           </Link>
         </li>
         <li>

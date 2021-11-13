@@ -2,7 +2,7 @@ import {
   NumberInputState,
   numberInputStateCreator,
 } from "../libs/numberInputState"
-import { POOLS_MAP, PoolName } from "../constants"
+import { POOLS_MAP, PoolName, PoolTypes } from "../constants"
 import { useCallback, useMemo, useState } from "react"
 
 import { BigNumber } from "@ethersproject/bignumber"
@@ -83,7 +83,7 @@ export default function useWithdrawFormState(
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const calculateAndUpdateDynamicFields = useCallback(
     debounce( (state: WithdrawFormState) => {
-      if (userShareData == null || swapContract == null || account == null)
+      if (userShareData == null || (swapContract == null && POOL.type !== PoolTypes.LP) || account == null)
         return
 
       let percentageRaw

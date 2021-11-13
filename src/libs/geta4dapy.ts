@@ -1,7 +1,8 @@
 import {
-  AXIAL_LP_ADDRESS,
+  AXIAL_JLP_ADDRESS,
   AXIAL_MASTERCHEF_CONTRACT_ADDRESS,
   POOLS_MAP,
+  PoolTypes,
 } from "../constants"
 import { BigNumber, ethers } from "ethers"
 import axios from "axios"
@@ -16,6 +17,20 @@ export interface poolInfo {
   lastRewardTimestamp: BigNumber
   accAxialPerShare: BigNumber
   rewarder: string
+}
+
+export interface AxialLPData {
+  AXIALPrice: number,
+  LPTVL: number,
+  tokenPoolPrice: number
+}
+
+export interface MasterchefApr {
+  [swapAddress: string]: {
+    apr: number,
+    lptvl: number,
+    tokenPoolPrice: number
+  }
 }
 
 export async function getAVAXPrice(): Promise<number> {
@@ -46,13 +61,13 @@ export async function getAVAXPrice(): Promise<number> {
   }
 }
 
-export async function getAXIALPriceWithLP(): Promise<number> {
+export async function getAXIALPriceWithLP(): Promise<AxialLPData> {
   const provider = new ethers.providers.StaticJsonRpcProvider(
     process.env.REACT_APP_NETWORK_URL ?? "",
   )
 
   const lpContract = new ethers.Contract(
-    AXIAL_LP_ADDRESS[43114],
+    AXIAL_JLP_ADDRESS[43114],
     lpAMM,
     provider,
   )
@@ -65,23 +80,33 @@ export async function getAXIALPriceWithLP(): Promise<number> {
   // eslint-disable-next-line
   const axialAVAXPrice = AVAXQt / AxialQt
   const AVAXPrice = await getAVAXPrice()
+
   if (AVAXPrice) {
-    return axialAVAXPrice * AVAXPrice
+    // eslint-disable-next-line
+    const supply = await lpContract.totalSupply() /1e18
+    // eslint-disable-next-line
+    const tvl = (reserves._reserve0 / 1e18) * AVAXPrice * 2 
+    const tokenPoolPrice = tvl/supply
+
+    return {
+      AXIALPrice: axialAVAXPrice * AVAXPrice,
+      LPTVL: tvl,
+      tokenPoolPrice
+    }
   } else {
-    return 0
+    return {
+      AXIALPrice: 0,
+      LPTVL: 0,
+      tokenPoolPrice: 0
+    }
   }
 }
 
-interface MastechefApr {
-  [swapAddress: string]: number
-}
+export async function getVaultRewardAprNow(): Promise<MasterchefApr> {
 
-export async function getVaultRewardAprNow(): Promise<MastechefApr> {
-
-  let APRData:MastechefApr = {}
-  try {
-    for (const pool of Object.values(POOLS_MAP)) {
-      console.log(pool)
+  let APRData: MasterchefApr = {}
+  for (const pool of Object.values(POOLS_MAP)) {
+    try {
 
       const provider = new ethers.providers.StaticJsonRpcProvider(
         process.env.REACT_APP_NETWORK_URL ?? "",
@@ -103,9 +128,17 @@ export async function getVaultRewardAprNow(): Promise<MastechefApr> {
       )
       // eslint-disable-next-line
       const balanceToken = await tokenContract.balanceOf(AXIAL_MASTERCHEF_CONTRACT_ADDRESS[43114]) / 1e18
-      // eslint-disable-next-line
-      const virtualPrice: BigNumber = await swapTokenContract.getVirtualPrice()
-      const TVL = (+virtualPrice / 1e18) * balanceToken
+
+      const { AXIALPrice, LPTVL, tokenPoolPrice } = await getAXIALPriceWithLP()
+
+      let virtualPrice = BigNumber.from(0), TVL = 0
+      if(pool.type !== PoolTypes.LP) {
+        // eslint-disable-next-line
+        virtualPrice = await swapTokenContract.getVirtualPrice()
+        TVL = (+virtualPrice / 1e18) * balanceToken
+      } else {
+        TVL = tokenPoolPrice * balanceToken
+      }
 
       // eslint-disable-next-line
       const totalAllocPoint: BigNumber = await masterchefContract.totalAllocPoint()
@@ -114,21 +147,34 @@ export async function getVaultRewardAprNow(): Promise<MastechefApr> {
       // eslint-disable-next-line
       const axialPerSecond: number = await masterchefContract.axialPerSec() / 1e18
 
-      const poolFraction = +poolInfo.allocPoint / +totalAllocPoint
-      const axialPrice = await getAXIALPriceWithLP()
-
-      const usdPerWeek = axialPerSecond * poolFraction * axialPrice * 604_800
+      let poolFraction = 0
+      if(+poolInfo.allocPoint > 0) {
+        poolFraction = +poolInfo.allocPoint / +totalAllocPoint
+      }
+  
+      const usdPerWeek = axialPerSecond * poolFraction * AXIALPrice * 604_800
       const APRYearly = (usdPerWeek / TVL) * 100 * 52
 
       APRData = {
         ...APRData,
-        [pool.addresses[43114]]: APRYearly
+        [pool.addresses[43114]]: {
+          apr: APRYearly,
+          lptvl: LPTVL,
+          tokenPoolPrice: tokenPoolPrice
+        }
       }
-
+    } catch (error) {
+      console.error(`Error fetching Pool Reward APY for Pool: ${pool.addresses[43114]}`)
+      APRData = {
+        ...APRData,
+        [pool.addresses[43114]]: {
+          apr: 0,
+          lptvl: 0,
+          tokenPoolPrice: 0
+        }
+      } 
     }
-    return APRData
-  } catch (error) {
-    console.error("Error fetching Pool Reward APY")
-    return {}
   }
+  return APRData
+
 }

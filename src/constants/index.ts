@@ -17,7 +17,8 @@ import walletconnectIcon from "../assets/icons/walletconnect.svg"
 export const NetworkContextName = "NETWORK"
 export const AXIAL_AS4D_POOL_NAME = "AS4D Stablecoins"
 export const AXIAL_AC4D_POOL_NAME = "AC4D Stablecoins"
-export type PoolName = typeof AXIAL_AS4D_POOL_NAME | typeof AXIAL_AC4D_POOL_NAME
+export const AXIAL_JLP_POOL_NAME = "JLP AVAX-AXIAL"
+export type PoolName = typeof AXIAL_AS4D_POOL_NAME | typeof AXIAL_AC4D_POOL_NAME | typeof AXIAL_JLP_POOL_NAME
 
 export enum ChainId {
   MAINNET = 43114,
@@ -27,6 +28,7 @@ export enum PoolTypes {
   BTC,
   ETH,
   USD,
+  LP,
   OTHER,
 }
 
@@ -109,8 +111,7 @@ export const AXIAL_TOKEN_ADDRESS: {
   [ChainId.HARDHAT]: "0xcF8419A615c57511807236751c0AF38Db4ba3351",
 }
 
-//needs to be changed
-export const AXIAL_LP_ADDRESS: {
+export const AXIAL_JLP_ADDRESS: {
   [chainId in ChainId]: string
 } = {
   [ChainId.MAINNET]: "0x5305A6c4DA88391F4A9045bF2ED57F4BF0cF4f62",
@@ -139,6 +140,18 @@ export const AXIAL_AC4D_SWAP_TOKEN = new Token(
   false,
   true,
   1,
+)
+
+export const AXIAL_JLP_POOL_TOKEN = new Token(
+  AXIAL_JLP_ADDRESS,
+  18,
+  "JLP",
+  "jlpavaxaxial",
+  "JLP AVAX-AXIAL",
+  axialLogo,
+  false,
+  true,
+  2,
 )
 
 // Stablecoins
@@ -287,6 +300,15 @@ export const POOLS_MAP: PoolsMap = {
     isSynthetic: false,
     type: PoolTypes.USD,
     route: "ac4d"
+  },
+  [AXIAL_JLP_POOL_NAME]: {
+    name: AXIAL_JLP_POOL_NAME,
+    addresses: AXIAL_JLP_ADDRESS,
+    lpToken: AXIAL_JLP_POOL_TOKEN,
+    poolTokens: [],
+    isSynthetic: false,
+    type: PoolTypes.LP,
+    route: "jlp"
   },
 }
 
