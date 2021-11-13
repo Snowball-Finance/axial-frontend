@@ -31,21 +31,21 @@ function Farm(): ReactElement | null {
         name: AXIAL_AS4D_POOL_NAME,
         poolData: as4dPoolData,
         userShareData: as4dUserShareData,
-        poolRoute: "/farms/as4d",
+        poolRoute: "/rewards/as4d",
       }
     } else if (poolName === AXIAL_AC4D_POOL_NAME) {
       return {
         name: AXIAL_AC4D_POOL_NAME,
         poolData: ac4dPoolData,
         userShareData: ac4dUserShareData,
-        poolRoute: "/farms/ac4d",
+        poolRoute: "/rewards/ac4d",
       }
     } else {
       return {
         name: AXIAL_JLP_POOL_NAME,
         poolData: jlpPoolData,
         userShareData: jlpUserShareData,
-        poolRoute: "/farms/jlp",
+        poolRoute: "/rewards/jlp",
       }
     }
   }

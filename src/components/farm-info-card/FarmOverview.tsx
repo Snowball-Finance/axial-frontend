@@ -13,10 +13,13 @@ import Button from "../button/Button"
 import { Link } from "react-router-dom"
 import { Zero } from "@ethersproject/constants"
 import classNames from "classnames"
-import { ethers } from "ethers"
+import { BigNumber, ethers } from "ethers"
 import masterchef from "../../constants/abis/masterchef.json"
 import { useActiveWeb3React } from "../../hooks"
 import { useTranslation } from "react-i18next"
+import avaxIcon from '../../assets/icons/AVAX.png'
+import axialLogo from "../../assets/icons/logo_icon.svg" // this needs a smaller icon logo(24)
+
 
 interface Props {
   poolRoute: string
@@ -45,16 +48,16 @@ export default function FarmOverview({
       : "-",
     apr: poolData.apr ? `${Number(poolData.apr).toFixed(2)}%` : "-",
     rapr: poolData.rapr ? `${Number(poolData.rapr).toFixed(2)}%` : "-",
-    totalapr: Number(poolData.rapr) 
-    ? (Number(poolData.rapr) + (poolData.apr ? Number(poolData.apr) 
-    : 0)).toFixed(2)+"%" 
-    : "-",
+    totalapr: Number(poolData.rapr)
+      ? (Number(poolData.rapr) + (poolData.apr ? Number(poolData.apr)
+        : 0)).toFixed(2) + "%"
+      : "-",
     volume: poolData.volume ? `$${Number(poolData.volume).toFixed(2)}` : "-",
     userBalanceUSD: userShareData ? formatBNToShortString(
-      poolType === PoolTypes.LP 
-      ? userShareData.usdBalance 
-      : userShareData.masterchefBalance?.userInfo.amount || Zero
-    ,18) : "",
+      poolType === PoolTypes.LP
+        ? userShareData.usdBalance
+        : userShareData.masterchefBalance?.userInfo.amount || Zero
+      , 18) : "",
     tokens: poolData.tokens.map((coin) => {
       const token = TOKENS_MAP[coin.symbol]
       return {
@@ -84,7 +87,7 @@ export default function FarmOverview({
     },
   ]
 
-  if(poolType !== PoolTypes.LP) {
+  if (poolType !== PoolTypes.LP) {
     info.unshift(
       {
         title: "Rewards APR",
@@ -92,6 +95,31 @@ export default function FarmOverview({
       },
     )
   }
+  let tokensToShow = [...formattedData.tokens]
+  const poolTokensToShow = [...poolData.tokens]
+  if (poolData.name === "JLP AVAX-AXIAL") {
+    poolData.tokens = [{
+      percent: "24.19%",
+      symbol: "TSD",
+      value: BigNumber.from('0x012410c9d8d3e7774b6dfb')
+    },
+    ]
+    tokensToShow = [
+      {
+        icon: avaxIcon,
+        name: "Teddy Dollar",
+        symbol: "AVAX",
+        value: "1379240.70",
+      },
+      {
+        icon: axialLogo,
+        name: "Teddy Dollar",
+        symbol: "AXIAL",
+        value: "1379240.70",
+      }
+    ]
+  }
+
 
   return (
     <div
@@ -111,9 +139,9 @@ export default function FarmOverview({
             <span>{`$${formattedData.userBalanceUSD}`}</span>
           </div>
         )}
-        {poolData.tokens.length > 0 && (<div className="tokens">
+        {poolTokensToShow.length > 0 && (<div className="tokens">
           <span style={{ marginRight: "8px" }}>[</span>
-          {formattedData.tokens.map(({ symbol, icon }) => (
+          {tokensToShow.map(({ symbol, icon }) => (
             <div className="token" key={symbol}>
               <img alt="icon" src={icon} />
               <span>{symbol}</span>
