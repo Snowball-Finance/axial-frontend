@@ -120,13 +120,6 @@ export default function usePoolData(
           } else {
             return
           }
-                
-          const poolApr = masterchefPool.apr ?? 0
-
-          const userMasterchefBalances = masterchefBalances[POOL.lpToken.symbol]
-          if(!userMasterchefBalances){
-            return
-          }
 
           const lpTokenContract = getContract(
             POOL.lpToken.addresses[43114],
@@ -135,17 +128,11 @@ export default function usePoolData(
             account ?? undefined,
           ) as LpTokenUnguarded
 
-          const userLpTokenBalance = userMasterchefBalances.userInfo.amount
           const [totalLpTokenBalance] = await Promise.all([
             lpTokenContract.balanceOf(AXIAL_MASTERCHEF_CONTRACT_ADDRESS[43114]),
           ])
-          
-          const share = userLpTokenBalance?.mul(BigNumber.from(10).pow(18))
-          .div(
-            totalLpTokenBalance.isZero()
-              ? BigNumber.from("1")
-              : totalLpTokenBalance,
-          )
+              
+          const poolApr = masterchefPool.apr ?? 0
 
           let DEXLockedBN = BigNumber.from(0)
 
@@ -153,9 +140,6 @@ export default function usePoolData(
             const totalLocked = masterchefPool.tokenPoolPrice * (+totalLpTokenBalance/1e18)
             DEXLockedBN = BigNumber.from(totalLocked.toFixed(0)).mul(BigNumber.from(10).pow(18))
           }
-
-          const usdBalance = DEXLockedBN.isZero() ? BigNumber.from("0") :
-            DEXLockedBN.mul(share).div(BigNumber.from(10).pow(18))
 
           let tokenPoolPriceBN = BigNumber.from(0)
           try{
@@ -181,6 +165,24 @@ export default function usePoolData(
             lpToken: POOL.lpToken.symbol,
             isPaused: false,
           }
+
+          const userMasterchefBalances = masterchefBalances[POOL.lpToken.symbol]
+          if(!userMasterchefBalances){
+            setPoolData([poolData, null])
+            return
+          } 
+
+          const userLpTokenBalance = userMasterchefBalances.userInfo.amount
+          
+          const share = userLpTokenBalance?.mul(BigNumber.from(10).pow(18))
+          .div(
+            totalLpTokenBalance.isZero()
+              ? BigNumber.from("1")
+              : totalLpTokenBalance,
+          )
+
+          const usdBalance = DEXLockedBN.isZero() ? BigNumber.from("0") :
+            DEXLockedBN.mul(share).div(BigNumber.from(10).pow(18))
 
           const userShareData = account
           ? {
