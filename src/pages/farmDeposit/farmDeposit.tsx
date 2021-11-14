@@ -6,7 +6,7 @@ import {
   DepositTransaction,
   TransactionItem,
 } from "../../interfaces/transactions"
-import { POOLS_MAP, PoolName, Token } from "../../constants"
+import { AXIAL_AS4D_POOL_NAME, POOLS_MAP, PoolName, Token } from "../../constants"
 import React, { ReactElement, useEffect, useMemo, useState } from "react"
 import {
   TokensStateType,
@@ -33,7 +33,7 @@ interface Props {
   poolName: PoolName
 }
 
-function FarmDeposit({ poolName = 'AS4D Stablecoins' }: Props): ReactElement | null {
+function FarmDeposit({ poolName = AXIAL_AS4D_POOL_NAME }: Props): ReactElement | null {
   const POOL = POOLS_MAP[poolName]
   const { account } = useActiveWeb3React()
   const approveAndDeposit = useApproveAndDeposit(poolName)
