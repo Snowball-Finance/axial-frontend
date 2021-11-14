@@ -15,8 +15,8 @@ import usdtLogo from "../assets/icons/usdt.svg"
 import walletconnectIcon from "../assets/icons/walletconnect.svg"
 
 export const NetworkContextName = "NETWORK"
-export const AXIAL_AS4D_POOL_NAME = "AS4D Stablecoins"
-export const AXIAL_AC4D_POOL_NAME = "AC4D Stablecoins"
+export const AXIAL_AS4D_POOL_NAME = "Fiat Backed Stablecoins"
+export const AXIAL_AC4D_POOL_NAME = "Algorithmic Stablecoins"
 export type PoolName = typeof AXIAL_AS4D_POOL_NAME | typeof AXIAL_AC4D_POOL_NAME
 
 export enum ChainId {
