@@ -29,6 +29,7 @@ export interface MasterchefApr {
   [swapAddress: string]: {
     apr: number,
     lptvl: number,
+    totalStaked: string,
     tokenPoolPrice: number
   }
 }
@@ -127,7 +128,9 @@ export async function getVaultRewardAprNow(): Promise<MasterchefApr> {
         provider,
       )
       // eslint-disable-next-line
-      const balanceToken = await tokenContract.balanceOf(AXIAL_MASTERCHEF_CONTRACT_ADDRESS[43114]) / 1e18
+      const balanceToken = await tokenContract.balanceOf(
+        AXIAL_MASTERCHEF_CONTRACT_ADDRESS[43114]
+      ) as BigNumber
 
       const { AXIALPrice, LPTVL, tokenPoolPrice } = await getAXIALPriceWithLP()
 
@@ -135,9 +138,9 @@ export async function getVaultRewardAprNow(): Promise<MasterchefApr> {
       if(pool.type !== PoolTypes.LP) {
         // eslint-disable-next-line
         virtualPrice = await swapTokenContract.getVirtualPrice()
-        TVL = (+virtualPrice / 1e18) * balanceToken
+        TVL = (+virtualPrice / 1e18) * (+balanceToken / 1e18)
       } else {
-        TVL = tokenPoolPrice * balanceToken
+        TVL = tokenPoolPrice * (+balanceToken / 1e18)
       }
 
       // eslint-disable-next-line
@@ -160,6 +163,7 @@ export async function getVaultRewardAprNow(): Promise<MasterchefApr> {
         [pool.addresses[43114]]: {
           apr: APRYearly,
           lptvl: LPTVL,
+          totalStaked: balanceToken.toHexString(),
           tokenPoolPrice: tokenPoolPrice
         }
       }
@@ -170,7 +174,8 @@ export async function getVaultRewardAprNow(): Promise<MasterchefApr> {
         [pool.addresses[43114]]: {
           apr: 0,
           lptvl: 0,
-          tokenPoolPrice: 0
+          tokenPoolPrice: 0,
+          totalStaked: "0x0"
         }
       } 
     }

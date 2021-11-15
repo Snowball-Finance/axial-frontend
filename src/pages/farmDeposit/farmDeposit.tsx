@@ -37,7 +37,7 @@ function FarmDeposit({ poolName = 'AS4D Stablecoins' }: Props): ReactElement | n
   const POOL = POOLS_MAP[poolName]
   const { account } = useActiveWeb3React()
   const approveAndDeposit = useApproveAndDeposit(poolName)
-  const [poolData, userShareData] = usePoolData(poolName)
+  const [poolData, userShareData] = usePoolData(poolName, true)
   const swapContract = useSwapContract(poolName)
   const allTokens = useMemo(() => {
     const arr = Array.from(

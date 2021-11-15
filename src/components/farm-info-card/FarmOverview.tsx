@@ -43,6 +43,14 @@ export default function FarmOverview({
     name: poolData.name,
     myShare: formatBNToShortString(userShareData?.share || Zero, 18),
     TVL: formatBNToShortString(poolData?.totalLocked || Zero, 18),
+    axialPending: formatBNToShortString(
+      userShareData?.masterchefBalance?.pendingTokens.pendingAxial 
+      || Zero, 18
+    ),
+    avaxPending: formatBNToShortString(
+      userShareData?.masterchefBalance?.pendingTokens.pendingBonusToken
+      || Zero, 18
+    ),
     reserve: poolData.reserve
       ? formatBNToShortString(poolData.reserve, 18)
       : "-",
@@ -75,8 +83,31 @@ export default function FarmOverview({
     masterchef,
     library?.getSigner(),
   )
+  let info = []
 
-  const info = [
+  if(hasShare) {
+    info.push(
+      {
+        title: "Balance",
+        value: `$${formattedData.userBalanceUSD}`,
+      },
+      {
+        title: "Claimable",
+        value: `${formattedData.axialPending}`,
+      },
+    )
+  }
+
+  if (poolType !== PoolTypes.LP) {
+    info.push(
+      {
+        title: "Rewards APR",
+        value: `${formattedData.rapr}`,
+      },
+    )
+  }
+
+  info = info.concat([
     {
       title: "Total APR",
       value: `${formattedData.totalapr}`,
@@ -85,16 +116,9 @@ export default function FarmOverview({
       title: "TVL",
       value: `$${formattedData.TVL}`,
     },
-  ]
+  ])
 
-  if (poolType !== PoolTypes.LP) {
-    info.unshift(
-      {
-        title: "Rewards APR",
-        value: `${formattedData.rapr}`,
-      },
-    )
-  }
+
   let tokensToShow = [...formattedData.tokens]
   const poolTokensToShow = [...poolData.tokens]
   if (poolData.name === "JLP AVAX-AXIAL") {
@@ -133,12 +157,6 @@ export default function FarmOverview({
           {(shouldMigrate || isOutdated) && <Tag kind="warning">OUTDATED</Tag>}
           {poolData.isPaused && <Tag kind="error">PAUSED</Tag>}
         </div>
-        {hasShare && (
-          <div className="balance">
-            <span>{t("balance")}: </span>
-            <span>{`$${formattedData.userBalanceUSD}`}</span>
-          </div>
-        )}
         {poolTokensToShow.length > 0 && (<div className="tokens">
           <span style={{ marginRight: "8px" }}>[</span>
           {tokensToShow.map(({ symbol, icon }) => (
