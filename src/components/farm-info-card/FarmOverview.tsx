@@ -43,6 +43,14 @@ export default function FarmOverview({
     name: poolData.name,
     myShare: formatBNToShortString(userShareData?.share || Zero, 18),
     TVL: formatBNToShortString(poolData?.totalLocked || Zero, 18),
+    axialPending: formatBNToShortString(
+      userShareData?.masterchefBalance?.pendingTokens.pendingAxial 
+      || Zero, 18
+    ),
+    avaxPending: formatBNToShortString(
+      userShareData?.masterchefBalance?.pendingTokens.pendingBonusToken
+      || Zero, 18
+    ),
     reserve: poolData.reserve
       ? formatBNToShortString(poolData.reserve, 18)
       : "-",
@@ -137,6 +145,13 @@ export default function FarmOverview({
           <div className="balance">
             <span>{t("balance")}: </span>
             <span>{`$${formattedData.userBalanceUSD}`}</span>
+            <span>{formattedData.userBalanceUSD.length > 0 ? (
+              ` | Claimable: ${formattedData.axialPending} AXIAL ${
+                userShareData?.masterchefBalance?.pendingTokens.pendingBonusToken.gt("0x0") 
+                  ? formattedData.avaxPending+" AVAX" 
+                  : ""
+              }`
+            ) : null}</span>
           </div>
         )}
         {poolTokensToShow.length > 0 && (<div className="tokens">
