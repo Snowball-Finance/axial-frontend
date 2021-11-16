@@ -29,6 +29,7 @@
   "confirmWithdraw": "Confirm Withdraw",
   "connectedWith": "Connected with",
   "connectWallet": "Connect Wallet",
+  "switchNetwork": "Switch Network",
   "copyAddress": "Copy Address",
   "crossAssetSwapsUseVirtualSwaps": "Cross-asset swaps use Virtual Swap.",
   "currencyReserves": "Currency reserves",
