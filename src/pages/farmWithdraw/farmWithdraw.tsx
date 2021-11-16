@@ -22,7 +22,7 @@ interface Props {
   poolName: PoolName
 }
 function FarmWithdraw({ poolName }: Props): ReactElement {
-  const [poolData, userShareData] = usePoolData(poolName)
+  const [poolData, userShareData] = usePoolData(poolName, true)
   const [withdrawFormState, updateWithdrawFormState] = useWithdrawFormState(
     poolName,
   )

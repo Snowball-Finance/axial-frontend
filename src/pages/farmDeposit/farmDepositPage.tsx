@@ -138,7 +138,7 @@ const FarmDepositPage = (props: Props): ReactElement => {
           </Button>
         </div>
         <div className="infoPanels">
-          <MyShareCard data={myShareData} usePendingMasterchef={true} />
+          <MyShareCard data={myShareData} usePendingMasterchef={true} useMasterchefAmount={true} />
           <div
             style={{
               display: myShareData ? "block" : "none",
