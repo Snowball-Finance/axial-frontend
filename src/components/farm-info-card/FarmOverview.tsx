@@ -144,7 +144,6 @@ export default function FarmOverview({
     ]
   }
 
-
   return (
     <div
       className={classNames("poolOverview", {
