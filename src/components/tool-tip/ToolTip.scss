@@ -1,4 +1,5 @@
 @import "../../styles/theme";
+@import "../../styles/viewports.scss";
 
 .toolTip {
   display: inline-block;
@@ -28,6 +29,9 @@
     left: 50%;
     transform: translateX(-50%);
     margin-bottom: 15px;
+    @include breakpoint(sm) {
+      left: 90%;
+    }
   }
 
   /* Tooltip arrow */
