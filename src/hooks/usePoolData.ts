@@ -80,6 +80,7 @@ const emptyPoolData = {
 
 export default function usePoolData(
   poolName?: PoolName,
+  useMasterchef?: boolean, //use LP info or masterchef info as source of data for balances
 ): PoolDataHookReturnType {
   const { account, library, chainId } = useActiveWeb3React()
   const swapContract = useSwapContract(poolName)
@@ -228,7 +229,7 @@ export default function usePoolData(
       ])
       
       let poolApr = 0
-      if( masterchefApr ){
+      if(masterchefApr){
         poolApr = masterchefApr[POOL.addresses[43114]].apr ?? 0
       }
 
@@ -239,10 +240,12 @@ export default function usePoolData(
         library,
         account ?? undefined,
       ) as LpTokenUnguarded
-      const [userLpTokenBalance, totalLpTokenBalance] = await Promise.all([
-        lpTokenContract.balanceOf(account || AddressZero),
-        lpTokenContract.totalSupply(),
-      ])
+      const totalLpTokenBalance = await lpTokenContract.totalSupply()
+    
+      //      lpTokenContract.add(masterchef)
+      const userLpTokenBalance = useMasterchef && userMasterchefBalances 
+        ? userMasterchefBalances.userInfo.amount 
+        : await lpTokenContract.balanceOf(account || AddressZero)
 
       const virtualPrice = totalLpTokenBalance.isZero()
         ? BigNumber.from(10).pow(18)
@@ -281,13 +284,17 @@ export default function usePoolData(
           .div(tokenBalancesSum)
 
       function calculatePctOfTotalShare(lpTokenAmount: BigNumber): BigNumber {
+        const baseCalc = useMasterchef && masterchefApr
+          ? BigNumber.from(masterchefApr[POOL.addresses[43114]].totalStaked)
+          : totalLpTokenBalance
+
         // returns the % of total lpTokens
         return lpTokenAmount
           .mul(BigNumber.from(10).pow(18))
           .div(
-            totalLpTokenBalance.isZero()
+            baseCalc.isZero()
               ? BigNumber.from("1")
-              : totalLpTokenBalance,
+              : baseCalc,
           )
       }
 
@@ -384,6 +391,7 @@ export default function usePoolData(
     chainId,
     swapStats,
     masterchefApr,
+    useMasterchef
   ])
 
   return poolData

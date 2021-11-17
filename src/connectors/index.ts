@@ -6,6 +6,19 @@ import { WalletConnectConnector } from "@web3-react/walletconnect-connector"
 import { WalletLinkConnector } from "@web3-react/walletlink-connector"
 
 const NETWORK_URL = process.env.REACT_APP_NETWORK_URL
+
+const AVALANCHE_MAINNET_PARAMS = {
+  chainId: '0xa86a',
+  chainName: 'Avalanche Mainnet C-Chain',
+  nativeCurrency: {
+      name: 'Avalanche',
+      symbol: 'AVAX',
+      decimals: 18
+  },
+  rpcUrls: ['https://api.avax.network/ext/bc/C/rpc'],
+  blockExplorerUrls: ['https://snowtrace.io/']
+}
+
 export const NETWORK_CHAIN_ID: number = parseInt(
   process.env.REACT_APP_CHAIN_ID ?? "43114",
 )
@@ -43,3 +56,17 @@ export const walletlink = new WalletLinkConnector({
   url: NETWORK_URL,
   appName: "vault",
 })
+
+export const addAvalancheNetwork = () => {
+  injected.getProvider().then((provider: any): void => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    provider
+      .request({
+        method: 'wallet_addEthereumChain',
+        params: [AVALANCHE_MAINNET_PARAMS]
+      })
+      .catch((error: any) => {
+        console.log(error)
+      })
+  }).catch(error => {console.log(error)})
+};

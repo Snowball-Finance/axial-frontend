@@ -4,7 +4,7 @@
   text-align: right;
   span,
   a {
-    font-size: 12px;
+    font-size: 16px;
   }
   a {
     font-weight: 700;
@@ -19,6 +19,7 @@
   border-radius: 8px;
   padding: 8px;
   display: flex;
+  font-size: 16px;
   width: 100%;
   position: relative;
   background-color: $primary-shade;
@@ -48,6 +49,7 @@
 .inputGroup {
   display: flex;
   flex: 1;
+  font-size: 16px;
   flex-direction: column;
   align-items: flex-end;
   cursor: default;
