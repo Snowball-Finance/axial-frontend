@@ -17,8 +17,12 @@ import walletconnectIcon from "../assets/icons/walletconnect.svg"
 export const NetworkContextName = "NETWORK"
 export const AXIAL_AS4D_POOL_NAME = "AS4D Stablecoins"
 export const AXIAL_AC4D_POOL_NAME = "AC4D Stablecoins"
+export const AXIAL_AM3D_POOL_NAME = "AM3D Stablecoins"
 export const AXIAL_JLP_POOL_NAME = "JLP AVAX-AXIAL"
-export type PoolName = typeof AXIAL_AS4D_POOL_NAME | typeof AXIAL_AC4D_POOL_NAME | typeof AXIAL_JLP_POOL_NAME
+export type PoolName = typeof AXIAL_AS4D_POOL_NAME 
+| typeof AXIAL_AC4D_POOL_NAME 
+| typeof AXIAL_JLP_POOL_NAME
+| typeof AXIAL_AM3D_POOL_NAME
 
 export enum ChainId {
   MAINNET = 43114,
@@ -73,6 +77,11 @@ export const AXIAL_AS4D_SWAP_ADDRESSES: { [chainId in ChainId]: string } = {
   [ChainId.HARDHAT]: "0x2a716c4933A20Cd8B9f9D9C39Ae7196A85c24228",
 }
 
+export const AXIAL_AM3D_SWAP_ADDRESSES: { [chainId in ChainId]: string } = {
+  [ChainId.MAINNET]: "0x90c7b96AD2142166D001B27b5fbc128494CDfBc8",
+  [ChainId.HARDHAT]: "0x90c7b96AD2142166D001B27b5fbc128494CDfBc8",
+}
+
 export const AXIAL_AC4D_SWAP_ADDRESSES: { [chainId in ChainId]: string } = {
   [ChainId.MAINNET]: "0x8c3c1C6F971C01481150CA7942bD2bbB9Bc27bC7",
   [ChainId.HARDHAT]: "0x8c3c1C6F971C01481150CA7942bD2bbB9Bc27bC7",
@@ -88,6 +97,13 @@ export const AXIAL_AS4D_SWAP_TOKEN_CONTRACT_ADDRESSES: {
 } = {
   [ChainId.MAINNET]: "0x3A7387f8BA3ebFFa4A0ECcB1733e940CE2275D3f",
   [ChainId.HARDHAT]: "0x3A7387f8BA3ebFFa4A0ECcB1733e940CE2275D3f",
+}
+
+export const AXIAL_AM3D_SWAP_TOKEN_CONTRACT_ADDRESSES: {
+  [chainId in ChainId]: string
+} = {
+  [ChainId.MAINNET]: "0xc161E4B11FaF62584EFCD2100cCB461A2DdE64D1",
+  [ChainId.HARDHAT]: "0xc161E4B11FaF62584EFCD2100cCB461A2DdE64D1",
 }
 
 export const AXIAL_AC4D_SWAP_TOKEN_CONTRACT_ADDRESSES: {
@@ -140,6 +156,18 @@ export const AXIAL_AC4D_SWAP_TOKEN = new Token(
   false,
   true,
   1,
+)
+
+export const AXIAL_AM3D_SWAP_TOKEN = new Token(
+  AXIAL_AM3D_SWAP_TOKEN_CONTRACT_ADDRESSES,
+  18,
+  "am3dUSD",
+  "am3dusd",
+  "AM3D MIM/USDC.e/DAI.e",
+  axialLogo,
+  false,
+  true,
+  3,
 )
 
 export const AXIAL_JLP_POOL_TOKEN = new Token(
@@ -264,6 +292,7 @@ export const USDC = new Token(
 
 export const AXIAL_AS4D_POOL_TOKENS = [TUSD, USDC, DAI, USDT]
 export const AXIAL_AC4D_POOL_TOKENS = [TSD, MIM, FRAX, DAI]
+export const AXIAL_AM3D_POOL_TOKENS = [MIM, USDC, DAI]
 
 export type Pool = {
   name: PoolName
@@ -309,6 +338,15 @@ export const POOLS_MAP: PoolsMap = {
     isSynthetic: false,
     type: PoolTypes.LP,
     route: "jlp"
+  },
+  [AXIAL_AM3D_POOL_NAME]: {
+    name: AXIAL_AM3D_POOL_NAME,
+    addresses: AXIAL_AM3D_SWAP_ADDRESSES,
+    lpToken: AXIAL_AM3D_SWAP_TOKEN,
+    poolTokens: AXIAL_AM3D_POOL_TOKENS,
+    isSynthetic: false,
+    type: PoolTypes.USD,
+    route: "am3d"
   },
 }
 
