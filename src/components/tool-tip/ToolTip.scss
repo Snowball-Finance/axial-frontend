@@ -29,9 +29,6 @@
     left: 50%;
     transform: translateX(-50%);
     margin-bottom: 15px;
-    @include breakpoint(sm) {
-      left: 90%;
-    }
   }
 
   /* Tooltip arrow */

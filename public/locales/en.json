@@ -53,6 +53,8 @@
   "highPriceImpact": "Warning: High Price Impact! {{rate}}",
   "highPriceImpactConfirmation": "Warning: There is a high Price Impact on this transaction due either to the transaction's size or insufficient liquidity, which will result in a loss of funds. Please confirm that you understand before submitting your transaction.",
   "iConfirm": "I CONFIRM",
+  "unbalancedPool": "Warning: Pool unbalanced!",
+  "unbalancedPoolTooltip": "This pool is currently unbalanced, you may suffer high losses for depositing funds. Review the Price Impact carefully before depositing.",
   "infiniteApproval": "Approve Permanently",
   "infiniteApprovalTooltip": "Our smart contract needs your permission in order to move funds your behalf, this setting will give our contracts the permanent ability to move funds. Otherwise, you will need to approve each time you make a deposit.",
   "inputNotValid": "Not a valid input value",

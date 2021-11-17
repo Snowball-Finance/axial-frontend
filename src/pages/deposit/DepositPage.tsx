@@ -13,6 +13,7 @@ import MyShareCard from "../../components/my-share-card/MyShareCard"
 import PoolInfoCard from "../../components/pool-info-card/PoolInfoCard"
 import ReviewDeposit from "../../components/reviews/ReviewDeposit"
 import TokenInput from "../../components/token-input/TokenInput"
+import ToolTip from "../../components/tool-tip/ToolTip"
 import { formatBNToPercentString } from "../../libs"
 //import { logEvent } from "../../libs/googleAnalytics"
 import { useTranslation } from "react-i18next"
@@ -58,6 +59,8 @@ const DepositPage = (props: Props): ReactElement => {
 
   const validDepositAmount = transactionData.to.totalAmount.gt(0)
   const shouldDisplayWrappedOption = false
+
+  console.log('poolData ==>', poolData);
 
   return (
     <div className="deposit">
@@ -121,6 +124,13 @@ const DepositPage = (props: Props): ReactElement => {
             </div>
           </div>
           <AdvancedOptions noApprovalCheckbox={false} noSlippageCheckbox={false}/>
+          {poolData?.lpToken === "as4dUSD" && <div className="warning">
+            <ToolTip content={t("unbalancedPoolTooltip")}>
+              <h4>
+                {t("unbalancedPool")}
+              </h4>
+            </ToolTip>
+          </div>}
           <Button
             kind="primary"
             onClick={(): void => {
