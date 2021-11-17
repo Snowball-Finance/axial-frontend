@@ -61,12 +61,6 @@ export default function PoolOverview({
           {(shouldMigrate || isOutdated) && <Tag kind="warning">OUTDATED</Tag>}
           {poolData.isPaused && <Tag kind="error">PAUSED</Tag>}
         </div>
-        {hasShare && (
-          <div className="balance">
-            <span>{t("balance")}: </span>
-            <span>{`$${formattedData.userBalanceUSD}`}</span>
-          </div>
-        )}
         <div className="tokens">
           <span style={{ marginRight: "8px" }}>[</span>
           {formattedData.tokens.map(({ symbol, icon }) => (
@@ -81,6 +75,12 @@ export default function PoolOverview({
 
       <div className="right">
         <div className="poolInfo">
+          {hasShare && (
+            <div className="margin">
+              <span className="label">{`${t("balance")}`}</span>
+              <span>{formattedData.userBalanceUSD}</span>
+            </div>
+          )}
           {formattedData.apr && (
             <div className="margin">
               <span className="label">{`${t("apr")}`}</span>

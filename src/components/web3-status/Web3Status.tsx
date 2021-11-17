@@ -6,7 +6,8 @@ import ConnectWallet from "../connect-wallet/ConnectWallet"
 import Identicon from "../Identicon"
 import Modal from "../modal/Modal"
 import { useTranslation } from "react-i18next"
-import { useWeb3React } from "@web3-react/core"
+import { useWeb3React, UnsupportedChainIdError } from "@web3-react/core"
+import { addAvalancheNetwork } from "../../connectors"
 
 const WALLET_VIEWS = {
   OPTIONS: "options",
@@ -14,7 +15,7 @@ const WALLET_VIEWS = {
 }
 
 const Web3Status = (): ReactElement => {
-  const { account } = useWeb3React()
+  const { account, error } = useWeb3React()
   const [modalOpen, setModalOpen] = useState(false)
   const [walletView, setWalletView] = useState(WALLET_VIEWS.ACCOUNT)
   const { t } = useTranslation()
@@ -28,7 +29,11 @@ const Web3Status = (): ReactElement => {
 
   return (
     <div className="walletStatus">
-      <button type="button" onClick={(): void => setModalOpen(true)}>
+      {error instanceof UnsupportedChainIdError ?
+        <button type="button" onClick={addAvalancheNetwork}>
+          <div className="noAccount">{t("switchNetwork")}</div>
+        </button>
+      :<button type="button" onClick={(): void => setModalOpen(true)}>
         {account ? (
           <div className="hasAccount">
             <span className="address">
@@ -41,7 +46,7 @@ const Web3Status = (): ReactElement => {
         ) : (
           <div className="noAccount">{t("connectWallet")}</div>
         )}
-      </button>
+      </button>}
       <Modal isOpen={modalOpen} onClose={(): void => setModalOpen(false)}>
         {account && walletView === WALLET_VIEWS.ACCOUNT ? (
           <AccountDetails
