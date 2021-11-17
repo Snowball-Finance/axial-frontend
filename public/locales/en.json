@@ -56,7 +56,7 @@
   "unbalancedPool": "Warning: Pool unbalanced!",
   "unbalancedPoolTooltip": "This pool is currently unbalanced, you may suffer high losses for depositing funds. Review the Price Impact carefully before depositing.",
   "infiniteApproval": "Approve Permanently",
-  "infiniteApprovalTooltip": "Our smart contract needs your permission in order to move funds your behalf, this setting will give our contracts the permanent ability to move funds. Otherwise, you will need to approve each time you make a deposit.",
+  "infiniteApprovalTooltip": "Our smart contracts need your permission in order to move funds on your behalf. This setting will give our contracts the permanent ability to move funds. Otherwise, you will need to approve each time you make a deposit.",
   "inputNotValid": "Not a valid input value",
   "instant": "Instant",
   "insufficientBalance": "Insufficient balance",
