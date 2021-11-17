@@ -154,8 +154,6 @@ const FarmWithdrawPage = (props: Props): ReactElement => {
           <MyShareCard
             data={myShareData}
             useMasterchefAmount={true}
-            usePercent={false}
-            useUsd={false}
             usePendingMasterchef={true}
           />
           <div

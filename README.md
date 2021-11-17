@@ -2,7 +2,7 @@
 
 The Axial Front-End source code
 
-[axial.exchange](https://axial.exchange/) o
+[axial.exchange](https://axial.exchange/) 
 
 ## Installation
 
