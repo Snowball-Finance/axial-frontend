@@ -4,6 +4,7 @@ import {
   POOLS_MAP,
   PoolName,
   PoolTypes,
+  AXIAL_AM3D_POOL_NAME,
 } from "../../constants"
 import React, { ReactElement, useState } from "react"
 
@@ -16,6 +17,7 @@ import usePoolData from "../../hooks/usePoolData"
 
 function Pools(): ReactElement | null {
   const [as4dPoolData, as4dUserShareData] = usePoolData(AXIAL_AS4D_POOL_NAME)
+  const [am3dPoolData, am3dUserShareData] = usePoolData(AXIAL_AM3D_POOL_NAME)
   const [ac4dPoolData, ac4dUserShareData] = usePoolData(AXIAL_AC4D_POOL_NAME)
   const [currentModal, setCurrentModal] = useState<string | null>(null)
   const [filter] = useState<PoolTypes | "all" | "outdated">("all")
@@ -30,6 +32,13 @@ function Pools(): ReactElement | null {
         poolData: as4dPoolData,
         userShareData: as4dUserShareData,
         poolRoute: "/pools/as4d",
+      }
+    } else if (poolName === AXIAL_AM3D_POOL_NAME) {
+      return {
+        name: AXIAL_AM3D_POOL_NAME,
+        poolData: am3dPoolData,
+        userShareData: am3dUserShareData,
+        poolRoute: "/pools/am3d",
       }
     } else {
       return {
