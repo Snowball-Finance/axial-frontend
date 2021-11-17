@@ -3,7 +3,6 @@ import "./MyShareCard.scss"
 import { POOLS_MAP, PoolTypes, TOKENS_MAP } from "../../constants"
 import React, { ReactElement } from "react"
 import { formatBNToPercentString, formatBNToString } from "../../libs"
-import Button from "../button/Button"
 import { UserShareType } from "../../hooks/usePoolData"
 import { commify } from "@ethersproject/units"
 import { useTranslation } from "react-i18next"
@@ -107,11 +106,6 @@ function MyShareCard({
             <span className="value">{formattedData.rewards.avaxRewards}</span>
           </div>
         ) : null}
-        <a href="https://app.snowball.network/compound-and-earn">
-          <Button size="medium" kind="primary">
-            Compound with Snowball
-          </Button>
-        </a>
       </div>
 
       <div className="currency">
