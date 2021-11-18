@@ -23,8 +23,8 @@ div.connectWallet {
     padding: 32px;
 
     & > button {
-      background: $primary;
-      color: var(--background-main);
+      background: $primary-shade;
+      color: var(--text);
       outline: none;
 
       border-radius: 10px;
@@ -36,8 +36,7 @@ div.connectWallet {
 
       &:hover {
         cursor: pointer;
-        background-color: $secondary-focus;
-        color: var(--text);
+        background-color: #050422;
         box-shadow: var(--shadow-hover);
       }
     }
