@@ -14,7 +14,9 @@ import ReviewDeposit from "../../components/reviews/ReviewDeposit"
 import TokenInput from "../../components/token-input/TokenInput"
 //import { logEvent } from "../../libs/googleAnalytics"
 import { useTranslation } from "react-i18next"
-import InfoSection, { InfoSectionProps } from "../../components/info-section/infoSection"
+import InfoSection, {
+  InfoSectionProps,
+} from "../../components/info-section/infoSection"
 import FarmInfoCard from "../../components/farm-info-card/FarmInfoCard"
 import { POOLS_MAP, PoolTypes } from "../../constants"
 interface Props {
@@ -51,39 +53,37 @@ const FarmDepositPage = (props: Props): ReactElement => {
     onToggleDepositWrapped,
   } = props
 
-
   const [currentModal, setCurrentModal] = useState<string | null>(null)
 
   const validDepositAmount = true
   const shouldDisplayWrappedOption = false
 
   let poolType = PoolTypes.USD
-  if(poolData){
+  if (poolData) {
     const POOL = POOLS_MAP[poolData?.name]
     poolType = POOL.type
   }
 
-  const statsDataRows: InfoSectionProps['rows'] = [
+  const statsDataRows: InfoSectionProps["rows"] = [
     {
       title: "Total APR",
       value: poolData?.rapr
-      ? `${(Number(poolData?.rapr) + (poolData.apr
-          ? Number(poolData?.apr)
-          : 0)
-        ).toFixed(2)}%`
-      : "-"
+        ? `${(
+            Number(poolData?.rapr) + (poolData.apr ? Number(poolData?.apr) : 0)
+          ).toFixed(2)}%`
+        : "-",
     },
   ]
 
-  if(poolType !== PoolTypes.LP) {
+  if (poolType !== PoolTypes.LP) {
     statsDataRows.push(
       {
         title: "Fee APR",
-        value: poolData?.apr ? `${Number(poolData?.apr).toFixed(2)}%` : "-"
+        value: poolData?.apr ? `${Number(poolData?.apr).toFixed(2)}%` : "-",
       },
       {
         title: "Rewards APR",
-        value: poolData?.rapr ? `${Number(poolData?.rapr).toFixed(2)}%` : "-"
+        value: poolData?.rapr ? `${Number(poolData?.rapr).toFixed(2)}%` : "-",
       },
     )
   }
@@ -123,7 +123,10 @@ const FarmDepositPage = (props: Props): ReactElement => {
               </div>
             )}
           </div>
-          <AdvancedOptions noApprovalCheckbox={false} noSlippageCheckbox={true} />
+          <AdvancedOptions
+            noApprovalCheckbox={false}
+            noSlippageCheckbox={true}
+          />
           <Button
             kind="primary"
             onClick={async () => {
@@ -136,9 +139,25 @@ const FarmDepositPage = (props: Props): ReactElement => {
           >
             {t("deposit")}
           </Button>
+          {poolType === PoolTypes.LP ? (
+            <>
+              <p>or</p>
+              <a
+                target="_blank"
+                rel="noreferrer"
+                href="https://app.snowball.network/compound-and-earn"
+              >
+                <Button kind="primary">{t("Compound with Snowball")}</Button>
+              </a>{" "}
+            </>
+          ) : null}
         </div>
         <div className="infoPanels">
-          <MyShareCard data={myShareData} usePendingMasterchef={true} useMasterchefAmount={true} />
+          <MyShareCard
+            data={myShareData}
+            usePendingMasterchef={true}
+            useMasterchefAmount={true}
+          />
           <div
             style={{
               display: myShareData ? "block" : "none",
@@ -147,7 +166,7 @@ const FarmDepositPage = (props: Props): ReactElement => {
           ></div>
           <InfoSection title="Stats" withDivider rows={statsDataRows} />
 
-          {poolType !== PoolTypes.LP && (<FarmInfoCard data={poolData} />)}
+          {poolType !== PoolTypes.LP && <FarmInfoCard data={poolData} />}
         </div>
         <Modal
           isOpen={!!currentModal}
