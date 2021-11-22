@@ -139,18 +139,14 @@ const FarmDepositPage = (props: Props): ReactElement => {
           >
             {t("deposit")}
           </Button>
-          {poolType === PoolTypes.LP ? (
-            <>
-              <p>or</p>
-              <a
-                target="_blank"
-                rel="noreferrer"
-                href="https://app.snowball.network/compound-and-earn"
-              >
-                <Button kind="primary">{t("Compound with Snowball")}</Button>
-              </a>{" "}
-            </>
-          ) : null}
+          <p>or</p>
+          <a
+            target="_blank"
+            rel="noreferrer"
+            href="https://app.snowball.network/compound-and-earn"
+          >
+            <Button kind="primary">{t("Compound with Snowball")}</Button>
+          </a>{" "}
         </div>
         <div className="infoPanels">
           <MyShareCard
