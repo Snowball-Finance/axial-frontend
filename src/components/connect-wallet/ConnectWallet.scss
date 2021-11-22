@@ -36,8 +36,8 @@ div.connectWallet {
 
       &:hover {
         cursor: pointer;
-        padding: 15px;
-        border: 2px solid var(--text-selected);
+        background-color: #050422;
+        box-shadow: var(--shadow-hover);
       }
     }
 
