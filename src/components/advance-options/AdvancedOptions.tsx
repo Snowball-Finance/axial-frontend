@@ -75,7 +75,9 @@ export default function AdvancedOptions(props: Props): React.ReactElement {
                 }
               />
               <ToolTip content={t("infiniteApprovalTooltip")}>
-                <span className={styles.label}>{t("infiniteApproval")}</span>
+                <div className={styles.labelLine}>
+                  <span className={styles.label}>{t("infiniteApproval")}</span>
+                </div>
               </ToolTip>
             </div>
           ) : null}
