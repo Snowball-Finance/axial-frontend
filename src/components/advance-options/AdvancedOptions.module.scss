@@ -167,9 +167,12 @@
     font-size: 16px;
     letter-spacing: -0.04em;
     margin-left: 16px;
-
     &:hover {
       cursor: help;
     }
+  }
+
+  .labelLine {
+    min-width: 280px;
   }
 }

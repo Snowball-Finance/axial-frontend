@@ -1,5 +1,6 @@
 @import "../../styles/theme";
 @import "../../styles/viewports";
+
 div.deposit {
   background: var(--background-main);
   color: var(--text);
@@ -47,6 +48,23 @@ div.deposit {
       @include breakpoint(lg) {
         margin: 0 auto;
         width: 100%;
+      }
+
+      .warning {
+        width: 100%;
+        margin: 12px 0;
+        @include breakpoint(lg) {
+          max-width: 90%;
+        }
+
+        .toolTip {
+          padding: 4px 12px;
+          background-color: $error;
+          width: 100%;
+          border-radius: 4px;
+          font-weight: bold;
+          text-decoration: underline;
+        }
       }
     }
 
