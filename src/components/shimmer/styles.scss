@@ -1,0 +1,33 @@
+.shimmerLoading {
+  background: rgba(23, 0, 59, 1);
+  position: relative;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
+
+}
+
+.shimmerLoading::before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(-60deg, rgba(23, 0, 59, 1) 0%, rgba(23, 0, 59, 1) 35%, rgba(70, 50, 100, 1)50%, rgba(23, 0, 59, 1)65%, rgba(23, 0, 59, 1) 100%);
+  animation-name: shimmer;
+  animation-duration: .6s;
+  animation-iteration-count: infinite;
+  background-repeat: no-repeat;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -150px 0%;
+  }
+
+  100% {
+    background-position: 150px 0%;
+  }
+}

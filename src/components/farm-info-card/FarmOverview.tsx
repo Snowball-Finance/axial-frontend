@@ -19,6 +19,7 @@ import { useActiveWeb3React } from "../../hooks"
 import { useTranslation } from "react-i18next"
 import avaxIcon from '../../assets/icons/AVAX.png'
 import axialLogo from "../../assets/icons/logo_icon.svg" // this needs a smaller icon logo(24)
+import { LoadingWrapper } from "../shimmer"
 
 
 interface Props {
@@ -44,7 +45,7 @@ export default function FarmOverview({
     myShare: formatBNToShortString(userShareData?.share || Zero, 18),
     TVL: formatBNToShortString(poolData?.totalLocked || Zero, 18),
     axialPending: formatBNToShortString(
-      userShareData?.masterchefBalance?.pendingTokens.pendingAxial 
+      userShareData?.masterchefBalance?.pendingTokens.pendingAxial
       || Zero, 18
     ),
     avaxPending: formatBNToShortString(
@@ -85,7 +86,7 @@ export default function FarmOverview({
   )
   let info = []
 
-  if(hasShare) {
+  if (hasShare) {
     info.push(
       {
         title: "Balance",
@@ -156,16 +157,19 @@ export default function FarmOverview({
           {(shouldMigrate || isOutdated) && <Tag kind="warning">OUTDATED</Tag>}
           {poolData.isPaused && <Tag kind="error">PAUSED</Tag>}
         </div>
-        {poolTokensToShow.length > 0 && (<div className="tokens">
+
+        <div className="tokens">
           <span style={{ marginRight: "8px" }}>[</span>
-          {tokensToShow.map(({ symbol, icon }) => (
-            <div className="token" key={symbol}>
-              <img alt="icon" src={icon} />
-              <span>{symbol}</span>
-            </div>
-          ))}
-          <span style={{ marginLeft: "-8px" }}>]</span>
-        </div>)}
+          <LoadingWrapper height={19} width={140} isLoading={tokensToShow.length === 0 || poolTokensToShow.length === 0} >
+            {tokensToShow.map(({ symbol, icon }) => (
+              <div className="token" key={symbol}>
+                <img alt="icon" src={icon} />
+                <span>{symbol}</span>
+              </div>
+            ))}
+          </LoadingWrapper>
+          <span style={{ marginLeft: "0px" }}>]</span>
+        </div>
       </div>
 
       <div className="right">
@@ -174,7 +178,9 @@ export default function FarmOverview({
             return (
               <div key={index} className="margin">
                 <span className="label">{item.title}</span>
-                <span>{item.value}</span>
+                <LoadingWrapper height={19} width={50} isLoading={item.value === '-' || item.value === '$0.0'} >
+                  <span>{item.value}</span>
+                </LoadingWrapper >
               </div>
             )
           })}
