@@ -1,6 +1,7 @@
 import "./infoSection.scss"
 
 import React, { ReactElement } from "react"
+import { LoadingWrapper } from "../shimmer"
 
 
 export interface InfoSectionProps {
@@ -24,7 +25,9 @@ function InfoSection({ title, rows, withDivider }: InfoSectionProps): ReactEleme
               return <div key={index} className="infoItem">
                 {item.value && <>
                   <span className="label bold">{item.title} : </span>
-                  <span className="value">{item.value}</span>
+                  <LoadingWrapper width={70} isLoading={item.value === '-'} >
+                    <span className="value">{item.value}</span>
+                  </LoadingWrapper>
                 </>}
                 {
                   item.sub && <div className="topInfo">

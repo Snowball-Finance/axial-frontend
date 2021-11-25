@@ -7,6 +7,10 @@ div.infoCard {
   color: $text-white;
   font-size: 16px;
 
+  .infoItem {
+    display: flex;
+  }
+
   h4 {
     width: 100%;
     font-family: $font-family-title;
