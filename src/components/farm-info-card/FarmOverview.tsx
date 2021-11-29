@@ -19,6 +19,7 @@ import { useActiveWeb3React } from "../../hooks"
 import { useTranslation } from "react-i18next"
 import avaxIcon from "../../assets/icons/AVAX.png"
 import axialLogo from "../../assets/icons/logo_icon.svg" // this needs a smaller icon logo(24)
+import { LoadingWrapper } from "../shimmer"
 
 interface Props {
   poolRoute: string
@@ -183,7 +184,9 @@ export default function FarmOverview({
             return (
               <div key={index} className="margin">
                 <span className="label">{item.title}</span>
-                <span>{item.value}</span>
+                <LoadingWrapper height={19} width={50} isLoading={item.value === '-' || item.value === '$0.0'} >
+                  <span>{item.value}</span>
+                </LoadingWrapper >
               </div>
             )
           })}

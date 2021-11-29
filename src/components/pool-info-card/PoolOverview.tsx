@@ -8,6 +8,7 @@ import { Link } from "react-router-dom"
 import { Zero } from "@ethersproject/constants"
 import classNames from "classnames"
 import { useTranslation } from "react-i18next"
+import { LoadingWrapper } from "../shimmer"
 
 interface Props {
   poolRoute: string
@@ -30,7 +31,7 @@ export default function PoolOverview({
     name: poolData.name,
     reserve: poolData.reserve
       ? formatBNToShortString(poolData.reserve, 18)
-      : "-",
+      : "",
     apr: poolData.apr ? `${Number(poolData.apr).toFixed(2)}%` : "-",
     volume: poolData.volume ? `$${Number(poolData.volume).toFixed(2)}` : "-",
     userBalanceUSD: formatBNToShortString(
@@ -63,13 +64,15 @@ export default function PoolOverview({
         </div>
         <div className="tokens">
           <span style={{ marginRight: "8px" }}>[</span>
-          {formattedData.tokens.map(({ symbol, icon }) => (
-            <div className="token" key={symbol}>
-              <img alt="icon" src={icon} />
-              <span>{symbol}</span>
-            </div>
-          ))}
-          <span style={{ marginLeft: "-8px" }}>]</span>
+          <LoadingWrapper height={19} width={140} isLoading={formattedData.tokens.length === 0} >
+            <>{formattedData.tokens.map(({ symbol, icon }) => (
+              <div className="token" key={symbol}>
+                <img alt="icon" src={icon} />
+                <span>{symbol}</span>
+              </div>
+            ))}</>
+          </LoadingWrapper>
+          <span style={{ marginLeft: "0px" }}>]</span>
         </div>
       </div>
 
@@ -84,17 +87,23 @@ export default function PoolOverview({
           {formattedData.apr && (
             <div className="margin">
               <span className="label">{`${t("apr")}`}</span>
-              <span>{formattedData.apr}</span>
+              <LoadingWrapper height={19} width={90} isLoading={formattedData.apr === '-'} >
+                <span>{formattedData.apr}</span>
+              </LoadingWrapper>
             </div>
           )}
           <div className="margin">
             <span className="label">TVL</span>
-            <span>{`$${formattedData.reserve}`}</span>
+            <LoadingWrapper height={19} width={55} isLoading={!formattedData.reserve} >
+              <span> {`$${formattedData.reserve}`}</span>
+            </LoadingWrapper>
           </div>
           {formattedData.volume && (
             <div>
               <span className="label">{`${t("24HrVolume")}`}</span>
-              <span>{formattedData.volume}</span>
+              <LoadingWrapper height={19} width={90} isLoading={formattedData.volume === '-'} >
+                <span>{formattedData.volume}</span>
+              </LoadingWrapper>
             </div>
           )}
         </div>
