@@ -63,9 +63,9 @@ export type PoolDataHookReturnType = [PoolDataType, UserShareType | null]
 const emptyPoolData = {
   adminFee: Zero,
   aParameter: Zero,
-  apr: 0,
-  rapr: 0,
-  extraapr: 0,
+  apr: null,
+  rapr: null,
+  extraapr: null,
   name: "",
   reserve: null,
   swapFee: Zero,
@@ -240,7 +240,7 @@ export default function usePoolData(
       ) as LpTokenUnguarded
       const totalLpTokenBalance = await lpTokenContract.totalSupply()
 
-      let poolApr = 0, extraapr = 0, extraUSDPerWeek = 0
+      let poolApr = null, extraapr = null, extraUSDPerWeek = 0
       if(masterchefApr){
         poolApr = masterchefApr[POOL.addresses[43114]].apr ?? 0
 

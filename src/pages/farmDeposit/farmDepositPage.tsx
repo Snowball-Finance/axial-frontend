@@ -73,7 +73,7 @@ const FarmDepositPage = (props: Props): ReactElement => {
               (poolData.apr ? Number(poolData?.apr) : 0 + 
                 (poolData?.extraapr ? poolData?.extraapr : 0))
           ).toFixed(2)}%`
-        : "-",
+        : poolData?.rapr === 0 ? "0%" : "-",
     },
   ]
 
@@ -81,13 +81,13 @@ const FarmDepositPage = (props: Props): ReactElement => {
     statsDataRows.push(
       {
         title: "Fee APR",
-        value: poolData?.apr ? `${Number(poolData?.apr).toFixed(2)}%` : "-",
+        value: poolData?.apr ? `${Number(poolData?.apr).toFixed(2)}%` : poolData?.rapr === 0 ? "0%" : "-",
       },
       {
         title: "Rewards APR",
         value: poolData?.rapr ? `${Number(poolData?.rapr).toFixed(2)}%` + 
         (poolData?.extraapr ?` + ${Number(poolData?.extraapr).toFixed(2)}%` : "")
-        : "-",
+        : poolData?.rapr === 0 ? "0%" : "-",
       },
     )
   }
