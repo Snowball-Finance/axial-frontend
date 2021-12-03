@@ -1,6 +1,6 @@
 import "./MyShareCard.scss"
 
-import { FXS, POOLS_MAP, PoolTypes, TEDDY, TOKENS_MAP, WAVAX } from "../../constants"
+import { FXS, ORCA, POOLS_MAP, PoolTypes, TEDDY, TOKENS_MAP, WAVAX } from "../../constants"
 import React, { ReactElement } from "react"
 import { formatBNToPercentString, formatBNToString } from "../../libs"
 import { UserShareType } from "../../hooks/usePoolData"
@@ -39,6 +39,10 @@ function MyShareCard({
   const hasTEDDY = 
     data.masterchefBalance?.pendingTokens.bonusTokenAddress.toLowerCase() 
     === TEDDY.addresses[43114].toLowerCase()
+  
+  const hasORCA = 
+    data.masterchefBalance?.pendingTokens.bonusTokenAddress.toLowerCase() 
+    === ORCA.addresses[43114].toLowerCase()
 
   const formattedData = {
     share: formatBNToPercentString(data.share, 18),
@@ -86,6 +90,17 @@ function MyShareCard({
           data.masterchefBalance?.pendingTokens && hasFXS
           && data.masterchefBalance?.pendingTokens.bonusTokenAddress.toLowerCase() 
           === FXS.addresses[43114].toLowerCase()
+            ? data.masterchefBalance?.pendingTokens.pendingBonusToken
+            : BigNumber.from("0"),
+          18,
+          formattedDecimals,
+        ),
+      ),
+      orcaRewards: commify(
+        formatBNToString(
+          data.masterchefBalance?.pendingTokens && hasFXS
+          && data.masterchefBalance?.pendingTokens.bonusTokenAddress.toLowerCase() 
+          === ORCA.addresses[43114].toLowerCase()
             ? data.masterchefBalance?.pendingTokens.pendingBonusToken
             : BigNumber.from("0"),
           18,
@@ -147,6 +162,12 @@ function MyShareCard({
           <div className="infoItem">
             <span className="bold">{`${t("fraxRewards")}: `}</span>
             <span className="value">{formattedData.rewards.fxsRewards}</span>
+          </div>
+        ) : null}
+      {usePendingMasterchef && hasORCA ? (
+          <div className="infoItem">
+            <span className="bold">{`${t("orcaRewards")}: `}</span>
+            <span className="value">{formattedData.rewards.orcaRewards}</span>
           </div>
         ) : null}
       </div>
