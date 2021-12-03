@@ -70,8 +70,8 @@ const FarmDepositPage = (props: Props): ReactElement => {
       value: poolData?.rapr
         ? `${(
             Number(poolData?.rapr) + 
-              (poolData.apr ? Number(poolData?.apr) : 0 + 
-                (poolData?.extraapr ? poolData?.extraapr : 0))
+              (poolData.apr ? Number(poolData?.apr) : 0) + 
+                (poolData.extraapr ? Number(poolData?.extraapr) : 0)
           ).toFixed(2)}%`
         : poolData?.rapr === 0 ? "0%" : "-",
     },

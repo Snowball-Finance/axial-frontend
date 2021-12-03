@@ -60,6 +60,7 @@ export default function FarmOverview({
     totalapr: Number(poolData.rapr)
       ? (
           Number(poolData.rapr) + (poolData.apr ? Number(poolData.apr) : 0)
+          + (poolData.extraapr ? Number(poolData.extraapr) : 0)
         ).toFixed(2) + "%"
       : poolData.rapr === 0 ? "0%" : "-",
     volume: poolData.volume ? `$${Number(poolData.volume).toFixed(2)}` : "-",
