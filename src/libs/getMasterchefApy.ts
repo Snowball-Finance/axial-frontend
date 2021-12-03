@@ -1,7 +1,7 @@
 import { AppDispatch } from "../store"
 import retry from "async-retry"
 import { updateMasterchefApr } from "../store/application"
-import { getVaultRewardAprNow, MasterchefApr } from "./geta4dapy"
+import { getVaultRewardAprNow, MasterchefApr } from "./getPoolsAPR"
 
 export default async function fetchAprStats(
   dispatch: AppDispatch,

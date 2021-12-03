@@ -245,6 +245,53 @@ export const MIM = new Token(
   false,
 )
 
+const TEDDY_CONTRACT_ADDRESS: { [chainId in ChainId]: string } = {
+  [ChainId.MAINNET]: "0x094bd7B2D99711A1486FB94d4395801C6d0fdDcC",
+  [ChainId.HARDHAT]: "0x094bd7B2D99711A1486FB94d4395801C6d0fdDcC",
+}
+export const TEDDY = new Token(
+  TEDDY_CONTRACT_ADDRESS,
+  18,
+  "TEDDY",
+  "teddy",
+  "Teddy",
+  axialLogo,
+  false,
+  false,
+)
+
+const FXS_CONTRACT_ADDRESS: { [chainId in ChainId]: string } = {
+  [ChainId.MAINNET]: "0x214DB107654fF987AD859F34125307783fC8e387",
+  [ChainId.HARDHAT]: "0x214DB107654fF987AD859F34125307783fC8e387",
+}
+export const FXS = new Token(
+  FXS_CONTRACT_ADDRESS,
+  18,
+  "FXS",
+  "frax-share",
+  "Frax Share",
+  axialLogo,
+  false,
+  false,
+)
+
+const WAVAX_CONTRACT_ADDRESS: { [chainId in ChainId]: string } = {
+  [ChainId.MAINNET]: "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7",
+  [ChainId.HARDHAT]: "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7",
+}
+export const WAVAX = new Token(
+  WAVAX_CONTRACT_ADDRESS,
+  18,
+  "AVAX",
+  "avalanche-2",
+  "Wrapped AVAX",
+  axialLogo,
+  false,
+  false,
+)
+
+export const extraRewardTokens = [TEDDY, FXS, WAVAX];
+
 const TUSD_CONTRACT_ADDRESSES: { [chainId in ChainId]: string } = {
   [ChainId.MAINNET]: "0x1C20E891Bab6b1727d14Da358FAe2984Ed9B59EB",
   [ChainId.HARDHAT]: "0x1C20E891Bab6b1727d14Da358FAe2984Ed9B59EB",
@@ -463,6 +510,8 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
 // "axial" in bytes32 form
 export const SYNTH_TRACKING_ID =
   "0x534144444c450000000000000000000000000000000000000000000000000000"
+
+export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000"
 
 // FLAGS
 export const IS_VIRTUAL_SWAP_ACTIVE = false

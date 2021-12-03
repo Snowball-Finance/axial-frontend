@@ -12,11 +12,13 @@ interface CoinGeckoReponse {
 }
 const otherTokens = {
   AVAX: "avalanche-2",
-  USDT: "tether",
-  DAI: "dai",
-  USDC: "usd-coin",
+  "USDT.e": "tether",
+  "DAI.e": "dai",
+  "USDC.e": "usd-coin",
   TUSD: "true-usd",
   FRAX: "frax",
+  TEDDY: "teddy",
+  AXIAL: "axial-token"
 }
 
 export default function fetchTokenPricesUSD(dispatch: AppDispatch): void {

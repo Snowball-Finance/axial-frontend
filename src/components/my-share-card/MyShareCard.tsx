@@ -1,6 +1,6 @@
 import "./MyShareCard.scss"
 
-import { POOLS_MAP, PoolTypes, TOKENS_MAP } from "../../constants"
+import { FXS, POOLS_MAP, PoolTypes, TEDDY, TOKENS_MAP, WAVAX } from "../../constants"
 import React, { ReactElement } from "react"
 import { formatBNToPercentString, formatBNToString } from "../../libs"
 import { UserShareType } from "../../hooks/usePoolData"
@@ -54,7 +54,31 @@ function MyShareCard({
     rewards: {
       avaxRewards: commify(
         formatBNToString(
+          data.masterchefBalance?.pendingTokens 
+          && data.masterchefBalance?.pendingTokens.bonusTokenAddress.toLowerCase() 
+          === WAVAX.addresses[43114].toLowerCase()
+            ? data.masterchefBalance?.pendingTokens.pendingBonusToken
+            : BigNumber.from("0"),
+          18,
+          formattedDecimals,
+        ),
+      ),
+      teddyRewards: commify(
+        formatBNToString(
           data.masterchefBalance?.pendingTokens
+          && data.masterchefBalance?.pendingTokens.bonusTokenAddress.toLowerCase() 
+          === TEDDY.addresses[43114].toLowerCase()
+            ? data.masterchefBalance?.pendingTokens.pendingBonusToken
+            : BigNumber.from("0"),
+          18,
+          formattedDecimals,
+        ),
+      ),
+      fxsRewards: commify(
+        formatBNToString(
+          data.masterchefBalance?.pendingTokens
+          && data.masterchefBalance?.pendingTokens.bonusTokenAddress.toLowerCase() 
+          === FXS.addresses[43114].toLowerCase()
             ? data.masterchefBalance?.pendingTokens.pendingBonusToken
             : BigNumber.from("0"),
           18,
@@ -100,10 +124,22 @@ function MyShareCard({
             <span className="value">{formattedData.rewards.axialRewards}</span>
           </div>
         ) : null}
-        {usePendingMasterchef ? (
+        {usePendingMasterchef && formattedData.rewards.avaxRewards !== "0.0" ? (
           <div className="infoItem">
             <span className="bold">{`${t("avaxRewards")}: `}</span>
             <span className="value">{formattedData.rewards.avaxRewards}</span>
+          </div>
+        ) : null}
+      {usePendingMasterchef && formattedData.rewards.teddyRewards !== "0.0" ? (
+          <div className="infoItem">
+            <span className="bold">{`${t("teddyRewards")}: `}</span>
+            <span className="value">{formattedData.rewards.teddyRewards}</span>
+          </div>
+        ) : null}
+      {usePendingMasterchef && formattedData.rewards.fxsRewards !== "0.0" ? (
+          <div className="infoItem">
+            <span className="bold">{`${t("fraxRewards")}: `}</span>
+            <span className="value">{formattedData.rewards.fxsRewards}</span>
           </div>
         ) : null}
       </div>

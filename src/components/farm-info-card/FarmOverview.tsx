@@ -56,6 +56,7 @@ export default function FarmOverview({
       : "-",
     apr: poolData.apr ? `${Number(poolData.apr).toFixed(2)}%` : "-",
     rapr: poolData.rapr ? `${Number(poolData.rapr).toFixed(2)}%` : "-",
+    extraapr: poolData.extraapr ? `${Number(poolData.extraapr).toFixed(2)}%` : null,
     totalapr: Number(poolData.rapr)
       ? (
           Number(poolData.rapr) + (poolData.apr ? Number(poolData.apr) : 0)
@@ -105,7 +106,7 @@ export default function FarmOverview({
   if (poolType !== PoolTypes.LP) {
     info.push({
       title: "Rewards APR",
-      value: `${formattedData.rapr}`,
+      value: `${formattedData.rapr}${formattedData.extraapr ? " + "+formattedData.extraapr : ""}`,
     })
   }
 
