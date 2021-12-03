@@ -248,11 +248,14 @@ export default function usePoolData(
         if(masterchefApr[POOL.addresses[43114]].extraTokens.length > 0) {
           const TVL = +totalLpTokenBalance / 10 ** 18
           for(const token of masterchefApr[POOL.addresses[43114]].extraTokens) {
-            const extraReward = extraRewardTokens.find(o => o.addresses[43114].toLocaleLowerCase() === token.address)
+            const extraReward = extraRewardTokens.find(
+              o => o.addresses[43114].toLowerCase() === token.address.toLowerCase()
+            )
             if(extraReward) {
               const tokenPrice = tokenPricesUSD[extraReward.symbol]
-
-              extraUSDPerWeek += (+token.tokenPerSec / 10 ** extraReward.decimals) * tokenPrice * 604_800
+              
+              const tokensPerSec = ethers.BigNumber.from(token.tokenPerSec)
+              extraUSDPerWeek += (+tokensPerSec / 10 ** extraReward.decimals) * tokenPrice * 604_800
             } else {
               console.error(`Not found mapping for token: ${token.address}`)
             }

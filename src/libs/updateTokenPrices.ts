@@ -18,7 +18,9 @@ const otherTokens = {
   TUSD: "true-usd",
   FRAX: "frax",
   TEDDY: "teddy",
-  AXIAL: "axial-token"
+  AXIAL: "axial-token",
+  AVAI: "orca-avai",
+  ORCA: "orcadao"
 }
 
 export default function fetchTokenPricesUSD(dispatch: AppDispatch): void {

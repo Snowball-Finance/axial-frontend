@@ -29,7 +29,7 @@ export interface AxialLPData {
 
 export interface ExtraTokens {
   address: string,
-  tokenPerSec: BigNumber
+  tokenPerSec: string
 }
 
 export interface MasterchefApr {
@@ -176,7 +176,7 @@ export async function getVaultRewardAprNow(): Promise<MasterchefApr> {
         const tokenAddress:string = await rewarderContract.rewardToken();
         extraTokens.push({
           address: tokenAddress,
-          tokenPerSec: tokenPerSec
+          tokenPerSec: tokenPerSec.toHexString()
         })
       }
   

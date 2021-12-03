@@ -6,6 +6,7 @@ import {
   PoolTypes,
   AXIAL_JLP_POOL_NAME,
   AXIAL_AM3D_POOL_NAME,
+  AXIAL_AA3D_POOL_NAME,
 } from "../../constants"
 import React, { ReactElement, useState } from "react"
 
@@ -20,6 +21,7 @@ function Farm(): ReactElement | null {
   const [as4dPoolData, as4dUserShareData] = usePoolData(AXIAL_AS4D_POOL_NAME)
   const [ac4dPoolData, ac4dUserShareData] = usePoolData(AXIAL_AC4D_POOL_NAME)
   const [am3dPoolData, am3dUserShareData] = usePoolData(AXIAL_AM3D_POOL_NAME)
+  const [aa3dPoolData, aa3dUserShareData] = usePoolData(AXIAL_AA3D_POOL_NAME)
   const [jlpPoolData, jlpUserShareData] = usePoolData(AXIAL_JLP_POOL_NAME)
   const [currentModal, setCurrentModal] = useState<string | null>(null)
   const [filter] = useState<PoolTypes | "all" | "outdated">("all")
@@ -48,6 +50,13 @@ function Farm(): ReactElement | null {
         poolData: am3dPoolData,
         userShareData: am3dUserShareData,
         poolRoute: "/rewards/am3d",
+      }
+    } else if (poolName === AXIAL_AA3D_POOL_NAME) {
+      return {
+        name: AXIAL_AA3D_POOL_NAME,
+        poolData: aa3dPoolData,
+        userShareData: aa3dUserShareData,
+        poolRoute: "/rewards/aa3d",
       }
     } else {
       return {
