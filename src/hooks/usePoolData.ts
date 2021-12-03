@@ -369,7 +369,7 @@ export default function usePoolData(
       const { oneDayVolume, apr, utilization } =
         swapStats && poolAddress in swapStats
           ? swapStats[poolAddress]
-          : { oneDayVolume: null, apr: null, utilization: null }
+          : { oneDayVolume: 0, apr: 0, utilization: null }
       const poolData = {
         name: poolName,
         rapr: poolApr,
