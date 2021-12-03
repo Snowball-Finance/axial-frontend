@@ -54,13 +54,14 @@ export default function FarmOverview({
     reserve: poolData.reserve
       ? formatBNToShortString(poolData.reserve, 18)
       : "-",
-    apr: poolData.apr ? `${Number(poolData.apr).toFixed(2)}%` : "-",
-    rapr: poolData.rapr ? `${Number(poolData.rapr).toFixed(2)}%` : "-",
+    apr: poolData.apr ? `${Number(poolData.apr).toFixed(2)}%` : poolData.apr === 0 ? "0%" : "-",
+    rapr: poolData.rapr ? `${Number(poolData.rapr).toFixed(2)}%` : poolData.rapr === 0 ? "0%" : "-",
+    extraapr: poolData.extraapr ? `${Number(poolData.extraapr).toFixed(2)}%` : null,
     totalapr: Number(poolData.rapr)
       ? (
           Number(poolData.rapr) + (poolData.apr ? Number(poolData.apr) : 0)
         ).toFixed(2) + "%"
-      : "-",
+      : poolData.rapr === 0 ? "0%" : "-",
     volume: poolData.volume ? `$${Number(poolData.volume).toFixed(2)}` : "-",
     userBalanceUSD: userShareData
       ? formatBNToShortString(
@@ -105,7 +106,7 @@ export default function FarmOverview({
   if (poolType !== PoolTypes.LP) {
     info.push({
       title: "Rewards APR",
-      value: `${formattedData.rapr}`,
+      value: `${formattedData.rapr}${formattedData.extraapr ? " + "+formattedData.extraapr : ""}`,
     })
   }
 

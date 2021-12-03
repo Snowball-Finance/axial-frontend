@@ -3,6 +3,7 @@ import {
   AXIAL_MASTERCHEF_CONTRACT_ADDRESS,
   POOLS_MAP,
   PoolTypes,
+  ZERO_ADDRESS,
 } from "../constants"
 import { BigNumber, ethers } from "ethers"
 import axios from "axios"
@@ -10,6 +11,7 @@ import erc20 from "../constants/abis/erc20.json"
 import lpAMM from "../constants/abis/lpTokenAMM.json"
 import masterchef from "../constants/abis/masterchef.json"
 import swap from "../constants/abis/swapFlashLoanNoWithdrawFee.json"
+import simplerewarder from "../constants/abis/simplerewarder.json"
 
 export interface poolInfo {
   lpToken: string
@@ -25,12 +27,19 @@ export interface AxialLPData {
   tokenPoolPrice: number
 }
 
+export interface ExtraTokens {
+  address: string,
+  tokenPerSec: string
+}
+
 export interface MasterchefApr {
   [swapAddress: string]: {
     apr: number,
     lptvl: number,
     totalStaked: string,
-    tokenPoolPrice: number
+    tokenPoolPrice: number,
+    extraTokens: ExtraTokens[],
+
   }
 }
 
@@ -104,6 +113,7 @@ export async function getAXIALPriceWithLP(): Promise<AxialLPData> {
 }
 
 export async function getVaultRewardAprNow(): Promise<MasterchefApr> {
+  const { AXIALPrice, LPTVL, tokenPoolPrice } = await getAXIALPriceWithLP()
 
   let APRData: MasterchefApr = {}
   for (const pool of Object.values(POOLS_MAP)) {
@@ -132,8 +142,6 @@ export async function getVaultRewardAprNow(): Promise<MasterchefApr> {
         AXIAL_MASTERCHEF_CONTRACT_ADDRESS[43114]
       ) as BigNumber
 
-      const { AXIALPrice, LPTVL, tokenPoolPrice } = await getAXIALPriceWithLP()
-
       let virtualPrice = BigNumber.from(0), TVL = 0
       if(pool.type !== PoolTypes.LP) {
         // eslint-disable-next-line
@@ -154,6 +162,23 @@ export async function getVaultRewardAprNow(): Promise<MasterchefApr> {
       if(+poolInfo.allocPoint > 0) {
         poolFraction = +poolInfo.allocPoint / +totalAllocPoint
       }
+
+      const extraTokens:ExtraTokens[] = []
+      if(poolInfo.rewarder !== ZERO_ADDRESS) {
+        const rewarderContract = new ethers.Contract(
+          poolInfo.rewarder,
+          simplerewarder,
+          provider,
+        )
+        // eslint-disable-next-line
+        const tokenPerSec:BigNumber = await rewarderContract.tokenPerSec();
+        // eslint-disable-next-line
+        const tokenAddress:string = await rewarderContract.rewardToken();
+        extraTokens.push({
+          address: tokenAddress,
+          tokenPerSec: tokenPerSec.toHexString()
+        })
+      }
   
       const usdPerWeek = axialPerSecond * poolFraction * AXIALPrice * 604_800
       const APRYearly = (usdPerWeek / TVL) * 100 * 52
@@ -164,7 +189,8 @@ export async function getVaultRewardAprNow(): Promise<MasterchefApr> {
           apr: APRYearly,
           lptvl: LPTVL,
           totalStaked: balanceToken.toHexString(),
-          tokenPoolPrice: tokenPoolPrice
+          tokenPoolPrice: tokenPoolPrice,
+          extraTokens: extraTokens
         }
       }
     } catch (error) {
@@ -175,7 +201,8 @@ export async function getVaultRewardAprNow(): Promise<MasterchefApr> {
           apr: 0,
           lptvl: 0,
           tokenPoolPrice: 0,
-          totalStaked: "0x0"
+          totalStaked: "0x0",
+          extraTokens: []
         }
       } 
     }

@@ -12,17 +12,20 @@ import metamaskIcon from "../assets/icons/metamask.svg"
 import tusdLogo from "../assets/icons/tusd.svg"
 import usdcLogo from "../assets/icons/usdc.svg"
 import usdtLogo from "../assets/icons/usdt.svg"
+import avaiLogo from "../assets/icons/avai.svg"
 import walletconnectIcon from "../assets/icons/walletconnect.svg"
 
 export const NetworkContextName = "NETWORK"
 export const AXIAL_AS4D_POOL_NAME = "AS4D Stablecoins"
 export const AXIAL_AC4D_POOL_NAME = "AC4D Stablecoins"
 export const AXIAL_AM3D_POOL_NAME = "AM3D Stablecoins"
+export const AXIAL_AA3D_POOL_NAME = "AA3D Stablecoins"
 export const AXIAL_JLP_POOL_NAME = "JLP AVAX-AXIAL"
 export type PoolName = typeof AXIAL_AS4D_POOL_NAME 
 | typeof AXIAL_AC4D_POOL_NAME 
 | typeof AXIAL_JLP_POOL_NAME
 | typeof AXIAL_AM3D_POOL_NAME
+| typeof AXIAL_AA3D_POOL_NAME
 
 export enum ChainId {
   MAINNET = 43114,
@@ -82,6 +85,11 @@ export const AXIAL_AM3D_SWAP_ADDRESSES: { [chainId in ChainId]: string } = {
   [ChainId.HARDHAT]: "0x90c7b96AD2142166D001B27b5fbc128494CDfBc8",
 }
 
+export const AXIAL_AA3D_SWAP_ADDRESSES: { [chainId in ChainId]: string } = {
+  [ChainId.MAINNET]: "0x6EfbC734D91b229BE29137cf9fE531C1D3bf4Da6",
+  [ChainId.HARDHAT]: "0x6EfbC734D91b229BE29137cf9fE531C1D3bf4Da6",
+}
+
 export const AXIAL_AC4D_SWAP_ADDRESSES: { [chainId in ChainId]: string } = {
   [ChainId.MAINNET]: "0x8c3c1C6F971C01481150CA7942bD2bbB9Bc27bC7",
   [ChainId.HARDHAT]: "0x8c3c1C6F971C01481150CA7942bD2bbB9Bc27bC7",
@@ -104,6 +112,13 @@ export const AXIAL_AM3D_SWAP_TOKEN_CONTRACT_ADDRESSES: {
 } = {
   [ChainId.MAINNET]: "0xc161E4B11FaF62584EFCD2100cCB461A2DdE64D1",
   [ChainId.HARDHAT]: "0xc161E4B11FaF62584EFCD2100cCB461A2DdE64D1",
+}
+
+export const AXIAL_AA3D_SWAP_TOKEN_CONTRACT_ADDRESSES: {
+  [chainId in ChainId]: string
+} = {
+  [ChainId.MAINNET]: "0xaD556e7dc377d9089C6564f9E8d275f5EE4da22d",
+  [ChainId.HARDHAT]: "0xaD556e7dc377d9089C6564f9E8d275f5EE4da22d",
 }
 
 export const AXIAL_AC4D_SWAP_TOKEN_CONTRACT_ADDRESSES: {
@@ -170,6 +185,18 @@ export const AXIAL_AM3D_SWAP_TOKEN = new Token(
   3,
 )
 
+export const AXIAL_AA3D_SWAP_TOKEN = new Token(
+  AXIAL_AA3D_SWAP_TOKEN_CONTRACT_ADDRESSES,
+  18,
+  "aa3dUSD",
+  "aa3dusd",
+  "AA3D AVAI/MIM/USDC.e",
+  axialLogo,
+  false,
+  true,
+  4,
+)
+
 export const AXIAL_JLP_POOL_TOKEN = new Token(
   AXIAL_JLP_ADDRESS,
   18,
@@ -196,6 +223,38 @@ export const DAI = new Token(
   "dai",
   "Dai",
   daiLogo,
+  false,
+  false,
+)
+
+const AVAI_CONTRACT_ADDRESSES: { [chainId in ChainId]: string } = {
+  [ChainId.MAINNET]: "0x346A59146b9b4a77100D369a3d18E8007A9F46a6",
+  [ChainId.HARDHAT]: "0x346A59146b9b4a77100D369a3d18E8007A9F46a6",
+}
+
+export const AVAI = new Token(
+  AVAI_CONTRACT_ADDRESSES,
+  18,
+  "AVAI",
+  "orca-avai",
+  "Orca AVAI",
+  avaiLogo,
+  false,
+  false,
+)
+
+const ORCA_CONTRACT_ADDRESSES: { [chainId in ChainId]: string } = {
+  [ChainId.MAINNET]: "0x8B1d98A91F853218ddbb066F20b8c63E782e2430",
+  [ChainId.HARDHAT]: "0x8B1d98A91F853218ddbb066F20b8c63E782e2430",
+}
+
+export const ORCA = new Token(
+  ORCA_CONTRACT_ADDRESSES,
+  18,
+  "ORCA",
+  "orcadao",
+  "Orca DAO",
+  axialLogo,
   false,
   false,
 )
@@ -245,6 +304,53 @@ export const MIM = new Token(
   false,
 )
 
+const TEDDY_CONTRACT_ADDRESS: { [chainId in ChainId]: string } = {
+  [ChainId.MAINNET]: "0x094bd7B2D99711A1486FB94d4395801C6d0fdDcC",
+  [ChainId.HARDHAT]: "0x094bd7B2D99711A1486FB94d4395801C6d0fdDcC",
+}
+export const TEDDY = new Token(
+  TEDDY_CONTRACT_ADDRESS,
+  18,
+  "TEDDY",
+  "teddy",
+  "Teddy",
+  axialLogo,
+  false,
+  false,
+)
+
+const FXS_CONTRACT_ADDRESS: { [chainId in ChainId]: string } = {
+  [ChainId.MAINNET]: "0x214DB107654fF987AD859F34125307783fC8e387",
+  [ChainId.HARDHAT]: "0x214DB107654fF987AD859F34125307783fC8e387",
+}
+export const FXS = new Token(
+  FXS_CONTRACT_ADDRESS,
+  18,
+  "FXS",
+  "frax-share",
+  "Frax Share",
+  axialLogo,
+  false,
+  false,
+)
+
+const WAVAX_CONTRACT_ADDRESS: { [chainId in ChainId]: string } = {
+  [ChainId.MAINNET]: "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7",
+  [ChainId.HARDHAT]: "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7",
+}
+export const WAVAX = new Token(
+  WAVAX_CONTRACT_ADDRESS,
+  18,
+  "AVAX",
+  "avalanche-2",
+  "Wrapped AVAX",
+  axialLogo,
+  false,
+  false,
+)
+
+export const extraRewardTokens = [TEDDY, FXS, WAVAX, ORCA];
+
 const TUSD_CONTRACT_ADDRESSES: { [chainId in ChainId]: string } = {
   [ChainId.MAINNET]: "0x1C20E891Bab6b1727d14Da358FAe2984Ed9B59EB",
   [ChainId.HARDHAT]: "0x1C20E891Bab6b1727d14Da358FAe2984Ed9B59EB",
@@ -293,6 +399,7 @@ export const USDC = new Token(
 export const AXIAL_AS4D_POOL_TOKENS = [TUSD, USDC, DAI, USDT]
 export const AXIAL_AC4D_POOL_TOKENS = [TSD, MIM, FRAX, DAI]
 export const AXIAL_AM3D_POOL_TOKENS = [MIM, USDC, DAI]
+export const AXIAL_AA3D_POOL_TOKENS = [AVAI, MIM, USDC]
 
 export type Pool = {
   name: PoolName
@@ -347,6 +454,15 @@ export const POOLS_MAP: PoolsMap = {
     isSynthetic: false,
     type: PoolTypes.USD,
     route: "am3d"
+  },
+  [AXIAL_AA3D_POOL_NAME]: {
+    name: AXIAL_AA3D_POOL_NAME,
+    addresses: AXIAL_AA3D_SWAP_ADDRESSES,
+    lpToken: AXIAL_AA3D_SWAP_TOKEN,
+    poolTokens: AXIAL_AA3D_POOL_TOKENS,
+    isSynthetic: false,
+    type: PoolTypes.USD,
+    route: "aa3d"
   },
 }
 
@@ -463,6 +579,8 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
 // "axial" in bytes32 form
 export const SYNTH_TRACKING_ID =
   "0x534144444c450000000000000000000000000000000000000000000000000000"
+
+export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000"
 
 // FLAGS
 export const IS_VIRTUAL_SWAP_ACTIVE = false

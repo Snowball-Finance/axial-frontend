@@ -32,8 +32,8 @@ export default function PoolOverview({
     reserve: poolData.reserve
       ? formatBNToShortString(poolData.reserve, 18)
       : "",
-    apr: poolData.apr ? `${Number(poolData.apr).toFixed(2)}%` : "-",
-    volume: poolData.volume ? `$${Number(poolData.volume).toFixed(2)}` : "-",
+    apr: poolData.apr ? `${Number(poolData.apr).toFixed(2)}%` : poolData.apr === 0 ? " - " : "-",
+    volume: poolData.volume ? `$${Number(poolData.volume).toFixed(2)}` : poolData.volume === 0 ? " - " : "-",
     userBalanceUSD: formatBNToShortString(
       userShareData?.usdBalance || Zero,
       18,

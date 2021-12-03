@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
-import { MasterchefApr } from "../libs/geta4dapy"
+import { MasterchefApr } from "../libs/getPoolsAPR"
 import { SwapStatsReponse } from "../libs/getSwapStats"
 
 interface GasPrices {

@@ -17,6 +17,9 @@ import {
   PoolTypes,
   AXIAL_AM3D_POOL_NAME,
   AXIAL_AM3D_SWAP_TOKEN,
+  AXIAL_AA3D_POOL_NAME,
+  AXIAL_AA3D_SWAP_TOKEN,
+  AVAI,
 } from "../constants"
 
 import { Contract } from "@ethersproject/contracts"
@@ -109,7 +112,7 @@ export function useSwapContract(
 
 export function useLPTokenContract<T extends PoolName>(
   poolName: T,
-): T extends typeof AXIAL_AS4D_POOL_NAME | typeof AXIAL_AC4D_POOL_NAME | typeof AXIAL_AM3D_POOL_NAME 
+): T extends typeof AXIAL_AS4D_POOL_NAME | typeof AXIAL_AC4D_POOL_NAME | typeof AXIAL_AM3D_POOL_NAME | typeof AXIAL_AA3D_POOL_NAME
   ? LpTokenGuarded | null
   : LpTokenUnguarded | null
 
@@ -146,6 +149,7 @@ export function useAllContracts(): AllContractsObject | null {
   const usdcContract = useTokenContract(USDC) as Erc20
   const tsdContract = useTokenContract(TSD) as Erc20
   const mimContract = useTokenContract(MIM) as Erc20
+  const avaiContract = useTokenContract(AVAI) as Erc20
 
   const axialas4dSwapTokenContract = useTokenContract(
     AXIAL_AS4D_SWAP_TOKEN,
@@ -157,6 +161,10 @@ export function useAllContracts(): AllContractsObject | null {
 
   const axialam3dSwapTokenContract = useTokenContract(
     AXIAL_AM3D_SWAP_TOKEN,
+  ) as LpTokenUnguarded
+
+  const axialaa3dSwapTokenContract = useTokenContract(
+    AXIAL_AA3D_SWAP_TOKEN,
   ) as LpTokenUnguarded
 
   const axialjlpTokenContract = useTokenContract(
@@ -173,9 +181,11 @@ export function useAllContracts(): AllContractsObject | null {
         fraxContract,
         tsdContract,
         mimContract,
+        avaiContract,
         axialas4dSwapTokenContract,
         axialac4dSwapTokenContract,
         axialam3dSwapTokenContract,
+        axialaa3dSwapTokenContract,
         axialjlpTokenContract,
       ].some(Boolean)
     )
@@ -188,9 +198,11 @@ export function useAllContracts(): AllContractsObject | null {
       [FRAX.symbol]: fraxContract,
       [TSD.symbol]: tsdContract,
       [MIM.symbol]: mimContract,
+      [AVAI.symbol]: avaiContract,
       [AXIAL_AS4D_SWAP_TOKEN.symbol]: axialas4dSwapTokenContract,
       [AXIAL_AC4D_SWAP_TOKEN.symbol]: axialac4dSwapTokenContract,
       [AXIAL_AM3D_SWAP_TOKEN.symbol]: axialam3dSwapTokenContract,
+      [AXIAL_AA3D_SWAP_TOKEN.symbol]: axialaa3dSwapTokenContract,
       [AXIAL_JLP_POOL_TOKEN.symbol]: axialjlpTokenContract,
     }
   }, [
@@ -201,9 +213,11 @@ export function useAllContracts(): AllContractsObject | null {
     fraxContract,
     tsdContract,
     mimContract,
+    avaiContract,
     axialas4dSwapTokenContract,
     axialac4dSwapTokenContract,
     axialam3dSwapTokenContract,
+    axialaa3dSwapTokenContract,
     axialjlpTokenContract,
   ])
 }

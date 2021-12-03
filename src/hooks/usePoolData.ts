@@ -3,7 +3,7 @@ import {
   MasterchefResponse,
   useMasterchefBalances,
 } from "../store/wallet/hooks"
-import { POOLS_MAP, PoolName, TRANSACTION_TYPES, PoolTypes, AXIAL_MASTERCHEF_CONTRACT_ADDRESS } from "../constants"
+import { POOLS_MAP, PoolName, TRANSACTION_TYPES, PoolTypes, AXIAL_MASTERCHEF_CONTRACT_ADDRESS, extraRewardTokens } from "../constants"
 import {
   formatBNToPercentString,
   getContract,
@@ -34,6 +34,7 @@ export interface PoolDataType {
   aParameter: BigNumber
   apr: number | null
   rapr: number | null
+  extraapr: number | null
   name: string
   reserve: BigNumber | null
   swapFee: BigNumber
@@ -62,8 +63,9 @@ export type PoolDataHookReturnType = [PoolDataType, UserShareType | null]
 const emptyPoolData = {
   adminFee: Zero,
   aParameter: Zero,
-  apr: 0,
-  rapr: 0,
+  apr: null,
+  rapr: null,
+  extraapr: null,
   name: "",
   reserve: null,
   swapFee: Zero,
@@ -162,6 +164,7 @@ export default function usePoolData(
             volume: 0,
             utilization: null,
             apr: 0,
+            extraapr: 0,
             lpTokenPriceUSD: tokenPoolPriceBN,
             lpToken: POOL.lpToken.symbol,
             isPaused: false,
@@ -228,11 +231,6 @@ export default function usePoolData(
         effectiveSwapContract.paused(),
       ])
       
-      let poolApr = 0
-      if(masterchefApr){
-        poolApr = masterchefApr[POOL.addresses[43114]].apr ?? 0
-      }
-
       const { adminFee, lpToken: lpTokenAddress, swapFee } = swapStorage
       const lpTokenContract = getContract(
         lpTokenAddress,
@@ -241,6 +239,32 @@ export default function usePoolData(
         account ?? undefined,
       ) as LpTokenUnguarded
       const totalLpTokenBalance = await lpTokenContract.totalSupply()
+
+      let poolApr = null, extraapr = null, extraUSDPerWeek = 0
+      if(masterchefApr){
+        poolApr = masterchefApr[POOL.addresses[43114]].apr ?? 0
+
+        //set extra APR
+        if(masterchefApr[POOL.addresses[43114]].extraTokens.length > 0) {
+          const TVL = +totalLpTokenBalance / 10 ** 18
+          for(const token of masterchefApr[POOL.addresses[43114]].extraTokens) {
+            const extraReward = extraRewardTokens.find(
+              o => o.addresses[43114].toLowerCase() === token.address.toLowerCase()
+            )
+            if(extraReward) {
+              const tokenPrice = tokenPricesUSD[extraReward.symbol]
+              
+              const tokensPerSec = ethers.BigNumber.from(token.tokenPerSec)
+              extraUSDPerWeek += (+tokensPerSec / 10 ** extraReward.decimals) * tokenPrice * 604_800
+            } else {
+              console.error(`Not found mapping for token: ${token.address}`)
+            }
+          }
+          if(extraUSDPerWeek > 0 && TVL > 0) {
+            extraapr = extraUSDPerWeek * 52 / TVL * 100;
+          }
+        }
+      }
     
       //      lpTokenContract.add(masterchef)
       const userLpTokenBalance = useMasterchef && userMasterchefBalances 
@@ -345,7 +369,7 @@ export default function usePoolData(
       const { oneDayVolume, apr, utilization } =
         swapStats && poolAddress in swapStats
           ? swapStats[poolAddress]
-          : { oneDayVolume: null, apr: null, utilization: null }
+          : { oneDayVolume: 0, apr: 0, utilization: null }
       const poolData = {
         name: poolName,
         rapr: poolApr,
@@ -359,6 +383,7 @@ export default function usePoolData(
         volume: oneDayVolume,
         utilization: utilization ? parseUnits(utilization, 18) : null,
         apr: apr,
+        extraapr: extraapr,
         lpTokenPriceUSD,
         lpToken: POOL.lpToken.symbol,
         isPaused,
