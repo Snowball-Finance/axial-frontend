@@ -88,8 +88,6 @@ function MyShareCard({
       fxsRewards: commify(
         formatBNToString(
           data.masterchefBalance?.pendingTokens && hasFXS
-          && data.masterchefBalance?.pendingTokens.bonusTokenAddress.toLowerCase() 
-          === FXS.addresses[43114].toLowerCase()
             ? data.masterchefBalance?.pendingTokens.pendingBonusToken
             : BigNumber.from("0"),
           18,
@@ -98,9 +96,7 @@ function MyShareCard({
       ),
       orcaRewards: commify(
         formatBNToString(
-          data.masterchefBalance?.pendingTokens && hasFXS
-          && data.masterchefBalance?.pendingTokens.bonusTokenAddress.toLowerCase() 
-          === ORCA.addresses[43114].toLowerCase()
+          data.masterchefBalance?.pendingTokens && hasORCA
             ? data.masterchefBalance?.pendingTokens.pendingBonusToken
             : BigNumber.from("0"),
           18,
