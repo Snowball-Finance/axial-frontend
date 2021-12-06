@@ -1,0 +1,38 @@
+@import "../../styles/theme";
+
+div.oneLine {
+  display: flex;
+  // flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: flex-start;
+}
+
+div.oneLine > div {
+  margin: 4px;
+}
+
+div.stepItem {
+  display: grid;
+  grid-gap: 4px;
+  place-items: center;
+}
+
+div.stepItem > .tokenIcon {
+  width: 24px;
+  height: 24px;
+}
+
+div.dot {
+  margin: 4px 0;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+}
+
+div.checked {
+  background-color: green;
+}
+
+div.unchecked {
+  background-color: grey;
+}

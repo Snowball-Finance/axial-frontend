@@ -36,7 +36,7 @@ interface Props {
 function FarmDeposit({ poolName = AXIAL_AS4D_POOL_NAME }: Props): ReactElement | null {
   const POOL = POOLS_MAP[poolName]
   const { account } = useActiveWeb3React()
-  const approveAndDeposit = useApproveAndDeposit(poolName)
+  const { approveAndDeposit } = useApproveAndDeposit(poolName)
   const [poolData, userShareData] = usePoolData(poolName, true)
   const swapContract = useSwapContract(poolName)
   const allTokens = useMemo(() => {

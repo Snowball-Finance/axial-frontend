@@ -17,10 +17,12 @@ import ToolTip from "../../components/tool-tip/ToolTip"
 import { formatBNToPercentString } from "../../libs"
 //import { logEvent } from "../../libs/googleAnalytics"
 import { useTranslation } from "react-i18next"
+import { PoolName } from "../../constants"
+import { TransactionStatusType } from '../../hooks/useApproveAndDeposit'
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 interface Props {
-  title: string
+  title: PoolName
   onConfirmTransaction: () => Promise<void>
   onChangeTokenInputValue: (tokenSymbol: string, value: string) => void
   onToggleDepositWrapped: () => void
@@ -37,6 +39,7 @@ interface Props {
   poolData: PoolDataType | null
   myShareData: UserShareType | null
   transactionData: DepositTransaction
+  transactionStatus?: TransactionStatusType
 }
 
 /* eslint-enable @typescript-eslint/no-explicit-any */
@@ -48,6 +51,7 @@ const DepositPage = (props: Props): ReactElement => {
     poolData,
     myShareData,
     transactionData,
+    transactionStatus,
     shouldDepositWrapped,
     onChangeTokenInputValue,
     onConfirmTransaction,
@@ -180,7 +184,12 @@ const DepositPage = (props: Props): ReactElement => {
               onClose={(): void => setCurrentModal(null)}
             />
           ) : null}
-          {currentModal === "confirm" ? <ConfirmTransaction /> : null}
+          {currentModal === "confirm" &&
+            <ConfirmTransaction
+              transactionStatus={transactionStatus}
+              type='deposit'
+              transactionData={transactionData} />
+          }
         </Modal>
       </div>
     </div>
