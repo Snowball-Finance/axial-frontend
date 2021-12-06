@@ -2,7 +2,7 @@ import {
   DepositTransaction,
   TransactionItem,
 } from "../../interfaces/transactions"
-import { POOLS_MAP, PoolName, Token } from "../../constants"
+import { POOLS_MAP, TOKENS_MAP, PoolName, Token } from "../../constants"
 import React, { ReactElement, useEffect, useMemo, useState } from "react"
 import {
   TokensStateType,
@@ -31,7 +31,6 @@ interface Props {
 }
 
 function Deposit({ poolName }: Props): ReactElement | null {
-  
   const POOL = POOLS_MAP[poolName]
   const { account } = useActiveWeb3React()
   const approveAndDeposit = useApproveAndDeposit(poolName)
@@ -109,10 +108,7 @@ function Deposit({ poolName }: Props): ReactElement | null {
   useEffect(() => {
     // evaluate if a new deposit will exceed the pool's per-user limit
     async function calculateMaxDeposits(): Promise<void> {
-      if (
-        swapContract == null ||
-        poolData == null 
-      ) {
+      if (swapContract == null || poolData == null) {
         setEstDepositLPTokenAmount(Zero)
         return
       }
@@ -158,6 +154,9 @@ function Deposit({ poolName }: Props): ReactElement | null {
     allTokens,
   ])
 
+  console.log({ shouldDepositWrapped })
+  console.table(POOL.underlyingPoolTokens)
+  console.table(POOL.poolTokens)
   // A represention of tokens used for UI
   const tokens = (shouldDepositWrapped
     ? POOL.underlyingPoolTokens || []
@@ -169,6 +168,24 @@ function Deposit({ poolName }: Props): ReactElement | null {
     max: formatBNToString(tokenBalances?.[symbol] || Zero, decimals),
     inputValue: tokenFormState[symbol].valueRaw,
   }))
+
+  const hasFRAX = tokens.filter((token) => token.symbol === "FRAX").length > 0
+  console.log({ hasFRAX })
+
+  if (tokens.filter((token) => token.symbol === "FRAX").length > 0) {
+    const { symbol, name, icon, decimals } = TOKENS_MAP["FRAX.e"]
+    console.log({ symbol })
+    console.log({ tokenFormState })
+    // if the pool has FRAX
+    tokens.push({
+      symbol: symbol,
+      name: name,
+      icon: icon,
+      max: formatBNToString(tokenBalances?.[symbol] || Zero, decimals),
+      inputValue: tokenFormState[symbol]?.valueRaw ?? "",
+    })
+  }
+  console.log({ tokens })
 
   const exceedsWallet = allTokens.some(({ symbol }) => {
     const exceedsBoolean = (tokenBalances?.[symbol] || Zero).lt(

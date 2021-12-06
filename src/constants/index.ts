@@ -21,11 +21,12 @@ export const AXIAL_AC4D_POOL_NAME = "AC4D Stablecoins"
 export const AXIAL_AM3D_POOL_NAME = "AM3D Stablecoins"
 export const AXIAL_AA3D_POOL_NAME = "AA3D Stablecoins"
 export const AXIAL_JLP_POOL_NAME = "JLP AVAX-AXIAL"
-export type PoolName = typeof AXIAL_AS4D_POOL_NAME 
-| typeof AXIAL_AC4D_POOL_NAME 
-| typeof AXIAL_JLP_POOL_NAME
-| typeof AXIAL_AM3D_POOL_NAME
-| typeof AXIAL_AA3D_POOL_NAME
+export type PoolName =
+  | typeof AXIAL_AS4D_POOL_NAME
+  | typeof AXIAL_AC4D_POOL_NAME
+  | typeof AXIAL_JLP_POOL_NAME
+  | typeof AXIAL_AM3D_POOL_NAME
+  | typeof AXIAL_AA3D_POOL_NAME
 
 export enum ChainId {
   MAINNET = 43114,
@@ -349,7 +350,7 @@ export const WAVAX = new Token(
   false,
 )
 
-export const extraRewardTokens = [TEDDY, FXS, WAVAX, ORCA];
+export const extraRewardTokens = [TEDDY, FXS, WAVAX, ORCA]
 
 const TUSD_CONTRACT_ADDRESSES: { [chainId in ChainId]: string } = {
   [ChainId.MAINNET]: "0x1C20E891Bab6b1727d14Da358FAe2984Ed9B59EB",
@@ -426,7 +427,7 @@ export const POOLS_MAP: PoolsMap = {
     poolTokens: AXIAL_AS4D_POOL_TOKENS,
     isSynthetic: false,
     type: PoolTypes.USD,
-    route: "as4d"
+    route: "as4d",
   },
   [AXIAL_AC4D_POOL_NAME]: {
     name: AXIAL_AC4D_POOL_NAME,
@@ -435,7 +436,7 @@ export const POOLS_MAP: PoolsMap = {
     poolTokens: AXIAL_AC4D_POOL_TOKENS,
     isSynthetic: false,
     type: PoolTypes.USD,
-    route: "ac4d"
+    route: "ac4d",
   },
   [AXIAL_JLP_POOL_NAME]: {
     name: AXIAL_JLP_POOL_NAME,
@@ -444,7 +445,7 @@ export const POOLS_MAP: PoolsMap = {
     poolTokens: [],
     isSynthetic: false,
     type: PoolTypes.LP,
-    route: "jlp"
+    route: "jlp",
   },
   [AXIAL_AM3D_POOL_NAME]: {
     name: AXIAL_AM3D_POOL_NAME,
@@ -453,7 +454,7 @@ export const POOLS_MAP: PoolsMap = {
     poolTokens: AXIAL_AM3D_POOL_TOKENS,
     isSynthetic: false,
     type: PoolTypes.USD,
-    route: "am3d"
+    route: "am3d",
   },
   [AXIAL_AA3D_POOL_NAME]: {
     name: AXIAL_AA3D_POOL_NAME,
@@ -462,7 +463,7 @@ export const POOLS_MAP: PoolsMap = {
     poolTokens: AXIAL_AA3D_POOL_TOKENS,
     isSynthetic: false,
     type: PoolTypes.USD,
-    route: "aa3d"
+    route: "aa3d",
   },
 }
 
@@ -480,6 +481,21 @@ export const TOKENS_MAP = Object.keys(POOLS_MAP).reduce((acc, poolName) => {
   newAcc[pool.lpToken.symbol] = pool.lpToken
   return newAcc
 }, {} as TokensMap)
+
+TOKENS_MAP["FRAX.e"] = {
+  // this is Anyswap FRAX: https://docs.frax.finance/cross-chain/bridge
+  addresses: {
+    43114: "0xDC42728B0eA910349ed3c6e1c9Dc06b5FB591f98",
+  },
+  decimals: 18,
+  geckoId: "frax",
+  icon: "/static/media/frax.bbaec159.svg",
+  isLPToken: false,
+  isSynthetic: false,
+  masterchefId: 0,
+  name: "AnyFrax",
+  symbol: "FRAX.e",
+}
 
 export type TokenToPoolsMap = {
   [tokenSymbol: string]: string[]
