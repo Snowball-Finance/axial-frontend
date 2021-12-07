@@ -30,9 +30,9 @@ div.dot {
 }
 
 div.checked {
-  background-color: green;
+  background-color: var(--background-lightgrey);
 }
 
 div.unchecked {
-  background-color: grey;
+  background-color: var(--text-lightest);
 }
