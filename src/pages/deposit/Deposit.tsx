@@ -154,9 +154,6 @@ function Deposit({ poolName }: Props): ReactElement | null {
     allTokens,
   ])
 
-  console.log({ shouldDepositWrapped })
-  console.table(POOL.underlyingPoolTokens)
-  console.table(POOL.poolTokens)
   // A represention of tokens used for UI
   const tokens = (shouldDepositWrapped
     ? POOL.underlyingPoolTokens || []
@@ -169,15 +166,17 @@ function Deposit({ poolName }: Props): ReactElement | null {
     inputValue: tokenFormState[symbol].valueRaw,
   }))
 
-  const hasFRAX = tokens.filter((token) => token.symbol === "FRAX").length > 0
-  console.log({ hasFRAX })
+  const poolHasFRAX =
+    tokens.filter((token) => token.symbol === "FRAX").length > 0
 
-  if (tokens.filter((token) => token.symbol === "FRAX").length > 0) {
+  const userHasZeroFRAXButHasFRAXe =
+    parseFloat(formatBNToString(tokenBalances?.["FRAX"] || Zero, 18)) <= 0 &&
+    parseFloat(formatBNToString(tokenBalances?.["FRAX.e"] || Zero, 18)) > 0
+
+  if (poolHasFRAX && userHasZeroFRAXButHasFRAXe) {
     const { symbol, name, icon, decimals } = TOKENS_MAP["FRAX.e"]
-    console.log({ symbol })
-    console.log({ tokenFormState })
-    // if the pool has FRAX
-    tokens.push({
+    const indexOfFRAX = tokens.findIndex((token) => token.symbol === "FRAX")
+    tokens.splice(indexOfFRAX, 1, {
       symbol: symbol,
       name: name,
       icon: icon,
@@ -185,7 +184,6 @@ function Deposit({ poolName }: Props): ReactElement | null {
       inputValue: tokenFormState[symbol]?.valueRaw ?? "",
     })
   }
-  console.log({ tokens })
 
   const exceedsWallet = allTokens.some(({ symbol }) => {
     const exceedsBoolean = (tokenBalances?.[symbol] || Zero).lt(
