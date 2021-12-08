@@ -482,7 +482,7 @@ export const TOKENS_MAP = Object.keys(POOLS_MAP).reduce((acc, poolName) => {
   return newAcc
 }, {} as TokensMap)
 
-TOKENS_MAP["FRAX.e"] = {
+TOKENS_MAP["AnyFrax"] = {
   // this is Anyswap FRAX: https://docs.frax.finance/cross-chain/bridge
   addresses: {
     43114: "0xDC42728B0eA910349ed3c6e1c9Dc06b5FB591f98",
@@ -494,7 +494,7 @@ TOKENS_MAP["FRAX.e"] = {
   isSynthetic: false,
   masterchefId: 0,
   name: "AnyFrax",
-  symbol: "FRAX.e",
+  symbol: "AnyFrax",
 }
 
 export type TokenToPoolsMap = {

@@ -171,10 +171,10 @@ function Deposit({ poolName }: Props): ReactElement | null {
 
   const userHasZeroFRAXButHasFRAXe =
     parseFloat(formatBNToString(tokenBalances?.["FRAX"] || Zero, 18)) <= 0 &&
-    parseFloat(formatBNToString(tokenBalances?.["FRAX.e"] || Zero, 18)) > 0
+    parseFloat(formatBNToString(tokenBalances?.["AnyFrax"] || Zero, 18)) > 0
 
   if (poolHasFRAX && userHasZeroFRAXButHasFRAXe) {
-    const { symbol, name, icon, decimals } = TOKENS_MAP["FRAX.e"]
+    const { symbol, name, icon, decimals } = TOKENS_MAP["AnyFrax"]
     const indexOfFRAX = tokens.findIndex((token) => token.symbol === "FRAX")
     tokens.splice(indexOfFRAX, 1, {
       symbol: symbol,
