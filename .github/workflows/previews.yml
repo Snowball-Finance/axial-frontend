@@ -20,8 +20,8 @@ jobs:
         npm run build
 
     - name: Get branch name
-        id: branch-name
-        uses: tj-actions/branch-names@v5
+      id: branch-name
+      uses: tj-actions/branch-names@v5
     
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
