@@ -2,7 +2,7 @@ on: pull_request
 
 jobs:
 
-  deploy:
+  deploy-branch:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
