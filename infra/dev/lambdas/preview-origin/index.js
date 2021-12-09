@@ -1,5 +1,4 @@
 exports.handler = (event, context, callback) => {
-  console.log("request made")
     const { request } = event.Records[0].cf;
     try {
       const host = request.headers['x-forwarded-host'][0].value;
@@ -8,6 +7,5 @@ exports.handler = (event, context, callback) => {
     } catch (e) {
      callback(null, request)
     }
-    console.log(request)
     callback(null, request)
   };
