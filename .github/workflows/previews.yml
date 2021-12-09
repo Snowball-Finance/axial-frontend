@@ -30,8 +30,14 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-west-2
 
+    - name: fix branch name
+      shell: bash
+      run: | 
+        echo "::set-output name=current::$(echo ${{steps.branch-name.outputs.current_branch}} | sed 's/\//-/g')"
+      id: branch
+
     - name: Deploy branch to S3 bucket
-      run: aws s3 cp --recursive build/ s3://${{secrets.DEV_S3_BUCKET}}/${{ steps.branch-name.outputs.current_branch }}
+      run: aws s3 cp --recursive build/ s3://${{secrets.DEV_S3_BUCKET}}/${{ steps.branch.outputs.current}}
   
   display-link:
     runs-on: ubuntu-latest
