@@ -57,14 +57,16 @@ export const walletlink = new WalletLinkConnector({
   appName: "vault",
 })
 
-export const addAvalancheNetwork = () => {
+export const addAvalancheNetwork = (): void  => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   injected.getProvider().then((provider: any): void => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     provider
       .request({
         method: 'wallet_addEthereumChain',
         params: [AVALANCHE_MAINNET_PARAMS]
       })
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .catch((error: any) => {
         console.log(error)
       })
