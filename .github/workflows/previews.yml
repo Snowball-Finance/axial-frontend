@@ -14,7 +14,7 @@ jobs:
         node-version:14
         
     - name: Build
-      run |
+      run: |
         npm run build
 
     - name: Extract branch name
