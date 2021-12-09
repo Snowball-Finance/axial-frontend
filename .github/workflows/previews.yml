@@ -37,7 +37,7 @@ jobs:
       id: branch
 
     - name: Deploy branch to S3 bucket
-      run: aws s3 cp --recursive build/ s3://${{secrets.DEV_S3_BUCKET}}/${{ steps.branch.outputs.current}}
+      run: aws s3 cp --recursive build/ s3://${{secrets.DEV_S3_BUCKET}}/${{ steps.branch.outputs.current }}
   
   display-link:
     runs-on: ubuntu-latest
@@ -50,9 +50,14 @@ jobs:
         id: branch-name
         uses: tj-actions/branch-names@v5
 
+      - name: fix branch name
+        shell: bash
+        run: | 
+          echo "::set-output name=current::$(echo ${{steps.branch-name.outputs.current_branch}} | sed 's/\//-/g')"
+        id: branch
+
       - name: Comment PR
         uses: thollander/actions-comment-pull-request@v1
-        
         with:
-          message: 'This PR is automatically being deployed to https://preview-${{ steps.branch-name.outputs.current_branch }}.dev-app.axial.exchange'
+          message: 'This PR is automatically being deployed to https://preview-${{ steps.branch.outputs.current }}.dev-app.axial.exchange'
           GITHUB_TOKEN: ${{ secrets.CI_TOKEN }}
