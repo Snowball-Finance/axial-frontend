@@ -90,7 +90,7 @@
     "cy:open": "cypress open",
     "cy:startopen": "start-test 3000 'cypress open'",
     "cy:coverage": "start-test 3000 'cypress run --config video=false'",
-    "postinstall": "typechain --target ethers-v5 'src/constants/abis/*.json' && npm run gen:theme-typings",
+    "postinstall": "typechain --target ethers-v5 'src/constants/abis/*.json'",
     "gen:theme-typings": "chakra-cli tokens src/theme/index.ts",
     "prepare": "husky install"
   },
