@@ -75,7 +75,7 @@ const DepositPage = (props: Props): ReactElement => {
         }
       }
     } else {
-      return false
+      return null
     }
     return true
   }, [poolData?.tokens])
@@ -142,7 +142,7 @@ const DepositPage = (props: Props): ReactElement => {
             </div>
           </div>
           <AdvancedOptions noApprovalCheckbox={false} noSlippageCheckbox={false}/>
-          {poolData?.tokens?.length && !isBalancedPool && <div className="warning">
+          {(isBalancedPool !== null && !isBalancedPool) && <div className="warning">
             <ToolTip content={t("unbalancedPoolTooltip")}>
               <h4>
                 {t("unbalancedPool")}
