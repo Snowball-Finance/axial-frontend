@@ -58,13 +58,15 @@ function Farm(): ReactElement | null {
         userShareData: aa3dUserShareData,
         poolRoute: "/rewards/aa3d",
       }
-    } else {
+    } else if (poolName === AXIAL_JLP_POOL_NAME) {
       return {
         name: AXIAL_JLP_POOL_NAME,
         poolData: jlpPoolData,
         userShareData: jlpUserShareData,
         poolRoute: "/rewards/jlp",
       }
+    } else {
+      throw new Error("Not mapped Pool")
     }
   }
 

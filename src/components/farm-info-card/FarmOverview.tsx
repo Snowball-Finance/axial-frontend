@@ -1,6 +1,7 @@
 import "./FarmOverview.scss"
 
 import {
+  AXIAL_JLP_POOL_NAME,
   AXIAL_MASTERCHEF_CONTRACT_ADDRESS,
   POOLS_MAP,
   PoolTypes,
@@ -73,14 +74,30 @@ export default function FarmOverview({
         )
       : "",
     tokens: poolData.tokens.map((coin) => {
-      const token = TOKENS_MAP[coin.symbol]
-      return {
-        symbol: token.symbol,
-        name: token.name,
-        icon: token.icon,
-        value: formatBNToString(coin.value, token.decimals, formattedDecimals),
+        const token = TOKENS_MAP[coin.symbol]
+        return {
+          symbol: token.symbol,
+          name: token.name,
+          icon: token.icon,
+          value: formatBNToString(coin.value, token.decimals, formattedDecimals),
+        }
       }
-    }),
+    ),
+    ammTokens: poolData.name === AXIAL_JLP_POOL_NAME //add other amm's if needed
+    ? [
+      {
+        icon: avaxIcon,
+        name: "Wrapped AVAX",
+        symbol: "AVAX",
+        value: "0",
+      },
+      {
+        icon: axialLogo,
+        name: "AxialToken",
+        symbol: "AXIAL",
+        value: "0",
+      },
+    ] : []
   }
   const hasShare = !!userShareData?.masterchefBalance?.userInfo.amount.gt("0")
 
@@ -122,32 +139,6 @@ export default function FarmOverview({
     },
   ])
 
-  let tokensToShow = [...formattedData.tokens]
-  const poolTokensToShow = [...poolData.tokens]
-  if (poolData.name === "JLP AVAX-AXIAL") {
-    poolData.tokens = [
-      {
-        percent: "24.19%",
-        symbol: "TSD",
-        value: BigNumber.from("0x012410c9d8d3e7774b6dfb"),
-      },
-    ]
-    tokensToShow = [
-      {
-        icon: avaxIcon,
-        name: "Teddy Dollar",
-        symbol: "AVAX",
-        value: "1379240.70",
-      },
-      {
-        icon: axialLogo,
-        name: "Teddy Dollar",
-        symbol: "AXIAL",
-        value: "1379240.70",
-      },
-    ]
-  }
-
   return (
     <div
       className={classNames("poolOverview", {
@@ -166,18 +157,22 @@ export default function FarmOverview({
           {(shouldMigrate || isOutdated) && <Tag kind="warning">OUTDATED</Tag>}
           {poolData.isPaused && <Tag kind="error">PAUSED</Tag>}
         </div>
-        {poolTokensToShow.length > 0 && (
-          <div className="tokens">
-            <span style={{ marginRight: "8px" }}>[</span>
-            {tokensToShow.map(({ symbol, icon }) => (
-              <div className="token" key={symbol}>
-                <img alt="icon" src={icon} />
-                <span>{symbol}</span>
-              </div>
-            ))}
-            <span style={{ marginLeft: "-8px" }}>]</span>
-          </div>
-        )}
+        { //use local tokens if it's a native pool or amm if it's imported
+          (formattedData.tokens.length > 0 
+          || formattedData.ammTokens.length > 0) && (
+            <div className="tokens">
+              <span style={{ marginRight: "8px" }}>[</span>
+              {(formattedData.ammTokens.length > 0 
+                ? formattedData.ammTokens
+                : formattedData.tokens).map(({ symbol, icon }) => (
+                <div className="token" key={symbol}>
+                  <img alt="icon" src={icon} />
+                  <span>{symbol}</span>
+                </div>
+              ))}
+              <span style={{ marginLeft: "-8px" }}>]</span>
+            </div>
+          )}
       </div>
 
       <div className="right">
