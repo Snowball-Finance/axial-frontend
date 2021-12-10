@@ -19,6 +19,7 @@ import { useActiveWeb3React } from "."
 import { useDispatch } from "react-redux"
 import { useSelector } from "react-redux"
 import { ethers } from "ethers"
+import { useAnalytics } from "../utils/analytics"
 
 interface ApproveAndWithdrawStateArgument {
   tokenFormState: { [symbol: string]: NumberInputState }
@@ -31,6 +32,7 @@ export function useApproveAndWithdraw(
   mastechefWithdraw = false,
 ): (state: ApproveAndWithdrawStateArgument) => Promise<void> {
   const dispatch = useDispatch()
+  const { trackEvent } = useAnalytics()
   const swapContract = useSwapContract(poolName)
   const { account, library } = useActiveWeb3React()
   const { gasStandard, gasFast, gasInstant } = useSelector(
@@ -76,10 +78,10 @@ export function useApproveAndWithdraw(
         const allowanceAmount =
           state.withdrawType === "IMBALANCE"
             ? addSlippage(
-                state.lpTokenAmountToSpend,
-                slippageSelected,
-                slippageCustom,
-              )
+              state.lpTokenAmountToSpend,
+              slippageSelected,
+              slippageCustom,
+            )
             : state.lpTokenAmountToSpend
         if (!swapContract) return
         await checkAndApproveTokenForTrade(
@@ -104,11 +106,11 @@ export function useApproveAndWithdraw(
         )
         const deadline = Math.round(
           new Date().getTime() / 1000 +
-            60 *
-              formatDeadlineToNumber(
-                transactionDeadlineSelected,
-                transactionDeadlineCustom,
-              ),
+          60 *
+          formatDeadlineToNumber(
+            transactionDeadlineSelected,
+            transactionDeadlineCustom,
+          ),
         )
         let spendTransaction
         if (state.withdrawType === "ALL") {
@@ -166,6 +168,11 @@ export function useApproveAndWithdraw(
           [TRANSACTION_TYPES.WITHDRAW]: Date.now(),
         }),
       )
+      trackEvent({
+        category: "Withdraw",
+        action: "Withdraw",
+        name: `symbol:${POOL.lpToken.symbol}-type:${state.withdrawType}-spend:${state.lpTokenAmountToSpend.toNumber()}-valueSafe:${state.tokenFormState[POOL.lpToken.symbol].valueSafe}`,
+      })
     } catch (e) {
       console.error(e)
     }

@@ -3,6 +3,7 @@ import "./Button.scss"
 import React, { ReactElement } from "react"
 
 import classNames from "classnames"
+import { useAnalytics } from "../../utils/analytics"
 
 type Props = {
   disabled?: boolean
@@ -15,8 +16,21 @@ type Props = {
 export default function Button(
   props: React.PropsWithChildren<Props>,
 ): ReactElement {
-  const { kind = "primary", size = 'large', ...buttonProps } = props
+  const { trackEvent } = useAnalytics()
+  const { kind = "primary", size = 'large', onClick, ...buttonProps } = props
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (onClick) {
+      onClick(e)
+    }
+    trackEvent({
+      category: "Button",
+      action: "click",
+      name: `${kind}-${size}-${typeof props.children === "string" ? props.children : "button"}`,
+    })
+  }
+
   return (
-    <button className={classNames("button", kind, size)} {...buttonProps} />
+    <button className={classNames("button", kind, size)} onClick={handleClick} {...buttonProps} />
   )
 }

@@ -1,5 +1,6 @@
 import React, { ReactElement } from "react"
 import useCopyClipboard from "../hooks/useCopyClipboard"
+import { AnalyticActions, AnalyticCategories, createEvent, useAnalytics } from "../utils/analytics"
 
 export default function CopyHelper(props: {
   toCopy: string
@@ -7,8 +8,21 @@ export default function CopyHelper(props: {
 }): ReactElement {
   const [isCopied, setCopied] = useCopyClipboard()
 
+  const { trackEvent } = useAnalytics()
+
+  const handleCopy = () => {
+    setCopied(props.toCopy)
+    trackEvent(createEvent(
+      {
+        category: AnalyticCategories.clipboard,
+        action: AnalyticActions.copy,
+        name: props.toCopy,
+      }
+    ))
+  }
+
   return (
-    <button className="textStyle" onClick={() => setCopied(props.toCopy)}>
+    <button className="textStyle" onClick={handleCopy}>
       {isCopied ? (
         <>
           {/* Shows check icon after copied */}

@@ -20,6 +20,7 @@ import { formatBNToPercentString } from "../../libs"
 import { logEvent } from "../../libs/googleAnalytics"
 import { useSelector } from "react-redux"
 import { useTranslation } from "react-i18next"
+import { useAnalytics } from "../../utils/analytics"
 
 export interface ReviewWithdrawData {
   withdraw: {
@@ -61,6 +62,9 @@ interface Props {
 
 const WithdrawPage = (props: Props): ReactElement => {
   const { t } = useTranslation()
+
+  const { trackEvent } = useAnalytics()
+
   const {
     tokensData,
     poolData,
@@ -76,6 +80,11 @@ const WithdrawPage = (props: Props): ReactElement => {
 
   const onSubmit = (): void => {
     setCurrentModal("review")
+    trackEvent({
+      category: "Withdraw",
+      action: "Review",
+      name: "Review",
+    })
   }
   const noShare = !myShareData || myShareData.lpTokenBalance.eq(Zero)
 
@@ -172,7 +181,7 @@ const WithdrawPage = (props: Props): ReactElement => {
               </div>
             </div>
           </div>
-          <AdvancedOptions noApprovalCheckbox={true}  noSlippageCheckbox={true}/>
+          <AdvancedOptions noApprovalCheckbox={true} noSlippageCheckbox={true} />
           <Button
             kind="primary"
             disabled={
@@ -205,10 +214,11 @@ const WithdrawPage = (props: Props): ReactElement => {
               gas={gasPriceSelected}
               onConfirm={async (): Promise<void> => {
                 setCurrentModal("confirm")
-                logEvent(
-                  "withdraw",
-                  (poolData && { pool: poolData?.name }) || {},
-                )
+                trackEvent({
+                  category: "Withdraw",
+                  action: "Confirm",
+                  name: "Confirm",
+                })
                 await onConfirmTransaction?.()
                 setCurrentModal(null)
               }}

@@ -16,6 +16,8 @@ import getLibrary from "./libs/getLibrary"
 import { getNetworkLibrary } from "./connectors"
 import reportWebVitals from "./reportWebVitals"
 import store from "./store"
+import { MatomoProvider } from "@datapunt/matomo-tracker-react"
+import { matomoInstance } from "./utils/analytics"
 
 const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName)
 
@@ -27,20 +29,22 @@ window.addEventListener("error", logError)
 
 ReactDOM.render(
   <>
-    <ColorModeScript initialColorMode={chakraTheme.config.initialColorMode} />
-    <React.StrictMode>
-      <ChakraProvider theme={chakraTheme}>
-        <Web3ReactProvider getLibrary={getLibrary}>
-          <Web3ProviderNetwork getLibrary={getNetworkLibrary}>
-            <Provider store={store}>
-              <Router>
-                <App />
-              </Router>
-            </Provider>
-          </Web3ProviderNetwork>
-        </Web3ReactProvider>
-      </ChakraProvider>
-    </React.StrictMode>
+    <MatomoProvider value={matomoInstance} >
+      <ColorModeScript initialColorMode={chakraTheme.config.initialColorMode} />
+      <React.StrictMode>
+        <ChakraProvider theme={chakraTheme}>
+          <Web3ReactProvider getLibrary={getLibrary}>
+            <Web3ProviderNetwork getLibrary={getNetworkLibrary}>
+              <Provider store={store}>
+                <Router>
+                  <App />
+                </Router>
+              </Provider>
+            </Web3ProviderNetwork>
+          </Web3ReactProvider>
+        </ChakraProvider>
+      </React.StrictMode>
+    </MatomoProvider>
   </>,
   document.getElementById("root"),
 )

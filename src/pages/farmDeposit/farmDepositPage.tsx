@@ -19,6 +19,7 @@ import InfoSection, {
 } from "../../components/info-section/infoSection"
 import FarmInfoCard from "../../components/farm-info-card/FarmInfoCard"
 import { POOLS_MAP, PoolTypes } from "../../constants"
+import { useAnalytics } from "../../utils/analytics"
 interface Props {
   title: string
   onConfirmTransaction: () => Promise<void>
@@ -41,6 +42,9 @@ interface Props {
 /* eslint-enable @typescript-eslint/no-explicit-any */
 const FarmDepositPage = (props: Props): ReactElement => {
   const { t } = useTranslation()
+
+  const { trackEvent } = useAnalytics()
+
   const {
     tokens,
     exceedsWallet,
@@ -69,10 +73,10 @@ const FarmDepositPage = (props: Props): ReactElement => {
       title: "Total APR",
       value: poolData?.rapr
         ? `${(
-            Number(poolData?.rapr) + 
-              (poolData.apr ? Number(poolData?.apr) : 0) + 
-                (poolData.extraapr ? Number(poolData?.extraapr) : 0)
-          ).toFixed(2)}%`
+          Number(poolData?.rapr) +
+          (poolData.apr ? Number(poolData?.apr) : 0) +
+          (poolData.extraapr ? Number(poolData?.extraapr) : 0)
+        ).toFixed(2)}%`
         : poolData?.rapr === 0 ? "0%" : "-",
     },
   ]
@@ -85,9 +89,9 @@ const FarmDepositPage = (props: Props): ReactElement => {
       },
       {
         title: "Rewards APR",
-        value: poolData?.rapr ? `${Number(poolData?.rapr).toFixed(2)}%` + 
-        (poolData?.extraapr ?` + ${Number(poolData?.extraapr).toFixed(2)}%` : "")
-        : poolData?.rapr === 0 ? "0%" : "-",
+        value: poolData?.rapr ? `${Number(poolData?.rapr).toFixed(2)}%` +
+          (poolData?.extraapr ? ` + ${Number(poolData?.extraapr).toFixed(2)}%` : "")
+          : poolData?.rapr === 0 ? "0%" : "-",
       },
     )
   }
@@ -137,6 +141,11 @@ const FarmDepositPage = (props: Props): ReactElement => {
               setCurrentModal("confirm")
               await onConfirmTransaction?.()
               setCurrentModal(null)
+              trackEvent({
+                category: "Deposit",
+                action: "Deposit",
+                name: "Confirm",
+              })
               //setCurrentModal("review")
             }}
             disabled={!validDepositAmount || poolData?.isPaused}

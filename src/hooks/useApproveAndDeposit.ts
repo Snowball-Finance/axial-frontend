@@ -21,6 +21,7 @@ import { subtractSlippage } from "../libs/slippage"
 import { updateLastTransactionTimes } from "../store/application"
 import { useActiveWeb3React } from "."
 import { SwapFlashLoanNoWithdrawFee } from "../../types/ethers-contracts/SwapFlashLoanNoWithdrawFee"
+import { useAnalytics } from "../utils/analytics"
 
 interface ApproveAndDepositStateArgument {
   [tokenSymbol: string]: NumberInputState
@@ -29,10 +30,11 @@ interface ApproveAndDepositStateArgument {
 export function useApproveAndDeposit(
   poolName: PoolName,
 ): (
-  state: ApproveAndDepositStateArgument,
-  shouldDepositWrapped?: boolean,
-  masterchefDeposit?: boolean
-) => Promise<void> {
+    state: ApproveAndDepositStateArgument,
+    shouldDepositWrapped?: boolean,
+    masterchefDeposit?: boolean
+  ) => Promise<void> {
+  const { trackEvent } = useAnalytics()
   const dispatch = useDispatch()
   const swapContract = useSwapContract(poolName)
   const lpTokenContract = useLPTokenContract(poolName)
@@ -62,14 +64,14 @@ export function useApproveAndDeposit(
       const poolTokens = shouldDepositWrapped
         ? (POOL.underlyingPoolTokens as Token[])
         : masterchefDeposit
-        ? [POOL.lpToken]
-        : POOL.poolTokens
+          ? [POOL.lpToken]
+          : POOL.poolTokens
       const masterchefContract = new ethers.Contract(
         AXIAL_MASTERCHEF_CONTRACT_ADDRESS[43114],
         MASTERCHEF_ABI,
         library?.getSigner(),
       )
-      
+
       const effectiveSwapContract = masterchefDeposit
         ? masterchefContract
         : swapContract
@@ -90,7 +92,7 @@ export function useApproveAndDeposit(
         if (spendingValue.isZero()) return
         const tokenContract = tokenContracts?.[token.symbol] as Erc20
         if (tokenContract == null) return
-        if(!effectiveSwapContract) return
+        if (!effectiveSwapContract) return
         await checkAndApproveTokenForTrade(
           tokenContract,
           effectiveSwapContract.address,
@@ -115,8 +117,8 @@ export function useApproveAndDeposit(
         await Promise.all(poolTokens.map((token) => approveSingleToken(token)))
       }
 
-      if(!masterchefDeposit){
-        if(!lpTokenContract) return
+      if (!masterchefDeposit) {
+        if (!lpTokenContract) return
         const isFirstTransaction = (await lpTokenContract.totalSupply()).isZero()
         let minToMint: BigNumber
         if (isFirstTransaction) {
@@ -127,13 +129,13 @@ export function useApproveAndDeposit(
             true, // deposit boolean
           )
         }
-  
+
         minToMint = subtractSlippage(minToMint, slippageSelected, slippageCustom)
         const deadline = formatDeadlineToNumber(
           transactionDeadlineSelected,
           transactionDeadlineCustom,
         )
-  
+
         const txnAmounts = poolTokens.map(({ symbol }) => state[symbol].valueSafe)
         const txnDeadline = Math.round(
           new Date().getTime() / 1000 + 60 * deadline,
@@ -146,13 +148,13 @@ export function useApproveAndDeposit(
           txnDeadline,
         )
 
-      await spendTransaction.wait()
-      dispatch(
-        updateLastTransactionTimes({
-          [TRANSACTION_TYPES.DEPOSIT]: Date.now(),
-        }),
-      )
-      return Promise.resolve()
+        await spendTransaction.wait()
+        dispatch(
+          updateLastTransactionTimes({
+            [TRANSACTION_TYPES.DEPOSIT]: Date.now(),
+          }),
+        )
+        return Promise.resolve()
       } else {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         await masterchefContract.deposit(
@@ -160,7 +162,11 @@ export function useApproveAndDeposit(
           BigNumber.from(state[POOL.lpToken.symbol].valueSafe),
         )
       }
-
+      trackEvent({
+        category: "Deposit",
+        action: "Deposit",
+        name: `${POOL.lpToken.symbol}-${POOL.lpToken.masterchefId}-${(state[POOL.lpToken.symbol].valueSafe).toString()}}`,
+      })
 
 
     } catch (e) {

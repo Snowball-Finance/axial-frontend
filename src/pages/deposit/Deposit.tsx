@@ -25,6 +25,7 @@ import { useApproveAndDeposit } from "../../hooks/useApproveAndDeposit"
 import { usePoolTokenBalances } from "../../store/wallet/hooks"
 import { useSelector } from "react-redux"
 import { useSwapContract } from "../../hooks/useContract"
+import { useAnalytics } from "../../utils/analytics"
 
 interface Props {
   poolName: PoolName
@@ -32,6 +33,8 @@ interface Props {
 
 function Deposit({ poolName }: Props): ReactElement | null {
   
+  const{trackEvent}=useAnalytics()
+
   const POOL = POOLS_MAP[poolName]
   const { account } = useActiveWeb3React()
   const approveAndDeposit = useApproveAndDeposit(poolName)
@@ -178,6 +181,7 @@ function Deposit({ poolName }: Props): ReactElement | null {
   })
 
   async function onConfirmTransaction(): Promise<void> {
+
     await approveAndDeposit(tokenFormState, shouldDepositWrapped)
     // Clear input after deposit
     updateTokenFormState(
@@ -189,6 +193,11 @@ function Deposit({ poolName }: Props): ReactElement | null {
         {},
       ),
     )
+    trackEvent({
+      category: "Deposit",
+      action: "Deposit",
+      name: poolName,
+    })
   }
   function updateTokenFormValue(symbol: string, value: string): void {
     updateTokenFormState({ [symbol]: value })
