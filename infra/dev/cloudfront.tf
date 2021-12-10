@@ -1,32 +1,22 @@
+resource "aws_cloudfront_origin_access_identity" "web" {
+  comment = "${local.env} axial app origin"
+}
+
 resource "aws_cloudfront_distribution" "this" {
   enabled             = true
   is_ipv6_enabled     = true
   default_root_object = local.root_object
-  aliases             = [local.domain]
+  aliases             = [local.domain, local.wildcard_domain]
+
   origin {
-    domain_name = aws_s3_bucket.web_app.bucket_regional_domain_name
+    domain_name = aws_s3_bucket.web_app.website_endpoint
     origin_id   = local.origin_id
-  }
-
-  # fixes for SPA
-  custom_error_response {
-    error_code         = 400
-    response_code      = 200
-    response_page_path = "/index.html"
-  }
-
-  # fixes for SPA
-  custom_error_response {
-    error_code         = 404
-    response_code      = 200
-    response_page_path = "/index.html"
-  }
-
-  # fixes for SPA
-  custom_error_response {
-    error_code         = 403
-    response_code      = 200
-    response_page_path = "/index.html"
+    custom_origin_config {
+      http_port              = 80
+      https_port             = 443
+      origin_protocol_policy = "http-only"
+      origin_ssl_protocols   = ["TLSv1", "TLSv1.1", "TLSv1.2"]
+    }
   }
 
   restrictions {
@@ -41,10 +31,23 @@ resource "aws_cloudfront_distribution" "this" {
     allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
     cached_methods   = ["GET", "HEAD"]
 
+    lambda_function_association {
+      event_type   = "origin-request"
+      lambda_arn   = module.origin_lambda.qualified_arn
+      include_body = false
+    }
+  
+    lambda_function_association {
+      event_type   = "viewer-request"
+      lambda_arn   = module.viewer_lambda.qualified_arn
+      include_body = false
+    }
+
     forwarded_values {
-      query_string = true
+      query_string = false
+      headers      = ["x-forwarded-host", "Origin"]
       cookies {
-        forward = "all"
+        forward = "none"
       }
     }
 

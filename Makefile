@@ -3,7 +3,7 @@ AWS_PROFILE=snowball
 dev_S3_BUCKET=dev-app.axial.exchange
 staging_S3_BUCKET=dev-stg.axial.exchange
 prod_S3_BUCKET=app.axial.exchange
-dev_DISTRIBUTION_ID=E1896O31DT0GF5
+dev_DISTRIBUTION_ID=E2AS5XGPCS3Z5V
 staging_DISTRIBUTION_ID=
 prod_DISTRIBUTION_ID=E2N82FJBD6LE57
 
