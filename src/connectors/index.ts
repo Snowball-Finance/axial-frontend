@@ -62,6 +62,7 @@ export const addAvalancheNetwork = (): void  => {
   injected.getProvider().then((provider: any): void => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     provider
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       .request({
         method: 'wallet_addEthereumChain',
         params: [AVALANCHE_MAINNET_PARAMS]
@@ -70,5 +71,7 @@ export const addAvalancheNetwork = (): void  => {
       .catch((error: any) => {
         console.log(error)
       })
-  }).catch(error => {console.log(error)})
+  })
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+  .catch(error => {console.log(error)})
 };
