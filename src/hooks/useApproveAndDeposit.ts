@@ -28,8 +28,9 @@ interface ApproveAndDepositStateArgument {
 }
 
 export type TransactionStatusType = {
-  approve: {[tokenSymbol: string]: boolean | undefined},
-  deposit: boolean,
+  approve?: {[tokenSymbol: string]: boolean | undefined},
+  deposit?: boolean,
+  withdraw?: boolean,
 }
 
 export function useApproveAndDeposit(
@@ -64,7 +65,8 @@ export function useApproveAndDeposit(
 
   const initialTransactionStatus = {
     approve: POOL.poolTokens.map(token => token.symbol).reduce((acc, curr) => ({...acc, [curr]: false}), {}),
-    deposit: false
+    deposit: false,
+    withdraw: false,
   }
   
   const [ transactionStatus, setTransactinStatus ] = useState<TransactionStatusType>(initialTransactionStatus)

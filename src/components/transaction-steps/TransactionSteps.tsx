@@ -3,6 +3,7 @@ import "./TransactionSteps.scss"
 import React, { ReactElement } from "react"
 import { TransactionStatusType } from "../../hooks/useApproveAndDeposit"
 import { DepositTransaction } from "../../interfaces/transactions"
+import { POOLS_MAP } from "../../constants"
 
 type Props = {
   type: 'deposit' | 'withdraw' | undefined
@@ -30,6 +31,27 @@ function TransactionSteps({ type, transactionData, transactionStatus }: Props): 
         <div className="stepItem">
           <h4>Deposit</h4>
           <div className={transactionStatus?.deposit ? "dot checked": "dot unchecked"} />
+        </div>
+      </div>
+    )
+  } else if (type === 'withdraw') {
+    return (
+      <div className="oneLine">
+        <div>
+          <h4>Approval</h4>
+          <div className='oneLine'>
+            {Object.keys(transactionStatus?.approve || {}).map(key => (
+              <div key={key} className="stepItem">
+                <div className={transactionStatus?.approve?.[key] ? "dot checked": "dot unchecked"} />
+                <img src={POOLS_MAP[key].lpToken.icon} className="tokenIcon" alt='token-icon' />
+                <div>{POOLS_MAP[key].lpToken.symbol}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="stepItem">
+          <h4>Withdraw</h4>
+          <div className={transactionStatus?.withdraw ? "dot checked": "dot unchecked"} />
         </div>
       </div>
     )
