@@ -18,6 +18,7 @@ import { logEvent } from "../../libs/googleAnalytics"
 import { useSelector } from "react-redux"
 import { useTranslation } from "react-i18next"
 import { POOLS_MAP, PoolTypes } from "../../constants"
+import { TransactionStatusType } from "../../hooks/useApproveAndDeposit"
 
 export interface ReviewWithdrawData {
   withdraw: {
@@ -54,6 +55,7 @@ interface Props {
   formStateData: WithdrawFormState
   onFormChange: (action: any) => void
   onConfirmTransaction: () => Promise<void>
+  transactionStatus: TransactionStatusType
 }
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
@@ -67,6 +69,7 @@ const FarmWithdrawPage = (props: Props): ReactElement => {
     formStateData,
     reviewData,
     onConfirmTransaction,
+    transactionStatus,
   } = props
 
   let poolType = PoolTypes.USD
@@ -184,7 +187,11 @@ const FarmWithdrawPage = (props: Props): ReactElement => {
               onClose={(): void => setCurrentModal(null)}
             />
           ) : null}
-          {currentModal === "confirm" ? <ConfirmTransaction /> : null}
+          {currentModal === "confirm" &&
+            <ConfirmTransaction
+              type='withdraw'
+              transactionStatus={transactionStatus} />
+          }
         </Modal>
       </div>
     </div>

@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from "react-redux"
 import { ethers } from "ethers"
 import { BigNumber } from "@ethersproject/bignumber"
@@ -26,13 +27,23 @@ interface ApproveAndDepositStateArgument {
   [tokenSymbol: string]: NumberInputState
 }
 
+export type TransactionStatusType = {
+  approve?: {[tokenSymbol: string]: boolean | undefined},
+  deposit?: boolean,
+  withdraw?: boolean,
+}
+
 export function useApproveAndDeposit(
   poolName: PoolName,
-): (
-  state: ApproveAndDepositStateArgument,
-  shouldDepositWrapped?: boolean,
-  masterchefDeposit?: boolean
-) => Promise<void> {
+): ({
+    approveAndDeposit: (
+      state: ApproveAndDepositStateArgument,
+      shouldDepositWrapped?: boolean,
+      masterchefDeposit?: boolean
+    ) => Promise<void>,
+    transactionStatus: TransactionStatusType
+  })
+{
   const dispatch = useDispatch()
   const swapContract = useSwapContract(poolName)
   const lpTokenContract = useLPTokenContract(poolName)
@@ -52,7 +63,19 @@ export function useApproveAndDeposit(
   } = useSelector((state: AppState) => state.user)
   const POOL = POOLS_MAP[poolName]
 
-  return async function approveAndDeposit(
+  const initialTransactionStatus = {
+    approve: POOL.poolTokens.map(token => token.symbol).reduce((acc, curr) => ({...acc, [curr]: false}), {}),
+    deposit: false,
+    withdraw: false,
+  }
+  
+  const [ transactionStatus, setTransactinStatus ] = useState<TransactionStatusType>(initialTransactionStatus)
+  
+  useEffect(() => {
+    setTransactinStatus(initialTransactionStatus)
+  }, [setTransactinStatus, POOL.poolTokens]);
+  
+  async function approveAndDeposit(
     state: ApproveAndDepositStateArgument,
     shouldDepositWrapped = false,
     masterchefDeposit = false
@@ -64,6 +87,7 @@ export function useApproveAndDeposit(
         : masterchefDeposit
         ? [POOL.lpToken]
         : POOL.poolTokens
+
       const masterchefContract = new ethers.Contract(
         AXIAL_MASTERCHEF_CONTRACT_ADDRESS[43114],
         MASTERCHEF_ABI,
@@ -87,7 +111,13 @@ export function useApproveAndDeposit(
       const gasPrice = parseUnits(String(gasPriceUnsafe) || "45", 9)
       const approveSingleToken = async (token: Token): Promise<void> => {
         const spendingValue = BigNumber.from(state[token.symbol].valueSafe)
-        if (spendingValue.isZero()) return
+        if (spendingValue.isZero()) {
+          setTransactinStatus(prevState => ({
+            deposit: false,
+            approve: {...(prevState.approve), [token.symbol]: true}
+          }));
+          return
+        }
         const tokenContract = tokenContracts?.[token.symbol] as Erc20
         if (tokenContract == null) return
         if(!effectiveSwapContract) return
@@ -104,6 +134,10 @@ export function useApproveAndDeposit(
             },
           },
         )
+        setTransactinStatus(prevState => ({
+          approve: {...(prevState?.approve), [token.symbol]: true},
+          deposit: prevState?.deposit,
+        }))
         return
       }
       // For each token being deposited, check the allowance and approve it if necessary
@@ -146,19 +180,31 @@ export function useApproveAndDeposit(
           txnDeadline,
         )
 
-      await spendTransaction.wait()
-      dispatch(
-        updateLastTransactionTimes({
-          [TRANSACTION_TYPES.DEPOSIT]: Date.now(),
-        }),
-      )
-      return Promise.resolve()
+        await spendTransaction.wait()
+        setTransactinStatus((prevState: any) => (
+          {
+            approve: prevState?.approve,
+            deposit: true,
+          }
+        ))
+        dispatch(
+          updateLastTransactionTimes({
+            [TRANSACTION_TYPES.DEPOSIT]: Date.now(),
+          }),
+        )
+        return Promise.resolve()
       } else {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         await masterchefContract.deposit(
           POOL.lpToken.masterchefId,
           BigNumber.from(state[POOL.lpToken.symbol].valueSafe),
         )
+        setTransactinStatus((prevState: any) => (
+          {
+            approve: prevState?.approve,
+            deposit: true,
+          }
+        ))
       }
 
 
@@ -166,5 +212,8 @@ export function useApproveAndDeposit(
     } catch (e) {
       console.error(e)
     }
+    setTransactinStatus(initialTransactionStatus);
   }
+
+  return {approveAndDeposit, transactionStatus}
 }
