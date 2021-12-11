@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import {
   POOLS_MAP,
   PoolName,
@@ -20,7 +20,6 @@ import { useActiveWeb3React } from "."
 import { useSelector, useDispatch } from "react-redux"
 import { ethers } from "ethers"
 import { TransactionStatusType } from "./useApproveAndDeposit"
-import { ChainId } from "../constants"
 
 interface ApproveAndWithdrawStateArgument {
   tokenFormState: { [symbol: string]: NumberInputState }
@@ -39,7 +38,7 @@ export function useApproveAndWithdraw(
 }) {
   const dispatch = useDispatch()
   const swapContract = useSwapContract(poolName)
-  const { account, library } = useActiveWeb3React()
+  const { account, library, chainId } = useActiveWeb3React()
   const { gasStandard, gasFast, gasInstant } = useSelector(
     (state: AppState) => state.application,
   )
@@ -55,25 +54,27 @@ export function useApproveAndWithdraw(
   const lpTokenContract = useLPTokenContract(poolName)
   const POOL = POOLS_MAP[poolName]
 
-  const initialTransactionStatus = {
-    approve: {[poolName]: false},
-    deposit: false,
-    withdraw: false,
-  }
+  const initialTransactionStatus = useMemo(() => {
+    return {
+      approve: {[poolName]: false},
+      deposit: false,
+      withdraw: false,
+    }
+  },[poolName])
 
-  const [ transactionStatus, setTransactinStatus ] = useState<TransactionStatusType>(initialTransactionStatus)
+  const [ transactionStatus, setTransactionStatus ] = useState<TransactionStatusType>(initialTransactionStatus)
 
   useEffect(() => {
-    setTransactinStatus(initialTransactionStatus)
-  }, [setTransactinStatus, POOL.poolTokens, poolName]);
+    setTransactionStatus(initialTransactionStatus)
+  }, [setTransactionStatus, POOL.poolTokens, poolName, initialTransactionStatus]);
 
   async function approveAndWithdraw(
     state: ApproveAndWithdrawStateArgument,
   ): Promise<void> {
     try {
-      if (!account) throw new Error("Wallet must be connected")
+      if (!account || !chainId) throw new Error("Wallet must be connected")
       const masterchefContract = new ethers.Contract(
-        AXIAL_MASTERCHEF_CONTRACT_ADDRESS[43114],
+        AXIAL_MASTERCHEF_CONTRACT_ADDRESS[chainId],
         MASTERCHEF_ABI,
         library?.getSigner(),
       )
@@ -113,7 +114,7 @@ export function useApproveAndWithdraw(
             },
           },
         )
-        setTransactinStatus(prevState => ({
+        setTransactionStatus(prevState => ({
           withdraw: false,
           approve: {...(prevState.approve), [poolName]: true}
         }));
@@ -177,7 +178,7 @@ export function useApproveAndWithdraw(
 
         await spendTransaction.wait()
       } else {
-        setTransactinStatus(prevState => ({
+        setTransactionStatus(prevState => ({
           withdraw: false,
           approve: {...(prevState.approve), [poolName]: true}
         }));
@@ -187,7 +188,7 @@ export function useApproveAndWithdraw(
           BigNumber.from(state.tokenFormState[POOL.lpToken.symbol].valueSafe),
         )
       }
-      setTransactinStatus((prevState: any) => (
+      setTransactionStatus((prevState: TransactionStatusType) => (
         {
           approve: prevState?.approve,
           withdraw: true,
@@ -201,7 +202,7 @@ export function useApproveAndWithdraw(
     } catch (e) {
       console.error(e)
     }
-    setTransactinStatus(initialTransactionStatus);
+    setTransactionStatus(initialTransactionStatus);
   }
 
   return { approveAndWithdraw, transactionStatus }

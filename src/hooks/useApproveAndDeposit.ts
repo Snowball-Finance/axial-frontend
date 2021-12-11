@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from "react-redux"
 import { ethers } from "ethers"
 import { BigNumber } from "@ethersproject/bignumber"
@@ -63,17 +63,19 @@ export function useApproveAndDeposit(
   } = useSelector((state: AppState) => state.user)
   const POOL = POOLS_MAP[poolName]
 
-  const initialTransactionStatus = {
-    approve: POOL.poolTokens.map(token => token.symbol).reduce((acc, curr) => ({...acc, [curr]: false}), {}),
-    deposit: false,
-    withdraw: false,
-  }
-  
+  const initialTransactionStatus = useMemo(() => {
+    return {
+      approve: POOL.poolTokens.map(token => token.symbol).reduce((acc, curr) => ({...acc, [curr]: false}), {}),
+      deposit: false,
+      withdraw: false,
+    }
+  },[POOL.poolTokens])
+
   const [ transactionStatus, setTransactinStatus ] = useState<TransactionStatusType>(initialTransactionStatus)
   
   useEffect(() => {
     setTransactinStatus(initialTransactionStatus)
-  }, [setTransactinStatus, POOL.poolTokens]);
+  }, [setTransactinStatus, POOL.poolTokens, initialTransactionStatus]);
   
   async function approveAndDeposit(
     state: ApproveAndDepositStateArgument,
@@ -181,7 +183,7 @@ export function useApproveAndDeposit(
         )
 
         await spendTransaction.wait()
-        setTransactinStatus((prevState: any) => (
+        setTransactinStatus((prevState: TransactionStatusType) => (
           {
             approve: prevState?.approve,
             deposit: true,
@@ -199,15 +201,13 @@ export function useApproveAndDeposit(
           POOL.lpToken.masterchefId,
           BigNumber.from(state[POOL.lpToken.symbol].valueSafe),
         )
-        setTransactinStatus((prevState: any) => (
+        setTransactinStatus((prevState: TransactionStatusType) => (
           {
             approve: prevState?.approve,
             deposit: true,
           }
         ))
       }
-
-
 
     } catch (e) {
       console.error(e)
