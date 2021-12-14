@@ -29,7 +29,7 @@ function MyShareCard({
   const { type: poolType } = POOLS_MAP[data.name]
   const formattedDecimals = poolType === PoolTypes.USD ? 2 : 4
   const hasAVAX = 
-    data.masterchefBalance?.pendingTokens.bonusTokenAddress.toLowerCase() 
+    data.masterchefBalance?.pendingTokens?.bonusTokenAddress?.toLowerCase() 
     === WAVAX.addresses[43114].toLowerCase()
 
   const hasFXS = 
