@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react"
 import useCopyClipboard from "../hooks/useCopyClipboard"
-import { AnalyticActions, AnalyticCategories, createEvent, useAnalytics } from "../utils/analytics"
+import { AnalyticActions, AnalyticCategories, analytics, createEvent } from "../utils/analytics"
 
 export default function CopyHelper(props: {
   toCopy: string
@@ -8,11 +8,9 @@ export default function CopyHelper(props: {
 }): ReactElement {
   const [isCopied, setCopied] = useCopyClipboard()
 
-  const { trackEvent } = useAnalytics()
-
   const handleCopy = () => {
     setCopied(props.toCopy)
-    trackEvent(createEvent(
+    analytics.trackEvent(createEvent(
       {
         category: AnalyticCategories.clipboard,
         action: AnalyticActions.copy,

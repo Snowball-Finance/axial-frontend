@@ -5,7 +5,7 @@ import { UnsupportedChainIdError, useWeb3React } from "@web3-react/core"
 import { SUPPORTED_WALLETS, WalletInfo } from "../../constants"
 import { map } from "lodash"
 import { useTranslation } from "react-i18next"
-import { useAnalytics } from "../../utils/analytics"
+import { analytics } from "../../utils/analytics"
 
 interface Props {
   onClose: () => void
@@ -14,7 +14,6 @@ interface Props {
 function ConnectWallet({ onClose }: Props): ReactElement {
   const { t } = useTranslation()
   const { activate } = useWeb3React()
-  const { trackEvent } = useAnalytics()
 
   const handleWalletSelect = (wallet: WalletInfo) => {
     activate(wallet.connector, undefined, true).catch((error) => {
@@ -25,7 +24,7 @@ function ConnectWallet({ onClose }: Props): ReactElement {
       }
     })
     onClose()
-    trackEvent({
+    analytics.trackEvent({
       category: "Wallet",
       action: "Connect",
       name: wallet.name,

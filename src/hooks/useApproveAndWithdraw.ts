@@ -19,8 +19,7 @@ import { useActiveWeb3React } from "."
 import { useDispatch } from "react-redux"
 import { useSelector } from "react-redux"
 import { ethers } from "ethers"
-import { useAnalytics } from "../utils/analytics"
-
+import { analytics } from "../utils/analytics"
 interface ApproveAndWithdrawStateArgument {
   tokenFormState: { [symbol: string]: NumberInputState }
   withdrawType: string
@@ -32,7 +31,6 @@ export function useApproveAndWithdraw(
   mastechefWithdraw = false,
 ): (state: ApproveAndWithdrawStateArgument) => Promise<void> {
   const dispatch = useDispatch()
-  const { trackEvent } = useAnalytics()
   const swapContract = useSwapContract(poolName)
   const { account, library } = useActiveWeb3React()
   const { gasStandard, gasFast, gasInstant } = useSelector(
@@ -168,7 +166,7 @@ export function useApproveAndWithdraw(
           [TRANSACTION_TYPES.WITHDRAW]: Date.now(),
         }),
       )
-      trackEvent({
+      analytics.trackEvent({
         category: "Withdraw",
         action: "Withdraw",
         name: `symbol:${POOL.lpToken.symbol}-type:${state.withdrawType}-spend:${state.lpTokenAmountToSpend.toNumber()}-valueSafe:${state.tokenFormState[POOL.lpToken.symbol].valueSafe}`,

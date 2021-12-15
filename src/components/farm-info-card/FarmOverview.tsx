@@ -20,8 +20,7 @@ import { useTranslation } from "react-i18next"
 import avaxIcon from "../../assets/icons/AVAX.png"
 import axialLogo from "../../assets/icons/logo_icon.svg" // this needs a smaller icon logo(24)
 import { LoadingWrapper } from "../shimmer"
-import { useAnalytics } from "../../utils/analytics"
-
+import { analytics } from "../../utils/analytics"
 interface Props {
   poolRoute: string
   poolData: PoolDataType
@@ -36,8 +35,6 @@ export default function FarmOverview({
   onClickMigrate,
 }: Props): ReactElement | null {
   const { t } = useTranslation()
-
-  const { trackEvent } = useAnalytics()
 
   const { type: poolType, isOutdated } = POOLS_MAP[poolData.name]
   const formattedDecimals = poolType === PoolTypes.USD ? 2 : 4
@@ -157,7 +154,7 @@ export default function FarmOverview({
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     await masterchefContract.withdraw(POOL.lpToken.masterchefId, 0)
-    trackEvent({
+    analytics.trackEvent({
       category: "Farm",
       action: "Claim",
       name: poolData.name,

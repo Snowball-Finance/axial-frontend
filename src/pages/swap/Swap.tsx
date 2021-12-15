@@ -37,7 +37,7 @@ import { usePoolTokenBalances } from "../../store/wallet/hooks"
 import { useSelector } from "react-redux"
 import { useSwapContract } from "../../hooks/useContract"
 import { useTranslation } from "react-i18next"
-import { useAnalytics } from "../../utils/analytics"
+import { analytics } from "../../utils/analytics"
 
 type FormState = {
   error: null | string
@@ -89,7 +89,6 @@ const EMPTY_FORM_STATE = {
 
 function Swap(): ReactElement {
   const { t } = useTranslation()
-  const { trackEvent } = useAnalytics()
   const { chainId } = useActiveWeb3React()
   const approveAndSwap = useApproveAndSwap()
   const tokenBalances = usePoolTokenBalances()
@@ -314,7 +313,7 @@ function Swap(): ReactElement {
       }
       return nextState
     })
-    trackEvent({
+    analytics.trackEvent({
       category: "Swap",
       action: "Reverse",
       name: `${formState.from.symbol} to ${formState.to.symbol}`,
@@ -453,7 +452,7 @@ function Swap(): ReactElement {
       currentSwapPairs: prevState.currentSwapPairs,
       swapType: prevState.swapType,
     }))
-    trackEvent({
+    analytics.trackEvent({
       category: "Swap",
       action: "Confirm",
       name: `${formState.from.symbol} to ${formState.to.symbol}-${formState.swapType}-fromValue:${formState.from.value}-toValue:${formState.to.value.toNumber()}`,

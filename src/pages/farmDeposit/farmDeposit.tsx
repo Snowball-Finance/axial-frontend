@@ -28,14 +28,13 @@ import { useApproveAndDeposit } from "../../hooks/useApproveAndDeposit"
 import { usePoolTokenBalances } from "../../store/wallet/hooks"
 import { useSelector } from "react-redux"
 import { useSwapContract } from "../../hooks/useContract"
-import { useAnalytics } from "../../utils/analytics"
+import { analytics } from "../../utils/analytics"
 
 interface Props {
   poolName: PoolName
 }
 
 function FarmDeposit({ poolName = AXIAL_AS4D_POOL_NAME }: Props): ReactElement | null {
-  const { trackEvent } = useAnalytics()
   const POOL = POOLS_MAP[poolName]
   const { account } = useActiveWeb3React()
   const approveAndDeposit = useApproveAndDeposit(poolName)
@@ -204,7 +203,7 @@ function FarmDeposit({ poolName = AXIAL_AS4D_POOL_NAME }: Props): ReactElement |
         {},
       ),
     )
-    trackEvent({
+    analytics.trackEvent({
       category: "Farm Deposit",
       action: "Deposit",
       name: POOL.name,

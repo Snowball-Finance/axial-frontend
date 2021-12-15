@@ -21,8 +21,7 @@ import { subtractSlippage } from "../libs/slippage"
 import { updateLastTransactionTimes } from "../store/application"
 import { useActiveWeb3React } from "."
 import { SwapFlashLoanNoWithdrawFee } from "../../types/ethers-contracts/SwapFlashLoanNoWithdrawFee"
-import { useAnalytics } from "../utils/analytics"
-
+import { analytics } from "../utils/analytics"
 interface ApproveAndDepositStateArgument {
   [tokenSymbol: string]: NumberInputState
 }
@@ -34,7 +33,6 @@ export function useApproveAndDeposit(
     shouldDepositWrapped?: boolean,
     masterchefDeposit?: boolean
   ) => Promise<void> {
-  const { trackEvent } = useAnalytics()
   const dispatch = useDispatch()
   const swapContract = useSwapContract(poolName)
   const lpTokenContract = useLPTokenContract(poolName)
@@ -162,7 +160,7 @@ export function useApproveAndDeposit(
           BigNumber.from(state[POOL.lpToken.symbol].valueSafe),
         )
       }
-      trackEvent({
+      analytics.trackEvent({
         category: "Deposit",
         action: "Deposit",
         name: `${POOL.lpToken.symbol}-${POOL.lpToken.masterchefId}-${(state[POOL.lpToken.symbol].valueSafe).toString()}}`,

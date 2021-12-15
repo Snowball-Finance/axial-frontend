@@ -25,16 +25,12 @@ import { useApproveAndDeposit } from "../../hooks/useApproveAndDeposit"
 import { usePoolTokenBalances } from "../../store/wallet/hooks"
 import { useSelector } from "react-redux"
 import { useSwapContract } from "../../hooks/useContract"
-import { useAnalytics } from "../../utils/analytics"
-
+import { analytics } from "../../utils/analytics"
 interface Props {
   poolName: PoolName
 }
 
 function Deposit({ poolName }: Props): ReactElement | null {
-  
-  const{trackEvent}=useAnalytics()
-
   const POOL = POOLS_MAP[poolName]
   const { account } = useActiveWeb3React()
   const approveAndDeposit = useApproveAndDeposit(poolName)
@@ -114,7 +110,7 @@ function Deposit({ poolName }: Props): ReactElement | null {
     async function calculateMaxDeposits(): Promise<void> {
       if (
         swapContract == null ||
-        poolData == null 
+        poolData == null
       ) {
         setEstDepositLPTokenAmount(Zero)
         return
@@ -193,7 +189,7 @@ function Deposit({ poolName }: Props): ReactElement | null {
         {},
       ),
     )
-    trackEvent({
+    analytics.trackEvent({
       category: "Deposit",
       action: "Deposit",
       name: poolName,
@@ -284,8 +280,8 @@ function buildTransactionData(
   }
   const shareOfPool = poolData?.totalLocked.gt(0)
     ? estDepositLPTokenAmount
-        .mul(BigNumber.from(10).pow(18))
-        .div(estDepositLPTokenAmount.add(poolData?.totalLocked))
+      .mul(BigNumber.from(10).pow(18))
+      .div(estDepositLPTokenAmount.add(poolData?.totalLocked))
     : BigNumber.from(10).pow(18)
   const gasAmount = calculateGasEstimate("addLiquidity").mul(gasPrice) // units of gas * GWEI/Unit of gas
 
@@ -293,8 +289,8 @@ function buildTransactionData(
     amount: gasAmount,
     valueUSD: tokenPricesUSD?.ETH
       ? parseUnits(tokenPricesUSD.ETH.toFixed(2), 18) // USD / ETH  * 10^18
-          .mul(gasAmount) // GWEI
-          .div(BigNumber.from(10).pow(25)) // USD / ETH * GWEI * ETH / GWEI = USD
+        .mul(gasAmount) // GWEI
+        .div(BigNumber.from(10).pow(25)) // USD / ETH * GWEI * ETH / GWEI = USD
       : null,
   }
 

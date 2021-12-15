@@ -21,15 +21,14 @@ import Farm from "./farm/Farm"
 import FarmDeposit from "./farmDeposit/farmDeposit"
 import FarmWithdraw from "./farmWithdraw/farmWithdraw"
 import fetchAprStats from "../libs/getMasterchefApy"
-import { useAnalytics } from "../utils/analytics"
+import { analytics } from "../utils/analytics"
 
 
 const App = (): ReactElement => {
   const location = useLocation()
-  const { trackPageView } = useAnalytics()
 
   useEffect(() => {
-    trackPageView({
+    analytics.trackPageView({
       href: location.pathname
     });
   }, [location]);

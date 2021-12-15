@@ -17,8 +17,7 @@ import classNames from "classnames"
 import { useSelector } from "react-redux"
 import { useTranslation } from "react-i18next"
 import { POOLS_MAP, PoolTypes } from "../../constants"
-import { useAnalytics } from "../../utils/analytics"
-
+import { analytics } from "../../utils/analytics"
 export interface ReviewWithdrawData {
   withdraw: {
     name: string
@@ -60,8 +59,6 @@ interface Props {
 const FarmWithdrawPage = (props: Props): ReactElement => {
   const { t } = useTranslation()
 
-  const { trackEvent } = useAnalytics()
-
   const {
     tokensData,
     poolData,
@@ -89,7 +86,7 @@ const FarmWithdrawPage = (props: Props): ReactElement => {
     setCurrentModal("confirm")
     await onConfirmTransaction?.()
     setCurrentModal(null)
-    trackEvent({
+    analytics.trackEvent({
       category: "withdraw",
       action: "withdraw",
       name: poolData?.name,
@@ -183,7 +180,7 @@ const FarmWithdrawPage = (props: Props): ReactElement => {
               gas={gasPriceSelected}
               onConfirm={async (): Promise<void> => {
                 setCurrentModal("confirm")
-                trackEvent(
+                analytics.trackEvent(
                   {
                     category: "withdraw",
                     action: "confirm",

@@ -21,7 +21,7 @@ import { logEvent } from "../../libs/googleAnalytics"
 import { useActiveWeb3React } from "../../hooks"
 import { useSelector } from "react-redux"
 import { useTranslation } from "react-i18next"
-import { useAnalytics } from "../../utils/analytics"
+import { analytics } from "../../utils/analytics"
 
 interface Props {
   tokenOptions: {
@@ -51,8 +51,6 @@ interface Props {
 
 const SwapPage = (props: Props): ReactElement => {
   const { t } = useTranslation()
-
-  const { trackEvent } = useAnalytics()
 
   const { account } = useActiveWeb3React()
   const {
@@ -244,7 +242,7 @@ const SwapPage = (props: Props): ReactElement => {
           kind="primary"
           onClick={(): void => {
             setCurrentModal("review")
-            trackEvent({
+            analytics.trackEvent({
               category: "Swap",
               action: "Review",
               name: `${fromState.symbol}_${toState.symbol}`,
@@ -266,7 +264,7 @@ const SwapPage = (props: Props): ReactElement => {
               onClose={(): void => setCurrentModal(null)}
               onConfirm={async (): Promise<void> => {
                 setCurrentModal("confirm")
-                trackEvent({
+                analytics.trackEvent({
                   category: "Swap",
                   action: "Confirm",
                   name: `${fromState.symbol}_${toState.symbol}`,

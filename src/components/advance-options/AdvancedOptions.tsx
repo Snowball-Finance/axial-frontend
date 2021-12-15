@@ -15,7 +15,7 @@ import ToolTip from "../tool-tip/ToolTip"
 import classNames from "classnames"
 import styles from "./AdvancedOptions.module.scss"
 import { useTranslation } from "react-i18next"
-import { useAnalytics } from "../../utils/analytics"
+import { analytics } from "../../utils/analytics"
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 interface Props {
@@ -25,9 +25,6 @@ interface Props {
 
 export default function AdvancedOptions(props: Props): React.ReactElement {
   const { t } = useTranslation()
-
-  const { trackEvent } = useAnalytics()
-
   const dispatch = useDispatch<AppDispatch>()
   const {
     infiniteApproval,
@@ -38,7 +35,7 @@ export default function AdvancedOptions(props: Props): React.ReactElement {
 
   const handleInfiniteApproval = (): void => {
     dispatch(updateInfiniteApproval(!infiniteApproval))
-    trackEvent({
+    analytics.trackEvent({
       category: "User",
       action: "Toggled Infinite Approval",
       name: infiniteApproval ? "Off" : "On",
@@ -47,7 +44,7 @@ export default function AdvancedOptions(props: Props): React.ReactElement {
 
   const handleSlippageSelected = (value: Slippages): void => {
     dispatch(updateSlippageSelected(value))
-    trackEvent({
+    analytics.trackEvent({
       category: "User",
       action: "Toggled Slippage",
       name: value,
@@ -56,7 +53,7 @@ export default function AdvancedOptions(props: Props): React.ReactElement {
 
   const handleSlippageCustom = (value: string): void => {
     dispatch(updateSlippageCustom(value))
-    trackEvent({
+    analytics.trackEvent({
       category: "User",
       action: "Updated Slippage Custom",
       name: value,

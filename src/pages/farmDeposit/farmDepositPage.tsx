@@ -19,7 +19,7 @@ import InfoSection, {
 } from "../../components/info-section/infoSection"
 import FarmInfoCard from "../../components/farm-info-card/FarmInfoCard"
 import { POOLS_MAP, PoolTypes } from "../../constants"
-import { useAnalytics } from "../../utils/analytics"
+import { analytics } from "../../utils/analytics"
 interface Props {
   title: string
   onConfirmTransaction: () => Promise<void>
@@ -42,8 +42,6 @@ interface Props {
 /* eslint-enable @typescript-eslint/no-explicit-any */
 const FarmDepositPage = (props: Props): ReactElement => {
   const { t } = useTranslation()
-
-  const { trackEvent } = useAnalytics()
 
   const {
     tokens,
@@ -141,7 +139,7 @@ const FarmDepositPage = (props: Props): ReactElement => {
               setCurrentModal("confirm")
               await onConfirmTransaction?.()
               setCurrentModal(null)
-              trackEvent({
+              analytics.trackEvent({
                 category: "Deposit",
                 action: "Deposit",
                 name: "Confirm",

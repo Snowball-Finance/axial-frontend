@@ -13,7 +13,7 @@ import { shortenAddress } from "../../libs/shortenAddress"
 import { useActiveWeb3React } from "../../hooks"
 import { usePoolTokenBalances } from "../../store/wallet/hooks"
 import { useTranslation } from "react-i18next"
-import { AnalyticActions, AnalyticCategories, createEvent, useAnalytics } from "../../utils/analytics"
+import { AnalyticActions, AnalyticCategories, analytics, createEvent } from "../../utils/analytics"
 
 interface Props {
   openOptions: () => void
@@ -22,8 +22,6 @@ interface Props {
 export default function AccountDetail({ openOptions }: Props): ReactElement {
   const { t } = useTranslation()
 
-  const { trackEvent } = useAnalytics()
-
   const { account, connector } = useActiveWeb3React()
   const tokenBalances = usePoolTokenBalances()
   const ethBalanceFormatted = commify(
@@ -31,7 +29,7 @@ export default function AccountDetail({ openOptions }: Props): ReactElement {
   )
 
   const handleOptionsClick = (): void => {
-    trackEvent(createEvent({
+    analytics.trackEvent(createEvent({
       category: AnalyticCategories.investigation,
       action: AnalyticActions.openOptions,
       name: "account-options",
