@@ -96,8 +96,8 @@ function GasAndTokenPrices({
     void fetchAprStats(dispatch)
   }, [dispatch])
 
-  usePoller(fetchAndUpdateGasPrice, 5 * 1000)
   usePoller(fetchAndUpdateTokensPrice, BLOCK_TIME * 120)
+  usePoller(fetchAndUpdateGasPrice, BLOCK_TIME * 2 * 60 * 60) // ~ 1hr, we don't use manual gas for now
   usePoller(fetchAndUpdateSwapStats, BLOCK_TIME * 2 * 60 * 60) // ~ 1hr
   usePoller(fetchAndUpdateMasterchefApy, BLOCK_TIME * 2 * 60 * 60) // ~ 1hr
 

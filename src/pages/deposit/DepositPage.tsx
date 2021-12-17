@@ -1,7 +1,7 @@
 import "./DepositPage.scss"
 
 import { PoolDataType, UserShareType } from "../../hooks/usePoolData"
-import React, { ReactElement, useState } from "react"
+import React, { ReactElement, useState, useMemo } from "react"
 import AdvancedOptions from "../../components/advance-options/AdvancedOptions"
 import Button from "../../components/button/Button"
 
@@ -17,10 +17,12 @@ import ToolTip from "../../components/tool-tip/ToolTip"
 import { formatBNToPercentString } from "../../libs"
 //import { logEvent } from "../../libs/googleAnalytics"
 import { useTranslation } from "react-i18next"
+import { PoolName } from "../../constants"
+import { TransactionStatusType } from '../../hooks/useApproveAndDeposit'
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 interface Props {
-  title: string
+  title: PoolName
   onConfirmTransaction: () => Promise<void>
   onChangeTokenInputValue: (tokenSymbol: string, value: string) => void
   onToggleDepositWrapped: () => void
@@ -37,6 +39,7 @@ interface Props {
   poolData: PoolDataType | null
   myShareData: UserShareType | null
   transactionData: DepositTransaction
+  transactionStatus?: TransactionStatusType
 }
 
 /* eslint-enable @typescript-eslint/no-explicit-any */
@@ -48,6 +51,7 @@ const DepositPage = (props: Props): ReactElement => {
     poolData,
     myShareData,
     transactionData,
+    transactionStatus,
     shouldDepositWrapped,
     onChangeTokenInputValue,
     onConfirmTransaction,
@@ -60,7 +64,21 @@ const DepositPage = (props: Props): ReactElement => {
   const validDepositAmount = transactionData.to.totalAmount.gt(0)
   const shouldDisplayWrappedOption = false
 
-  console.log('poolData ==>', poolData);
+  const isBalancedPool = useMemo(() => {
+    const tokenCount = poolData?.tokens?.length || 0
+    if (tokenCount > 2) {
+      const threshold = tokenCount === 3 ? 25: tokenCount === 4 ? 20: 100 / (tokenCount + 1);
+      for (const token of poolData?.tokens || []) {
+        const percentValue = parseFloat(token.percent.replace('%', '')) || 0
+        if (percentValue < threshold) {
+          return false
+        }
+      }
+    } else {
+      return null
+    }
+    return true
+  }, [poolData?.tokens])
 
   return (
     <div className="deposit">
@@ -124,7 +142,7 @@ const DepositPage = (props: Props): ReactElement => {
             </div>
           </div>
           <AdvancedOptions noApprovalCheckbox={false} noSlippageCheckbox={false}/>
-          {poolData?.lpToken === "as4dUSD" && <div className="warning">
+          {(isBalancedPool !== null && !isBalancedPool) && <div className="warning">
             <ToolTip content={t("unbalancedPoolTooltip")}>
               <h4>
                 {t("unbalancedPool")}
@@ -166,7 +184,12 @@ const DepositPage = (props: Props): ReactElement => {
               onClose={(): void => setCurrentModal(null)}
             />
           ) : null}
-          {currentModal === "confirm" ? <ConfirmTransaction /> : null}
+          {currentModal === "confirm" &&
+            <ConfirmTransaction
+              transactionStatus={transactionStatus}
+              type='deposit'
+              transactionData={transactionData} />
+          }
         </Modal>
       </div>
     </div>

@@ -13,6 +13,7 @@ import { PoolDataType } from "../../hooks/usePoolData"
 import ToolTip from "../tool-tip/ToolTip"
 import { commify } from "@ethersproject/units"
 import { useTranslation } from "react-i18next"
+import { LoadingWrapper } from "../shimmer"
 
 interface Props {
   data: PoolDataType | null
@@ -106,7 +107,9 @@ function PoolInfoCard({ data }: Props): ReactElement | null {
       </div>
       <div className="bottom">
         <h4>{t("currencyReserves")}</h4>
-        <span>{`$${formattedData.reserve} ${t("inTotal")}`}</span>
+        <LoadingWrapper height={19} width={160} isLoading={formattedData.reserve === '-'}>
+          <span>{`$${formattedData.reserve} ${t("inTotal")}`}</span>
+        </LoadingWrapper>
         <div className="tokenList">
           {formattedData.tokens.map((token, index) => (
             <div className="token" key={index}>

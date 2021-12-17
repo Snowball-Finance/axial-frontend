@@ -43,7 +43,7 @@ div.reviewWithdraw {
         }
       }
       & > .token {
-        width: 55%;
+        width: 32px;
         @include breakpoint(md) {
           width: 27%;
         }

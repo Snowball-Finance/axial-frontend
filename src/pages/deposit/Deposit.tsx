@@ -34,7 +34,7 @@ function Deposit({ poolName }: Props): ReactElement | null {
   
   const POOL = POOLS_MAP[poolName]
   const { account } = useActiveWeb3React()
-  const approveAndDeposit = useApproveAndDeposit(poolName)
+  const { approveAndDeposit, transactionStatus } = useApproveAndDeposit(poolName)
   const [poolData, userShareData] = usePoolData(poolName)
   const swapContract = useSwapContract(poolName)
   const allTokens = useMemo(() => {
@@ -218,6 +218,7 @@ function Deposit({ poolName }: Props): ReactElement | null {
       poolData={poolData}
       myShareData={userShareData}
       transactionData={depositTransaction}
+      transactionStatus={transactionStatus}
     />
   )
 }

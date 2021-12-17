@@ -1,3 +1,4 @@
+import { useState, useEffect, useMemo } from "react"
 import {
   POOLS_MAP,
   PoolName,
@@ -16,9 +17,9 @@ import checkAndApproveTokenForTrade from "../libs/checkAndApproveTokenForTrade"
 import { formatDeadlineToNumber } from "../libs"
 import { updateLastTransactionTimes } from "../store/application"
 import { useActiveWeb3React } from "."
-import { useDispatch } from "react-redux"
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 import { ethers } from "ethers"
+import { TransactionStatusType } from "./useApproveAndDeposit"
 
 interface ApproveAndWithdrawStateArgument {
   tokenFormState: { [symbol: string]: NumberInputState }
@@ -29,10 +30,15 @@ interface ApproveAndWithdrawStateArgument {
 export function useApproveAndWithdraw(
   poolName: PoolName,
   mastechefWithdraw = false,
-): (state: ApproveAndWithdrawStateArgument) => Promise<void> {
+): ({
+  approveAndWithdraw: (
+    state: ApproveAndWithdrawStateArgument,
+  ) => Promise<void>,
+  transactionStatus: TransactionStatusType
+}) {
   const dispatch = useDispatch()
   const swapContract = useSwapContract(poolName)
-  const { account, library } = useActiveWeb3React()
+  const { account, library, chainId } = useActiveWeb3React()
   const { gasStandard, gasFast, gasInstant } = useSelector(
     (state: AppState) => state.application,
   )
@@ -48,17 +54,30 @@ export function useApproveAndWithdraw(
   const lpTokenContract = useLPTokenContract(poolName)
   const POOL = POOLS_MAP[poolName]
 
-  return async function approveAndWithdraw(
+  const initialTransactionStatus = useMemo(() => {
+    return {
+      approve: {[poolName]: false},
+      deposit: false,
+      withdraw: false,
+    }
+  },[poolName])
+
+  const [ transactionStatus, setTransactionStatus ] = useState<TransactionStatusType>(initialTransactionStatus)
+
+  useEffect(() => {
+    setTransactionStatus(initialTransactionStatus)
+  }, [setTransactionStatus, POOL.poolTokens, poolName, initialTransactionStatus]);
+
+  async function approveAndWithdraw(
     state: ApproveAndWithdrawStateArgument,
   ): Promise<void> {
     try {
-      if (!account) throw new Error("Wallet must be connected")
+      if (!account || !chainId) throw new Error("Wallet must be connected")
       const masterchefContract = new ethers.Contract(
-        AXIAL_MASTERCHEF_CONTRACT_ADDRESS[43114],
+        AXIAL_MASTERCHEF_CONTRACT_ADDRESS[chainId],
         MASTERCHEF_ABI,
         library?.getSigner(),
       )
-
       if (state.lpTokenAmountToSpend.isZero()) return
       if (lpTokenContract == null) return
       let gasPrice
@@ -95,6 +114,10 @@ export function useApproveAndWithdraw(
             },
           },
         )
+        setTransactionStatus(prevState => ({
+          withdraw: false,
+          approve: {...(prevState.approve), [poolName]: true}
+        }));
 
         console.debug(
           `lpTokenAmountToSpend: ${formatUnits(
@@ -155,12 +178,22 @@ export function useApproveAndWithdraw(
 
         await spendTransaction.wait()
       } else {
+        setTransactionStatus(prevState => ({
+          withdraw: false,
+          approve: {...(prevState.approve), [poolName]: true}
+        }));
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         await masterchefContract.withdraw(
           POOL.lpToken.masterchefId,
           BigNumber.from(state.tokenFormState[POOL.lpToken.symbol].valueSafe),
         )
       }
+      setTransactionStatus((prevState: TransactionStatusType) => (
+        {
+          approve: prevState?.approve,
+          withdraw: true,
+        }
+      ))
       dispatch(
         updateLastTransactionTimes({
           [TRANSACTION_TYPES.WITHDRAW]: Date.now(),
@@ -169,5 +202,8 @@ export function useApproveAndWithdraw(
     } catch (e) {
       console.error(e)
     }
+    setTransactionStatus(initialTransactionStatus);
   }
+
+  return { approveAndWithdraw, transactionStatus }
 }

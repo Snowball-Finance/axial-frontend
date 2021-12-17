@@ -56,6 +56,7 @@ export default async function checkAndApproveTokenForTrade(
       const confirmedTransaction = await approvalTransaction.wait()
       cleanupOnStart?.()
       callbacks.onTransactionSuccess?.(confirmedTransaction)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       callbacks.onTransactionError?.(error)
       throw error

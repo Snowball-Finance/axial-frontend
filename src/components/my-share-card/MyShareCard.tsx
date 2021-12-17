@@ -1,6 +1,6 @@
 import "./MyShareCard.scss"
 
-import { POOLS_MAP, PoolTypes, TOKENS_MAP } from "../../constants"
+import { FXS, ORCA, POOLS_MAP, PoolTypes, TEDDY, TOKENS_MAP, WAVAX } from "../../constants"
 import React, { ReactElement } from "react"
 import { formatBNToPercentString, formatBNToString } from "../../libs"
 import { UserShareType } from "../../hooks/usePoolData"
@@ -28,6 +28,21 @@ function MyShareCard({
   if (!data) return null
   const { type: poolType } = POOLS_MAP[data.name]
   const formattedDecimals = poolType === PoolTypes.USD ? 2 : 4
+  const hasAVAX = 
+    data.masterchefBalance?.pendingTokens?.bonusTokenAddress?.toLowerCase() 
+    === WAVAX.addresses[43114].toLowerCase()
+
+  const hasFXS = 
+    data.masterchefBalance?.pendingTokens.bonusTokenAddress.toLowerCase() 
+    === FXS.addresses[43114].toLowerCase()
+
+  const hasTEDDY = 
+    data.masterchefBalance?.pendingTokens.bonusTokenAddress.toLowerCase() 
+    === TEDDY.addresses[43114].toLowerCase()
+  
+  const hasORCA = 
+    data.masterchefBalance?.pendingTokens.bonusTokenAddress.toLowerCase() 
+    === ORCA.addresses[43114].toLowerCase()
 
   const formattedData = {
     share: formatBNToPercentString(data.share, 18),
@@ -54,7 +69,34 @@ function MyShareCard({
     rewards: {
       avaxRewards: commify(
         formatBNToString(
-          data.masterchefBalance?.pendingTokens
+          data.masterchefBalance?.pendingTokens && hasAVAX
+            ? data.masterchefBalance?.pendingTokens.pendingBonusToken
+            : BigNumber.from("0"),
+          18,
+          formattedDecimals,
+        ),
+      ),
+      teddyRewards: commify(
+        formatBNToString(
+          data.masterchefBalance?.pendingTokens && hasTEDDY
+            ? data.masterchefBalance?.pendingTokens.pendingBonusToken
+            : BigNumber.from("0"),
+          18,
+          formattedDecimals,
+        ),
+      ),
+      fxsRewards: commify(
+        formatBNToString(
+          data.masterchefBalance?.pendingTokens && hasFXS
+            ? data.masterchefBalance?.pendingTokens.pendingBonusToken
+            : BigNumber.from("0"),
+          18,
+          formattedDecimals,
+        ),
+      ),
+      orcaRewards: commify(
+        formatBNToString(
+          data.masterchefBalance?.pendingTokens && hasORCA
             ? data.masterchefBalance?.pendingTokens.pendingBonusToken
             : BigNumber.from("0"),
           18,
@@ -100,10 +142,28 @@ function MyShareCard({
             <span className="value">{formattedData.rewards.axialRewards}</span>
           </div>
         ) : null}
-        {usePendingMasterchef ? (
+        {usePendingMasterchef && hasAVAX ? (
           <div className="infoItem">
             <span className="bold">{`${t("avaxRewards")}: `}</span>
             <span className="value">{formattedData.rewards.avaxRewards}</span>
+          </div>
+        ) : null}
+      {usePendingMasterchef && hasTEDDY ? (
+          <div className="infoItem">
+            <span className="bold">{`${t("teddyRewards")}: `}</span>
+            <span className="value">{formattedData.rewards.teddyRewards}</span>
+          </div>
+        ) : null}
+      {usePendingMasterchef && hasFXS ? (
+          <div className="infoItem">
+            <span className="bold">{`${t("fraxRewards")}: `}</span>
+            <span className="value">{formattedData.rewards.fxsRewards}</span>
+          </div>
+        ) : null}
+      {usePendingMasterchef && hasORCA ? (
+          <div className="infoItem">
+            <span className="bold">{`${t("orcaRewards")}: `}</span>
+            <span className="value">{formattedData.rewards.orcaRewards}</span>
           </div>
         ) : null}
       </div>
