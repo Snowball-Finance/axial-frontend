@@ -21,7 +21,7 @@ export const AXIAL_AC4D_POOL_NAME = "AC4D Stablecoins"
 export const AXIAL_AM3D_POOL_NAME = "AM3D Stablecoins"
 export const AXIAL_AA3D_POOL_NAME = "AA3D Stablecoins"
 export const AXIAL_JLP_POOL_NAME = "JLP AVAX-AXIAL"
-export const USDC_META_POOL_NAME = "Native USDC Metapool"
+export const USDC_META_POOL_NAME = "USDC/AM3D Metapool"
 
 export type PoolName = typeof AXIAL_AS4D_POOL_NAME 
 | typeof AXIAL_AC4D_POOL_NAME 
@@ -325,8 +325,8 @@ export const TSD = new Token(
 )
 
 const USDC_CONTRACT_ADDRESSES: { [chainId in ChainId]: string } = {
-  [ChainId.MAINNET]: "0xad3e3fc59dff318beceaab7d00eb4f68b1ecf195",
-  [ChainId.HARDHAT]: "0xFD471836031dc5108809D173A067e8486B9047A3",
+  [ChainId.MAINNET]: "0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E",
+  [ChainId.HARDHAT]: "0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E",
 }
 export const USDC = new Token(
   USDC_CONTRACT_ADDRESSES,
