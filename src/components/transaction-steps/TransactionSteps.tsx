@@ -23,7 +23,6 @@ function TransactionSteps({ type, transactionData, transactionStatus }: Props): 
               <div key={item.token.symbol} className="stepItem">
                 <div className={transactionStatus?.approve?.[item.token.symbol] ? "dot checked": "dot unchecked"} />
                 <img src={item.token.icon} className="tokenIcon" alt='token-icon' />
-                <div>{item.token.symbol}</div>
               </div>
             ))}
           </div>
