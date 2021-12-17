@@ -11,7 +11,7 @@ import {
   TSD,
   TUSD,
   Token,
-  USDC,
+  USDCe,
   USDT,
   AXIAL_JLP_POOL_TOKEN,
   PoolTypes,
@@ -20,19 +20,21 @@ import {
   AXIAL_AA3D_POOL_NAME,
   AXIAL_AA3D_SWAP_TOKEN,
   AVAI,
+  isMetaPool,
+  USDC,
+  USDC_META_SWAP_TOKEN,
 } from "../constants"
 
 import { Contract } from "@ethersproject/contracts"
 import ERC20_ABI from "../constants/abis/erc20.json"
 import { Erc20 } from "../../types/ethers-contracts/Erc20"
 import LPTOKEN_UNGUARDED_ABI from "../constants/abis/lpTokenUnguarded.json"
+import METASWAP_DEPOSIT_ABI from "../constants/abis/metaSwapDeposit.json"
 import { LpTokenGuarded } from "../../types/ethers-contracts/LpTokenGuarded"
 import { LpTokenUnguarded } from "../../types/ethers-contracts/LpTokenUnguarded"
 import { MetaSwapDeposit } from "../../types/ethers-contracts/MetaSwapDeposit"
 import SWAP_FLASH_LOAN_NO_WITHDRAW_FEE_ABI from "../constants/abis/swapFlashLoanNoWithdrawFee.json"
-import { SwapFlashLoan } from "../../types/ethers-contracts/SwapFlashLoan"
 import { SwapFlashLoanNoWithdrawFee } from "../../types/ethers-contracts/SwapFlashLoanNoWithdrawFee"
-import { SwapGuarded } from "../../types/ethers-contracts/SwapGuarded"
 import { getContract } from "../libs"
 import { useActiveWeb3React } from "./index"
 import { useMemo } from "react"
@@ -70,18 +72,9 @@ export function useTokenContract(
   return useContract(tokenAddress, ERC20_ABI, withSignerIfPossible)
 }
 
-export function useSwapContract<T extends PoolName>(
-  poolName?: T,
-): 
- SwapFlashLoanNoWithdrawFee | null
- //we want to change this if we put different pools kind
- //T extends  typeof AXIAL_AS4D_POOL_NAME | typeof AXIAL_AC4D_POOL_NAME
- // : SwapFlashLoan | SwapGuarded | MetaSwapDeposit | null
 export function useSwapContract(
   poolName?: PoolName,
 ):
-  | SwapGuarded
-  | SwapFlashLoan
   | SwapFlashLoanNoWithdrawFee
   | MetaSwapDeposit
   | null {
@@ -93,7 +86,14 @@ export function useSwapContract(
       if(pool.type === PoolTypes.LP) {
         return null
       }
-      if (pool) {
+      if (isMetaPool(poolName)) {
+        return getContract(
+          pool.addresses[chainId],
+          METASWAP_DEPOSIT_ABI,
+          library,
+          account ?? undefined,
+        ) as MetaSwapDeposit
+      } else if (pool) {
         return getContract(
           pool.addresses[chainId],
           SWAP_FLASH_LOAN_NO_WITHDRAW_FEE_ABI,
@@ -112,13 +112,11 @@ export function useSwapContract(
 
 export function useLPTokenContract<T extends PoolName>(
   poolName: T,
-): T extends typeof AXIAL_AS4D_POOL_NAME | typeof AXIAL_AC4D_POOL_NAME | typeof AXIAL_AM3D_POOL_NAME | typeof AXIAL_AA3D_POOL_NAME
-  ? LpTokenGuarded | null
-  : LpTokenUnguarded | null
+): LpTokenUnguarded | null
 
 export function useLPTokenContract(
   poolName: PoolName,
-): LpTokenUnguarded | LpTokenGuarded | null {
+): LpTokenUnguarded | null {
   const { chainId, account, library } = useActiveWeb3React()
   return useMemo(() => {
     if (!poolName || !library || !chainId) return null
@@ -146,10 +144,11 @@ export function useAllContracts(): AllContractsObject | null {
   const tusdContract = useTokenContract(TUSD) as Erc20
   const usdtContract = useTokenContract(USDT) as Erc20
   const fraxContract = useTokenContract(FRAX) as Erc20
-  const usdcContract = useTokenContract(USDC) as Erc20
+  const usdceContract = useTokenContract(USDCe) as Erc20
   const tsdContract = useTokenContract(TSD) as Erc20
   const mimContract = useTokenContract(MIM) as Erc20
   const avaiContract = useTokenContract(AVAI) as Erc20
+  const usdcContract = useTokenContract(USDC) as Erc20
 
   const axialas4dSwapTokenContract = useTokenContract(
     AXIAL_AS4D_SWAP_TOKEN,
@@ -167,6 +166,10 @@ export function useAllContracts(): AllContractsObject | null {
     AXIAL_AA3D_SWAP_TOKEN,
   ) as LpTokenUnguarded
 
+  const usdcMetaSwapTokenContract = useTokenContract(
+    USDC_META_SWAP_TOKEN,
+  ) as LpTokenUnguarded
+
   const axialjlpTokenContract = useTokenContract(
     AXIAL_JLP_POOL_TOKEN,
   ) as LpTokenUnguarded
@@ -178,6 +181,7 @@ export function useAllContracts(): AllContractsObject | null {
         tusdContract,
         usdtContract,
         usdcContract,
+        usdceContract,
         fraxContract,
         tsdContract,
         mimContract,
@@ -186,6 +190,7 @@ export function useAllContracts(): AllContractsObject | null {
         axialac4dSwapTokenContract,
         axialam3dSwapTokenContract,
         axialaa3dSwapTokenContract,
+        usdcMetaSwapTokenContract,
         axialjlpTokenContract,
       ].some(Boolean)
     )
@@ -195,6 +200,7 @@ export function useAllContracts(): AllContractsObject | null {
       [TUSD.symbol]: tusdContract,
       [USDT.symbol]: usdtContract,
       [USDC.symbol]: usdcContract,
+      [USDCe.symbol]: usdceContract,
       [FRAX.symbol]: fraxContract,
       [TSD.symbol]: tsdContract,
       [MIM.symbol]: mimContract,
@@ -203,6 +209,7 @@ export function useAllContracts(): AllContractsObject | null {
       [AXIAL_AC4D_SWAP_TOKEN.symbol]: axialac4dSwapTokenContract,
       [AXIAL_AM3D_SWAP_TOKEN.symbol]: axialam3dSwapTokenContract,
       [AXIAL_AA3D_SWAP_TOKEN.symbol]: axialaa3dSwapTokenContract,
+      [USDC_META_SWAP_TOKEN.symbol]: usdcMetaSwapTokenContract,
       [AXIAL_JLP_POOL_TOKEN.symbol]: axialjlpTokenContract,
     }
   }, [
@@ -210,6 +217,7 @@ export function useAllContracts(): AllContractsObject | null {
     tusdContract,
     usdtContract,
     usdcContract,
+    usdceContract,
     fraxContract,
     tsdContract,
     mimContract,
@@ -218,6 +226,7 @@ export function useAllContracts(): AllContractsObject | null {
     axialac4dSwapTokenContract,
     axialam3dSwapTokenContract,
     axialaa3dSwapTokenContract,
+    usdcMetaSwapTokenContract,
     axialjlpTokenContract,
   ])
 }

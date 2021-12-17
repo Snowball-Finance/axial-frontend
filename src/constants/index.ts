@@ -21,16 +21,20 @@ export const AXIAL_AC4D_POOL_NAME = "AC4D Stablecoins"
 export const AXIAL_AM3D_POOL_NAME = "AM3D Stablecoins"
 export const AXIAL_AA3D_POOL_NAME = "AA3D Stablecoins"
 export const AXIAL_JLP_POOL_NAME = "JLP AVAX-AXIAL"
+export const USDC_META_POOL_NAME = "Native USDC Metapool"
+
 export type PoolName = typeof AXIAL_AS4D_POOL_NAME 
 | typeof AXIAL_AC4D_POOL_NAME 
 | typeof AXIAL_JLP_POOL_NAME
 | typeof AXIAL_AM3D_POOL_NAME
 | typeof AXIAL_AA3D_POOL_NAME
+| typeof USDC_META_POOL_NAME
 
 export enum ChainId {
   MAINNET = 43114,
   HARDHAT = 43114,
 }
+
 export enum PoolTypes {
   BTC,
   ETH,
@@ -74,6 +78,25 @@ export class Token {
 }
 
 export const BLOCK_TIME = 500 // ms
+
+export const USDC_META_SWAP_ADDRESSES: { [chainId in ChainId]: string } = {
+  [ChainId.MAINNET]: "0x3F1d224557afA4365155ea77cE4BC32D5Dae2174",
+  [ChainId.HARDHAT]: "0x1429859428C0aBc9C2C47C8Ee9FBaf82cFA0F20f",
+}
+
+export const USDC_META_SWAP_DEPOSIT_ADDRESSES: {
+  [chainId in ChainId]: string
+} = {
+  [ChainId.MAINNET]: "0x401AFbc31ad2A3Bc0eD8960d63eFcDEA749b4849",
+  [ChainId.HARDHAT]: "0x922D6956C99E12DFeB3224DEA977D0939758A1Fe",
+}
+
+export const USDC_META_SWAP_TOKEN_CONTRACT_ADDRESSES: {
+  [chainId in ChainId]: string
+} = {
+  [ChainId.MAINNET]: "0x78179d49C13c4ECa14C69545ec172Ba0179EAE6B",
+  [ChainId.HARDHAT]: "0x465Df401621060aE6330C13cA7A0baa2B0a9d66D",
+}
 
 export const AXIAL_AS4D_SWAP_ADDRESSES: { [chainId in ChainId]: string } = {
   [ChainId.MAINNET]: "0x2a716c4933A20Cd8B9f9D9C39Ae7196A85c24228",
@@ -197,6 +220,18 @@ export const AXIAL_AA3D_SWAP_TOKEN = new Token(
   4,
 )
 
+export const USDC_META_SWAP_TOKEN = new Token(
+  USDC_META_SWAP_TOKEN_CONTRACT_ADDRESSES,
+  18,
+  "usdcMETAUSD",
+  "usdcmetausd",
+  "Axial USDC/AM3D",
+  axialLogo,
+  false,
+  true,
+  5
+)
+
 export const AXIAL_JLP_POOL_TOKEN = new Token(
   AXIAL_JLP_ADDRESS,
   18,
@@ -285,6 +320,21 @@ export const TSD = new Token(
   "teddy-dollar",
   "Teddy Dollar",
   tsdLogo,
+  false,
+  false,
+)
+
+const USDC_CONTRACT_ADDRESSES: { [chainId in ChainId]: string } = {
+  [ChainId.MAINNET]: "0xad3e3fc59dff318beceaab7d00eb4f68b1ecf195",
+  [ChainId.HARDHAT]: "0xFD471836031dc5108809D173A067e8486B9047A3",
+}
+export const USDC = new Token(
+  USDC_CONTRACT_ADDRESSES,
+  6,
+  "USDC",
+  "usd-coin",
+  "USDC",
+  usdcLogo,
   false,
   false,
 )
@@ -381,12 +431,12 @@ export const USDT = new Token(
   false,
 )
 
-const USDC_CONTRACT_ADDRESSES: { [chainId in ChainId]: string } = {
+const USDCe_CONTRACT_ADDRESSES: { [chainId in ChainId]: string } = {
   [ChainId.MAINNET]: "0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664",
   [ChainId.HARDHAT]: "0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664",
 }
-export const USDC = new Token(
-  USDC_CONTRACT_ADDRESSES,
+export const USDCe = new Token(
+  USDCe_CONTRACT_ADDRESSES,
   6,
   "USDC.e",
   "usd-coin",
@@ -396,10 +446,12 @@ export const USDC = new Token(
   false,
 )
 
-export const AXIAL_AS4D_POOL_TOKENS = [TUSD, USDC, DAI, USDT]
+export const AXIAL_AS4D_POOL_TOKENS = [TUSD, USDCe, DAI, USDT]
 export const AXIAL_AC4D_POOL_TOKENS = [TSD, MIM, FRAX, DAI]
-export const AXIAL_AM3D_POOL_TOKENS = [MIM, USDC, DAI]
-export const AXIAL_AA3D_POOL_TOKENS = [AVAI, MIM, USDC]
+export const AXIAL_AM3D_POOL_TOKENS = [MIM, USDCe, DAI]
+export const AXIAL_AA3D_POOL_TOKENS = [AVAI, MIM, USDCe]
+export const USDC_META_POOL_TOKENS = [USDC, ...AXIAL_AM3D_POOL_TOKENS]
+export const USDC_META_UNDERLYING_POOL_TOKENS = [USDC, AXIAL_AM3D_SWAP_TOKEN]
 
 export type Pool = {
   name: PoolName
@@ -464,6 +516,24 @@ export const POOLS_MAP: PoolsMap = {
     type: PoolTypes.USD,
     route: "aa3d"
   },
+  [USDC_META_POOL_NAME]: {
+    name: USDC_META_POOL_NAME,
+    lpToken: USDC_META_SWAP_TOKEN,
+    poolTokens: USDC_META_POOL_TOKENS,
+    addresses: USDC_META_SWAP_DEPOSIT_ADDRESSES,
+    isSynthetic: false,
+    type: PoolTypes.USD,
+    metaSwapAddresses: USDC_META_SWAP_ADDRESSES,
+    underlyingPoolTokens: USDC_META_UNDERLYING_POOL_TOKENS,
+    underlyingPool: AXIAL_AM3D_POOL_NAME,
+    route: "usdc",
+  },
+}
+
+export function isMetaPool(poolName = ""): boolean {
+  return new Set([
+    USDC_META_POOL_NAME,
+  ]).has(poolName)
 }
 
 // maps a symbol string to a token object
