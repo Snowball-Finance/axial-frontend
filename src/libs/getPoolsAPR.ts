@@ -144,8 +144,14 @@ export async function getVaultRewardAprNow(): Promise<MasterchefApr> {
 
       let virtualPrice = BigNumber.from(0), TVL = 0
       if(pool.type !== PoolTypes.LP) {
-        // eslint-disable-next-line
-        virtualPrice = await swapTokenContract.getVirtualPrice()
+
+        try {
+          // eslint-disable-next-line
+          virtualPrice = await swapTokenContract.getVirtualPrice()
+        } catch (error) {
+          virtualPrice = BigNumber.from(1)
+        }
+
         TVL = (+virtualPrice / 1e18) * (+balanceToken / 1e18)
       } else {
         TVL = tokenPoolPrice * (+balanceToken / 1e18)
