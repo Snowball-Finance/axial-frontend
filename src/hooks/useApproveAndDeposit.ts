@@ -24,6 +24,7 @@ import { updateLastTransactionTimes } from "../store/application"
 import { useActiveWeb3React } from "."
 import { SwapFlashLoanNoWithdrawFee } from "../../types/ethers-contracts/SwapFlashLoanNoWithdrawFee"
 import { MetaSwap } from '../../types/ethers-contracts/MetaSwap'
+import { analytics } from "../utils/analytics"
 
 interface ApproveAndDepositStateArgument {
   [tokenSymbol: string]: NumberInputState

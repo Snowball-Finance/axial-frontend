@@ -22,6 +22,7 @@ import avaxIcon from "../../assets/icons/AVAX.png"
 import axialLogo from "../../assets/icons/logo_icon.svg" // this needs a smaller icon logo(24)
 import { LoadingWrapper } from "../shimmer"
 import { analytics } from "../../utils/analytics"
+import {BigNumber} from'ethers'
 interface Props {
   poolRoute: string
   poolData: PoolDataType
