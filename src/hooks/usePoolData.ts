@@ -21,6 +21,7 @@ import { useActiveWeb3React } from "."
 import { useSelector } from "react-redux"
 import { useSwapContract } from "./useContract"
 import { ethers } from "ethers"
+import { SwapFlashLoanNoWithdrawFee } from "../../types/ethers-contracts/SwapFlashLoanNoWithdrawFee"
 
 interface TokenShareType {
   percent: string
@@ -213,7 +214,7 @@ export default function usePoolData(
         : null
       const effectivePoolTokens = POOL.underlyingPoolTokens || POOL.poolTokens
       const isMetaSwap = POOL.metaSwapAddresses != null
-      let metaSwapContract = null as MetaSwap | null
+      let metaSwapContract
       if (isMetaSwap) {
         metaSwapContract = getContract(
           POOL.metaSwapAddresses?.[chainId] as string,
@@ -222,7 +223,8 @@ export default function usePoolData(
           account ?? undefined,
         ) as MetaSwap
       }
-      const effectiveSwapContract = metaSwapContract || swapContract 
+      const effectiveSwapContract = 
+        metaSwapContract || (swapContract as SwapFlashLoanNoWithdrawFee)
  
       // Swap fees, price, and LP Token data
       const [swapStorage, aParameter, isPaused] = await Promise.all([

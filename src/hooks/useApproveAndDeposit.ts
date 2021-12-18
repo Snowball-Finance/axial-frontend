@@ -4,7 +4,7 @@ import { ethers } from "ethers"
 import { BigNumber } from "@ethersproject/bignumber"
 
 import { POOLS_MAP, PoolName, TRANSACTION_TYPES, Token, AXIAL_MASTERCHEF_CONTRACT_ADDRESS } from "../constants"
-import { formatDeadlineToNumber } from "../libs"
+import { formatDeadlineToNumber, getContract } from "../libs"
 import {
   useAllContracts,
   useLPTokenContract,
@@ -15,6 +15,7 @@ import { Erc20 } from "../../types/ethers-contracts/Erc20"
 import { GasPrices } from "../store/module/user"
 import { IS_PRODUCTION } from "../libs/environment"
 import MASTERCHEF_ABI from "../constants/abis/masterchef.json"
+import METASWAP_ABI from "../constants/abis/metaSwap.json"
 import { NumberInputState } from "../libs/numberInputState"
 import checkAndApproveTokenForTrade from "../libs/checkAndApproveTokenForTrade"
 import { parseUnits } from "@ethersproject/units"
@@ -22,6 +23,7 @@ import { subtractSlippage } from "../libs/slippage"
 import { updateLastTransactionTimes } from "../store/application"
 import { useActiveWeb3React } from "."
 import { SwapFlashLoanNoWithdrawFee } from "../../types/ethers-contracts/SwapFlashLoanNoWithdrawFee"
+import { MetaSwap } from '../../types/ethers-contracts/MetaSwap'
 
 interface ApproveAndDepositStateArgument {
   [tokenSymbol: string]: NumberInputState
@@ -48,7 +50,7 @@ export function useApproveAndDeposit(
   const swapContract = useSwapContract(poolName)
   const lpTokenContract = useLPTokenContract(poolName)
   const tokenContracts = useAllContracts()
-  const { account, library } = useActiveWeb3React()
+  const { account, library, chainId } = useActiveWeb3React()
   const { gasStandard, gasFast, gasInstant } = useSelector(
     (state: AppState) => state.application,
   )
@@ -62,6 +64,18 @@ export function useApproveAndDeposit(
     infiniteApproval,
   } = useSelector((state: AppState) => state.user)
   const POOL = POOLS_MAP[poolName]
+
+  const metaSwapContract = useMemo(() => {
+    if (POOL.metaSwapAddresses && chainId && library) {
+      return getContract(
+        POOL.metaSwapAddresses[43114],
+        METASWAP_ABI,
+        library,
+        account ?? undefined,
+      ) as MetaSwap
+    }
+    return null
+  }, [chainId, library, POOL.metaSwapAddresses, account])
 
   const initialTransactionStatus = useMemo(() => {
     return {
@@ -98,6 +112,8 @@ export function useApproveAndDeposit(
       
       const effectiveSwapContract = masterchefDeposit
         ? masterchefContract
+        : shouldDepositWrapped
+        ? (metaSwapContract as MetaSwap)
         : swapContract
 
       let gasPriceUnsafe: string | number | undefined

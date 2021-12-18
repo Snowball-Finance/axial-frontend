@@ -17,7 +17,7 @@ import ToolTip from "../../components/tool-tip/ToolTip"
 import { formatBNToPercentString } from "../../libs"
 //import { logEvent } from "../../libs/googleAnalytics"
 import { useTranslation } from "react-i18next"
-import { PoolName } from "../../constants"
+import { isMetaPool, PoolName } from "../../constants"
 import { TransactionStatusType } from '../../hooks/useApproveAndDeposit'
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -62,7 +62,7 @@ const DepositPage = (props: Props): ReactElement => {
   const [currentModal, setCurrentModal] = useState<string | null>(null)
 
   const validDepositAmount = transactionData.to.totalAmount.gt(0)
-  const shouldDisplayWrappedOption = false
+  const shouldDisplayWrappedOption = isMetaPool(poolData?.name)
 
   const isBalancedPool = useMemo(() => {
     const tokenCount = poolData?.tokens?.length || 0
