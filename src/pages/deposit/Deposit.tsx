@@ -46,7 +46,7 @@ function Deposit({ poolName }: Props): ReactElement | null {
     )
   }, [POOL.poolTokens, POOL.underlyingPoolTokens])
   const [tokenFormState, updateTokenFormState] = useTokenFormState(allTokens)
-  const [shouldDepositWrapped, setShouldDepositWrapped] = useState(false)
+  const [shouldDepositWrapped, setShouldDepositWrapped] = useState(true)
   useEffect(() => {
     // empty out previous token state when switchng between wrapped and unwrapped
     if (shouldDepositWrapped) {
