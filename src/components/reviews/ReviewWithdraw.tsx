@@ -55,8 +55,8 @@ function ReviewWithdraw({ onClose, onConfirm, data }: Props): ReactElement {
               </div>
               <div className="token">
                 <img src={token.icon} alt="icon" />
-                <span>{token.name}</span>
               </div>
+              <span>{token.name}</span>
             </div>
           ))}
         </div>

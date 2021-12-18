@@ -1,0 +1,63 @@
+on: pull_request
+
+jobs:
+
+  deploy-branch:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+
+    - name: setup NodeJS
+      uses: actions/setup-node@v1
+      with:
+        node-version: 16.13.1
+    - name: Install
+      run: |
+        npm install
+    - name: Build
+      run: |
+        npm run build
+
+    - name: Get branch name
+      id: branch-name
+      uses: tj-actions/branch-names@v5
+    
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-west-2
+
+    - name: fix branch name
+      shell: bash
+      run: | 
+        echo "::set-output name=current::$(echo ${{steps.branch-name.outputs.current_branch}} | sed 's/\//-/g')"
+      id: branch
+
+    - name: Deploy branch to S3 bucket
+      run: aws s3 cp --recursive build/ s3://${{secrets.DEV_S3_BUCKET}}/${{ steps.branch.outputs.current }}
+  
+  display-link:
+    runs-on: ubuntu-latest
+    name: Comment link to deployed pr
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Get branch name
+        id: branch-name
+        uses: tj-actions/branch-names@v5
+
+      - name: fix branch name
+        shell: bash
+        run: | 
+          echo "::set-output name=current::$(echo ${{steps.branch-name.outputs.current_branch}} | sed 's/\//-/g')"
+        id: branch
+
+      - name: Comment PR
+        uses: thollander/actions-comment-pull-request@v1
+        with:
+          message: 'This PR is automatically being deployed to https://preview-${{ steps.branch.outputs.current }}.dev-app.axial.exchange'
+          GITHUB_TOKEN: ${{ secrets.CI_TOKEN }}

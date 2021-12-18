@@ -28,21 +28,26 @@ function MyShareCard({
   if (!data) return null
   const { type: poolType } = POOLS_MAP[data.name]
   const formattedDecimals = poolType === PoolTypes.USD ? 2 : 4
-  const hasAVAX = 
-    data.masterchefBalance?.pendingTokens.bonusTokenAddress.toLowerCase() 
-    === WAVAX.addresses[43114].toLowerCase()
+  let hasAVAX = false, hasFXS = false, hasTEDDY = false,
+    hasORCA = false; 
 
-  const hasFXS = 
-    data.masterchefBalance?.pendingTokens.bonusTokenAddress.toLowerCase() 
-    === FXS.addresses[43114].toLowerCase()
+  if(data.masterchefBalance){
+    hasAVAX = 
+      data.masterchefBalance?.pendingTokens?.bonusTokenAddress?.toLowerCase() 
+      === WAVAX.addresses[43114].toLowerCase()
 
-  const hasTEDDY = 
-    data.masterchefBalance?.pendingTokens.bonusTokenAddress.toLowerCase() 
-    === TEDDY.addresses[43114].toLowerCase()
-  
-  const hasORCA = 
-    data.masterchefBalance?.pendingTokens.bonusTokenAddress.toLowerCase() 
-    === ORCA.addresses[43114].toLowerCase()
+    hasFXS = 
+      data.masterchefBalance?.pendingTokens?.bonusTokenAddress?.toLowerCase() 
+      === FXS.addresses[43114].toLowerCase()
+
+    hasTEDDY = 
+      data.masterchefBalance?.pendingTokens?.bonusTokenAddress?.toLowerCase() 
+      === TEDDY.addresses[43114].toLowerCase()
+    
+    hasORCA = 
+      data.masterchefBalance?.pendingTokens?.bonusTokenAddress?.toLowerCase() 
+      === ORCA.addresses[43114].toLowerCase()
+  }
 
   const formattedData = {
     share: formatBNToPercentString(data.share, 18),
@@ -70,7 +75,7 @@ function MyShareCard({
       avaxRewards: commify(
         formatBNToString(
           data.masterchefBalance?.pendingTokens && hasAVAX
-            ? data.masterchefBalance?.pendingTokens.pendingBonusToken
+            ? data.masterchefBalance?.pendingTokens?.pendingBonusToken
             : BigNumber.from("0"),
           18,
           formattedDecimals,
@@ -79,7 +84,7 @@ function MyShareCard({
       teddyRewards: commify(
         formatBNToString(
           data.masterchefBalance?.pendingTokens && hasTEDDY
-            ? data.masterchefBalance?.pendingTokens.pendingBonusToken
+            ? data.masterchefBalance?.pendingTokens?.pendingBonusToken
             : BigNumber.from("0"),
           18,
           formattedDecimals,
@@ -88,7 +93,7 @@ function MyShareCard({
       fxsRewards: commify(
         formatBNToString(
           data.masterchefBalance?.pendingTokens && hasFXS
-            ? data.masterchefBalance?.pendingTokens.pendingBonusToken
+            ? data.masterchefBalance?.pendingTokens?.pendingBonusToken
             : BigNumber.from("0"),
           18,
           formattedDecimals,
@@ -97,7 +102,7 @@ function MyShareCard({
       orcaRewards: commify(
         formatBNToString(
           data.masterchefBalance?.pendingTokens && hasORCA
-            ? data.masterchefBalance?.pendingTokens.pendingBonusToken
+            ? data.masterchefBalance?.pendingTokens?.pendingBonusToken
             : BigNumber.from("0"),
           18,
           formattedDecimals,
@@ -105,8 +110,8 @@ function MyShareCard({
       ),
       axialRewards: commify(
         formatBNToString(
-          data.masterchefBalance?.pendingTokens
-            ? data.masterchefBalance?.pendingTokens.pendingAxial
+          data.masterchefBalance?.pendingTokens?.pendingAxial
+            ? data.masterchefBalance?.pendingTokens?.pendingAxial
             : BigNumber.from("0"),
           18,
           formattedDecimals,

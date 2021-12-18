@@ -1,9 +1,10 @@
+import { useState, useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from "react-redux"
 import { ethers } from "ethers"
 import { BigNumber } from "@ethersproject/bignumber"
 
 import { POOLS_MAP, PoolName, TRANSACTION_TYPES, Token, AXIAL_MASTERCHEF_CONTRACT_ADDRESS } from "../constants"
-import { formatDeadlineToNumber } from "../libs"
+import { formatDeadlineToNumber, getContract } from "../libs"
 import {
   useAllContracts,
   useLPTokenContract,
@@ -14,6 +15,7 @@ import { Erc20 } from "../../types/ethers-contracts/Erc20"
 import { GasPrices } from "../store/module/user"
 import { IS_PRODUCTION } from "../libs/environment"
 import MASTERCHEF_ABI from "../constants/abis/masterchef.json"
+import METASWAP_ABI from "../constants/abis/metaSwap.json"
 import { NumberInputState } from "../libs/numberInputState"
 import checkAndApproveTokenForTrade from "../libs/checkAndApproveTokenForTrade"
 import { parseUnits } from "@ethersproject/units"
@@ -21,23 +23,34 @@ import { subtractSlippage } from "../libs/slippage"
 import { updateLastTransactionTimes } from "../store/application"
 import { useActiveWeb3React } from "."
 import { SwapFlashLoanNoWithdrawFee } from "../../types/ethers-contracts/SwapFlashLoanNoWithdrawFee"
-import { analytics } from "../utils/analytics"
+import { MetaSwap } from '../../types/ethers-contracts/MetaSwap'
+
 interface ApproveAndDepositStateArgument {
   [tokenSymbol: string]: NumberInputState
 }
 
+export type TransactionStatusType = {
+  approve?: {[tokenSymbol: string]: boolean | undefined},
+  deposit?: boolean,
+  withdraw?: boolean,
+}
+
 export function useApproveAndDeposit(
   poolName: PoolName,
-): (
-    state: ApproveAndDepositStateArgument,
-    shouldDepositWrapped?: boolean,
-    masterchefDeposit?: boolean
-  ) => Promise<void> {
+): ({
+    approveAndDeposit: (
+      state: ApproveAndDepositStateArgument,
+      shouldDepositWrapped?: boolean,
+      masterchefDeposit?: boolean
+    ) => Promise<void>,
+    transactionStatus: TransactionStatusType
+  })
+{
   const dispatch = useDispatch()
   const swapContract = useSwapContract(poolName)
   const lpTokenContract = useLPTokenContract(poolName)
   const tokenContracts = useAllContracts()
-  const { account, library } = useActiveWeb3React()
+  const { account, library, chainId } = useActiveWeb3React()
   const { gasStandard, gasFast, gasInstant } = useSelector(
     (state: AppState) => state.application,
   )
@@ -52,7 +65,33 @@ export function useApproveAndDeposit(
   } = useSelector((state: AppState) => state.user)
   const POOL = POOLS_MAP[poolName]
 
-  return async function approveAndDeposit(
+  const metaSwapContract = useMemo(() => {
+    if (POOL.metaSwapAddresses && chainId && library) {
+      return getContract(
+        POOL.metaSwapAddresses[43114],
+        METASWAP_ABI,
+        library,
+        account ?? undefined,
+      ) as MetaSwap
+    }
+    return null
+  }, [chainId, library, POOL.metaSwapAddresses, account])
+
+  const initialTransactionStatus = useMemo(() => {
+    return {
+      approve: POOL.poolTokens.map(token => token.symbol).reduce((acc, curr) => ({...acc, [curr]: false}), {}),
+      deposit: false,
+      withdraw: false,
+    }
+  },[POOL.poolTokens])
+
+  const [ transactionStatus, setTransactinStatus ] = useState<TransactionStatusType>(initialTransactionStatus)
+  
+  useEffect(() => {
+    setTransactinStatus(initialTransactionStatus)
+  }, [setTransactinStatus, POOL.poolTokens, initialTransactionStatus]);
+  
+  async function approveAndDeposit(
     state: ApproveAndDepositStateArgument,
     shouldDepositWrapped = false,
     masterchefDeposit = false
@@ -62,8 +101,9 @@ export function useApproveAndDeposit(
       const poolTokens = shouldDepositWrapped
         ? (POOL.underlyingPoolTokens as Token[])
         : masterchefDeposit
-          ? [POOL.lpToken]
-          : POOL.poolTokens
+        ? [POOL.lpToken]
+        : POOL.poolTokens
+
       const masterchefContract = new ethers.Contract(
         AXIAL_MASTERCHEF_CONTRACT_ADDRESS[43114],
         MASTERCHEF_ABI,
@@ -72,6 +112,8 @@ export function useApproveAndDeposit(
 
       const effectiveSwapContract = masterchefDeposit
         ? masterchefContract
+        : shouldDepositWrapped
+        ? (metaSwapContract as MetaSwap)
         : swapContract
 
       let gasPriceUnsafe: string | number | undefined
@@ -87,7 +129,13 @@ export function useApproveAndDeposit(
       const gasPrice = parseUnits(String(gasPriceUnsafe) || "45", 9)
       const approveSingleToken = async (token: Token): Promise<void> => {
         const spendingValue = BigNumber.from(state[token.symbol].valueSafe)
-        if (spendingValue.isZero()) return
+        if (spendingValue.isZero()) {
+          setTransactinStatus(prevState => ({
+            deposit: false,
+            approve: {...(prevState.approve), [token.symbol]: true}
+          }));
+          return
+        }
         const tokenContract = tokenContracts?.[token.symbol] as Erc20
         if (tokenContract == null) return
         if (!effectiveSwapContract) return
@@ -104,6 +152,10 @@ export function useApproveAndDeposit(
             },
           },
         )
+        setTransactinStatus(prevState => ({
+          approve: {...(prevState?.approve), [token.symbol]: true},
+          deposit: prevState?.deposit,
+        }))
         return
       }
       // For each token being deposited, check the allowance and approve it if necessary
@@ -147,6 +199,12 @@ export function useApproveAndDeposit(
         )
 
         await spendTransaction.wait()
+        setTransactinStatus((prevState: TransactionStatusType) => (
+          {
+            approve: prevState?.approve,
+            deposit: true,
+          }
+        ))
         dispatch(
           updateLastTransactionTimes({
             [TRANSACTION_TYPES.DEPOSIT]: Date.now(),
@@ -159,6 +217,12 @@ export function useApproveAndDeposit(
           POOL.lpToken.masterchefId,
           BigNumber.from(state[POOL.lpToken.symbol].valueSafe),
         )
+        setTransactinStatus((prevState: TransactionStatusType) => (
+          {
+            approve: prevState?.approve,
+            deposit: true,
+          }
+        ))
       }
       analytics.trackEvent({
         category: "Deposit",
@@ -166,9 +230,11 @@ export function useApproveAndDeposit(
         name: `${POOL.lpToken.symbol}-${POOL.lpToken.masterchefId}-${(state[POOL.lpToken.symbol].valueSafe).toString()}}`,
       })
 
-
     } catch (e) {
       console.error(e)
     }
+    setTransactinStatus(initialTransactionStatus);
   }
+
+  return {approveAndDeposit, transactionStatus}
 }

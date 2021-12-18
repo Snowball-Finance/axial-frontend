@@ -2,15 +2,17 @@ import {
   DepositTransaction,
   TransactionItem,
 } from "../../interfaces/transactions"
-import { POOLS_MAP, PoolName, Token } from "../../constants"
+import { POOLS_MAP, PoolName, Token, isMetaPool, USDC_AM3D_POOL_NAME } from "../../constants"
 import React, { ReactElement, useEffect, useMemo, useState } from "react"
 import {
   TokensStateType,
   useTokenFormState,
 } from "../../hooks/useTokenFormState"
-import { formatBNToString, shiftBNDecimals } from "../../libs"
+import { formatBNToString, getContract, shiftBNDecimals } from "../../libs"
 import usePoolData, { PoolDataType } from "../../hooks/usePoolData"
 
+import { MetaSwap } from "../../../types/ethers-contracts/MetaSwap"
+import META_SWAP_ABI from "../../constants/abis/metaSwap.json"
 import { AppState } from "../../store"
 import { BigNumber } from "@ethersproject/bignumber"
 import DepositPage from "./DepositPage"
@@ -26,14 +28,16 @@ import { usePoolTokenBalances } from "../../store/wallet/hooks"
 import { useSelector } from "react-redux"
 import { useSwapContract } from "../../hooks/useContract"
 import { analytics } from "../../utils/analytics"
+import { SwapFlashLoanNoWithdrawFee } from "../../../types/ethers-contracts/SwapFlashLoanNoWithdrawFee"
+
 interface Props {
   poolName: PoolName
 }
 
 function Deposit({ poolName }: Props): ReactElement | null {
   const POOL = POOLS_MAP[poolName]
-  const { account } = useActiveWeb3React()
-  const approveAndDeposit = useApproveAndDeposit(poolName)
+  const { account, chainId, library } = useActiveWeb3React()
+  const { approveAndDeposit, transactionStatus } = useApproveAndDeposit(poolName)
   const [poolData, userShareData] = usePoolData(poolName)
   const swapContract = useSwapContract(poolName)
   const allTokens = useMemo(() => {
@@ -42,7 +46,7 @@ function Deposit({ poolName }: Props): ReactElement | null {
     )
   }, [POOL.poolTokens, POOL.underlyingPoolTokens])
   const [tokenFormState, updateTokenFormState] = useTokenFormState(allTokens)
-  const [shouldDepositWrapped, setShouldDepositWrapped] = useState(false)
+  const [shouldDepositWrapped, setShouldDepositWrapped] = useState(POOL.name === USDC_AM3D_POOL_NAME ? true : false)
   useEffect(() => {
     // empty out previous token state when switchng between wrapped and unwrapped
     if (shouldDepositWrapped) {
@@ -104,6 +108,18 @@ function Deposit({ poolName }: Props): ReactElement | null {
   )
   const [estDepositLPTokenAmount, setEstDepositLPTokenAmount] = useState(Zero)
   const [priceImpact, setPriceImpact] = useState(Zero)
+  const isMetaSwap = isMetaPool(POOL.name)
+  const metaSwapContract = useMemo(() => {
+    if (isMetaSwap && chainId && library) {
+      return getContract(
+        POOL.metaSwapAddresses?.[chainId] as string,
+        META_SWAP_ABI,
+        library,
+        account ?? undefined,
+      ) as MetaSwap
+    }
+    return null
+  }, [isMetaSwap, chainId, library, POOL.metaSwapAddresses, account])
 
   useEffect(() => {
     // evaluate if a new deposit will exceed the pool's per-user limit
@@ -126,10 +142,23 @@ function Deposit({ poolName }: Props): ReactElement | null {
       )
       let depositLPTokenAmount
       if (poolData.totalLocked.gt(0) && tokenInputSum.gt(0)) {
-        depositLPTokenAmount = await swapContract.calculateTokenAmount(
-          POOL.poolTokens.map(({ symbol }) => tokenFormState[symbol].valueSafe),
-          true, // deposit boolean
-        )
+        if (shouldDepositWrapped) {
+          depositLPTokenAmount = metaSwapContract
+            ? await metaSwapContract.calculateTokenAmount(
+                (POOL.underlyingPoolTokens || []).map(
+                  ({ symbol }) => tokenFormState[symbol].valueSafe,
+                ),
+                true, // deposit boolean
+              )
+            : Zero
+        } else {
+          depositLPTokenAmount = await (swapContract as SwapFlashLoanNoWithdrawFee).calculateTokenAmount(
+            POOL.poolTokens.map(
+              ({ symbol }) => tokenFormState[symbol].valueSafe,
+            ),
+            true, // deposit boolean
+          )
+        }
       } else {
         // when pool is empty, estimate the lptokens by just summing the input instead of calling contract
         depositLPTokenAmount = tokenInputSum
@@ -154,6 +183,7 @@ function Deposit({ poolName }: Props): ReactElement | null {
     POOL.poolTokens,
     POOL.underlyingPoolTokens,
     shouldDepositWrapped,
+    metaSwapContract,
     allTokens,
   ])
 
@@ -223,6 +253,7 @@ function Deposit({ poolName }: Props): ReactElement | null {
       poolData={poolData}
       myShareData={userShareData}
       transactionData={depositTransaction}
+      transactionStatus={transactionStatus}
     />
   )
 }

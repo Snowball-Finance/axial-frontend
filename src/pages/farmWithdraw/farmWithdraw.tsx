@@ -35,7 +35,7 @@ function FarmWithdraw({ poolName }: Props): ReactElement {
   const { tokenPricesUSD, gasStandard, gasFast, gasInstant } = useSelector(
     (state: AppState) => state.application,
   )
-  const approveAndWithdraw = useApproveAndWithdraw(poolName, true)
+  const { approveAndWithdraw, transactionStatus } = useApproveAndWithdraw(poolName, true)
   const swapContract = useSwapContract(poolName)
   const { account } = useActiveWeb3React()
   const POOL = POOLS_MAP[poolName]
@@ -160,6 +160,7 @@ function FarmWithdraw({ poolName }: Props): ReactElement {
       formStateData={withdrawFormState}
       onConfirmTransaction={onConfirmTransaction}
       onFormChange={updateWithdrawFormState}
+      transactionStatus={transactionStatus}
     />
   )
 }

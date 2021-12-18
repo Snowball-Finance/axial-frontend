@@ -1,26 +1,11 @@
 locals {
   acl = "public-read"
-  policy_config_json = jsonencode({
-    "Version" : "2008-10-17",
-    "Statement" : [
-      {
-        "Sid" : "AllowPublicRead",
-        "Effect" : "Allow",
-        "Principal" : {
-          "AWS" : "*"
-        },
-        "Action" : "s3:GetObject",
-        "Resource" : "arn:aws:s3:::${local.bucket_name}/*"
-      }
-    ]
-    }
-  )
 }
 
 resource "aws_s3_bucket" "web_app" {
   bucket = local.bucket_name
   acl    = local.acl
-  policy = local.policy_config_json
+  policy = data.aws_iam_policy_document.s3.json
   force_destroy = true
   lifecycle {
     prevent_destroy = false
@@ -28,5 +13,21 @@ resource "aws_s3_bucket" "web_app" {
   website {
     error_document = "error.html"
     index_document = "index.html"
+  }
+}
+
+data "aws_iam_policy_document" "s3" {
+  statement { 
+    sid = "AllowPublicRead"
+    effect = "Allow"
+    actions = [ "s3:GetObject"]
+    resources = [
+      "arn:aws:s3:::${local.bucket_name}",
+      "arn:aws:s3:::${local.bucket_name}/*"
+    ]
+    principals {
+      identifiers = ["*"]
+      type = "*"
+    }
   }
 }

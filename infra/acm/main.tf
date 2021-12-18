@@ -14,6 +14,11 @@ variable "aws_region" {
   default     = "us-west-2"
 }
 
+variable "alternative_names" {
+  type = list(string)
+  default =  []
+}
+
 variable "tags" {
   description = "The associted tags"
   default     = []
@@ -26,6 +31,7 @@ provider "aws" {
 
 resource "aws_acm_certificate" "acm" {
   domain_name       = var.domain_name
+  subject_alternative_names = var.alternative_names 
   validation_method = "DNS"
   lifecycle {
     create_before_destroy = true
