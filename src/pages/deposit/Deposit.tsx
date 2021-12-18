@@ -2,7 +2,7 @@ import {
   DepositTransaction,
   TransactionItem,
 } from "../../interfaces/transactions"
-import { POOLS_MAP, PoolName, Token, isMetaPool } from "../../constants"
+import { POOLS_MAP, PoolName, Token, isMetaPool, USDC_AM3D_POOL_NAME } from "../../constants"
 import React, { ReactElement, useEffect, useMemo, useState } from "react"
 import {
   TokensStateType,
@@ -46,7 +46,7 @@ function Deposit({ poolName }: Props): ReactElement | null {
     )
   }, [POOL.poolTokens, POOL.underlyingPoolTokens])
   const [tokenFormState, updateTokenFormState] = useTokenFormState(allTokens)
-  const [shouldDepositWrapped, setShouldDepositWrapped] = useState(false)
+  const [shouldDepositWrapped, setShouldDepositWrapped] = useState(POOL.name === USDC_AM3D_POOL_NAME ? true : false)
   useEffect(() => {
     // empty out previous token state when switchng between wrapped and unwrapped
     if (shouldDepositWrapped) {
