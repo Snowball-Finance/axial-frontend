@@ -18,7 +18,7 @@ import {
   AVAI,
   isMetaPool,
   USDC,
-  USDC_META_SWAP_TOKEN,
+  USDC_AM3D_SWAP_TOKEN,
 } from "../constants"
 
 import { Contract } from "@ethersproject/contracts"
@@ -162,8 +162,8 @@ export function useAllContracts(): AllContractsObject | null {
     AXIAL_AA3D_SWAP_TOKEN,
   ) as LpTokenUnguarded
 
-  const usdcMetaSwapTokenContract = useTokenContract(
-    USDC_META_SWAP_TOKEN,
+  const usdcAm3dSwapTokenContract = useTokenContract(
+    USDC_AM3D_SWAP_TOKEN,
   ) as LpTokenUnguarded
 
   const axialjlpTokenContract = useTokenContract(
@@ -186,7 +186,7 @@ export function useAllContracts(): AllContractsObject | null {
         axialac4dSwapTokenContract,
         axialam3dSwapTokenContract,
         axialaa3dSwapTokenContract,
-        usdcMetaSwapTokenContract,
+        usdcAm3dSwapTokenContract,
         axialjlpTokenContract,
       ].some(Boolean)
     )
@@ -205,7 +205,7 @@ export function useAllContracts(): AllContractsObject | null {
       [AXIAL_AC4D_SWAP_TOKEN.symbol]: axialac4dSwapTokenContract,
       [AXIAL_AM3D_SWAP_TOKEN.symbol]: axialam3dSwapTokenContract,
       [AXIAL_AA3D_SWAP_TOKEN.symbol]: axialaa3dSwapTokenContract,
-      [USDC_META_SWAP_TOKEN.symbol]: usdcMetaSwapTokenContract,
+      [USDC_AM3D_SWAP_TOKEN.symbol]: usdcAm3dSwapTokenContract,
       [AXIAL_JLP_POOL_TOKEN.symbol]: axialjlpTokenContract,
     }
   }, [
@@ -222,7 +222,7 @@ export function useAllContracts(): AllContractsObject | null {
     axialac4dSwapTokenContract,
     axialam3dSwapTokenContract,
     axialaa3dSwapTokenContract,
-    usdcMetaSwapTokenContract,
+    usdcAm3dSwapTokenContract,
     axialjlpTokenContract,
   ])
 }

@@ -6,7 +6,7 @@ import {
   PoolTypes,
   AXIAL_AM3D_POOL_NAME,
   AXIAL_AA3D_POOL_NAME,
-  USDC_META_POOL_NAME,
+  USDC_AM3D_POOL_NAME,
 } from "../../constants"
 import React, { ReactElement, useState } from "react"
 
@@ -22,7 +22,7 @@ function Pools(): ReactElement | null {
   const [am3dPoolData, am3dUserShareData] = usePoolData(AXIAL_AM3D_POOL_NAME)
   const [aa3dPoolData, aa3dUserShareData] = usePoolData(AXIAL_AA3D_POOL_NAME)
   const [ac4dPoolData, ac4dUserShareData] = usePoolData(AXIAL_AC4D_POOL_NAME)
-  const [usdcMetaPoolData, usdcMetaUserShareData] = usePoolData(USDC_META_POOL_NAME)
+  const [usdcAm3dPoolData, usdcAm3dUserShareData] = usePoolData(USDC_AM3D_POOL_NAME)
   const [currentModal, setCurrentModal] = useState<string | null>(null)
   const [filter] = useState<PoolTypes | "all" | "outdated">("all")
   const handleClickMigrate = () => {
@@ -51,12 +51,12 @@ function Pools(): ReactElement | null {
         userShareData: aa3dUserShareData,
         poolRoute: "/pools/aa3d",
       }
-    } else if (poolName === USDC_META_POOL_NAME) {
+    } else if (poolName === USDC_AM3D_POOL_NAME) {
       return {
-        name: USDC_META_POOL_NAME,
-        poolData: usdcMetaPoolData,
-        userShareData: usdcMetaUserShareData,
-        poolRoute: "/pools/wcusd",
+        name: USDC_AM3D_POOL_NAME,
+        poolData: usdcAm3dPoolData,
+        userShareData: usdcAm3dUserShareData,
+        poolRoute: "/pools/usdc",
       }
     } else {
       return {
