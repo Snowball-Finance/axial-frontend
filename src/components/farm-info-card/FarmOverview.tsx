@@ -140,29 +140,13 @@ export default function FarmOverview({
       value: `$${formattedData.TVL}`,
     },
   ])
-
-  let tokensToShow = [...formattedData.tokens]
-  const poolTokensToShow = [...poolData.tokens]
+  
   if (poolData.name === "JLP AVAX-AXIAL") {
     poolData.tokens = [
       {
         percent: "24.19%",
         symbol: "TSD",
         value: BigNumber.from("0x012410c9d8d3e7774b6dfb"),
-      },
-    ]
-    tokensToShow = [
-      {
-        icon: avaxIcon,
-        name: "Teddy Dollar",
-        symbol: "AVAX",
-        value: "1379240.70",
-      },
-      {
-        icon: axialLogo,
-        name: "Teddy Dollar",
-        symbol: "AXIAL",
-        value: "1379240.70",
       },
     ]
   }
