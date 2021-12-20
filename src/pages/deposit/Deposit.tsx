@@ -2,7 +2,7 @@ import {
   DepositTransaction,
   TransactionItem,
 } from "../../interfaces/transactions"
-import { POOLS_MAP, PoolName, Token, isMetaPool, USDC_AM3D_POOL_NAME } from "../../constants"
+import { POOLS_MAP, PoolName, Token, isMetaPool, USDC_AM3D_POOL_NAME, FRAX_ADDRESSES } from "../../constants"
 import React, { ReactElement, useEffect, useMemo, useState } from "react"
 import {
   TokensStateType,
@@ -26,7 +26,7 @@ import { useActiveWeb3React } from "../../hooks"
 import { useApproveAndDeposit } from "../../hooks/useApproveAndDeposit"
 import { usePoolTokenBalances } from "../../store/wallet/hooks"
 import { useSelector } from "react-redux"
-import { useSwapContract } from "../../hooks/useContract"
+import { useSwapContract, useTokenContractByChainId } from "../../hooks/useContract"
 import { SwapFlashLoanNoWithdrawFee } from "../../../types/ethers-contracts/SwapFlashLoanNoWithdrawFee"
 
 interface Props {
@@ -40,6 +40,16 @@ function Deposit({ poolName }: Props): ReactElement | null {
   const { approveAndDeposit, transactionStatus } = useApproveAndDeposit(poolName)
   const [poolData, userShareData] = usePoolData(poolName)
   const swapContract = useSwapContract(poolName)
+  const [hasFrax, setHasFrax] = useState(false)
+  const fraxContractOnETH = useTokenContractByChainId(FRAX_ADDRESSES[1], 1)
+  const fraxContractOnBSC = useTokenContractByChainId(FRAX_ADDRESSES[56], 56)
+  const fraxContractOnMATIC = useTokenContractByChainId(FRAX_ADDRESSES[137], 137)
+  const fraxContractOnARBITRUM = useTokenContractByChainId(FRAX_ADDRESSES[42161], 42161)
+  const fraxContractOnFANTOM = useTokenContractByChainId(FRAX_ADDRESSES[250], 250)
+  const fraxContractOnMOONRIVER = useTokenContractByChainId(FRAX_ADDRESSES[1285], 1285)
+  const fraxContractOnBOBA = useTokenContractByChainId(FRAX_ADDRESSES[288], 288)
+  const fraxContractOnHARMONY = useTokenContractByChainId(FRAX_ADDRESSES[1666600000], 1666600000)
+
   const allTokens = useMemo(() => {
     return Array.from(
       new Set(POOL.poolTokens.concat(POOL.underlyingPoolTokens || [])),
@@ -47,6 +57,146 @@ function Deposit({ poolName }: Props): ReactElement | null {
   }, [POOL.poolTokens, POOL.underlyingPoolTokens])
   const [tokenFormState, updateTokenFormState] = useTokenFormState(allTokens)
   const [shouldDepositWrapped, setShouldDepositWrapped] = useState(POOL.name === USDC_AM3D_POOL_NAME ? true : false)
+
+  const fetchFraxBalanceOnETH = async () => {
+    try {
+      if (fraxContractOnETH && account) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        const hasFraxBalance = (await fraxContractOnETH.balanceOf(account)).gt(Zero)
+        if (hasFraxBalance) {
+          setHasFrax(true);
+        }
+      }
+    } catch (err) {
+      console.error('[fetchFraxBalanceOnETH] ==> err', err)
+    }
+  }
+
+  const fetchFraxBalanceOnBSC = async () => {
+    try {
+      if (fraxContractOnBSC && account) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        const hasFraxBalance = (await fraxContractOnBSC.balanceOf(account)).gt(Zero)
+        if (hasFraxBalance) {
+          setHasFrax(true)
+        }
+      }
+    } catch (err) {
+      console.error('[fetchFraxBalanceOnBSC] ==> err', err)
+    }
+  }
+
+  const fetchFraxBalanceOnMATIC = async () => {
+    try {
+      if (fraxContractOnMATIC && account) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        const hasFraxBalance = (await fraxContractOnMATIC.balanceOf(account)).gt(Zero)
+        if (hasFraxBalance) {
+          setHasFrax(true)
+        }
+      }
+    } catch (err) {
+      console.error('[fetchFraxBalanceOnMATIC] ==> err', err)
+    }
+  }
+
+  const fetchFraxBalanceOnARBITRUM = async () => {
+    try {
+      if (fraxContractOnARBITRUM && account) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        const hasFraxBalance = (await fraxContractOnARBITRUM.balanceOf(account)).gt(Zero)
+        if (hasFraxBalance) {
+          setHasFrax(true)
+        }
+      }
+    } catch (err) {
+      console.error('[fetchFraxBalanceOnARBITRUM] ==> err', err)
+    }
+  }
+
+  const fetchFraxBalanceOnFANTOM = async () => {
+    try {
+      if (fraxContractOnFANTOM && account) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        const hasFraxBalance = (await fraxContractOnFANTOM.balanceOf(account)).gt(Zero)
+        if (hasFraxBalance) {
+          setHasFrax(true)
+        }
+      }
+    } catch (err) {
+      console.error('[fetchFraxBalanceOnFANTOM] ==> err', err)
+    }
+  }
+
+  const fetchFraxBalanceOnMOONRIVER = async () => {
+    try {
+      if (fraxContractOnMOONRIVER && account) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        const hasFraxBalance = (await fraxContractOnMOONRIVER.balanceOf(account)).gt(Zero)
+        if (hasFraxBalance) {
+          setHasFrax(true)
+        }
+      }
+    } catch (err) {
+      console.error('[fraxContractOnMOONRIVER] ==> err', err)
+    }
+  }
+
+  const fetchFraxBalanceOnBOBA = async () => {
+    try {
+      if (fraxContractOnBOBA && account) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        const hasFraxBalance = (await fraxContractOnBOBA.balanceOf(account)).gt(Zero)
+        if (hasFraxBalance) {
+          setHasFrax(true)
+        }
+      }
+    } catch (err) {
+      console.error('[fetchFraxBalanceOnBOBA] ==> err', err)
+    }
+  }
+
+  const fetchFraxBalanceOnHARMONY = async () => {
+    try {
+      if (fraxContractOnHARMONY && account) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        const hasFraxBalance = (await fraxContractOnHARMONY.balanceOf(account)).gt(Zero)
+        if (hasFraxBalance) {
+          setHasFrax(true)
+        }
+      }
+    } catch (err) {
+      console.error('[fetchFraxBalanceOnHARMONY] ==> err', err)
+    }
+  }
+
+  
+  useEffect(() => {
+    const fetchFraxBalance = () => {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      fetchFraxBalanceOnETH()
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      fetchFraxBalanceOnBSC()
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      fetchFraxBalanceOnMATIC()
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      fetchFraxBalanceOnFANTOM()
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      fetchFraxBalanceOnARBITRUM()
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      fetchFraxBalanceOnMOONRIVER()
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      fetchFraxBalanceOnBOBA()
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      fetchFraxBalanceOnHARMONY()
+    }
+    if (account && POOL?.poolTokens?.find(token => token.symbol === 'FRAX')) {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      fetchFraxBalance()
+    }
+  // eslint-disable-next-line
+  }, [account, POOL.poolTokens])
+
   useEffect(() => {
     // empty out previous token state when switchng between wrapped and unwrapped
     if (shouldDepositWrapped) {
@@ -248,6 +398,7 @@ function Deposit({ poolName }: Props): ReactElement | null {
       myShareData={userShareData}
       transactionData={depositTransaction}
       transactionStatus={transactionStatus}
+      hasFrax={hasFrax}
     />
   )
 }

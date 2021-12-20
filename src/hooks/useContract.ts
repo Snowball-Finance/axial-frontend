@@ -19,8 +19,10 @@ import {
   isMetaPool,
   USDC,
   USDC_AM3D_SWAP_TOKEN,
+  RPC_URLS,
 } from "../constants"
 
+import { StaticJsonRpcProvider, getDefaultProvider } from "@ethersproject/providers"
 import { Contract } from "@ethersproject/contracts"
 import ERC20_ABI from "../constants/abis/erc20.json"
 import { Erc20 } from "../../types/ethers-contracts/Erc20"
@@ -34,6 +36,7 @@ import { SwapFlashLoanNoWithdrawFee } from "../../types/ethers-contracts/SwapFla
 import { getContract } from "../libs"
 import { useActiveWeb3React } from "./index"
 import { useMemo } from "react"
+
 
 // returns null on errors
 function useContract(
@@ -66,6 +69,14 @@ export function useTokenContract(
   const { chainId } = useActiveWeb3React()
   const tokenAddress = chainId ? t.addresses[chainId] : undefined
   return useContract(tokenAddress, ERC20_ABI, withSignerIfPossible)
+}
+
+export function useTokenContractByChainId(
+  tokenAddress: string,
+  chainId: 1 | 56 | 137 | 43114 | 250 | 42161 | 1285 | 288 | 1666600000,
+): Contract | null {
+  const provider = chainId === 1 ? getDefaultProvider('homestead') : new StaticJsonRpcProvider(RPC_URLS[chainId])
+  return new Contract(tokenAddress, ERC20_ABI, provider)
 }
 
 export function useSwapContract(

@@ -40,6 +40,7 @@ interface Props {
   myShareData: UserShareType | null
   transactionData: DepositTransaction
   transactionStatus?: TransactionStatusType
+  hasFrax?: boolean
 }
 
 /* eslint-enable @typescript-eslint/no-explicit-any */
@@ -56,6 +57,7 @@ const DepositPage = (props: Props): ReactElement => {
     onChangeTokenInputValue,
     onConfirmTransaction,
     onToggleDepositWrapped,
+    hasFrax,
   } = props
 
 
@@ -98,6 +100,11 @@ const DepositPage = (props: Props): ReactElement => {
                     onChangeTokenInputValue(token.symbol, value)
                   }
                 />
+                {(hasFrax && token.symbol ==='FRAX') &&
+                  <div className="fraxPanel">
+                    It appears that you have Anyswap Frax. <a target='_blank' rel='noreferrer' href='https://app.frax.finance/crosschain'>Click here</a> to exchange for Canonical Frax.
+                  </div>
+                }
                 {index === tokens.length - 1 ? (
                   ""
                 ) : (
