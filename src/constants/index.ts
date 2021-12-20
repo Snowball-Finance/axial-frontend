@@ -23,12 +23,13 @@ export const AXIAL_AA3D_POOL_NAME = "AA3D Stablecoins"
 export const AXIAL_JLP_POOL_NAME = "JLP AVAX-AXIAL"
 export const USDC_AM3D_POOL_NAME = "USDC-AM3D Metapool"
 
-export type PoolName = typeof AXIAL_AS4D_POOL_NAME 
-| typeof AXIAL_AC4D_POOL_NAME 
-| typeof AXIAL_JLP_POOL_NAME
-| typeof AXIAL_AM3D_POOL_NAME
-| typeof AXIAL_AA3D_POOL_NAME
-| typeof USDC_AM3D_POOL_NAME
+export type PoolName =
+  | typeof AXIAL_AS4D_POOL_NAME
+  | typeof AXIAL_AC4D_POOL_NAME
+  | typeof AXIAL_JLP_POOL_NAME
+  | typeof AXIAL_AM3D_POOL_NAME
+  | typeof AXIAL_AA3D_POOL_NAME
+  | typeof USDC_AM3D_POOL_NAME
 
 export enum ChainId {
   MAINNET = 43114,
@@ -229,7 +230,7 @@ export const USDC_AM3D_SWAP_TOKEN = new Token(
   axialLogo,
   false,
   true,
-  5
+  5,
 )
 
 export const AXIAL_JLP_POOL_TOKEN = new Token(
@@ -399,7 +400,7 @@ export const WAVAX = new Token(
   false,
 )
 
-export const extraRewardTokens = [TEDDY, FXS, WAVAX, ORCA];
+export const extraRewardTokens = [TEDDY, FXS, WAVAX, ORCA]
 
 const TUSD_CONTRACT_ADDRESSES: { [chainId in ChainId]: string } = {
   [ChainId.MAINNET]: "0x1C20E891Bab6b1727d14Da358FAe2984Ed9B59EB",
@@ -478,7 +479,7 @@ export const POOLS_MAP: PoolsMap = {
     poolTokens: AXIAL_AS4D_POOL_TOKENS,
     isSynthetic: false,
     type: PoolTypes.USD,
-    route: "as4d"
+    route: "as4d",
   },
   [AXIAL_AC4D_POOL_NAME]: {
     name: AXIAL_AC4D_POOL_NAME,
@@ -487,7 +488,7 @@ export const POOLS_MAP: PoolsMap = {
     poolTokens: AXIAL_AC4D_POOL_TOKENS,
     isSynthetic: false,
     type: PoolTypes.USD,
-    route: "ac4d"
+    route: "ac4d",
   },
   [AXIAL_JLP_POOL_NAME]: {
     name: AXIAL_JLP_POOL_NAME,
@@ -496,7 +497,7 @@ export const POOLS_MAP: PoolsMap = {
     poolTokens: [],
     isSynthetic: false,
     type: PoolTypes.LP,
-    route: "jlp"
+    route: "jlp",
   },
   [AXIAL_AM3D_POOL_NAME]: {
     name: AXIAL_AM3D_POOL_NAME,
@@ -505,7 +506,7 @@ export const POOLS_MAP: PoolsMap = {
     poolTokens: AXIAL_AM3D_POOL_TOKENS,
     isSynthetic: false,
     type: PoolTypes.USD,
-    route: "am3d"
+    route: "am3d",
   },
   [AXIAL_AA3D_POOL_NAME]: {
     name: AXIAL_AA3D_POOL_NAME,
@@ -514,7 +515,7 @@ export const POOLS_MAP: PoolsMap = {
     poolTokens: AXIAL_AA3D_POOL_TOKENS,
     isSynthetic: false,
     type: PoolTypes.USD,
-    route: "aa3d"
+    route: "aa3d",
   },
   [USDC_AM3D_POOL_NAME]: {
     name: USDC_AM3D_POOL_NAME,
@@ -531,9 +532,7 @@ export const POOLS_MAP: PoolsMap = {
 }
 
 export function isMetaPool(poolName = ""): boolean {
-  return new Set([
-    USDC_AM3D_POOL_NAME,
-  ]).has(poolName)
+  return new Set([USDC_AM3D_POOL_NAME]).has(poolName)
 }
 
 // maps a symbol string to a token object

@@ -1,12 +1,15 @@
-
-
-import FarmDepositPage from './farmDepositPage'
+import FarmDepositPage from "./farmDepositPage"
 
 import {
   DepositTransaction,
   TransactionItem,
 } from "../../interfaces/transactions"
-import { AXIAL_AS4D_POOL_NAME, POOLS_MAP, PoolName, Token } from "../../constants"
+import {
+  AXIAL_AS4D_POOL_NAME,
+  POOLS_MAP,
+  PoolName,
+  Token,
+} from "../../constants"
 import React, { ReactElement, useEffect, useMemo, useState } from "react"
 import {
   TokensStateType,
@@ -34,19 +37,19 @@ interface Props {
   poolName: PoolName
 }
 
-function FarmDeposit({ poolName = AXIAL_AS4D_POOL_NAME }: Props): ReactElement | null {
+function FarmDeposit({
+  poolName = AXIAL_AS4D_POOL_NAME,
+}: Props): ReactElement | null {
   const POOL = POOLS_MAP[poolName]
   const { account } = useActiveWeb3React()
-  const { approveAndDeposit, transactionStatus } = useApproveAndDeposit(poolName)
+  const { approveAndDeposit, transactionStatus } = useApproveAndDeposit(
+    poolName,
+  )
   const [poolData, userShareData] = usePoolData(poolName, true)
   const swapContract = useSwapContract(poolName)
   const allTokens = useMemo(() => {
     const arr = Array.from(
-      new Set(
-        POOL.poolTokens
-          .concat(POOL.underlyingPoolTokens || [])
-          ,
-      ),
+      new Set(POOL.poolTokens.concat(POOL.underlyingPoolTokens || [])),
     )
     arr.push(POOL.lpToken)
     return arr
@@ -81,7 +84,7 @@ function FarmDeposit({ poolName = AXIAL_AS4D_POOL_NAME }: Props): ReactElement |
     updateTokenFormState,
     POOL.poolTokens,
     POOL.underlyingPoolTokens,
-    POOL.lpToken
+    POOL.lpToken,
   ])
   const tokenBalances = usePoolTokenBalances()
   const { tokenPricesUSD, gasStandard, gasFast, gasInstant } = useSelector(
@@ -242,7 +245,6 @@ function FarmDeposit({ poolName = AXIAL_AS4D_POOL_NAME }: Props): ReactElement |
   )
 }
 
-
 function buildTransactionData(
   tokenFormState: TokensStateType,
   poolData: PoolDataType | null,
@@ -296,8 +298,8 @@ function buildTransactionData(
   }
   const shareOfPool = poolData?.totalLocked.gt(0)
     ? estDepositLPTokenAmount
-      .mul(BigNumber.from(10).pow(18))
-      .div(estDepositLPTokenAmount.add(poolData?.totalLocked))
+        .mul(BigNumber.from(10).pow(18))
+        .div(estDepositLPTokenAmount.add(poolData?.totalLocked))
     : BigNumber.from(10).pow(18)
   const gasAmount = calculateGasEstimate("addLiquidity").mul(gasPrice) // units of gas * GWEI/Unit of gas
 
@@ -305,8 +307,8 @@ function buildTransactionData(
     amount: gasAmount,
     valueUSD: tokenPricesUSD?.ETH
       ? parseUnits(tokenPricesUSD.ETH.toFixed(2), 18) // USD / ETH  * 10^18
-        .mul(gasAmount) // GWEI
-        .div(BigNumber.from(10).pow(25)) // USD / ETH * GWEI * ETH / GWEI = USD
+          .mul(gasAmount) // GWEI
+          .div(BigNumber.from(10).pow(25)) // USD / ETH * GWEI * ETH / GWEI = USD
       : null,
   }
 
@@ -318,6 +320,5 @@ function buildTransactionData(
     txnGasCost,
   }
 }
-
 
 export default FarmDeposit

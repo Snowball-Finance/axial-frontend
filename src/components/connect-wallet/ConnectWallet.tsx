@@ -31,7 +31,6 @@ function ConnectWallet({ onClose }: Props): ReactElement {
     })
   }
 
-
   return (
     <div className="connectWallet">
       <h3>{t("connectWallet")}</h3>

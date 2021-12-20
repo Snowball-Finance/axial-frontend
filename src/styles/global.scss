@@ -28,7 +28,6 @@ h5 {
 
 svg,
 img {
-
   display: inline !important;
 }
 
@@ -37,22 +36,22 @@ ul {
 }
 
 :root {
-  --background-main:#31386B;
-  --background-element:#0F0E3B;
+  --background-main: #31386b;
+  --background-element: #0f0e3b;
   --background: $primary;
-  --background-lightgrey: #3290FE;
-  --primary-foreground: #026AE7;
-  --primary-background:#107CFD;
+  --background-lightgrey: #3290fe;
+  --primary-foreground: #026ae7;
+  --primary-background: #107cfd;
   --background-element-hover: rgba(255, 255, 255, 0.88);
   --background-logo: #{$primary};
 
   --secondary-button: #{$light-blue};
-  --outline:#107CFD;
+  --outline: #107cfd;
   --outline-gray: #{$black30};
   --option-hover: #{$primary-blue-light};
-  --tab: #0F0E3B;
+  --tab: #0f0e3b;
 
-  --text: #E5E6E7;
+  --text: #e5e6e7;
   --text-darker: #000;
   --text-lighter: #686868;
   --text-lightest: #a5a5a5;
@@ -60,7 +59,7 @@ ul {
   --text-primary: #{$primary-blue};
   --text-selected: #{$primary-blue};
   --text-secondary-button: #{$primary-blue};
-  --text-secondary-button-disabled: #717f7B;
+  --text-secondary-button-disabled: #717f7b;
   --header-text: #1f2023;
   --sign-graph: #000;
 

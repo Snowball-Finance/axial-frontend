@@ -23,17 +23,14 @@ import FarmWithdraw from "./farmWithdraw/farmWithdraw"
 import fetchAprStats from "../libs/getMasterchefApy"
 import { analytics } from "../utils/analytics"
 
-
 const App = (): ReactElement => {
   const location = useLocation()
 
   useEffect(() => {
     analytics.trackPageView({
-      href: location.pathname
-    });
-  }, [location]);
-
-
+      href: location.pathname,
+    })
+  }, [location])
 
   return (
     <Suspense fallback={null}>
@@ -48,7 +45,9 @@ const App = (): ReactElement => {
                 <Route
                   exact
                   path={`/rewards/${route}/withdraw`}
-                  render={(props: any) => <FarmWithdraw {...props} poolName={name} />}
+                  render={(props: any) => (
+                    <FarmWithdraw {...props} poolName={name} />
+                  )}
                   key={`${name}-farmswithdraw`}
                 />
               ))}
@@ -56,7 +55,9 @@ const App = (): ReactElement => {
                 <Route
                   exact
                   path={`/rewards/${route}/deposit`}
-                  render={(props: any) => <FarmDeposit {...props} poolName={name} />}
+                  render={(props: any) => (
+                    <FarmDeposit {...props} poolName={name} />
+                  )}
                   key={`${name}-farmsdeposit`}
                 />
               ))}
@@ -64,7 +65,9 @@ const App = (): ReactElement => {
                 <Route
                   exact
                   path={`/pools/${route}/deposit`}
-                  render={(props: any) => <Deposit {...props} poolName={name} />}
+                  render={(props: any) => (
+                    <Deposit {...props} poolName={name} />
+                  )}
                   key={`${name}-deposit`}
                 />
               ))}
@@ -72,7 +75,9 @@ const App = (): ReactElement => {
                 <Route
                   exact
                   path={`/pools/${route}/withdraw`}
-                  render={(props: any) => <Withdraw {...props} poolName={name} />}
+                  render={(props: any) => (
+                    <Withdraw {...props} poolName={name} />
+                  )}
                   key={`${name}-withdraw`}
                 />
               ))}

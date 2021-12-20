@@ -31,12 +31,10 @@ interface ApproveAndWithdrawStateArgument {
 export function useApproveAndWithdraw(
   poolName: PoolName,
   mastechefWithdraw = false,
-): ({
-  approveAndWithdraw: (
-    state: ApproveAndWithdrawStateArgument,
-  ) => Promise<void>,
+): {
+  approveAndWithdraw: (state: ApproveAndWithdrawStateArgument) => Promise<void>
   transactionStatus: TransactionStatusType
-}) {
+} {
   const dispatch = useDispatch()
   const swapContract = useSwapContract(poolName)
   const { account, library, chainId } = useActiveWeb3React()
@@ -57,17 +55,25 @@ export function useApproveAndWithdraw(
 
   const initialTransactionStatus = useMemo(() => {
     return {
-      approve: {[poolName]: false},
+      approve: { [poolName]: false },
       deposit: false,
       withdraw: false,
     }
-  },[poolName])
+  }, [poolName])
 
-  const [ transactionStatus, setTransactionStatus ] = useState<TransactionStatusType>(initialTransactionStatus)
+  const [
+    transactionStatus,
+    setTransactionStatus,
+  ] = useState<TransactionStatusType>(initialTransactionStatus)
 
   useEffect(() => {
     setTransactionStatus(initialTransactionStatus)
-  }, [setTransactionStatus, POOL.poolTokens, poolName, initialTransactionStatus]);
+  }, [
+    setTransactionStatus,
+    POOL.poolTokens,
+    poolName,
+    initialTransactionStatus,
+  ])
 
   async function approveAndWithdraw(
     state: ApproveAndWithdrawStateArgument,
@@ -96,10 +102,10 @@ export function useApproveAndWithdraw(
         const allowanceAmount =
           state.withdrawType === "IMBALANCE"
             ? addSlippage(
-              state.lpTokenAmountToSpend,
-              slippageSelected,
-              slippageCustom,
-            )
+                state.lpTokenAmountToSpend,
+                slippageSelected,
+                slippageCustom,
+              )
             : state.lpTokenAmountToSpend
         if (!swapContract) return
         await checkAndApproveTokenForTrade(
@@ -115,10 +121,10 @@ export function useApproveAndWithdraw(
             },
           },
         )
-        setTransactionStatus(prevState => ({
+        setTransactionStatus((prevState) => ({
           withdraw: false,
-          approve: {...(prevState.approve), [poolName]: true}
-        }));
+          approve: { ...prevState.approve, [poolName]: true },
+        }))
 
         console.debug(
           `lpTokenAmountToSpend: ${formatUnits(
@@ -128,11 +134,11 @@ export function useApproveAndWithdraw(
         )
         const deadline = Math.round(
           new Date().getTime() / 1000 +
-          60 *
-          formatDeadlineToNumber(
-            transactionDeadlineSelected,
-            transactionDeadlineCustom,
-          ),
+            60 *
+              formatDeadlineToNumber(
+                transactionDeadlineSelected,
+                transactionDeadlineCustom,
+              ),
         )
         let spendTransaction
         if (state.withdrawType === "ALL") {
@@ -179,22 +185,20 @@ export function useApproveAndWithdraw(
 
         await spendTransaction.wait()
       } else {
-        setTransactionStatus(prevState => ({
+        setTransactionStatus((prevState) => ({
           withdraw: false,
-          approve: {...(prevState.approve), [poolName]: true}
-        }));
+          approve: { ...prevState.approve, [poolName]: true },
+        }))
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         await masterchefContract.withdraw(
           POOL.lpToken.masterchefId,
           BigNumber.from(state.tokenFormState[POOL.lpToken.symbol].valueSafe),
         )
       }
-      setTransactionStatus((prevState: TransactionStatusType) => (
-        {
-          approve: prevState?.approve,
-          withdraw: true,
-        }
-      ))
+      setTransactionStatus((prevState: TransactionStatusType) => ({
+        approve: prevState?.approve,
+        withdraw: true,
+      }))
       dispatch(
         updateLastTransactionTimes({
           [TRANSACTION_TYPES.WITHDRAW]: Date.now(),
@@ -203,12 +207,16 @@ export function useApproveAndWithdraw(
       analytics.trackEvent({
         category: "Withdraw",
         action: "Withdraw",
-        name: `symbol:${POOL.lpToken.symbol}-type:${state.withdrawType}-spend:${state.lpTokenAmountToSpend.toNumber()}-valueSafe:${state.tokenFormState[POOL.lpToken.symbol].valueSafe}`,
+        name: `symbol:${POOL.lpToken.symbol}-type:${
+          state.withdrawType
+        }-spend:${state.lpTokenAmountToSpend.toNumber()}-valueSafe:${
+          state.tokenFormState[POOL.lpToken.symbol].valueSafe
+        }`,
       })
     } catch (e) {
       console.error(e)
     }
-    setTransactionStatus(initialTransactionStatus);
+    setTransactionStatus(initialTransactionStatus)
   }
 
   return { approveAndWithdraw, transactionStatus }

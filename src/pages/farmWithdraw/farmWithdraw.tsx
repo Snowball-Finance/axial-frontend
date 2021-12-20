@@ -35,7 +35,10 @@ function FarmWithdraw({ poolName }: Props): ReactElement {
   const { tokenPricesUSD, gasStandard, gasFast, gasInstant } = useSelector(
     (state: AppState) => state.application,
   )
-  const { approveAndWithdraw, transactionStatus } = useApproveAndWithdraw(poolName, true)
+  const { approveAndWithdraw, transactionStatus } = useApproveAndWithdraw(
+    poolName,
+    true,
+  )
   const swapContract = useSwapContract(poolName)
   const { account } = useActiveWeb3React()
   const POOL = POOLS_MAP[poolName]
@@ -88,19 +91,16 @@ function FarmWithdraw({ poolName }: Props): ReactElement {
     updateWithdrawFormState({ fieldName: "reset", value: "reset" })
   }
 
-  const tokensData = React.useMemo(
-    () => {
-      return [
-        {
-          name: POOL.lpToken.name,
-          symbol: POOL.lpToken.symbol,
-          icon: POOL.lpToken.icon,
-          inputValue: withdrawFormState.tokenInputs[POOL.lpToken.symbol].valueRaw,
-        }
-      ]
-    },
-    [withdrawFormState, POOL.lpToken],
-  )
+  const tokensData = React.useMemo(() => {
+    return [
+      {
+        name: POOL.lpToken.name,
+        symbol: POOL.lpToken.symbol,
+        icon: POOL.lpToken.icon,
+        inputValue: withdrawFormState.tokenInputs[POOL.lpToken.symbol].valueRaw,
+      },
+    ]
+  }, [withdrawFormState, POOL.lpToken])
   const gasPrice = BigNumber.from(
     formatGasToString(
       { gasStandard, gasFast, gasInstant },
@@ -116,8 +116,8 @@ function FarmWithdraw({ poolName }: Props): ReactElement {
     amount: gasAmount,
     valueUSD: tokenPricesUSD?.ETH
       ? parseUnits(tokenPricesUSD.ETH.toFixed(2), 18) // USD / ETH  * 10^18
-        .mul(gasAmount) // GWEI
-        .div(BigNumber.from(10).pow(25)) // USD / ETH * GWEI * ETH / GWEI = USD
+          .mul(gasAmount) // GWEI
+          .div(BigNumber.from(10).pow(25)) // USD / ETH * GWEI * ETH / GWEI = USD
       : null,
   }
 
@@ -128,28 +128,32 @@ function FarmWithdraw({ poolName }: Props): ReactElement {
     priceImpact: estWithdrawBonus,
     txnGasCost: txnGasCost,
   }
-    if (BigNumber.from(withdrawFormState.tokenInputs[POOL.lpToken.symbol].valueSafe).gt(0)) {
-      reviewWithdrawData.withdraw.push({
-        name: POOL.lpToken.name,
-        value: commify(
-          formatUnits(
-            withdrawFormState.tokenInputs[POOL.lpToken.symbol].valueSafe,
-            POOL.lpToken.decimals,
-          ),
+  if (
+    BigNumber.from(
+      withdrawFormState.tokenInputs[POOL.lpToken.symbol].valueSafe,
+    ).gt(0)
+  ) {
+    reviewWithdrawData.withdraw.push({
+      name: POOL.lpToken.name,
+      value: commify(
+        formatUnits(
+          withdrawFormState.tokenInputs[POOL.lpToken.symbol].valueSafe,
+          POOL.lpToken.decimals,
         ),
-        icon: POOL.lpToken.icon,
+      ),
+      icon: POOL.lpToken.icon,
+    })
+    if (tokenPricesUSD != null) {
+      reviewWithdrawData.rates.push({
+        name: POOL.lpToken.name,
+        value: formatUnits(
+          withdrawFormState.tokenInputs[POOL.lpToken.symbol].valueSafe,
+          POOL.lpToken.decimals,
+        ),
+        rate: "0",
       })
-      if (tokenPricesUSD != null) {
-        reviewWithdrawData.rates.push({
-          name: POOL.lpToken.name,
-          value: formatUnits(
-            withdrawFormState.tokenInputs[POOL.lpToken.symbol].valueSafe,
-            POOL.lpToken.decimals,
-          ),
-          rate: "0",
-        })
-      }
     }
+  }
   return (
     <FarmWithdrawPage
       title={poolName}

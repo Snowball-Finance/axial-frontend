@@ -129,27 +129,27 @@ function Swap(): ReactElement {
     const toTokens =
       formState.currentSwapPairs.length > 0
         ? formState.currentSwapPairs
-          .map(({ to, type: swapType }) => {
-            const { symbol, name, icon, decimals } = TOKENS_MAP[to.symbol]
-            const amount = tokenBalances?.[symbol] || Zero
-            return {
-              name,
-              icon,
-              symbol,
-              decimals,
-              amount,
-              valueUSD: calculatePrice(
-                amount,
-                tokenPricesUSD?.[symbol],
+            .map(({ to, type: swapType }) => {
+              const { symbol, name, icon, decimals } = TOKENS_MAP[to.symbol]
+              const amount = tokenBalances?.[symbol] || Zero
+              return {
+                name,
+                icon,
+                symbol,
                 decimals,
-              ),
-              swapType,
-              isAvailable: IS_VIRTUAL_SWAP_ACTIVE
-                ? swapType !== SWAP_TYPES.INVALID
-                : swapType === SWAP_TYPES.DIRECT, // TODO replace once VSwaps are live
-            }
-          })
-          .sort(sortTokenOptions)
+                amount,
+                valueUSD: calculatePrice(
+                  amount,
+                  tokenPricesUSD?.[symbol],
+                  decimals,
+                ),
+                swapType,
+                isAvailable: IS_VIRTUAL_SWAP_ACTIVE
+                  ? swapType !== SWAP_TYPES.INVALID
+                  : swapType === SWAP_TYPES.DIRECT, // TODO replace once VSwaps are live
+              }
+            })
+            .sort(sortTokenOptions)
         : allTokens
     // from: all tokens always available. to: limited by selected "from" token.
     return {
@@ -455,7 +455,11 @@ function Swap(): ReactElement {
     analytics.trackEvent({
       category: "Swap",
       action: "Confirm",
-      name: `${formState.from.symbol} to ${formState.to.symbol}-${formState.swapType}-fromValue:${formState.from.value}-toValue:${formState.to.value.toNumber()}`,
+      name: `${formState.from.symbol} to ${formState.to.symbol}-${
+        formState.swapType
+      }-fromValue:${
+        formState.from.value
+      }-toValue:${formState.to.value.toNumber()}`,
     })
   }
 
@@ -472,8 +476,8 @@ function Swap(): ReactElement {
     amount: gasAmount,
     valueUSD: tokenPricesUSD?.ETH
       ? parseUnits(tokenPricesUSD.ETH.toFixed(2), 18) // USD / ETH  * 10^18
-        .mul(gasAmount) // GWEI
-        .div(BigNumber.from(10).pow(25)) // USD / ETH * GWEI * ETH / GWEI = USD
+          .mul(gasAmount) // GWEI
+          .div(BigNumber.from(10).pow(25)) // USD / ETH * GWEI * ETH / GWEI = USD
       : null,
   }
 
@@ -494,9 +498,9 @@ function Swap(): ReactElement {
           formState.to.symbol === ""
             ? "0"
             : formatUnits(
-              formState.to.value,
-              TOKENS_MAP[formState.to.symbol].decimals,
-            ),
+                formState.to.value,
+                TOKENS_MAP[formState.to.symbol].decimals,
+              ),
       }}
       swapType={formState.swapType}
       onChangeFromAmount={handleUpdateAmountFrom}

@@ -82,7 +82,8 @@ const FarmWithdrawPage = (props: Props): ReactElement => {
   const [currentModal, setCurrentModal] = useState<string | null>(null)
 
   /* eslint-disable @typescript-eslint/no-unsafe-call */
-  const noShare = !myShareData || myShareData.masterchefBalance?.userInfo.amount.eq("0x0")
+  const noShare =
+    !myShareData || myShareData.masterchefBalance?.userInfo.amount.eq("0x0")
 
   const handleWithdrawClick = async () => {
     //onSubmit
@@ -171,7 +172,7 @@ const FarmWithdrawPage = (props: Props): ReactElement => {
             }}
             className="divider"
           ></div>{" "}
-          {poolType !== PoolTypes.LP && (<PoolInfoCard data={poolData} />)}
+          {poolType !== PoolTypes.LP && <PoolInfoCard data={poolData} />}
         </div>
         <Modal
           isOpen={!!currentModal}
@@ -183,24 +184,23 @@ const FarmWithdrawPage = (props: Props): ReactElement => {
               gas={gasPriceSelected}
               onConfirm={async (): Promise<void> => {
                 setCurrentModal("confirm")
-                analytics.trackEvent(
-                  {
-                    category: "withdraw",
-                    action: "confirm",
-                    name: poolData?.name,
-                  }
-                )
+                analytics.trackEvent({
+                  category: "withdraw",
+                  action: "confirm",
+                  name: poolData?.name,
+                })
                 await onConfirmTransaction?.()
                 setCurrentModal(null)
               }}
               onClose={(): void => setCurrentModal(null)}
             />
           ) : null}
-          {currentModal === "confirm" &&
+          {currentModal === "confirm" && (
             <ConfirmTransaction
-              type='withdraw'
-              transactionStatus={transactionStatus} />
-          }
+              type="withdraw"
+              transactionStatus={transactionStatus}
+            />
+          )}
         </Modal>
       </div>
     </div>

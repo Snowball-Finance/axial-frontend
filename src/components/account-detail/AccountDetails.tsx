@@ -13,7 +13,12 @@ import { shortenAddress } from "../../libs/shortenAddress"
 import { useActiveWeb3React } from "../../hooks"
 import { usePoolTokenBalances } from "../../store/wallet/hooks"
 import { useTranslation } from "react-i18next"
-import { AnalyticActions, AnalyticCategories, analytics, createEvent } from "../../utils/analytics"
+import {
+  AnalyticActions,
+  AnalyticCategories,
+  analytics,
+  createEvent,
+} from "../../utils/analytics"
 
 interface Props {
   openOptions: () => void
@@ -29,11 +34,13 @@ export default function AccountDetail({ openOptions }: Props): ReactElement {
   )
 
   const handleOptionsClick = (): void => {
-    analytics.trackEvent(createEvent({
-      category: AnalyticCategories.investigation,
-      action: AnalyticActions.openOptions,
-      name: "account-options",
-    }))
+    analytics.trackEvent(
+      createEvent({
+        category: AnalyticCategories.investigation,
+        action: AnalyticActions.openOptions,
+        name: "account-options",
+      }),
+    )
     openOptions()
   }
 
@@ -82,10 +89,7 @@ export default function AccountDetail({ openOptions }: Props): ReactElement {
             )}
           </div>
           <div className="buttonGroup">
-            <button
-              className="textStyle"
-              onClick={handleOptionsClick}
-            >
+            <button className="textStyle" onClick={handleOptionsClick}>
               {/* change Icon */}
               <svg
                 width="16"

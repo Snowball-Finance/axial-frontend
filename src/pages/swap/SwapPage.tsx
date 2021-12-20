@@ -17,7 +17,6 @@ import { Zero } from "@ethersproject/constants"
 import classNames from "classnames"
 import { commify } from "../../libs"
 import { isHighPriceImpact } from "../../libs/priceImpact"
-import { logEvent } from "../../libs/googleAnalytics"
 import { useActiveWeb3React } from "../../hooks"
 import { useSelector } from "react-redux"
 import { useTranslation } from "react-i18next"
@@ -237,7 +236,10 @@ const SwapPage = (props: Props): ReactElement => {
             {">"}
           </div>
         )}
-        <AdvancedOptions noApprovalCheckbox={false} noSlippageCheckbox={false} />
+        <AdvancedOptions
+          noApprovalCheckbox={false}
+          noSlippageCheckbox={false}
+        />
         <Button
           kind="primary"
           onClick={(): void => {

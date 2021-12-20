@@ -17,7 +17,6 @@ import { WithdrawFormState } from "../../hooks/useWithdrawFormState"
 import { Zero } from "@ethersproject/constants"
 import classNames from "classnames"
 import { formatBNToPercentString } from "../../libs"
-import { logEvent } from "../../libs/googleAnalytics"
 import { useSelector } from "react-redux"
 import { useTranslation } from "react-i18next"
 import { TransactionStatusType } from "../../hooks/useApproveAndDeposit"
@@ -182,7 +181,10 @@ const WithdrawPage = (props: Props): ReactElement => {
               </div>
             </div>
           </div>
-          <AdvancedOptions noApprovalCheckbox={true} noSlippageCheckbox={true} />
+          <AdvancedOptions
+            noApprovalCheckbox={true}
+            noSlippageCheckbox={true}
+          />
           <Button
             kind="primary"
             disabled={
@@ -226,12 +228,12 @@ const WithdrawPage = (props: Props): ReactElement => {
               onClose={(): void => setCurrentModal(null)}
             />
           ) : null}
-          {currentModal === "confirm" &&
+          {currentModal === "confirm" && (
             <ConfirmTransaction
-              type='withdraw'
+              type="withdraw"
               transactionStatus={transactionStatus}
             />
-          }
+          )}
         </Modal>
       </div>
     </div>

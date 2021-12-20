@@ -1,6 +1,14 @@
 import "./MyShareCard.scss"
 
-import { FXS, ORCA, POOLS_MAP, PoolTypes, TEDDY, TOKENS_MAP, WAVAX } from "../../constants"
+import {
+  FXS,
+  ORCA,
+  POOLS_MAP,
+  PoolTypes,
+  TEDDY,
+  TOKENS_MAP,
+  WAVAX,
+} from "../../constants"
 import React, { ReactElement } from "react"
 import { formatBNToPercentString, formatBNToString } from "../../libs"
 import { UserShareType } from "../../hooks/usePoolData"
@@ -28,25 +36,27 @@ function MyShareCard({
   if (!data) return null
   const { type: poolType } = POOLS_MAP[data.name]
   const formattedDecimals = poolType === PoolTypes.USD ? 2 : 4
-  let hasAVAX = false, hasFXS = false, hasTEDDY = false,
-    hasORCA = false; 
+  let hasAVAX = false,
+    hasFXS = false,
+    hasTEDDY = false,
+    hasORCA = false
 
-  if(data.masterchefBalance){
-    hasAVAX = 
-      data.masterchefBalance?.pendingTokens?.bonusTokenAddress?.toLowerCase() 
-      === WAVAX.addresses[43114].toLowerCase()
+  if (data.masterchefBalance) {
+    hasAVAX =
+      data.masterchefBalance?.pendingTokens?.bonusTokenAddress?.toLowerCase() ===
+      WAVAX.addresses[43114].toLowerCase()
 
-    hasFXS = 
-      data.masterchefBalance?.pendingTokens?.bonusTokenAddress?.toLowerCase() 
-      === FXS.addresses[43114].toLowerCase()
+    hasFXS =
+      data.masterchefBalance?.pendingTokens?.bonusTokenAddress?.toLowerCase() ===
+      FXS.addresses[43114].toLowerCase()
 
-    hasTEDDY = 
-      data.masterchefBalance?.pendingTokens?.bonusTokenAddress?.toLowerCase() 
-      === TEDDY.addresses[43114].toLowerCase()
-    
-    hasORCA = 
-      data.masterchefBalance?.pendingTokens?.bonusTokenAddress?.toLowerCase() 
-      === ORCA.addresses[43114].toLowerCase()
+    hasTEDDY =
+      data.masterchefBalance?.pendingTokens?.bonusTokenAddress?.toLowerCase() ===
+      TEDDY.addresses[43114].toLowerCase()
+
+    hasORCA =
+      data.masterchefBalance?.pendingTokens?.bonusTokenAddress?.toLowerCase() ===
+      ORCA.addresses[43114].toLowerCase()
   }
 
   const formattedData = {
@@ -153,19 +163,19 @@ function MyShareCard({
             <span className="value">{formattedData.rewards.avaxRewards}</span>
           </div>
         ) : null}
-      {usePendingMasterchef && hasTEDDY ? (
+        {usePendingMasterchef && hasTEDDY ? (
           <div className="infoItem">
             <span className="bold">{`${t("teddyRewards")}: `}</span>
             <span className="value">{formattedData.rewards.teddyRewards}</span>
           </div>
         ) : null}
-      {usePendingMasterchef && hasFXS ? (
+        {usePendingMasterchef && hasFXS ? (
           <div className="infoItem">
             <span className="bold">{`${t("fraxRewards")}: `}</span>
             <span className="value">{formattedData.rewards.fxsRewards}</span>
           </div>
         ) : null}
-      {usePendingMasterchef && hasORCA ? (
+        {usePendingMasterchef && hasORCA ? (
           <div className="infoItem">
             <span className="bold">{`${t("orcaRewards")}: `}</span>
             <span className="value">{formattedData.rewards.orcaRewards}</span>

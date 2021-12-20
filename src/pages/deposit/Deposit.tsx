@@ -2,7 +2,13 @@ import {
   DepositTransaction,
   TransactionItem,
 } from "../../interfaces/transactions"
-import { POOLS_MAP, PoolName, Token, isMetaPool, USDC_AM3D_POOL_NAME } from "../../constants"
+import {
+  POOLS_MAP,
+  PoolName,
+  Token,
+  isMetaPool,
+  USDC_AM3D_POOL_NAME,
+} from "../../constants"
 import React, { ReactElement, useEffect, useMemo, useState } from "react"
 import {
   TokensStateType,
@@ -37,7 +43,9 @@ interface Props {
 function Deposit({ poolName }: Props): ReactElement | null {
   const POOL = POOLS_MAP[poolName]
   const { account, chainId, library } = useActiveWeb3React()
-  const { approveAndDeposit, transactionStatus } = useApproveAndDeposit(poolName)
+  const { approveAndDeposit, transactionStatus } = useApproveAndDeposit(
+    poolName,
+  )
   const [poolData, userShareData] = usePoolData(poolName)
   const swapContract = useSwapContract(poolName)
   const allTokens = useMemo(() => {
@@ -46,7 +54,9 @@ function Deposit({ poolName }: Props): ReactElement | null {
     )
   }, [POOL.poolTokens, POOL.underlyingPoolTokens])
   const [tokenFormState, updateTokenFormState] = useTokenFormState(allTokens)
-  const [shouldDepositWrapped, setShouldDepositWrapped] = useState(POOL.name === USDC_AM3D_POOL_NAME ? true : false)
+  const [shouldDepositWrapped, setShouldDepositWrapped] = useState(
+    POOL.name === USDC_AM3D_POOL_NAME ? true : false,
+  )
   useEffect(() => {
     // empty out previous token state when switchng between wrapped and unwrapped
     if (shouldDepositWrapped) {
@@ -124,10 +134,7 @@ function Deposit({ poolName }: Props): ReactElement | null {
   useEffect(() => {
     // evaluate if a new deposit will exceed the pool's per-user limit
     async function calculateMaxDeposits(): Promise<void> {
-      if (
-        swapContract == null ||
-        poolData == null
-      ) {
+      if (swapContract == null || poolData == null) {
         setEstDepositLPTokenAmount(Zero)
         return
       }
@@ -207,7 +214,6 @@ function Deposit({ poolName }: Props): ReactElement | null {
   })
 
   async function onConfirmTransaction(): Promise<void> {
-
     await approveAndDeposit(tokenFormState, shouldDepositWrapped)
     // Clear input after deposit
     updateTokenFormState(
@@ -311,8 +317,8 @@ function buildTransactionData(
   }
   const shareOfPool = poolData?.totalLocked.gt(0)
     ? estDepositLPTokenAmount
-      .mul(BigNumber.from(10).pow(18))
-      .div(estDepositLPTokenAmount.add(poolData?.totalLocked))
+        .mul(BigNumber.from(10).pow(18))
+        .div(estDepositLPTokenAmount.add(poolData?.totalLocked))
     : BigNumber.from(10).pow(18)
   const gasAmount = calculateGasEstimate("addLiquidity").mul(gasPrice) // units of gas * GWEI/Unit of gas
 
@@ -320,8 +326,8 @@ function buildTransactionData(
     amount: gasAmount,
     valueUSD: tokenPricesUSD?.ETH
       ? parseUnits(tokenPricesUSD.ETH.toFixed(2), 18) // USD / ETH  * 10^18
-        .mul(gasAmount) // GWEI
-        .div(BigNumber.from(10).pow(25)) // USD / ETH * GWEI * ETH / GWEI = USD
+          .mul(gasAmount) // GWEI
+          .div(BigNumber.from(10).pow(25)) // USD / ETH * GWEI * ETH / GWEI = USD
       : null,
   }
 
