@@ -149,7 +149,7 @@ export async function getVaultRewardAprNow(): Promise<MasterchefApr> {
           // eslint-disable-next-line
           virtualPrice = await swapTokenContract.getVirtualPrice()
         } catch (error) {
-          virtualPrice = BigNumber.from(1)
+          virtualPrice = ethers.utils.parseUnits("1",18)
         }
 
         TVL = (+virtualPrice / 1e18) * (+balanceToken / 1e18)
