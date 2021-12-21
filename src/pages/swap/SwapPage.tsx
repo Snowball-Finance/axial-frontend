@@ -16,7 +16,7 @@ import type { TokenOption } from "../../pages/swap/Swap"
 import { Zero } from "@ethersproject/constants"
 import classNames from "classnames"
 import { commify } from "../../libs"
-import { isHighPriceImpact } from "../../libs/priceImpact"
+import { isLowerRate } from "../../libs/priceImpact"
 import { logEvent } from "../../libs/googleAnalytics"
 import { useActiveWeb3React } from "../../hooks"
 import { useSelector } from "react-redux"
@@ -218,10 +218,10 @@ const SwapPage = (props: Props): ReactElement => {
             </>
           )}
         </div>
-        {account && isHighPriceImpact(exchangeRateInfo.priceImpact) && (
+        {account && isLowerRate(exchangeRateInfo.exchangeRate) && (
           <div className="exchangeWarning">
-            {t("highPriceImpact", {
-              rate: formattedPriceImpact,
+            {t("lowSwapRate", {
+              rate: ((+exchangeRateInfo.exchangeRate/1e18 * 100) - 100).toFixed(2),
             })}
           </div>
         )}

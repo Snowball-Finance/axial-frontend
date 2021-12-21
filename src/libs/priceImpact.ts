@@ -1,5 +1,6 @@
 import { BigNumber } from "@ethersproject/bignumber"
 import { Zero } from "@ethersproject/constants"
+import { ethers } from "ethers"
 
 export function isHighPriceImpact(priceImpact: BigNumber): boolean {
   // assumes that priceImpact has 18d precision
@@ -7,6 +8,11 @@ export function isHighPriceImpact(priceImpact: BigNumber): boolean {
     .pow(18 - 2)
     .mul(-1)
   return priceImpact.lte(negOne)
+}
+
+export function isLowerRate(exchangeRate: BigNumber): boolean {
+  // assumes that rateImpact has 18d precision
+  return exchangeRate.gt(0) && exchangeRate.lte(ethers.utils.parseUnits("99",16))
 }
 
 export function calculatePriceImpact(
