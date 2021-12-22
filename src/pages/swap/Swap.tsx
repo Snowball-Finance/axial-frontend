@@ -37,6 +37,7 @@ import { usePoolTokenBalances } from "../../store/wallet/hooks"
 import { useSelector } from "react-redux"
 import { useSwapContract } from "../../hooks/useContract"
 import { useTranslation } from "react-i18next"
+import { analytics } from "../../utils/analytics"
 
 type FormState = {
   error: null | string
@@ -312,6 +313,11 @@ function Swap(): ReactElement {
       }
       return nextState
     })
+    analytics.trackEvent({
+      category: "Swap",
+      action: "Reverse",
+      name: `${formState.from.symbol} to ${formState.to.symbol}`,
+    })
   }
   function handleUpdateTokenFrom(symbol: string): void {
     if (symbol === formState.to.symbol) return handleReverseExchangeDirection()
@@ -446,6 +452,15 @@ function Swap(): ReactElement {
       currentSwapPairs: prevState.currentSwapPairs,
       swapType: prevState.swapType,
     }))
+    analytics.trackEvent({
+      category: "Swap",
+      action: "Confirm",
+      name: `${formState.from.symbol} to ${formState.to.symbol}-${
+        formState.swapType
+      }-fromValue:${
+        formState.from.value
+      }-toValue:${formState.to.value.toNumber()}`,
+    })
   }
 
   const gasPrice = BigNumber.from(

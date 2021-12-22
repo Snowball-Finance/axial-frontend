@@ -2,7 +2,13 @@ import {
   DepositTransaction,
   TransactionItem,
 } from "../../interfaces/transactions"
-import { POOLS_MAP, PoolName, Token, isMetaPool, USDC_AM3D_POOL_NAME } from "../../constants"
+import {
+  POOLS_MAP,
+  PoolName,
+  Token,
+  isMetaPool,
+  USDC_AM3D_POOL_NAME,
+} from "../../constants"
 import React, { ReactElement, useEffect, useMemo, useState } from "react"
 import {
   TokensStateType,
@@ -27,6 +33,7 @@ import { useApproveAndDeposit } from "../../hooks/useApproveAndDeposit"
 import { usePoolTokenBalances } from "../../store/wallet/hooks"
 import { useSelector } from "react-redux"
 import { useSwapContract } from "../../hooks/useContract"
+import { analytics } from "../../utils/analytics"
 import { SwapFlashLoanNoWithdrawFee } from "../../../types/ethers-contracts/SwapFlashLoanNoWithdrawFee"
 
 interface Props {
@@ -34,10 +41,11 @@ interface Props {
 }
 
 function Deposit({ poolName }: Props): ReactElement | null {
-  
   const POOL = POOLS_MAP[poolName]
   const { account, chainId, library } = useActiveWeb3React()
-  const { approveAndDeposit, transactionStatus } = useApproveAndDeposit(poolName)
+  const { approveAndDeposit, transactionStatus } = useApproveAndDeposit(
+    poolName,
+  )
   const [poolData, userShareData] = usePoolData(poolName)
   const swapContract = useSwapContract(poolName)
   const allTokens = useMemo(() => {
@@ -46,7 +54,9 @@ function Deposit({ poolName }: Props): ReactElement | null {
     )
   }, [POOL.poolTokens, POOL.underlyingPoolTokens])
   const [tokenFormState, updateTokenFormState] = useTokenFormState(allTokens)
-  const [shouldDepositWrapped, setShouldDepositWrapped] = useState(POOL.name === USDC_AM3D_POOL_NAME ? true : false)
+  const [shouldDepositWrapped, setShouldDepositWrapped] = useState(
+    POOL.name === USDC_AM3D_POOL_NAME ? true : false,
+  )
   useEffect(() => {
     // empty out previous token state when switchng between wrapped and unwrapped
     if (shouldDepositWrapped) {
@@ -124,10 +134,7 @@ function Deposit({ poolName }: Props): ReactElement | null {
   useEffect(() => {
     // evaluate if a new deposit will exceed the pool's per-user limit
     async function calculateMaxDeposits(): Promise<void> {
-      if (
-        swapContract == null ||
-        poolData == null 
-      ) {
+      if (swapContract == null || poolData == null) {
         setEstDepositLPTokenAmount(Zero)
         return
       }
@@ -218,6 +225,11 @@ function Deposit({ poolName }: Props): ReactElement | null {
         {},
       ),
     )
+    analytics.trackEvent({
+      category: "Deposit",
+      action: "Deposit",
+      name: poolName,
+    })
   }
   function updateTokenFormValue(symbol: string, value: string): void {
     updateTokenFormState({ [symbol]: value })

@@ -20,7 +20,7 @@ const otherTokens = {
   TEDDY: "teddy",
   AXIAL: "axial-token",
   AVAI: "orca-avai",
-  ORCA: "orcadao"
+  ORCA: "orcadao",
 }
 
 export default function fetchTokenPricesUSD(dispatch: AppDispatch): void {

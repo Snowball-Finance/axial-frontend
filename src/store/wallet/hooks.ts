@@ -75,16 +75,19 @@ export function useMasterchefBalances(): {
           (acc, t) => ({
             ...acc,
             [t.symbol]: {
-              userInfo:{
+              userInfo: {
                 amount: mBalances[t.addresses[chainId]]?.userInfo[0], // eslint-disable-line
-                rewardDebt: mBalances[t.addresses[chainId]]?.userInfo[1] // eslint-disable-line
-              }, 
+                rewardDebt: mBalances[t.addresses[chainId]]?.userInfo[1], // eslint-disable-line
+              },
               pendingTokens: {
                 pendingAxial: mBalances[t.addresses[chainId]]?.pendingTokens[0], // eslint-disable-line
-                bonusTokenAddress: mBalances[t.addresses[chainId]]?.pendingTokens[1], // eslint-disable-line
-                bonusTokenSymbol: mBalances[t.addresses[chainId]]?.pendingTokens[2], // eslint-disable-line
-                pendingBonusToken: mBalances[t.addresses[chainId]]?.pendingTokens[3], // eslint-disable-line
-              }
+                bonusTokenAddress:
+                  mBalances[t.addresses[chainId]]?.pendingTokens[1], // eslint-disable-line
+                bonusTokenSymbol:
+                  mBalances[t.addresses[chainId]]?.pendingTokens[2], // eslint-disable-line
+                pendingBonusToken:
+                  mBalances[t.addresses[chainId]]?.pendingTokens[3], // eslint-disable-line
+              },
             },
           }),
           { _info: _info },

@@ -24,7 +24,7 @@ interface LastTransactionTimes {
 
 type ApplicationState = GasPrices & { tokenPricesUSD?: TokenPricesUSD } & {
   lastTransactionTimes: LastTransactionTimes
-} & { swapStats?: SwapStats } & {masterchefApr?: MasterchefApr}
+} & { swapStats?: SwapStats } & { masterchefApr?: MasterchefApr }
 
 const initialState: ApplicationState = {
   lastTransactionTimes: {},
@@ -87,7 +87,7 @@ export const {
   updateTokensPricesUSD,
   updateLastTransactionTimes,
   updateSwapStats,
-  updateMasterchefApr
+  updateMasterchefApr,
 } = applicationSlice.actions
 
 export default applicationSlice.reducer

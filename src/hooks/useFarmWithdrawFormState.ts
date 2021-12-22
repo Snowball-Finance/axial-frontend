@@ -58,7 +58,7 @@ export default function useWithdrawFormState(
   )
   const tokenInputsEmptyState = useMemo(
     () =>
-    [POOL.lpToken].reduce(
+      [POOL.lpToken].reduce(
         (acc, { symbol }) => ({
           ...acc,
           [symbol]: tokenInputStateCreators[symbol]("0"),
@@ -82,8 +82,12 @@ export default function useWithdrawFormState(
   // TODO: resolve this, it's a little unsafe
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const calculateAndUpdateDynamicFields = useCallback(
-    debounce( (state: WithdrawFormState) => {
-      if (userShareData == null || (swapContract == null && POOL.type !== PoolTypes.LP) || account == null)
+    debounce((state: WithdrawFormState) => {
+      if (
+        userShareData == null ||
+        (swapContract == null && POOL.type !== PoolTypes.LP) ||
+        account == null
+      )
         return
 
       let percentageRaw
@@ -96,9 +100,10 @@ export default function useWithdrawFormState(
       }
 
       // LP * % to be withdrawn
-      const effectiveUserLPTokenBalance = userShareData.masterchefBalance?.userInfo.amount
-        .mul(parseUnits(percentageRaw, 5)) // difference between numerator and denominator because we're going from 100 to 1.00
-        .div(10 ** 7) ?? BigNumber.from("0")
+      const effectiveUserLPTokenBalance =
+        userShareData.masterchefBalance?.userInfo.amount
+          .mul(parseUnits(percentageRaw, 5)) // difference between numerator and denominator because we're going from 100 to 1.00
+          .div(10 ** 7) ?? BigNumber.from("0")
 
       // Use state.withdrawType to figure out which swap functions to use to calcuate next state
       let nextState: WithdrawFormState | Record<string, unknown>
@@ -144,8 +149,9 @@ export default function useWithdrawFormState(
             }
           } else {
             // This branch addresses a user manually inputting a value for one token
-            const inputCalculatedLPTokenAmount = 
-              BigNumber.from(state.tokenInputs[POOL.lpToken.symbol].valueSafe)
+            const inputCalculatedLPTokenAmount = BigNumber.from(
+              state.tokenInputs[POOL.lpToken.symbol].valueSafe,
+            )
             nextState = inputCalculatedLPTokenAmount.gt(
               effectiveUserLPTokenBalance,
             )

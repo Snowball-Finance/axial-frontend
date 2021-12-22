@@ -70,16 +70,13 @@ export function useTokenContract(
 
 export function useSwapContract(
   poolName?: PoolName,
-):
-  | SwapFlashLoanNoWithdrawFee
-  | MetaSwapDeposit
-  | null {
+): SwapFlashLoanNoWithdrawFee | MetaSwapDeposit | null {
   const { chainId, account, library } = useActiveWeb3React()
   return useMemo(() => {
     if (!poolName || !library || !chainId) return null
     try {
       const pool = POOLS_MAP[poolName]
-      if(pool.type === PoolTypes.LP) {
+      if (pool.type === PoolTypes.LP) {
         return null
       }
       if (isMetaPool(poolName)) {
