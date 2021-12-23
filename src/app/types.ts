@@ -4,8 +4,8 @@ import { ethers } from 'ethers'
 export enum AppPages {
   RootPage = '/',
   HomePage = '/home',
+  GovernancePage = '/governance',
 }
-
 
 export type PrivateProvider = ethers.providers.StaticJsonRpcProvider
 export type Contract = ethers.Contract

@@ -3,6 +3,7 @@ import { HomePageState } from 'app/containers/pages/Home/types';
 import { BlockChainState } from 'app/containers/BlockChain/types';
 import { Web3State } from "app/containers/BlockChain/Web3/types";
 import { EthersState } from "app/containers/BlockChain/Ethers/types";
+import { GovernanceState } from 'app/containers/pages/Governance/types';
 // [IMPORT NEW CONTAINERSTATE ABOVE] < Needed for generating containers seamlessly
 
 /* 
@@ -18,5 +19,6 @@ export interface RootState {
   web3?: Web3State;
   ethers?: EthersState;
   blockChain?: BlockChainState;
+  governance?: GovernanceState;
   // [INSERT NEW REDUCER KEY ABOVE] < Needed for generating containers seamlessly
 }

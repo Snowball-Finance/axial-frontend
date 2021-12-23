@@ -2,5 +2,14 @@
   "HomePage": {
     "home": "Home",
     "description": "Home Page"
+  },
+  "GovernancePage": {
+    "Governance": "Governance",
+    "Description": "Governance Page",
+    "Tabs": {
+      "Active": "Active",
+      "All": "All",
+      "NewProposal": "New Proposal"
+    }
   }
 }

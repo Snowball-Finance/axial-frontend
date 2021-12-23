@@ -18,6 +18,7 @@ import { BlockChain } from "./containers/BlockChain/Loadable";
 import { useEffect } from "react";
 import { AppPages } from "./types";
 import {analytics} from '@snowball-finance/snowball-analytics'
+import { Governance } from "./containers/pages/Governance/Loadable";
 
 export function App() {
   const { t } = useTranslation();
@@ -41,6 +42,7 @@ export function App() {
       </Helmet>
       <Switch>
         <Route exact path={AppPages.RootPage} component={HomePage} />
+        <Route exact path={AppPages.GovernancePage} component={Governance} />
         <Route component={NotFoundPage} />
       </Switch>
     </>
