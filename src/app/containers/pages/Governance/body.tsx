@@ -2,7 +2,7 @@ import { Route, Switch } from "react-router-dom";
 import { NavigationTabs } from "./components/navigationTabs";
 import { Proposals } from "./subPages/proposals";
 import { NewProposal } from "./subPages/newProposal";
-import { push } from "connected-react-router";
+import { replace } from "connected-react-router";
 import { GovernanceSubPages } from "./subPages/routes";
 import { translations } from "locales/i18n";
 import { useDispatch } from "react-redux";
@@ -31,7 +31,7 @@ export const GovernanceBody=()=>{
   const path = window.location.pathname
   const { t } = useTranslation()
   const handleTabChange = (page: string) => {
-    dispatch(push(page))
+    dispatch(replace(page))
   }
 
 
