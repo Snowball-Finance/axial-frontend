@@ -24,7 +24,6 @@ const pages = ({ t }) => [{
 },
 ]
 
-
 export const GovernanceBody=()=>{
 
   const dispatch = useDispatch()
@@ -33,7 +32,6 @@ export const GovernanceBody=()=>{
   const handleTabChange = (page: string) => {
     dispatch(replace(page))
   }
-
 
   return (
     <PageWrapper>
