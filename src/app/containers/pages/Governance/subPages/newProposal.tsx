@@ -1,3 +1,3 @@
 export const NewProposal = () => {
-  return <></>
+  return <>{`new proposal`}</>
 }

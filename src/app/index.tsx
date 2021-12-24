@@ -42,7 +42,7 @@ export function App() {
       </Helmet>
       <Switch>
         <Route exact path={AppPages.RootPage} component={HomePage} />
-        <Route exact path={AppPages.GovernancePage} component={Governance} />
+        <Route path={AppPages.GovernancePage} component={Governance} />
         <Route component={NotFoundPage} />
       </Switch>
     </>

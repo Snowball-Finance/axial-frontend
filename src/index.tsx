@@ -24,6 +24,8 @@ import { HelmetProvider } from 'react-helmet-async';
 
 import { configureAppStore } from 'store/configureStore';
 
+import './styles/cssVariables/cssVariables.css'
+
 import { ThemeProvider as MaterialThemeProvider } from '@mui/material';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'

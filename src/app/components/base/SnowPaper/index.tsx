@@ -1,13 +1,12 @@
 import { styled } from '@mui/material';
 import Paper, { PaperProps } from '@mui/material/Paper';
-import { ReactNode } from 'react';
+import { CssVariables } from "styles/cssVariables/cssVariables";
 
-interface SnowPaperInterface {
-  children: ReactNode;
+interface SnowPaperInterface extends PaperProps {
 }
 
 const StyledPaper = styled(Paper)<PaperProps>(({ theme }) => ({
-  borderRadius: '10px',
+  borderRadius: CssVariables.paperBorderRadius,
 }));
 
 export const SnowPaper = ({ children, ...rest }: SnowPaperInterface) => {

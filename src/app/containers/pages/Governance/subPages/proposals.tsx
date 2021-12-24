@@ -1,8 +1,8 @@
 import { FC } from "react"
 
 interface ProposalsProps {
-  filter?: 'all' | 'active'
+  filter: 'all' | 'active'
 }
-export const Proposals: FC<ProposalsProps> = () => {
-  return <></>
+export const Proposals: FC<ProposalsProps> = ({filter}) => {
+  return <>{`proposals ${filter}`}</>
 }
