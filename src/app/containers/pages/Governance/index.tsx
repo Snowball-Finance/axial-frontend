@@ -22,6 +22,7 @@ export function Governance() {
         <title>{t(translations.GovernancePage.Governance())}</title>
         <meta name="description" content={`${t(translations.GovernancePage.Description())}`} />
       </Helmet>
+      
       <PageHead
         title={t(translations.GovernancePage.Governance())}
         description={t(translations.GovernancePage.Description())}
