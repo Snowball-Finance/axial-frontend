@@ -7,6 +7,9 @@ html{
   --black:black;
   --navigationTabBackground: #f5f5f5;
   --activeNAvigationTabBackground: #C8E6FE;
+  --primaryBlue: #1A93F2;
+  --lightBlue: #C8E6FE;
+  --darkText:#6E6B7B;
   --navigationTabTextColor: #333;
   --paperBorderRadius:8px;
 }

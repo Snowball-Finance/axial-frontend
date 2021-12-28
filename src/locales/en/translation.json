@@ -4,12 +4,24 @@
     "description": "Home Page"
   },
   "GovernancePage": {
+    "ActiveProposals": "Active Proposals",
+    "ActiveProposalsDescriptions": "To vote, members must stake their SNOB for xSNOB. Read about proposal details in the Snowball Discord",
     "Governance": "Governance",
+    "VotingPower": "Voting Power",
     "Description": "Governance Page",
     "Tabs": {
       "Active": "Active",
       "All": "All",
       "NewProposal": "New Proposal"
     }
+  },
+  "Common": {
+    "Yes": "Yes",
+    "No": "No",
+    "Cancel": "Cancel",
+    "Submit": "Submit",
+    "Close": "Close",
+    "Confirm": "Confirm",
+    "MoreInfo": "More Info"
   }
 }

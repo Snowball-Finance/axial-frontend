@@ -37,7 +37,7 @@ export const GovernanceBody=()=>{
     <PageWrapper>
         <NavigationTabs
           onTabChange={handleTabChange}
-          activePage={path ? path : GovernanceSubPages.active}
+          activePage={path!==AppPages.GovernancePage ? path : GovernanceSubPages.active}
           pages={pages({ t })}
         />
         <Switch>
