@@ -22,7 +22,9 @@ export const VotePower: FC = () => {
         <ContentTitle>
           {t(translations.GovernancePage.VotingPower())}
         </ContentTitle>
-        <XSnobValue></XSnobValue>
+        <XSnobValue>
+          <span>{xSnobBalance??'0.000'}</span><span>XSNOB</span>
+        </XSnobValue>
       </ContentWrapper>
     </Wrapper>
   )
@@ -34,14 +36,20 @@ const ContentTitle = styled('p')({
   color: CssVariables.white
 })
 
-const XSnobValue = styled('p')({})
+const XSnobValue = styled('p')({
+  fontSize: '24px',
+  color: CssVariables.white,
+  margin: 0,
+  display: 'flex',
+  gap: '6px'
+})
 
 const ContentWrapper = styled('div')({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
-  alignItems: 'center',
-  padding: '0px 20px'
+  alignItems: 'start',
+  padding: '0px 20px',
 })
 
 const LogoWrapper = styled('div')({
