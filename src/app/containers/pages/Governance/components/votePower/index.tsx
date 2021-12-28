@@ -8,11 +8,13 @@ import { CssVariables } from "styles/cssVariables/cssVariables";
 import logo from "assets/images/logo.svg";
 import { useTranslation } from "react-i18next";
 import { translations } from "locales/i18n";
+import { selectAccount } from "app/containers/BlockChain/Web3/selectors";
 
 export const VotePower: FC = () => {
   const xSnobBalance = useSelector(selectSnowConeBalance)
+  const account = useSelector(selectAccount)
   const { t } = useTranslation()
-  console.log(xSnobBalance)
+ const balance=(xSnobBalance && account)?xSnobBalance.toNumber():'0.000'
   return (
     <Wrapper elevation={0}>
       <LogoWrapper >
@@ -23,7 +25,7 @@ export const VotePower: FC = () => {
           {t(translations.GovernancePage.VotingPower())}
         </ContentTitle>
         <XSnobValue>
-          <span>{xSnobBalance??'0.000'}</span><span>XSNOB</span>
+          <span>{balance}</span><span>XSNOB</span>
         </XSnobValue>
       </ContentWrapper>
     </Wrapper>

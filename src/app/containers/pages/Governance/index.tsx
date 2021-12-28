@@ -12,6 +12,7 @@ import { translations } from "locales/i18n";
 import { Box } from "@mui/material";
 import { PageHead } from "./components/pageHead";
 import { GovernanceBody } from "./body";
+import { WalletToggle } from "app/components/common/wallettoggle";
 
 export function Governance() {
   useGovernanceSlice()
@@ -22,7 +23,7 @@ export function Governance() {
         <title>{t(translations.GovernancePage.Governance())}</title>
         <meta name="description" content={`${t(translations.GovernancePage.Description())}`} />
       </Helmet>
-      
+      <WalletToggle />
       <PageHead
         title={t(translations.GovernancePage.Governance())}
         description={t(translations.GovernancePage.Description())}

@@ -23,6 +23,7 @@
     "Close": "Close",
     "Confirm": "Confirm",
     "MoreInfo": "More Info",
-    "ConnectToWallet": "Connect to Wallet"
+    "ConnectToWallet": "Connect to Wallet",
+    "DisconnectFromWallet": "Disconnect from Wallet"
   }
 }
