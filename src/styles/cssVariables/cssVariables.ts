@@ -8,5 +8,4 @@ export const CssVariables = {
   primaryBlue:'var(--primaryBlue)',
   paperBorderRadius:'var(--paperBorderRadius)',
   darkText:'var(--darkText)',
-
 }

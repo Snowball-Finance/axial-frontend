@@ -3,7 +3,7 @@ import { NavigationTabs } from "./components/navigationTabs";
 import { Proposals } from "./subPages/proposals";
 import { NewProposal } from "./subPages/newProposal";
 import { replace } from "connected-react-router";
-import { GovernanceSubPages } from "./subPages/routes";
+import { GovernanceSubPages } from "./routes";
 import { translations } from "locales/i18n";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
