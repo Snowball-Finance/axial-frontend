@@ -28,10 +28,13 @@ div.swapPage {
   }
 
   .swapForm {
-    width: 100%;
+    width: 90%;
     background: $primary-focus;
     border-radius: 10px;
     padding: 36px 24px;
+    @include breakpoint(sm) {
+      width: 100%;
+    }
     .row {
       display: flex;
       justify-content: space-between;
@@ -58,7 +61,7 @@ div.swapPage {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    width: 980px;
+    width: 1170px;
     
     @include breakpoint(sm) {
       width: 100%;
@@ -71,10 +74,10 @@ div.swapPage {
 
     .textBlock{
       width: 100%;
-      padding-right: 56px 48px;
+      padding: 56px 48px;
       @include breakpoint(sm) {
         width: 100%;
-        padding: 18px 0px;
+        padding: 12px 8px;
       }
       .title h1{
         font-size: 42px;
