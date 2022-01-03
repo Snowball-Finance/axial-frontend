@@ -4,7 +4,18 @@ div.swapPage {
   background: var(--background-main);
   color: var(--text);
   font-size: 16px;
-  padding-bottom: 80px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  padding: 56px 48px;
+
+  @include breakpoint(sm) {
+    width: 100%;
+    padding: 12px 8px;
+  }
 
   h3.swapTitle {
     font-weight: 700;
@@ -20,7 +31,7 @@ div.swapPage {
     width: 100%;
     background: $primary-focus;
     border-radius: 10px;
-    padding: 24px;
+    padding: 36px 24px;
     .row {
       display: flex;
       justify-content: space-between;
@@ -42,7 +53,40 @@ div.swapPage {
       }
     }
   }
+  .container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 980px;
+    
+    @include breakpoint(sm) {
+      width: 100%;
+      padding: 0 8px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+    }
 
+    .textBlock{
+      width: 100%;
+      padding-right: 56px 48px;
+      @include breakpoint(sm) {
+        width: 100%;
+        padding: 18px 0px;
+      }
+      .title h1{
+        font-size: 42px;
+        line-height: 54.68px;
+        font-weight: 800;
+      }
+      .description p{
+        font-size: 16px;
+      }
+    }
+  }
+  
   .content {
     width: 550px;
     margin: 0 auto;

@@ -103,10 +103,20 @@ const SwapPage = (props: Props): ReactElement => {
 
   return (
     <div className="swapPage">
-      <div className="content">
+      <div className="container">
+        <div className="textBlock">
+          <div className="title">
+            <h1>Stable Swapping</h1>
+          </div>
+          <div className="description">
+            <p>
+            Swap stablecoins and other value-pegged assets on Axial. Swapping on Avalanche has never been cheaper, with our ultra low fees and negligible slippage on your trades.
+            </p>
+          </div>
+        </div>
         <div className="swapForm">
           <div className="row">
-            <h3 className="swapTitle">{t("from")}</h3>
+            <h4 className="swapTitle">{t("from")}</h4>
             <div className="balanceContainer">
               <span>{t("balance")}:</span>
               &nbsp;
@@ -218,7 +228,10 @@ const SwapPage = (props: Props): ReactElement => {
               )}
             </>
           )}
-        </div>
+          <AdvancedOptions
+          noApprovalCheckbox={false}
+          noSlippageCheckbox={false}
+        />
         {account && isLowerRate(exchangeRateInfo.exchangeRate) && (
           <div className="exchangeWarning">
             {t("lowSwapRate", {
@@ -236,10 +249,7 @@ const SwapPage = (props: Props): ReactElement => {
             {">"}
           </div>
         )}
-        <AdvancedOptions
-          noApprovalCheckbox={false}
-          noSlippageCheckbox={false}
-        />
+       
         <Button
           kind="primary"
           onClick={(): void => {
@@ -257,6 +267,8 @@ const SwapPage = (props: Props): ReactElement => {
         <div className={classNames({ showError: !!error }, "error")}>
           {error}
         </div>
+        </div>
+        
         <Modal
           isOpen={!!currentModal}
           onClose={(): void => setCurrentModal(null)}
