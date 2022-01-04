@@ -1,6 +1,9 @@
+
+@import "../../styles/theme";
+
 .shimmerLoading {
   --color: rgba(23, 0, 59, 1);
-  --highlight: rgba(35, 29, 69, 1);
+  --highlight: rgba(234, 171, 80, 1);
   background: $background;
   position: relative;
   background-repeat: no-repeat;
