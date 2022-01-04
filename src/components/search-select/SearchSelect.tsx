@@ -78,6 +78,7 @@ export default function SearchSelect({
         </svg>
 
         <input
+          placeholder="Search token"
           value={searchTerm}
           onChange={(e) => {
             const inputValue = e.target.value
@@ -111,7 +112,7 @@ export default function SearchSelect({
               onClick={() => item.isAvailable && onSelect(item.symbol)}
               ref={i === activeIndex ? focusedItemRef : null}
             >
-              <Divider />
+              
               <ListItem {...item} isActive={i === activeIndex} />
             </li>
           )
