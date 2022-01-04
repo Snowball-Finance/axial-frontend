@@ -147,9 +147,9 @@ const SwapPage = (props: Props): ReactElement => {
               isSwapFrom
             />
           </div>
-          <div style={{ height: "48px" }}></div>
+          <div style={{ height: "12px" }}></div>
           <div className="row">
-            <h3 className="swapTitle">{t("to")}</h3>
+            <h4 className="swapTitle">{t("to")}</h4>
           </div>
           <div className="row">
             <SwapInput
@@ -164,9 +164,10 @@ const SwapPage = (props: Props): ReactElement => {
             />
           </div>
           <div style={{ height: "24px" }}></div>
+          <div className="swapInformation">
           {fromState.symbol && toState.symbol && (
             <div className="row">
-              <div>
+              <div className="swapRate">
                 <span>{t("rate")}</span>
                 &nbsp;
                 <span>{exchangeRateInfo.pair}</span>
@@ -228,6 +229,8 @@ const SwapPage = (props: Props): ReactElement => {
               )}
             </>
           )}
+          </div>
+          
           <AdvancedOptions
           noApprovalCheckbox={false}
           noSlippageCheckbox={false}

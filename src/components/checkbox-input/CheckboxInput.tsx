@@ -14,7 +14,7 @@ export default function CheckboxInput({
   return (
     <label className="checkboxInput">
       <input type="checkbox" checked={checked} onChange={onChange} />
-      <div className="checkboxControl">
+      <div className={"checkboxControl " + (checked ? 'checkboxChecked' : 'checkboxUnchecked')}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"

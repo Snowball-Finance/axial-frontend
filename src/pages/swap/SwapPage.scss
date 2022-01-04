@@ -16,12 +16,13 @@ div.swapPage {
     width: 100%;
     padding: 12px 8px;
   }
-
-  h3.swapTitle {
-    font-weight: 700;
-    font-size: 24px;
+  
+  .row .swapTitle {
+    font-weight: 400;
+    font-size: 21px;
     line-height: 30px;
-  }
+  } 
+ 
 
   button:hover {
     cursor: pointer;
@@ -35,6 +36,11 @@ div.swapPage {
     @include breakpoint(sm) {
       width: 100%;
     }
+    .swapInformation{
+      .row{
+        margin: 0px;
+      }
+    }
     .row {
       display: flex;
       justify-content: space-between;
@@ -45,7 +51,7 @@ div.swapPage {
     .balanceContainer {
       span,
       a {
-        font-size: 12px;
+        font-size: 16px;
       }
       a {
         font-weight: 700;
@@ -62,6 +68,10 @@ div.swapPage {
     justify-content: space-between;
     align-items: center;
     width: 1170px;
+
+    @include breakpoint(md) {
+      width: 980px;
+    }
     
     @include breakpoint(sm) {
       width: 100%;
@@ -81,12 +91,16 @@ div.swapPage {
       }
       .title h1{
         font-size: 42px;
-        line-height: 54.68px;
-        font-weight: 800;
+        line-height: 54px;
+        font-weight: $bold;
       }
-      .description p{
-        font-size: 16px;
+      .description{
+        width: 100%;
+        p {
+          font-size: 16px;
+        }
       }
+      
     }
   }
   

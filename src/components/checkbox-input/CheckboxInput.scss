@@ -7,27 +7,40 @@
 
   .checkboxControl {
     display: inline-block;
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     border-radius: 0.25em;
-    border: 0.1em solid var(--outline);
-    background-color: $white;
+
+    
+  }
+
+  .checkboxChecked{
+    border: 2px solid $primary;
+    background: $primary;
+  }
+  .checkboxUnchecked{
+    border: 2px solid $white;
+    background: transparent;
   }
 
   .checkboxControl > svg {
-    margin: 0;
-    width: 20px;
-    height: 20px;
-    stroke: var(--text-selected);
+    margin: 0px;
+    width: 16px;
+    height: 16px;
+    stroke: $white;
     transition: transform 0.1s ease-in 25ms;
     transform: scale(0);
-    transform-origin: bottom left;
+    transform-origin: center center;
     display: block !important;
+    background: $primary;
+    border-radius: 0.25em;
+   
   }
 
   & > input {
-    width: 24px;
-    height: 24px;
+    width: 18px;
+    height: 18px;
+    
 
     display: none;
     &:checked + .checkboxControl svg {
