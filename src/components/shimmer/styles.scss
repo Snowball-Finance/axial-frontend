@@ -1,7 +1,7 @@
 .shimmerLoading {
   --color: rgba(23, 0, 59, 1);
   --highlight: rgba(35, 29, 69, 1);
-  background: var(--color);
+  background: $background;
   position: relative;
   background-repeat: no-repeat;
   width: 100%;

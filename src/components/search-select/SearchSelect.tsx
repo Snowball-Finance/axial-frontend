@@ -6,7 +6,6 @@ import React, {
   useState,
 } from "react"
 
-import Divider from "../divider/Divider"
 import { SWAP_TYPES } from "../../constants"
 import type { TokenOption } from "../../pages/swap/Swap"
 import classnames from "classnames"

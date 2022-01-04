@@ -24,27 +24,33 @@ div.walletStatus {
   .hasAccount {
     display: flex;
     align-items: center;
+    border: 1px solid $primary-destructive;
+    border-radius: 75px;
+    padding: 8px 12px;
+    font-family: $font-family;
+    font-weight: $bold;
+    font-size: 16px;
     span.address {
       margin-right: 8px;
+      color: $primary-destructive;
       @include breakpoint(md) {
         display: none;
       }
     }
   }
   .noAccount {
-    height: 40px;
-    width: 170px;
-    border: 1px solid var(--outline);
-    border-radius: 8px;
+    
+    background: $primary-destructive;
+    border-radius: 75px;
     line-height: 40px;
-    color: $primary;
+    color: $primary-focus;
     font-weight: $bold;
+    padding: 0px 20px;
 
     @include breakpoint(lg) {
       display: flex;
       align-items: center;
       justify-content: center;
-      height: 50px;
       line-height: 18px;
       width: 60px;
     }
@@ -56,7 +62,8 @@ div.walletStatus {
     &:focus,
     &:active {
       outline: none;
-      border: 2px solid var(--outline);
+      background: linear-gradient(90deg, rgba(234, 171, 80, 0) 0%, #FFD08C 49.8%, rgba(234, 171, 80, 0) 100%), #EAAB50;
+      border-radius: 75px;
       transform: none;
       transition: none;
       cursor: pointer;
