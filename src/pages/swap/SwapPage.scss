@@ -41,10 +41,33 @@ div.swapPage {
         margin: 0px;
       }
     }
+    .change{
+      width: 100%;
+      display: flex;
+      align-items: center;
+      flex-wrap: nowrap;
+      flex-direction: row;
+      justify-content: center;
+      padding: 8px;
+      button{
+        border-radius: 50px;
+        margin: 8px 0px;
+        height: 32px;
+        width: 32px;
+        background: $primary-blue;
+        &:hover{
+          box-shadow: $shadow-hover;
+          background: $primary-shade;
+        }
+        svg {
+          fill: $white;
+        }
+      }
+    }
     .row {
       display: flex;
       justify-content: space-between;
-      margin-top: 8px;
+      margin-bottom: 8px;
       width: 100%;
       align-items: baseline;
     }
@@ -121,10 +144,8 @@ div.swapPage {
   button.exchange {
     border: none;
     background: $primary;
-    height: 24px;
-    margin-left: 4px;
+    height: 32px;
     padding: 0;
-    border-radius: 4px;
 
     &:hover {
       transform: none;
@@ -139,7 +160,6 @@ div.swapPage {
     background: $primary-shade;
     width: 100%;
     > svg {
-      fill: var(--primary-foreground);
       margin-right: 8px;
     }
   }
@@ -149,9 +169,11 @@ div.swapPage {
     background-color: $text-red;
     padding: 8px;
     width: 100%;
-    margin-top: 32px;
+    margin: 12px 0px;
     display: flex;
     justify-content: center;
+    font-family: $font-family;
+    font-weight: $bold;
   }
 
   .infoSection {
@@ -205,9 +227,10 @@ div.swapPage {
     width: 100%;
     color: $error;
     font-weight: $normal;
-    text-align: center;
-    margin-top: 8px;
+    text-align: right;
     display: none;
+    font-size: 14px;
+    font-family: $font-family;
   }
 
   .info {

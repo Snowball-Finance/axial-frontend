@@ -6,7 +6,8 @@
   display: flex;
   width: 100%;
   position: relative;
-  background-color: $primary-shade;
+  background-color: transparent;
+  border: 1px solid $primary;
 }
 
 .selectTokenGroup {
@@ -22,8 +23,9 @@
     }
   }
   > img {
-    height: 24px;
-    width: 24px;
+    margin: 0 8px;
+    height: 32px;
+    width: 32px;
   }
 
   .tokenNameContainer {
@@ -37,7 +39,7 @@
     display: flex;
     align-items: center;
     svg path {
-      fill: $primary;
+      fill: $white;
     }
   }
 }
@@ -52,7 +54,7 @@
     cursor: default;
     outline: none;
     text-align: right;
-    background-color: $primary-shade;
+    background-color: transparent;
     color: var(--text);
     width: 100%;
   }
@@ -65,8 +67,9 @@
 .textBoldPurple {
   outline: none;
   color: var(--text);
-  font-weight: 800;
-  font-size: 16px;
+  font-weight: 500;
+  font-size: 18px;
+  font-family: $font-family;
 }
 
 .dropdownContainer {
@@ -79,6 +82,6 @@
 }
 
 .textMinor {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--text);
 }

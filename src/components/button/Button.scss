@@ -4,7 +4,7 @@
 
 button.button {
   font-family: $font-family;
-  border-radius: 4px;
+  border-radius: 75px;
   border: none;
   color: var(--background-main);
   font-weight: $bold;
@@ -36,6 +36,16 @@ button.button {
       background-color: $secondary-focus;
       color: var(--text);
       box-shadow: var(--shadow-hover);
+    }
+  }
+
+  &.primary-destructive{
+    background: $primary-destructive;
+    color: $primary-blue;
+    &:disabled {
+      cursor: not-allowed;
+      background: #856553;
+
     }
   }
 
@@ -110,5 +120,11 @@ button.button {
     @include breakpoint(sm) {
       width: 140px;
     }
+  }
+  &.full{
+    width: 100%;
+    padding: 12px 20px;
+    font-size: 18px;
+    font-weight: $bold;
   }
 }
