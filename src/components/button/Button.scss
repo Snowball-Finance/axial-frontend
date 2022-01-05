@@ -29,12 +29,11 @@ button.button {
   }
 
   &.primary {
-    background: $primary;
-
+    background: $primary-destructive;
+    color: $primary-blue;
     &:enabled:hover,
     &:enabled:focus {
-      background-color: $secondary-focus;
-      color: var(--text);
+      background: linear-gradient(90deg, rgba(234, 171, 80, 0) 0%, #FFD08C 49.8%, rgba(234, 171, 80, 0) 100%), #EAAB50;
       box-shadow: var(--shadow-hover);
     }
   }
@@ -48,12 +47,21 @@ button.button {
 
     }
   }
+  &.secondary-destructive{
+    border:1px solid $primary-destructive;
+    color: $primary-blue;
+    &:disabled {
+      cursor: not-allowed;
+      background: #856553;
+
+    }
+  }
 
   &.secondary {
     background-color: clear;
-    color: $secondary-focus;
+    color: $primary-destructive;
     font-weight: $bold;
-    border: 1px solid var(--outline);
+    border: 1px solid $primary-destructive;
 
     &:disabled {
       cursor: not-allowed;
@@ -63,7 +71,6 @@ button.button {
     &:enabled:hover,
     &:enabled:focus {
       background-color: $primary-blue;
-      color: $text-white;
       font-weight: $bold;
       box-shadow: var(--shadow-hover);
     }
