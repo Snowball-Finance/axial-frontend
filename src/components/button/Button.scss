@@ -20,6 +20,7 @@ button.button {
   &:disabled {
     cursor: not-allowed;
     color: rgba(0, 0, 0, 0.3);
+    opacity: 0.5;
   }
 
   &:hover,
@@ -38,24 +39,7 @@ button.button {
     }
   }
 
-  &.primary-destructive{
-    background: $primary-destructive;
-    color: $primary-blue;
-    &:disabled {
-      cursor: not-allowed;
-      background: #856553;
 
-    }
-  }
-  &.secondary-destructive{
-    border:1px solid $primary-destructive;
-    color: $primary-blue;
-    &:disabled {
-      cursor: not-allowed;
-      background: #856553;
-
-    }
-  }
 
   &.secondary {
     background-color: clear;
@@ -65,7 +49,8 @@ button.button {
 
     &:disabled {
       cursor: not-allowed;
-      color: var(--text-secondary-button-disabled);
+      color: $primary-destructive;
+      opacity: 0.5;
     }
 
     &:enabled:hover,

@@ -242,12 +242,12 @@ export default function FarmOverview({
             disabled={userShareData?.masterchefBalance?.pendingTokens.pendingAxial.eq(
               "0x0",
             )}
-            kind="secondary-destructive"
+            kind="secondary"
           >
             {t("claim")}
           </Button>
           <Link to={`${poolRoute}/withdraw`}>
-            <Button size="medium" kind="secondary-destructive">
+            <Button size="medium" kind="secondary">
               {t("withdraw")}
             </Button>
           </Link>
@@ -263,7 +263,7 @@ export default function FarmOverview({
             <Link to={`${poolRoute}/deposit`}>
               <Button
                 size="medium"
-                kind="primary-destructive"
+                kind="primary"
                 disabled={poolData?.isPaused || isOutdated}
               >
                 {t("deposit")}

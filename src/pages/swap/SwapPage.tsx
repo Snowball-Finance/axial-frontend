@@ -266,7 +266,7 @@ const SwapPage = (props: Props): ReactElement => {
         )}
        
         <Button
-          kind="primary-destructive"
+          kind="primary"
           size="full"
           onClick={(): void => {
             setCurrentModal("review")

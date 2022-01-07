@@ -90,7 +90,8 @@ div.poolOverview {
     }
 
     .margin {
-      margin-right: 24px;
+      margin-right: 22px;
+      text-align: center;
 
       @include breakpoint(md) {
         margin-right: auto;
