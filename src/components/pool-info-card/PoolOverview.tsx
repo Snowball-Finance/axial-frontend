@@ -71,7 +71,7 @@ export default function PoolOverview({
           {poolData.isPaused && <Tag kind="error">PAUSED</Tag>}
         </div>
         <div className="tokens">
-          <span style={{ marginRight: "8px" }}>[</span>
+          <span>[</span>
           <LoadingWrapper
             height={19}
             width={140}
@@ -86,7 +86,7 @@ export default function PoolOverview({
               ))}
             </>
           </LoadingWrapper>
-          <span style={{ marginLeft: "0px" }}>]</span>
+          <span>]</span>
         </div>
       </div>
 
@@ -135,11 +135,15 @@ export default function PoolOverview({
         </div>
         <div className="buttons">
           <Link to={`${poolRoute}/withdraw`}>
-            <Button kind="secondary">{t("withdraw")}</Button>
+            <Button 
+            kind="secondary"
+            size="medium"
+            >{t("withdraw")}</Button>
           </Link>
           {shouldMigrate ? (
             <Button
               kind="temporary"
+              size="medium"
               onClick={onClickMigrate}
               disabled={!hasShare}
             >
@@ -149,6 +153,7 @@ export default function PoolOverview({
             <Link to={`${poolRoute}/deposit`}>
               <Button
                 kind="primary"
+                size="medium"
                 disabled={poolData?.isPaused || isOutdated}
               >
                 {t("deposit")}

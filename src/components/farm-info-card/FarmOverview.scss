@@ -7,7 +7,7 @@ div.poolOverview {
   background: var(--background-element);
   box-shadow: var(--shadow);
   border-radius: 10px;
-  padding: 24px 32px;
+  padding: 24px 36px;
   display: grid;
   grid-template-columns: 45% 55%;
 
@@ -65,7 +65,11 @@ div.poolOverview {
   }
 
   div.token {
-    margin-right: 16px;
+    margin: 0px 8px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
 
     &:last-child {
       margin-right: 0;
@@ -73,9 +77,8 @@ div.poolOverview {
 
     & > img {
       margin-right: 4px;
-      vertical-align: sub;
-      height: 18px;
-      width: 18px;
+      height: 24px;
+      width: 24px;
     }
   }
 
