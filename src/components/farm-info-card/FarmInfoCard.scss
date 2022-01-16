@@ -91,3 +91,13 @@ div.poolInfoCard {
     border-bottom: 1px dotted var(--text);
   }
 }
+.currencyReserves{
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  span{
+    white-space: nowrap;
+    color: $primary-destructive;
+  }
+}

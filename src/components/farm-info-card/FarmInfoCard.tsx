@@ -71,10 +71,12 @@ function FarmInfoCard({ data }: Props): ReactElement | null {
       )}
       <div className="info"></div>
       <div className="bottom">
-        <h4>{t("currencyReserves")}</h4>
-        <LoadingWrapper width={130} isLoading={formattedData.reserve === "-"}>
-          <span>{`$${formattedData.reserve} ${t("inTotal")}`}</span>
-        </LoadingWrapper>
+        <div className="currencyReserves">
+          <h4>{t("currencyReserves")}</h4>
+          <LoadingWrapper width={130} isLoading={formattedData.reserve === "-"}>
+            <span>{`$${formattedData.reserve} ${t("inTotal")}`}</span>
+          </LoadingWrapper>
+        </div>
         <div className="tokenList">
           {formattedData.tokens.map((token, index) => (
             <div className="token" key={index}>
