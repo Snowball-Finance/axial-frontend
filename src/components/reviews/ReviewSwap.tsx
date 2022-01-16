@@ -159,6 +159,9 @@ function ReviewSwap({ onClose, onConfirm, data }: Props): ReactElement {
       <div className="bottom">
         <p>{t("estimatedOutput")}</p>
         <div className="buttonWrapper">
+        <Button onClick={onClose} kind="secondary">
+            {t("cancel")}
+          </Button>
           <Button
             onClick={onConfirm}
             kind="primary"
@@ -166,9 +169,7 @@ function ReviewSwap({ onClose, onConfirm, data }: Props): ReactElement {
           >
             {t("confirmSwap")}
           </Button>
-          <Button onClick={onClose} kind="cancel">
-            {t("cancel")}
-          </Button>
+          
         </div>
       </div>
     </div>
@@ -181,7 +182,7 @@ function DirectSwapTokens({ data }: { data: Props["data"] }) {
   return (
     <>
       <div className="row">
-        <div>
+        <div className="infoToken">
           <img className="tokenIcon" src={fromToken.icon} alt="icon" />
           <span className="tokenName">{data.from.symbol}</span>
         </div>
@@ -191,7 +192,7 @@ function DirectSwapTokens({ data }: { data: Props["data"] }) {
       </div>
       <img src={iconDown} alt="to" className="arrowDown" />
       <div className="row">
-        <div>
+        <div className="infoToken">
           <img className="tokenIcon" src={toToken.icon} alt="icon" />
           <span className="tokenName">{data.to.symbol}</span>
         </div>
@@ -215,7 +216,7 @@ function VirtualSwapTokens({ data }: { data: Props["data"] }) {
         const token = TOKENS_MAP[symbol]
         return (
           <div className="row" key={symbol}>
-            <div>
+            <div className="infoToken">
               {!isFirst && !isLast && <ThinArrowDown className="stepArrow" />}
               <img className="tokenIcon" src={token.icon} alt="icon" />
               <span className={classnames("tokenName", { grey: isLast })}>

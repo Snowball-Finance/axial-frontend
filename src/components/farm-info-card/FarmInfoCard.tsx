@@ -78,8 +78,10 @@ function FarmInfoCard({ data }: Props): ReactElement | null {
         <div className="tokenList">
           {formattedData.tokens.map((token, index) => (
             <div className="token" key={index}>
-              <img alt="icon" src={token.icon} />
-              <span className="bold">{`${token.symbol} ${token.percent}`}</span>
+              <div className="tokenInfo">
+                <img alt="icon" src={token.icon} />
+                <p className="bold">{token.symbol} <span>{token.percent}</span></p>
+              </div>
               <span className="tokenValue">{token.value}</span>
             </div>
           ))}

@@ -67,9 +67,25 @@ function PoolInfoCard({ data }: Props): ReactElement | null {
           <h4 className="underline">{formattedData.name}</h4>
         </ToolTip>
       ) : (
-        <h4>{/*formattedData.name*/}</h4>
+        <span>{/*formattedData.name*/}</span>
       )}
-      <div className="info">
+      <div className="poolResume">
+        <div className="item">
+          <p>{t("apr")}</p>
+          <span>{Number(data.apr).toFixed(2)}%</span>
+        </div>
+        <div className="item">
+          <p>{t("24HrVolume")}</p>
+          <span>${commify(Number(data.volume).toFixed(2))}</span>
+        </div>
+        <div className="item">
+          <p>TVL</p>
+          <span>{`$${formattedData.reserve}`}</span>
+        </div>
+      </div>
+      <div className="info" style={{
+              display: "none"
+            }}>
         {/*<div className="infoItem">
           <span className="label bold">{`${t("fee")}:`}</span>
           <span className="value">{formattedData.swapFee}</span>
@@ -112,15 +128,20 @@ function PoolInfoCard({ data }: Props): ReactElement | null {
           width={160}
           isLoading={formattedData.reserve === "-"}
         >
-          <span>{`$${formattedData.reserve} ${t("inTotal")}`}</span>
+          
         </LoadingWrapper>
         <div className="tokenList">
           {formattedData.tokens.map((token, index) => (
             <div className="token" key={index}>
-              <img alt="icon" src={token.icon} />
-              <span className="bold">{`${token.symbol} ${token.percent}`}</span>
-              <span className="tokenValue">{token.value}</span>
+              <div className="tokenInfo">
+                <img alt="icon" src={token.icon} />
+                <p className="bold">{token.symbol} <span>{token.percent}</span></p>
+              </div>
+              <span className="tokenValue">${token.value}</span>
             </div>
+
+            
+            
           ))}
         </div>
       </div>

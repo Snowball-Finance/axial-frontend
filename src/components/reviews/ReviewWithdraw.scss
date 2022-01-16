@@ -4,15 +4,14 @@
 div.reviewWithdraw {
   margin-top: 0;
   padding: 40px;
-  background-color: $white;
-  color: $text-black;
+  background-color: $primary-shade;
+  color: $white;
   border-radius: 8px;
 
   h3 {
     font-family: $font-family-title;
-    font-size: 30px;
-    font-weight: $bold;
-    color: $text-black;
+    font-size: 26px;
+    font-weight: 500;
     margin-top: 0;
     margin-bottom: 24px;
   }
@@ -26,6 +25,9 @@ div.reviewWithdraw {
 
     .eachToken {
       margin-bottom: 16px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
 
       div {
         display: inline-block;
@@ -43,7 +45,12 @@ div.reviewWithdraw {
         }
       }
       & > .token {
-        width: 32px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        img{
+          width: 32px;
+        }
         @include breakpoint(md) {
           width: 27%;
         }
@@ -58,6 +65,7 @@ div.reviewWithdraw {
 
       & > .label {
         width: 45%;
+        font-size: 16px;
         @include breakpoint(md) {
           width: 73%;
         }
@@ -83,7 +91,7 @@ div.reviewWithdraw {
   }
 
   div.bottom {
-    background: $black;
+    background: $primary-focus;
     margin: 0 -40px -40px -40px;
     padding: 16px 40px 24px 40px;
     border-radius: 0px 0px 8px 8px;
@@ -103,7 +111,7 @@ div.reviewWithdraw {
   }
 
   .divider {
-    background-color: $divider-red;
+    background-color: $primary-destructive;
     margin: 12px 0 16px 0;
     height: 1px;
     width: 100%;

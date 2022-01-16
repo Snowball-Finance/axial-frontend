@@ -6,6 +6,9 @@ div.poolsPage {
   color: var(--text);
   font-size: 16px;
   padding: 36px 48px;
+  @include breakpoint(sm) {
+    padding: 12px 8px;
+  }
 
   .filters {
     width: max-content;

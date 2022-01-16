@@ -103,6 +103,20 @@ const FarmWithdrawPage = (props: Props): ReactElement => {
         <div className="left">
           <div className="form">
             <h3>{t("withdraw")}</h3>
+            <div className="rangeSelector">
+              <input type="range" min="0" max="100" step="5" onChange={(e: React.FormEvent<HTMLInputElement>): void =>
+                  onFormChange({
+                    fieldName: "percentage",
+                    value: e.currentTarget.value,
+                  })
+                }
+                onFocus={(e: React.ChangeEvent<HTMLInputElement>): void =>
+                  e.target.select()
+                }
+                value={formStateData.percentage ? formStateData.percentage : 0}
+                />
+            </div>
+            
             <div className="percentage">
               <span>{`${t("withdrawPercentage")} (%):`}</span>
               <input
@@ -143,13 +157,13 @@ const FarmWithdrawPage = (props: Props): ReactElement => {
                 )}
               </div>
             ))}
-          </div>
-          <AdvancedOptions
+            <AdvancedOptions
             noApprovalCheckbox={true}
             noSlippageCheckbox={true}
           />
           <Button
             kind="primary"
+            size="full"
             disabled={
               noShare ||
               !!formStateData.error ||
@@ -159,20 +173,21 @@ const FarmWithdrawPage = (props: Props): ReactElement => {
           >
             {t("withdraw")}
           </Button>
+          </div>
+          
         </div>
         <div className="infoPanels">
+          <div className="poolName">
+            <p>{t("withdraw")}</p>
+            <h1>{props.title}</h1>
+          </div>
           <MyShareCard
             data={myShareData}
             useMasterchefAmount={true}
             usePendingMasterchef={true}
           />
-          <div
-            style={{
-              display: myShareData ? "block" : "none",
-            }}
-            className="divider"
-          ></div>{" "}
           {poolType !== PoolTypes.LP && <PoolInfoCard data={poolData} />}
+
         </div>
         <Modal
           isOpen={!!currentModal}

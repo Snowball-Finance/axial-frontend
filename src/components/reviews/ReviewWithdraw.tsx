@@ -50,13 +50,13 @@ function ReviewWithdraw({ onClose, onConfirm, data }: Props): ReactElement {
         <div className="tokenList">
           {data.withdraw.map((token, index) => (
             <div className="eachToken" key={index}>
+               <div className="token">
+                <img src={token.icon} alt="icon" />
+                <span>{token.name}</span>
+              </div>
               <div className="value">
                 <span className="value">{token.value}</span>
               </div>
-              <div className="token">
-                <img src={token.icon} alt="icon" />
-              </div>
-              <span>{token.name}</span>
             </div>
           ))}
         </div>
@@ -116,6 +116,9 @@ function ReviewWithdraw({ onClose, onConfirm, data }: Props): ReactElement {
       <div className="bottom">
         <p>{t("estimatedOutput")}</p>
         <div className="buttonWrapper">
+        <Button onClick={onClose} kind="secondary">
+            {t("cancel")}
+          </Button>
           <Button
             onClick={onConfirm}
             kind="primary"
@@ -123,9 +126,7 @@ function ReviewWithdraw({ onClose, onConfirm, data }: Props): ReactElement {
           >
             {t("confirmWithdraw")}
           </Button>
-          <Button onClick={onClose} kind="cancel">
-            {t("cancel")}
-          </Button>
+          
         </div>
       </div>
     </div>

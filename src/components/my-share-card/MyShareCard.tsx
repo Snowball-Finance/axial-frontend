@@ -132,52 +132,56 @@ function MyShareCard({
 
   return (
     <div className="myShareCard">
-      <h4>{t("myShare")}</h4>
+      <div className="head">
+        <h4>{t("myShare")}</h4>
+        <span>
+          {formattedData.share} {t("ofPool")}
+        </span>
+      </div>
+      
       <div className="info">
         {usePercent ? (
           <div className="poolShare">
-            <span>
-              {formattedData.share} {t("ofPool")}
-            </span>
+            
           </div>
         ) : null}
         {useUsd ? (
           <div className="infoItem">
-            <span className="bold">{`${t("usdBalance")}: `}</span>
+            <span className="title">{`${t("usdBalance")}: `}</span>
             <span className="value">{`$${formattedData.usdBalance}`}</span>
           </div>
         ) : null}
         <div className="infoItem">
-          <span className="bold">{`${t("totalAmount")}: `}</span>
+          <span className="title">{`${t("totalAmount")}: `}</span>
           <span className="value">{formattedData.amount}</span>
         </div>
         {usePendingMasterchef ? (
           <div className="infoItem">
-            <span className="bold">{`${t("axialRewards")}: `}</span>
+            <span className="title">{`${t("axialRewards")}: `}</span>
             <span className="value">{formattedData.rewards.axialRewards}</span>
           </div>
         ) : null}
         {usePendingMasterchef && hasAVAX ? (
           <div className="infoItem">
-            <span className="bold">{`${t("avaxRewards")}: `}</span>
+            <span className="title">{`${t("avaxRewards")}: `}</span>
             <span className="value">{formattedData.rewards.avaxRewards}</span>
           </div>
         ) : null}
         {usePendingMasterchef && hasTEDDY ? (
           <div className="infoItem">
-            <span className="bold">{`${t("teddyRewards")}: `}</span>
+            <span className="title">{`${t("teddyRewards")}: `}</span>
             <span className="value">{formattedData.rewards.teddyRewards}</span>
           </div>
         ) : null}
         {usePendingMasterchef && hasFXS ? (
           <div className="infoItem">
-            <span className="bold">{`${t("fraxRewards")}: `}</span>
+            <span className="title">{`${t("fraxRewards")}: `}</span>
             <span className="value">{formattedData.rewards.fxsRewards}</span>
           </div>
         ) : null}
         {usePendingMasterchef && hasORCA ? (
           <div className="infoItem">
-            <span className="bold">{`${t("orcaRewards")}: `}</span>
+            <span className="title">{`${t("orcaRewards")}: `}</span>
             <span className="value">{formattedData.rewards.orcaRewards}</span>
           </div>
         ) : null}

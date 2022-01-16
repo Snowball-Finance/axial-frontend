@@ -91,9 +91,32 @@ const WithdrawPage = (props: Props): ReactElement => {
   return (
     <div className={"withdraw " + classNames({ noShare: noShare })}>
       <div className="content">
-        <div className="left">
+        <div className="infoPanels">
+          <div className="poolName">
+            <p>{t("withdraw")}</p>
+            <h1>{props.title}</h1>
+          </div>
+          <PoolInfoCard data={poolData} />
+          <MyShareCard data={myShareData} />
+          
+        </div>
+        <div className="widthdrawSection">
           <div className="form">
             <h3>{t("withdraw")}</h3>
+            <div className="rangeSelector">
+              <input type="range" min="0" max="100" step="5" onChange={(e: React.FormEvent<HTMLInputElement>): void =>
+                  onFormChange({
+                    fieldName: "percentage",
+                    value: e.currentTarget.value,
+                  })
+                }
+                onFocus={(e: React.ChangeEvent<HTMLInputElement>): void =>
+                  e.target.select()
+                }
+                value={formStateData.percentage ? formStateData.percentage : 0}
+                />
+            </div>
+            
             <div className="percentage">
               <span>{`${t("withdrawPercentage")} (%):`}</span>
               <input
@@ -135,7 +158,7 @@ const WithdrawPage = (props: Props): ReactElement => {
                         value: t.symbol,
                       })
                     }
-                    label={t.name}
+                    label={t.symbol}
                   />
                 )
               })}
@@ -180,13 +203,13 @@ const WithdrawPage = (props: Props): ReactElement => {
                 </div>
               </div>
             </div>
-          </div>
-          <AdvancedOptions
+            <AdvancedOptions
             noApprovalCheckbox={true}
             noSlippageCheckbox={true}
           />
           <Button
             kind="primary"
+            size="full"
             disabled={
               noShare ||
               !!formStateData.error ||
@@ -196,16 +219,8 @@ const WithdrawPage = (props: Props): ReactElement => {
           >
             {t("withdraw")}
           </Button>
-        </div>
-        <div className="infoPanels">
-          <MyShareCard data={myShareData} />
-          <div
-            style={{
-              display: myShareData ? "block" : "none",
-            }}
-            className="divider"
-          ></div>{" "}
-          <PoolInfoCard data={poolData} />
+          </div>
+          
         </div>
         <Modal
           isOpen={!!currentModal}

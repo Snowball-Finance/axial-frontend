@@ -9,7 +9,7 @@ div.withdraw {
   box-sizing: border-box; // Make the padding included in height calculation
 
   .content {
-    width: 888px;
+    width: 980px;
     margin: 0 auto;
     display: grid;
     grid-template-columns: auto auto;
@@ -26,10 +26,8 @@ div.withdraw {
 
     .infoPanels {
       margin-top: 40px;
-      width: 434px;
-      padding: 24px 32px;
+      width: 490px;
       border-radius: 10px;
-      background: var(--background-element);
       box-sizing: border-box;
       @include breakpoint(lg) {
         margin: 40px auto 0;
@@ -37,9 +35,17 @@ div.withdraw {
       @include breakpoint(md) {
         max-width: 90%;
       }
+      .poolName{
+        padding: 12px 16px;
+        h1{
+          font-size: 36px;
+          font-family: $font-family-title;
+          font-weight: 700;
+        }
+      }
     }
 
-    .left {
+    .withdrawSection {
       width: 434px;
       @include breakpoint(lg) {
         margin: 0 auto;
@@ -64,12 +70,12 @@ div.withdraw {
 
     .form h3 {
       font-family: $font-family-title;
-      font-size: 30px;
+      font-size: 24px;
       margin-top: 0;
-      margin-bottom: 48px;
+      margin-bottom: 12px;
       font-weight: $bold;
       color: var(--text);
-      text-align: center;
+      text-align: left;
     }
 
     .percentage {
@@ -88,17 +94,17 @@ div.withdraw {
         height: 32px;
         width: 112px;
         display: block;
-        background: $white;
+        background: transparent;
         border: none;
         border-radius: 0;
-
         padding-left: 16px;
-        color: $text-black;
+        color: $white;
         font-size: 16px;
         font-family: $font-family;
         font-style: normal;
         font-weight: $normal;
-
+        text-align: right;
+        font-size: 18px;
         &:focus {
           outline: var(--outline) solid 1px;
         }
@@ -116,9 +122,16 @@ div.withdraw {
     div.horizontalDisplay {
       display: flex;
       gap: 8px;
-      margin-bottom: 24px;
+      padding: 18px 16px;
+      border: 1px solid $primary;
+      border-radius: 10px;
+      justify-content: space-between;
       @include breakpoint(md) {
         flex-flow: row wrap;
+      }
+
+      span{
+        font-size: 16px;
       }
     }
   }
@@ -216,3 +229,10 @@ div.withdraw {
 div.noShare {
   background: var(--background-main);
 }
+
+.rangeSelector{
+  input{
+    width: 100%;
+  }
+}
+

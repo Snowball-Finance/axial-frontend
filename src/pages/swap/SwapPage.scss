@@ -111,6 +111,7 @@ div.swapPage {
       @include breakpoint(sm) {
         width: 100%;
         padding: 12px 8px;
+        margin-bottom: 40px;
       }
       .title h1{
         font-size: 42px;
@@ -145,8 +146,9 @@ div.swapPage {
     border: none;
     background: $primary;
     height: 32px;
+    width: 32px;
     padding: 0;
-
+    border-radius: 100%;
     &:hover {
       transform: none;
     }

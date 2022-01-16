@@ -21,14 +21,13 @@ function InfoSection({
   return (
     <>
       <div className="infoCard">
-        <h4>{title}</h4>
         <div className="info">
           {rows.map((item, index) => {
             return (
               <div key={index} className="infoItem">
                 {item.value && (
                   <>
-                    <span className="label bold">{item.title} : </span>
+                    <span className="label">{item.title}</span>
                     <LoadingWrapper width={70} isLoading={item.value === "-"}>
                       <span className="value">{item.value}</span>
                     </LoadingWrapper>

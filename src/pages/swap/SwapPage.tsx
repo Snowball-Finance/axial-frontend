@@ -264,22 +264,24 @@ const SwapPage = (props: Props): ReactElement => {
             {">"}
           </div>
         )}
-       
-        <Button
-          kind="primary"
-          size="full"
-          onClick={(): void => {
-            setCurrentModal("review")
-            analytics.trackEvent({
-              category: "Swap",
-              action: "Review",
-              name: `${fromState.symbol}_${toState.symbol}`,
-            })
-          }}
-          disabled={!!error || +toState.value <= 0}
-        >
-          {t("swap")}
-        </Button>
+        <div className="buttonSection">
+          <Button
+            kind="primary"
+            size="full"
+            onClick={(): void => {
+              setCurrentModal("review")
+              analytics.trackEvent({
+                category: "Swap",
+                action: "Review",
+                name: `${fromState.symbol}_${toState.symbol}`,
+              })
+            }}
+            disabled={!!error || +toState.value <= 0}
+          >
+            {t("swap")}
+          </Button>
+        </div>
+        
        
         </div>
         

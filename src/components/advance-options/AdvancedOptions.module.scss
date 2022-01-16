@@ -3,23 +3,21 @@
 
 .advancedOptions {
   width: 100%;
-  margin-top: 24px;
-  margin-bottom: 24px;
+  padding: 12px 0px;
 
   .titleBox{
     padding-bottom: 8px;
   }
   
-  span.title {
-    padding-left: 8px;
-    
+  span.settings {
+    margin-right: 8px;
   }
   @include breakpoint(lg) {
     margin: 12px auto 20px;
     width: 434px;
   }
   @include breakpoint(md) {
-    max-width: 90%;
+    max-width: 100%;
   }
   svg.triangle {
     margin-left: 10px;
