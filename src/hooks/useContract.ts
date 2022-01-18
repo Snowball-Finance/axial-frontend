@@ -31,6 +31,7 @@ import { LpTokenUnguarded } from "../../types/ethers-contracts/LpTokenUnguarded"
 import { MetaSwapDeposit } from "../../types/ethers-contracts/MetaSwapDeposit"
 import SWAP_FLASH_LOAN_NO_WITHDRAW_FEE_ABI from "../constants/abis/swapFlashLoanNoWithdrawFee.json"
 import { SwapFlashLoanNoWithdrawFee } from "../../types/ethers-contracts/SwapFlashLoanNoWithdrawFee"
+import { SwapRouter } from "../../types/ethers-contracts/SwapRouter"
 import { getContract } from "../libs"
 import { useActiveWeb3React } from "./index"
 import { useMemo } from "react"
@@ -93,6 +94,41 @@ export function useSwapContract(
           library,
           account ?? undefined,
         ) as SwapFlashLoanNoWithdrawFee
+      } else {
+        return null
+      }
+    } catch (error) {
+      console.error("Failed to get contract", error)
+      return null
+    }
+  }, [chainId, library, account, poolName])
+}
+
+export function useSwapRouterContract(
+  poolName?: PoolName,
+): SwapRouter | MetaSwapDeposit | null {
+  const { chainId, account, library } = useActiveWeb3React()
+  return useMemo(() => {
+    if (!poolName || !library || !chainId) return null
+    try {
+      const pool = POOLS_MAP[poolName]
+      if (pool.type === PoolTypes.LP) {
+        return null
+      }
+      if (isMetaPool(poolName)) {
+        return getContract(
+          pool.addresses[chainId],
+          METASWAP_DEPOSIT_ABI,
+          library,
+          account ?? undefined,
+        ) as MetaSwapDeposit
+      } else if (pool) {
+        return getContract(
+          pool.addresses[chainId],
+          SWAP_FLASH_LOAN_NO_WITHDRAW_FEE_ABI,
+          library,
+          account ?? undefined,
+        ) as SwapRouter
       } else {
         return null
       }

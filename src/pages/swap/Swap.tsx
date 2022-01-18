@@ -35,7 +35,7 @@ import { useActiveWeb3React } from "../../hooks"
 import { useApproveAndSwap } from "../../hooks/useApproveAndSwap"
 import { usePoolTokenBalances } from "../../store/wallet/hooks"
 import { useSelector } from "react-redux"
-import { useSwapContract } from "../../hooks/useContract"
+import { useSwapContract, useSwapRouterContract } from "../../hooks/useContract"
 import { useTranslation } from "react-i18next"
 import { analytics } from "../../utils/analytics"
 
@@ -108,6 +108,11 @@ function Swap(): ReactElement {
   const swapContract = useSwapContract(
     formState.to.poolName as PoolName | undefined,
   )
+
+  const routerContract=useSwapRouterContract(
+    formState.to.poolName as PoolName | undefined,
+  )
+
   // build a representation of pool tokens for the UI
   const tokenOptions = useMemo(() => {
     const allTokens = Object.values(TOKENS_MAP)
