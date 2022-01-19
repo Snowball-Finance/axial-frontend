@@ -38,6 +38,7 @@ import { useSelector } from "react-redux"
 import { useSwapContract, useSwapRouterContract } from "../../hooks/useContract"
 import { useTranslation } from "react-i18next"
 import { analytics } from "../../utils/analytics"
+import { ethers } from "ethers"
 
 type FormState = {
   error: null | string
@@ -89,7 +90,7 @@ const EMPTY_FORM_STATE = {
 
 function Swap(): ReactElement {
   const { t } = useTranslation()
-  const { chainId } = useActiveWeb3React()
+  const { chainId,library } = useActiveWeb3React()
   const approveAndSwap = useApproveAndSwap()
   const tokenBalances = usePoolTokenBalances()
   const calculateSwapPairs = useCalculateSwapPairs()
@@ -104,7 +105,6 @@ function Swap(): ReactElement {
   const [prevFormState, setPrevFormState] = useState<FormState>(
     EMPTY_FORM_STATE,
   )
-
   const swapContract = useSwapContract(
     formState.to.poolName as PoolName | undefined,
   )
@@ -208,13 +208,28 @@ function Swap(): ReactElement {
         amountToReceive = Zero
       } else if (
         formStateArg.swapType === SWAP_TYPES.DIRECT &&
-        swapContract != null
+        routerContract != null
       ) {
-        amountToReceive = await swapContract.calculateSwap(
-          formStateArg.from.tokenIndex,
-          formStateArg.to.tokenIndex,
-          amountToGive,
-        )
+        if(library){
+          const gasPrice=await library.getGasPrice()
+          const a = await routerContract.findBestPathWithGas(
+           amountToGive,
+           tokenFrom.addresses[chainId],
+           tokenTo.addresses[chainId],
+          4,
+          gasPrice
+          )
+          console.log(a);
+        }
+  
+        return
+        
+        // console.log(amountToReceive)
+        // amountToReceive = await swapContract.calculateSwap(
+        //   formStateArg.from.tokenIndex,
+        //   formStateArg.to.tokenIndex,
+        //   amountToGive,
+        // )
       }
       const toValueUSD = calculatePrice(
         amountToReceive,

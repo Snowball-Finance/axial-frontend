@@ -30,6 +30,7 @@ import { LpTokenGuarded } from "../../types/ethers-contracts/LpTokenGuarded"
 import { LpTokenUnguarded } from "../../types/ethers-contracts/LpTokenUnguarded"
 import { MetaSwapDeposit } from "../../types/ethers-contracts/MetaSwapDeposit"
 import SWAP_FLASH_LOAN_NO_WITHDRAW_FEE_ABI from "../constants/abis/swapFlashLoanNoWithdrawFee.json"
+import SWAP_ROUTER_ABI from "../constants/abis/swapRouter.json"
 import { SwapFlashLoanNoWithdrawFee } from "../../types/ethers-contracts/SwapFlashLoanNoWithdrawFee"
 import { SwapRouter } from "../../types/ethers-contracts/SwapRouter"
 import { getContract } from "../libs"
@@ -106,32 +107,21 @@ export function useSwapContract(
 
 export function useSwapRouterContract(
   poolName?: PoolName,
-): SwapRouter | MetaSwapDeposit | null {
+): SwapRouter | null {
   const { chainId, account, library } = useActiveWeb3React()
   return useMemo(() => {
     if (!poolName || !library || !chainId) return null
     try {
       const pool = POOLS_MAP[poolName]
-      if (pool.type === PoolTypes.LP) {
-        return null
-      }
-      if (isMetaPool(poolName)) {
-        return getContract(
-          pool.addresses[chainId],
-          METASWAP_DEPOSIT_ABI,
-          library,
-          account ?? undefined,
-        ) as MetaSwapDeposit
-      } else if (pool) {
-        return getContract(
-          pool.addresses[chainId],
-          SWAP_FLASH_LOAN_NO_WITHDRAW_FEE_ABI,
-          library,
-          account ?? undefined,
-        ) as SwapRouter
-      } else {
-        return null
-      }
+      const findBestPathFunction = ['function findBestPathWithGas(uint256, address, address, uint, uint) external']
+      // const routerContract = new Contract('0xC4729E56b831d74bBc18797e0e17A295fA77488c', findBestPathFunction,library.getSigner())
+      const routerContract=getContract(
+        '0xC4729E56b831d74bBc18797e0e17A295fA77488c',
+        SWAP_ROUTER_ABI,
+        library,
+        account ?? undefined,
+      ) as SwapRouter
+    return routerContract
     } catch (error) {
       console.error("Failed to get contract", error)
       return null
