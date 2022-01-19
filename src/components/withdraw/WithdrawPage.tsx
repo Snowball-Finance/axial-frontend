@@ -17,10 +17,10 @@ import { WithdrawFormState } from "../../hooks/useWithdrawFormState"
 import { Zero } from "@ethersproject/constants"
 import classNames from "classnames"
 import { formatBNToPercentString } from "../../libs"
-import { logEvent } from "../../libs/googleAnalytics"
 import { useSelector } from "react-redux"
 import { useTranslation } from "react-i18next"
 import { TransactionStatusType } from "../../hooks/useApproveAndDeposit"
+import { analytics } from "../../utils/analytics"
 
 export interface ReviewWithdrawData {
   withdraw: {
@@ -63,6 +63,7 @@ interface Props {
 
 const WithdrawPage = (props: Props): ReactElement => {
   const { t } = useTranslation()
+
   const {
     tokensData,
     poolData,
@@ -79,6 +80,11 @@ const WithdrawPage = (props: Props): ReactElement => {
 
   const onSubmit = (): void => {
     setCurrentModal("review")
+    analytics.trackEvent({
+      category: "Withdraw",
+      action: "Review",
+      name: "Review",
+    })
   }
   const noShare = !myShareData || myShareData.lpTokenBalance.eq(Zero)
 
@@ -175,7 +181,10 @@ const WithdrawPage = (props: Props): ReactElement => {
               </div>
             </div>
           </div>
-          <AdvancedOptions noApprovalCheckbox={true}  noSlippageCheckbox={true}/>
+          <AdvancedOptions
+            noApprovalCheckbox={true}
+            noSlippageCheckbox={true}
+          />
           <Button
             kind="primary"
             disabled={
@@ -208,22 +217,23 @@ const WithdrawPage = (props: Props): ReactElement => {
               gas={gasPriceSelected}
               onConfirm={async (): Promise<void> => {
                 setCurrentModal("confirm")
-                logEvent(
-                  "withdraw",
-                  (poolData && { pool: poolData?.name }) || {},
-                )
+                analytics.trackEvent({
+                  category: "Withdraw",
+                  action: "Confirm",
+                  name: "Confirm",
+                })
                 await onConfirmTransaction?.()
                 setCurrentModal(null)
               }}
               onClose={(): void => setCurrentModal(null)}
             />
           ) : null}
-          {currentModal === "confirm" &&
+          {currentModal === "confirm" && (
             <ConfirmTransaction
-              type='withdraw'
+              type="withdraw"
               transactionStatus={transactionStatus}
             />
-          }
+          )}
         </Modal>
       </div>
     </div>

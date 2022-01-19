@@ -22,7 +22,9 @@ function Pools(): ReactElement | null {
   const [am3dPoolData, am3dUserShareData] = usePoolData(AXIAL_AM3D_POOL_NAME)
   const [aa3dPoolData, aa3dUserShareData] = usePoolData(AXIAL_AA3D_POOL_NAME)
   const [ac4dPoolData, ac4dUserShareData] = usePoolData(AXIAL_AC4D_POOL_NAME)
-  const [usdcAm3dPoolData, usdcAm3dUserShareData] = usePoolData(USDC_AM3D_POOL_NAME)
+  const [usdcAm3dPoolData, usdcAm3dUserShareData] = usePoolData(
+    USDC_AM3D_POOL_NAME,
+  )
   const [currentModal, setCurrentModal] = useState<string | null>(null)
   const [filter] = useState<PoolTypes | "all" | "outdated">("all")
   const handleClickMigrate = () => {
@@ -68,14 +70,13 @@ function Pools(): ReactElement | null {
     }
   }
 
-  const visiblePoolList = Object.values(POOLS_MAP)
-    .filter(
-      ({ type, migration, isOutdated }) =>
-        (filter === "all" ||
+  const visiblePoolList = Object.values(POOLS_MAP).filter(
+    ({ type, migration, isOutdated }) =>
+      (filter === "all" ||
         type === filter ||
-        (filter === "outdated" && (migration || isOutdated)))
-        && type !== PoolTypes.LP,
-    )
+        (filter === "outdated" && (migration || isOutdated))) &&
+      type !== PoolTypes.LP,
+  )
 
   return (
     <div className={styles.poolsPage}>
@@ -139,7 +140,9 @@ function Pools(): ReactElement | null {
               }
             />
           ))}
-        {visiblePoolList.length === 0 && <p className={styles.noPools}>No pools were found.</p>}
+        {visiblePoolList.length === 0 && (
+          <p className={styles.noPools}>No pools were found.</p>
+        )}
       </div>
       <Modal
         isOpen={!!currentModal}

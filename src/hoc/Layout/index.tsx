@@ -8,11 +8,13 @@ export default function Layout({
   children,
 }: React.PropsWithChildren<unknown>): ReactElement {
   const { pathname }: { pathname: string } = useLocation()
-  const activeTab = pathname.split('/')[1] || 'swap';
+  const activeTab = pathname.split("/")[1] || "swap"
 
-  return <div className="layout">
-    <TopMenu activeTab={activeTab} />
-    {children}
-    <Footer />
-  </div>
+  return (
+    <div className="layout">
+      <TopMenu activeTab={activeTab} />
+      {children}
+      <Footer />
+    </div>
+  )
 }

@@ -16,11 +16,11 @@ import type { TokenOption } from "../../pages/swap/Swap"
 import { Zero } from "@ethersproject/constants"
 import classNames from "classnames"
 import { commify } from "../../libs"
-import { isHighPriceImpact } from "../../libs/priceImpact"
-import { logEvent } from "../../libs/googleAnalytics"
+import { isLowerRate } from "../../libs/priceImpact"
 import { useActiveWeb3React } from "../../hooks"
 import { useSelector } from "react-redux"
 import { useTranslation } from "react-i18next"
+import { analytics } from "../../utils/analytics"
 
 interface Props {
   tokenOptions: {
@@ -50,6 +50,7 @@ interface Props {
 
 const SwapPage = (props: Props): ReactElement => {
   const { t } = useTranslation()
+
   const { account } = useActiveWeb3React()
   const {
     tokenOptions,
@@ -218,10 +219,10 @@ const SwapPage = (props: Props): ReactElement => {
             </>
           )}
         </div>
-        {account && isHighPriceImpact(exchangeRateInfo.priceImpact) && (
+        {account && isLowerRate(exchangeRateInfo.exchangeRate) && (
           <div className="exchangeWarning">
-            {t("highPriceImpact", {
-              rate: formattedPriceImpact,
+            {t("lowSwapRate", {
+              rate: ((+exchangeRateInfo.exchangeRate/1e18 * 100) - 100).toFixed(2),
             })}
           </div>
         )}
@@ -235,11 +236,19 @@ const SwapPage = (props: Props): ReactElement => {
             {">"}
           </div>
         )}
-        <AdvancedOptions noApprovalCheckbox={false}  noSlippageCheckbox={false}/>
+        <AdvancedOptions
+          noApprovalCheckbox={false}
+          noSlippageCheckbox={false}
+        />
         <Button
           kind="primary"
           onClick={(): void => {
             setCurrentModal("review")
+            analytics.trackEvent({
+              category: "Swap",
+              action: "Review",
+              name: `${fromState.symbol}_${toState.symbol}`,
+            })
           }}
           disabled={!!error || +toState.value <= 0}
         >
@@ -257,9 +266,10 @@ const SwapPage = (props: Props): ReactElement => {
               onClose={(): void => setCurrentModal(null)}
               onConfirm={async (): Promise<void> => {
                 setCurrentModal("confirm")
-                logEvent("swap", {
-                  from: fromState.symbol,
-                  to: toState.symbol,
+                analytics.trackEvent({
+                  category: "Swap",
+                  action: "Confirm",
+                  name: `${fromState.symbol}_${toState.symbol}`,
                 })
                 await onConfirmTransaction?.()
                 setCurrentModal(null)

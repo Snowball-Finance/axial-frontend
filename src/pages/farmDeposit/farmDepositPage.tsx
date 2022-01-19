@@ -19,7 +19,8 @@ import InfoSection, {
 } from "../../components/info-section/infoSection"
 import FarmInfoCard from "../../components/farm-info-card/FarmInfoCard"
 import { POOLS_MAP, PoolTypes } from "../../constants"
-import { TransactionStatusType } from '../../hooks/useApproveAndDeposit'
+import { analytics } from "../../utils/analytics"
+import { TransactionStatusType } from "../../hooks/useApproveAndDeposit"
 interface Props {
   title: string
   onConfirmTransaction: () => Promise<void>
@@ -43,6 +44,7 @@ interface Props {
 /* eslint-enable @typescript-eslint/no-explicit-any */
 const FarmDepositPage = (props: Props): ReactElement => {
   const { t } = useTranslation()
+
   const {
     tokens,
     exceedsWallet,
@@ -72,11 +74,13 @@ const FarmDepositPage = (props: Props): ReactElement => {
       title: "Total APR",
       value: poolData?.rapr
         ? `${(
-            Number(poolData?.rapr) + 
-              (poolData.apr ? Number(poolData?.apr) : 0) + 
-                (poolData.extraapr ? Number(poolData?.extraapr) : 0)
+            Number(poolData?.rapr) +
+            (poolData.apr ? Number(poolData?.apr) : 0) +
+            (poolData.extraapr ? Number(poolData?.extraapr) : 0)
           ).toFixed(2)}%`
-        : poolData?.rapr === 0 ? "0%" : "-",
+        : poolData?.rapr === 0
+        ? "0%"
+        : "-",
     },
   ]
 
@@ -84,13 +88,22 @@ const FarmDepositPage = (props: Props): ReactElement => {
     statsDataRows.push(
       {
         title: "Fee APR",
-        value: poolData?.apr ? `${Number(poolData?.apr).toFixed(2)}%` : poolData?.rapr === 0 ? "0%" : "-",
+        value: poolData?.apr
+          ? `${Number(poolData?.apr).toFixed(2)}%`
+          : poolData?.rapr === 0
+          ? "0%"
+          : "-",
       },
       {
         title: "Rewards APR",
-        value: poolData?.rapr ? `${Number(poolData?.rapr).toFixed(2)}%` + 
-        (poolData?.extraapr ?` + ${Number(poolData?.extraapr).toFixed(2)}%` : "")
-        : poolData?.rapr === 0 ? "0%" : "-",
+        value: poolData?.rapr
+          ? `${Number(poolData?.rapr).toFixed(2)}%` +
+            (poolData?.extraapr
+              ? ` + ${Number(poolData?.extraapr).toFixed(2)}%`
+              : "")
+          : poolData?.rapr === 0
+          ? "0%"
+          : "-",
       },
     )
   }
@@ -140,6 +153,11 @@ const FarmDepositPage = (props: Props): ReactElement => {
               setCurrentModal("confirm")
               await onConfirmTransaction?.()
               setCurrentModal(null)
+              analytics.trackEvent({
+                category: "Deposit",
+                action: "Deposit",
+                name: "Confirm",
+              })
               //setCurrentModal("review")
             }}
             disabled={!validDepositAmount || poolData?.isPaused}
@@ -186,12 +204,13 @@ const FarmDepositPage = (props: Props): ReactElement => {
               onClose={(): void => setCurrentModal(null)}
             />
           ) : null}
-          {currentModal === "confirm" &&
+          {currentModal === "confirm" && (
             <ConfirmTransaction
-              type='deposit'
+              type="deposit"
               transactionStatus={transactionStatus}
-              transactionData={transactionData} />
-          }
+              transactionData={transactionData}
+            />
+          )}
         </Modal>
       </div>
     </div>

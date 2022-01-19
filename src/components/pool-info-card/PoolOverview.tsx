@@ -32,8 +32,16 @@ export default function PoolOverview({
     reserve: poolData.reserve
       ? formatBNToShortString(poolData.reserve, 18)
       : "",
-    apr: poolData.apr ? `${Number(poolData.apr).toFixed(2)}%` : poolData.apr === 0 ? " - " : "-",
-    volume: poolData.volume ? `$${commify(Number(poolData.volume).toFixed(2))}` : poolData.volume === 0 ? " - " : "-",
+    apr: poolData.apr
+      ? `${Number(poolData.apr).toFixed(2)}%`
+      : poolData.apr === 0
+      ? " - "
+      : "-",
+    volume: poolData.volume
+      ? `$${commify(Number(poolData.volume).toFixed(2))}`
+      : poolData.volume === 0
+      ? " - "
+      : "-",
     userBalanceUSD: formatBNToShortString(
       userShareData?.usdBalance || Zero,
       18,
@@ -64,13 +72,19 @@ export default function PoolOverview({
         </div>
         <div className="tokens">
           <span style={{ marginRight: "8px" }}>[</span>
-          <LoadingWrapper height={19} width={140} isLoading={formattedData.tokens.length === 0} >
-            <>{formattedData.tokens.map(({ symbol, icon }) => (
-              <div className="token" key={symbol}>
-                <img alt="icon" src={icon} />
-                <span>{symbol}</span>
-              </div>
-            ))}</>
+          <LoadingWrapper
+            height={19}
+            width={140}
+            isLoading={formattedData.tokens.length === 0}
+          >
+            <>
+              {formattedData.tokens.map(({ symbol, icon }) => (
+                <div className="token" key={symbol}>
+                  <img alt="icon" src={icon} />
+                  <span>{symbol}</span>
+                </div>
+              ))}
+            </>
           </LoadingWrapper>
           <span style={{ marginLeft: "0px" }}>]</span>
         </div>
@@ -87,21 +101,33 @@ export default function PoolOverview({
           {formattedData.apr && (
             <div className="margin">
               <span className="label">{`${t("apr")}`}</span>
-              <LoadingWrapper height={19} width={90} isLoading={formattedData.apr === '-'} >
+              <LoadingWrapper
+                height={19}
+                width={90}
+                isLoading={formattedData.apr === "-"}
+              >
                 <span>{formattedData.apr}</span>
               </LoadingWrapper>
             </div>
           )}
           <div className="margin">
             <span className="label">TVL</span>
-            <LoadingWrapper height={19} width={55} isLoading={!formattedData.reserve} >
+            <LoadingWrapper
+              height={19}
+              width={55}
+              isLoading={!formattedData.reserve}
+            >
               <span> {`$${formattedData.reserve}`}</span>
             </LoadingWrapper>
           </div>
           {formattedData.volume && (
             <div>
               <span className="label">{`${t("24HrVolume")}`}</span>
-              <LoadingWrapper height={19} width={90} isLoading={formattedData.volume === '-'} >
+              <LoadingWrapper
+                height={19}
+                width={90}
+                isLoading={formattedData.volume === "-"}
+              >
                 <span>{formattedData.volume}</span>
               </LoadingWrapper>
             </div>

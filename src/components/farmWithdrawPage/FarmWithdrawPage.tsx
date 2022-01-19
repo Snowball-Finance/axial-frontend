@@ -14,12 +14,11 @@ import ReviewWithdraw from "../reviews/ReviewWithdraw"
 import TokenInput from "../token-input/TokenInput"
 import { WithdrawFormState } from "../../hooks/useFarmWithdrawFormState"
 import classNames from "classnames"
-import { logEvent } from "../../libs/googleAnalytics"
 import { useSelector } from "react-redux"
 import { useTranslation } from "react-i18next"
 import { POOLS_MAP, PoolTypes } from "../../constants"
+import { analytics } from "../../utils/analytics"
 import { TransactionStatusType } from "../../hooks/useApproveAndDeposit"
-
 export interface ReviewWithdrawData {
   withdraw: {
     name: string
@@ -61,6 +60,7 @@ interface Props {
 
 const FarmWithdrawPage = (props: Props): ReactElement => {
   const { t } = useTranslation()
+
   const {
     tokensData,
     poolData,
@@ -73,7 +73,7 @@ const FarmWithdrawPage = (props: Props): ReactElement => {
   } = props
 
   let poolType = PoolTypes.USD
-  if(poolData){
+  if (poolData) {
     const POOL = POOLS_MAP[poolData?.name]
     poolType = POOL.type
   }
@@ -82,7 +82,20 @@ const FarmWithdrawPage = (props: Props): ReactElement => {
   const [currentModal, setCurrentModal] = useState<string | null>(null)
 
   /* eslint-disable @typescript-eslint/no-unsafe-call */
-  const noShare = !myShareData || myShareData.masterchefBalance?.userInfo.amount.eq("0x0")
+  const noShare =
+    !myShareData || myShareData.masterchefBalance?.userInfo.amount.eq("0x0")
+
+  const handleWithdrawClick = async () => {
+    //onSubmit
+    setCurrentModal("confirm")
+    await onConfirmTransaction?.()
+    setCurrentModal(null)
+    analytics.trackEvent({
+      category: "withdraw",
+      action: "withdraw",
+      name: poolData?.name,
+    })
+  }
 
   return (
     <div className={"withdraw " + classNames({ noShare: noShare })}>
@@ -142,13 +155,7 @@ const FarmWithdrawPage = (props: Props): ReactElement => {
               !!formStateData.error ||
               formStateData.lpTokenAmountToSpend.isZero()
             }
-            onClick={async () => {
-              //onSubmit
-              setCurrentModal("confirm")
-              logEvent("withdraw", (poolData && { pool: poolData?.name }) || {})
-              await onConfirmTransaction?.()
-              setCurrentModal(null)
-            }}
+            onClick={handleWithdrawClick}
           >
             {t("withdraw")}
           </Button>
@@ -165,7 +172,7 @@ const FarmWithdrawPage = (props: Props): ReactElement => {
             }}
             className="divider"
           ></div>{" "}
-          {poolType !== PoolTypes.LP && (<PoolInfoCard data={poolData} />)}
+          {poolType !== PoolTypes.LP && <PoolInfoCard data={poolData} />}
         </div>
         <Modal
           isOpen={!!currentModal}
@@ -177,21 +184,23 @@ const FarmWithdrawPage = (props: Props): ReactElement => {
               gas={gasPriceSelected}
               onConfirm={async (): Promise<void> => {
                 setCurrentModal("confirm")
-                logEvent(
-                  "withdraw",
-                  (poolData && { pool: poolData?.name }) || {},
-                )
+                analytics.trackEvent({
+                  category: "withdraw",
+                  action: "confirm",
+                  name: poolData?.name,
+                })
                 await onConfirmTransaction?.()
                 setCurrentModal(null)
               }}
               onClose={(): void => setCurrentModal(null)}
             />
           ) : null}
-          {currentModal === "confirm" &&
+          {currentModal === "confirm" && (
             <ConfirmTransaction
-              type='withdraw'
-              transactionStatus={transactionStatus} />
-          }
+              type="withdraw"
+              transactionStatus={transactionStatus}
+            />
+          )}
         </Modal>
       </div>
     </div>

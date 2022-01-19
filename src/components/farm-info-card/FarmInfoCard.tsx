@@ -67,14 +67,12 @@ function FarmInfoCard({ data }: Props): ReactElement | null {
           <h4 className="underline">{formattedData.name}</h4>
         </ToolTip>
       ) : (
-        ''
+        ""
       )}
-      <div className="info">
-
-      </div>
+      <div className="info"></div>
       <div className="bottom">
         <h4>{t("currencyReserves")}</h4>
-        <LoadingWrapper width={130} isLoading={formattedData.reserve === '-'}>
+        <LoadingWrapper width={130} isLoading={formattedData.reserve === "-"}>
           <span>{`$${formattedData.reserve} ${t("inTotal")}`}</span>
         </LoadingWrapper>
         <div className="tokenList">

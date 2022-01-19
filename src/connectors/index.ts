@@ -8,15 +8,15 @@ import { WalletLinkConnector } from "@web3-react/walletlink-connector"
 const NETWORK_URL = process.env.REACT_APP_NETWORK_URL
 
 const AVALANCHE_MAINNET_PARAMS = {
-  chainId: '0xa86a',
-  chainName: 'Avalanche Mainnet C-Chain',
+  chainId: "0xa86a",
+  chainName: "Avalanche Mainnet C-Chain",
   nativeCurrency: {
-      name: 'Avalanche',
-      symbol: 'AVAX',
-      decimals: 18
+    name: "Avalanche",
+    symbol: "AVAX",
+    decimals: 18,
   },
-  rpcUrls: ['https://api.avax.network/ext/bc/C/rpc'],
-  blockExplorerUrls: ['https://snowtrace.io/']
+  rpcUrls: ["https://api.avax.network/ext/bc/C/rpc"],
+  blockExplorerUrls: ["https://snowtrace.io/"],
 }
 
 export const NETWORK_CHAIN_ID: number = parseInt(
@@ -57,21 +57,25 @@ export const walletlink = new WalletLinkConnector({
   appName: "vault",
 })
 
-export const addAvalancheNetwork = (): void  => {
+export const addAvalancheNetwork = (): void => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  injected.getProvider().then((provider: any): void => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    provider
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      .request({
-        method: 'wallet_addEthereumChain',
-        params: [AVALANCHE_MAINNET_PARAMS]
-      })
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      .catch((error: any) => {
-        console.log(error)
-      })
-  })
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-  .catch(error => {console.log(error)})
-};
+  injected
+    .getProvider()
+    .then((provider: any): void => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+      provider
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        .request({
+          method: "wallet_addEthereumChain",
+          params: [AVALANCHE_MAINNET_PARAMS],
+        })
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        .catch((error: any) => {
+          console.log(error)
+        })
+    })
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    .catch((error) => {
+      console.log(error)
+    })
+}

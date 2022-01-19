@@ -6,15 +6,19 @@ import loadingGif from "../../assets/loading.gif"
 import { useTranslation } from "react-i18next"
 import TransactionSteps from "../transaction-steps/TransactionSteps"
 import { DepositTransaction } from "../../interfaces/transactions"
-import { TransactionStatusType } from '../../hooks/useApproveAndDeposit'
+import { TransactionStatusType } from "../../hooks/useApproveAndDeposit"
 
 type Props = {
   transactionStatus?: TransactionStatusType
-  type?: 'deposit' | 'withdraw' | undefined
+  type?: "deposit" | "withdraw" | undefined
   transactionData?: DepositTransaction
 }
 
-function ConfirmTransaction({ transactionStatus, type, transactionData }: Props): ReactElement {
+function ConfirmTransaction({
+  transactionStatus,
+  type,
+  transactionData,
+}: Props): ReactElement {
   const { t } = useTranslation()
 
   return (
@@ -22,12 +26,13 @@ function ConfirmTransaction({ transactionStatus, type, transactionData }: Props)
       <img src={axialLogo} />
       <h3>{t("confirmTransaction")}</h3>
       <img src={loadingGif} alt="loading..." className="loadingGif" />
-      {transactionStatus &&
+      {transactionStatus && (
         <TransactionSteps
           type={type}
           transactionData={transactionData}
-          transactionStatus={transactionStatus} />
-      }
+          transactionStatus={transactionStatus}
+        />
+      )}
     </div>
   )
 }

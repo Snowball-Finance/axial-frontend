@@ -29,24 +29,26 @@ const Web3Status = (): ReactElement => {
 
   return (
     <div className="walletStatus">
-      {error instanceof UnsupportedChainIdError ?
+      {error instanceof UnsupportedChainIdError ? (
         <button type="button" onClick={addAvalancheNetwork}>
           <div className="noAccount">{t("switchNetwork")}</div>
         </button>
-      :<button type="button" onClick={(): void => setModalOpen(true)}>
-        {account ? (
-          <div className="hasAccount">
-            <span className="address">
-              {account.substring(0, 6)}...
-              {account.substring(account.length - 4, account.length)}
-            </span>
+      ) : (
+        <button type="button" onClick={(): void => setModalOpen(true)}>
+          {account ? (
+            <div className="hasAccount">
+              <span className="address">
+                {account.substring(0, 6)}...
+                {account.substring(account.length - 4, account.length)}
+              </span>
 
-            <Identicon />
-          </div>
-        ) : (
-          <div className="noAccount">{t("connectWallet")}</div>
-        )}
-      </button>}
+              <Identicon />
+            </div>
+          ) : (
+            <div className="noAccount">{t("connectWallet")}</div>
+          )}
+        </button>
+      )}
       <Modal isOpen={modalOpen} onClose={(): void => setModalOpen(false)}>
         {account && walletView === WALLET_VIEWS.ACCOUNT ? (
           <AccountDetails

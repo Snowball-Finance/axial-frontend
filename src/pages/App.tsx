@@ -2,10 +2,9 @@ import "../styles/global.scss"
 import "../styles/NotifyStyle.scss"
 
 import { BLOCK_TIME, POOLS_MAP } from "../constants"
-import React, { ReactElement, Suspense, useCallback } from "react"
-import { Route, Switch } from "react-router-dom"
+import React, { ReactElement, Suspense, useCallback, useEffect } from "react"
+import { Route, Switch, useLocation } from "react-router-dom"
 import { AppDispatch } from "../store"
-
 import Layout from "../hoc/Layout"
 import Deposit from "./deposit/Deposit"
 import Pools from "./pools/Pools"
@@ -22,8 +21,17 @@ import Farm from "./farm/Farm"
 import FarmDeposit from "./farmDeposit/farmDeposit"
 import FarmWithdraw from "./farmWithdraw/farmWithdraw"
 import fetchAprStats from "../libs/getMasterchefApy"
+import { analytics } from "../utils/analytics"
 
-export default function App(): ReactElement {
+const App = (): ReactElement => {
+  const location = useLocation()
+
+  useEffect(() => {
+    analytics.trackPageView({
+      href: location.pathname,
+    })
+  }, [location])
+
   return (
     <Suspense fallback={null}>
       <Web3ReactManager>
@@ -37,7 +45,9 @@ export default function App(): ReactElement {
                 <Route
                   exact
                   path={`/rewards/${route}/withdraw`}
-                  render={(props) => <FarmWithdraw {...props} poolName={name} />}
+                  render={(props: any) => (
+                    <FarmWithdraw {...props} poolName={name} />
+                  )}
                   key={`${name}-farmswithdraw`}
                 />
               ))}
@@ -45,7 +55,9 @@ export default function App(): ReactElement {
                 <Route
                   exact
                   path={`/rewards/${route}/deposit`}
-                  render={(props) => <FarmDeposit {...props} poolName={name} />}
+                  render={(props: any) => (
+                    <FarmDeposit {...props} poolName={name} />
+                  )}
                   key={`${name}-farmsdeposit`}
                 />
               ))}
@@ -53,7 +65,9 @@ export default function App(): ReactElement {
                 <Route
                   exact
                   path={`/pools/${route}/deposit`}
-                  render={(props) => <Deposit {...props} poolName={name} />}
+                  render={(props: any) => (
+                    <Deposit {...props} poolName={name} />
+                  )}
                   key={`${name}-deposit`}
                 />
               ))}
@@ -61,7 +75,9 @@ export default function App(): ReactElement {
                 <Route
                   exact
                   path={`/pools/${route}/withdraw`}
-                  render={(props) => <Withdraw {...props} poolName={name} />}
+                  render={(props: any) => (
+                    <Withdraw {...props} poolName={name} />
+                  )}
                   key={`${name}-withdraw`}
                 />
               ))}
@@ -73,6 +89,9 @@ export default function App(): ReactElement {
     </Suspense>
   )
 }
+
+// eslint-disable-next-line @typescript-eslint/no-unsafe-call
+export default App
 
 function GasAndTokenPrices({
   children,

@@ -13,6 +13,12 @@ import { shortenAddress } from "../../libs/shortenAddress"
 import { useActiveWeb3React } from "../../hooks"
 import { usePoolTokenBalances } from "../../store/wallet/hooks"
 import { useTranslation } from "react-i18next"
+import {
+  AnalyticActions,
+  AnalyticCategories,
+  analytics,
+  createEvent,
+} from "../../utils/analytics"
 
 interface Props {
   openOptions: () => void
@@ -20,11 +26,23 @@ interface Props {
 
 export default function AccountDetail({ openOptions }: Props): ReactElement {
   const { t } = useTranslation()
+
   const { account, connector } = useActiveWeb3React()
   const tokenBalances = usePoolTokenBalances()
   const ethBalanceFormatted = commify(
     formatBNToString(tokenBalances?.ETH || Zero, 18, 6),
   )
+
+  const handleOptionsClick = (): void => {
+    analytics.trackEvent(
+      createEvent({
+        category: AnalyticCategories.investigation,
+        action: AnalyticActions.openOptions,
+        name: "account-options",
+      }),
+    )
+    openOptions()
+  }
 
   const connectorName = find(SUPPORTED_WALLETS, ["connector", connector])?.name
 
@@ -71,12 +89,7 @@ export default function AccountDetail({ openOptions }: Props): ReactElement {
             )}
           </div>
           <div className="buttonGroup">
-            <button
-              className="textStyle"
-              onClick={() => {
-                openOptions()
-              }}
-            >
+            <button className="textStyle" onClick={handleOptionsClick}>
               {/* change Icon */}
               <svg
                 width="16"

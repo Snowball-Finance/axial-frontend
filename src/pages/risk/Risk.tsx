@@ -21,9 +21,7 @@ function Risk(): ReactElement {
         <h3>{t("audits")}</h3>
         <p data-testid="risk-audits">
           {t("riskAudits1")}{" "}
-          <a href="https://saddle.finance/">
-            {t("riskAudits1LinkTitle")}
-          </a>
+          <a href="https://saddle.finance/">{t("riskAudits1LinkTitle")}</a>
           {t("riskAudits2")}{" "}
           <a href="https://github.com/Snowball-Finance/axial-protocol">
             {t("riskAudits2LinkTitle")}
@@ -37,7 +35,6 @@ function Risk(): ReactElement {
         </p>
         <h3>{t("adminKeys")}</h3>
         <p data-testid="risk-adminkeys">
-
           {t("riskAdminKeys")}
           <a href="https://snowballs.gitbook.io/snowball-docs/resources/security#2-council">
             {t("riskAdminKeysLinkTitle")}

@@ -22,24 +22,23 @@ export interface poolInfo {
 }
 
 export interface AxialLPData {
-  AXIALPrice: number,
-  LPTVL: number,
+  AXIALPrice: number
+  LPTVL: number
   tokenPoolPrice: number
 }
 
 export interface ExtraTokens {
-  address: string,
+  address: string
   tokenPerSec: string
 }
 
 export interface MasterchefApr {
   [swapAddress: string]: {
-    apr: number,
-    lptvl: number,
-    totalStaked: string,
-    tokenPoolPrice: number,
-    extraTokens: ExtraTokens[],
-
+    apr: number
+    lptvl: number
+    totalStaked: string
+    tokenPoolPrice: number
+    extraTokens: ExtraTokens[]
   }
 }
 
@@ -93,21 +92,21 @@ export async function getAXIALPriceWithLP(): Promise<AxialLPData> {
 
   if (AVAXPrice) {
     // eslint-disable-next-line
-    const supply = await lpContract.totalSupply() /1e18
+    const supply = (await lpContract.totalSupply()) / 1e18
     // eslint-disable-next-line
-    const tvl = (reserves._reserve0 / 1e18) * AVAXPrice * 2 
-    const tokenPoolPrice = tvl/supply
+    const tvl = (reserves._reserve0 / 1e18) * AVAXPrice * 2
+    const tokenPoolPrice = tvl / supply
 
     return {
       AXIALPrice: axialAVAXPrice * AVAXPrice,
       LPTVL: tvl,
-      tokenPoolPrice
+      tokenPoolPrice,
     }
   } else {
     return {
       AXIALPrice: 0,
       LPTVL: 0,
-      tokenPoolPrice: 0
+      tokenPoolPrice: 0,
     }
   }
 }
@@ -118,7 +117,6 @@ export async function getVaultRewardAprNow(): Promise<MasterchefApr> {
   let APRData: MasterchefApr = {}
   for (const pool of Object.values(POOLS_MAP)) {
     try {
-
       const provider = new ethers.providers.StaticJsonRpcProvider(
         process.env.REACT_APP_NETWORK_URL ?? "",
       )
@@ -138,18 +136,18 @@ export async function getVaultRewardAprNow(): Promise<MasterchefApr> {
         provider,
       )
       // eslint-disable-next-line
-      const balanceToken = await tokenContract.balanceOf(
-        AXIAL_MASTERCHEF_CONTRACT_ADDRESS[43114]
-      ) as BigNumber
+      const balanceToken = (await tokenContract.balanceOf(
+        AXIAL_MASTERCHEF_CONTRACT_ADDRESS[43114],
+      )) as BigNumber
 
-      let virtualPrice = BigNumber.from(0), TVL = 0
-      if(pool.type !== PoolTypes.LP) {
-
+      let virtualPrice = BigNumber.from(0),
+        TVL = 0
+      if (pool.type !== PoolTypes.LP) {
         try {
           // eslint-disable-next-line
           virtualPrice = await swapTokenContract.getVirtualPrice()
         } catch (error) {
-          virtualPrice = BigNumber.from(1)
+          virtualPrice = ethers.utils.parseUnits("1",18)
         }
 
         TVL = (+virtualPrice / 1e18) * (+balanceToken / 1e18)
@@ -160,32 +158,35 @@ export async function getVaultRewardAprNow(): Promise<MasterchefApr> {
       // eslint-disable-next-line
       const totalAllocPoint: BigNumber = await masterchefContract.totalAllocPoint()
       // eslint-disable-next-line
-      const poolInfo: poolInfo = await masterchefContract.poolInfo(pool.lpToken.masterchefId)
+      const poolInfo: poolInfo = await masterchefContract.poolInfo(
+        pool.lpToken.masterchefId,
+      )
       // eslint-disable-next-line
-      const axialPerSecond: number = await masterchefContract.axialPerSec() / 1e18
+      const axialPerSecond: number =
+        (await masterchefContract.axialPerSec()) / 1e18
 
       let poolFraction = 0
-      if(+poolInfo.allocPoint > 0) {
+      if (+poolInfo.allocPoint > 0) {
         poolFraction = +poolInfo.allocPoint / +totalAllocPoint
       }
 
-      const extraTokens:ExtraTokens[] = []
-      if(poolInfo.rewarder !== ZERO_ADDRESS) {
+      const extraTokens: ExtraTokens[] = []
+      if (poolInfo.rewarder !== ZERO_ADDRESS) {
         const rewarderContract = new ethers.Contract(
           poolInfo.rewarder,
           simplerewarder,
           provider,
         )
         // eslint-disable-next-line
-        const tokenPerSec:BigNumber = await rewarderContract.tokenPerSec();
+        const tokenPerSec: BigNumber = await rewarderContract.tokenPerSec()
         // eslint-disable-next-line
-        const tokenAddress:string = await rewarderContract.rewardToken();
+        const tokenAddress: string = await rewarderContract.rewardToken()
         extraTokens.push({
           address: tokenAddress,
-          tokenPerSec: tokenPerSec.toHexString()
+          tokenPerSec: tokenPerSec.toHexString(),
         })
       }
-  
+
       const usdPerWeek = axialPerSecond * poolFraction * AXIALPrice * 604_800
       const APRYearly = (usdPerWeek / TVL) * 100 * 52
 
@@ -196,11 +197,13 @@ export async function getVaultRewardAprNow(): Promise<MasterchefApr> {
           lptvl: LPTVL,
           totalStaked: balanceToken.toHexString(),
           tokenPoolPrice: tokenPoolPrice,
-          extraTokens: extraTokens
-        }
+          extraTokens: extraTokens,
+        },
       }
     } catch (error) {
-      console.error(`Error fetching Pool Reward APY for Pool: ${pool.addresses[43114]}`)
+      console.error(
+        `Error fetching Pool Reward APY for Pool: ${pool.addresses[43114]}`,
+      )
       APRData = {
         ...APRData,
         [pool.addresses[43114]]: {
@@ -208,11 +211,10 @@ export async function getVaultRewardAprNow(): Promise<MasterchefApr> {
           lptvl: 0,
           tokenPoolPrice: 0,
           totalStaked: "0x0",
-          extraTokens: []
-        }
-      } 
+          extraTokens: [],
+        },
+      }
     }
   }
   return APRData
-
 }

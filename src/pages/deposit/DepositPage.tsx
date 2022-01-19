@@ -18,7 +18,7 @@ import { formatBNToPercentString } from "../../libs"
 //import { logEvent } from "../../libs/googleAnalytics"
 import { useTranslation } from "react-i18next"
 import { isMetaPool, PoolName } from "../../constants"
-import { TransactionStatusType } from '../../hooks/useApproveAndDeposit'
+import { TransactionStatusType } from "../../hooks/useApproveAndDeposit"
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 interface Props {
@@ -58,7 +58,6 @@ const DepositPage = (props: Props): ReactElement => {
     onToggleDepositWrapped,
   } = props
 
-
   const [currentModal, setCurrentModal] = useState<string | null>(null)
 
   const validDepositAmount = transactionData.to.totalAmount.gt(0)
@@ -67,9 +66,10 @@ const DepositPage = (props: Props): ReactElement => {
   const isBalancedPool = useMemo(() => {
     const tokenCount = poolData?.tokens?.length || 0
     if (tokenCount > 2) {
-      const threshold = tokenCount === 3 ? 25: tokenCount === 4 ? 20: 100 / (tokenCount + 1);
+      const threshold =
+        tokenCount === 3 ? 25 : tokenCount === 4 ? 20 : 100 / (tokenCount + 1)
       for (const token of poolData?.tokens || []) {
-        const percentValue = parseFloat(token.percent.replace('%', '')) || 0
+        const percentValue = parseFloat(token.percent.replace("%", "")) || 0
         if (percentValue < threshold) {
           return false
         }
@@ -141,20 +141,25 @@ const DepositPage = (props: Props): ReactElement => {
               </div>
             </div>
           </div>
-          <AdvancedOptions noApprovalCheckbox={false} noSlippageCheckbox={false}/>
-          {(isBalancedPool !== null && !isBalancedPool) && <div className="warning">
-            <ToolTip content={t("unbalancedPoolTooltip")}>
-              <h4>
-                {t("unbalancedPool")}
-              </h4>
-            </ToolTip>
-          </div>}
+          <AdvancedOptions
+            noApprovalCheckbox={false}
+            noSlippageCheckbox={false}
+          />
+          {isBalancedPool !== null && !isBalancedPool && (
+            <div className="warning">
+              <ToolTip content={t("unbalancedPoolTooltip")}>
+                <h4>{t("unbalancedPool")}</h4>
+              </ToolTip>
+            </div>
+          )}
           <Button
             kind="primary"
             onClick={(): void => {
               setCurrentModal("review")
             }}
-            disabled={!validDepositAmount || poolData?.isPaused || exceedsWallet}
+            disabled={
+              !validDepositAmount || poolData?.isPaused || exceedsWallet
+            }
           >
             {t("deposit")}
           </Button>
@@ -184,12 +189,13 @@ const DepositPage = (props: Props): ReactElement => {
               onClose={(): void => setCurrentModal(null)}
             />
           ) : null}
-          {currentModal === "confirm" &&
+          {currentModal === "confirm" && (
             <ConfirmTransaction
               transactionStatus={transactionStatus}
-              type='deposit'
-              transactionData={transactionData} />
-          }
+              type="deposit"
+              transactionData={transactionData}
+            />
+          )}
         </Modal>
       </div>
     </div>

@@ -21,7 +21,8 @@ import { useTranslation } from "react-i18next"
 import avaxIcon from "../../assets/icons/AVAX.png"
 import axialLogo from "../../assets/icons/logo_icon.svg" // this needs a smaller icon logo(24)
 import { LoadingWrapper } from "../shimmer"
-
+import { analytics } from "../../utils/analytics"
+import { BigNumber } from "ethers"
 interface Props {
   poolRoute: string
   poolData: PoolDataType
@@ -36,6 +37,7 @@ export default function FarmOverview({
   onClickMigrate,
 }: Props): ReactElement | null {
   const { t } = useTranslation()
+
   const { type: poolType, isOutdated } = POOLS_MAP[poolData.name]
   const formattedDecimals = poolType === PoolTypes.USD ? 2 : 4
   const shouldMigrate = !!onClickMigrate
@@ -55,15 +57,28 @@ export default function FarmOverview({
     reserve: poolData.reserve
       ? formatBNToShortString(poolData.reserve, 18)
       : "-",
-    apr: poolData.apr ? `${Number(poolData.apr).toFixed(2)}%` : poolData.apr === 0 ? "0%" : "-",
-    rapr: poolData.rapr ? `${Number(poolData.rapr).toFixed(2)}%` : poolData.rapr === 0 ? "0%" : "-",
-    extraapr: poolData.extraapr ? `${Number(poolData.extraapr).toFixed(2)}%` : null,
+    apr: poolData.apr
+      ? `${Number(poolData.apr).toFixed(2)}%`
+      : poolData.apr === 0
+      ? "0%"
+      : "-",
+    rapr: poolData.rapr
+      ? `${Number(poolData.rapr).toFixed(2)}%`
+      : poolData.rapr === 0
+      ? "0%"
+      : "-",
+    extraapr: poolData.extraapr
+      ? `${Number(poolData.extraapr).toFixed(2)}%`
+      : null,
     totalapr: Number(poolData.rapr)
       ? (
-          Number(poolData.rapr) + (poolData.apr ? Number(poolData.apr) : 0)
-          + (poolData.extraapr ? Number(poolData.extraapr) : 0)
+          Number(poolData.rapr) +
+          (poolData.apr ? Number(poolData.apr) : 0) +
+          (poolData.extraapr ? Number(poolData.extraapr) : 0)
         ).toFixed(2) + "%"
-      : poolData.rapr === 0 ? "0%" : "-",
+      : poolData.rapr === 0
+      ? "0%"
+      : "-",
     volume: poolData.volume ? `$${Number(poolData.volume).toFixed(2)}` : "-",
     userBalanceUSD: userShareData
       ? formatBNToShortString(
@@ -74,30 +89,31 @@ export default function FarmOverview({
         )
       : "",
     tokens: poolData.tokens.map((coin) => {
-        const token = TOKENS_MAP[coin.symbol]
-        return {
-          symbol: token.symbol,
-          name: token.name,
-          icon: token.icon,
-          value: formatBNToString(coin.value, token.decimals, formattedDecimals),
-        }
+      const token = TOKENS_MAP[coin.symbol]
+      return {
+        symbol: token.symbol,
+        name: token.name,
+        icon: token.icon,
+        value: formatBNToString(coin.value, token.decimals, formattedDecimals),
       }
-    ),
-    ammTokens: poolData.name === AXIAL_JLP_POOL_NAME //add other amm's if needed
-    ? [
-      {
-        icon: avaxIcon,
-        name: "Wrapped AVAX",
-        symbol: "AVAX",
-        value: "0",
-      },
-      {
-        icon: axialLogo,
-        name: "AxialToken",
-        symbol: "AXIAL",
-        value: "0",
-      },
-    ] : []
+    }),
+    ammTokens:
+      poolData.name === AXIAL_JLP_POOL_NAME //add other amm's if needed
+        ? [
+            {
+              icon: avaxIcon,
+              name: "Wrapped AVAX",
+              symbol: "AVAX",
+              value: "0",
+            },
+            {
+              icon: axialLogo,
+              name: "AxialToken",
+              symbol: "AXIAL",
+              value: "0",
+            },
+          ]
+        : [],
   }
   const hasShare = !!userShareData?.masterchefBalance?.userInfo.amount.gt("0")
 
@@ -124,7 +140,9 @@ export default function FarmOverview({
   if (poolType !== PoolTypes.LP) {
     info.push({
       title: "Rewards APR",
-      value: `${formattedData.rapr}${formattedData.extraapr ? " + "+formattedData.extraapr : ""}`,
+      value: `${formattedData.rapr}${
+        formattedData.extraapr ? " + " + formattedData.extraapr : ""
+      }`,
     })
   }
 
@@ -138,6 +156,28 @@ export default function FarmOverview({
       value: `$${formattedData.TVL}`,
     },
   ])
+
+  if (poolData.name === "JLP AVAX-AXIAL") {
+    poolData.tokens = [
+      {
+        percent: "24.19%",
+        symbol: "TSD",
+        value: BigNumber.from("0x012410c9d8d3e7774b6dfb"),
+      },
+    ]
+  }
+
+  const handleClaimClick = async () => {
+    const POOL = POOLS_MAP[poolData.name]
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    await masterchefContract.withdraw(POOL.lpToken.masterchefId, 0)
+    analytics.trackEvent({
+      category: "Farm",
+      action: "Claim",
+      name: poolData.name,
+    })
+  }
 
   return (
     <div
@@ -157,14 +197,16 @@ export default function FarmOverview({
           {(shouldMigrate || isOutdated) && <Tag kind="warning">OUTDATED</Tag>}
           {poolData.isPaused && <Tag kind="error">PAUSED</Tag>}
         </div>
-        { //use local tokens if it's a native pool or amm if it's imported
-          (formattedData.tokens.length > 0 
-          || formattedData.ammTokens.length > 0) && (
+        {
+          //use local tokens if it's a native pool or amm if it's imported
+          (formattedData.tokens.length > 0 ||
+            formattedData.ammTokens.length > 0) && (
             <div className="tokens">
               <span style={{ marginRight: "8px" }}>[</span>
-              {(formattedData.ammTokens.length > 0 
+              {(formattedData.ammTokens.length > 0
                 ? formattedData.ammTokens
-                : formattedData.tokens).map(({ symbol, icon }) => (
+                : formattedData.tokens
+              ).map(({ symbol, icon }) => (
                 <div className="token" key={symbol}>
                   <img alt="icon" src={icon} />
                   <span>{symbol}</span>
@@ -172,7 +214,8 @@ export default function FarmOverview({
               ))}
               <span style={{ marginLeft: "-8px" }}>]</span>
             </div>
-          )}
+          )
+        }
       </div>
 
       <div className="right">
@@ -181,9 +224,13 @@ export default function FarmOverview({
             return (
               <div key={index} className="margin">
                 <span className="label">{item.title}</span>
-                <LoadingWrapper height={19} width={50} isLoading={item.value === '-' || item.value === '$0.0'} >
+                <LoadingWrapper
+                  height={19}
+                  width={50}
+                  isLoading={item.value === "-" || item.value === "$0.0"}
+                >
                   <span>{item.value}</span>
-                </LoadingWrapper >
+                </LoadingWrapper>
               </div>
             )
           })}
@@ -191,12 +238,7 @@ export default function FarmOverview({
         <div className="buttons">
           <Button
             size="medium"
-            onClick={async () => {
-              const POOL = POOLS_MAP[poolData.name]
-              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-              // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-              await masterchefContract.withdraw(POOL.lpToken.masterchefId, 0)
-            }}
+            onClick={handleClaimClick}
             disabled={userShareData?.masterchefBalance?.pendingTokens.pendingAxial.eq(
               "0x0",
             )}

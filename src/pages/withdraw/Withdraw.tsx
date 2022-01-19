@@ -36,7 +36,9 @@ function Withdraw({ poolName }: Props): ReactElement {
   const { tokenPricesUSD, gasStandard, gasFast, gasInstant } = useSelector(
     (state: AppState) => state.application,
   )
-  const { approveAndWithdraw, transactionStatus } = useApproveAndWithdraw(poolName)
+  const { approveAndWithdraw, transactionStatus } = useApproveAndWithdraw(
+    poolName,
+  )
   const swapContract = useSwapContract(poolName)
   const { account } = useActiveWeb3React()
   const POOL = POOLS_MAP[poolName]
@@ -132,8 +134,8 @@ function Withdraw({ poolName }: Props): ReactElement {
     amount: gasAmount,
     valueUSD: tokenPricesUSD?.ETH
       ? parseUnits(tokenPricesUSD.ETH.toFixed(2), 18) // USD / ETH  * 10^18
-        .mul(gasAmount) // GWEI
-        .div(BigNumber.from(10).pow(25)) // USD / ETH * GWEI * ETH / GWEI = USD
+          .mul(gasAmount) // GWEI
+          .div(BigNumber.from(10).pow(25)) // USD / ETH * GWEI * ETH / GWEI = USD
       : null,
   }
 
@@ -168,7 +170,6 @@ function Withdraw({ poolName }: Props): ReactElement {
       }
     }
   })
-
 
   return (
     <WithdrawPage
