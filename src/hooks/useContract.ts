@@ -105,28 +105,22 @@ export function useSwapContract(
   }, [chainId, library, account, poolName])
 }
 
-export function useSwapRouterContract(
-  poolName?: PoolName,
-): SwapRouter | null {
+export function useSwapRouterContract(): SwapRouter | null {
   const { chainId, account, library } = useActiveWeb3React()
   return useMemo(() => {
-    if (!poolName || !library || !chainId) return null
+    if (!library || !chainId) return null
     try {
-      const pool = POOLS_MAP[poolName]
-      const findBestPathFunction = ['function findBestPathWithGas(uint256, address, address, uint, uint) external']
-      // const routerContract = new Contract('0xC4729E56b831d74bBc18797e0e17A295fA77488c', findBestPathFunction,library.getSigner())
-      const routerContract=getContract(
-        '0xC4729E56b831d74bBc18797e0e17A295fA77488c',
+      return getContract(
+        "0xC4729E56b831d74bBc18797e0e17A295fA77488c",
         SWAP_ROUTER_ABI,
         library,
         account ?? undefined,
       ) as SwapRouter
-    return routerContract
     } catch (error) {
       console.error("Failed to get contract", error)
       return null
     }
-  }, [chainId, library, account, poolName])
+  }, [chainId, library, account])
 }
 
 export function useLPTokenContract<T extends PoolName>(

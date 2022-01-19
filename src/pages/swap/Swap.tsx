@@ -38,7 +38,6 @@ import { useSelector } from "react-redux"
 import { useSwapContract, useSwapRouterContract } from "../../hooks/useContract"
 import { useTranslation } from "react-i18next"
 import { analytics } from "../../utils/analytics"
-import { ethers } from "ethers"
 
 type FormState = {
   error: null | string
@@ -109,9 +108,7 @@ function Swap(): ReactElement {
     formState.to.poolName as PoolName | undefined,
   )
 
-  const routerContract=useSwapRouterContract(
-    formState.to.poolName as PoolName | undefined,
-  )
+  const routerContract = useSwapRouterContract()
 
   // build a representation of pool tokens for the UI
   const tokenOptions = useMemo(() => {
@@ -211,15 +208,31 @@ function Swap(): ReactElement {
         routerContract != null
       ) {
         if(library){
-          const gasPrice=await library.getGasPrice()
-          const a = await routerContract.findBestPathWithGas(
+ 
+          // TODO: @Moshen - Refactor this block
+
+          const gasEstimate = await routerContract.estimateGas.findBestPathWithGas(
            amountToGive,
            tokenFrom.addresses[chainId],
            tokenTo.addresses[chainId],
-          4,
-          gasPrice
+          1,
+          BigNumber.from(225),
           )
-          console.log(a);
+
+          console.log(`Gas Estimate: ${gasEstimate.toString()}`);
+
+          const bestPath = await routerContract.findBestPathWithGas(
+            amountToGive,
+            tokenFrom.addresses[chainId],
+            tokenTo.addresses[chainId],
+           1,
+           BigNumber.from(225),
+           { gasLimit: gasEstimate }
+           )
+          
+           console.log(`Best Path: ${bestPath.toString()}`);
+
+          
         }
   
         return
