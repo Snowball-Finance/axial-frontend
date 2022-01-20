@@ -82,7 +82,9 @@ function FarmInfoCard({ data }: Props): ReactElement | null {
             <div className="token" key={index}>
               <div className="tokenInfo">
                 <img alt="icon" src={token.icon} />
-                <p className="bold">{token.symbol} <span>{token.percent}</span></p>
+                <p className="bold">
+                  {token.symbol} <span>{token.percent}</span>
+                </p>
               </div>
               <span className="tokenValue">{token.value}</span>
             </div>

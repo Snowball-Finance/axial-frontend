@@ -138,13 +138,9 @@ function MyShareCard({
           {formattedData.share} {t("ofPool")}
         </span>
       </div>
-      
+
       <div className="info">
-        {usePercent ? (
-          <div className="poolShare">
-            
-          </div>
-        ) : null}
+        {usePercent ? <div className="poolShare"></div> : null}
         {useUsd ? (
           <div className="infoItem">
             <span className="title">{`${t("usdBalance")}: `}</span>

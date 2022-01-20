@@ -39,7 +39,6 @@ div.walletStatus {
     }
   }
   .noAccount {
-    
     background: $primary-destructive;
     border-radius: 75px;
     line-height: 40px;
@@ -62,7 +61,13 @@ div.walletStatus {
     &:focus,
     &:active {
       outline: none;
-      background: linear-gradient(90deg, rgba(234, 171, 80, 0) 0%, #FFD08C 49.8%, rgba(234, 171, 80, 0) 100%), #EAAB50;
+      background: linear-gradient(
+          90deg,
+          rgba(234, 171, 80, 0) 0%,
+          #ffd08c 49.8%,
+          rgba(234, 171, 80, 0) 100%
+        ),
+        #eaab50;
       border-radius: 75px;
       transform: none;
       transition: none;

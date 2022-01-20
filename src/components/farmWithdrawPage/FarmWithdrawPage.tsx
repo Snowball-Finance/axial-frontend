@@ -104,7 +104,12 @@ const FarmWithdrawPage = (props: Props): ReactElement => {
           <div className="form">
             <h3>{t("withdraw")}</h3>
             <div className="rangeSelector">
-              <input type="range" min="0" max="100" step="5" onChange={(e: React.FormEvent<HTMLInputElement>): void =>
+              <input
+                type="range"
+                min="0"
+                max="100"
+                step="5"
+                onChange={(e: React.FormEvent<HTMLInputElement>): void =>
                   onFormChange({
                     fieldName: "percentage",
                     value: e.currentTarget.value,
@@ -114,9 +119,9 @@ const FarmWithdrawPage = (props: Props): ReactElement => {
                   e.target.select()
                 }
                 value={formStateData.percentage ? formStateData.percentage : 0}
-                />
+              />
             </div>
-            
+
             <div className="percentage">
               <span>{`${t("withdrawPercentage")} (%):`}</span>
               <input
@@ -158,23 +163,22 @@ const FarmWithdrawPage = (props: Props): ReactElement => {
               </div>
             ))}
             <AdvancedOptions
-            noApprovalCheckbox={true}
-            noSlippageCheckbox={true}
-          />
-          <Button
-            kind="primary"
-            size="full"
-            disabled={
-              noShare ||
-              !!formStateData.error ||
-              formStateData.lpTokenAmountToSpend.isZero()
-            }
-            onClick={handleWithdrawClick}
-          >
-            {t("withdraw")}
-          </Button>
+              noApprovalCheckbox={true}
+              noSlippageCheckbox={true}
+            />
+            <Button
+              kind="primary"
+              size="full"
+              disabled={
+                noShare ||
+                !!formStateData.error ||
+                formStateData.lpTokenAmountToSpend.isZero()
+              }
+              onClick={handleWithdrawClick}
+            >
+              {t("withdraw")}
+            </Button>
           </div>
-          
         </div>
         <div className="infoPanels">
           <div className="poolName">
@@ -187,7 +191,6 @@ const FarmWithdrawPage = (props: Props): ReactElement => {
             usePendingMasterchef={true}
           />
           {poolType !== PoolTypes.LP && <PoolInfoCard data={poolData} />}
-
         </div>
         <Modal
           isOpen={!!currentModal}

@@ -135,10 +135,9 @@ export default function PoolOverview({
         </div>
         <div className="buttons">
           <Link to={`${poolRoute}/withdraw`}>
-            <Button 
-            kind="secondary"
-            size="medium"
-            >{t("withdraw")}</Button>
+            <Button kind="secondary" size="medium">
+              {t("withdraw")}
+            </Button>
           </Link>
           {shouldMigrate ? (
             <Button

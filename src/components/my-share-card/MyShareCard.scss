@@ -10,7 +10,7 @@ div.myShareCard {
   border-radius: 10px;
   padding: 12px 16px;
 
-  .head{
+  .head {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -24,8 +24,6 @@ div.myShareCard {
       font-size: 16px;
       color: $primary-destructive;
     }
-
-  
   }
 
   h4 {
@@ -70,18 +68,18 @@ div.myShareCard {
   }
 }
 
-.infoItem{
+.infoItem {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
-.title{
+.title {
   font-size: 18px;
   font-family: $font-family;
   font-weight: $normal;
   line-height: 21px;
 }
-.value{
+.value {
   font-size: 18px;
   line-height: 21px;
 }

@@ -35,9 +35,9 @@ div.withdraw {
       @include breakpoint(md) {
         max-width: 90%;
       }
-      .poolName{
+      .poolName {
         padding: 12px 16px;
-        h1{
+        h1 {
           font-size: 36px;
           font-family: $font-family-title;
           font-weight: 700;
@@ -130,7 +130,7 @@ div.withdraw {
         flex-flow: row wrap;
       }
 
-      span{
+      span {
         font-size: 16px;
       }
     }
@@ -230,9 +230,8 @@ div.noShare {
   background: var(--background-main);
 }
 
-.rangeSelector{
-  input{
+.rangeSelector {
+  input {
     width: 100%;
   }
 }
-

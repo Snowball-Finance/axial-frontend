@@ -144,37 +144,38 @@ const FarmDepositPage = (props: Props): ReactElement => {
               </div>
             )}
             <AdvancedOptions
-            noApprovalCheckbox={false}
-            noSlippageCheckbox={true}
-          />
-          <Button
-            kind="primary"
-            size="full"
-            onClick={async () => {
-              setCurrentModal("confirm")
-              await onConfirmTransaction?.()
-              setCurrentModal(null)
-              analytics.trackEvent({
-                category: "Deposit",
-                action: "Deposit",
-                name: "Confirm",
-              })
-              //setCurrentModal("review")
-            }}
-            disabled={!validDepositAmount || poolData?.isPaused}
-          >
-            {t("deposit")}
-          </Button>
-          <p className="orOption">or</p>
-          <a
-            target="_blank"
-            rel="noreferrer"
-            href="https://app.snowball.network/compound-and-earn"
-          >
-            <Button kind="secondary" size="full">{t("Compound with Snowball")}</Button>
-          </a>
-          </div>
-          {" "}
+              noApprovalCheckbox={false}
+              noSlippageCheckbox={true}
+            />
+            <Button
+              kind="primary"
+              size="full"
+              onClick={async () => {
+                setCurrentModal("confirm")
+                await onConfirmTransaction?.()
+                setCurrentModal(null)
+                analytics.trackEvent({
+                  category: "Deposit",
+                  action: "Deposit",
+                  name: "Confirm",
+                })
+                //setCurrentModal("review")
+              }}
+              disabled={!validDepositAmount || poolData?.isPaused}
+            >
+              {t("deposit")}
+            </Button>
+            <p className="orOption">or</p>
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href="https://app.snowball.network/compound-and-earn"
+            >
+              <Button kind="secondary" size="full">
+                {t("Compound with Snowball")}
+              </Button>
+            </a>
+          </div>{" "}
         </div>
         <div className="infoPanels">
           <div className="poolName">
@@ -187,7 +188,6 @@ const FarmDepositPage = (props: Props): ReactElement => {
             usePendingMasterchef={true}
             useMasterchefAmount={true}
           />
-          
 
           {poolType !== PoolTypes.LP && <FarmInfoCard data={poolData} />}
         </div>

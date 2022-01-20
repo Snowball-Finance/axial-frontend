@@ -32,7 +32,7 @@ div.poolOverview {
   .left {
     display: grid;
     grid-template-rows: 40px 24px 22px 10px 20px;
-    @include breakpoint(sm) {  
+    @include breakpoint(sm) {
       display: flex;
       flex-direction: column;
       align-content: center;
@@ -107,7 +107,7 @@ div.poolOverview {
       @include breakpoint(md) {
         margin-right: auto;
       }
-      
+
       @include breakpoint(sm) {
         margin-right: 0px;
       }
@@ -124,7 +124,7 @@ div.poolOverview {
         width: 100%;
         justify-content: space-between;
       }
-            
+
       @include breakpoint(sm) {
         display: flex;
         flex-direction: row;
@@ -168,7 +168,6 @@ div.poolOverview {
         flex-direction: row;
         align-content: center;
       }
-
     }
   }
 

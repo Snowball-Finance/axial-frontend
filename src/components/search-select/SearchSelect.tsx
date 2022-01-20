@@ -111,7 +111,6 @@ export default function SearchSelect({
               onClick={() => item.isAvailable && onSelect(item.symbol)}
               ref={i === activeIndex ? focusedItemRef : null}
             >
-              
               <ListItem {...item} isActive={i === activeIndex} />
             </li>
           )

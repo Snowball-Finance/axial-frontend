@@ -12,7 +12,9 @@ export function isHighPriceImpact(priceImpact: BigNumber): boolean {
 
 export function isLowerRate(exchangeRate: BigNumber): boolean {
   // assumes that rateImpact has 18d precision
-  return exchangeRate.gt(0) && exchangeRate.lte(ethers.utils.parseUnits("99",16))
+  return (
+    exchangeRate.gt(0) && exchangeRate.lte(ethers.utils.parseUnits("99", 16))
+  )
 }
 
 export function calculatePriceImpact(

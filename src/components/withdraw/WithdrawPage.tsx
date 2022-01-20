@@ -98,13 +98,17 @@ const WithdrawPage = (props: Props): ReactElement => {
           </div>
           <PoolInfoCard data={poolData} />
           <MyShareCard data={myShareData} />
-          
         </div>
         <div className="widthdrawSection">
           <div className="form">
             <h3>{t("withdraw")}</h3>
             <div className="rangeSelector">
-              <input type="range" min="0" max="100" step="5" onChange={(e: React.FormEvent<HTMLInputElement>): void =>
+              <input
+                type="range"
+                min="0"
+                max="100"
+                step="5"
+                onChange={(e: React.FormEvent<HTMLInputElement>): void =>
                   onFormChange({
                     fieldName: "percentage",
                     value: e.currentTarget.value,
@@ -114,9 +118,9 @@ const WithdrawPage = (props: Props): ReactElement => {
                   e.target.select()
                 }
                 value={formStateData.percentage ? formStateData.percentage : 0}
-                />
+              />
             </div>
-            
+
             <div className="percentage">
               <span>{`${t("withdrawPercentage")} (%):`}</span>
               <input
@@ -204,23 +208,22 @@ const WithdrawPage = (props: Props): ReactElement => {
               </div>
             </div>
             <AdvancedOptions
-            noApprovalCheckbox={true}
-            noSlippageCheckbox={true}
-          />
-          <Button
-            kind="primary"
-            size="full"
-            disabled={
-              noShare ||
-              !!formStateData.error ||
-              formStateData.lpTokenAmountToSpend.isZero()
-            }
-            onClick={onSubmit}
-          >
-            {t("withdraw")}
-          </Button>
+              noApprovalCheckbox={true}
+              noSlippageCheckbox={true}
+            />
+            <Button
+              kind="primary"
+              size="full"
+              disabled={
+                noShare ||
+                !!formStateData.error ||
+                formStateData.lpTokenAmountToSpend.isZero()
+              }
+              onClick={onSubmit}
+            >
+              {t("withdraw")}
+            </Button>
           </div>
-          
         </div>
         <Modal
           isOpen={!!currentModal}

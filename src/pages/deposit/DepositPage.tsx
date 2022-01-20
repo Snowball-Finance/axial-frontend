@@ -83,15 +83,13 @@ const DepositPage = (props: Props): ReactElement => {
   return (
     <div className="deposit">
       <div className="content">
-      <div className="infoPanels">
-
-        <div className="poolName">
-          <p>{t("addLiquidity")}</p>
-          <h1>{props.title}</h1>
-        </div>
-        <PoolInfoCard data={poolData} />
-        <MyShareCard data={myShareData} />
-        
+        <div className="infoPanels">
+          <div className="poolName">
+            <p>{t("addLiquidity")}</p>
+            <h1>{props.title}</h1>
+          </div>
+          <PoolInfoCard data={poolData} />
+          <MyShareCard data={myShareData} />
         </div>
         <div className="depositSection">
           <div className="form">
@@ -123,9 +121,9 @@ const DepositPage = (props: Props): ReactElement => {
             )}
             <div className={"transactionInfoContainer"}>
               <div className="transactionInfo">
-              {exceedsWallet ? (
-              <div className="error">{t("depositBalanceExceeded")}</div>
-            ) : null}
+                {exceedsWallet ? (
+                  <div className="error">{t("depositBalanceExceeded")}</div>
+                ) : null}
                 <div className="transactionInfoItem">
                   {transactionData.priceImpact.gte(0) ? (
                     <span className="bonus">{`${t("bonus")}: `}</span>
@@ -151,32 +149,31 @@ const DepositPage = (props: Props): ReactElement => {
               </div>
             </div>
             <AdvancedOptions
-            noApprovalCheckbox={false}
-            noSlippageCheckbox={false}
-          />
-          {isBalancedPool !== null && !isBalancedPool && (
-            <div className="warning">
-              <ToolTip content={t("unbalancedPoolTooltip")}>
-                <h4>{t("unbalancedPool")}</h4>
-              </ToolTip>
-            </div>
-          )}
-          <Button
-            kind="primary"
-            size="full"
-            onClick={(): void => {
-              setCurrentModal("review")
-            }}
-            disabled={
-              !validDepositAmount || poolData?.isPaused || exceedsWallet
-            }
-          >
-            {t("deposit")}
-          </Button>
+              noApprovalCheckbox={false}
+              noSlippageCheckbox={false}
+            />
+            {isBalancedPool !== null && !isBalancedPool && (
+              <div className="warning">
+                <ToolTip content={t("unbalancedPoolTooltip")}>
+                  <h4>{t("unbalancedPool")}</h4>
+                </ToolTip>
+              </div>
+            )}
+            <Button
+              kind="primary"
+              size="full"
+              onClick={(): void => {
+                setCurrentModal("review")
+              }}
+              disabled={
+                !validDepositAmount || poolData?.isPaused || exceedsWallet
+              }
+            >
+              {t("deposit")}
+            </Button>
           </div>
-          
         </div>
-       
+
         <Modal
           isOpen={!!currentModal}
           onClose={(): void => setCurrentModal(null)}

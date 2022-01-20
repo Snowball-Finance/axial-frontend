@@ -159,7 +159,7 @@ function ReviewSwap({ onClose, onConfirm, data }: Props): ReactElement {
       <div className="bottom">
         <p>{t("estimatedOutput")}</p>
         <div className="buttonWrapper">
-        <Button onClick={onClose} kind="secondary">
+          <Button onClick={onClose} kind="secondary">
             {t("cancel")}
           </Button>
           <Button
@@ -169,7 +169,6 @@ function ReviewSwap({ onClose, onConfirm, data }: Props): ReactElement {
           >
             {t("confirmSwap")}
           </Button>
-          
         </div>
       </div>
     </div>

@@ -10,15 +10,13 @@
     width: 18px;
     height: 18px;
     border-radius: 0.25em;
-
-    
   }
 
-  .checkboxChecked{
+  .checkboxChecked {
     border: 2px solid $primary;
     background: $primary;
   }
-  .checkboxUnchecked{
+  .checkboxUnchecked {
     border: 2px solid $white;
     background: transparent;
   }
@@ -34,13 +32,11 @@
     display: block !important;
     background: $primary;
     border-radius: 0.25em;
-   
   }
 
   & > input {
     width: 18px;
     height: 18px;
-    
 
     display: none;
     &:checked + .checkboxControl svg {

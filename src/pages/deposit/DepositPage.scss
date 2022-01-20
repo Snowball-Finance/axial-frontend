@@ -35,15 +35,14 @@ div.deposit {
       @include breakpoint(md) {
         max-width: 90%;
       }
-      .poolName{
+      .poolName {
         padding: 12px 16px;
-        h1{
+        h1 {
           font-size: 36px;
           font-family: $font-family-title;
           font-weight: 700;
         }
       }
-      
     }
 
     .depositSection {
@@ -121,13 +120,13 @@ div.deposit {
     grid-template-rows: auto;
     row-gap: 8px;
 
-    .transactionInfoItem{
+    .transactionInfoItem {
       padding: 12px 0px;
       display: flex;
       justify-content: space-between;
     }
-    
-    .error{
+
+    .error {
       font-family: $font-family;
       font-size: 18px;
     }
@@ -138,7 +137,7 @@ div.deposit {
 
     span.bonus {
       color: $white;
-      font-size: 16px;;
+      font-size: 16px;
     }
 
     span.slippage {

@@ -16,13 +16,12 @@ div.swapPage {
     width: 100%;
     padding: 12px 8px;
   }
-  
+
   .row .swapTitle {
     font-weight: 400;
     font-size: 21px;
     line-height: 30px;
-  } 
- 
+  }
 
   button:hover {
     cursor: pointer;
@@ -36,12 +35,12 @@ div.swapPage {
     @include breakpoint(sm) {
       width: 100%;
     }
-    .swapInformation{
-      .row{
+    .swapInformation {
+      .row {
         margin: 0px;
       }
     }
-    .change{
+    .change {
       width: 100%;
       display: flex;
       align-items: center;
@@ -49,13 +48,13 @@ div.swapPage {
       flex-direction: row;
       justify-content: center;
       padding: 8px;
-      button{
+      button {
         border-radius: 50px;
         margin: 8px 0px;
         height: 32px;
         width: 32px;
         background: $primary-blue;
-        &:hover{
+        &:hover {
           box-shadow: $shadow-hover;
           background: $primary-shade;
         }
@@ -85,7 +84,7 @@ div.swapPage {
       }
     }
   }
-  .container{
+  .container {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -95,7 +94,7 @@ div.swapPage {
     @include breakpoint(md) {
       width: 980px;
     }
-    
+
     @include breakpoint(sm) {
       width: 100%;
       padding: 0 8px;
@@ -105,7 +104,7 @@ div.swapPage {
       align-items: center;
     }
 
-    .textBlock{
+    .textBlock {
       width: 100%;
       padding: 56px 48px;
       @include breakpoint(sm) {
@@ -113,21 +112,20 @@ div.swapPage {
         padding: 12px 8px;
         margin-bottom: 40px;
       }
-      .title h1{
+      .title h1 {
         font-size: 42px;
         line-height: 54px;
         font-weight: $bold;
       }
-      .description{
+      .description {
         width: 100%;
         p {
           font-size: 16px;
         }
       }
-      
     }
   }
-  
+
   .content {
     width: 550px;
     margin: 0 auto;

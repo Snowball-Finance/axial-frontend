@@ -83,9 +83,12 @@ function PoolInfoCard({ data }: Props): ReactElement | null {
           <span>{`$${formattedData.reserve}`}</span>
         </div>
       </div>
-      <div className="info" style={{
-              display: "none"
-            }}>
+      <div
+        className="info"
+        style={{
+          display: "none",
+        }}
+      >
         {/*<div className="infoItem">
           <span className="label bold">{`${t("fee")}:`}</span>
           <span className="value">{formattedData.swapFee}</span>
@@ -123,25 +126,20 @@ function PoolInfoCard({ data }: Props): ReactElement | null {
       </div>
       <div className="bottom">
         <h4>{t("currencyReserves")}</h4>
-        <LoadingWrapper
-          height={19}
-          width={160}
-          isLoading={formattedData.reserve === "-"}
-        >
-          
-        </LoadingWrapper>
+        <LoadingWrapper width={130} isLoading={formattedData.reserve === "-"}>
+            <span style={{display: 'none'}}>{`$${formattedData.reserve} ${t("inTotal")}`}</span>
+          </LoadingWrapper>
         <div className="tokenList">
           {formattedData.tokens.map((token, index) => (
             <div className="token" key={index}>
               <div className="tokenInfo">
                 <img alt="icon" src={token.icon} />
-                <p className="bold">{token.symbol} <span>{token.percent}</span></p>
+                <p className="bold">
+                  {token.symbol} <span>{token.percent}</span>
+                </p>
               </div>
               <span className="tokenValue">${token.value}</span>
             </div>
-
-            
-            
           ))}
         </div>
       </div>

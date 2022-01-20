@@ -14,7 +14,6 @@ export interface InfoSectionProps {
 }
 
 function InfoSection({
-  title,
   rows,
   withDivider,
 }: InfoSectionProps): ReactElement | null {
