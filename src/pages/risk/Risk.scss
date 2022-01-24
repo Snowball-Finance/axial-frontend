@@ -8,9 +8,9 @@ div.riskpage {
   box-sizing: border-box; // Make the padding included in height calculation
 
   .content {
-    padding-top: 24px;
+    padding: 36px 46px;
     margin: 0 auto;
-    width: 888px;
+    width: 980px;
     color: var(--text);
     @include breakpoint(lg) {
       display: flex;
@@ -22,10 +22,25 @@ div.riskpage {
     }
   }
 
+  .itemInfo {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    justify-content: space-between;
+
+    .text {
+      width: 75%;
+    }
+    .icon {
+      text-align: center;
+    }
+  }
+
   h3 {
-    margin-top: 40px;
-    margin-bottom: 16px;
-    font-size: 20px;
+    padding-top: 20px;
+    margin-bottom: 12px;
+    font-size: 26px;
+    font-weight: $bold;
   }
 
   a {

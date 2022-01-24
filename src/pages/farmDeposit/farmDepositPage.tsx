@@ -133,6 +133,7 @@ const FarmDepositPage = (props: Props): ReactElement => {
                 )}
               </div>
             ))}
+
             {shouldDisplayWrappedOption && (
               <div className="wrappedDeposit">
                 <CheckboxInput
@@ -142,50 +143,51 @@ const FarmDepositPage = (props: Props): ReactElement => {
                 <span>{t("depositWrapped")}</span>
               </div>
             )}
-          </div>
-          <AdvancedOptions
-            noApprovalCheckbox={false}
-            noSlippageCheckbox={true}
-          />
-          <Button
-            kind="primary"
-            onClick={async () => {
-              setCurrentModal("confirm")
-              await onConfirmTransaction?.()
-              setCurrentModal(null)
-              analytics.trackEvent({
-                category: "Deposit",
-                action: "Deposit",
-                name: "Confirm",
-              })
-              //setCurrentModal("review")
-            }}
-            disabled={!validDepositAmount || poolData?.isPaused}
-          >
-            {t("deposit")}
-          </Button>
-          <p>or</p>
-          <a
-            target="_blank"
-            rel="noreferrer"
-            href="https://app.snowball.network/compound-and-earn"
-          >
-            <Button kind="primary">{t("Compound with Snowball")}</Button>
-          </a>{" "}
+            <AdvancedOptions
+              noApprovalCheckbox={false}
+              noSlippageCheckbox={true}
+            />
+            <Button
+              kind="primary"
+              size="full"
+              onClick={async () => {
+                setCurrentModal("confirm")
+                await onConfirmTransaction?.()
+                setCurrentModal(null)
+                analytics.trackEvent({
+                  category: "Deposit",
+                  action: "Deposit",
+                  name: "Confirm",
+                })
+                //setCurrentModal("review")
+              }}
+              disabled={!validDepositAmount || poolData?.isPaused}
+            >
+              {t("deposit")}
+            </Button>
+            <p className="orOption">or</p>
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href="https://app.snowball.network/compound-and-earn"
+            >
+              <Button kind="secondary" size="full">
+                {t("Compound with Snowball")}
+              </Button>
+            </a>
+          </div>{" "}
         </div>
         <div className="infoPanels">
+          <div className="poolName">
+            <p>{t("deposit")}</p>
+            <h1>{props.title}</h1>
+          </div>
+          <InfoSection title="Stats" rows={statsDataRows} />
           <MyShareCard
             data={myShareData}
             usePendingMasterchef={true}
             useMasterchefAmount={true}
           />
-          <div
-            style={{
-              display: myShareData ? "block" : "none",
-            }}
-            className="divider"
-          ></div>
-          <InfoSection title="Stats" withDivider rows={statsDataRows} />
 
           {poolType !== PoolTypes.LP && <FarmInfoCard data={poolData} />}
         </div>

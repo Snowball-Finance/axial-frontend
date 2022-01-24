@@ -3,15 +3,14 @@
 div.reviewSwap {
   margin-top: 0;
   padding: 40px;
-  background-color: $white;
-  color: $text-black;
+  background-color: $primary-blue;
+  color: $white;
   border-radius: 8px;
 
   h3 {
     font-family: $font-family-title;
-    font-size: 30px;
-    font-weight: $bold;
-    color: $text-black;
+    font-size: 26px;
+    font-weight: 500;
     margin-top: 0;
     margin-bottom: 24px;
   }
@@ -52,8 +51,8 @@ div.reviewSwap {
 
     img.tokenIcon {
       vertical-align: text-bottom;
-      width: 24px;
-      height: 24px;
+      width: 32px;
+      height: 32px;
     }
 
     span.tokenName {
@@ -62,13 +61,12 @@ div.reviewSwap {
     }
 
     .divider {
-      background-color: $divider-red;
+      background-color: $primary-destructive;
       margin: 16px 0 20px 0;
     }
 
     .priceTable {
       width: 100%;
-      color: $text-black;
     }
 
     .row {
@@ -77,7 +75,7 @@ div.reviewSwap {
   }
 
   .bottom {
-    background: $black;
+    background: $primary-focus;
     margin: 0 -40px -40px -40px;
     padding: 24px 40px 40px 40px;
     border-radius: 0px 0px 8px 8px;
@@ -93,4 +91,10 @@ div.reviewSwap {
       justify-content: space-between;
     }
   }
+}
+
+.infoToken {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
