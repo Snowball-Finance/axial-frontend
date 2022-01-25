@@ -1,4 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
+import { BigNumber } from "ethers"
 import { MasterchefApr } from "../libs/getPoolsAPR"
 import { SwapStatsReponse } from "../libs/getSwapStats"
 
@@ -22,18 +23,37 @@ interface LastTransactionTimes {
   [transactionType: string]: number
 }
 
+export interface BestPath {
+  amountIn: BigNumber
+  amountOut: BigNumber
+  path: string[]
+  adapters: string[]
+}
+
 type ApplicationState = GasPrices & { tokenPricesUSD?: TokenPricesUSD } & {
   lastTransactionTimes: LastTransactionTimes
-} & { swapStats?: SwapStats } & { masterchefApr?: MasterchefApr }
+} & { swapStats?: SwapStats } & { masterchefApr?: MasterchefApr } &{
+  isGettingBestPath: boolean,
+  bestSwapPath:BestPath | null,
+
+}
 
 const initialState: ApplicationState = {
   lastTransactionTimes: {},
+  isGettingBestPath:false,
+  bestSwapPath:null,
 }
 
 const applicationSlice = createSlice({
   name: "application",
   initialState,
   reducers: {
+    setIsGettingBestPath(state, action: PayloadAction<boolean>){
+      state.isGettingBestPath = action.payload
+    },
+    setBestPath(state, action: PayloadAction<BestPath | null>){
+      state.bestSwapPath = action.payload
+    },
     updateGasPrices(state, action: PayloadAction<GasPrices>): void {
       const { gasStandard, gasFast, gasInstant } = action.payload
       state.gasStandard = gasStandard
@@ -87,6 +107,8 @@ export const {
   updateTokensPricesUSD,
   updateLastTransactionTimes,
   updateSwapStats,
+  setBestPath,
+  setIsGettingBestPath,
   updateMasterchefApr,
 } = applicationSlice.actions
 

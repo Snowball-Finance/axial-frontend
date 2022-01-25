@@ -15,10 +15,11 @@ const store = configureStore({
     user,
   },
   middleware: [
-    ...getDefaultMiddleware({ thunk: false }),
+    ...getDefaultMiddleware({ thunk: false ,  serializableCheck: false}),
     save({ states: PERSISTED_KEYS }),
   ],
   preloadedState: merge({}, { user: userInitialState }, stateFromStorage),
+
 })
 
 export default store

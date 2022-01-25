@@ -50,6 +50,7 @@ interface Props {
 
 const SwapPage = (props: Props): ReactElement => {
   const { t } = useTranslation()
+  const isGettingBestPath = useSelector((state: AppState) => state.application.isGettingBestPath);
 
   const { account } = useActiveWeb3React()
   const {
@@ -242,6 +243,7 @@ const SwapPage = (props: Props): ReactElement => {
         />
         <Button
           kind="primary"
+          
           onClick={(): void => {
             setCurrentModal("review")
             analytics.trackEvent({
@@ -250,7 +252,7 @@ const SwapPage = (props: Props): ReactElement => {
               name: `${fromState.symbol}_${toState.symbol}`,
             })
           }}
-          disabled={!!error || +toState.value <= 0}
+          disabled={!!error || +toState.value <= 0 || isGettingBestPath}
         >
           {t("swap")}
         </Button>
