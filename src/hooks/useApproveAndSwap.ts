@@ -1,23 +1,16 @@
-import { POOLS_MAP, SWAP_TYPES, TRANSACTION_TYPES } from "../constants"
+import { TRANSACTION_TYPES } from "../constants"
 import { AppState } from "../store"
 import { BigNumber } from "@ethersproject/bignumber"
 import { Bridge } from "../../types/ethers-contracts/Bridge"
 import { Erc20 } from "../../types/ethers-contracts/Erc20"
 import { GasPrices } from "../store/module/user"
-import { MetaSwapDeposit } from "../../types/ethers-contracts/MetaSwapDeposit"
-import { SwapFlashLoan } from "../../types/ethers-contracts/SwapFlashLoan"
-import { SwapFlashLoanNoWithdrawFee } from "../../types/ethers-contracts/SwapFlashLoanNoWithdrawFee"
-import { SwapGuarded } from "../../types/ethers-contracts/SwapGuarded"
 import checkAndApproveTokenForTrade from "../libs/checkAndApproveTokenForTrade"
-import { formatDeadlineToNumber } from "../libs"
 import { parseUnits } from "@ethersproject/units"
-import { subtractSlippage } from "../libs/slippage"
 import { BestPath, updateLastTransactionTimes } from "../store/application"
 import { useActiveWeb3React } from "."
 import { useAllContracts } from "./useContract"
 import { useDispatch } from "react-redux"
 import { useSelector } from "react-redux"
-import { utils } from "ethers"
 import { SwapRouter } from "../../types/ethers-contracts/SwapRouter"
 
 
@@ -97,8 +90,6 @@ export function useApproveAndSwap(): (
         const swapTransaction = await (state.routerContract as NonNullable<
           typeof state.routerContract // we already check for nonnull above
         >).swapNoSplit({ amountIn, amountOut, path, adapters }, account, BigNumber.from(0))
-        console.log(swapTransaction);
-
         await swapTransaction?.wait()
         dispatch(
           updateLastTransactionTimes({

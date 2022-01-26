@@ -111,7 +111,7 @@ export function useSwapRouterContract(): SwapRouter | null {
     if (!library || !chainId) return null
     try {
       return getContract(
-        "0xC4729E56b831d74bBc18797e0e17A295fA77488c",
+        "0xBeD9dfE835cd2bB6775f344Ee5E3431b2CbF31FB",
         SWAP_ROUTER_ABI,
         library,
         account ?? undefined,

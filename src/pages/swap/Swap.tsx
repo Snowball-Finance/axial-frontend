@@ -255,7 +255,7 @@ function Swap(): ReactElement {
         catch (e) {
           console.debug(e)
         }
-        finally{
+        finally {
           dispatch(setIsGettingBestPath(false))
         }
       }
@@ -506,13 +506,18 @@ function Swap(): ReactElement {
       currentSwapPairs: prevState.currentSwapPairs,
       swapType: prevState.swapType,
     }))
-    analytics.trackEvent({
-      category: "Swap",
-      action: "Confirm",
-      name: `${formState.from.symbol} to ${formState.to.symbol}-${formState.swapType
-        }-fromValue:${formState.from.value
-        }-toValue:${formState.to.value.toNumber()}`,
-    })
+    try {
+      analytics.trackEvent({
+        category: "Swap",
+        action: "Confirm",
+        name: `${formState.from.symbol} to ${formState.to.symbol}-${formState.swapType
+          }-fromValue:${formState.from.value
+          }-toValue:${formState.to.value.toString()}`,
+      })
+    }
+    catch (e) {
+      console.log(e)
+    }
   }
 
   const gasPrice = BigNumber.from(
