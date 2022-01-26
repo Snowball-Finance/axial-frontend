@@ -30,29 +30,33 @@ export interface BestPath {
   adapters: string[]
 }
 
-type ApplicationState = GasPrices & { tokenPricesUSD?: TokenPricesUSD } & {
-  lastTransactionTimes: LastTransactionTimes
-} & { swapStats?: SwapStats } & { masterchefApr?: MasterchefApr } &{
+export interface SwapRouterInfo{
   isGettingBestPath: boolean,
   bestSwapPath:BestPath | null,
+  swapError: string | null,
 
 }
 
+type ApplicationState = GasPrices & { tokenPricesUSD?: TokenPricesUSD } & {
+  lastTransactionTimes: LastTransactionTimes
+} & { swapStats?: SwapStats } & { masterchefApr?: MasterchefApr } &{swapRouterInfo:SwapRouterInfo}
+
 const initialState: ApplicationState = {
   lastTransactionTimes: {},
+swapRouterInfo:{
   isGettingBestPath:false,
   bestSwapPath:null,
+  swapError:null,
+}
+
 }
 
 const applicationSlice = createSlice({
   name: "application",
   initialState,
   reducers: {
-    setIsGettingBestPath(state, action: PayloadAction<boolean>){
-      state.isGettingBestPath = action.payload
-    },
-    setBestPath(state, action: PayloadAction<BestPath | null>){
-      state.bestSwapPath = action.payload
+    setSwapRouterInfo(state, action: PayloadAction<SwapRouterInfo>){
+      state.swapRouterInfo = {...action.payload}
     },
     updateGasPrices(state, action: PayloadAction<GasPrices>): void {
       const { gasStandard, gasFast, gasInstant } = action.payload
@@ -107,8 +111,7 @@ export const {
   updateTokensPricesUSD,
   updateLastTransactionTimes,
   updateSwapStats,
-  setBestPath,
-  setIsGettingBestPath,
+  setSwapRouterInfo,
   updateMasterchefApr,
 } = applicationSlice.actions
 

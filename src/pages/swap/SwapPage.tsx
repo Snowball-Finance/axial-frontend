@@ -21,6 +21,7 @@ import { useActiveWeb3React } from "../../hooks"
 import { useSelector } from "react-redux"
 import { useTranslation } from "react-i18next"
 import { analytics } from "../../utils/analytics"
+import { LoadingWrapper } from "../../components/shimmer"
 
 interface Props {
   tokenOptions: {
@@ -50,7 +51,7 @@ interface Props {
 
 const SwapPage = (props: Props): ReactElement => {
   const { t } = useTranslation()
-  const isGettingBestPath = useSelector((state: AppState) => state.application.isGettingBestPath);
+  const { isGettingBestPath, swapError } = useSelector((state: AppState) => state.application.swapRouterInfo);
 
   const { account } = useActiveWeb3React()
   const {
@@ -148,6 +149,7 @@ const SwapPage = (props: Props): ReactElement => {
                 ({ symbol }) => symbol !== fromState.symbol,
               )}
               onSelect={onChangeToToken}
+              isLoading={isGettingBestPath}
               selected={toState.symbol}
               inputValue={toState.value}
               inputValueUSD={toState.valueUSD}
@@ -220,10 +222,17 @@ const SwapPage = (props: Props): ReactElement => {
             </>
           )}
         </div>
+        {
+          swapError && (
+            <div className="exchangeWarning">
+              {swapError}
+            </div>
+          )
+        }
         {account && isLowerRate(exchangeRateInfo.exchangeRate) && (
           <div className="exchangeWarning">
             {t("lowSwapRate", {
-              rate: ((+exchangeRateInfo.exchangeRate/1e18 * 100) - 100).toFixed(2),
+              rate: ((+exchangeRateInfo.exchangeRate / 1e18 * 100) - 100).toFixed(2),
             })}
           </div>
         )}
@@ -237,13 +246,13 @@ const SwapPage = (props: Props): ReactElement => {
             {">"}
           </div>
         )}
+
         <AdvancedOptions
           noApprovalCheckbox={false}
           noSlippageCheckbox={false}
         />
         <Button
           kind="primary"
-          
           onClick={(): void => {
             setCurrentModal("review")
             analytics.trackEvent({
@@ -252,7 +261,7 @@ const SwapPage = (props: Props): ReactElement => {
               name: `${fromState.symbol}_${toState.symbol}`,
             })
           }}
-          disabled={!!error || +toState.value <= 0 || isGettingBestPath}
+          disabled={!!error || +toState.value <= 0 || isGettingBestPath || swapError !== null}
         >
           {t("swap")}
         </Button>

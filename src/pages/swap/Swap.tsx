@@ -38,7 +38,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { useSwapRouterContract } from "../../hooks/useContract"
 import { useTranslation } from "react-i18next"
 import { analytics } from "../../utils/analytics"
-import { BestPath, setBestPath, setIsGettingBestPath } from "../../store/application"
+import { BestPath, setSwapRouterInfo } from "../../store/application"
 
 type FormState = {
   error: null | string
@@ -91,7 +91,7 @@ const EMPTY_FORM_STATE = {
 function Swap(): ReactElement {
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  const { chainId, library } = useActiveWeb3React()
+  const { chainId } = useActiveWeb3React()
   const approveAndSwap = useApproveAndSwap()
   const tokenBalances = usePoolTokenBalances()
   const calculateSwapPairs = useCalculateSwapPairs()
@@ -107,7 +107,9 @@ function Swap(): ReactElement {
     EMPTY_FORM_STATE,
   )
 
-  const bestPath = useSelector((state: AppState) => state.application.bestSwapPath)
+  const swapRouterInfo = useSelector((state: AppState) => state.application.swapRouterInfo)
+  const { bestSwapPath } = swapRouterInfo
+
   const routerContract = useSwapRouterContract()
 
   // build a representation of pool tokens for the UI
@@ -146,9 +148,10 @@ function Swap(): ReactElement {
                 decimals,
               ),
               swapType,
-              isAvailable: IS_VIRTUAL_SWAP_ACTIVE
-                ? swapType !== SWAP_TYPES.INVALID
-                : swapType === SWAP_TYPES.DIRECT, // TODO replace once VSwaps are live
+              isAvailable: true
+              // isAvailable: IS_VIRTUAL_SWAP_ACTIVE
+              //   ? swapType !== SWAP_TYPES.INVALID
+              //   : swapType === SWAP_TYPES.DIRECT, // TODO replace once VSwaps are live
             }
           })
           .sort(sortTokenOptions)
@@ -162,18 +165,12 @@ function Swap(): ReactElement {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const calculateSwapAmount = useCallback(
     debounce(async (formStateArg: FormState) => {
-
-      if (formStateArg.swapType === SWAP_TYPES.INVALID) return
-      if (tokenBalances === null || chainId == null)
-        // || bridgeContract == null
-        return
-      if (
-        formStateArg.from.tokenIndex === undefined ||
-        formStateArg.from.poolName === undefined ||
-        formStateArg.to.tokenIndex === undefined ||
-        formStateArg.to.poolName === undefined
-      )
-        return
+      if (tokenBalances === null || chainId == null) { return }
+      // if (
+      //   formStateArg.from.tokenIndex === undefined ||
+      //   formStateArg.from.poolName === undefined ||
+      //   formStateArg.to.tokenIndex === undefined ||
+      //   formStateArg.to.poolName === undefined) { return }
       const cleanedFormFromValue = formStateArg.from.value.replace(/[$,]/g, "") // remove common copy/pasted financial characters
       if (
         cleanedFormFromValue === "" ||
@@ -206,12 +203,14 @@ function Swap(): ReactElement {
       if (amountToGive.isZero()) {
         amountToReceive = Zero
       } else if (
-        formStateArg.swapType === SWAP_TYPES.DIRECT &&
         routerContract != null
       ) {
         try {
-          dispatch(setIsGettingBestPath(true))
-          dispatch(setBestPath(null))
+          dispatch(setSwapRouterInfo({
+            ...swapRouterInfo,
+            bestSwapPath: null,
+            isGettingBestPath: true,
+          }))
           const gasEstimate = await routerContract.estimateGas.findBestPathWithGas(
             amountToGive,
             tokenFrom.addresses[chainId],
@@ -220,7 +219,7 @@ function Swap(): ReactElement {
             BigNumber.from(225),
           )
 
-          console.log(`Gas Estimate: ${gasEstimate.toString()}`);
+          console.debug(`Gas Estimate: ${gasEstimate.toString()}`);
 
           const optimalPath = await routerContract.findBestPathWithGas(
             amountToGive,
@@ -231,7 +230,19 @@ function Swap(): ReactElement {
             { gasLimit: (Number(gasEstimate) + 2000).toString() }
           )
 
-          console.log(`Best Path: `, optimalPath);
+          if (!optimalPath.amounts[optimalPath.amounts.length - 1]) {
+            console.log('path was not found')
+            dispatch(setSwapRouterInfo({
+              ...swapRouterInfo,
+              swapError: 'path was not found for this pair to Swap'
+            }))
+            return
+          }
+          dispatch(setSwapRouterInfo({
+            ...swapRouterInfo,
+            swapError: null
+          }))
+          console.debug(`Best Path: `, optimalPath);
           amountToReceive = optimalPath.amounts[optimalPath.amounts.length - 1];
           const p: BestPath = {
             amountIn: amountToGive,
@@ -240,7 +251,6 @@ function Swap(): ReactElement {
             adapters: optimalPath.adapters,
           }
 
-          dispatch(setBestPath(p))
           // console.log(`amount To Receive: `,amountToReceive.toString());
 
           const routes: string[] = []
@@ -251,13 +261,20 @@ function Swap(): ReactElement {
             }
           })
           path = routes;
+          dispatch(setSwapRouterInfo({
+            ...swapRouterInfo,
+            isGettingBestPath: false,
+            swapError: null,
+          }))
         }
         catch (e) {
           console.debug(e)
+          dispatch(setSwapRouterInfo({
+            ...swapRouterInfo,
+            isGettingBestPath: false,
+          }))
         }
-        finally {
-          dispatch(setIsGettingBestPath(false))
-        }
+
       }
       const toValueUSD = calculatePrice(
         amountToReceive,
@@ -285,6 +302,7 @@ function Swap(): ReactElement {
             amountToReceive,
             tokenTo.decimals,
           ),
+
           ...(path && { route: path }),
 
         }
@@ -359,7 +377,7 @@ function Swap(): ReactElement {
         exchangeRate: Zero,
         route: activeSwapPair?.route || [],
         currentSwapPairs: swapPairs,
-        swapType: activeSwapPair?.type || SWAP_TYPES.INVALID,
+        swapType: SWAP_TYPES.DIRECT,
       }
       return nextState
     })
@@ -406,7 +424,7 @@ function Swap(): ReactElement {
         exchangeRate: Zero,
         route: activeSwapPair?.route || [],
         currentSwapPairs: swapPairs,
-        swapType: activeSwapPair?.type || SWAP_TYPES.INVALID,
+        swapType: SWAP_TYPES.DIRECT,
       }
       return nextState
     })
@@ -438,7 +456,7 @@ function Swap(): ReactElement {
         priceImpact: Zero,
         exchangeRate: Zero,
         route: activeSwapPair?.route || [],
-        swapType: activeSwapPair?.type || SWAP_TYPES.INVALID,
+        swapType: SWAP_TYPES.DIRECT,
       }
       return nextState
     })
@@ -485,8 +503,7 @@ function Swap(): ReactElement {
       swapType: SWAP_TYPES.DIRECT,
 
     }
-
-    await approveAndSwap(dataToApprove, bestPath)
+    await approveAndSwap(dataToApprove, bestSwapPath)
     // Clear input after deposit
     setFormState((prevState) => ({
       error: null,
@@ -506,6 +523,13 @@ function Swap(): ReactElement {
       currentSwapPairs: prevState.currentSwapPairs,
       swapType: prevState.swapType,
     }))
+
+    dispatch(setSwapRouterInfo({
+      ...swapRouterInfo,
+      isGettingBestPath: false,
+      bestSwapPath: null,
+    }))
+
     try {
       analytics.trackEvent({
         category: "Swap",

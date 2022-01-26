@@ -19,6 +19,7 @@ import {
   isMetaPool,
   USDC,
   USDC_AM3D_SWAP_TOKEN,
+  SWAP_ROUTER_ADDRESSES,
 } from "../constants"
 
 import { Contract } from "@ethersproject/contracts"
@@ -111,7 +112,7 @@ export function useSwapRouterContract(): SwapRouter | null {
     if (!library || !chainId) return null
     try {
       return getContract(
-        "0xBeD9dfE835cd2bB6775f344Ee5E3431b2CbF31FB",
+        SWAP_ROUTER_ADDRESSES[chainId],
         SWAP_ROUTER_ABI,
         library,
         account ?? undefined,

@@ -1,4 +1,4 @@
-import { TRANSACTION_TYPES } from "../constants"
+import { SWAP_ROUTER_FEE, TRANSACTION_TYPES } from "../constants"
 import { AppState } from "../store"
 import { BigNumber } from "@ethersproject/bignumber"
 import { Bridge } from "../../types/ethers-contracts/Bridge"
@@ -89,7 +89,7 @@ export function useApproveAndSwap(): (
         const { adapters, amountIn, amountOut, path } = bestPath
         const swapTransaction = await (state.routerContract as NonNullable<
           typeof state.routerContract // we already check for nonnull above
-        >).swapNoSplit({ amountIn, amountOut, path, adapters }, account, BigNumber.from(0))
+        >).swapNoSplit({ amountIn, amountOut, path, adapters }, account,SWAP_ROUTER_FEE)
         await swapTransaction?.wait()
         dispatch(
           updateLastTransactionTimes({

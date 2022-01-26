@@ -10,11 +10,13 @@ import { formatBNToString } from "../../libs"
 import styles from "./SwapInput.module.scss"
 import useDetectOutsideClick from "../../hooks/useDetectOutsideClick"
 import { useTranslation } from "react-i18next"
+import { LoadingWrapper } from "../shimmer"
 
 interface Props {
   tokens: TokenOption[]
   selected: string
   inputValue: string
+  isLoading?: boolean
   inputValueUSD: BigNumber
   isSwapFrom: boolean
   onSelect?: (tokenSymbol: string) => void
@@ -24,6 +26,7 @@ export default function SwapInput({
   tokens,
   selected,
   onSelect,
+  isLoading,
   inputValue,
   inputValueUSD,
   isSwapFrom,
@@ -94,6 +97,7 @@ export default function SwapInput({
           inputRef.current?.focus()
         }}
       >
+        <LoadingWrapper isLoading={isLoading??false}height={24} width='100%' >
         <input
           ref={inputRef}
           autoComplete="off"
@@ -117,6 +121,7 @@ export default function SwapInput({
           readOnly={!isSwapFrom}
           tabIndex={isSwapFrom ? 0 : -1}
         />
+        </LoadingWrapper>
         <p className={styles.textMinor}>
           ≈${commify(formatBNToString(inputValueUSD, 18, 2))}
         </p>
