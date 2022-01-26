@@ -202,7 +202,7 @@ export default function FarmOverview({
           (formattedData.tokens.length > 0 ||
             formattedData.ammTokens.length > 0) && (
             <div className="tokens">
-              <span style={{ marginRight: "8px" }}>[</span>
+              <span>[</span>
               {(formattedData.ammTokens.length > 0
                 ? formattedData.ammTokens
                 : formattedData.tokens
@@ -212,7 +212,7 @@ export default function FarmOverview({
                   <span>{symbol}</span>
                 </div>
               ))}
-              <span style={{ marginLeft: "-8px" }}>]</span>
+              <span>]</span>
             </div>
           )
         }

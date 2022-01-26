@@ -83,12 +83,17 @@ const DepositPage = (props: Props): ReactElement => {
   return (
     <div className="deposit">
       <div className="content">
-        <div className="left">
+        <div className="infoPanels">
+          <div className="poolName">
+            <p>{t("addLiquidity")}</p>
+            <h1>{props.title}</h1>
+          </div>
+          <PoolInfoCard data={poolData} />
+          <MyShareCard data={myShareData} />
+        </div>
+        <div className="depositSection">
           <div className="form">
             <h3>{t("addLiquidity")}</h3>
-            {exceedsWallet ? (
-              <div className="error">{t("depositBalanceExceeded")}</div>
-            ) : null}
             {tokens.map((token, index) => (
               <div key={index}>
                 <TokenInput
@@ -116,6 +121,9 @@ const DepositPage = (props: Props): ReactElement => {
             )}
             <div className={"transactionInfoContainer"}>
               <div className="transactionInfo">
+                {exceedsWallet ? (
+                  <div className="error">{t("depositBalanceExceeded")}</div>
+                ) : null}
                 <div className="transactionInfoItem">
                   {transactionData.priceImpact.gte(0) ? (
                     <span className="bonus">{`${t("bonus")}: `}</span>
@@ -140,40 +148,32 @@ const DepositPage = (props: Props): ReactElement => {
                 </div>
               </div>
             </div>
+            <AdvancedOptions
+              noApprovalCheckbox={false}
+              noSlippageCheckbox={false}
+            />
+            {isBalancedPool !== null && !isBalancedPool && (
+              <div className="warning">
+                <ToolTip content={t("unbalancedPoolTooltip")}>
+                  <h4>{t("unbalancedPool")}</h4>
+                </ToolTip>
+              </div>
+            )}
+            <Button
+              kind="primary"
+              size="full"
+              onClick={(): void => {
+                setCurrentModal("review")
+              }}
+              disabled={
+                !validDepositAmount || poolData?.isPaused || exceedsWallet
+              }
+            >
+              {t("deposit")}
+            </Button>
           </div>
-          <AdvancedOptions
-            noApprovalCheckbox={false}
-            noSlippageCheckbox={false}
-          />
-          {isBalancedPool !== null && !isBalancedPool && (
-            <div className="warning">
-              <ToolTip content={t("unbalancedPoolTooltip")}>
-                <h4>{t("unbalancedPool")}</h4>
-              </ToolTip>
-            </div>
-          )}
-          <Button
-            kind="primary"
-            onClick={(): void => {
-              setCurrentModal("review")
-            }}
-            disabled={
-              !validDepositAmount || poolData?.isPaused || exceedsWallet
-            }
-          >
-            {t("deposit")}
-          </Button>
         </div>
-        <div className="infoPanels">
-          <MyShareCard data={myShareData} />
-          <div
-            style={{
-              display: myShareData ? "block" : "none",
-            }}
-            className="divider"
-          ></div>
-          <PoolInfoCard data={poolData} />
-        </div>
+
         <Modal
           isOpen={!!currentModal}
           onClose={(): void => setCurrentModal(null)}

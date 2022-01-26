@@ -140,15 +140,16 @@ function ReviewDeposit({
       <div className="bottom">
         <p>{t("estimatedOutput")}</p>
         <div className="buttonWrapper">
+          <Button onClick={onClose} kind="secondary">
+            {t("cancel")}
+          </Button>
+
           <Button
             onClick={onConfirm}
             kind="primary"
             disabled={isHighPriceImpactTxn && !hasConfirmedHighPriceImpact}
           >
             {t("confirmDeposit")}
-          </Button>
-          <Button onClick={onClose} kind="cancel">
-            {t("cancel")}
           </Button>
         </div>
       </div>
