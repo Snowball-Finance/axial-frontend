@@ -3,15 +3,21 @@
 
 .advancedOptions {
   width: 100%;
-  margin-top: 24px;
-  margin-bottom: 24px;
+  padding: 12px 0px;
 
+  .titleBox {
+    padding-bottom: 8px;
+  }
+
+  span.settings {
+    margin-right: 8px;
+  }
   @include breakpoint(lg) {
     margin: 12px auto 20px;
     width: 434px;
   }
   @include breakpoint(md) {
-    max-width: 90%;
+    max-width: 100%;
   }
   svg.triangle {
     margin-left: 10px;
@@ -34,14 +40,23 @@
 
   .tableContainer {
     display: none;
+    padding: 12px 8px;
+    background: #31386b;
+    border-radius: 10px;
+    transition: transform 0.1s ease-in 25ms;
+    transform: scale(0);
+    transform-origin: bottom left;
   }
 
   div.parameter {
-    margin-top: 16px;
+    margin-top: 0px;
   }
 
   .show {
     display: block;
+    transition: transform 0.1s ease-in 25ms;
+    transform: scale(1);
+    transform-origin: top center;
   }
 
   .parameter {
@@ -54,7 +69,7 @@
   div.inputGroup {
     input {
       width: 48px;
-      border: 1px solid $primary;
+      border: 1px solid $primary-destructive;
       border-radius: 8px;
       height: 28px;
       font-size: 80%;
@@ -69,10 +84,11 @@
     }
 
     .label {
-      font-weight: $bold;
+      font-weight: $normal;
       font-size: 16px;
       letter-spacing: -0.04em;
       margin: auto 16px auto 0;
+      font-family: "Karla";
       @include breakpoint(lg) {
         font-size: 13px;
         margin-right: 0px;
@@ -96,16 +112,89 @@
         font-size: 11px;
       }
     }
+    .groupButtons {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-content: center;
+
+      .custom {
+        border: 2px solid $primary-destructive;
+        border-radius: 75px;
+        background: $primary-blue;
+        & > input {
+          background: $primary-blue;
+          border: none;
+          font-size: 16px;
+          color: $white;
+          font-family: $font-family;
+        }
+        span {
+          margin-right: 4px;
+        }
+      }
+    }
+
+    .groupButtons > button {
+      margin: 0px 8px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 2px solid $primary-destructive;
+      border-radius: 75px;
+      background: $primary-blue;
+      font-size: 16px;
+      padding: 6px 8px;
+      font-weight: $normal;
+      color: var(--text);
+      letter-spacing: -0.04em;
+      padding: 4px 10px;
+      cursor: pointer;
+
+      &:hover {
+        transform: none;
+      }
+
+      &:focus {
+        outline: none;
+        border: none;
+      }
+
+      &.selected {
+        color: var(--text);
+        font-weight: $bold;
+        background: $primary;
+        border-radius: 75px;
+        border: 1px solid $primary;
+      }
+      @include breakpoint(lg) {
+        font-size: 12px;
+        width: 72px;
+        height: 28px;
+      }
+      @include breakpoint(md) {
+        font-size: 11px;
+        width: 72px;
+        height: 28px;
+      }
+      @include breakpoint(xs) {
+        font-size: 11px;
+        width: 58px;
+        height: 28px;
+        padding: 0 2px;
+        margin-right: 2px;
+      }
+    }
 
     .options > button {
       display: flex;
       justify-content: center;
       align-items: center;
-      border: none;
+      border: 1px solid;
       border-radius: 8px;
       background: none;
       font-size: 16px;
-      width: 80px;
+      padding: 6px 8px;
       font-weight: $normal;
       color: var(--text);
       letter-spacing: -0.04em;
@@ -124,9 +213,9 @@
 
       &.selected {
         color: var(--text);
-        font-weight: $medium;
-        border: 1px solid var(--text-selected);
-        border-radius: 8px;
+        font-weight: $bold;
+        background: $primary;
+        border-radius: 75px;
       }
       @include breakpoint(lg) {
         font-size: 12px;
@@ -161,11 +250,11 @@
 
   .label {
     position: relative;
+    font-family: "Karla";
     border-bottom: 1px dotted var(--text);
-    font-weight: $bold;
-    font-size: 16px;
-    letter-spacing: -0.04em;
-    margin-left: 16px;
+    font-size: 14px;
+    margin-left: 8px;
+    font-weight: $normal;
     &:hover {
       cursor: help;
     }

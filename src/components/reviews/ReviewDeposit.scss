@@ -5,12 +5,12 @@
 div.reviewDeposit {
   margin-top: 0;
   padding: 40px;
-  background-color: $primary-focus;
+  background-color: $primary-shade;
   color: var(--text);
   border-radius: 8px;
 
   h3 {
-    font-size: 30px;
+    font-size: 26px;
     font-weight: $bold;
     color: var(--text);
     margin-top: 0;
@@ -71,6 +71,7 @@ div.reviewDeposit {
       flex-direction: row;
 
       & > .label {
+        font-size: 16px;
         color: $primary;
         width: 45%;
         @include breakpoint(md) {
@@ -98,7 +99,7 @@ div.reviewDeposit {
   }
 
   div.bottom {
-    background: $primary-shade;
+    background: $primary-focus;
     margin: 0 -40px -40px -40px;
     padding: 16px 40px 24px 40px;
     border-radius: 0px 0px 8px 8px;
@@ -123,7 +124,7 @@ div.reviewDeposit {
   }
 
   .divider {
-    background-color: $primary;
+    background-color: $primary-destructive;
     margin: 12px 0 16px 0;
   }
 }

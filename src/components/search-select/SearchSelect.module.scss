@@ -2,10 +2,10 @@
 @import "../../styles/viewports";
 
 .searchSelect {
-  padding: 16px 8px 0 8px;
-  background-color: $primary-shade;
+  padding: 8px 12px;
+  background-color: $primary-focus;
   border: 1px solid $primary;
-  border-radius: 8px;
+  border-radius: 0px 0px 8px 8px;
   max-height: 350px;
   max-width: 500px;
   overflow-y: auto;
@@ -19,19 +19,19 @@
   justify-content: center;
   align-items: center;
   margin-bottom: 8px;
+  border: 1px solid $primary;
+  border-radius: 10px;
+  padding: 8px;
 
   input {
     flex: 1;
-    height: 32px;
-    background-color: clear;
-    margin: 0 8px;
-    padding: 0 8px;
-    color: $primary;
+    background-color: transparent;
+    color: $white;
     font-size: 16px;
     font-family: $font-family;
     font-style: normal;
     font-weight: $normal;
-
+    padding: 0px 8px;
     &:focus {
       outline: none;
     }
@@ -50,10 +50,11 @@
   padding: 8px;
   margin: 8px 0;
   user-select: none;
+  font-family: $font-family;
 
   img {
-    height: 24px;
-    width: 24px;
+    height: 32px;
+    width: 32px;
   }
 
   > :nth-child(2) {
@@ -70,7 +71,7 @@
   &.isAvailable {
     &:hover,
     &.isActive {
-      background-color: $primary;
+      background-color: $background;
       cursor: pointer;
     }
   }

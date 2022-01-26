@@ -234,6 +234,7 @@ function Swap(): ReactElement {
             console.log('path was not found')
             dispatch(setSwapRouterInfo({
               ...swapRouterInfo,
+              isGettingBestPath:false,
               swapError: 'path was not found for this pair to Swap'
             }))
             return

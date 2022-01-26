@@ -7,10 +7,17 @@ import { analytics } from "../../utils/analytics"
 
 type Props = {
   disabled?: boolean
-  kind?: "primary" | "secondary" | "ternary" | "cancel" | "temporary"
+  kind?:
+    | "primary"
+    | "secondary"
+    | "ternary"
+    | "cancel"
+    | "temporary"
+    | "primary-destructive"
+    | "secondary-destructive"
   visible?: boolean
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void
-  size?: "small" | "medium" | "large"
+  size?: "small" | "medium" | "large" | "full"
 }
 
 export default function Button(

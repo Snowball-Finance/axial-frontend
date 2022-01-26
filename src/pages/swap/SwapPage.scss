@@ -4,11 +4,22 @@ div.swapPage {
   background: var(--background-main);
   color: var(--text);
   font-size: 16px;
-  padding-bottom: 80px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  padding: 36px 48px;
 
-  h3.swapTitle {
-    font-weight: 700;
-    font-size: 24px;
+  @include breakpoint(sm) {
+    width: 100%;
+    padding: 12px 8px;
+  }
+
+  .row .swapTitle {
+    font-weight: 400;
+    font-size: 21px;
     line-height: 30px;
   }
 
@@ -17,27 +28,99 @@ div.swapPage {
   }
 
   .swapForm {
-    width: 100%;
+    width: 90%;
     background: $primary-focus;
     border-radius: 10px;
-    padding: 24px;
+    padding: 36px 24px;
+    @include breakpoint(sm) {
+      width: 100%;
+    }
+    .swapInformation {
+      .row {
+        margin: 0px;
+      }
+    }
+    .change {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      flex-wrap: nowrap;
+      flex-direction: row;
+      justify-content: center;
+      padding: 8px;
+      button {
+        border-radius: 50px;
+        margin: 8px 0px;
+        height: 32px;
+        width: 32px;
+        background: $primary-blue;
+        &:hover {
+          box-shadow: $shadow-hover;
+          background: $primary-shade;
+        }
+        svg {
+          fill: $white;
+        }
+      }
+    }
     .row {
       display: flex;
       justify-content: space-between;
-      margin-top: 8px;
+      margin-bottom: 8px;
       width: 100%;
       align-items: baseline;
     }
     .balanceContainer {
       span,
       a {
-        font-size: 12px;
+        font-size: 16px;
       }
       a {
         font-weight: 700;
         color: var(--text);
         &:hover {
           cursor: pointer;
+        }
+      }
+    }
+  }
+  .container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 1170px;
+
+    @include breakpoint(md) {
+      width: 980px;
+    }
+
+    @include breakpoint(sm) {
+      width: 100%;
+      padding: 0 8px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .textBlock {
+      width: 100%;
+      padding: 56px 48px;
+      @include breakpoint(sm) {
+        width: 100%;
+        padding: 12px 8px;
+        margin-bottom: 40px;
+      }
+      .title h1 {
+        font-size: 42px;
+        line-height: 54px;
+        font-weight: $bold;
+      }
+      .description {
+        width: 100%;
+        p {
+          font-size: 16px;
         }
       }
     }
@@ -60,11 +143,10 @@ div.swapPage {
   button.exchange {
     border: none;
     background: $primary;
-    height: 24px;
-    margin-left: 4px;
+    height: 32px;
+    width: 32px;
     padding: 0;
-    border-radius: 4px;
-
+    border-radius: 100%;
     &:hover {
       transform: none;
     }
@@ -78,7 +160,6 @@ div.swapPage {
     background: $primary-shade;
     width: 100%;
     > svg {
-      fill: var(--primary-foreground);
       margin-right: 8px;
     }
   }
@@ -88,9 +169,11 @@ div.swapPage {
     background-color: $text-red;
     padding: 8px;
     width: 100%;
-    margin-top: 32px;
+    margin: 12px 0px;
     display: flex;
     justify-content: center;
+    font-family: $font-family;
+    font-weight: $bold;
   }
 
   .infoSection {
@@ -144,9 +227,10 @@ div.swapPage {
     width: 100%;
     color: $error;
     font-weight: $normal;
-    text-align: center;
-    margin-top: 8px;
+    text-align: right;
     display: none;
+    font-size: 14px;
+    font-family: $font-family;
   }
 
   .info {

@@ -7,7 +7,7 @@ div.poolOverview {
   background: var(--background-element);
   box-shadow: var(--shadow);
   border-radius: 10px;
-  padding: 24px 32px;
+  padding: 24px 36px;
   display: grid;
   grid-template-columns: 45% 55%;
 
@@ -32,6 +32,12 @@ div.poolOverview {
   .left {
     display: grid;
     grid-template-rows: 40px 24px 22px 10px 20px;
+    @include breakpoint(sm) {
+      display: flex;
+      flex-direction: column;
+      align-content: center;
+      align-items: center;
+    }
   }
 
   .titleAndTag {
@@ -65,7 +71,11 @@ div.poolOverview {
   }
 
   div.token {
-    margin-right: 16px;
+    margin: 0px 8px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
 
     &:last-child {
       margin-right: 0;
@@ -73,9 +83,8 @@ div.poolOverview {
 
     & > img {
       margin-right: 4px;
-      vertical-align: sub;
-      height: 18px;
-      width: 18px;
+      height: 24px;
+      width: 24px;
     }
   }
 
@@ -90,10 +99,17 @@ div.poolOverview {
     }
 
     .margin {
-      margin-right: 24px;
+      margin-right: 22px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
 
       @include breakpoint(md) {
         margin-right: auto;
+      }
+
+      @include breakpoint(sm) {
+        margin-right: 0px;
       }
     }
 
@@ -107,6 +123,11 @@ div.poolOverview {
         justify-self: start;
         width: 100%;
         justify-content: space-between;
+      }
+
+      @include breakpoint(sm) {
+        display: flex;
+        flex-direction: row;
       }
     }
 
@@ -138,6 +159,14 @@ div.poolOverview {
         display: flex;
         width: 100%;
         justify-content: space-between;
+      }
+
+      @include breakpoint(sm) {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        flex-direction: row;
+        align-content: center;
       }
     }
   }

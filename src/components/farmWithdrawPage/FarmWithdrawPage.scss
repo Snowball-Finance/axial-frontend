@@ -9,7 +9,7 @@ div.withdraw {
   box-sizing: border-box; // Make the padding included in height calculation
 
   .content {
-    width: 888px;
+    width: 980px;
     margin: 0 auto;
     display: grid;
     grid-template-columns: auto auto;
@@ -26,10 +26,8 @@ div.withdraw {
 
     .infoPanels {
       margin-top: 40px;
-      width: 434px;
-      padding: 24px 32px;
+      /*padding: 24px 32px;*/
       border-radius: 10px;
-      background: var(--background-element);
       box-sizing: border-box;
       @include breakpoint(lg) {
         margin: 40px auto 0;
@@ -67,12 +65,12 @@ div.withdraw {
 
     .form h3 {
       font-family: $font-family-title;
-      font-size: 30px;
+      font-size: 24px;
       margin-top: 0;
-      margin-bottom: 48px;
+      margin-bottom: 12px;
       font-weight: $bold;
       color: var(--text);
-      text-align: center;
+      text-align: left;
     }
 
     .percentage {
@@ -83,7 +81,8 @@ div.withdraw {
       margin-bottom: 16px;
 
       span {
-        font-weight: $bold;
+        font-weight: 500;
+        font-size: 18px;
         letter-spacing: -0.04em;
       }
 
@@ -91,17 +90,16 @@ div.withdraw {
         height: 32px;
         width: 112px;
         display: block;
-        background: $white;
         border: none;
         border-radius: 0;
-
+        text-align: right;
         padding-left: 16px;
-        color: $text-black;
         font-size: 16px;
         font-family: $font-family;
         font-style: normal;
         font-weight: $normal;
-
+        font-size: 24px;
+        border-radius: 10px;
         &:focus {
           outline: var(--outline) solid 1px;
         }
@@ -111,6 +109,7 @@ div.withdraw {
         margin-top: 8px;
         color: $error;
         font-size: 14px;
+        font-family: $font-family;
         text-align: right;
         width: 100%;
       }
@@ -187,14 +186,19 @@ div.withdraw {
   }
 
   div.transactionInfo {
-    margin-top: 32px;
+    margin-top: 24px;
     display: grid;
     grid-template-rows: auto;
     row-gap: 8px;
 
+    .transactionInfoItem {
+      display: flex;
+      justify-content: space-between;
+    }
+
     span.value {
       color: var(--text);
-      font-weight: $bold;
+      font-weight: 500;
     }
 
     span.bonus {

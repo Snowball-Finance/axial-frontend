@@ -4,7 +4,7 @@
 
 button.button {
   font-family: $font-family;
-  border-radius: 4px;
+  border-radius: 75px;
   border: none;
   color: var(--background-main);
   font-weight: $bold;
@@ -20,6 +20,7 @@ button.button {
   &:disabled {
     cursor: not-allowed;
     color: rgba(0, 0, 0, 0.3);
+    opacity: 0.5;
   }
 
   &:hover,
@@ -29,31 +30,36 @@ button.button {
   }
 
   &.primary {
-    background: $primary;
-
+    background: $primary-destructive;
+    color: $primary-blue;
     &:enabled:hover,
     &:enabled:focus {
-      background-color: $secondary-focus;
-      color: var(--text);
+      background: linear-gradient(
+          90deg,
+          rgba(234, 171, 80, 0) 0%,
+          #ffd08c 49.8%,
+          rgba(234, 171, 80, 0) 100%
+        ),
+        #eaab50;
       box-shadow: var(--shadow-hover);
     }
   }
 
   &.secondary {
     background-color: clear;
-    color: $secondary-focus;
+    color: $primary-destructive;
     font-weight: $bold;
-    border: 1px solid var(--outline);
+    border: 1px solid $primary-destructive;
 
     &:disabled {
       cursor: not-allowed;
-      color: var(--text-secondary-button-disabled);
+      color: $primary-destructive;
+      opacity: 0.5;
     }
 
     &:enabled:hover,
     &:enabled:focus {
       background-color: $primary-blue;
-      color: $text-white;
       font-weight: $bold;
       box-shadow: var(--shadow-hover);
     }
@@ -101,7 +107,8 @@ button.button {
   &.medium {
     width: unset;
     min-height: 40px;
-    min-width: 110px;
+    min-width: 138px;
+    padding: 0px 36px;
   }
 
   &.large {
@@ -110,5 +117,11 @@ button.button {
     @include breakpoint(sm) {
       width: 140px;
     }
+  }
+  &.full {
+    width: 100%;
+    padding: 12px 20px;
+    font-size: 18px;
+    font-weight: $bold;
   }
 }
