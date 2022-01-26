@@ -263,7 +263,7 @@ function Swap(): ReactElement {
           })
           path = routes;
           dispatch(setSwapRouterInfo({
-            ...swapRouterInfo,
+            bestSwapPath:p,
             isGettingBestPath: false,
             swapError: null,
           }))
