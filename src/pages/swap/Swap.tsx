@@ -222,7 +222,7 @@ function Swap(): ReactElement {
           console.debug(`Gas Estimate: ${gasEstimate.toString()}`);
 
           // additional gas estimate to make sure we have enough gas
-          const additional=multiply(Number(gasEstimate.toString()),0.0005).toFixed(0)
+          const additional=multiply(Number(gasEstimate.toString()),0.2).toFixed(0)
           // fetch the best path
           const optimalPath = await routerContract.findBestPathWithGas(
             amountToGive,
