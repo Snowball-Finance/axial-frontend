@@ -29,7 +29,7 @@ import SwapPage from "./SwapPage"
 import { Zero } from "@ethersproject/constants"
 import { calculateGasEstimate } from "../../libs/gasEstimate"
 import { calculatePriceImpact } from "../../libs/priceImpact"
-import { debounce } from "lodash"
+import { debounce, multiply } from "lodash"
 import { formatGasToString } from "../../libs/gas"
 import { useActiveWeb3React } from "../../hooks"
 import { useApproveAndSwap } from "../../hooks/useApproveAndSwap"
@@ -221,13 +221,16 @@ function Swap(): ReactElement {
 
           console.debug(`Gas Estimate: ${gasEstimate.toString()}`);
 
+          // additional gas estimate to make sure we have enough gas
+          const additional=multiply(Number(gasEstimate.toString()),0.0005).toFixed(0)
+          // fetch the best path
           const optimalPath = await routerContract.findBestPathWithGas(
             amountToGive,
             tokenFrom.addresses[chainId],
             tokenTo.addresses[chainId],
             1,
             BigNumber.from(225),
-            { gasLimit: (Number(gasEstimate) + 2000).toString() }
+            { gasLimit: (Number(gasEstimate) + Number(additional)).toString() }
           )
 
           if (!optimalPath.amounts[optimalPath.amounts.length - 1]) {
@@ -235,7 +238,7 @@ function Swap(): ReactElement {
             dispatch(setSwapRouterInfo({
               ...swapRouterInfo,
               isGettingBestPath:false,
-              swapError: 'path was not found for this pair to Swap'
+              swapError: t('swapPathNotFound')
             }))
             return
           }

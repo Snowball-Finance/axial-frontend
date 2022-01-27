@@ -55,6 +55,7 @@
   "getWallet": "Get a wallet!",
   "highPriceImpact": "Warning: High Price Impact! {{rate}}",
   "lowSwapRate": "Warning: Low Swap Rate! {{rate}}%",
+  "swapPathNotFound":"path was not found for this pair to Swap",
   "highPriceImpactConfirmation": "Warning: There is a high Price Impact on this transaction due either to the transaction's size or insufficient liquidity, which will result in a loss of funds. Please confirm that you understand before submitting your transaction.",
   "iConfirm": "I CONFIRM",
   "unbalancedPool": "Warning: Pool unbalanced!",
