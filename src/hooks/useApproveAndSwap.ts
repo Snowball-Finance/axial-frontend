@@ -81,7 +81,7 @@ export function useApproveAndSwap(): (
       } else {
         gasPrice = gasStandard
       }
-      gasPrice = parseUnits(String(gasPrice) || "45", 9)
+      gasPrice = parseUnits(gasPrice?String(gasPrice): "45", 9)
       if (tokenContract == null) return
       let addressToApprove = ""
       if (state.swapType === SWAP_TYPES.DIRECT) {
