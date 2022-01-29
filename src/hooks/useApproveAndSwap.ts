@@ -72,7 +72,7 @@ export function useApproveAndSwap(): (
       // For each token being deposited, check the allowance and approve it if necessary
       const tokenContract = tokenContracts?.[state.from.symbol] as Erc20
       let gasPrice
-      if (gasPriceSelected === GasPrices.Custom) {
+      if (gasPriceSelected === GasPrices.Custom &&gasCustom?.valueSafe) {
         gasPrice = gasCustom?.valueSafe
       } else if (gasPriceSelected === GasPrices.Fast) {
         gasPrice = gasFast
@@ -81,7 +81,7 @@ export function useApproveAndSwap(): (
       } else {
         gasPrice = gasStandard
       }
-      gasPrice = parseUnits(String(gasPrice) || "45", 9)
+      gasPrice = parseUnits(gasPrice?String(gasPrice):"45", 9)
       if (tokenContract == null) return
       let addressToApprove = ""
       if (state.swapType === SWAP_TYPES.DIRECT) {
@@ -163,6 +163,7 @@ export function useApproveAndSwap(): (
           transactionDeadlineSelected,
           transactionDeadlineCustom,
         )
+
         const args = [
           state.from.tokenIndex,
           state.to.tokenIndex,
@@ -171,6 +172,7 @@ export function useApproveAndSwap(): (
           Math.round(new Date().getTime() / 1000 + 60 * deadline),
           txnArgs,
         ] as const
+        console.log(args);
         console.debug("swap - direct", args)
         swapTransaction = await (state.swapContract as NonNullable<
           typeof state.swapContract // we already check for nonnull above
