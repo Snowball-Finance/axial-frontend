@@ -172,7 +172,6 @@ export function useApproveAndSwap(): (
           Math.round(new Date().getTime() / 1000 + 60 * deadline),
           txnArgs,
         ] as const
-        console.log(args);
         console.debug("swap - direct", args)
         swapTransaction = await (state.swapContract as NonNullable<
           typeof state.swapContract // we already check for nonnull above
