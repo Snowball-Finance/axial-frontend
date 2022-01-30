@@ -459,7 +459,7 @@ function Swap(): ReactElement {
         formState.swapType
       }-fromValue:${
         formState.from.value
-      }-toValue:${formState.to.value.toNumber()}`,
+      }`,
     })
   }
 
