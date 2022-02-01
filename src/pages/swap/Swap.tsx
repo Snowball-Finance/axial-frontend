@@ -1,6 +1,5 @@
 import {
   IS_VIRTUAL_SWAP_ACTIVE,
-  PoolName,
   SWAP_TYPES,
   TOKENS_MAP,
 } from "../../constants"

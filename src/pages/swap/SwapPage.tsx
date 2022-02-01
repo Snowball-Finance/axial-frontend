@@ -21,7 +21,6 @@ import { useActiveWeb3React } from "../../hooks"
 import { useSelector } from "react-redux"
 import { useTranslation } from "react-i18next"
 import { analytics } from "../../utils/analytics"
-import { LoadingWrapper } from "../../components/shimmer"
 
 interface Props {
   tokenOptions: {
