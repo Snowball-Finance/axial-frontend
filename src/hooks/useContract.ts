@@ -19,6 +19,7 @@ import {
   isMetaPool,
   USDC,
   USDC_AM3D_SWAP_TOKEN,
+  SWAP_ROUTER_ADDRESSES,
 } from "../constants"
 
 import { Contract } from "@ethersproject/contracts"
@@ -30,7 +31,9 @@ import { LpTokenGuarded } from "../../types/ethers-contracts/LpTokenGuarded"
 import { LpTokenUnguarded } from "../../types/ethers-contracts/LpTokenUnguarded"
 import { MetaSwapDeposit } from "../../types/ethers-contracts/MetaSwapDeposit"
 import SWAP_FLASH_LOAN_NO_WITHDRAW_FEE_ABI from "../constants/abis/swapFlashLoanNoWithdrawFee.json"
+import SWAP_ROUTER_ABI from "../constants/abis/swapRouter.json"
 import { SwapFlashLoanNoWithdrawFee } from "../../types/ethers-contracts/SwapFlashLoanNoWithdrawFee"
+import { SwapRouter } from "../../types/ethers-contracts/SwapRouter"
 import { getContract } from "../libs"
 import { useActiveWeb3React } from "./index"
 import { useMemo } from "react"
@@ -101,6 +104,24 @@ export function useSwapContract(
       return null
     }
   }, [chainId, library, account, poolName])
+}
+
+export function useSwapRouterContract(): SwapRouter | null {
+  const { chainId, account, library } = useActiveWeb3React()
+  return useMemo(() => {
+    if (!library || !chainId) return null
+    try {
+      return getContract(
+        SWAP_ROUTER_ADDRESSES[chainId],
+        SWAP_ROUTER_ABI,
+        library,
+        account ?? undefined,
+      ) as SwapRouter
+    } catch (error) {
+      console.error("Failed to get contract", error)
+      return null
+    }
+  }, [chainId, library, account])
 }
 
 export function useLPTokenContract<T extends PoolName>(

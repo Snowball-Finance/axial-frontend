@@ -15,7 +15,6 @@ const fetchGasFromChain = async (): Promise<GenericGasReponse> => {
       process.env.REACT_APP_NETWORK_URL,
     )
     const gasPrice = Math.floor((await provider.getGasPrice()).toNumber() / 1e9)
-
     const response: GenericGasReponse = {
       gasStandard: gasPrice,
       gasFast: gasPrice,

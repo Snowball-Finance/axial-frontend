@@ -464,6 +464,7 @@ export type Pool = {
   route: string
   migration?: PoolName
   metaSwapAddresses?: { [chainId in ChainId]: string }
+  swapRouterAddresses?: { [chainId in ChainId]: string }
   underlyingPoolTokens?: Token[]
   underlyingPool?: PoolName
   isOutdated?: boolean // pool can be outdated but not have a migration target
@@ -654,3 +655,9 @@ export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000"
 // FLAGS
 export const IS_VIRTUAL_SWAP_ACTIVE = false
 // FLAGS END
+
+export const SWAP_ROUTER_ADDRESSES: { [chainId in ChainId]: string } = {
+  [ChainId.MAINNET]: "0xBeD9dfE835cd2bB6775f344Ee5E3431b2CbF31FB",
+  [ChainId.HARDHAT]: "0xBeD9dfE835cd2bB6775f344Ee5E3431b2CbF31FB",//ZERO_ADDRESS,
+}
+export const SWAP_ROUTER_FEE=BigNumber.from(0)
