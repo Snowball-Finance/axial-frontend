@@ -122,7 +122,7 @@ export default function FarmOverview({
     masterchef,
     library?.getSigner(),
   )
-  let info = []
+  let info:any = []
 
   if (hasShare) {
     info.push(

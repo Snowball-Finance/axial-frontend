@@ -15,7 +15,9 @@ import chakraTheme from "./theme/"
 import getLibrary from "./libs/getLibrary"
 import { getNetworkLibrary } from "./connectors"
 import reportWebVitals from "./reportWebVitals"
-import store from "./store"
+import { configureAppStore } from "./store"
+import { ApolloProvider } from "@apollo/client";
+import { apolloClient } from "./services/apollo/client"
 
 const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName)
 
@@ -24,6 +26,7 @@ if (window && window.ethereum) {
 }
 
 window.addEventListener("error", logError)
+const store = configureAppStore({});
 
 ReactDOM.render(
   <>
@@ -33,9 +36,11 @@ ReactDOM.render(
         <Web3ReactProvider getLibrary={getLibrary}>
           <Web3ProviderNetwork getLibrary={getNetworkLibrary}>
             <Provider store={store}>
-              <Router>
-                <App />
-              </Router>
+              <ApolloProvider client={apolloClient}>
+                <Router>
+                  <App />
+                </Router>
+              </ApolloProvider>
             </Provider>
           </Web3ProviderNetwork>
         </Web3ReactProvider>

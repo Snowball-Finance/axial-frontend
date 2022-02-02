@@ -33,6 +33,7 @@ function TokenInput({
   let tokenUSDValue: number | BigNumber | undefined
   const poolName = LPTOKEN_TO_POOL_MAP[symbol]
   const [poolData] = usePoolData(poolName)
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   const { tokenPricesUSD } = useSelector((state: AppState) => state.application)
 
   if (poolData.lpTokenPriceUSD != Zero) {

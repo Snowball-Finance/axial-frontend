@@ -37,7 +37,7 @@ export interface SwapRouterInfo{
 
 }
 
-type ApplicationState = GasPrices & { tokenPricesUSD?: TokenPricesUSD } & {
+export type ApplicationState = GasPrices & { tokenPricesUSD?: TokenPricesUSD } & {
   lastTransactionTimes: LastTransactionTimes
 } & { swapStats?: SwapStats } & { masterchefApr?: MasterchefApr } &{swapRouterInfo:SwapRouterInfo}
 

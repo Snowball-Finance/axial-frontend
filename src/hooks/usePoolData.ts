@@ -262,8 +262,8 @@ export default function usePoolData(
       ) as LpTokenUnguarded
       const totalLpTokenBalance = await lpTokenContract.totalSupply()
 
-      let poolApr = null,
-        extraapr = null,
+      let poolApr:any = null,
+        extraapr:any = null,
         extraUSDPerWeek = 0
       if (masterchefApr) {
         poolApr = masterchefApr[POOL.addresses[43114]].apr ?? 0
