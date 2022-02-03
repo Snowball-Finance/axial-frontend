@@ -127,8 +127,10 @@ function PoolInfoCard({ data }: Props): ReactElement | null {
       <div className="bottom">
         <h4>{t("currencyReserves")}</h4>
         <LoadingWrapper width={130} isLoading={formattedData.reserve === "-"}>
-            <span style={{display: 'none'}}>{`$${formattedData.reserve} ${t("inTotal")}`}</span>
-          </LoadingWrapper>
+          <span style={{ display: "none" }}>{`$${formattedData.reserve} ${t(
+            "inTotal",
+          )}`}</span>
+        </LoadingWrapper>
         <div className="tokenList">
           {formattedData.tokens.map((token, index) => (
             <div className="token" key={index}>

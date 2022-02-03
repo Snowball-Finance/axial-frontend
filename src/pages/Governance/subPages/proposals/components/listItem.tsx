@@ -1,40 +1,45 @@
-import { Box, Chip, Divider, styled } from "@mui/material";
-import { Tick } from "assets/iconComponents/tick";
+import { Box, Chip, Divider, styled } from "@mui/material"
+import { Tick } from "assets/iconComponents/tick"
 
+import React, { FC } from "react"
+import { useTranslation } from "react-i18next"
+import { useDispatch } from "react-redux"
+import { useHistory } from "react-router-dom"
+import ChevronRightInCircle from "../../../../../assets/iconComponents/chevronRightInCircle"
+import {
+  SnowPaper,
+  SnowPaperInterface,
+} from "../../../../../components/injectedByNewStructure/base/SnowPaper"
+import { InfoButton } from "../../../../../components/injectedByNewStructure/common/buttons/infoButton"
+import {
+  Proposal,
+  ProposalStates,
+} from "../../../../../containers/BlockChain/Governance/types"
+import { CssVariables } from "../../../../../styles/cssVariables/cssVariables"
+import { mobile } from "../../../../../styles/media"
 
-import React, { FC } from "react";
-import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
-import ChevronRightInCircle from "../../../../../assets/iconComponents/chevronRightInCircle";
-import { SnowPaper, SnowPaperInterface } from "../../../../../components/injectedByNewStructure/base/SnowPaper";
-import { InfoButton } from "../../../../../components/injectedByNewStructure/common/buttons/infoButton";
-import { Proposal, ProposalStates } from "../../../../../containers/BlockChain/Governance/types";
-import { CssVariables } from "../../../../../styles/cssVariables/cssVariables";
-import { mobile } from "../../../../../styles/media";
+import { GovernanceSubPages } from "../../../routes"
 
-import { GovernanceSubPages } from "../../../routes";
-
-import { forAndAgainst } from "../../../utils/votes";
-import { VoteProgressBar, VoteProgressBarType } from "./voteProgressBar";
+import { forAndAgainst } from "../../../utils/votes"
+import { VoteProgressBar, VoteProgressBarType } from "./voteProgressBar"
 
 interface ProposalListItemProps {
-  proposal: Proposal;
-  short?: boolean;
+  proposal: Proposal
+  short?: boolean
 }
 
 export const ProposalListItem: FC<ProposalListItemProps> = ({
   proposal,
   short,
 }) => {
-  const { t } = useTranslation();
-  const history = useHistory();
+  const { t } = useTranslation()
+  const history = useHistory()
 
-  const { forVotes, againstVotes } = forAndAgainst({ proposal });
+  const { forVotes, againstVotes } = forAndAgainst({ proposal })
 
   const handleDetailsClick = () => {
-    history.push(`${GovernanceSubPages.proposals}/${proposal.index}`);
-  };
+    history.push(`${GovernanceSubPages.proposals}/${proposal.index}`)
+  }
 
   return (
     <Wrapper {...(short && { marginBottom: "0 !important" })}>
@@ -47,22 +52,24 @@ export const ProposalListItem: FC<ProposalListItemProps> = ({
           {...(!short && { width: "310px" })}
         >
           <div>
-          <DarkText size={12}>#{proposal.index}</DarkText>
-          <DarkText size={16}>{proposal.title}</DarkText>
+            <DarkText size={12}>#{proposal.index}</DarkText>
+            <DarkText size={16}>{proposal.title}</DarkText>
           </div>
           <StatusChip
             state={proposal.state}
             label={
-              proposal.state === ProposalStates.vetoed
-                ?
-                 ProposalStates.passed
-                :
-                 proposal.state===ProposalStates.executed?
+              proposal.state === ProposalStates.vetoed ? (
+                ProposalStates.passed
+              ) : proposal.state === ProposalStates.executed ? (
                 <>
-                <span>{proposal.state}</span><span><Tick /></span>
+                  <span>{proposal.state}</span>
+                  <span>
+                    <Tick />
+                  </span>
                 </>
-                :
+              ) : (
                 proposal.state
+              )
             }
           />
         </IndexNameAndStatusWrapper>
@@ -78,7 +85,7 @@ export const ProposalListItem: FC<ProposalListItemProps> = ({
               "..." +
               proposal.proposer.substring(
                 proposal.proposer.length - 4,
-                proposal.proposer.length
+                proposal.proposer.length,
               )}
           </DarkText>
         </DateAndMiscWrapper>
@@ -87,16 +94,12 @@ export const ProposalListItem: FC<ProposalListItemProps> = ({
           <>
             <VotesBarWrapper>
               <VoteProgressBar
-                title={`${t("For")}: ${
-                  forVotes.formattedVotes
-                }`}
+                title={`${t("For")}: ${forVotes.formattedVotes}`}
                 percent={forVotes.percent}
                 type={VoteProgressBarType.for}
               />
               <VoteProgressBar
-                title={`${t("Against")}: ${
-                  againstVotes.formattedVotes
-                }`}
+                title={`${t("Against")}: ${againstVotes.formattedVotes}`}
                 percent={againstVotes.percent}
                 type={VoteProgressBarType.against}
               />
@@ -113,10 +116,10 @@ export const ProposalListItem: FC<ProposalListItemProps> = ({
         )}
       </StyledSnowPaper>
     </Wrapper>
-  );
-};
+  )
+}
 
-const DateAndChip = styled("div")({});
+const DateAndChip = styled("div")({})
 
 const DateChip = styled(Chip)({
   background: CssVariables.chipBackgroundColor,
@@ -126,26 +129,26 @@ const DateChip = styled(Chip)({
   maxHeight: "24px",
   marginBottom: "16px",
   marginTop: "6px",
-});
+})
 
 const StatusChip = styled(Chip)<{ state: ProposalStates }>(({ state }) => {
-  let background = CssVariables.primaryBlue;
-  let color = CssVariables.paperBackground;
+  let background = CssVariables.primaryBlue
+  let color = CssVariables.paperBackground
   switch (state) {
     case ProposalStates.readyForExecution:
-      background = CssVariables.chipBackgroundColor;
-      color = CssVariables.white;
-      break;
-      case ProposalStates.active:
-        background = CssVariables.primaryBlue;
-        color = CssVariables.paperBackground;
-        break;
-       case ProposalStates.executed:
-        background = CssVariables.opaqueGreen;
-        color = CssVariables.white;
-        break; 
-        default:
-      break;
+      background = CssVariables.chipBackgroundColor
+      color = CssVariables.white
+      break
+    case ProposalStates.active:
+      background = CssVariables.primaryBlue
+      color = CssVariables.paperBackground
+      break
+    case ProposalStates.executed:
+      background = CssVariables.opaqueGreen
+      color = CssVariables.white
+      break
+    default:
+      break
   }
   return {
     background,
@@ -153,19 +156,19 @@ const StatusChip = styled(Chip)<{ state: ProposalStates }>(({ state }) => {
     borderRadius: CssVariables.paperBorderRadius,
     fontSize: "12px",
     maxHeight: "24px",
-    "span":{
-display:'flex',
-gap:'6px',
-alignItems:'center'
-    }
-  };
-});
+    span: {
+      display: "flex",
+      gap: "6px",
+      alignItems: "center",
+    },
+  }
+})
 
 const DarkText = styled("p")<{ size: number }>(({ size }) => ({
   color: CssVariables.bodyTextColor,
   margin: 0,
   fontSize: `${size}px`,
-}));
+}))
 
 const DetailButtonWrapper = styled("div")({
   display: "flex",
@@ -176,7 +179,7 @@ const DetailButtonWrapper = styled("div")({
       height: "36px",
     },
   },
-});
+})
 
 const VotesBarWrapper = styled("div")({
   minWidth: "320px",
@@ -190,7 +193,7 @@ const VotesBarWrapper = styled("div")({
     padding: 0,
     gap: "6px",
   },
-});
+})
 
 const DateAndMiscWrapper = styled("div")<{ short: "true" | "" }>(
   ({ short }) => ({
@@ -200,15 +203,15 @@ const DateAndMiscWrapper = styled("div")<{ short: "true" | "" }>(
       alignItems: "center",
       ...(short && { flexDirection: "column", alignItems: "start" }),
     },
-  })
-);
+  }),
+)
 
 const IndexNameAndStatusWrapper = styled(Box)({
   display: "flex",
   flexDirection: "column",
   alignItems: "flex-start",
   justifyContent: "space-between",
-});
+})
 
 const DividerOnMobile = styled(Divider)({
   display: "none",
@@ -216,7 +219,7 @@ const DividerOnMobile = styled(Divider)({
     display: "block",
     margin: "16px 0",
   },
-});
+})
 
 const StyledSnowPaper = styled(SnowPaper)<
   SnowPaperInterface & { active: "true" | ""; short: "true" | "" }
@@ -239,8 +242,8 @@ const StyledSnowPaper = styled(SnowPaper)<
       },
     }),
   },
-}));
+}))
 
 const Wrapper = styled(Box)({
   marginBottom: "16px",
-});
+})

@@ -1,49 +1,49 @@
-import { createSelector } from "@reduxjs/toolkit";
-import { RootState } from "../../../../store/types";
+import { createSelector } from "@reduxjs/toolkit"
+import { RootState } from "../../../../store/types"
 
-import { selectContractsDomain } from "../../selectors";
-import { selectGovernanceTokenContractDomain } from "../selectors";
-import { initialState } from "./slice";
+import { selectContractsDomain } from "../../selectors"
+import { selectGovernanceTokenContractDomain } from "../selectors"
+import { initialState } from "./slice"
 
-const selectDomain = (state: RootState) => state.staking || initialState;
-const selectIsStakingDomain = (state: RootState) => state.staking?.isStaking;
+const selectDomain = (state: RootState) => state.staking || initialState
+const selectIsStakingDomain = (state: RootState) => state.staking?.isStaking
 export const selectFeeDistributorABIDomain = (state: RootState) =>
-  state.staking?.feeDistributorABI;
+  state.staking?.feeDistributorABI
 export const selectOtherDistributorsDomain = (state: RootState) =>
-  state.staking?.otherDistributors;
+  state.staking?.otherDistributors
 export const selectUserClaimableDomain = (state: RootState) =>
-  state.staking?.claimable?.userClaimable;
+  state.staking?.claimable?.userClaimable
 export const selectOtherClaimablesDomain = (state: RootState) =>
-  state.staking?.claimable?.otherClaimables;
+  state.staking?.claimable?.otherClaimables
 
 export const selectStaking = createSelector(
   [selectDomain],
-  (stakingState) => stakingState
-);
+  (stakingState) => stakingState,
+)
 
 export const selectIsStaking = createSelector(
   [selectIsStakingDomain],
-  (isStaking) => isStaking
-);
+  (isStaking) => isStaking,
+)
 
 export const selectOtherDistributors = createSelector(
   [selectOtherDistributorsDomain],
-  (otherDistributors) => otherDistributors
-);
+  (otherDistributors) => otherDistributors,
+)
 
 export const selectUserClaimable = createSelector(
   [selectUserClaimableDomain],
-  (userClaimable) => userClaimable
-);
+  (userClaimable) => userClaimable,
+)
 
 export const selectOtherClaimables = createSelector(
   [selectOtherClaimablesDomain],
-  (otherClaimables) => otherClaimables
-);
+  (otherClaimables) => otherClaimables,
+)
 
 export const selectReadyForStaking = createSelector(
   [selectContractsDomain, selectGovernanceTokenContractDomain],
   (blockChainContracts, governanceTokenContract) => {
-    return blockChainContracts.mainTokenContract && governanceTokenContract;
-  }
-);
+    return blockChainContracts.mainTokenContract && governanceTokenContract
+  },
+)

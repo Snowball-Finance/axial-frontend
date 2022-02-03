@@ -16,7 +16,7 @@ import getLibrary from "./libs/getLibrary"
 import { getNetworkLibrary } from "./connectors"
 import reportWebVitals from "./reportWebVitals"
 import { configureAppStore } from "./store"
-import { ApolloProvider } from "@apollo/client";
+import { ApolloProvider } from "@apollo/client"
 import { apolloClient } from "./services/apollo/client"
 
 const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName)
@@ -26,7 +26,7 @@ if (window && window.ethereum) {
 }
 
 window.addEventListener("error", logError)
-const store = configureAppStore({});
+const store = configureAppStore({})
 
 ReactDOM.render(
   <>

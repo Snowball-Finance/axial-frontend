@@ -4,15 +4,15 @@
  *
  */
 
-import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { useWeb3Slice, Web3Actions } from "./slice";
-import { useWeb3React, Web3ReactProvider } from "@web3-react/core";
-import { Web3Provider } from "@ethersproject/providers";
+import React, { useEffect } from "react"
+import { useDispatch } from "react-redux"
+import { useWeb3Slice, Web3Actions } from "./slice"
+import { useWeb3React, Web3ReactProvider } from "@web3-react/core"
+import { Web3Provider } from "@ethersproject/providers"
 
 const Core = () => {
-  useWeb3Slice();
-  const dispatch = useDispatch();
+  useWeb3Slice()
+  const dispatch = useDispatch()
   const {
     active,
     activate,
@@ -22,7 +22,7 @@ const Core = () => {
     library,
     chainId,
     error,
-  } = useWeb3React();
+  } = useWeb3React()
 
   useEffect(() => {
     dispatch(
@@ -35,8 +35,8 @@ const Core = () => {
         library,
         chainId,
         error,
-      })
-    );
+      }),
+    )
   }, [
     active,
     activate,
@@ -47,14 +47,11 @@ const Core = () => {
     chainId,
     error,
     dispatch,
-  ]);
+  ])
 
-  return <></>;
-};
-
+  return <></>
+}
 
 export const Web3 = () => {
-  return (
-      <Core />
-  );
-};
+  return <Core />
+}

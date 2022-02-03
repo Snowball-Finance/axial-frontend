@@ -11,9 +11,9 @@ import { useSelector } from "react-redux"
 export default function usePoolTVLs(): { [poolName in PoolName]?: BigNumber } {
   const { chainId, library } = useActiveWeb3React()
   const { tokenPricesUSD } = useSelector((state: AppState) => state.application)
-  const [poolTvls, setPoolTvls] = useState<
-    { [poolName in PoolName]?: BigNumber }
-  >({})
+  const [poolTvls, setPoolTvls] = useState<{
+    [poolName in PoolName]?: BigNumber
+  }>({})
 
   useEffect(() => {
     if (

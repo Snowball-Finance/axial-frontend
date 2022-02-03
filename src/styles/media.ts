@@ -1,4 +1,4 @@
-import { theme } from "./theme";
+import { theme } from "./theme"
 
 // Update your breakpoints if you want
-export const mobile = theme.breakpoints.down("md");
+export const mobile = theme.breakpoints.down("md")

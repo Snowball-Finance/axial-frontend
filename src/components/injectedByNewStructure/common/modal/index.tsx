@@ -1,13 +1,13 @@
-import React, { FC, forwardRef } from "react";
-import { SnowModalProps } from "./types";
-import { StyledDialog, Wrapper, ChildWrapper } from "./style";
-import { Zoom, ZoomProps } from "@mui/material";
+import React, { FC, forwardRef } from "react"
+import { SnowModalProps } from "./types"
+import { StyledDialog, Wrapper, ChildWrapper } from "./style"
+import { Zoom, ZoomProps } from "@mui/material"
 
 // It is from official MUI docs, if you can please change types/
 // eslint-disable-next-line react/display-name
 const Transition = forwardRef<HTMLDivElement, ZoomProps>((props, ref) => {
-  return <Zoom ref={props.ref} {...props} timeout={300} />;
-});
+  return <Zoom ref={props.ref} {...props} timeout={300} />
+})
 
 export const SnowModal: FC<SnowModalProps> = ({
   isOpen,
@@ -25,5 +25,5 @@ export const SnowModal: FC<SnowModalProps> = ({
         <ChildWrapper>{children}</ChildWrapper>
       </Wrapper>
     </StyledDialog>
-  );
-};
+  )
+}

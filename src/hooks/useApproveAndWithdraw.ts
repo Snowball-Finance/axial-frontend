@@ -61,10 +61,8 @@ export function useApproveAndWithdraw(
     }
   }, [poolName])
 
-  const [
-    transactionStatus,
-    setTransactionStatus,
-  ] = useState<TransactionStatusType>(initialTransactionStatus)
+  const [transactionStatus, setTransactionStatus] =
+    useState<TransactionStatusType>(initialTransactionStatus)
 
   useEffect(() => {
     setTransactionStatus(initialTransactionStatus)

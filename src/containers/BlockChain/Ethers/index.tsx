@@ -4,19 +4,19 @@
  *
  */
 
-import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect } from "react"
+import { useDispatch } from "react-redux"
 
-import { EthersActions, useEthersSlice } from "./slice";
+import { EthersActions, useEthersSlice } from "./slice"
 
 export function Ethers() {
-  useEthersSlice();
+  useEthersSlice()
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(EthersActions.getAndSetProvider());
-  }, []);
+    dispatch(EthersActions.getAndSetProvider())
+  }, [])
 
-  return <></>;
+  return <></>
 }

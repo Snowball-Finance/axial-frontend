@@ -1,4 +1,4 @@
-import { styled } from "@mui/material";
+import { styled } from "@mui/material"
 
 export const Wrapper = styled("div")`
   position: fixed;
@@ -65,4 +65,4 @@ export const Wrapper = styled("div")`
       transform: translate(24px, 0);
     }
   }
-`;
+`

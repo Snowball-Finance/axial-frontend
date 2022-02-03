@@ -1,45 +1,44 @@
-import { createSelector } from "@reduxjs/toolkit";
-import { selectPrivateProviderDomain } from "./Ethers/selectors";
-import { selectLibraryDomain } from "./Web3/selectors";
-import { initialState } from "./slice";
-import { ethers } from "ethers";
-import { RootState } from "../../store/types";
-import { env } from "../../environment";
-
+import { createSelector } from "@reduxjs/toolkit"
+import { selectPrivateProviderDomain } from "./Ethers/selectors"
+import { selectLibraryDomain } from "./Web3/selectors"
+import { initialState } from "./slice"
+import { ethers } from "ethers"
+import { RootState } from "../../store/types"
+import { env } from "../../environment"
 
 export const selectBlockChainDomain = (state: RootState) =>
-  state.blockChain || initialState;
+  state.blockChain || initialState
 export const selectMainTokenABIDomain = (state: RootState) =>
-  state.blockChain?.mainTokenABI || undefined;
+  state.blockChain?.mainTokenABI || undefined
 export const selectContractsDomain = (state: RootState) =>
-  state.blockChain?.contracts || { ...initialState.contracts };
+  state.blockChain?.contracts || { ...initialState.contracts }
 export const selectPricesDomain = (state: RootState) =>
-  state.blockChain?.prices || { ...initialState.prices };
+  state.blockChain?.prices || { ...initialState.prices }
 
 export const selectBlockChain = createSelector(
   [selectBlockChainDomain],
-  (blockChainState) => blockChainState
-);
+  (blockChainState) => blockChainState,
+)
 
 export const selectPrices = createSelector(
   [selectPricesDomain],
-  (prices) => prices
-);
+  (prices) => prices,
+)
 
 export const selectMainTokenBalance = createSelector(
   [selectBlockChainDomain],
-  (blockChainState) => blockChainState.mainTokenBalance
-);
+  (blockChainState) => blockChainState.mainTokenBalance,
+)
 
 export const selectIsLoadingSnobBalance = createSelector(
   [selectBlockChainDomain],
-  (blockChainState) => blockChainState.isGettingSnobBalance
-);
+  (blockChainState) => blockChainState.isGettingSnobBalance,
+)
 
 export const selectContracts = createSelector(
   [selectBlockChainDomain],
-  (blockChainState) => blockChainState.contracts
-);
+  (blockChainState) => blockChainState.contracts,
+)
 
 export const selectCalculatedContracts = createSelector(
   [selectPrivateProviderDomain, selectLibraryDomain, selectMainTokenABIDomain],
@@ -50,12 +49,12 @@ export const selectCalculatedContracts = createSelector(
         mainTokenContract: new ethers.Contract(
           env.MAIN_TOKEN_ADDRESS || "",
           mainTokenABI,
-          provider
+          provider,
         ),
-      };
+      }
     }
     return {
       mainTokenContract: undefined,
-    };
-  }
-);
+    }
+  },
+)

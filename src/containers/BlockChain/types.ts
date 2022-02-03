@@ -1,18 +1,18 @@
-import { BigNumber, Contract } from "ethers";
+import { BigNumber, Contract } from "ethers"
 
 /* --- STATE --- */
 export interface BlockChainState {
-  mainTokenBalance: BigNumber | undefined;
-  isGettingSnobBalance: boolean;
-  mainTokenABI: any;
-  includesGovernance: boolean;
+  mainTokenBalance: BigNumber | undefined
+  isGettingSnobBalance: boolean
+  mainTokenABI: any
+  includesGovernance: boolean
   prices: {
-    mainToken: number;
-    mainToken24hChange: number;
-  };
+    mainToken: number
+    mainToken24hChange: number
+  }
   contracts: {
-    mainTokenContract: Contract | undefined;
-  };
+    mainTokenContract: Contract | undefined
+  }
 }
 
-export type ContainerState = BlockChainState;
+export type ContainerState = BlockChainState

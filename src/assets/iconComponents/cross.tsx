@@ -1,9 +1,9 @@
-import React, { FC } from "react";
-import { CssVariables } from "../../styles/cssVariables/cssVariables";
-import { IconProps } from "./types";
+import React, { FC } from "react"
+import { CssVariables } from "../../styles/cssVariables/cssVariables"
+import { IconProps } from "./types"
 
 const CrossIcon: FC<IconProps> = ({ color, size }) => {
-  const fill = color ?? CssVariables.primaryBlue;
+  const fill = color ?? CssVariables.primaryBlue
   return (
     <svg
       width={(size ?? 32) + ""}
@@ -27,7 +27,7 @@ const CrossIcon: FC<IconProps> = ({ color, size }) => {
         strokeLinejoin="round"
       />
     </svg>
-  );
-};
+  )
+}
 
-export default CrossIcon;
+export default CrossIcon

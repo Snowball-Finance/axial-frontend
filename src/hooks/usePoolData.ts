@@ -94,12 +94,8 @@ export default function usePoolData(
 ): PoolDataHookReturnType {
   const { account, library, chainId } = useActiveWeb3React()
   const swapContract = useSwapContract(poolName)
-  const {
-    tokenPricesUSD,
-    lastTransactionTimes,
-    swapStats,
-    masterchefApr,
-  } = useSelector((state: AppState) => state.application)
+  const { tokenPricesUSD, lastTransactionTimes, swapStats, masterchefApr } =
+    useSelector((state: AppState) => state.application)
   const lastDepositTime = lastTransactionTimes[TRANSACTION_TYPES.DEPOSIT]
   const lastWithdrawTime = lastTransactionTimes[TRANSACTION_TYPES.WITHDRAW]
   const lastSwapTime = lastTransactionTimes[TRANSACTION_TYPES.SWAP]
@@ -262,8 +258,8 @@ export default function usePoolData(
       ) as LpTokenUnguarded
       const totalLpTokenBalance = await lpTokenContract.totalSupply()
 
-      let poolApr:any = null,
-        extraapr:any = null,
+      let poolApr: any = null,
+        extraapr: any = null,
         extraUSDPerWeek = 0
       if (masterchefApr) {
         poolApr = masterchefApr[POOL.addresses[43114]].apr ?? 0
@@ -361,9 +357,8 @@ export default function usePoolData(
       const userPoolTokenBalancesUSD = tokenBalancesUSD.map((balance) => {
         return userShare.mul(balance).div(BigNumber.from(10).pow(18))
       })
-      const userPoolTokenBalancesUSDSum: BigNumber = userPoolTokenBalancesUSD.reduce(
-        (sum, b) => sum.add(b),
-      )
+      const userPoolTokenBalancesUSDSum: BigNumber =
+        userPoolTokenBalancesUSD.reduce((sum, b) => sum.add(b))
 
       const poolTokens = effectivePoolTokens.map((token, i) => ({
         symbol: token.symbol,

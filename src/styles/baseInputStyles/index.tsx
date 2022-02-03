@@ -1,5 +1,5 @@
-import { Theme } from "@mui/material/styles";
-import { CssVariables } from "styles/cssVariables/cssVariables";
+import { Theme } from "@mui/material/styles"
+import { CssVariables } from "styles/cssVariables/cssVariables"
 
 export const BaseInputStyles = ({ theme }: { theme: Theme }) => {
   return {
@@ -11,5 +11,5 @@ export const BaseInputStyles = ({ theme }: { theme: Theme }) => {
     fontSize: 16,
     padding: "10px 26px 10px 12px",
     transition: theme.transitions.create(["border-color", "box-shadow"]),
-  };
-};
+  }
+}

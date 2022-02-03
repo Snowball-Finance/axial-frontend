@@ -1,5 +1,5 @@
-import React, { FC } from "react";
-import { IconProps } from "./types";
+import React, { FC } from "react"
+import { IconProps } from "./types"
 
 const DangerIcon: FC<IconProps> = ({ color }) => {
   return (
@@ -32,7 +32,7 @@ const DangerIcon: FC<IconProps> = ({ color }) => {
         strokeLinejoin="round"
       />
     </svg>
-  );
-};
+  )
+}
 
-export default DangerIcon;
+export default DangerIcon

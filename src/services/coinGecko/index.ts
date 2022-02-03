@@ -1,5 +1,5 @@
-import CoinGecko from "coingecko-api";
+import CoinGecko from "coingecko-api"
 
-export const CoinGeckoClient = new CoinGecko();
+export const CoinGeckoClient = new CoinGecko()
 // eslint-disable-next-line @typescript-eslint/unbound-method
-export const geckoPrice = CoinGeckoClient.simple.price;
+export const geckoPrice = CoinGeckoClient.simple.price

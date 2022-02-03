@@ -42,9 +42,8 @@ function FarmDeposit({
 }: Props): ReactElement | null {
   const POOL = POOLS_MAP[poolName]
   const { account } = useActiveWeb3React()
-  const { approveAndDeposit, transactionStatus } = useApproveAndDeposit(
-    poolName,
-  )
+  const { approveAndDeposit, transactionStatus } =
+    useApproveAndDeposit(poolName)
   const [poolData, userShareData] = usePoolData(poolName, true)
   const swapContract = useSwapContract(poolName)
   const allTokens = useMemo(() => {

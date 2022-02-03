@@ -3,9 +3,7 @@ import { useCallback, useState } from "react"
 import { find } from "lodash"
 import { useActiveWeb3React } from "./index"
 
-export default function useAddTokenToMetamask(
-  token: Token | undefined,
-): {
+export default function useAddTokenToMetamask(token: Token | undefined): {
   addToken: () => void
   success: boolean | undefined
 } {

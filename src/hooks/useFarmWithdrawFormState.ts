@@ -191,15 +191,12 @@ export default function useWithdrawFormState(
       setFormState((prevState) => {
         let nextState: WithdrawFormState | Record<string, unknown> = {}
         if (action.fieldName === "tokenInputs") {
-          const {
-            tokenSymbol: tokenSymbolInput = "",
-            value: valueInput,
-          } = action
+          const { tokenSymbol: tokenSymbolInput = "", value: valueInput } =
+            action
           const newTokenInputs = {
             ...prevState.tokenInputs,
-            [tokenSymbolInput]: tokenInputStateCreators[tokenSymbolInput](
-              valueInput,
-            ),
+            [tokenSymbolInput]:
+              tokenInputStateCreators[tokenSymbolInput](valueInput),
           }
           const activeInputTokens = [POOL.lpToken].filter(
             ({ symbol }) => +newTokenInputs[symbol].valueRaw !== 0,

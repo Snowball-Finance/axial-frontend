@@ -104,12 +104,13 @@ export default function useWithdrawFormState(
       let nextState: WithdrawFormState | Record<string, unknown>
       if (state.withdrawType === IMBALANCE) {
         try {
-          const inputCalculatedLPTokenAmount = await swapContract.calculateTokenAmount(
-            POOL.poolTokens.map(
-              ({ symbol }) => state.tokenInputs[symbol].valueSafe,
-            ),
-            false,
-          )
+          const inputCalculatedLPTokenAmount =
+            await swapContract.calculateTokenAmount(
+              POOL.poolTokens.map(
+                ({ symbol }) => state.tokenInputs[symbol].valueSafe,
+              ),
+              false,
+            )
           nextState = inputCalculatedLPTokenAmount.gt(
             effectiveUserLPTokenBalance,
           )
@@ -165,10 +166,11 @@ export default function useWithdrawFormState(
             const tokenIndex = POOL.poolTokens.findIndex(
               ({ symbol }) => symbol === state.withdrawType,
             )
-            const tokenAmount = await swapContract.calculateRemoveLiquidityOneToken(
-              effectiveUserLPTokenBalance, // lp token to be burnt
-              tokenIndex,
-            ) // actual coin amount to be returned
+            const tokenAmount =
+              await swapContract.calculateRemoveLiquidityOneToken(
+                effectiveUserLPTokenBalance, // lp token to be burnt
+                tokenIndex,
+              ) // actual coin amount to be returned
             nextState = {
               lpTokenAmountToSpend: effectiveUserLPTokenBalance,
               tokenInputs: POOL.poolTokens.reduce(
@@ -184,12 +186,13 @@ export default function useWithdrawFormState(
             }
           } else {
             // This branch addresses a user manually inputting a value for one token
-            const inputCalculatedLPTokenAmount = await swapContract.calculateTokenAmount(
-              POOL.poolTokens.map(
-                ({ symbol }) => state.tokenInputs[symbol].valueSafe,
-              ),
-              false,
-            )
+            const inputCalculatedLPTokenAmount =
+              await swapContract.calculateTokenAmount(
+                POOL.poolTokens.map(
+                  ({ symbol }) => state.tokenInputs[symbol].valueSafe,
+                ),
+                false,
+              )
             nextState = inputCalculatedLPTokenAmount.gt(
               effectiveUserLPTokenBalance,
             )
@@ -229,15 +232,12 @@ export default function useWithdrawFormState(
       setFormState((prevState) => {
         let nextState: WithdrawFormState | Record<string, unknown> = {}
         if (action.fieldName === "tokenInputs") {
-          const {
-            tokenSymbol: tokenSymbolInput = "",
-            value: valueInput,
-          } = action
+          const { tokenSymbol: tokenSymbolInput = "", value: valueInput } =
+            action
           const newTokenInputs = {
             ...prevState.tokenInputs,
-            [tokenSymbolInput]: tokenInputStateCreators[tokenSymbolInput](
-              valueInput,
-            ),
+            [tokenSymbolInput]:
+              tokenInputStateCreators[tokenSymbolInput](valueInput),
           }
           const activeInputTokens = POOL.poolTokens.filter(
             ({ symbol }) => +newTokenInputs[symbol].valueRaw !== 0,

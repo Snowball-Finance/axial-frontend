@@ -1,5 +1,5 @@
-import React from "react";
-import { Wrapper } from "./wrapper";
+import React from "react"
+import { Wrapper } from "./wrapper"
 
 const PageLoading = (props) => {
   return (
@@ -11,6 +11,6 @@ const PageLoading = (props) => {
         <div></div>
       </div>
     </Wrapper>
-  );
-};
-export { PageLoading };
+  )
+}
+export { PageLoading }

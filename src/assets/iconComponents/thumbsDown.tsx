@@ -1,9 +1,9 @@
-import React, { FC } from "react";
-import { CssVariables } from "../../styles/cssVariables/cssVariables";
-import { IconProps } from "./types";
+import React, { FC } from "react"
+import { CssVariables } from "../../styles/cssVariables/cssVariables"
+import { IconProps } from "./types"
 
 const ThumbsDownIcon: FC<IconProps> = ({ color }) => {
-  const fill = color ?? CssVariables.primaryBlue;
+  const fill = color ?? CssVariables.primaryBlue
   return (
     <svg
       width="31"
@@ -19,7 +19,7 @@ const ThumbsDownIcon: FC<IconProps> = ({ color }) => {
         fill={fill}
       />
     </svg>
-  );
-};
+  )
+}
 
-export default ThumbsDownIcon;
+export default ThumbsDownIcon

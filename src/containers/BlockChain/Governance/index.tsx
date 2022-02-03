@@ -1,14 +1,14 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { selectLibrary } from "../Web3/selectors";
+import React, { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { selectLibrary } from "../Web3/selectors"
 import {
   selectGovernanceTokenContract,
   selectProposals,
   selectSyncedProposalsWithBlockChain,
-} from "./selectors";
-import { GovernanceActions, useGovernanceSlice } from "./slice";
-import { Staking } from "./Staking";
-import { DistributorData } from "./Staking/types";
+} from "./selectors"
+import { GovernanceActions, useGovernanceSlice } from "./slice"
+import { Staking } from "./Staking"
+import { DistributorData } from "./Staking/types"
 
 export const Governance = ({
   tokenABI,
@@ -16,13 +16,13 @@ export const Governance = ({
   governanceABI,
   staking,
 }: {
-  tokenABI: any;
-  governanceABI: any;
-  proposalsQuery: string;
+  tokenABI: any
+  governanceABI: any
+  proposalsQuery: string
   staking?: {
-    feeDistributorABI: any;
-    otherDistributors?: DistributorData[];
-  };
+    feeDistributorABI: any
+    otherDistributors?: DistributorData[]
+  }
 }) => {
   const variables = {
     MINIMUM_TOKEN_FOR_VOTING: process.env.REACT_APP_MINIMUM_TOKEN_FOR_VOTING,
@@ -37,36 +37,36 @@ export const Governance = ({
     GOVERNANCE_TOKEN_LOGO_ADDRESS:
       process.env.REACT_APP_GOVERNANCE_TOKEN_LOGO_ADDRESS,
     VOTING_CONTRACT_ADDRESS: process.env.REACT_APP_VOTING_CONTRACT_ADDRESS,
-  };
+  }
 
   for (const key in variables) {
     if (!variables[key]) {
-      throw new Error(`REACT_APP_${key} is not set in .env for the governance`);
+      throw new Error(`REACT_APP_${key} is not set in .env for the governance`)
     }
   }
   if (!governanceABI) {
-    throw new Error("governanceABI is not Provided for Blockchain module");
+    throw new Error("governanceABI is not Provided for Blockchain module")
   }
-  useGovernanceSlice();
-  const dispatch = useDispatch();
-  const governanceToken = useSelector(selectGovernanceTokenContract);
-  const library = useSelector(selectLibrary);
-  const proposals = useSelector(selectProposals);
+  useGovernanceSlice()
+  const dispatch = useDispatch()
+  const governanceToken = useSelector(selectGovernanceTokenContract)
+  const library = useSelector(selectLibrary)
+  const proposals = useSelector(selectProposals)
   const syncedProposalsWithBlockChain = useSelector(
-    selectSyncedProposalsWithBlockChain
-  );
+    selectSyncedProposalsWithBlockChain,
+  )
   useEffect(() => {
     if (governanceToken) {
-      dispatch(GovernanceActions.setGovernanceTokenContract(governanceToken));
+      dispatch(GovernanceActions.setGovernanceTokenContract(governanceToken))
     }
-  }, [governanceToken]);
+  }, [governanceToken])
 
   useEffect(() => {
-    dispatch(GovernanceActions.setGovernanceABI(governanceABI));
-    dispatch(GovernanceActions.setGovernanceTokenABI(tokenABI));
-    dispatch(GovernanceActions.getProposals({ query: proposalsQuery }));
-    return () => {};
-  }, []);
+    dispatch(GovernanceActions.setGovernanceABI(governanceABI))
+    dispatch(GovernanceActions.setGovernanceTokenABI(tokenABI))
+    dispatch(GovernanceActions.getProposals({ query: proposalsQuery }))
+    return () => {}
+  }, [])
 
   useEffect(() => {
     if (
@@ -75,9 +75,9 @@ export const Governance = ({
       proposals.length &&
       syncedProposalsWithBlockChain === false
     ) {
-      dispatch(GovernanceActions.syncProposalsWithBlockchain());
+      dispatch(GovernanceActions.syncProposalsWithBlockchain())
     }
-  }, [library, proposals, syncedProposalsWithBlockChain]);
+  }, [library, proposals, syncedProposalsWithBlockChain])
 
   return (
     <>
@@ -88,5 +88,5 @@ export const Governance = ({
         />
       )}
     </>
-  );
-};
+  )
+}

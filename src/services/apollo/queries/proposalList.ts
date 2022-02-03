@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from "@apollo/client"
 
 export const PROPOSAL_QUERY = `
 {
@@ -27,10 +27,10 @@ export const PROPOSAL_QUERY = `
     }
   }
 }
-`;
+`
 
 const PROPOSAL_LIST = gql`
   query ${PROPOSAL_QUERY}
-`;
+`
 
-export { PROPOSAL_LIST };
+export { PROPOSAL_LIST }

@@ -1,10 +1,10 @@
-import { PayloadAction } from "@reduxjs/toolkit";
-import { ContainerState } from "./types";
-import { blockChainSaga } from "./saga";
-import { BigNumber } from "@ethersproject/bignumber";
-import { createSlice } from "../../store/toolkit";
-import { Contract } from "ethers";
-import { useInjectReducer, useInjectSaga } from "../../store/redux-injectors";
+import { PayloadAction } from "@reduxjs/toolkit"
+import { ContainerState } from "./types"
+import { blockChainSaga } from "./saga"
+import { BigNumber } from "@ethersproject/bignumber"
+import { createSlice } from "../../store/toolkit"
+import { Contract } from "ethers"
+import { useInjectReducer, useInjectSaga } from "../../store/redux-injectors"
 
 // The initial state of the BlockChain container
 export const initialState: ContainerState = {
@@ -19,7 +19,7 @@ export const initialState: ContainerState = {
   contracts: {
     mainTokenContract: undefined,
   },
-};
+}
 
 const blockChainSlice = createSlice({
   name: "blockChain",
@@ -27,45 +27,45 @@ const blockChainSlice = createSlice({
   reducers: {
     getBalance(state, action: PayloadAction<Contract>) {},
     setMainTokenABI(state, action: PayloadAction<any>) {
-      state.mainTokenABI = action.payload;
+      state.mainTokenABI = action.payload
     },
     setIncludesGovernance(state, action: PayloadAction<boolean>) {
-      state.includesGovernance = action.payload;
+      state.includesGovernance = action.payload
     },
     getMainTokenBalance(state, action: PayloadAction<void>) {},
     setContracts(
       state,
       action: PayloadAction<{
-        mainTokenContract: any;
-      }>
+        mainTokenContract: any
+      }>,
     ) {
       state.contracts = {
         mainTokenContract: action.payload.mainTokenContract,
-      };
+      }
     },
     getGovernanceTokenBalance(state, action: PayloadAction<void>) {},
     setIsGettingMainTokenBalance(state, action: PayloadAction<boolean>) {
-      state.isGettingSnobBalance = action.payload;
+      state.isGettingSnobBalance = action.payload
     },
     setMainTokenBalance(state, action: PayloadAction<BigNumber>) {
-      state.mainTokenBalance = action.payload;
+      state.mainTokenBalance = action.payload
     },
     getPrices(state, action: PayloadAction<void>) {},
     getTotalGovernanceTokenSupply(state, action: PayloadAction<void>) {},
     setPrices(state, action: PayloadAction<ContainerState["prices"]>) {
-      state.prices = action.payload;
+      state.prices = action.payload
     },
   },
-});
+})
 
 export const {
   actions: BlockChainActions,
   reducer: BlockChainReducer,
   name: sliceKey,
-} = blockChainSlice;
+} = blockChainSlice
 
 export const useBlockChainSlice = () => {
-  useInjectReducer({ key: sliceKey, reducer: BlockChainReducer });
-  useInjectSaga({ key: sliceKey, saga: blockChainSaga });
-  return { BlockChainActions };
-};
+  useInjectReducer({ key: sliceKey, reducer: BlockChainReducer })
+  useInjectSaga({ key: sliceKey, saga: blockChainSaga })
+  return { BlockChainActions }
+}

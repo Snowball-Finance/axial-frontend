@@ -1,9 +1,9 @@
-import React, { FC } from "react";
-import { CssVariables } from "../../styles/cssVariables/cssVariables";
-import { IconProps } from "./types";
+import React, { FC } from "react"
+import { CssVariables } from "../../styles/cssVariables/cssVariables"
+import { IconProps } from "./types"
 
 const DocumentIcon: FC<IconProps> = ({ color }) => {
-  const fill = color ?? CssVariables.primaryBlue;
+  const fill = color ?? CssVariables.primaryBlue
   return (
     <svg
       width="18"
@@ -48,7 +48,7 @@ const DocumentIcon: FC<IconProps> = ({ color }) => {
         strokeLinejoin="round"
       />
     </svg>
-  );
-};
+  )
+}
 
-export default DocumentIcon;
+export default DocumentIcon

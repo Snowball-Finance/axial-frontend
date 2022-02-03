@@ -23,9 +23,8 @@ function Farm(): ReactElement | null {
   const [ac4dPoolData, ac4dUserShareData] = usePoolData(AXIAL_AC4D_POOL_NAME)
   const [am3dPoolData, am3dUserShareData] = usePoolData(AXIAL_AM3D_POOL_NAME)
   const [aa3dPoolData, aa3dUserShareData] = usePoolData(AXIAL_AA3D_POOL_NAME)
-  const [usdcAm3dPoolData, usdcAm3dUserShareData] = usePoolData(
-    USDC_AM3D_POOL_NAME,
-  )
+  const [usdcAm3dPoolData, usdcAm3dUserShareData] =
+    usePoolData(USDC_AM3D_POOL_NAME)
   const [jlpPoolData, jlpUserShareData] = usePoolData(AXIAL_JLP_POOL_NAME)
   const [currentModal, setCurrentModal] = useState<string | null>(null)
   const [filter] = useState<PoolTypes | "all" | "outdated">("all")

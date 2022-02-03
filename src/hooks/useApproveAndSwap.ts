@@ -13,12 +13,8 @@ import { useDispatch } from "react-redux"
 import { useSelector } from "react-redux"
 import { SwapRouter } from "../../types/ethers-contracts/SwapRouter"
 
-
-
 type Contracts = {
-  routerContract:
-  | SwapRouter
-  | null,
+  routerContract: SwapRouter | null
   bridgeContract: Bridge | null
 }
 type SwapSide = {
@@ -35,7 +31,7 @@ type ApproveAndSwapStateArgument = FormState & Contracts
 
 export function useApproveAndSwap(): (
   state: ApproveAndSwapStateArgument,
-  bestPath: BestPath | null
+  bestPath: BestPath | null,
 ) => Promise<void> {
   const dispatch = useDispatch()
   const tokenContracts = useAllContracts()
@@ -43,17 +39,14 @@ export function useApproveAndSwap(): (
   const { gasStandard, gasFast, gasInstant } = useSelector(
     (state: AppState) => state.application,
   )
-  const {
-    gasPriceSelected,
-    gasCustom,
-    infiniteApproval,
-  } = useSelector((state: AppState) => state.user)
+  const { gasPriceSelected, gasCustom, infiniteApproval } = useSelector(
+    (state: AppState) => state.user,
+  )
   return async function approveAndSwap(
     state: ApproveAndSwapStateArgument,
-    bestPath: BestPath | null
+    bestPath: BestPath | null,
   ): Promise<void> {
     try {
-
       if (!account) throw new Error("Wallet must be connected")
       if (chainId === undefined) throw new Error("Unknown chain")
       // For each token being deposited, check the allowance and approve it if necessary
@@ -87,9 +80,15 @@ export function useApproveAndSwap(): (
       )
       if (bestPath) {
         const { adapters, amountIn, amountOut, path } = bestPath
-        const swapTransaction = await (state.routerContract as NonNullable<
-          typeof state.routerContract // we already check for nonnull above
-        >).swapNoSplit({ amountIn, amountOut, path, adapters }, account,SWAP_ROUTER_FEE)
+        const swapTransaction = await (
+          state.routerContract as NonNullable<
+            typeof state.routerContract // we already check for nonnull above
+          >
+        ).swapNoSplit(
+          { amountIn, amountOut, path, adapters },
+          account,
+          SWAP_ROUTER_FEE,
+        )
         await swapTransaction?.wait()
         dispatch(
           updateLastTransactionTimes({

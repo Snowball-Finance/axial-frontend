@@ -97,30 +97,30 @@ export default function SwapInput({
           inputRef.current?.focus()
         }}
       >
-        <LoadingWrapper isLoading={isLoading??false}height={24} width='100%' >
-        <input
-          ref={inputRef}
-          autoComplete="off"
-          autoCorrect="off"
-          type="text"
-          placeholder="0.0"
-          spellCheck="false"
-          value={isSwapFrom ? inputValue : commify(inputValue)}
-          onChange={(e) => {
-            // remove all chars that aren't a digit or a period
-            const newValue = e.target.value.replace(/[^\d|.]/g, "")
-            // disallow more than one period
-            if (newValue.indexOf(".") !== newValue.lastIndexOf(".")) return
-            onChangeAmount?.(newValue)
-          }}
-          onFocus={(e: React.ChangeEvent<HTMLInputElement>): void => {
-            if (isSwapFrom) {
-              e.target.select()
-            }
-          }}
-          readOnly={!isSwapFrom}
-          tabIndex={isSwapFrom ? 0 : -1}
-        />
+        <LoadingWrapper isLoading={isLoading ?? false} height={24} width="100%">
+          <input
+            ref={inputRef}
+            autoComplete="off"
+            autoCorrect="off"
+            type="text"
+            placeholder="0.0"
+            spellCheck="false"
+            value={isSwapFrom ? inputValue : commify(inputValue)}
+            onChange={(e) => {
+              // remove all chars that aren't a digit or a period
+              const newValue = e.target.value.replace(/[^\d|.]/g, "")
+              // disallow more than one period
+              if (newValue.indexOf(".") !== newValue.lastIndexOf(".")) return
+              onChangeAmount?.(newValue)
+            }}
+            onFocus={(e: React.ChangeEvent<HTMLInputElement>): void => {
+              if (isSwapFrom) {
+                e.target.select()
+              }
+            }}
+            readOnly={!isSwapFrom}
+            tabIndex={isSwapFrom ? 0 : -1}
+          />
         </LoadingWrapper>
         <p className={styles.textMinor}>
           ≈${commify(formatBNToString(inputValueUSD, 18, 2))}

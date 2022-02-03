@@ -24,21 +24,15 @@ interface Props {
 }
 function Withdraw({ poolName }: Props): ReactElement {
   const [poolData, userShareData] = usePoolData(poolName)
-  const [withdrawFormState, updateWithdrawFormState] = useWithdrawFormState(
-    poolName,
-  )
-  const {
-    slippageCustom,
-    slippageSelected,
-    gasPriceSelected,
-    gasCustom,
-  } = useSelector((state: AppState) => state.user)
+  const [withdrawFormState, updateWithdrawFormState] =
+    useWithdrawFormState(poolName)
+  const { slippageCustom, slippageSelected, gasPriceSelected, gasCustom } =
+    useSelector((state: AppState) => state.user)
   const { tokenPricesUSD, gasStandard, gasFast, gasInstant } = useSelector(
     (state: AppState) => state.application,
   )
-  const { approveAndWithdraw, transactionStatus } = useApproveAndWithdraw(
-    poolName,
-  )
+  const { approveAndWithdraw, transactionStatus } =
+    useApproveAndWithdraw(poolName)
   const swapContract = useSwapContract(poolName)
   const { account } = useActiveWeb3React()
   const POOL = POOLS_MAP[poolName]
@@ -96,11 +90,8 @@ function Withdraw({ poolName }: Props): ReactElement {
     POOL.poolTokens,
   ])
   async function onConfirmTransaction(): Promise<void> {
-    const {
-      withdrawType,
-      tokenInputs,
-      lpTokenAmountToSpend,
-    } = withdrawFormState
+    const { withdrawType, tokenInputs, lpTokenAmountToSpend } =
+      withdrawFormState
     await approveAndWithdraw({
       tokenFormState: tokenInputs,
       withdrawType,

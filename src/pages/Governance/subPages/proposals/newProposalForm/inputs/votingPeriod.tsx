@@ -1,21 +1,21 @@
-import { InputAdornment, TextField } from "@mui/material";
-import { selectNewProposalField } from "containers/BlockChain/Governance/selectors";
-import { GovernanceActions } from "containers/BlockChain/Governance/slice";
-import { env } from "environment";
-import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import React from 'react';
-import { isInvalidPeriod } from "./utils/period";
+import { InputAdornment, TextField } from "@mui/material"
+import { selectNewProposalField } from "containers/BlockChain/Governance/selectors"
+import { GovernanceActions } from "containers/BlockChain/Governance/slice"
+import { env } from "environment"
+import { useTranslation } from "react-i18next"
+import { useDispatch, useSelector } from "react-redux"
+import React from "react"
+import { isInvalidPeriod } from "./utils/period"
 
 export const VotingPeriodInput = () => {
-  const fieldName = "votingPeriod";
-  const { t } = useTranslation();
-  const dispatch = useDispatch();
-  const votingPeriod = useSelector(selectNewProposalField(fieldName));
+  const fieldName = "votingPeriod"
+  const { t } = useTranslation()
+  const dispatch = useDispatch()
+  const votingPeriod = useSelector(selectNewProposalField(fieldName))
 
   const handleInputChange = (value: string) => {
-    dispatch(GovernanceActions.setNewProposalFields({ key: fieldName, value }));
-  };
+    dispatch(GovernanceActions.setNewProposalFields({ key: fieldName, value }))
+  }
 
   return (
     <TextField
@@ -52,5 +52,5 @@ export const VotingPeriodInput = () => {
         max: Number(env.MAXIMUM_VOTING_PERIOD),
       }}
     />
-  );
-};
+  )
+}

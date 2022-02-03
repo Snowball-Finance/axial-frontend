@@ -1,10 +1,10 @@
-import { env } from "../environment";
+import { env } from "../environment"
 
-const IS_MAINNET = env.NETWORK === "mainnet";
+const IS_MAINNET = env.NETWORK === "mainnet"
 
-const C_CHAIN_ID = IS_MAINNET ? 43114 : 43113;
+const C_CHAIN_ID = IS_MAINNET ? 43114 : 43113
 
-const MAX_RETRIES = 5;
+const MAX_RETRIES = 5
 
 const CONTRACTS = {
   GOVERNANCE: "0x914556b16c1220e4af63084dB1acbD4e6f9c65Aa",
@@ -44,10 +44,10 @@ const CONTRACTS = {
   VOTE: {
     GOVERNANCE_V2: "0xfdCcf6D49A29f435E509DFFAAFDecB0ADD93f8C0",
   },
-};
+}
 
-const WAVAX = "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7";
-const PNG = "0x60781C2586D68229fde47564546784ab3fACA982";
-const JOE = "0x6e84a6216ea6dacc71ee8e6b0a5b7322eebc0fdd";
+const WAVAX = "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7"
+const PNG = "0x60781C2586D68229fde47564546784ab3fACA982"
+const JOE = "0x6e84a6216ea6dacc71ee8e6b0a5b7322eebc0fdd"
 
-export { IS_MAINNET, C_CHAIN_ID, CONTRACTS, MAX_RETRIES, WAVAX, PNG, JOE };
+export { IS_MAINNET, C_CHAIN_ID, CONTRACTS, MAX_RETRIES, WAVAX, PNG, JOE }

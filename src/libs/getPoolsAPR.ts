@@ -156,7 +156,8 @@ export async function getVaultRewardAprNow(): Promise<MasterchefApr> {
       }
 
       // eslint-disable-next-line
-      const totalAllocPoint: BigNumber = await masterchefContract.totalAllocPoint()
+      const totalAllocPoint: BigNumber =
+        await masterchefContract.totalAllocPoint()
       // eslint-disable-next-line
       const poolInfo: poolInfo = await masterchefContract.poolInfo(
         pool.lpToken.masterchefId,

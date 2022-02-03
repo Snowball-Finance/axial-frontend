@@ -24,17 +24,16 @@ import fetchAprStats from "../libs/getMasterchefApy"
 import { analytics } from "../utils/analytics"
 import { BlockChain } from "../containers/BlockChain"
 //FIXME: this is a hack to get the governance working, should be replaced with actual data
-import SNOWBALL_ABI from "../abis/snowball.json";
-import GOVERNANCE_ABI from "../abis/vote-governance.json";
-import SNOWCONE_ABI from "../abis/snowcone.json";
-import FEE_DISTRIBUTOR_ABI from "../abis/fee-distributor.json";
+import SNOWBALL_ABI from "../abis/snowball.json"
+import GOVERNANCE_ABI from "../abis/vote-governance.json"
+import SNOWCONE_ABI from "../abis/snowcone.json"
+import FEE_DISTRIBUTOR_ABI from "../abis/fee-distributor.json"
 import { PROPOSAL_QUERY } from "../services/apollo/queries/proposalList"
-import { ThemeProvider as MaterialThemeProvider } from "@mui/material";
-import '../styles/cssVariables/cssVariables.css'
+import { ThemeProvider as MaterialThemeProvider } from "@mui/material"
+import "../styles/cssVariables/cssVariables.css"
 import { theme } from "../styles/theme"
 import { GovernancePage } from "./Governance"
 import { GovernancePageAddress } from "./Governance/routes"
-
 
 const App = (): ReactElement => {
   const location = useLocation()

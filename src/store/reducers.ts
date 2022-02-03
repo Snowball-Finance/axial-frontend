@@ -2,11 +2,11 @@
  * Combine all reducers in this file and export the combined reducers.
  */
 
-import { combineReducers } from "@reduxjs/toolkit";
-import { InjectedReducersType } from "./types/injector-typings";
-import { globalReducer } from "./slice";
-import application from "./application";
-import user from "./module/user";
+import { combineReducers } from "@reduxjs/toolkit"
+import { InjectedReducersType } from "./types/injector-typings"
+import { globalReducer } from "./slice"
+import application from "./application"
+import user from "./module/user"
 
 /**
  * Merges the main reducer with the router state and dynamically injected reducers
@@ -19,6 +19,6 @@ export function createReducer(injectedReducers: InjectedReducersType = {}) {
     ...(Object.keys(injectedReducers).length !== 0 && injectedReducers),
     global: globalReducer,
     application,
-    user
-  });
+    user,
+  })
 }

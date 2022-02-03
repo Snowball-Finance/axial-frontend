@@ -1,6 +1,6 @@
-import { CssVariables } from "../../styles/cssVariables/cssVariables";
+import { CssVariables } from "../../styles/cssVariables/cssVariables"
 
 export interface IconProps {
-  color?: CssVariables;
-  size?: number;
+  color?: CssVariables
+  size?: number
 }

@@ -1,143 +1,143 @@
-import { createSelector } from "@reduxjs/toolkit";
+import { createSelector } from "@reduxjs/toolkit"
 
-import { ethers } from "ethers";
-import { env } from "../../../environment";
-import { RootState } from "../../../store/types";
-import { selectPrivateProviderDomain } from "../Ethers/selectors";
-import { selectAccountDomain, selectLibraryDomain } from "../Web3/selectors";
+import { ethers } from "ethers"
+import { env } from "../../../environment"
+import { RootState } from "../../../store/types"
+import { selectPrivateProviderDomain } from "../Ethers/selectors"
+import { selectAccountDomain, selectLibraryDomain } from "../Web3/selectors"
 
-import { initialState } from "./slice";
-import { ContainerState, ProposalFilters, ProposalStates } from "./types";
+import { initialState } from "./slice"
+import { ContainerState, ProposalFilters, ProposalStates } from "./types"
 
 const selectGovernanceDomain = (state: RootState) =>
-  state.governance || initialState;
+  state.governance || initialState
 const selectSelectedProposalFilterDomain = (state: RootState) =>
   state.governance?.selectedProposalFilter ||
-  initialState.selectedProposalFilter;
+  initialState.selectedProposalFilter
 export const selectProposalsDomain = (state: RootState) =>
-  state.governance?.proposals || [];
+  state.governance?.proposals || []
 const selectSelectedProposalDomain = (state: RootState) =>
-  state.governance?.selectedProposal || initialState.selectedProposal;
+  state.governance?.selectedProposal || initialState.selectedProposal
 const selectIsLoadingProposalsDomain = (state: RootState) =>
-  state.governance?.isLoadingProposals || initialState.isLoadingProposals;
+  state.governance?.isLoadingProposals || initialState.isLoadingProposals
 const selectIsSubmittingNewProposalsDomain = (state: RootState) =>
   state.governance?.isSubmittingNewProposal ||
-  initialState.isSubmittingNewProposal;
+  initialState.isSubmittingNewProposal
 const selectIsVotingForDomain = (state: RootState) =>
-  state.governance?.isVotingFor || initialState.isVotingFor;
+  state.governance?.isVotingFor || initialState.isVotingFor
 const selectIsVotingAgainstDomain = (state: RootState) =>
-  state.governance?.isVotingAgainst || initialState.isVotingAgainst;
+  state.governance?.isVotingAgainst || initialState.isVotingAgainst
 const selectIsNewProposalFormOpenDomain = (state: RootState) =>
-  state.governance?.isNewProposalFormOpen || initialState.isNewProposalFormOpen;
+  state.governance?.isNewProposalFormOpen || initialState.isNewProposalFormOpen
 const selectSyncedProposalsWithBlockchainDomain = (state: RootState) =>
-  state.governance?.syncedProposalsWithBlockchain || false;
+  state.governance?.syncedProposalsWithBlockchain || false
 
 export const selectSyncedProposalsWithBlockChain = createSelector(
   selectSyncedProposalsWithBlockchainDomain,
-  (syncedProposalsWithBlockchain) => syncedProposalsWithBlockchain
-);
+  (syncedProposalsWithBlockchain) => syncedProposalsWithBlockchain,
+)
 
 export const selectNewProposalFieldsDomain = (state: RootState) =>
   state.governance?.newProposalFields || {
     ...initialState.newProposalFields,
     error: { ...initialState.newProposalFields.error },
-  };
+  }
 const selectIsLoadingReceiptDomain = (state: RootState) =>
-  state.governance?.iseGettingReceipt || initialState.iseGettingReceipt;
+  state.governance?.iseGettingReceipt || initialState.iseGettingReceipt
 const selectReceiptDomain = (state: RootState) =>
-  state.governance?.receipt || { ...initialState.receipt };
+  state.governance?.receipt || { ...initialState.receipt }
 export const selectGovernanceTokenABIDomain = (state: RootState) =>
-  state.governance?.governanceTokenABI || undefined;
+  state.governance?.governanceTokenABI || undefined
 export const selectGovernanceTokenContractDomain = (state: RootState) =>
-  state.governance?.governanceTokenContract || undefined;
+  state.governance?.governanceTokenContract || undefined
 
 export const selectGovernanceABIDomain = (state: RootState) =>
-  state.governance?.governanceABI || undefined;
+  state.governance?.governanceABI || undefined
 
 export const selectGovernance = createSelector(
   [selectGovernanceDomain],
-  (governanceState) => governanceState
-);
+  (governanceState) => governanceState,
+)
 export const selectTotalGovernanceTokenSupply = createSelector(
   [selectGovernanceDomain],
-  (blockChainState) => blockChainState.totalGovernanceTokenSupply
-);
+  (blockChainState) => blockChainState.totalGovernanceTokenSupply,
+)
 export const selectIsLoadingGovernanceTokenBalance = createSelector(
   [selectGovernanceDomain],
-  (blockChainState) => blockChainState.isGettingGovernanceTokenBalance
-);
+  (blockChainState) => blockChainState.isGettingGovernanceTokenBalance,
+)
 
 export const selectGovernanceTokenBalance = createSelector(
   [selectGovernanceDomain],
-  (blockChainState) => blockChainState.governanceTokenBalance
-);
+  (blockChainState) => blockChainState.governanceTokenBalance,
+)
 export const selectIsLoadingReceipt = createSelector(
   [selectIsLoadingReceiptDomain],
-  (isLoadingReceipt) => isLoadingReceipt
-);
+  (isLoadingReceipt) => isLoadingReceipt,
+)
 
 export const selectReceipt = createSelector(
   [selectReceiptDomain],
-  (receipt) => receipt
-);
+  (receipt) => receipt,
+)
 
 export const selectSelectedProposalFilter = createSelector(
   [selectSelectedProposalFilterDomain],
-  (filter) => filter
-);
+  (filter) => filter,
+)
 
 export const selectSelectedProposal = createSelector(
   [selectSelectedProposalDomain],
-  (proposal) => proposal
-);
+  (proposal) => proposal,
+)
 
 export const selectProposals = createSelector(
   [selectProposalsDomain],
-  (proposals) => proposals
-);
+  (proposals) => proposals,
+)
 
 export const selectNewProposalFields = createSelector(
   [selectNewProposalFieldsDomain],
-  (fields) => fields
-);
+  (fields) => fields,
+)
 
 export const selectNewProposalField = (
-  field: keyof ContainerState["newProposalFields"]
-) => createSelector([selectNewProposalFieldsDomain], (fields) => fields[field]);
+  field: keyof ContainerState["newProposalFields"],
+) => createSelector([selectNewProposalFieldsDomain], (fields) => fields[field])
 
 export const selectIsVotingFor = createSelector(
   [selectIsVotingForDomain],
-  (isVotingFor) => isVotingFor
-);
+  (isVotingFor) => isVotingFor,
+)
 export const selectIsVotingAgainst = createSelector(
   [selectIsVotingAgainstDomain],
-  (isVotingAgainst) => isVotingAgainst
-);
+  (isVotingAgainst) => isVotingAgainst,
+)
 export const selectIsNewProposalFormOpen = createSelector(
   [selectIsNewProposalFormOpenDomain],
-  (isNewProposalFormOpen) => isNewProposalFormOpen
-);
+  (isNewProposalFormOpen) => isNewProposalFormOpen,
+)
 
 export const selectIsLoadingProposals = createSelector(
   [selectIsLoadingProposalsDomain],
-  (isLoading) => isLoading
-);
+  (isLoading) => isLoading,
+)
 
 export const selectIsSubmittingNewProposal = createSelector(
   [selectIsSubmittingNewProposalsDomain],
-  (isLoading) => isLoading
-);
+  (isLoading) => isLoading,
+)
 
 export const selectFilteredProposalsProposals = createSelector(
   [selectProposalsDomain, selectSelectedProposalFilterDomain],
   (proposals, filters) => {
-    let list = [...proposals];
+    let list = [...proposals]
     if (filters === ProposalFilters.Active) {
-      list = list.filter((p) => p.state === ProposalStates.active);
+      list = list.filter((p) => p.state === ProposalStates.active)
     }
-    return list;
-  }
-);
+    return list
+  },
+)
 
 export const selectCanAddNewProposal = createSelector(
   [selectGovernanceDomain, selectAccountDomain],
@@ -148,11 +148,11 @@ export const selectCanAddNewProposal = createSelector(
         Number(env.MINIMUM_TOKEN_FOR_VOTING) &&
       account
     ) {
-      return true;
+      return true
     }
-    return false;
-  }
-);
+    return false
+  },
+)
 
 export const selectGovernanceTokenContract = createSelector(
   [
@@ -164,15 +164,15 @@ export const selectGovernanceTokenContract = createSelector(
     if (provider && library && governanceABI) {
       if (!env.GOVERNANCE_TOKEN_CONTRACT_ADDRESS) {
         throw new Error(
-          "Governance Token Contract Address is not defined in environment, please define REACT_APP_GOVERNANCE_TOKEN_CONTRACT_ADDRESS"
-        );
+          "Governance Token Contract Address is not defined in environment, please define REACT_APP_GOVERNANCE_TOKEN_CONTRACT_ADDRESS",
+        )
       }
       return new ethers.Contract(
         env.GOVERNANCE_TOKEN_CONTRACT_ADDRESS,
         governanceABI,
-        provider
-      );
+        provider,
+      )
     }
-    return undefined;
-  }
-);
+    return undefined
+  },
+)

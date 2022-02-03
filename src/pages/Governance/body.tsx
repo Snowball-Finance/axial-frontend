@@ -1,10 +1,9 @@
-import { Route, Switch } from "react-router-dom";
-import { Proposals } from "./subPages/proposals";
-import { GovernanceSubPages } from "./routes";
-import { styled } from "@mui/material";
-import { ProposalDetails } from "./subPages/details";
-import React from 'react';
-
+import { Route, Switch } from "react-router-dom"
+import { Proposals } from "./subPages/proposals"
+import { GovernanceSubPages } from "./routes"
+import { styled } from "@mui/material"
+import { ProposalDetails } from "./subPages/details"
+import React from "react"
 
 export const GovernanceBody = () => {
   return (
@@ -18,7 +17,7 @@ export const GovernanceBody = () => {
         </Route>
       </Switch>
     </PageWrapper>
-  );
-};
+  )
+}
 
-const PageWrapper = styled("div")({});
+const PageWrapper = styled("div")({})

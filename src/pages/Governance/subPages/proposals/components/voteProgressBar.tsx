@@ -1,7 +1,7 @@
-import { LinearProgress, linearProgressClasses } from "@mui/material";
-import { styled } from "@mui/system";
-import React, { FC } from "react";
-import { CssVariables } from "styles/cssVariables/cssVariables";
+import { LinearProgress, linearProgressClasses } from "@mui/material"
+import { styled } from "@mui/system"
+import React, { FC } from "react"
+import { CssVariables } from "styles/cssVariables/cssVariables"
 
 export enum VoteProgressBarType {
   for = "for",
@@ -9,10 +9,10 @@ export enum VoteProgressBarType {
 }
 
 interface VoteProgressBarProps {
-  percent: number;
-  type: VoteProgressBarType;
-  title: string;
-  height?: string;
+  percent: number
+  type: VoteProgressBarType
+  title: string
+  height?: string
 }
 export const VoteProgressBar: FC<VoteProgressBarProps> = ({
   percent,
@@ -30,28 +30,28 @@ export const VoteProgressBar: FC<VoteProgressBarProps> = ({
         height={height ?? "6px"}
       />
     </Wrapper>
-  );
-};
+  )
+}
 
 const StyledLinearProgress = styled(LinearProgress)<{
-  type: VoteProgressBarType;
-  height: string;
+  type: VoteProgressBarType
+  height: string
 }>(({ type, height }) => {
-  let mainColor = CssVariables.primaryBlue;
-  let bg = CssVariables.mildBlue;
+  let mainColor = CssVariables.primaryBlue
+  let bg = CssVariables.mildBlue
 
   switch (type) {
     case VoteProgressBarType.for:
-      mainColor = CssVariables.green;
-      bg = CssVariables.mildGreen;
-      break;
+      mainColor = CssVariables.green
+      bg = CssVariables.mildGreen
+      break
 
     case VoteProgressBarType.against:
-      mainColor = CssVariables.red;
-      bg = CssVariables.mildRed;
-      break;
+      mainColor = CssVariables.red
+      bg = CssVariables.mildRed
+      break
     default:
-      break;
+      break
   }
 
   return {
@@ -64,16 +64,16 @@ const StyledLinearProgress = styled(LinearProgress)<{
       borderRadius: 5,
       backgroundColor: mainColor,
     },
-  };
-});
+  }
+})
 
 const Title = styled("p")({
   marginTop: 0,
   marginBottom: "0px",
   fontSize: "12px",
-  color:CssVariables.white,
-});
+  color: CssVariables.white,
+})
 
 const Wrapper = styled("div")({
   width: "100%",
-});
+})

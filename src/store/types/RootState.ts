@@ -8,13 +8,14 @@
 // import { GovernancePageState } from "app/containers/pages/Governance/types";
 // import { StakingState } from "app/containers/BlockChain/Governance/Staking/types";
 // import { StakingPageState } from "app/containers/pages/StakingPage/types";
-import { GovernancePageState } from "pages/Governance/types";
-import { EthersState } from "../../containers/BlockChain/Ethers/types";
-import { StakingState } from "../../containers/BlockChain/Governance/Staking/types";
-import { GovernanceState } from "../../containers/BlockChain/Governance/types";
-import { BlockChainState } from "../../containers/BlockChain/types";
-import { Web3State } from "../../containers/BlockChain/Web3/types";
-import { ApplicationState } from "../application";
+import { GovernancePageState } from "pages/Governance/types"
+import { StakingPageState } from "pages/StakingPage/types"
+import { EthersState } from "../../containers/BlockChain/Ethers/types"
+import { StakingState } from "../../containers/BlockChain/Governance/Staking/types"
+import { GovernanceState } from "../../containers/BlockChain/Governance/types"
+import { BlockChainState } from "../../containers/BlockChain/types"
+import { Web3State } from "../../containers/BlockChain/Web3/types"
+import { ApplicationState } from "../application"
 // [IMPORT NEW CONTAINERSTATE ABOVE] < Needed for generating containers seamlessly
 
 /* 
@@ -24,17 +25,17 @@ import { ApplicationState } from "../application";
   So, not available always
 */
 export interface RootState {
-  global?: any;
+  global?: any
   // homePage?: HomePageState;
   // example?: ExampleState;
-  web3?: Web3State;
-  ethers?: EthersState;
-  blockChain?: BlockChainState;
-  governance?: GovernanceState;
+  web3?: Web3State
+  ethers?: EthersState
+  blockChain?: BlockChainState
+  governance?: GovernanceState
   // poolsAndGauges?: PoolsAndGaugesState;
-  governancePage?: GovernancePageState;
-  staking?: StakingState;
-  // stakingPage?: StakingPageState;
-  application:ApplicationState
+  governancePage?: GovernancePageState
+  staking?: StakingState
+  stakingPage?: StakingPageState
+  application: ApplicationState
   // [INSERT NEW REDUCER KEY ABOVE] < Needed for generating containers seamlessly
 }

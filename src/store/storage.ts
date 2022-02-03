@@ -7,31 +7,31 @@ export enum SessionStorageKeys {
 }
 export const storage = {
   write: (key: LocalStorageKeys, data: any) => {
-    localStorage[key] = JSON.stringify(data);
+    localStorage[key] = JSON.stringify(data)
   },
   delete: (key: LocalStorageKeys) => {
-    localStorage.removeItem(key);
+    localStorage.removeItem(key)
   },
   clear: () => {
-    localStorage.clear();
+    localStorage.clear()
   },
   read: (key: LocalStorageKeys, ifDoesntExist?: any) => {
     try {
-      return JSON.parse(localStorage[key]);
+      return JSON.parse(localStorage[key])
     } catch (error) {
       if (ifDoesntExist) {
-        localStorage[key] = JSON.stringify(ifDoesntExist);
-        return ifDoesntExist;
+        localStorage[key] = JSON.stringify(ifDoesntExist)
+        return ifDoesntExist
       }
-      return null;
+      return null
     }
   },
   sessionStorage: {
     write: (key: SessionStorageKeys, data: any) => {
-      sessionStorage[key] = JSON.stringify(data);
+      sessionStorage[key] = JSON.stringify(data)
     },
     read: (key: SessionStorageKeys) => {
-      return JSON.parse(sessionStorage[key]);
+      return JSON.parse(sessionStorage[key])
     },
   },
-};
+}

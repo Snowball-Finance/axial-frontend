@@ -1,9 +1,9 @@
-import React, { FC } from "react";
-import { CssVariables } from "../../styles/cssVariables/cssVariables";
-import { IconProps } from "./types";
+import React, { FC } from "react"
+import { CssVariables } from "../../styles/cssVariables/cssVariables"
+import { IconProps } from "./types"
 
 const DiscordIcon: FC<IconProps> = ({ color }) => {
-  const fill = color ?? CssVariables.primaryBlue;
+  const fill = color ?? CssVariables.primaryBlue
   return (
     <svg
       width="17"
@@ -31,7 +31,7 @@ const DiscordIcon: FC<IconProps> = ({ color }) => {
         </clipPath>
       </defs>
     </svg>
-  );
-};
+  )
+}
 
-export default DiscordIcon;
+export default DiscordIcon

@@ -658,6 +658,6 @@ export const IS_VIRTUAL_SWAP_ACTIVE = false
 
 export const SWAP_ROUTER_ADDRESSES: { [chainId in ChainId]: string } = {
   [ChainId.MAINNET]: "0xBeD9dfE835cd2bB6775f344Ee5E3431b2CbF31FB",
-  [ChainId.HARDHAT]: "0xBeD9dfE835cd2bB6775f344Ee5E3431b2CbF31FB",//ZERO_ADDRESS,
+  [ChainId.HARDHAT]: "0xBeD9dfE835cd2bB6775f344Ee5E3431b2CbF31FB", //ZERO_ADDRESS,
 }
-export const SWAP_ROUTER_FEE=BigNumber.from(0)
+export const SWAP_ROUTER_FEE = BigNumber.from(0)

@@ -27,10 +27,8 @@ function ReviewDeposit({
   const { slippageCustom, slippageSelected } = useSelector(
     (state: AppState) => state.user,
   )
-  const [
-    hasConfirmedHighPriceImpact,
-    setHasConfirmedHighPriceImpact,
-  ] = useState(false)
+  const [hasConfirmedHighPriceImpact, setHasConfirmedHighPriceImpact] =
+    useState(false)
 
   const isHighPriceImpactTxn = isHighPriceImpact(transactionData.priceImpact)
 

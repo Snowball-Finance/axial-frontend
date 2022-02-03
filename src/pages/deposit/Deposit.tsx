@@ -43,9 +43,8 @@ interface Props {
 function Deposit({ poolName }: Props): ReactElement | null {
   const POOL = POOLS_MAP[poolName]
   const { account, chainId, library } = useActiveWeb3React()
-  const { approveAndDeposit, transactionStatus } = useApproveAndDeposit(
-    poolName,
-  )
+  const { approveAndDeposit, transactionStatus } =
+    useApproveAndDeposit(poolName)
   const [poolData, userShareData] = usePoolData(poolName)
   const swapContract = useSwapContract(poolName)
   const allTokens = useMemo(() => {
@@ -159,7 +158,9 @@ function Deposit({ poolName }: Props): ReactElement | null {
               )
             : Zero
         } else {
-          depositLPTokenAmount = await (swapContract as SwapFlashLoanNoWithdrawFee).calculateTokenAmount(
+          depositLPTokenAmount = await (
+            swapContract as SwapFlashLoanNoWithdrawFee
+          ).calculateTokenAmount(
             POOL.poolTokens.map(
               ({ symbol }) => tokenFormState[symbol].valueSafe,
             ),
@@ -195,9 +196,8 @@ function Deposit({ poolName }: Props): ReactElement | null {
   ])
 
   // A represention of tokens used for UI
-  const tokens = (shouldDepositWrapped
-    ? POOL.underlyingPoolTokens || []
-    : POOL.poolTokens
+  const tokens = (
+    shouldDepositWrapped ? POOL.underlyingPoolTokens || [] : POOL.poolTokens
   ).map(({ symbol, name, icon, decimals }) => ({
     symbol,
     name,

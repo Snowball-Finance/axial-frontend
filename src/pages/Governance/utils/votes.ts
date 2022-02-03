@@ -1,11 +1,11 @@
-import { Proposal } from "containers/BlockChain/Governance/types";
-import { formatNumber } from "utils/format";
+import { Proposal } from "containers/BlockChain/Governance/types"
+import { formatNumber } from "utils/format"
 
 export const forAndAgainst = ({ proposal }: { proposal: Proposal }) => {
-  const { forVotes, againstVotes } = proposal;
-  const sumOfVotes = forVotes + againstVotes;
-  const forPercent = (forVotes / sumOfVotes) * 100;
-  const againstPercent = (againstVotes / sumOfVotes) * 100;
+  const { forVotes, againstVotes } = proposal
+  const sumOfVotes = forVotes + againstVotes
+  const forPercent = (forVotes / sumOfVotes) * 100
+  const againstPercent = (againstVotes / sumOfVotes) * 100
 
   return {
     forVotes: {
@@ -18,5 +18,5 @@ export const forAndAgainst = ({ proposal }: { proposal: Proposal }) => {
       votes: againstVotes,
       formattedVotes: formatNumber(againstVotes, 2),
     },
-  };
-};
+  }
+}

@@ -1,5 +1,5 @@
 export interface SnowModalProps {
-  isOpen: boolean;
+  isOpen: boolean
   // eslint-disable-next-line @typescript-eslint/ban-types
-  onClose: Function;
+  onClose: Function
 }

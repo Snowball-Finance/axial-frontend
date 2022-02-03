@@ -1,4 +1,4 @@
-export const IS_DEV = process.env.NODE_ENV !== "production";
+export const IS_DEV = process.env.NODE_ENV !== "production"
 
 export const env = {
   ANALYTICS_ENDPOINT: process.env.REACT_APP_ANALYTICS_ENDPOINT,
@@ -29,4 +29,4 @@ export const env = {
   GOVERNANCE_TOKEN_LOGO_ADDRESS:
     process.env.REACT_APP_GOVERNANCE_TOKEN_LOGO_ADDRESS,
   GAUGE_PROXY_ADDRESS: process.env.REACT_APP_GAUGE_PROXY_ADDRESS,
-};
+}

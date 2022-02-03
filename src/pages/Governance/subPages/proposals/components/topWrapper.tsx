@@ -1,9 +1,9 @@
-import { Divider, styled } from "@mui/material";
-import React, { FC } from "react";
-import { NewProposalButton } from "./newProposalButton";
-import { ProposalFilterSelect } from "./filterSelect";
-import { SubmitPermission } from "./submitPermission";
-import { mobile } from "../../../../../styles/media";
+import { Divider, styled } from "@mui/material"
+import React, { FC } from "react"
+import { NewProposalButton } from "./newProposalButton"
+import { ProposalFilterSelect } from "./filterSelect"
+import { SubmitPermission } from "./submitPermission"
+import { mobile } from "../../../../../styles/media"
 
 export const TopWrapper: FC = () => {
   return (
@@ -17,12 +17,12 @@ export const TopWrapper: FC = () => {
         <NewProposalButton />
       </RightWrapper>
     </Wrapper>
-  );
-};
+  )
+}
 
 const DividerWrapper = styled("div")({
   padding: "4px",
-});
+})
 
 const Wrapper = styled("div")({
   display: "flex",
@@ -32,7 +32,7 @@ const Wrapper = styled("div")({
   [mobile]: {
     flexDirection: "column",
   },
-});
+})
 
 const RightWrapper = styled("div")({
   display: "flex",
@@ -40,4 +40,4 @@ const RightWrapper = styled("div")({
     flexDirection: "column",
     gap: "4px",
   },
-});
+})

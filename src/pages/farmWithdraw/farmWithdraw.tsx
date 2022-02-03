@@ -23,15 +23,10 @@ interface Props {
 }
 function FarmWithdraw({ poolName }: Props): ReactElement {
   const [poolData, userShareData] = usePoolData(poolName, true)
-  const [withdrawFormState, updateWithdrawFormState] = useWithdrawFormState(
-    poolName,
-  )
-  const {
-    slippageCustom,
-    slippageSelected,
-    gasPriceSelected,
-    gasCustom,
-  } = useSelector((state: AppState) => state.user)
+  const [withdrawFormState, updateWithdrawFormState] =
+    useWithdrawFormState(poolName)
+  const { slippageCustom, slippageSelected, gasPriceSelected, gasCustom } =
+    useSelector((state: AppState) => state.user)
   const { tokenPricesUSD, gasStandard, gasFast, gasInstant } = useSelector(
     (state: AppState) => state.application,
   )
@@ -78,11 +73,8 @@ function FarmWithdraw({ poolName }: Props): ReactElement {
     POOL.lpToken,
   ])
   async function onConfirmTransaction(): Promise<void> {
-    const {
-      withdrawType,
-      tokenInputs,
-      lpTokenAmountToSpend,
-    } = withdrawFormState
+    const { withdrawType, tokenInputs, lpTokenAmountToSpend } =
+      withdrawFormState
     await approveAndWithdraw({
       tokenFormState: tokenInputs,
       withdrawType,

@@ -42,9 +42,7 @@ export type TransactionStatusType = {
   withdraw?: boolean
 }
 
-export function useApproveAndDeposit(
-  poolName: PoolName,
-): {
+export function useApproveAndDeposit(poolName: PoolName): {
   approveAndDeposit: (
     state: ApproveAndDepositStateArgument,
     shouldDepositWrapped?: boolean,
@@ -93,10 +91,8 @@ export function useApproveAndDeposit(
     }
   }, [POOL.poolTokens])
 
-  const [
-    transactionStatus,
-    setTransactinStatus,
-  ] = useState<TransactionStatusType>(initialTransactionStatus)
+  const [transactionStatus, setTransactinStatus] =
+    useState<TransactionStatusType>(initialTransactionStatus)
 
   useEffect(() => {
     setTransactinStatus(initialTransactionStatus)
@@ -187,7 +183,9 @@ export function useApproveAndDeposit(
         if (isFirstTransaction) {
           minToMint = BigNumber.from("0")
         } else {
-          minToMint = await (effectiveSwapContract as SwapFlashLoanNoWithdrawFee).calculateTokenAmount(
+          minToMint = await (
+            effectiveSwapContract as SwapFlashLoanNoWithdrawFee
+          ).calculateTokenAmount(
             poolTokens.map(({ symbol }) => state[symbol].valueSafe),
             true, // deposit boolean
           )
@@ -211,11 +209,9 @@ export function useApproveAndDeposit(
         )
         const swapFlashLoanContract = effectiveSwapContract
 
-        const spendTransaction = await (swapFlashLoanContract as SwapFlashLoanNoWithdrawFee)?.addLiquidity(
-          txnAmounts,
-          minToMint,
-          txnDeadline,
-        )
+        const spendTransaction = await (
+          swapFlashLoanContract as SwapFlashLoanNoWithdrawFee
+        )?.addLiquidity(txnAmounts, minToMint, txnDeadline)
 
         await spendTransaction.wait()
         setTransactinStatus((prevState: TransactionStatusType) => ({

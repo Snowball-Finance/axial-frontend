@@ -1,9 +1,9 @@
-import React, { FC } from "react";
-import { CssVariables } from "../../styles/cssVariables/cssVariables";
-import { IconProps } from "./types";
+import React, { FC } from "react"
+import { CssVariables } from "../../styles/cssVariables/cssVariables"
+import { IconProps } from "./types"
 
 const LeftArrowIcon: FC<IconProps> = ({ color }) => {
-  const fill = color ?? CssVariables.primaryBlue;
+  const fill = color ?? CssVariables.primaryBlue
   return (
     <svg
       width="24"
@@ -27,7 +27,7 @@ const LeftArrowIcon: FC<IconProps> = ({ color }) => {
         strokeLinejoin="round"
       />
     </svg>
-  );
-};
+  )
+}
 
-export default LeftArrowIcon;
+export default LeftArrowIcon

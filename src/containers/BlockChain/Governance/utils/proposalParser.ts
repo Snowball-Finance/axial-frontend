@@ -1,44 +1,42 @@
-import { BigNumber, ethers } from "ethers";
-import { Proposal } from "../types";
-import axios from "axios";
+import { BigNumber, ethers } from "ethers"
+import { Proposal } from "../types"
+import axios from "axios"
 
 export const parseProposalFromRawBlockchainResponse = async ({
   item,
   alreadyHasMetadata,
 }: {
-  alreadyHasMetadata?: boolean;
-  item: any;
+  alreadyHasMetadata?: boolean
+  item: any
 }) => {
-  const parsed: Partial<Proposal> = {};
-  parsed.title = item["title"];
-  const forVotes = BigNumber.from(item["forVotes"].toString());
-  parsed.forVotes = Number(ethers.utils.formatUnits(forVotes, 18).toString());
-  const againstVotes = BigNumber.from(item["againstVotes"].toString());
+  const parsed: Partial<Proposal> = {}
+  parsed.title = item["title"]
+  const forVotes = BigNumber.from(item["forVotes"].toString())
+  parsed.forVotes = Number(ethers.utils.formatUnits(forVotes, 18).toString())
+  const againstVotes = BigNumber.from(item["againstVotes"].toString())
   parsed.againstVotes = Number(
-    ethers.utils.formatUnits(againstVotes, 18).toString()
-  );
-  parsed.proposer = item["proposer"];
-  const startTime = Number(item["startTime"].toString());
+    ethers.utils.formatUnits(againstVotes, 18).toString(),
+  )
+  parsed.proposer = item["proposer"]
+  const startTime = Number(item["startTime"].toString())
   if (!alreadyHasMetadata) {
-    let meta;
+    let meta
     try {
       meta = await axios.request({
         url: item["metadata"],
         method: "GET",
-      });
+      })
     } catch (error) {
-      console.debug(error);
+      console.debug(error)
     }
     if (meta) {
-      parsed.metadata = meta.data;
+      parsed.metadata = meta.data
     }
   }
-  const endTime = Number(
-    item["startTime"].add(item["votingPeriod"]).toString()
-  );
+  const endTime = Number(item["startTime"].add(item["votingPeriod"]).toString())
   //convert statrtTime to timestamp
-  parsed.startDate = new Date(startTime * 1000).toISOString();
+  parsed.startDate = new Date(startTime * 1000).toISOString()
   //convert endTime to timestamp
-  parsed.endDate = new Date(endTime * 1000).toISOString();
-  return parsed;
-};
+  parsed.endDate = new Date(endTime * 1000).toISOString()
+  return parsed
+}

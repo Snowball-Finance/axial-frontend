@@ -1,20 +1,20 @@
-import React from 'react'
-import { styled } from "@mui/material";
-import { ChangeEvent } from "react";
-import SearchIcon from "@mui/icons-material/Search";
-import CloseIcon from "@mui/icons-material/Close";
-import IconButton from "@mui/material/IconButton";
+import React from "react"
+import { styled } from "@mui/material"
+import { ChangeEvent } from "react"
+import SearchIcon from "@mui/icons-material/Search"
+import CloseIcon from "@mui/icons-material/Close"
+import IconButton from "@mui/material/IconButton"
 
 interface SearchInputInterface {
-  onChange: (v: string) => void;
-  value?: string;
-  placeHolder?: string;
-  onClearClick?: () => void;
+  onChange: (v: string) => void
+  value?: string
+  placeHolder?: string
+  onClearClick?: () => void
 }
 const Wrapper = styled("div")({
   position: "relative",
   minHeight: "45px",
-});
+})
 
 const Input = styled("input")({
   background: "transparent",
@@ -23,12 +23,12 @@ const Input = styled("input")({
   height: "45px",
   outline: "none",
   padding: "0px 12px",
-});
+})
 const EndIconWrapper = styled("div")({
   position: "absolute",
   right: "10px",
   top: "4px",
-});
+})
 
 const SIcon = () => {
   return (
@@ -40,8 +40,8 @@ const SIcon = () => {
     >
       <SearchIcon />
     </IconButton>
-  );
-};
+  )
+}
 const CIcon = ({ onClear }: { onClear: () => void }) => {
   return (
     <IconButton
@@ -52,8 +52,8 @@ const CIcon = ({ onClear }: { onClear: () => void }) => {
     >
       <CloseIcon />
     </IconButton>
-  );
-};
+  )
+}
 
 export const SearchInput = ({
   onChange,
@@ -62,8 +62,8 @@ export const SearchInput = ({
   placeHolder,
 }: SearchInputInterface) => {
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    onChange(e.target.value);
-  };
+    onChange(e.target.value)
+  }
 
   return (
     <Wrapper>
@@ -86,5 +86,5 @@ export const SearchInput = ({
         </EndIconWrapper>
       }
     </Wrapper>
-  );
-};
+  )
+}

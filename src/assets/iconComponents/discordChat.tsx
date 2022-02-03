@@ -1,5 +1,5 @@
-import React, { FC } from "react";
-import { IconProps } from "./types";
+import React, { FC } from "react"
+import { IconProps } from "./types"
 
 const DiscordChatIcon: FC<IconProps> = () => {
   return (
@@ -15,7 +15,7 @@ const DiscordChatIcon: FC<IconProps> = () => {
         fill="#5865F2"
       />
     </svg>
-  );
-};
+  )
+}
 
-export default DiscordChatIcon;
+export default DiscordChatIcon

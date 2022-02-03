@@ -1,4 +1,4 @@
-import { styled } from "@mui/material";
+import { styled } from "@mui/material"
 
 /**
  * example:
@@ -15,4 +15,4 @@ import { styled } from "@mui/material";
 
 export const FullWidthWrapper = styled("div")`
   width: 100%;
-`;
+`
