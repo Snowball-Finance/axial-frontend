@@ -34,6 +34,7 @@ import "../styles/cssVariables/cssVariables.css"
 import { theme } from "../styles/theme"
 import { GovernancePage } from "./Governance"
 import { GovernancePageAddress } from "./Governance/routes"
+import { StakingPage } from "./Staking"
 
 const App = (): ReactElement => {
   const location = useLocation()
@@ -122,6 +123,9 @@ const App = (): ReactElement => {
                 <Route exact path="/risk" component={Risk} />
                 <Route path={GovernancePageAddress}>
                   <GovernancePage />
+                </Route>
+                <Route path={'/staking'}>
+                  <StakingPage />
                 </Route>
               </Layout>
             </Switch>

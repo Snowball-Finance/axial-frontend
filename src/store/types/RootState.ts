@@ -9,7 +9,7 @@
 // import { StakingState } from "app/containers/BlockChain/Governance/Staking/types";
 // import { StakingPageState } from "app/containers/pages/StakingPage/types";
 import { GovernancePageState } from "pages/Governance/types"
-import { StakingPageState } from "pages/StakingPage/types"
+import { StakingPageState } from "pages/Staking/types"
 import { EthersState } from "../../containers/BlockChain/Ethers/types"
 import { StakingState } from "../../containers/BlockChain/Governance/Staking/types"
 import { GovernanceState } from "../../containers/BlockChain/Governance/types"
