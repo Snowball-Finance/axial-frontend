@@ -236,22 +236,7 @@ export default function FarmOverview({
           })}
         </div>
         <div className="buttons">
-          <Button
-            size="medium"
-            onClick={handleClaimClick}
-            disabled={userShareData?.masterchefBalance?.pendingTokens.pendingAxial.eq(
-              "0x0",
-            )}
-            kind="secondary"
-          >
-            {t("claim")}
-          </Button>
-          <Link to={`${poolRoute}/withdraw`}>
-            <Button size="medium" kind="secondary">
-              {t("withdraw")}
-            </Button>
-          </Link>
-          {shouldMigrate ? (
+        {shouldMigrate ? (
             <Button
               kind="temporary"
               onClick={onClickMigrate}
@@ -270,6 +255,22 @@ export default function FarmOverview({
               </Button>
             </Link>
           )}
+          <Button
+            size="medium"
+            onClick={handleClaimClick}
+            disabled={userShareData?.masterchefBalance?.pendingTokens.pendingAxial.eq(
+              "0x0",
+            )}
+            kind="secondary"
+          >
+            {t("claim")}
+          </Button>
+          <Link to={`${poolRoute}/withdraw`}>
+            <Button size="medium" kind="secondary">
+              {t("withdraw")}
+            </Button>
+          </Link>
+          
         </div>
       </div>
     </div>
