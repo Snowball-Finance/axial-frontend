@@ -1,4 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
+import { BigNumber } from "ethers"
 import { MasterchefApr } from "../libs/getPoolsAPR"
 import { SwapStatsReponse } from "../libs/getSwapStats"
 
@@ -22,18 +23,41 @@ interface LastTransactionTimes {
   [transactionType: string]: number
 }
 
+export interface BestPath {
+  amountIn: BigNumber
+  amountOut: BigNumber
+  path: string[]
+  adapters: string[]
+}
+
+export interface SwapRouterInfo{
+  isGettingBestPath: boolean,
+  bestSwapPath:BestPath | null,
+  swapError: string | null,
+
+}
+
 type ApplicationState = GasPrices & { tokenPricesUSD?: TokenPricesUSD } & {
   lastTransactionTimes: LastTransactionTimes
-} & { swapStats?: SwapStats } & { masterchefApr?: MasterchefApr }
+} & { swapStats?: SwapStats } & { masterchefApr?: MasterchefApr } &{swapRouterInfo:SwapRouterInfo}
 
 const initialState: ApplicationState = {
   lastTransactionTimes: {},
+swapRouterInfo:{
+  isGettingBestPath:false,
+  bestSwapPath:null,
+  swapError:null,
+}
+
 }
 
 const applicationSlice = createSlice({
   name: "application",
   initialState,
   reducers: {
+    setSwapRouterInfo(state, action: PayloadAction<SwapRouterInfo>){
+      state.swapRouterInfo = {...action.payload}
+    },
     updateGasPrices(state, action: PayloadAction<GasPrices>): void {
       const { gasStandard, gasFast, gasInstant } = action.payload
       state.gasStandard = gasStandard
@@ -87,6 +111,7 @@ export const {
   updateTokensPricesUSD,
   updateLastTransactionTimes,
   updateSwapStats,
+  setSwapRouterInfo,
   updateMasterchefApr,
 } = applicationSlice.actions
 

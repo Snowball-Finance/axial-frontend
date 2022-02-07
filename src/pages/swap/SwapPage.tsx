@@ -50,6 +50,7 @@ interface Props {
 
 const SwapPage = (props: Props): ReactElement => {
   const { t } = useTranslation()
+  const { isGettingBestPath, swapError } = useSelector((state: AppState) => state.application.swapRouterInfo);
 
   const { account } = useActiveWeb3React()
   const {
@@ -186,6 +187,7 @@ const SwapPage = (props: Props): ReactElement => {
                 ({ symbol }) => symbol !== fromState.symbol,
               )}
               onSelect={onChangeToToken}
+              isLoading={isGettingBestPath}
               selected={toState.symbol}
               inputValue={toState.value}
               inputValueUSD={toState.valueUSD}
@@ -243,6 +245,14 @@ const SwapPage = (props: Props): ReactElement => {
             noApprovalCheckbox={false}
             noSlippageCheckbox={false}
           />
+
+        {
+          swapError && (
+            <div className="exchangeWarning">
+              {swapError}
+            </div>
+          )
+        }
           {account && isLowerRate(exchangeRateInfo.exchangeRate) && (
             <div className="exchangeWarning">
               {t("lowSwapRate", {
@@ -275,7 +285,7 @@ const SwapPage = (props: Props): ReactElement => {
                   name: `${fromState.symbol}_${toState.symbol}`,
                 })
               }}
-              disabled={!!error || +toState.value <= 0}
+              disabled={!!error || +toState.value <= 0 || isGettingBestPath || swapError !== null}
             >
               {t("swap")}
             </Button>
