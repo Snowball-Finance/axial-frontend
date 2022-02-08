@@ -1,0 +1,278 @@
+@import "../../styles/theme";
+@import "../../styles/viewports";
+
+div.quadReward {
+  background: var(--background-main);
+  color: var(--text);
+  padding-bottom: 80px;
+  box-sizing: border-box;
+  width: 100%;
+
+  .content {
+    width: 980px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: 20px;
+    @include breakpoint(lg) {
+      display: flex;
+      flex-flow: column nowrap;
+      align-items: center;
+      justify-content: center;
+      row-gap: 10px;
+      width: 100%;
+    }
+
+    .left {
+      width: 500px;
+      background: var(--background-element);
+      border-radius: 10px;
+      padding: 24px;
+      @include breakpoint(lg) {
+        width: 100%;
+      }
+
+      h3 {
+        font-family: $font-family-title;
+        font-size: 24px;
+        margin-top: 0;
+        margin-bottom: 12px;
+        font-weight: $bold;
+        color: var(--text);
+        text-align: left;
+      }
+
+      button {
+        margin-top: 10px;
+      }
+
+      .balance {
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      .tabs {
+        margin-bottom: 20px;
+
+        ul.nav {
+          font-family: $font-family;
+          list-style-type: none;
+          padding: 0;
+          margin: 0;
+          font-size: large;
+
+          & > li {
+            display: inline;
+            margin-right: 20px;
+            padding-bottom: 5px;
+            cursor: pointer;
+
+            &.active {
+              opacity: 1;
+              color: $primary-destructive;
+              font-weight: $bold;
+              border-bottom: 2px solid $primary-destructive;
+            }
+
+            &:hover {
+              color: $primary-destructive;
+            }
+          }
+        }
+      }
+
+      .tokenInputContainer {
+        border-radius: 8px;
+        padding: 8px;
+        display: flex;
+        align-items: center;
+        font-size: 16px;
+        width: 100%;
+        background-color: transparent;
+        border: 1px solid $primary;
+
+        .smallText {
+          font-size: 14px;
+        }
+
+        .boldText {
+          font-weight: 500;
+          font-size: 18px;
+          font-family: $font-family;
+        }
+
+        .tokenSymbolAndName {
+          display: flex;
+          flex-direction: column;
+          margin: 0 8px;
+        }
+
+        img {
+          width: 32px;
+          margin: 0px 8px;
+        }
+      }
+
+      .inputGroup {
+        display: flex;
+        flex: 1;
+        font-size: 16px;
+        cursor: default;
+
+        input {
+          outline: none;
+          border-radius: 4px;
+          text-align: right;
+          background-color: transparent;
+          color: var(--text);
+          width: 100%;
+          &::placeholder {
+            color: var(--text);
+          }
+
+          &:focus {
+            outline: none;
+          }
+
+          &:disabled {
+            background-color: $disabled;
+            border: none;
+          }
+        }
+      }
+    }
+
+    .right {
+      width: 530px;
+      background: var(--background-element);
+      border-radius: 10px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      row-gap: 10px;
+      @include breakpoint(lg) {
+        width: 100%;
+      }
+
+      h1 {
+        font-weight: bold;
+        font-size: 42px;
+        font-family: $font-family;
+        line-height: 45px;
+      }
+
+      .contract {
+        display: flex;
+        flex-direction: row;
+        column-gap: 5px;
+
+        img {
+          width: 12px;
+        }
+      }
+
+      .aprInfo {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .title {
+          color: $primary;
+          font-weight: bold;
+          font-size: 18px;
+          font-family: $font-family;
+        }
+      }
+
+      .share {
+        display: flex;
+        flex-direction: column;
+
+        .shareContent {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+
+          h4 {
+            font-weight: bold;
+            font-size: 21px;
+            font-family: $font-family;
+          }
+
+          h6 {
+            font-size: 18px;
+            font-family: $font-family;
+          }
+
+          .highlightText {
+            color: $primary-destructive;
+          }
+        }
+      }
+
+      .rewardsCoin {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .coinContent {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .title {
+          font-weight: bold;
+        }
+
+        img {
+          width: 32px;
+          margin: 0px 8px;
+        }
+      }
+
+      .currency {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        h4 {
+          font-weight: bold;
+          font-size: 21px;
+          font-family: $font-family;
+        }
+
+        .highlightText {
+          color: $primary-destructive;
+        }
+      }
+
+      .currencyDetails {
+        display: flex;
+        flex-direction: column;
+        row-gap: 10px;
+
+        .outer {
+          display: flex;
+          justify-content: space-between;
+        }
+
+        .inner {
+          display: flex;
+          flex-direction: row;
+          column-gap: 5px;
+          align-items: center;
+
+          img {
+            width: 32px;
+          }
+
+          .highlightText {
+            color: $primary-destructive;
+          }
+        }
+      }
+    }
+  }
+}
