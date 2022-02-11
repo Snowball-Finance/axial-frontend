@@ -13,16 +13,17 @@ html {
   --navigationTabBackground: #f5f5f5;
   --lightTint: #f7f7f7;
   --activeNAvigationTabBackground: #c8e6fe;
-  --primary: #1a93f2;
+  --primary: #EAAB50;
   --lightBlue: #c8e6fe;
   --mildBlue: #e9f5fe;
   --placeholderColor: #c7c7c7;
   --dark: #363636;
   --darkText: #6e6b7b;
   --grey: #8e8e8e;
-  --green: #28c76f;
+  --green: #60A88B;
   --mildGreen: rgba(40, 199, 111, 0.12);
-  --red: #df5f67;
+  --opaqueGreen:rgba(96, 168, 139, 0.5);
+  --red:#D12E38;
   --mildRed: rgba(223, 95, 103, 0.12);
   --mildYellow: rgba(251, 139, 36, 0.2);
   --lightGrey: #e5e5e5;
@@ -32,6 +33,11 @@ html {
   --paperBorderRadius: 8px;
   --gridInputBorder: #dbdbdb;
   --ctaBlue: #28a2ff;
+  --paperBackground:#201F55;
+  --bodyTextColor:#E5E6E7;
+  --buttonBorderRadius:60px;
+  --primaryDisabled:#89693B;
+  --chipBackgroundColor:#3a2e6b;
 
   /* ag grid related styles */
   --ag-border-color: transparent;
