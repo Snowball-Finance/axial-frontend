@@ -1,25 +1,27 @@
 import { Box, styled } from "@mui/material";
-import { FC, ReactNode } from "react";
-import { CssVariables } from "styles/cssVariables/cssVariables";
+import React, { FC, ReactNode } from "react";
+import { CssVariables } from "../../../../styles/cssVariables/cssVariables";
 import { ContainedButton } from "./containedButton";
 
 export interface InfoButtonProps {
   title: string;
   icon: ReactNode;
   fullWidth?: boolean;
+  contained?: boolean;
   onClick?: () => void;
 }
 export const InfoButton: FC<InfoButtonProps> = ({
   icon,
   title,
   onClick,
+  contained,
   fullWidth,
 }) => {
   return (
     <StyledContainedButton
       disableElevation
       onClick={onClick}
-      {...{ fullWidth }}
+      {...{ fullWidth, contained }}
     >
       {title}
       <Box display="flex">{icon}</Box>
@@ -30,10 +32,13 @@ export const InfoButton: FC<InfoButtonProps> = ({
 const StyledContainedButton = styled(ContainedButton)({
   display: "flex",
   gap: "8px",
-  backgroundColor: CssVariables.mildBlue,
+  backgroundColor: "transparent",
   color: CssVariables.primary,
-  borderRadius: CssVariables.paperBorderRadius,
-  fontSize: "12px",
+  border: `1px solid ${CssVariables.primary}`,
+  borderRadius: CssVariables.buttonBorderRadius,
+  fontSize: "16px",
+  fontWeight: 600,
+  maxHeight: "32px",
   "&:hover": {
     color: CssVariables.white,
     path: {

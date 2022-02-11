@@ -1,6 +1,6 @@
 import { CircularProgress, styled } from "@mui/material";
 import Button, { ButtonProps } from "@mui/material/Button";
-import { FC } from "react";
+import React, { FC } from "react";
 
 type CommonButtonProps = {
   loading?: boolean;

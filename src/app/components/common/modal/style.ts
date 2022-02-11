@@ -1,5 +1,5 @@
 import { Dialog, styled } from "@mui/material";
-import { CssVariables } from "styles/cssVariables/cssVariables";
+import { CssVariables } from "../../../../styles/cssVariables/cssVariables";
 
 export const StyledDialog = styled(Dialog)({
   background: "rgba(18, 19, 20, 0.4)",

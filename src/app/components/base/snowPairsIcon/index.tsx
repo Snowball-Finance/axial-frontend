@@ -1,6 +1,7 @@
 import { Box, styled } from "@mui/material";
 import { generateIconSrcByAddress } from "common/generateIconSrcByAddress";
 import orderBasePair from "common/orderBasePair";
+import React from "react";
 
 const Wrapper = styled("div")<any>(({ theme, size, flat }) => ({
   width: `${size || 50}px`,
@@ -30,7 +31,9 @@ export const SnowPairsIcon = ({
   size?: number;
   flat?: boolean;
 }) => {
-  let pairsIcon = orderBasePair(addresses.filter((address) => address !== ""));
+  const pairsIcon = orderBasePair(
+    addresses.filter((address) => address !== "")
+  );
   return (
     <Box display="flex">
       {pairsIcon.map((pair, index) => {

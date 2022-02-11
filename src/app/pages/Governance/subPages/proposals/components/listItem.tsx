@@ -7,8 +7,8 @@ import {
   ProposalStates,
 } from "app/containers/BlockChain/Governance/types";
 import ChevronRightInCircle from "assets/images/iconComponents/chevronRightInCircle";
+import { Tick } from "assets/images/iconComponents/tick";
 import { push } from "connected-react-router";
-import { translations } from "locales/i18n";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -47,14 +47,25 @@ export const ProposalListItem: FC<ProposalListItemProps> = ({
           {...(short && { flex: 1, paddingRight: "16px" })}
           {...(!short && { width: "310px" })}
         >
-          <DarkText size={12}>#{proposal.index}</DarkText>
-          <DarkText size={16}>{proposal.title}</DarkText>
+          <div>
+            <DarkText size={12}>#{proposal.index}</DarkText>
+            <DarkText size={16}>{proposal.title}</DarkText>
+          </div>
           <StatusChip
             state={proposal.state}
             label={
-              proposal.state === ProposalStates.vetoed
-                ? ProposalStates.passed
-                : proposal.state
+              proposal.state === ProposalStates.vetoed ? (
+                ProposalStates.passed
+              ) : proposal.state === ProposalStates.executed ? (
+                <>
+                  <span>{proposal.state}</span>
+                  <span>
+                    <Tick />
+                  </span>
+                </>
+              ) : (
+                proposal.state
+              )
             }
           />
         </IndexNameAndStatusWrapper>
@@ -65,7 +76,7 @@ export const ProposalListItem: FC<ProposalListItemProps> = ({
             <DateChip label={new Date(proposal.startDate).toLocaleString()} />
           </DateAndChip>
           <DarkText size={10}>
-            {t(translations.GovernancePage.Proposedby())} :
+            {t("Proposedby")} :
             {proposal.proposer.substring(0, 6) +
               "..." +
               proposal.proposer.substring(
@@ -79,16 +90,12 @@ export const ProposalListItem: FC<ProposalListItemProps> = ({
           <>
             <VotesBarWrapper>
               <VoteProgressBar
-                title={`${t(translations.Common.For())}: ${
-                  forVotes.formattedVotes
-                }`}
+                title={`${t("For")}: ${forVotes.formattedVotes}`}
                 percent={forVotes.percent}
                 type={VoteProgressBarType.for}
               />
               <VoteProgressBar
-                title={`${t(translations.Common.Against())}: ${
-                  againstVotes.formattedVotes
-                }`}
+                title={`${t("Against")}: ${againstVotes.formattedVotes}`}
                 percent={againstVotes.percent}
                 type={VoteProgressBarType.against}
               />
@@ -97,7 +104,7 @@ export const ProposalListItem: FC<ProposalListItemProps> = ({
             <DetailButtonWrapper>
               <InfoButton
                 icon={<ChevronRightInCircle />}
-                title={t(translations.Common.Details())}
+                title={t("Details")}
                 onClick={handleDetailsClick}
               />
             </DetailButtonWrapper>
@@ -111,8 +118,8 @@ export const ProposalListItem: FC<ProposalListItemProps> = ({
 const DateAndChip = styled("div")({});
 
 const DateChip = styled(Chip)({
-  background: CssVariables.mildBlue,
-  color: CssVariables.primary,
+  background: CssVariables.chipBackgroundColor,
+  color: CssVariables.white,
   borderRadius: CssVariables.paperBorderRadius,
   fontSize: "12px",
   maxHeight: "24px",
@@ -122,11 +129,19 @@ const DateChip = styled(Chip)({
 
 const StatusChip = styled(Chip)<{ state: ProposalStates }>(({ state }) => {
   let background = CssVariables.primary;
-  let color = CssVariables.white;
+  let color = CssVariables.paperBackground;
   switch (state) {
     case ProposalStates.readyForExecution:
-      background = CssVariables.mildBlue;
-      color = CssVariables.primary;
+      background = CssVariables.chipBackgroundColor;
+      color = CssVariables.white;
+      break;
+    case ProposalStates.active:
+      background = CssVariables.primary;
+      color = CssVariables.paperBackground;
+      break;
+    case ProposalStates.executed:
+      background = CssVariables.opaqueGreen;
+      color = CssVariables.white;
       break;
     default:
       break;
@@ -137,11 +152,16 @@ const StatusChip = styled(Chip)<{ state: ProposalStates }>(({ state }) => {
     borderRadius: CssVariables.paperBorderRadius,
     fontSize: "12px",
     maxHeight: "24px",
+    span: {
+      display: "flex",
+      gap: "6px",
+      alignItems: "center",
+    },
   };
 });
 
 const DarkText = styled("p")<{ size: number }>(({ size }) => ({
-  color: CssVariables.black,
+  color: CssVariables.bodyTextColor,
   margin: 0,
   fontSize: `${size}px`,
 }));
@@ -186,7 +206,7 @@ const IndexNameAndStatusWrapper = styled(Box)({
   display: "flex",
   flexDirection: "column",
   alignItems: "flex-start",
-  justifyContent: "space-around",
+  justifyContent: "space-between",
 });
 
 const DividerOnMobile = styled(Divider)({

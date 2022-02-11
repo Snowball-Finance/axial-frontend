@@ -23,7 +23,7 @@ import { ThemeProvider as MaterialThemeProvider } from "@mui/material";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./styles/cssVariables/cssVariables.css";
-import './index.css'
+import "./index.css";
 import { theme } from "styles/theme";
 import { ApolloProvider } from "@apollo/client";
 import { apolloClient } from "services/apollo/client";

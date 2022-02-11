@@ -8,20 +8,27 @@ import {
   SelectProps,
   styled,
 } from "@mui/material";
-import { FC } from "react";
-import { BaseInputStyles } from "styles/baseInputStyles";
-import { CssVariables } from "styles/cssVariables/cssVariables";
+import React, { FC } from "react";
 import { SnowSelectInterface } from "./types";
+import { BaseInputStyles } from "../../../../styles/baseInputStyles";
+import { CssVariables } from "../../../../styles/cssVariables/cssVariables";
 
 const StyledSelect = styled(Select)<SelectProps>(({ theme }) => ({
   maxHeight: "45px",
   borderRadius: "10px",
-  "& .MuiInputBase-input": BaseInputStyles({ theme }),
+  border: `1px solid ${CssVariables.ctaBlue}`,
+  boxShadow: "none",
+  "& .MuiInputBase-input": {
+    ...BaseInputStyles({ theme }),
+    paddingTop: "9px",
+    paddingBottom: "9px",
+    color: CssVariables.white,
+  },
   ".MuiSelect-icon": {
     width: "42px",
     height: "42px",
     marginTop: "-8px",
-    color: CssVariables.lightGrey,
+    color: CssVariables.white,
   },
   ".MuiOutlinedInput-input": {
     color: CssVariables.grey,

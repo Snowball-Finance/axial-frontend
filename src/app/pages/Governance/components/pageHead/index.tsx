@@ -1,7 +1,6 @@
 import { styled } from "@mui/material";
 import { SnowPaper } from "app/components/base/SnowPaper";
-import bgImage from "assets/images/page-head-bg-image.png";
-import coin from "assets/images/header-coin.png";
+import bgImage from "assets/images/page-head-bg-image.svg";
 import { FC } from "react";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { mobile } from "styles/media";
@@ -20,12 +19,11 @@ export const PageHead: FC<PageHeadProps> = ({
   endImage,
 }) => {
   const bg = image ?? bgImage;
-  const endImg = endImage ?? coin;
   return (
     <Wrapper elevation={0} image={bg}>
       <Title>{title}</Title>
       <Desc>{description}</Desc>
-      <ImageWrapper image={endImg} />
+      {endImage && <ImageWrapper image={endImage} />}
     </Wrapper>
   );
 };

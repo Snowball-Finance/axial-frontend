@@ -1,7 +1,7 @@
 import { styled } from "@mui/material";
-import { SnowButtonProps, SnowButton } from "app/components/base/snowButton";
-import { FC } from "react";
-import { CssVariables } from "styles/cssVariables/cssVariables";
+import React, { FC } from "react";
+import { CssVariables } from "../../../../styles/cssVariables/cssVariables";
+import { SnowButton, SnowButtonProps } from "../../base/snowButton";
 
 export const TextButton: FC<SnowButtonProps> = (props) => {
   return <StyledButton variant="text" {...props} />;

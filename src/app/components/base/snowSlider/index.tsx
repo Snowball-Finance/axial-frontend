@@ -1,6 +1,6 @@
 import { styled } from "@mui/material";
 import Slider, { SlideProps } from "@mui/material/Slide";
-import { FC } from "react";
+import React, { FC } from "react";
 
 export const SnowSlider: FC<SlideProps> = (props) => {
   return <StyledSlider {...props} />;
