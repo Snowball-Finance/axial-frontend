@@ -1,8 +1,8 @@
 import React, { ReactElement } from "react"
 import TopMenu from "../../components/menu/TopMenu"
-import Footer from "../../components/footer/Footer"
 import { useLocation } from "react-router"
 import "./index.scss"
+import Navigation from "../../components/navigation/Navigation"
 
 export default function Layout({
   children,
@@ -12,9 +12,15 @@ export default function Layout({
 
   return (
     <div className="layout">
-      <TopMenu activeTab={activeTab} />
-      {children}
-      <Footer />
+      <div className="topbar">
+        <TopMenu />
+      </div>
+
+      <div className="sidebar">
+        <Navigation activeTab={activeTab} />
+      </div>
+
+      <div className="mainContainer">{children}</div>
     </div>
   )
 }

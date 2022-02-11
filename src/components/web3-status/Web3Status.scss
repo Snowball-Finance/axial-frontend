@@ -24,7 +24,7 @@ div.walletStatus {
   .hasAccount {
     display: flex;
     align-items: center;
-    border: 1px solid $primary-destructive;
+    border: 2px solid $primary-new;
     border-radius: 75px;
     padding: 8px 12px;
     font-family: $font-family;
@@ -32,18 +32,19 @@ div.walletStatus {
     font-size: 16px;
     span.address {
       margin-right: 8px;
-      color: $primary-destructive;
+      color: $primary-new;
       @include breakpoint(md) {
         display: none;
       }
     }
   }
   .noAccount {
-    background: $primary-destructive;
+    border: 2px solid $primary-new;
     border-radius: 75px;
     line-height: 40px;
-    color: $primary-focus;
+    color: $primary-new;
     font-weight: $bold;
+    text-transform: uppercase;
     padding: 0px 20px;
 
     @include breakpoint(lg) {

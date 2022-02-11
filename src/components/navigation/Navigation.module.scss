@@ -1,0 +1,66 @@
+@import "../../styles/theme";
+@import "../../styles/viewports";
+
+div.navigation {
+  padding-left: 25%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 90vh;
+
+  ul.nav {
+    font-family: $font-family;
+    list-style-type: none;
+    padding: 46px 0px;
+    margin: 0;
+
+    & > li {
+      display: block;
+      padding: 20px 0;
+      a {
+        color: var(--text);
+        text-decoration: none;
+        font-style: italic;
+        font-weight: $bold;
+        font-size: 42px;
+        line-height: 63px;
+        font-family: $font-family;
+        text-transform: uppercase;
+        @include breakpoint(lg) {
+          font-size: 40px;
+        }
+        @include breakpoint(md) {
+          font-size: 38px;
+        }
+        @include breakpoint(sm) {
+          font-size: 36px;
+        }
+        &:hover {
+          opacity: 1;
+        }
+
+        &.active {
+          opacity: 1;
+          color: $primary-new;
+          font-weight: $bold;
+        }
+      }
+    }
+  }
+
+  .socialLinks {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: auto;
+    height: 60px;
+  }
+  
+  .socialLinks a {
+    padding: 0 8px;
+  }
+  
+  .socialLinks a:hover {
+    transform: scale(1.05);
+  }
+}
