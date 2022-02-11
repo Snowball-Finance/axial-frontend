@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 const GET_PAIRS_INFOS = gql`
   query pairsInfos($order: Int, $first: Int) {
@@ -58,6 +58,4 @@ const GET_LATEST_PAIRS_INFO = gql`
     }
   }
 `;
-
-
-export { GET_PAIRS_INFOS,GET_LATEST_PAIRS_INFO };
+export { GET_PAIRS_INFOS, GET_LATEST_PAIRS_INFO };

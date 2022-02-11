@@ -1,8 +1,8 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 const DEPRECATED_CONTRACTS = gql`
   query {
-    DeprecatedContracts{
+    DeprecatedContracts {
       kind
       source
       pair

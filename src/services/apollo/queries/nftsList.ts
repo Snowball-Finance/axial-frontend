@@ -1,8 +1,8 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 const NFTS_LIST = gql`
   query {
-    NFTsList{
+    NFTsList {
       address
       name
       imgUrl
@@ -15,7 +15,7 @@ const NFTS_LIST = gql`
       supply
       buyable
       baseCost
-      bondCurve 
+      bondCurve
     }
   }
 `;

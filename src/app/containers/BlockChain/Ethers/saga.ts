@@ -6,15 +6,17 @@ import { AVALANCHE_MAINNET_PARAMS } from "app/containers/BlockChain/utils/wallet
 export function* getAndSetProvider() {
   try {
     yield put(EthersActions.setIsCheckingNodeHealth(true));
-    const provider = new ethers.providers.StaticJsonRpcProvider(AVALANCHE_MAINNET_PARAMS.rpcUrls[0])
+    const provider = new ethers.providers.StaticJsonRpcProvider(
+      AVALANCHE_MAINNET_PARAMS.rpcUrls[0]
+    );
     yield put(EthersActions.setPrivateProvider(provider));
-
   } catch (error) {
-    console.log('e.c.t.p.n')//error connecting to private node
-    const provider = new ethers.providers.StaticJsonRpcProvider(AVALANCHE_MAINNET_PARAMS.rpcUrls[0])
+    console.log("e.c.t.p.n"); //error connecting to private node
+    const provider = new ethers.providers.StaticJsonRpcProvider(
+      AVALANCHE_MAINNET_PARAMS.rpcUrls[0]
+    );
     yield put(EthersActions.setPrivateProvider(provider));
-  }
-  finally {
+  } finally {
     yield put(EthersActions.setIsCheckingNodeHealth(false));
   }
 }

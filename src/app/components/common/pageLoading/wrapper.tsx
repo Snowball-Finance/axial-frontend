@@ -1,6 +1,6 @@
 import { styled } from "@mui/material";
 
-export const Wrapper = styled('div')`
+export const Wrapper = styled("div")`
   position: fixed;
   top: 30vh;
   left: calc(50vw - 30px);

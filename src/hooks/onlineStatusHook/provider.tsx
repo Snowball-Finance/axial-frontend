@@ -5,7 +5,7 @@ import React, {
   useContext,
   FC,
   createContext,
-} from 'react';
+} from "react";
 
 const PING_RESOURCE = `${BaseUrl}/check`;
 const TIMEOUT_TIME_MS = 4000;
@@ -14,7 +14,7 @@ const onlinePollingInterval = 60 * 1000;
 const timeout = (time: number, promise: Promise<any>) => {
   return new Promise(function (resolve, reject) {
     setTimeout(() => {
-      reject(new Error('Request timed out.'));
+      reject(new Error("Request timed out."));
     }, time);
     promise.then(resolve, reject);
   });
@@ -32,9 +32,9 @@ const checkOnlineStatus: () => Promise<boolean> = async () => {
     await timeout(
       TIMEOUT_TIME_MS,
       fetch(PING_RESOURCE, {
-        method: 'GET',
+        method: "GET",
         signal,
-      }),
+      })
     );
     return true;
   } catch (error) {
@@ -52,10 +52,10 @@ const OnlineStatusContext = createContext(true);
 
 export const OnlineStatusProvider: FC = ({ children }) => {
   const [onlineStatus, setOnlineStatus] = useState<boolean>(true);
-  if (process.env.NODE_ENV !== 'production') {
+  if (process.env.NODE_ENV !== "production") {
     console.log(
       `%cconnection Status: ${onlineStatus} ${new Date().toISOString()}`,
-      'color:orange;font-size:16px;',
+      "color:orange;font-size:16px;"
     );
   }
   const checkStatus = async () => {
@@ -64,7 +64,7 @@ export const OnlineStatusProvider: FC = ({ children }) => {
   };
 
   useEffect(() => {
-    window.addEventListener('offline', () => {
+    window.addEventListener("offline", () => {
       setOnlineStatus(false);
     });
 
@@ -74,7 +74,7 @@ export const OnlineStatusProvider: FC = ({ children }) => {
     }, onlinePollingInterval);
 
     return () => {
-      window.removeEventListener('offline', () => {
+      window.removeEventListener("offline", () => {
         setOnlineStatus(false);
       });
 
