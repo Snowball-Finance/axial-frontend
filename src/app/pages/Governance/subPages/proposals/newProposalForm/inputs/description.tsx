@@ -1,7 +1,8 @@
 import { TextField } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import React from "react";
 import { GovernanceSelectors } from "app/containers/BlockChain/Governance/selectors";
 import { GovernanceActions } from "app/containers/BlockChain/Governance/slice";
-import { useDispatch, useSelector } from "react-redux";
 
 export const DescriptionInput = () => {
   const fieldName = "description";

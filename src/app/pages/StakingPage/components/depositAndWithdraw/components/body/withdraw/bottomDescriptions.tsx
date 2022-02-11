@@ -23,7 +23,7 @@ const Description = styled("h6")({
   fontSize: "14px",
   fontWeight: "600",
   margin: 0,
-  color: CssVariables.darkText,
+  color: CssVariables.commonTextColor,
   textAlign: "center",
   padding: "0 20px",
 });

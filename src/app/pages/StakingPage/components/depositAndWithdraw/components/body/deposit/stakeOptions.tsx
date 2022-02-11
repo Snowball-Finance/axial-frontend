@@ -64,7 +64,7 @@ const Title = styled("h6")({
   fontSize: "16px",
   fontWeight: "400",
   margin: 0,
-  color: CssVariables.darkText,
+  color: CssVariables.commonTextColor,
 });
 
 const Wrapper = styled("div")({
@@ -76,5 +76,9 @@ const Wrapper = styled("div")({
   ".MuiFormControlLabel-label": {
     flex: 1,
     textAlign: "center",
+    color: CssVariables.commonTextColor,
+  },
+  ".MuiButtonBase-root:not(.Mui-checked)": {
+    color: CssVariables.commonTextColor,
   },
 });

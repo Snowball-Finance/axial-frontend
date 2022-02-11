@@ -22,5 +22,5 @@ export const ChildWrapper = styled("div")({
   width: "100%",
   marginLeft: "auto",
   marginRight: "auto",
-  color: CssVariables.darkText,
+  color: CssVariables.commonTextColor,
 });

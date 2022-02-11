@@ -1,11 +1,12 @@
 import { InputAdornment, TextField } from "@mui/material";
-import { GovernanceSelectors } from "app/containers/BlockChain/Governance/selectors";
-import { GovernanceActions } from "app/containers/BlockChain/Governance/slice";
-import { isInvalidPeriod } from "app/pages/Governance/utils/period";
 import { env } from "environment";
-import { translations } from "locales/i18n";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { isInvalidPeriod } from "./utils/period";
+import { GovernanceSelectors } from "app/containers/BlockChain/Governance/selectors";
+import { GovernanceActions } from "app/containers/BlockChain/Governance/slice";
+import { translations } from "locales/i18n";
 
 export const VotingPeriodInput = () => {
   const fieldName = "votingPeriod";

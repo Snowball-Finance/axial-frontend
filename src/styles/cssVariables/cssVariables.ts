@@ -11,7 +11,7 @@ export enum CssVariables {
   opaqueGreen = "var(--opaqueGreen)",
   paperBorderRadius = "var(--paperBorderRadius)",
   buttonBorderRadius = "var(--buttonBorderRadius)",
-  darkText = "var(--darkText)",
+  commonTextColor = "var(--commonTextColor)",
   error = "var(--error)",
   /**#363636 */
   dark = "var(--dark)",

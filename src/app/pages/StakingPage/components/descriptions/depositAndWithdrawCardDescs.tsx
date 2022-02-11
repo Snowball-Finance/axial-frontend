@@ -25,14 +25,14 @@ export const DepositAndWithdrawCardDescription = () => {
 const Desc = styled("div")({
   fontSize: "16px",
   fontWeight: 400,
-  color: CssVariables.darkText,
+  color: CssVariables.commonTextColor,
 });
 
 const Title = styled("h1")({
   fontSize: "42px",
   fontWeight: 700,
   margin: 0,
-  color: CssVariables.darkText,
+  color: CssVariables.commonTextColor,
   marginBottom: "20px",
 });
 

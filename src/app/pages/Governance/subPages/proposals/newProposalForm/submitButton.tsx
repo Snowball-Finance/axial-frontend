@@ -1,9 +1,10 @@
-import { ContainedButton } from "app/components/common/buttons/containedButton";
-import { GovernanceSelectors } from "app/containers/BlockChain/Governance/selectors";
-import { GovernanceActions } from "app/containers/BlockChain/Governance/slice";
-import { translations } from "locales/i18n";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { GovernanceSelectors } from "app/containers/BlockChain/Governance/selectors";
+import { GovernanceActions } from "app/containers/BlockChain/Governance/slice";
+import { ContainedButton } from "app/components/common/buttons/containedButton";
+import { translations } from "locales/i18n";
 
 export const NewProposalSubmitButton = () => {
   const { t } = useTranslation();

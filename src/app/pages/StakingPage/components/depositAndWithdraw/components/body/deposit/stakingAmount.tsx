@@ -45,7 +45,9 @@ export const StakingAmount = () => {
 
 const MaxButton = styled(OutlinedButton)({});
 
-const MainTokenName = styled("span")({});
+const MainTokenName = styled("span")({
+  color: CssVariables.commonTextColor,
+});
 
 const Icon = styled("img")({
   width: "32px",
@@ -59,8 +61,9 @@ const AmountInput = styled("input")({
   outline: "none",
   fontSize: "16px",
   fontWeight: "600",
-  color: CssVariables.darkText,
+  color: CssVariables.commonTextColor,
   padding: "0 0 0 8px",
+  background: "transparent",
 });
 
 const NameIconAndMaxButtonWrapper = styled("div")({

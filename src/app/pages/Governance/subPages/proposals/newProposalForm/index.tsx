@@ -27,7 +27,7 @@ export const NewProposalForm = () => {
       <Zoom in={isOpen} style={{ transitionDelay: isOpen ? "100ms" : "0ms" }}>
         <ContentWrapper>
           <CloseWrapper onClick={handleCloseClick}>
-            <CrossIcon color={CssVariables.darkText} />
+            <CrossIcon color={CssVariables.commonTextColor} />
           </CloseWrapper>
           <Title>{t(translations.GovernancePage.NewProposal())}</Title>
           <ProposalBodyWrapper>

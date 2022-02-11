@@ -27,7 +27,7 @@ export const Balance = () => {
 const BalanceText = styled("p")({
   fontSize: "14px",
   fontWeight: "400",
-  color: CssVariables.darkText,
+  color: CssVariables.commonTextColor,
   margin: 0,
   textAlign: "end",
 });

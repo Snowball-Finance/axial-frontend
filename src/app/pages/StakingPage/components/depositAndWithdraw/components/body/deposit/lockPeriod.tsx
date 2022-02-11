@@ -21,11 +21,12 @@ export const LockPeriod = () => {
 const Title = styled("h6")({
   fontSize: "16px",
   fontWeight: "400",
-  color: CssVariables.darkText,
   margin: 0,
 });
 
-const Wrapper = styled("div")({});
+const Wrapper = styled("div")({
+  color: CssVariables.commonTextColor,
+});
 
 const InputWrapper = styled("div")({
   padding: "10px 16px",

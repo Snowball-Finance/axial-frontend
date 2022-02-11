@@ -18,7 +18,7 @@ export const RightSection = () => {
     ? proposer.substring(0, 6) +
       "***" +
       proposer.substring(proposer.length - 4, proposer.length)
-    : t(translations.Common.NoConnectedWallet());
+    : t("NoConnectedWallet");
 
   return (
     <Wrapper>

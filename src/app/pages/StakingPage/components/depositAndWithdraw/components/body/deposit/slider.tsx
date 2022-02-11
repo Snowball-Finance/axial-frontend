@@ -55,6 +55,9 @@ export const BalanceSlider = () => {
 const Wrapper = styled("div")({
   [sliderClasses.markLabel]: {
     fontSize: "11px",
-    color: CssVariables.darkText,
+    color: CssVariables.commonTextColor,
+  },
+  ".MuiSlider-markLabel": {
+    color: CssVariables.commonTextColor,
   },
 });

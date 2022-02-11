@@ -17,7 +17,7 @@ export const Info: FC<Props> = ({ value, help, title }) => {
         {help && (
           <Tooltip arrow title={help}>
             <Box>
-              <InfoIcon color={CssVariables.darkText} />
+              <InfoIcon color={CssVariables.commonTextColor} />
             </Box>
           </Tooltip>
         )}
@@ -31,12 +31,13 @@ const Value = styled("h6")({
   margin: 0,
   fontSize: "16px",
   fontWeight: 400,
-  color: CssVariables.darkText,
+  color: CssVariables.commonTextColor,
 });
 
 const Title = styled("div")({
   display: "flex",
   gap: "6px",
+  color: CssVariables.commonTextColor,
 });
 
 const Wrapper = styled(Box)({});

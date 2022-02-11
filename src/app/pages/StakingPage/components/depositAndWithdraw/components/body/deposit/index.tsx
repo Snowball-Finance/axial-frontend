@@ -38,7 +38,7 @@ const BalanceAndAmountWrapper = styled("div")({});
 const Title = styled("h6")({
   fontSize: "24px",
   fontWeight: "600",
-  color: CssVariables.darkText,
+  color: CssVariables.commonTextColor,
   margin: 0,
   marginTop: "16px",
 });
