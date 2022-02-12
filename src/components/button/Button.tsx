@@ -15,6 +15,8 @@ type Props = {
     | "temporary"
     | "primary-destructive"
     | "secondary-destructive"
+    | "primary-new"
+    | "secondary-new"
   visible?: boolean
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void
   size?: "small" | "medium" | "large" | "full"

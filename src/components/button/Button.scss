@@ -65,6 +65,43 @@ button.button {
     }
   }
 
+  &.primary-new {
+    background: $primary-new;
+    color: $white;
+    border: 2px solid $white;
+    // &:enabled:hover,
+    // &:enabled:focus {
+    //   background: linear-gradient(
+    //       90deg,
+    //       rgba(234, 171, 80, 0) 0%,
+    //       #ffd08c 49.8%,
+    //       rgba(234, 171, 80, 0) 100%
+    //     ),
+    //     #eaab50;
+    //   box-shadow: var(--shadow-hover);
+    // }
+  }
+
+  &.secondary-new {
+    background-color: clear;
+    color: $primary-new;
+    font-weight: $bold;
+    border: 2px solid $primary-new;
+
+    &:disabled {
+      cursor: not-allowed;
+      color: $primary-new;
+      opacity: 0.5;
+    }
+
+    // &:enabled:hover,
+    // &:enabled:focus {
+    //   background-color: $primary-blue;
+    //   font-weight: $bold;
+    //   box-shadow: var(--shadow-hover);
+    // }
+  }
+
   &.ternary {
     color: $white;
     background: $divider-red;

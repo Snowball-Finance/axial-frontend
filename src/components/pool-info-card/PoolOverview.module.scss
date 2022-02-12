@@ -2,14 +2,16 @@
 @import "../../styles/viewports";
 
 div.poolOverview {
-  margin-top: 40px;
+  margin-top: 20px !important;
   width: 100%;
-  background: var(--background-element);
+  background: var(--background-element-new) !important;
   box-shadow: var(--shadow);
-  border-radius: 10px;
+  border-radius: 20px !important;
   padding: 24px 32px;
   display: grid;
   grid-template-columns: 45% 55%;
+  border: 4px solid #4D2F43;
+
   @include breakpoint(md) {
     grid-template-columns: 100%;
     grid-template-rows: auto auto;
@@ -28,7 +30,7 @@ div.poolOverview {
 
   .left {
     display: grid;
-    grid-template-rows: 40px 24px 22px 10px 20px;
+    grid-template-rows: 20px 24px 22px 10px 20px !important;
   }
 
   .titleAndTag {
@@ -73,6 +75,12 @@ div.poolOverview {
       height: 18px;
       width: 18px;
     }
+
+    & > span {
+      font-size: 16px;
+      font-family: $font-family;
+      font-weight: bold;
+    }
   }
 
   div.right {
@@ -86,7 +94,12 @@ div.poolOverview {
 
     .margin {
       margin-right: 24px;
+      display: flex;
+      flex-direction: row !important;
+      column-gap: 5px;
+      align-items: center;
       @include breakpoint(md) {
+        flex-direction: column !important;
         margin-right: auto;
       }
     }
@@ -101,12 +114,11 @@ div.poolOverview {
         justify-content: space-between;
       }
     }
-    span.label {
+    div.label {
       display: block;
-      color: var(--primary-foreground);
-      margin-bottom: 4px;
+      color: $white !important;
       font-weight: $bold;
-      font-size: 14px;
+      font-size: 16px;
       text-align: center;
     }
 

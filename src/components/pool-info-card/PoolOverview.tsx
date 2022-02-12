@@ -1,4 +1,5 @@
-import "./PoolOverview.scss"
+import styles from "./PoolOverview.module.scss"
+
 import { POOLS_MAP, PoolTypes, TOKENS_MAP } from "../../constants"
 import { PoolDataType, UserShareType } from "../../hooks/usePoolData"
 import React, { ReactElement } from "react"
@@ -60,18 +61,17 @@ export default function PoolOverview({
 
   return (
     <div
-      className={classNames("poolOverview", {
+      className={classNames([styles.poolOverview], {
         outdated: isOutdated || shouldMigrate,
       })}
     >
-      <div className="left">
-        <div className="titleAndTag">
-          <h4 className="title">{formattedData.name}</h4>
+      <div className={styles.left}>
+        <div className={styles.titleAndTag}>
+          <h4 className={styles.title}>{formattedData.name}</h4>
           {(shouldMigrate || isOutdated) && <Tag kind="warning">OUTDATED</Tag>}
           {poolData.isPaused && <Tag kind="error">PAUSED</Tag>}
         </div>
-        <div className="tokens">
-          <span>[</span>
+        <div className={styles.tokens}>
           <LoadingWrapper
             height={19}
             width={140}
@@ -79,28 +79,27 @@ export default function PoolOverview({
           >
             <>
               {formattedData.tokens.map(({ symbol, icon }) => (
-                <div className="token" key={symbol}>
+                <div className={styles.token} key={symbol}>
                   <img alt="icon" src={icon} />
                   <span>{symbol}</span>
                 </div>
               ))}
             </>
           </LoadingWrapper>
-          <span>]</span>
         </div>
       </div>
 
-      <div className="right">
-        <div className="poolInfo">
+      <div className={styles.right}>
+        <div className={styles.poolInfo}>
           {hasShare && (
-            <div className="margin">
-              <span className="label">{`${t("balance")}`}</span>
+            <div className={styles.margin}>
+              <div className={styles.label}>{`${t("balance")}`}</div>
               <span>{formattedData.userBalanceUSD}</span>
             </div>
           )}
           {formattedData.apr && (
-            <div className="margin">
-              <span className="label">{`${t("apr")}`}</span>
+            <div className={styles.margin}>
+              <div className={styles.label}>{`${t("apr")}`}</div>
               <LoadingWrapper
                 height={19}
                 width={90}
@@ -110,8 +109,8 @@ export default function PoolOverview({
               </LoadingWrapper>
             </div>
           )}
-          <div className="margin">
-            <span className="label">TVL</span>
+          <div className={styles.margin}>
+            <div className={styles.label}>TVL</div>
             <LoadingWrapper
               height={19}
               width={55}
@@ -121,8 +120,8 @@ export default function PoolOverview({
             </LoadingWrapper>
           </div>
           {formattedData.volume && (
-            <div>
-              <span className="label">{`${t("24HrVolume")}`}</span>
+            <div className={styles.margin}>
+              <div className={styles.label}>{`${t("24HrVolume")}`}</div>
               <LoadingWrapper
                 height={19}
                 width={90}
@@ -133,9 +132,9 @@ export default function PoolOverview({
             </div>
           )}
         </div>
-        <div className="buttons">
+        <div className={styles.buttons}>
           <Link to={`${poolRoute}/withdraw`}>
-            <Button kind="secondary" size="medium">
+            <Button kind="secondary-new" size="medium">
               {t("withdraw")}
             </Button>
           </Link>
@@ -151,7 +150,7 @@ export default function PoolOverview({
           ) : (
             <Link to={`${poolRoute}/deposit`}>
               <Button
-                kind="primary"
+                kind="primary-new"
                 size="medium"
                 disabled={poolData?.isPaused || isOutdated}
               >
@@ -170,5 +169,5 @@ function Tag(props: {
   kind?: "warning" | "error"
 }) {
   const { kind = "warning", ...tagProps } = props
-  return <span className={classNames("tag", kind)} {...tagProps} />
+  return <span className={classNames([styles.tag], kind)} {...tagProps} />
 }
