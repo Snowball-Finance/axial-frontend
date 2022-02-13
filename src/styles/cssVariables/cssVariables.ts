@@ -1,6 +1,7 @@
 export const CssVariables = {
   white:'var(--white)',
   black:'var(--black)',
+  primary: 'var(--primary)',
   navigationTabBackground:'var(--navigationTabBackground)',
   activeNAvigationTabBackground:'var(--activeNAvigationTabBackground)',
   navigationTabTextColor:'var(--navigationTabTextColor)',
