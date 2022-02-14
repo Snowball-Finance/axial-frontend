@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useEffect } from "react";
 import { styled } from "@mui/material";
 import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -9,16 +9,28 @@ import SocialLinks from "./SocialLink";
 import { navigationRoutes } from "../constants";
 
 const clickPath = require("../../../assets/audio/click.mp3");
+let ableToPlay = false;
 const audio = new Audio(clickPath.default);
 const playClick = () => {
-  audio.play();
+  try {
+    audio.play();
+  } catch (e) {}
 };
 
 export default function Sidebar(): ReactElement {
   const { t } = useTranslation();
   const handleMenuItemMouseOver = () => {
-    playClick();
+    if (ableToPlay) {
+      playClick();
+    }
   };
+  useEffect(() => {
+    document.addEventListener("click", () => {
+      ableToPlay = true;
+    });
+
+    return () => {};
+  }, []);
 
   return (
     <StyledSidebar>
@@ -91,6 +103,7 @@ const ListNavItem = styled(NavLink)({
   textTransform: "uppercase",
 });
 const TestWrapper = styled("div")`
+  --letterSpacingOnHover: 4px;
   width: 100%;
   margin: 0 auto;
   height: 100%;
@@ -106,38 +119,40 @@ const TestWrapper = styled("div")`
     color: #f25826;
     letter-spacing: 0;
     z-index: 1;
-    transition: all 0.1s linear;
+    transition: all 0.175s linear;
     &:hover {
-      transform: translate(0px, 0px) skew(-10deg, 0);
-      letter-spacing: 0.1em;
+      transform: translate(0px, 0px) skew(-5deg, 0);
+      letter-spacing: var(--letterSpacingOnHover);
     }
   }
-  h1::after,
+  /* h1::after, */
   h1::before {
     transition: all 0.1s linear;
     backface-visibility: hidden;
     content: attr(data-heading);
     position: absolute;
+    letter-spacing: 0;
   }
-  h1::after {
+  /* h1::after {
     left: 0px;
     top: 0px;
     z-index: 2;
     -webkit-text-stroke: 2px ${CssVariables.primary};
     -webkit-text-fill-color: transparent;
-  }
+  } */
   h1::before {
     z-index: -1;
     left: 0px;
     top: 0px;
     color: #f68722;
   }
-  h1:hover::after {
+  /* h1:hover::after {
     left: -2px;
     top: -2px;
-  }
+  } */
   h1:hover::before {
-    left: 2px;
-    top: 2px;
+    left: 4px;
+    top: 4px;
+    letter-spacing: var(--letterSpacingOnHover);
   }
 `;

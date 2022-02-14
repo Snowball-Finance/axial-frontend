@@ -33,6 +33,9 @@ export const Proposals: FC = () => {
       )
     );
     dispatch(push(AppPages.StakingPage));
+    setTimeout(() => {
+      document.getElementById("stakeButton")?.scrollIntoView();
+    }, 100);
   };
 
   const actionButtons = [
