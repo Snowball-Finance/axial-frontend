@@ -14,6 +14,7 @@ import { useTranslation } from "react-i18next";
 import { translations } from "locales/i18n";
 import { BlockChain } from "./containers/BlockChain/Loadable";
 import { AppPages } from "./types";
+import Layout from './Layout';
 import { GovernancePage } from "./pages/Governance/Loadable";
 // import { PoolsAndGauges } from "./containers/PoolsAndGauges";
 // import GAUGE_PROXY_ABI from "libs/abis/gauge-proxy.json";
@@ -36,40 +37,9 @@ export function App() {
       >
         <meta name="description" content="Snowball" />
       </Helmet>
-      <BlockChain
-        mainTokenABI={SNOWBALL_ABI}
-        governance={{
-          tokenABI: SNOWCONE_ABI,
-          governanceABI: GOVERNANCE_ABI,
-          proposalsQuery: PROPOSAL_QUERY,
-          staking: {
-            feeDistributorABI: FEE_DISTRIBUTOR_ABI,
-            otherDistributors: [
-              {
-                address: CONTRACTS.SHERPA_FEE_DISTRIBUTOR,
-                name: "Sherpa",
-                symbol: "SHP",
-                decimals: 18,
-              },
-              {
-                address: CONTRACTS.AXIAL_FEE_DISTRIBUTOR,
-                name: "Axial",
-                symbol: "AXL",
-                decimals: 18,
-              },
-            ],
-          },
-        }}
-      />
-      {/* <PoolsAndGauges abi={GAUGE_PROXY_ABI} initialDataQuery={INFO_QUERY} /> */}
       <Switch>
         <Route exact path={AppPages.RootPage} component={HomePage} />
-        <Route path={AppPages.GovernancePage}>
-          <GovernancePage />
-        </Route>
-        <Route path={AppPages.StakingPage}>
-          <StakingPage />
-        </Route>
+        <Route path={AppPages.GovernancePage} component={GovernancePage} />
         <Route component={NotFoundPage} />
       </Switch>
     </>

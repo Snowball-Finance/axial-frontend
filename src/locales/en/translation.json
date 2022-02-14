@@ -11,6 +11,26 @@
     "home": "Home",
     "description": "Home Page"
   },
+  "GovernancePage": {
+    "ActiveProposals": "Active Proposals",
+    "ActiveProposalsDescriptions": "To vote, members must stake their SNOB for xSNOB. Read about proposal details in the Snowball Discord",
+    "Governance": "Governance",
+    "VotingPower": "Voting Power",
+    "Description": "Governance Page",
+    "Tabs": {
+      "Active": "Active",
+      "All": "All",
+      "NewProposal": "New Proposal"
+    }
+  },
+  "Navigation": {
+    "swap": "Swap",
+    "liquidity": "Liquidity",
+    "rewards": "Rewards",
+    "staking": "Staking",
+    "governance": "Governance",
+    "risk": "Risk"
+  },
   "Common": {
     "NoConnectedWallet": "No Connected Wallet",
     "Balance": "Balance",
