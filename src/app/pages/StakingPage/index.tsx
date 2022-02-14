@@ -13,6 +13,7 @@ import { StakingDescription } from "./components/descriptions/stakingDescs";
 import { DepositAndWithdrawCardDescription } from "./components/descriptions/depositAndWithdrawCardDescs";
 import { Max1040 } from "app/components/wrappers/max1040";
 import { WalletToggle } from "app/components/common/walletToggle";
+import { mobile } from "styles/media";
 
 interface Props {}
 export function StakingPage(props: Props) {
@@ -38,20 +39,32 @@ export function StakingPage(props: Props) {
 
 const Spacer = styled("div")({
   height: "128px",
+  [mobile]: {
+    height: "32px",
+  },
 });
 
 const DepositAndWithdrawSection = styled("div")({
   alignItems: "center",
   display: "flex",
   justifyContent: "space-between",
+  [mobile]: {
+    flexDirection: "column-reverse",
+  },
 });
 
 const InfoSection = styled("div")({
   alignItems: "center",
   display: "flex",
   justifyContent: "space-between",
+  [mobile]: {
+    flexDirection: "column",
+  },
 });
 
 const Wrapper = styled(Max1040)({
   margin: "auto",
+  [mobile]: {
+    padding: "0 36px",
+  },
 });

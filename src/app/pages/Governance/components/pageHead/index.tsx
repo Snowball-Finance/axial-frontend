@@ -1,6 +1,6 @@
 import { styled } from "@mui/material";
 import { SnowPaper } from "app/components/base/SnowPaper";
-import bgImage from "assets/images/page-head-bg-image.svg";
+import bgImage from "assets/images/page-head-bg-image.png";
 import { FC } from "react";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { mobile } from "styles/media";

@@ -1,5 +1,6 @@
 import { styled } from "@mui/material";
 import { SnowPaper } from "app/components/base/SnowPaper";
+import { mobile } from "styles/media";
 import { DepositAndWithdrawBody } from "./components/body";
 import { StakingTabs } from "./components/tabs";
 
@@ -17,4 +18,8 @@ const StyledSnowPaper = styled(SnowPaper)({
   position: "relative",
   maxWidth: "490px",
   flex: 1,
+  [mobile]: {
+    maxWidth: "unset",
+    width: "100%",
+  },
 });

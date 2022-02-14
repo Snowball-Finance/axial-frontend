@@ -3,6 +3,7 @@ import { env } from "environment";
 import { translations } from "locales/i18n";
 import { useTranslation } from "react-i18next";
 import { CssVariables } from "styles/cssVariables/cssVariables";
+import { mobile } from "styles/media";
 
 export const StakingDescription = () => {
   const { t } = useTranslation();
@@ -34,4 +35,7 @@ const Title = styled("h1")({
 
 const Wrapper = styled("div")({
   maxWidth: "525px",
+  [mobile]: {
+    marginBottom: "24px",
+  },
 });
