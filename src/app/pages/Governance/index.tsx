@@ -4,14 +4,12 @@
  *
  */
 
-import React from "react";
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { translations } from "locales/i18n";
 import { Box, styled } from "@mui/material";
 import { PageHead } from "./components/pageHead";
 import { GovernanceBody } from "./body";
-import { WalletToggle } from "app/components/common/walletToggle";
 import { useGovernancePageSlice } from "./slice";
 import { Max1040 } from "app/components/wrappers/max1040";
 import { mobile } from "styles/media";
@@ -28,7 +26,6 @@ export function GovernancePage() {
           content={`${t(translations.GovernancePage.Description())}`}
         />
       </Helmet>
-      <WalletToggle />
       {/* <NavigationTabs /> */}
       <Box mb={4} />
       <StyledMax1040>

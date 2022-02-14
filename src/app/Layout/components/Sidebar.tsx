@@ -8,8 +8,17 @@ import { CssVariables } from "styles/cssVariables/cssVariables";
 import SocialLinks from "./SocialLink";
 import { navigationRoutes } from "../constants";
 
+const clickPath = require("../../../assets/audio/click.mp3");
+const audio = new Audio(clickPath.default);
+const playClick = () => {
+  audio.play();
+};
+
 export default function Sidebar(): ReactElement {
   const { t } = useTranslation();
+  const handleMenuItemMouseOver = () => {
+    playClick();
+  };
 
   return (
     <StyledSidebar>
@@ -19,6 +28,7 @@ export default function Sidebar(): ReactElement {
             <ListNavItem
               exact
               to={nav.to}
+              onMouseOver={handleMenuItemMouseOver}
               activeStyle={{
                 color: CssVariables.primary,
               }}
@@ -34,7 +44,11 @@ export default function Sidebar(): ReactElement {
                 }
               }}
             >
-              {t(translations.Navigation[nav.name]())}
+              <TestWrapper>
+                <h1 data-heading={t(translations.Navigation[nav.name]())}>
+                  {t(translations.Navigation[nav.name]())}
+                </h1>
+              </TestWrapper>
             </ListNavItem>
           </ListItem>
         ))}
@@ -56,6 +70,11 @@ const StyledSidebar = styled("div")({
 
 const List = styled("ul")({
   listStyleType: "none",
+  ".active": {
+    h1: {
+      color: CssVariables.primary,
+    },
+  },
 });
 
 const ListItem = styled("li")({
@@ -71,3 +90,54 @@ const ListNavItem = styled(NavLink)({
   fontSize: "42px",
   textTransform: "uppercase",
 });
+const TestWrapper = styled("div")`
+  width: 100%;
+  margin: 0 auto;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  h1 {
+    text-transform: uppercase;
+    transform: translate(0px, 0px) skew(0deg, 0);
+    margin: 0;
+    font-size: 42px;
+    font-weight: 400;
+    white-space: nowrap;
+    color: #f25826;
+    letter-spacing: 0;
+    z-index: 1;
+    transition: all 0.1s linear;
+    &:hover {
+      transform: translate(0px, 0px) skew(-10deg, 0);
+      letter-spacing: 0.1em;
+    }
+  }
+  h1::after,
+  h1::before {
+    transition: all 0.1s linear;
+    backface-visibility: hidden;
+    content: attr(data-heading);
+    position: absolute;
+  }
+  h1::after {
+    left: 0px;
+    top: 0px;
+    z-index: 2;
+    -webkit-text-stroke: 2px ${CssVariables.primary};
+    -webkit-text-fill-color: transparent;
+  }
+  h1::before {
+    z-index: -1;
+    left: 0px;
+    top: 0px;
+    color: #f68722;
+  }
+  h1:hover::after {
+    left: -2px;
+    top: -2px;
+  }
+  h1:hover::before {
+    left: 2px;
+    top: 2px;
+  }
+`;

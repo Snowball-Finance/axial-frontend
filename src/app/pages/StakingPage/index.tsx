@@ -3,8 +3,6 @@
  * StakingPage
  *
  */
-
-import React from "react";
 import { useStakingPageSlice } from "./slice";
 import { styled } from "@mui/material";
 import { DepositAndWithdraw } from "./components/depositAndWithdraw";
@@ -12,7 +10,6 @@ import { OverallInfoCard } from "./components/overallInfoCard";
 import { StakingDescription } from "./components/descriptions/stakingDescs";
 import { DepositAndWithdrawCardDescription } from "./components/descriptions/depositAndWithdrawCardDescs";
 import { Max1040 } from "app/components/wrappers/max1040";
-import { WalletToggle } from "app/components/common/walletToggle";
 import { mobile } from "styles/media";
 
 interface Props {}
@@ -20,20 +17,17 @@ export function StakingPage(props: Props) {
   useStakingPageSlice();
 
   return (
-    <>
-      <WalletToggle />
-      <Wrapper>
-        <InfoSection>
-          <StakingDescription />
-          <OverallInfoCard />
-        </InfoSection>
-        <Spacer />
-        <DepositAndWithdrawSection>
-          <DepositAndWithdraw />
-          <DepositAndWithdrawCardDescription />
-        </DepositAndWithdrawSection>
-      </Wrapper>
-    </>
+    <Wrapper>
+      <InfoSection>
+        <StakingDescription />
+        <OverallInfoCard />
+      </InfoSection>
+      <Spacer />
+      <DepositAndWithdrawSection>
+        <DepositAndWithdraw />
+        <DepositAndWithdrawCardDescription />
+      </DepositAndWithdrawSection>
+    </Wrapper>
   );
 }
 
