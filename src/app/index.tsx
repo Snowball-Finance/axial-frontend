@@ -19,6 +19,7 @@ import { useEffect } from "react";
 import { AppPages } from "./types";
 import {analytics} from '@snowball-finance/snowball-analytics'
 import { Governance } from "./containers/pages/Governance/Loadable";
+import Layout from './Layout';
 
 export function App() {
   const { t } = useTranslation();
@@ -40,11 +41,13 @@ export function App() {
       >
         <meta name="description" content="Snowball" />
       </Helmet>
-      <Switch>
-        <Route exact path={AppPages.RootPage} component={HomePage} />
-        <Route path={AppPages.GovernancePage} component={Governance} />
-        <Route component={NotFoundPage} />
-      </Switch>
+      <Layout>
+        <Switch>
+          <Route exact path={AppPages.RootPage} component={HomePage} />
+          <Route path={AppPages.GovernancePage} component={Governance} />
+          <Route component={NotFoundPage} />
+        </Switch>
+      </Layout>
     </>
   );
 }

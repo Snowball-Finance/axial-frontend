@@ -15,6 +15,14 @@
       "NewProposal": "New Proposal"
     }
   },
+  "Navigation": {
+    "swap": "Swap",
+    "liquidity": "Liquidity",
+    "rewards": "Rewards",
+    "staking": "Staking",
+    "governance": "Governance",
+    "risk": "Risk"
+  },
   "Common": {
     "Yes": "Yes",
     "No": "No",

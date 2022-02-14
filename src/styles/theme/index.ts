@@ -12,7 +12,7 @@ export const theme = createTheme({
       main: '#d20e42',
     },
     primary: {
-      main: '#0085EB',
+      main: '#60A88B',
     },
     action: {
       disabledBackground: '#efefef',
