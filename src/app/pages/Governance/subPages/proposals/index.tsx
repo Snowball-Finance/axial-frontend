@@ -12,12 +12,31 @@ import { NewProposalForm } from "./newProposalForm";
 import { mobile } from "styles/media";
 import { env } from "environment";
 import { ContainedButton } from "app/components/common/buttons/containedButton";
+import { useDispatch } from "react-redux";
+import {
+  StakingPageActions,
+  useStakingPageSlice,
+} from "app/pages/StakingPage/slice";
+import { DepositAndWithdrawTab } from "app/pages/StakingPage/types";
+import { push } from "connected-react-router";
+import { AppPages } from "app/types";
 
 export const Proposals: FC = () => {
   const { t } = useTranslation();
+  useStakingPageSlice();
+  const dispatch = useDispatch();
+
+  const handleStakeClick = () => {
+    dispatch(
+      StakingPageActions.setSelectedDepositAndWithdrawTab(
+        DepositAndWithdrawTab.Deposit
+      )
+    );
+    dispatch(push(AppPages.StakingPage));
+  };
 
   const actionButtons = [
-    <ContainedButton key={1} height={32}>
+    <ContainedButton key={1} height={32} onClick={handleStakeClick}>
       {`Stake ${env.MAIN_TOKEN_NAME}`}
     </ContainedButton>,
     <InfoButton key={2} title={t("Discord")} icon={<></>} />,
