@@ -125,7 +125,7 @@ const Title = styled("p")({
 const Descriptions = styled(SnowPaper)({
   padding: "18px 16px",
   fontSize: "12px",
-  color: CssVariables.commonTextColor
+  color: CssVariables.commonTextColor,
 });
 
 const ContentWrapper = styled(Box)({

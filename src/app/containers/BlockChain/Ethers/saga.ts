@@ -6,15 +6,11 @@ import { rpcUrl } from "app/containers/BlockChain/utils/wallet/connectors";
 export function* getAndSetProvider() {
   try {
     yield put(EthersActions.setIsCheckingNodeHealth(true));
-    const provider = new ethers.providers.StaticJsonRpcProvider(
-      rpcUrl
-    );
+    const provider = new ethers.providers.StaticJsonRpcProvider(rpcUrl);
     yield put(EthersActions.setPrivateProvider(provider));
   } catch (error) {
     console.log("e.c.t.p.n"); //error connecting to private node
-    const provider = new ethers.providers.StaticJsonRpcProvider(
-      rpcUrl
-    );
+    const provider = new ethers.providers.StaticJsonRpcProvider(rpcUrl);
     yield put(EthersActions.setPrivateProvider(provider));
   } finally {
     yield put(EthersActions.setIsCheckingNodeHealth(false));

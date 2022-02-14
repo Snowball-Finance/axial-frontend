@@ -40,9 +40,9 @@ const Column = styled("div")({
 });
 const Wrapper = styled(Column)({
   flex: 1,
-  'input,textarea': {
-    color:CssVariables.commonTextColor,
-  }
+  "input,textarea": {
+    color: CssVariables.commonTextColor,
+  },
 });
 
 const LeftSnowPaper = styled(SnowPaper)({

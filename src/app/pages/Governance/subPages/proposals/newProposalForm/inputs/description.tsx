@@ -17,7 +17,7 @@ export const DescriptionInput = () => {
 
   return (
     <TextField
-      sx={{ input: { color: 'red' } }}
+      sx={{ input: { color: "red" } }}
       fullWidth
       variant="outlined"
       multiline

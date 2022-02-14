@@ -20,18 +20,18 @@ export function StakingPage(props: Props) {
 
   return (
     <>
-    <WalletToggle />
-    <Wrapper>
-      <InfoSection>
-        <StakingDescription />
-        <OverallInfoCard />
-      </InfoSection>
-      <Spacer />
-      <DepositAndWithdrawSection>
-        <DepositAndWithdraw />
-        <DepositAndWithdrawCardDescription />
-      </DepositAndWithdrawSection>
-    </Wrapper>
+      <WalletToggle />
+      <Wrapper>
+        <InfoSection>
+          <StakingDescription />
+          <OverallInfoCard />
+        </InfoSection>
+        <Spacer />
+        <DepositAndWithdrawSection>
+          <DepositAndWithdraw />
+          <DepositAndWithdrawCardDescription />
+        </DepositAndWithdrawSection>
+      </Wrapper>
     </>
   );
 }
