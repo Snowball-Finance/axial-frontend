@@ -38,7 +38,7 @@ export const AdditionalData: FC<AdditionalDataProps> = ({
       )}
       {documentLink ? (
         <LinkContainer onClick={() => handleLinkClick(documentLink)}>
-          <DocumentIcon color={CssVariables.dark} />
+          <DocumentIcon color={CssVariables.commonTextColor} />
           {t(translations.GovernancePage.ProposalDocument())}
           <ExternalLinkIcon />
         </LinkContainer>
@@ -48,14 +48,14 @@ export const AdditionalData: FC<AdditionalDataProps> = ({
       <Divider />
       <TimeWrapper>
         <IconAndTimeContainer>
-          <ClickIcon color={CssVariables.dark} />
+          <ClickIcon color={CssVariables.commonTextColor} />
           {t(translations.GovernancePage.Votingperiodbegins())}
         </IconAndTimeContainer>
         <Time>{new Date(startTime).toLocaleString()}</Time>
       </TimeWrapper>
       <TimeWrapper>
         <IconAndTimeContainer>
-          <ClickIcon color={CssVariables.dark} />
+          <ClickIcon color={CssVariables.commonTextColor} />
           {t(translations.GovernancePage.Votingperiodends())}
         </IconAndTimeContainer>
         <Time>{new Date(endTime).toLocaleString()}</Time>
@@ -68,7 +68,7 @@ const Time = styled("p")({
   margin: 0,
   fontSize: "14px",
   fontWeight: 500,
-  color: CssVariables.black,
+  color: CssVariables.commonTextColor,
 });
 
 const IconAndTimeContainer = styled("div")({
@@ -90,4 +90,5 @@ const Wrapper = styled(SnowPaper)({
   display: "flex",
   gap: "16px",
   flexDirection: "column",
+  color: CssVariables.commonTextColor,
 });

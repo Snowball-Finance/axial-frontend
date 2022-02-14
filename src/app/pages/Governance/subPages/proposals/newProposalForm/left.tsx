@@ -40,6 +40,9 @@ const Column = styled("div")({
 });
 const Wrapper = styled(Column)({
   flex: 1,
+  'input,textarea': {
+    color:CssVariables.commonTextColor,
+  }
 });
 
 const LeftSnowPaper = styled(SnowPaper)({
@@ -53,7 +56,7 @@ const LeftSnowPaper = styled(SnowPaper)({
 });
 const BottomDescription = styled("p")({
   fontSize: "12",
-  color: CssVariables.dark,
+  color: CssVariables.commonTextColor,
   margin: "0",
   span: {
     color: CssVariables.red,
@@ -67,7 +70,7 @@ const SubmitWrapper = styled("div")({
 
 const InputTitle = styled("p")({
   fontSize: "20px",
-  color: CssVariables.grey,
+  color: CssVariables.commonTextColor,
   margin: "0",
   span: {
     color: CssVariables.red,

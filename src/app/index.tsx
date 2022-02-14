@@ -15,9 +15,9 @@ import { translations } from "locales/i18n";
 import { BlockChain } from "./containers/BlockChain/Loadable";
 import { AppPages } from "./types";
 import { GovernancePage } from "./pages/Governance/Loadable";
-import { PoolsAndGauges } from "./containers/PoolsAndGauges";
-import GAUGE_PROXY_ABI from "libs/abis/gauge-proxy.json";
-import { INFO_QUERY } from "services/apollo/queries/mainTokenInfo";
+// import { PoolsAndGauges } from "./containers/PoolsAndGauges";
+// import GAUGE_PROXY_ABI from "libs/abis/gauge-proxy.json";
+// import { INFO_QUERY } from "services/apollo/queries/mainTokenInfo";
 import { PROPOSAL_QUERY } from "services/apollo/queries/proposalList";
 import SNOWBALL_ABI from "libs/abis/snowball.json";
 import GOVERNANCE_ABI from "libs/abis/vote-governance.json";
@@ -61,7 +61,7 @@ export function App() {
           },
         }}
       />
-      <PoolsAndGauges abi={GAUGE_PROXY_ABI} initialDataQuery={INFO_QUERY} />
+      {/* <PoolsAndGauges abi={GAUGE_PROXY_ABI} initialDataQuery={INFO_QUERY} /> */}
       <Switch>
         <Route exact path={AppPages.RootPage} component={HomePage} />
         <Route path={AppPages.GovernancePage}>

@@ -12,12 +12,15 @@ import { OverallInfoCard } from "./components/overallInfoCard";
 import { StakingDescription } from "./components/descriptions/stakingDescs";
 import { DepositAndWithdrawCardDescription } from "./components/descriptions/depositAndWithdrawCardDescs";
 import { Max1040 } from "app/components/wrappers/max1040";
+import { WalletToggle } from "app/components/common/walletToggle";
 
 interface Props {}
 export function StakingPage(props: Props) {
   useStakingPageSlice();
 
   return (
+    <>
+    <WalletToggle />
     <Wrapper>
       <InfoSection>
         <StakingDescription />
@@ -29,6 +32,7 @@ export function StakingPage(props: Props) {
         <DepositAndWithdrawCardDescription />
       </DepositAndWithdrawSection>
     </Wrapper>
+    </>
   );
 }
 

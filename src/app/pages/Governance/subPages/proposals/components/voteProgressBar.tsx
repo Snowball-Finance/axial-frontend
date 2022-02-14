@@ -71,6 +71,7 @@ const Title = styled("p")({
   marginTop: 0,
   marginBottom: "0px",
   fontSize: "12px",
+  color: CssVariables.commonTextColor
 });
 
 const Wrapper = styled("div")({

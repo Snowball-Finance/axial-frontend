@@ -38,7 +38,9 @@ export const OverallInfoCard = () => {
         DepositAndWithdrawTab.Deposit
       )
     );
-    document.getElementById("stakeButton")?.scrollIntoView();
+    setTimeout(() => {
+      document.getElementById("stakeButton")?.scrollIntoView();
+    }, 0);
   };
 
   return (

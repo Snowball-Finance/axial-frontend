@@ -24,7 +24,7 @@ export const TopBackButton: FC<TopBackButtonProps> = ({
 
   return (
     <Wrapper onClick={handleBackClick}>
-      <LeftArrowIcon color={CssVariables.dark} />
+      <LeftArrowIcon color={CssVariables.commonTextColor} />
       <Title>
         {t(translations.Common.GoBackTo(), { name: destinationName })}
       </Title>
@@ -34,7 +34,7 @@ export const TopBackButton: FC<TopBackButtonProps> = ({
 
 const Title = styled("p")({
   margin: 0,
-  color: CssVariables.dark,
+  color: CssVariables.commonTextColor,
   fontSize: "16px",
   fontWeight: 500,
 });

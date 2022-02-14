@@ -44,7 +44,7 @@ const Title = styled("p")({
   fontSize: "20px",
   fontWeight: "500",
   margin: 0,
-  color: CssVariables.black,
+  color: CssVariables.white,
   marginBottom: "24px",
 });
 

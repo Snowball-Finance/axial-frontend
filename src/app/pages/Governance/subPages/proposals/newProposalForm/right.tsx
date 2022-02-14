@@ -49,7 +49,7 @@ export const RightSection = () => {
 const InputTitle = styled("p")({
   fontSize: "16px",
   margin: 0,
-  color: CssVariables.black,
+  color: CssVariables.commonTextColor,
   span: {
     color: CssVariables.red,
   },
@@ -59,14 +59,14 @@ const Account = styled("p")({
   fontSize: "12px",
   fontWeight: "500",
   margin: 0,
-  color: CssVariables.black,
+  color: CssVariables.commonTextColor,
 });
 
 const TopTitle = styled("p")({
   fontSize: "16px",
   fontWeight: "500",
   margin: 0,
-  color: CssVariables.black,
+  color: CssVariables.commonTextColor,
 });
 
 const ProposerWrapper = styled("div")({
@@ -74,6 +74,7 @@ const ProposerWrapper = styled("div")({
   alignItems: "center",
   justifyContent: "space-between",
   marginBottom: "16px",
+  
 });
 
 const Column = styled("div")({
@@ -92,4 +93,10 @@ const Wrapper = styled(Column)({
   ".MuiFormControl-root": {
     margin: 0,
   },
+  '.MuiTypography-root':{
+    color:CssVariables.commonTextColor,
+  },
+  'input,textarea': {
+    color:CssVariables.commonTextColor,
+  }
 });

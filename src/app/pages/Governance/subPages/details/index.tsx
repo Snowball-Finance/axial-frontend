@@ -83,7 +83,7 @@ export const ProposalDetails = () => {
             <Title>{t(translations.Common.Description())}</Title>
             <div
               dangerouslySetInnerHTML={{
-                __html: proposal.metadata.description.replace(
+                __html: proposal?.metadata?.description.replace(
                   /•/g,
                   "<br /><br />"
                 ),
@@ -104,8 +104,8 @@ export const ProposalDetails = () => {
             </VotesColumn>
           )}
           <AdditionalData
-            discordLink={proposal.metadata.discussion}
-            documentLink={proposal.metadata.document}
+            discordLink={proposal?.metadata?.discussion}
+            documentLink={proposal?.metadata?.document}
             startTime={proposal.startDate}
             endTime={proposal.endDate}
           />
@@ -118,13 +118,14 @@ const Title = styled("p")({
   margin: 0,
   fontSize: "16px",
   fontWeight: 500,
-  color: CssVariables.dark,
+  color: CssVariables.commonTextColor,
   marginBottom: "12px",
 });
 
 const Descriptions = styled(SnowPaper)({
   padding: "18px 16px",
   fontSize: "12px",
+  color: CssVariables.commonTextColor
 });
 
 const ContentWrapper = styled(Box)({

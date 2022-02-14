@@ -65,7 +65,7 @@ export const VoteStatus: FC<Props> = ({ proposal }) => {
     : isFor
     ? CssVariables.green
     : CssVariables.red;
-  const color = !hasVoted ? CssVariables.dark : CssVariables.white;
+  const color = !hasVoted ? CssVariables.commonTextColor : CssVariables.white;
   const icon = !hasVoted ? (
     <DangerIcon />
   ) : isFor ? (
@@ -116,7 +116,7 @@ const StyledContainedButton = styled(ContainedButton)({
 
 const Message = styled("p")({
   fontSize: "16px",
-  color: CssVariables.dark,
+  color: CssVariables.commonTextColor,
 });
 const StyledSnowPaper = styled(SnowPaper)<{
   bg: CssVariables;
