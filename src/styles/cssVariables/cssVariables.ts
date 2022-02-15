@@ -9,4 +9,6 @@ export const CssVariables = {
   primaryBlue:'var(--primaryBlue)',
   paperBorderRadius:'var(--paperBorderRadius)',
   darkText:'var(--darkText)',
+  poolCardBackground:'var(--poolCardBackground)',
+  poolCardBorder:'var(--poolCardBorder)',
 }
