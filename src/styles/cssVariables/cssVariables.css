@@ -18,4 +18,6 @@ html{
   --darkText:#6E6B7B;
   --navigationTabTextColor: #333;
   --paperBorderRadius:8px;
+  --poolCardBackground: #00103B;
+  --poolCardBorder: #4D2F43;
 }

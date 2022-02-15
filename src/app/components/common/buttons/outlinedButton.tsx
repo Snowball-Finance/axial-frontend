@@ -10,4 +10,11 @@ export const OutlinedButton: FC<SnowButtonProps> = (props) => {
 
 }
 
-const StyledButton = styled(SnowButton)(({ theme }) => ({}))
+const StyledButton = styled(SnowButton)(({ theme }) => ({
+  borderRadius: "10px",
+  borderWidth: "2px",
+
+  "&:hover" :{
+    borderWidth: "2px"
+  }
+}))

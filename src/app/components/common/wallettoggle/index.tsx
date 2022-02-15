@@ -7,7 +7,7 @@ import { useEffect } from "react"
 import { useTranslation } from "react-i18next"
 import { useDispatch, useSelector } from "react-redux"
 import { LocalStorageKeys, storage } from "store/storage"
-import { ContainedButton } from "../buttons/containedButton"
+import { OutlinedButton } from "../buttons/outlinedButton"
 
 export const WalletToggle=()=>{
   const { t } = useTranslation();
@@ -35,8 +35,8 @@ export const WalletToggle=()=>{
   }, [])
 
   return (
-    <ContainedButton color="primary" height={36} width={220} loading={isConnecting} onClick={handleButtonClick}>
+    <OutlinedButton color="primary" height={36} width={220} loading={isConnecting} onClick={handleButtonClick}>
       {account ? t(translations.Common.DisconnectFromWallet()) : t(translations.Common.ConnectToWallet())}
-    </ContainedButton>
+    </OutlinedButton>
   )
 }

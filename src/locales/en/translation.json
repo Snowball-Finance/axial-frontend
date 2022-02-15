@@ -3,6 +3,10 @@
     "home": "Home",
     "description": "Home Page"
   },
+  "LiquidityPage": {
+    "Liquidity": "Liquidity",
+    "Description": "Liquidity Page"
+  },
   "GovernancePage": {
     "ActiveProposals": "Active Proposals",
     "ActiveProposalsDescriptions": "To vote, members must stake their SNOB for xSNOB. Read about proposal details in the Snowball Discord",
