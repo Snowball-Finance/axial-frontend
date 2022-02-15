@@ -43,5 +43,6 @@ const SidebarWrapper = styled("div")({
 
 const MainWrapper = styled("div")({
   marginTop: 100,
-  marginLeft: "20%",
+  marginBottom: 50,
+  marginLeft: "25%",
 });

@@ -40,6 +40,9 @@ html{
   --buttonBorderRadius:60px;
   --primaryDisabled:#89693B;
   --chipBackgroundColor:#3a2e6b;
+  --poolCardBackground: #00103B;
+  --poolCardBorder: #4D2F43;
+  --paperBorderRadius:12px;
 
   /* ag grid related styles */
   --ag-border-color: transparent;

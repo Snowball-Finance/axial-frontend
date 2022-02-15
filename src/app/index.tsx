@@ -32,10 +32,10 @@ export function App() {
   return (
     <>
       <Helmet
-        titleTemplate="%s - Snowball"
+        titleTemplate="%s - Axial"
         defaultTitle={t(translations.HomePage.home())}
       >
-        <meta name="description" content="Snowball" />
+        <meta name="description" content="Axial" />
       </Helmet>
       <BlockChain
         mainTokenABI={SNOWBALL_ABI}

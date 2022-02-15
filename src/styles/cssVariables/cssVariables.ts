@@ -30,4 +30,6 @@ export enum CssVariables {
   gridInputBorder = "var(--gridInputBorder)",
   paperBackground = "var(--paperBackground)",
   bodyTextColor = "var(--bodyTextColor)",
+  poolCardBackground="var(--poolCardBackground)",
+  poolCardBorder= "var(--poolCardBorder)"
 }

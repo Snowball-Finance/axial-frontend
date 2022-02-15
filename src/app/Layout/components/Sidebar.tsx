@@ -82,7 +82,7 @@ const StyledSidebar = styled("div")({
 
 const List = styled("ul")({
   listStyleType: "none",
-  minWidth: "350px",
+  minWidth: "355px",
   ".active": {
     h1: {
       color: CssVariables.primary,
