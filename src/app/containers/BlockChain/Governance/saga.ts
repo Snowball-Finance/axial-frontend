@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 import { toast } from "react-toastify";
-import { all, call, put, select, takeLatest } from "redux-saga/effects";
+import { all, call, delay, put, select, takeLatest } from "redux-saga/effects";
 import { GovernanceActions } from "./slice";
 import { ContainerState, Proposal } from "./types";
 import { BNToFloat } from "common/format";
@@ -109,7 +109,6 @@ export function* submitNewProposal() {
       0,
       0x00
     );
-    yield put(GovernanceActions.setSyncedProposalsWithBlockchain(false));
   } catch (error: any) {
     const message = error?.data?.message;
     if (message) {
@@ -118,7 +117,11 @@ export function* submitNewProposal() {
       );
     }
   } finally {
-    yield put(GovernanceActions.setIsSubmittingNewProposal(false));
+    yield all([
+      put(GovernanceActions.setIsSubmittingNewProposal(false)),
+      put(GovernanceActions.setSyncedProposalsWithBlockchain(false)),
+      put(GovernanceActions.setIsNewProposalFormOpen(false)),
+    ]);
   }
 }
 

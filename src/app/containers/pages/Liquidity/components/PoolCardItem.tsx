@@ -4,7 +4,7 @@ import { styled, Grid, Typography } from "@mui/material";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { ContainedButton } from "app/components/common/buttons/containedButton";
 import { OutlinedButton } from "app/components/common/buttons/outlinedButton";
-import snobIcon from 'assets/images/logo.svg'
+import snobIcon from "assets/images/logo.svg";
 
 export const PoolCardItem: FC = () => {
   return (
@@ -75,10 +75,7 @@ export const PoolCardItem: FC = () => {
                 <Grid item>
                   <Grid container spacing={1} alignItems="center">
                     <Grid item>
-                      <PoolTokenImage
-                        src={snobIcon}
-                        alt="token1"
-                      />
+                      <PoolTokenImage src={snobIcon} alt="token1" />
                     </Grid>
                     <Grid item>
                       <PoolInfoTitleText>AXIAL</PoolInfoTitleText>
@@ -89,10 +86,7 @@ export const PoolCardItem: FC = () => {
                 <Grid item>
                   <Grid container spacing={1} alignItems="center">
                     <Grid item>
-                      <PoolTokenImage
-                        src={snobIcon}
-                        alt="token1"
-                      />
+                      <PoolTokenImage src={snobIcon} alt="token1" />
                     </Grid>
                     <Grid item>
                       <PoolInfoTitleText>AXIAL</PoolInfoTitleText>
@@ -103,10 +97,7 @@ export const PoolCardItem: FC = () => {
                 <Grid item>
                   <Grid container spacing={1} alignItems="center">
                     <Grid item>
-                      <PoolTokenImage
-                        src={snobIcon}
-                        alt="token1"
-                      />
+                      <PoolTokenImage src={snobIcon} alt="token1" />
                     </Grid>
                     <Grid item>
                       <PoolInfoTitleText>AXIAL</PoolInfoTitleText>
@@ -117,10 +108,7 @@ export const PoolCardItem: FC = () => {
                 <Grid item>
                   <Grid container spacing={1} alignItems="center">
                     <Grid item>
-                      <PoolTokenImage
-                        src={snobIcon}
-                        alt="token1"
-                      />
+                      <PoolTokenImage src={snobIcon} alt="token1" />
                     </Grid>
                     <Grid item>
                       <PoolInfoTitleText>AXIAL</PoolInfoTitleText>
@@ -172,5 +160,5 @@ const PoolInfoSubTitleText = styled(Typography)({
 });
 
 const PoolTokenImage = styled("img")({
-    width: '33px'
+  width: "33px",
 });

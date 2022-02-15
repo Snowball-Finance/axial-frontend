@@ -23,7 +23,7 @@ export const LiquidityPage: FC = () => {
           content={`${t(translations.LiquidityPage.Description())}`}
         />
       </Helmet>
-      
+
       <PoolCards />
     </>
   );

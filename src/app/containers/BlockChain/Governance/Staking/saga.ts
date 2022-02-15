@@ -15,6 +15,7 @@ import { Web3Domains } from "../../Web3/selectors";
 import { StakingDomains } from "./selectors";
 import { GovernanceDomains } from "../selectors";
 import { BlockChainDomains } from "../../selectors";
+import { GovernanceActions } from "../slice";
 
 export function* createLock(action: { type: string; payload: CreateLockData }) {
   const { balance, date } = action.payload;
@@ -77,6 +78,7 @@ export function* createLock(action: { type: string; payload: CreateLockData }) {
         yield all([
           put(BlockChainActions.getMainTokenBalance()),
           put(BlockChainActions.getGovernanceTokenBalance()),
+          put(GovernanceActions.getGovernanceTokenBalance()),
           put(StakingActions.getLockedGovernanceTokenInfo()),
         ]);
       }
