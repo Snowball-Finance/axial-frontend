@@ -11,11 +11,11 @@ html{
   --white:white;
   --black:black;
   --primary: #60A88B;
+  --secondary:#EAAB50;
   --mainBackgroundColor:#31386B;
   --navigationTabBackground: #f5f5f5;
   --lightTint: #f7f7f7;
   --activeNAvigationTabBackground: #c8e6fe;
-  --primary: #EAAB50;
   --lightBlue: #c8e6fe;
   --mildBlue: #e9f5fe;
   --placeholderColor: #c7c7c7;

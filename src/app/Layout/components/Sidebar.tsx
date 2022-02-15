@@ -117,7 +117,7 @@ const TestWrapper = styled("div")`
     font-size: 42px;
     font-weight: 400;
     white-space: nowrap;
-    color: #f25826;
+    color: ${CssVariables.secondary};
     letter-spacing: 0;
     z-index: 1;
     transition: all 0.175s linear;

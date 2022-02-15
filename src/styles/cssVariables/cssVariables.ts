@@ -22,6 +22,7 @@ export enum CssVariables {
   lightTint = "var(--lightTint)",
   green = "var(--green)",
   mildGreen = "var(--mildGreen)",
+  secondary = "var(--secondary)",
   red = "var(--red)",
   mildRed = "var(--mildRed)",
   mildYellow = "var(--mildYellow)",
