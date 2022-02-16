@@ -2,13 +2,12 @@ import React, { ReactElement } from "react";
 import { styled } from "@mui/material";
 
 import LogoIcon from "../../../assets/images/logo.svg";
-import { WalletToggle } from "../../components/common/wallettoggle";
+import { WalletToggle } from "app/components/common/walletToggle";
 
 export default function Header(): ReactElement {
   return (
     <StyledHeader>
       <Logo src={LogoIcon} alt="logo" />
-
       <WalletToggle />
     </StyledHeader>
   );

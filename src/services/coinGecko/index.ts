@@ -1,4 +1,4 @@
-import CoinGecko from 'coingecko-api'
+import CoinGecko from "coingecko-api";
 
 export const CoinGeckoClient = new CoinGecko();
-export const geckoPrice = CoinGeckoClient.simple.price
+export const geckoPrice = CoinGeckoClient.simple.price;

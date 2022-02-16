@@ -1,28 +1,58 @@
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { MenuItem, Select, SelectChangeEvent, SelectProps, styled } from '@mui/material';
-import { FC } from 'react';
-import { BaseInputStyles } from "styles/baseInputStyles";
-import { SnowSelectInterface } from './types';
+import ArrowDropDownRoundedIcon from "@mui/icons-material/ArrowDropDownRounded";
+import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
+import {
+  InputAdornment,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  SelectProps,
+  styled,
+} from "@mui/material";
+import React, { FC } from "react";
+import { SnowSelectInterface } from "./types";
+import { BaseInputStyles } from "../../../../styles/baseInputStyles";
+import { CssVariables } from "../../../../styles/cssVariables/cssVariables";
 
 const StyledSelect = styled(Select)<SelectProps>(({ theme }) => ({
-  maxHeight: '45px',
-  borderRadius: '10px',
-  '& .MuiInputBase-input': BaseInputStyles({ theme }),
-  '& :focus': {
-    borderRadius: '10px',
+  maxHeight: "45px",
+  borderRadius: "10px",
+  border: `1px solid ${CssVariables.ctaBlue}`,
+  boxShadow: "none",
+  "& .MuiInputBase-input": {
+    ...BaseInputStyles({ theme }),
+    paddingTop: "9px",
+    paddingBottom: "9px",
+    color: CssVariables.white,
   },
-
-  '& fieldset': {
-    border: 'none',
-    borderRadius: '10px',
+  ".MuiSelect-icon": {
+    width: "42px",
+    height: "42px",
+    marginTop: "-8px",
+    color: CssVariables.white,
+  },
+  ".MuiOutlinedInput-input": {
+    color: CssVariables.grey,
+  },
+  "& :focus": {
+    borderRadius: CssVariables.paperBorderRadius,
+  },
+  "& fieldset": {
+    border: "none",
+    borderRadius: CssVariables.paperBorderRadius,
   },
 }));
 
-const IconWrapper = styled('div')({
-  marginRight: '6px',
+const IconWrapper = styled("div")({
+  marginRight: "6px",
 });
 
-export const SnowSelect: FC<SnowSelectInterface> = ({ options, selectedValue, onChange }) => {
+export const SnowSelect: FC<SnowSelectInterface> = ({
+  options,
+  selectedValue,
+  isFilter,
+  onChange,
+  ...rest
+}) => {
   const handleSelectChange = (e: SelectChangeEvent<any>) => {
     // setActiveId(e.target.value);
     onChange(e.target.value);
@@ -32,10 +62,18 @@ export const SnowSelect: FC<SnowSelectInterface> = ({ options, selectedValue, on
     <StyledSelect
       margin="dense"
       fullWidth
-      labelId="Select pool"
+      labelId="Select"
       value={selectedValue}
-      IconComponent={KeyboardArrowDownIcon}
+      IconComponent={ArrowDropDownRoundedIcon}
       onChange={(e) => handleSelectChange(e)}
+      {...(isFilter && {
+        startAdornment: (
+          <InputAdornment position="start">
+            <StyledFilterAltOutlinedIcon />
+          </InputAdornment>
+        ),
+      })}
+      {...rest}
     >
       {[...options].map((item) => {
         return (
@@ -48,3 +86,7 @@ export const SnowSelect: FC<SnowSelectInterface> = ({ options, selectedValue, on
     </StyledSelect>
   );
 };
+
+const StyledFilterAltOutlinedIcon = styled(FilterAltOutlinedIcon)({
+  color: CssVariables.grey,
+});

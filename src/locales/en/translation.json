@@ -1,4 +1,12 @@
 {
+  "ExamplePage": {
+    "GetAsyncData": "Get Async Data",
+    "AddSnobToWallet": "Add Snob to Wallet",
+    "ConnectToWallet": "Connect to Wallet",
+    "DisconnectFromWallet": "Disconnect from Wallet",
+    "GettingUserPools": "Getting User Pools...",
+    "SearchPoolName": "Search Pool Name..."
+  },
   "HomePage": {
     "home": "Home",
     "description": "Home Page"
@@ -11,18 +19,6 @@
     "Rewards": "Rewards",
     "Description": "Rewards Page"
   },
-  "GovernancePage": {
-    "ActiveProposals": "Active Proposals",
-    "ActiveProposalsDescriptions": "To vote, members must stake their SNOB for xSNOB. Read about proposal details in the Snowball Discord",
-    "Governance": "Governance",
-    "VotingPower": "Voting Power",
-    "Description": "Governance Page",
-    "Tabs": {
-      "Active": "Active",
-      "All": "All",
-      "NewProposal": "New Proposal"
-    }
-  },
   "Navigation": {
     "swap": "Swap",
     "liquidity": "Liquidity",
@@ -32,14 +28,130 @@
     "risk": "Risk"
   },
   "Common": {
+    "NoConnectedWallet": "No Connected Wallet",
+    "Balance": "Balance",
+    "GoBackTo": "Go Back To {{name}}",
     "Yes": "Yes",
     "No": "No",
+    "Search": "Search",
+    "Filter": "Filter",
     "Cancel": "Cancel",
     "Submit": "Submit",
     "Close": "Close",
+    "Max": "Max",
+    "Min": "Min",
+    "Details": "Details",
+    "Detail": "Detail",
+    "Description": "Description",
+    "For": "For",
+    "Against": "Against",
+    "Requiredfields": "Required fields",
+    "Required": "Required",
     "Confirm": "Confirm",
     "MoreInfo": "More Info",
     "ConnectToWallet": "Connect to Wallet",
     "DisconnectFromWallet": "Disconnect from Wallet"
+  },
+  "External": {
+    "Discord": "Discord"
+  },
+  "GovernancePage": {
+    "ProposalNotFound": "Proposal Not Found",
+    "VotingPeriodShouldBeBetween": "Voting period should be between {{min}} and {{max}} {{unit}}",
+    "ActiveProposals": "Active Proposals",
+    "AllProposals": "All Proposals",
+    "NewProposals": "New Proposals",
+    "ActiveProposalsDescriptions": "To vote, members must stake their SNOB for xSNOB. Read about proposal details in the Snowball Discord",
+    "Governance": "Governance",
+    "VotingPower": "Voting Power",
+    "Description": "Governance Page",
+    "NewProposal": "New Proposal",
+    "VoteAgainst": "Vote Against",
+    "VoteFor": "Vote For",
+    "DiscussionofproposalinDiscord": "Discussion of proposal in Discord",
+    "ProposalDocument": "Proposal Document",
+    "Votingperiodbegins": "Voting period begins",
+    "Votingperiodends": "Voting period ends",
+    "MinGovernanceTokenToSubmitError": "You must stake at least {{amount}} {{name}} to submit a proposal",
+    "Titleofnewproposal": "Title of new proposal",
+    "Descriptionofnewproposal": "Description of new proposal",
+    "Requiredfields": "Required fields",
+    "Proposedby": "Proposed by",
+    "For": "For",
+    "Against": "Against",
+    "VotingPeriod": "Voting Period",
+    "PeriodInDaysToVote": "Period in days to vote...",
+    "DiscussionURL": "Discussion URL",
+    "SwitchVote": "Switch Vote",
+    "ProsConsDocumentURL": "Pros - Cons Document URL",
+    "YouHaventVotedOnThisProposalYet": "You haven't voted on this proposal yet",
+    "YouDidntVoteOnThisProposal": "You didn't vote on this proposal",
+    "youVotedForAgainstThisProposalWithAmountGovernanceToken": "you voted {{forAgainst}} this proposal with {{amount}} {{name}}",
+    "VoteAllocation": {
+      "GOVERNANCE_TOKEN_NAME_BALANCE_NEEDED_TO_VOTE": "{{amount}} {{governanceTokenName}} Balance Needed To Vote",
+      "TOKEN_RewardAllocations": "{{token}} Reward Allocations",
+      "Votethepairyouprefer": "Vote the pair you prefer",
+      "BottomDescs": "This chart shows the current SNOB reward allocations per pool (updated daily).",
+      "Voteforyourpreferredpair": "Vote for your preferred pair",
+      "SelectAll": "Select All",
+      "SelectYourTokens": "Select Your Tokens",
+      "Name": "Name",
+      "Pairs": "Pairs",
+      "YourAllocation": "Your Allocation",
+      "TOKEN_APR": "{{token}} APR",
+      "WeightVariation": "Weight Variation",
+      "VoteAllocation": "Vote Allocation",
+      "Platform": "Platform",
+      "Allocation": "Allocation",
+      "Allocationperday": "Allocation per day",
+      "Boosted_TOKEN_APR": "Boosted {{token}} APR",
+      "VoteWeight": "Vote Weight",
+      "Balance": "Balance",
+      "FitProportionally": "Fit Proportionally",
+      "FitEqually": "Fit Equally",
+      "TOKEN_BalanceNeededToVote": "{{token}} balance needed to vote",
+      "IfPercentage": "If the percentage is not exactly 100%, we will fit proportionally your choice.",
+      "TopDescs": "Once you've voted, your votes will continue to rollover each week. There is no need to revote unless you want to change the distribution you've voted for."
+    },
+  
+    "Tabs": {
+      "Proposals": "Proposals",
+      "VoteAllocation": "Vote Allocation"
+    }
+  },
+  "Staking": {
+    "Staking": "Staking",
+    "Deposit": "Deposit",
+    "Withdraw": "Withdraw",
+    "Stake": "Stake",
+    "Stake_MAINTOKENNAME": "Stake {{mainTokenName}}",
+    "WithdrawTokens": "Withdraw Tokens",
+    "LockPeriod": "Lock Period",
+    "StakeOptions": "Stake Options",
+    "AvailableToWithdraw_AMOUNT_GOVERNANCETOKENNAME": "Available to withdraw: {{amount}} {{governanceTokenName}}",
+    "UnlockTokensDaily": "Unlock Tokens Daily",
+    "UnlockTokensAtTheEndOfTheLockingPeriod": "Unlock Tokens At The End Of The Locking Period",
+    "YouWillGet_AMOUNT_TOKEN": "You will get {{amount}} {{token}}",
+    "StakeMyTokens": "Stake My Tokens",
+    "WithdrawMyTokens": "Withdraw My Tokens",
+    "TokensLocked": "Tokens Locked",
+    "GOVERNANCETOKENNAME_Balance": "{{governanceTokenName}} Balance",
+    "TokensEarned": "Tokens Earned",
+    "DailyUnlocked": "Daily Unlocked",
+    "HowItWorks": "How it works",
+    "StakingBottomDescriptions_GOVERNANCETOKENNAME_MAINTOKENNAME":
+    "Your {{governanceTokenName}} tokens will linearly decrease in amount and will be unlocked daily. Daily you can withdraw your {{mainTokenName}} tokens.",
+    "WithdrawBottomDescriptions_GOVERNANCETOKENNAME_MAINTOKENNAME":"Your {{governanceTokenName}} tokens will linearly decrease in amount and will be unlocked daily. Daily you can withdraw your {{mainTokenName}} tokens.",
+    "StakingPageFirstDescTitle_MAINTOKENNAME":"Stake your {{mainTokenName}} to earn tokens, boost your yields and vote.",
+    "StakingPageFirstDesc":"Cheesecake jelly beans cookie halvah chocolate toffee candy. Sweet roll cake halvah topping lemon drops. Bonbon toffee danish halvah lollipop.",
+    "StakingPageSecondDescTitle":"Temporarily stake your tokens",
+    "StakingPageSecondDesc_GOVERNANCETOKENNAME_MAINTOKENNAME":"Your {{governanceTokenName}} tokens will linearly decrease in amount and will be unlocked daily. Daily you can withdraw your {{mainTokenName}} tokens.",
+    "epochs":{
+      "oneDay": "1 Day",
+      "oneWeek": "1 Week",
+      "oneMonth": "1 Month",
+      "oneYear": "1 Year",
+      "twoYears": "2 Years"
+    }
   }
 }

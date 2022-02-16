@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 const MULTIPLE_TRANSACTION_INFO = gql`
   query multipleTransactionInfo($first: Int!, $skip: Int) {

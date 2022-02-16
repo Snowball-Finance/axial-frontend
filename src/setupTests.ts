@@ -1,11 +1,8 @@
 // react-testing-library renders your components to document.body,
 // this adds jest-dom's custom assertions
-import '@testing-library/jest-dom/extend-expect';
-
-import 'react-app-polyfill/ie11';
-import 'react-app-polyfill/stable';
-
-
+import "@testing-library/jest-dom/extend-expect";
+import "react-app-polyfill/ie11";
+import "react-app-polyfill/stable";
 var localStorageMock = (function () {
   var store = {};
   return {
@@ -20,8 +17,8 @@ var localStorageMock = (function () {
     },
     removeItem: function (key: string) {
       delete store[key];
-    }
+    },
   };
 })();
 
-Object.defineProperty(window, 'localStorage', { value: localStorageMock });
+Object.defineProperty(window, "localStorage", { value: localStorageMock });

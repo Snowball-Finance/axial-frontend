@@ -1,7 +1,7 @@
-import React from 'react';
-import { Wrapper } from './wrapper';
+import React from "react";
+import { Wrapper } from "./wrapper";
 
-const PageLoading = props => {
+const PageLoading = (props) => {
   return (
     <Wrapper {...props}>
       <div className="lds-ellipsis">

@@ -1,8 +1,8 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 const CURRENT_DISTRIBUTION_PHASE = gql`
   query {
-    CurrentDistributionPhase{
+    CurrentDistributionPhase {
       startDate
       nextDate
       snobDistributed

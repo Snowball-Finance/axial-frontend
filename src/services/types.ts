@@ -1,8 +1,8 @@
 export enum RequestTypes {
-  PUT = 'PUT',
-  POST = 'POST',
-  GET = 'GET',
-  DELETE = 'DELETE',
+  PUT = "PUT",
+  POST = "POST",
+  GET = "GET",
+  DELETE = "DELETE",
 }
 export interface RequestParameters {
   requestType: RequestTypes;
@@ -20,8 +20,5 @@ export interface StandardResponse {
 }
 
 export enum UploadUrls {
-  USER_PROFILE_IMAGE = 'user-profile-image/upload',
+  USER_PROFILE_IMAGE = "user-profile-image/upload",
 }
-
-
-
