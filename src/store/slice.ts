@@ -1,5 +1,5 @@
-import { PayloadAction } from '@reduxjs/toolkit';
-import { createSlice } from 'store/toolkit';
+import { PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "store/toolkit";
 interface ContainerState {
   loggedIn: boolean;
 }
@@ -9,7 +9,7 @@ export const initialState: ContainerState = {
 };
 
 const globalSlice = createSlice({
-  name: 'global',
+  name: "global",
   initialState,
   reducers: {
     setIsLoggedIn(state, action: PayloadAction<boolean>) {

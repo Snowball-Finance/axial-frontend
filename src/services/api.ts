@@ -1,17 +1,12 @@
-import {
-  RequestTypes,
-  RequestParameters,
-} from './types';
-import { queryStringer } from 'common/qs';
-
-import { MessageService, MessageNames } from './message';
+import { RequestTypes, RequestParameters } from "./types";
+import { queryStringer } from "common/qs";
+import { MessageService, MessageNames } from "./message";
 import { toast } from "react-toastify";
 import { BaseUrl } from "app/constants";
 
-
 export class ApiService {
   private static instance: ApiService;
-  private constructor() { }
+  private constructor() {}
   public static getInstance(): ApiService {
     if (!ApiService.instance) {
       ApiService.instance = new ApiService();
@@ -20,30 +15,29 @@ export class ApiService {
   }
 
   public baseUrl = BaseUrl;
-  public token: string = '';
+  public token: string = "";
   public async fetchData(params: RequestParameters) {
-
     const url = params.isRawUrl ? params.url : this.baseUrl + params.url;
 
-    if (process.env.NODE_ENV !== 'production') {
-      const uri = `${params.isRawUrl ? '' : this.baseUrl}${params.url}`
+    if (process.env.NODE_ENV !== "production") {
+      const uri = `${params.isRawUrl ? "" : this.baseUrl}${params.url}`;
       console.log(
         `🚀 %c${params.requestType} %crequest to: %c${uri}\n✉%c:`,
-        'color:green;',
-        'color:black;',
-        'color:green;',
-        'color:black;',
-        params.data,
+        "color:green;",
+        "color:black;",
+        "color:green;",
+        "color:black;",
+        params.data
       );
     }
     switch (params.requestType) {
       case RequestTypes.GET:
-        let query = '';
+        let query = "";
         if (params.data !== {}) {
           query = queryStringer(params.data);
         }
         const rawRes = await fetch(url + query, {
-          method: 'GET',
+          method: "GET",
           // credentials: 'include',
           headers: this.getHeaders(),
         });
@@ -53,7 +47,7 @@ export class ApiService {
           method: params.requestType,
           headers: this.getHeaders(),
           // credentials: 'include',
-          redirect: 'follow',
+          redirect: "follow",
           body: JSON.stringify(params.data),
         });
         return await this.handleRawResponse(rawResponse, params);
@@ -69,40 +63,39 @@ export class ApiService {
       }
       if (rawResponse.status === 401) {
         MessageService.send({ name: MessageNames.AUTH_ERROR_EVENT });
-
       } else if (rawResponse.status === 500) {
-        toast.error('connection failed');
+        toast.error("connection failed");
       }
     }
-    if (process.env.NODE_ENV !== 'production') {
-      const uri = `${params.isRawUrl ? '' : this.baseUrl}${params.url}`
+    if (process.env.NODE_ENV !== "production") {
+      const uri = `${params.isRawUrl ? "" : this.baseUrl}${params.url}`;
       if (rawResponse.ok) {
         rawResponse
           .clone()
           .json()
-          .then(response => {
+          .then((response) => {
             console.log(
               `✅ %csuccess %c${params.requestType} %crequest to: %c${uri}\n✉%c:`,
-              'color:green;font-size:15px;',
-              'color:blue;',
-              'color:black;',
-              'color:green;',
-              'color:black;',
+              "color:green;font-size:15px;",
+              "color:blue;",
+              "color:black;",
+              "color:green;",
+              "color:black;",
               params.data,
-              '\n',
-              ' response 👇',
-              response,
+              "\n",
+              " response 👇",
+              response
             );
           });
       } else {
         console.log(
           `⛔ %cError %c${params.requestType} %crequest to: %c${uri}\n✉%c:`,
-          'color:red;font-size:15px;',
-          'color:green;',
-          'color:black;',
-          'color:green;',
-          'color:black;',
-          params.data,
+          "color:red;font-size:15px;",
+          "color:green;",
+          "color:black;",
+          "color:green;",
+          "color:black;",
+          params.data
         );
         return new Error(`❌ Error calling ${uri}`);
       }
@@ -115,13 +108,13 @@ export class ApiService {
     | string[][]
     | Record<string, string>
     | undefined {
-    if (this.token === '') {
+    if (this.token === "") {
       return {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       };
     }
     return {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     };
   }
 }

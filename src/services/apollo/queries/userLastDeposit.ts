@@ -1,8 +1,8 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 const USER_LAST_DEPOSIT = gql`
-query ListLastDepositsPerWallet($wallet: String!) {
-  ListLastDepositsPerWallet(wallet:$wallet){
+  query ListLastDepositsPerWallet($wallet: String!) {
+    ListLastDepositsPerWallet(wallet: $wallet) {
       snowglobeAddress
       lastBlockScanned
       lpQuantity

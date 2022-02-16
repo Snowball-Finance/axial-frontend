@@ -3,21 +3,17 @@ import { BigNumber } from "ethers";
 
 /* --- STATE --- */
 export interface BlockChainState {
+  mainTokenBalance: BigNumber | undefined;
   isGettingSnobBalance: boolean;
-  isGettingSnowConeBalance: boolean;
-  snowballBalance: BigNumber | undefined
-  snowConeBalance: BigNumber | undefined
-  totalSnowConeSupply: BigNumber
-  totalSnowConeValue: string,
+  mainTokenABI: any;
+  includesGovernance: boolean;
   prices: {
-    SNOB: number,
-    SNOB24HChange: number,
-  }
+    mainToken: number;
+    mainToken24hChange: number;
+  };
   contracts: {
-    snob: Contract | undefined,
-    snowCone: Contract | undefined,
-    gaugeProxy: Contract | undefined
-  }
+    mainTokenContract: Contract | undefined;
+  };
 }
 
 export type ContainerState = BlockChainState;

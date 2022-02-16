@@ -1,14 +1,15 @@
-import { useMemo } from 'react'
-import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client'
-
-
+import { useMemo } from "react";
+import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
 let apolloClient;
 
 function createApolloClient() {
   return new ApolloClient({
-    ssrMode: typeof window === 'undefined',
+    ssrMode: typeof window === "undefined",
     link: new HttpLink({
-      uri: process.env.ENVIRONMENT === 'DEV' ? process.env.DEVAPIADDR : process.env.APIADDR,
+      uri:
+        process.env.ENVIRONMENT === "DEV"
+          ? process.env.DEVAPIADDR
+          : process.env.APIADDR,
     }),
     cache: new InMemoryCache(),
   });
@@ -27,7 +28,7 @@ export function initializeApollo(initialState = null) {
     _apolloClient.cache.restore({ ...existingCache, ...initialState });
   }
   // For SSG and SSR always create a new Apollo Client
-  if (typeof window === 'undefined') return _apolloClient;
+  if (typeof window === "undefined") return _apolloClient;
   // Create the Apollo Client once in the client
   if (!apolloClient) apolloClient = _apolloClient;
   return _apolloClient;

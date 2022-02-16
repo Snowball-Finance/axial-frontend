@@ -1,9 +1,13 @@
-import { RouterState } from 'connected-react-router';
-import { HomePageState } from 'app/containers/pages/Home/types';
-import { BlockChainState } from 'app/containers/BlockChain/types';
+import { RouterState } from "connected-react-router";
+import { HomePageState } from "app/pages/Home/types";
+import { BlockChainState } from "app/containers/BlockChain/types";
 import { Web3State } from "app/containers/BlockChain/Web3/types";
 import { EthersState } from "app/containers/BlockChain/Ethers/types";
-import { GovernanceState } from 'app/containers/pages/Governance/types';
+import { GovernanceState } from "app/containers/BlockChain/Governance/types";
+import { PoolsAndGaugesState } from "app/containers/PoolsAndGauges/types";
+import { GovernancePageState } from "app/pages/Governance/types";
+import { StakingState } from "app/containers/BlockChain/Governance/Staking/types";
+import { StakingPageState } from "app/pages/StakingPage/types";
 // [IMPORT NEW CONTAINERSTATE ABOVE] < Needed for generating containers seamlessly
 
 /* 
@@ -20,5 +24,9 @@ export interface RootState {
   ethers?: EthersState;
   blockChain?: BlockChainState;
   governance?: GovernanceState;
+  poolsAndGauges?: PoolsAndGaugesState;
+  governancePage?: GovernancePageState;
+  staking?: StakingState;
+  stakingPage?: StakingPageState;
   // [INSERT NEW REDUCER KEY ABOVE] < Needed for generating containers seamlessly
 }
