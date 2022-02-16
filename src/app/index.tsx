@@ -21,6 +21,7 @@ import {analytics} from '@snowball-finance/snowball-analytics'
 import { Governance } from "./containers/pages/Governance/Loadable";
 import Layout from './Layout';
 import { Liquidity } from './containers/pages/Liquidity/Loadable';
+import { Rewards } from './containers/pages/Rewards/Loadable';
 
 export function App() {
   const { t } = useTranslation();
@@ -47,6 +48,7 @@ export function App() {
           <Route exact path={AppPages.RootPage} component={HomePage} />
           <Route path={AppPages.GovernancePage} component={Governance} />
           <Route path={AppPages.LiquidityPage} component={Liquidity} />
+          <Route path={AppPages.RewardPage} component={Rewards} />
           <Route component={NotFoundPage} />
         </Switch>
       </Layout>

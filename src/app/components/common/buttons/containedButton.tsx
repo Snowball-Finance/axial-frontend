@@ -14,5 +14,5 @@ export const ContainedButton: FC<SnowButtonProps> = (props) => {
 const StyledButton = styled(SnowButton)(({ theme }) => ({
   color: CssVariables.white,
   border: `2px solid ${CssVariables.white}`,
-  borderRadius: "10px"
+  borderRadius: "20px"
 }))

@@ -7,6 +7,10 @@
     "Liquidity": "Liquidity",
     "Description": "Liquidity Page"
   },
+  "RewardsPage": {
+    "Rewards": "Rewards",
+    "Description": "Rewards Page"
+  },
   "GovernancePage": {
     "ActiveProposals": "Active Proposals",
     "ActiveProposalsDescriptions": "To vote, members must stake their SNOB for xSNOB. Read about proposal details in the Snowball Discord",
