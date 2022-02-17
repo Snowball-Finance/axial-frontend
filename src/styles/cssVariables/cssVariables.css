@@ -42,6 +42,7 @@ html{
   --chipBackgroundColor:#3a2e6b;
   --poolCardBackground: #00103B;
   --poolCardBorder: #4D2F43;
+  --swapInputbackground: #06041D;
   --paperBorderRadius:12px;
 
   /* ag grid related styles */

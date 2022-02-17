@@ -28,6 +28,7 @@ import { StakingPage } from "./pages/StakingPage";
 import Layout from "./Layout";
 import { LiquidityPage } from './pages/Liquidity/Loadable';
 import { RewardsPage } from './pages/Rewards/Loadable';
+import { SwapPage } from "./pages/Swap/Loadable";
 
 export function App() {
   const { t } = useTranslation();
@@ -67,7 +68,7 @@ export function App() {
       {/* <PoolsAndGauges abi={GAUGE_PROXY_ABI} initialDataQuery={INFO_QUERY} /> */}
       <Layout>
         <Switch>
-          <Route exact path={AppPages.RootPage} component={HomePage} />
+          <Route exact path={AppPages.RootPage} component={SwapPage} />
           <Route path={AppPages.GovernancePage}>
             <GovernancePage />
           </Route>

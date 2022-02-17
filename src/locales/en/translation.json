@@ -19,6 +19,10 @@
     "Rewards": "Rewards",
     "Description": "Rewards Page"
   },
+  "SwapPage": {
+    "Swap": "Swap",
+    "Description": "Swap Page"
+  },
   "Navigation": {
     "swap": "Swap",
     "liquidity": "Liquidity",
