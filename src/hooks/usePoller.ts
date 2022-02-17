@@ -1,34 +1,34 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react"
 
 // Source: https://github.com/austintgriffith/eth-hooks/blob/master/src/Poller.ts
 
 const usePoller = (fn: () => void, delay: number): void => {
-  const savedCallback = useRef<() => void>();
+  const savedCallback = useRef<() => void>()
 
   // Remember the latest fn.
   useEffect((): void => {
-    savedCallback.current = fn;
-  }, [fn]);
+    savedCallback.current = fn
+  }, [fn])
 
   // Set up the interval.
   useEffect((): void | (() => void) => {
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     function tick() {
-      if (savedCallback.current) savedCallback.current();
+      if (savedCallback.current) savedCallback.current()
     }
 
     if (delay !== null) {
-      const id = setInterval(tick, delay);
+      const id = setInterval(tick, delay)
       // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-      return () => clearInterval(id);
+      return () => clearInterval(id)
     }
-  }, [delay]);
+  }, [delay])
 
   // run at start too
   useEffect(() => {
-    fn();
+    fn()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-};
+  }, [])
+}
 
-export default usePoller;
+export default usePoller

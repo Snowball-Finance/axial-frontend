@@ -1,14 +1,14 @@
-import "./AssetButton.scss";
+import "./AssetButton.scss"
 
-import React, { ReactElement } from "react";
+import React, { ReactElement } from "react"
 
-import { Link } from "react-router-dom";
-import defaultIcon from "../assets/icons/icon_btc.svg";
+import { Link } from "react-router-dom"
+import defaultIcon from "../assets/icons/icon_btc.svg"
 
 interface Props {
-  title: string;
-  to: string;
-  icon?: string;
+  title: string
+  to: string
+  icon?: string
 }
 
 function AssetButton({ title, to, icon = defaultIcon }: Props): ReactElement {
@@ -19,7 +19,7 @@ function AssetButton({ title, to, icon = defaultIcon }: Props): ReactElement {
         <span>{title}</span>
       </button>
     </Link>
-  );
+  )
 }
 
-export default AssetButton;
+export default AssetButton

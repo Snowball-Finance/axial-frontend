@@ -1,56 +1,56 @@
-import "./ReviewSwap.scss";
+import "./ReviewSwap.scss"
 
-import React, { ReactElement, useState } from "react";
-import { SWAP_TYPES, TOKENS_MAP } from "../../constants";
-import { commify, formatBNToString, formatDeadlineToNumber } from "../../libs";
-import { formatGasToString, gasBNFromState } from "../../libs/gas";
+import React, { ReactElement, useState } from "react"
+import { SWAP_TYPES, TOKENS_MAP } from "../../constants"
+import { commify, formatBNToString, formatDeadlineToNumber } from "../../libs"
+import { formatGasToString, gasBNFromState } from "../../libs/gas"
 
-import { AppState } from "../../store/index";
-import { BigNumber } from "@ethersproject/bignumber";
-import Button from "../button/Button";
-import HighPriceImpactConfirmation from "../highprice-impact-confirmation/HighPriceImpactConfirmation";
-import { ReactComponent as ThinArrowDown } from "../../assets/icons/thinArrowDown.svg";
-import { calculateGasEstimate } from "../../libs/gasEstimate";
-import { formatSlippageToString } from "../../libs/slippage";
-import { isHighPriceImpact } from "../../libs/priceImpact";
-import { parseUnits } from "@ethersproject/units";
-import { useSelector } from "react-redux";
-import { useTranslation } from "react-i18next";
+import { AppState } from "../../store/index"
+import { BigNumber } from "@ethersproject/bignumber"
+import Button from "../button/Button"
+import HighPriceImpactConfirmation from "../highprice-impact-confirmation/HighPriceImpactConfirmation"
+import { ReactComponent as ThinArrowDown } from "../../assets/icons/thinArrowDown.svg"
+import { calculateGasEstimate } from "../../libs/gasEstimate"
+import { formatSlippageToString } from "../../libs/slippage"
+import { isHighPriceImpact } from "../../libs/priceImpact"
+import { parseUnits } from "@ethersproject/units"
+import { useSelector } from "react-redux"
+import { useTranslation } from "react-i18next"
 
 interface Props {
-  onClose: () => void;
-  onConfirm: () => void;
+  onClose: () => void
+  onConfirm: () => void
   data: {
-    from: { symbol: string; value: string };
-    to?: { symbol: string; value: string };
-    swapType: SWAP_TYPES;
+    from: { symbol: string; value: string }
+    to?: { symbol: string; value: string }
+    swapType: SWAP_TYPES
     exchangeRateInfo?: {
-      pair: string;
-      exchangeRate: BigNumber;
-      priceImpact: BigNumber;
-    };
-  };
+      pair: string
+      exchangeRate: BigNumber
+      priceImpact: BigNumber
+    }
+  }
 }
 
 function ReviewVirtualSwapSettlement({ onClose, onConfirm, data }: Props): ReactElement {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
   const { slippageCustom, slippageSelected, gasPriceSelected, gasCustom, transactionDeadlineSelected, transactionDeadlineCustom } = useSelector(
-    (state: AppState) => state.user
-  );
-  const { tokenPricesUSD, gasStandard, gasFast, gasInstant } = useSelector((state: AppState) => state.application);
-  const [hasConfirmedHighPriceImpact, setHasConfirmedHighPriceImpact] = useState(false);
-  const fromToken = TOKENS_MAP[data.from.symbol];
-  const toToken = data.to ? TOKENS_MAP[data.to.symbol] : null;
-  const isHighPriceImpactTxn = Boolean(data.to?.value && data.exchangeRateInfo && isHighPriceImpact(data.exchangeRateInfo.priceImpact));
-  const deadline = formatDeadlineToNumber(transactionDeadlineSelected, transactionDeadlineCustom);
-  const gasPrice = gasBNFromState({ gasStandard, gasFast, gasInstant }, gasPriceSelected, gasCustom);
-  const gasAmount = calculateGasEstimate("virtualSwapSettleOrWithdraw").mul(gasPrice);
+    (state: AppState) => state.user,
+  )
+  const { tokenPricesUSD, gasStandard, gasFast, gasInstant } = useSelector((state: AppState) => state.application)
+  const [hasConfirmedHighPriceImpact, setHasConfirmedHighPriceImpact] = useState(false)
+  const fromToken = TOKENS_MAP[data.from.symbol]
+  const toToken = data.to ? TOKENS_MAP[data.to.symbol] : null
+  const isHighPriceImpactTxn = Boolean(data.to?.value && data.exchangeRateInfo && isHighPriceImpact(data.exchangeRateInfo.priceImpact))
+  const deadline = formatDeadlineToNumber(transactionDeadlineSelected, transactionDeadlineCustom)
+  const gasPrice = gasBNFromState({ gasStandard, gasFast, gasInstant }, gasPriceSelected, gasCustom)
+  const gasAmount = calculateGasEstimate("virtualSwapSettleOrWithdraw").mul(gasPrice)
   const gasValueUSD = tokenPricesUSD?.ETH
     ? parseUnits(tokenPricesUSD.ETH.toFixed(2), 18) // USD / ETH  * 10^18
         .mul(gasAmount) // GWEI
         .div(BigNumber.from(10).pow(25)) // USD / ETH * GWEI * ETH / GWEI = USD
-    : null;
-  const isWithdrawAction = !data.from;
+    : null
+  const isWithdrawAction = !data.from
   return (
     <div className="reviewSwap">
       <h3>{isWithdrawAction ? t("Review Withdraw") : t("Review Settlement")}</h3>
@@ -127,7 +127,7 @@ function ReviewVirtualSwapSettlement({ onClose, onConfirm, data }: Props): React
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default ReviewVirtualSwapSettlement;
+export default ReviewVirtualSwapSettlement

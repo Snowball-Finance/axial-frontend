@@ -1,26 +1,26 @@
-import React, { ReactElement, useCallback, useRef, useState } from "react";
+import React, { ReactElement, useCallback, useRef, useState } from "react"
 
-import { BigNumber } from "@ethersproject/bignumber";
-import SearchSelect from "../search-select/SearchSelect";
-import { TOKENS_MAP } from "../../constants";
-import type { TokenOption } from "../../pages/swap/Swap";
-import classnames from "classnames";
-import { commify } from "../../libs";
-import { formatBNToString } from "../../libs";
-import styles from "./SwapInput.module.scss";
-import useDetectOutsideClick from "../../hooks/useDetectOutsideClick";
-import { useTranslation } from "react-i18next";
-import { LoadingWrapper } from "../shimmer";
+import { BigNumber } from "@ethersproject/bignumber"
+import SearchSelect from "../search-select/SearchSelect"
+import { TOKENS_MAP } from "../../constants"
+import type { TokenOption } from "../../pages/swap/Swap"
+import classnames from "classnames"
+import { commify } from "../../libs"
+import { formatBNToString } from "../../libs"
+import styles from "./SwapInput.module.scss"
+import useDetectOutsideClick from "../../hooks/useDetectOutsideClick"
+import { useTranslation } from "react-i18next"
+import { LoadingWrapper } from "../shimmer"
 
 interface Props {
-  tokens: TokenOption[];
-  selected: string;
-  inputValue: string;
-  isLoading?: boolean;
-  inputValueUSD: BigNumber;
-  isSwapFrom: boolean;
-  onSelect?: (tokenSymbol: string) => void;
-  onChangeAmount?: (value: string) => void;
+  tokens: TokenOption[]
+  selected: string
+  inputValue: string
+  isLoading?: boolean
+  inputValueUSD: BigNumber
+  isSwapFrom: boolean
+  onSelect?: (tokenSymbol: string) => void
+  onChangeAmount?: (value: string) => void
 }
 export default function SwapInput({
   tokens,
@@ -30,21 +30,21 @@ export default function SwapInput({
   inputValue,
   inputValueUSD,
   isSwapFrom,
-  onChangeAmount
+  onChangeAmount,
 }: Props): ReactElement {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const wrapperRef = useRef(null);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const { t } = useTranslation();
-  useDetectOutsideClick(wrapperRef, () => setIsDropdownOpen(false), isDropdownOpen);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const wrapperRef = useRef(null)
+  const inputRef = useRef<HTMLInputElement>(null)
+  const { t } = useTranslation()
+  useDetectOutsideClick(wrapperRef, () => setIsDropdownOpen(false), isDropdownOpen)
   const handleSelect = useCallback(
     (value: string) => {
-      onSelect?.(value);
-      setIsDropdownOpen(false);
+      onSelect?.(value)
+      setIsDropdownOpen(false)
     },
-    [onSelect]
-  );
-  const selectedToken = TOKENS_MAP[selected];
+    [onSelect],
+  )
+  const selectedToken = TOKENS_MAP[selected]
   return (
     <div className={styles.swapInputContainer}>
       <div
@@ -53,7 +53,7 @@ export default function SwapInput({
         tabIndex={0}
         onKeyDown={(e) => {
           if (onSelect && (e.key === "Enter" || e.key === " ")) {
-            setIsDropdownOpen((prev) => !prev);
+            setIsDropdownOpen((prev) => !prev)
           }
         }}>
         {selectedToken && <img src={selectedToken.icon} />}
@@ -73,7 +73,7 @@ export default function SwapInput({
       <div
         className={classnames({ [styles.focusable]: isSwapFrom }, styles.inputGroup)}
         onClick={() => {
-          inputRef.current?.focus();
+          inputRef.current?.focus()
         }}>
         <LoadingWrapper isLoading={isLoading ?? false} height={24} width="100%">
           <input
@@ -86,14 +86,14 @@ export default function SwapInput({
             value={isSwapFrom ? inputValue : commify(inputValue)}
             onChange={(e) => {
               // remove all chars that aren't a digit or a period
-              const newValue = e.target.value.replace(/[^\d|.]/g, "");
+              const newValue = e.target.value.replace(/[^\d|.]/g, "")
               // disallow more than one period
-              if (newValue.indexOf(".") !== newValue.lastIndexOf(".")) return;
-              onChangeAmount?.(newValue);
+              if (newValue.indexOf(".") !== newValue.lastIndexOf(".")) return
+              onChangeAmount?.(newValue)
             }}
             onFocus={(e: React.ChangeEvent<HTMLInputElement>): void => {
               if (isSwapFrom) {
-                e.target.select();
+                e.target.select()
               }
             }}
             readOnly={!isSwapFrom}
@@ -108,5 +108,5 @@ export default function SwapInput({
         </div>
       )}
     </div>
-  );
+  )
 }

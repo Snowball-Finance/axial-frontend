@@ -1,26 +1,26 @@
-import "./PoolInfoCard.scss";
+import "./PoolInfoCard.scss"
 
-import { POOLS_MAP, POOL_FEE_PRECISION, PoolTypes, TOKENS_MAP } from "../../constants";
-import React, { ReactElement } from "react";
-import { formatBNToPercentString, formatBNToString } from "../../libs";
+import { POOLS_MAP, POOL_FEE_PRECISION, PoolTypes, TOKENS_MAP } from "../../constants"
+import React, { ReactElement } from "react"
+import { formatBNToPercentString, formatBNToString } from "../../libs"
 
-import { PoolDataType } from "../../hooks/usePoolData";
-import ToolTip from "../tool-tip/ToolTip";
-import { commify } from "@ethersproject/units";
-import { useTranslation } from "react-i18next";
-import { LoadingWrapper } from "../shimmer";
+import { PoolDataType } from "../../hooks/usePoolData"
+import ToolTip from "../tool-tip/ToolTip"
+import { commify } from "@ethersproject/units"
+import { useTranslation } from "react-i18next"
+import { LoadingWrapper } from "../shimmer"
 
 interface Props {
-  data: PoolDataType | null;
+  data: PoolDataType | null
 }
 
 function PoolInfoCard({ data }: Props): ReactElement | null {
-  const { t } = useTranslation();
-  if (data == null) return null;
-  const { type: poolType, underlyingPool } = POOLS_MAP[data?.name];
-  const formattedDecimals = poolType === PoolTypes.USD ? 2 : 4;
-  const swapFee = data?.swapFee ? formatBNToPercentString(data.swapFee, POOL_FEE_PRECISION) : null;
-  const adminFee = data?.adminFee ? formatBNToPercentString(data.adminFee, POOL_FEE_PRECISION) : null;
+  const { t } = useTranslation()
+  if (data == null) return null
+  const { type: poolType, underlyingPool } = POOLS_MAP[data?.name]
+  const formattedDecimals = poolType === PoolTypes.USD ? 2 : 4
+  const swapFee = data?.swapFee ? formatBNToPercentString(data.swapFee, POOL_FEE_PRECISION) : null
+  const adminFee = data?.adminFee ? formatBNToPercentString(data.adminFee, POOL_FEE_PRECISION) : null
   const formattedData = {
     name: data?.name,
     swapFee,
@@ -32,16 +32,16 @@ function PoolInfoCard({ data }: Props): ReactElement | null {
     volume: data?.volume ? commify(data.volume) : "-",
     tokens:
       data?.tokens.map((coin) => {
-        const token = TOKENS_MAP[coin.symbol];
+        const token = TOKENS_MAP[coin.symbol]
         return {
           symbol: token.symbol,
           name: token.name,
           icon: token.icon,
           percent: coin.percent,
-          value: commify(formatBNToString(coin.value, 18, formattedDecimals))
-        };
-      }) || []
-  };
+          value: commify(formatBNToString(coin.value, 18, formattedDecimals)),
+        }
+      }) || [],
+  }
 
   return (
     <div className="poolInfoCard">
@@ -69,7 +69,7 @@ function PoolInfoCard({ data }: Props): ReactElement | null {
       <div
         className="info"
         style={{
-          display: "none"
+          display: "none",
         }}>
         {/*<div className="infoItem">
           <span className="label bold">{`${t("fee")}:`}</span>
@@ -126,7 +126,7 @@ function PoolInfoCard({ data }: Props): ReactElement | null {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default PoolInfoCard;
+export default PoolInfoCard

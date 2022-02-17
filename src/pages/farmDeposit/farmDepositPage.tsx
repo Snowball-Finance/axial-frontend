@@ -1,47 +1,47 @@
-import "./farmDepositPage.scss";
+import "./farmDepositPage.scss"
 
-import { PoolDataType, UserShareType } from "../../hooks/usePoolData";
-import React, { ReactElement, useState } from "react";
-import AdvancedOptions from "../../components/advance-options/AdvancedOptions";
-import Button from "../../components/button/Button";
+import { PoolDataType, UserShareType } from "../../hooks/usePoolData"
+import React, { ReactElement, useState } from "react"
+import AdvancedOptions from "../../components/advance-options/AdvancedOptions"
+import Button from "../../components/button/Button"
 
-import CheckboxInput from "../../components/checkbox-input/CheckboxInput";
-import ConfirmTransaction from "../../components/confirm-transaction/ConfirmTransaction";
-import { DepositTransaction } from "../../interfaces/transactions";
-import Modal from "../../components/modal/Modal";
-import MyShareCard from "../../components/my-share-card/MyShareCard";
-import ReviewDeposit from "../../components/reviews/ReviewDeposit";
-import TokenInput from "../../components/token-input/TokenInput";
+import CheckboxInput from "../../components/checkbox-input/CheckboxInput"
+import ConfirmTransaction from "../../components/confirm-transaction/ConfirmTransaction"
+import { DepositTransaction } from "../../interfaces/transactions"
+import Modal from "../../components/modal/Modal"
+import MyShareCard from "../../components/my-share-card/MyShareCard"
+import ReviewDeposit from "../../components/reviews/ReviewDeposit"
+import TokenInput from "../../components/token-input/TokenInput"
 //import { logEvent } from "../../libs/googleAnalytics"
-import { useTranslation } from "react-i18next";
-import InfoSection, { InfoSectionProps } from "../../components/info-section/infoSection";
-import FarmInfoCard from "../../components/farm-info-card/FarmInfoCard";
-import { POOLS_MAP, PoolTypes } from "../../constants";
-import { analytics } from "../../utils/analytics";
-import { TransactionStatusType } from "../../hooks/useApproveAndDeposit";
+import { useTranslation } from "react-i18next"
+import InfoSection, { InfoSectionProps } from "../../components/info-section/infoSection"
+import FarmInfoCard from "../../components/farm-info-card/FarmInfoCard"
+import { POOLS_MAP, PoolTypes } from "../../constants"
+import { analytics } from "../../utils/analytics"
+import { TransactionStatusType } from "../../hooks/useApproveAndDeposit"
 interface Props {
-  title: string;
-  onConfirmTransaction: () => Promise<void>;
-  onChangeTokenInputValue: (tokenSymbol: string, value: string) => void;
-  onToggleDepositWrapped: () => void;
-  shouldDepositWrapped: boolean;
+  title: string
+  onConfirmTransaction: () => Promise<void>
+  onChangeTokenInputValue: (tokenSymbol: string, value: string) => void
+  onToggleDepositWrapped: () => void
+  shouldDepositWrapped: boolean
   tokens: Array<{
-    symbol: string;
-    name: string;
-    icon: string;
-    max: string;
-    inputValue: string;
-  }>;
-  exceedsWallet: boolean;
-  poolData: PoolDataType | null;
-  myShareData: UserShareType | null;
-  transactionData: DepositTransaction;
-  transactionStatus: TransactionStatusType;
+    symbol: string
+    name: string
+    icon: string
+    max: string
+    inputValue: string
+  }>
+  exceedsWallet: boolean
+  poolData: PoolDataType | null
+  myShareData: UserShareType | null
+  transactionData: DepositTransaction
+  transactionStatus: TransactionStatusType
 }
 
 /* eslint-enable @typescript-eslint/no-explicit-any */
 const FarmDepositPage = (props: Props): ReactElement => {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
 
   const {
     tokens,
@@ -53,18 +53,18 @@ const FarmDepositPage = (props: Props): ReactElement => {
     shouldDepositWrapped,
     onChangeTokenInputValue,
     onConfirmTransaction,
-    onToggleDepositWrapped
-  } = props;
+    onToggleDepositWrapped,
+  } = props
 
-  const [currentModal, setCurrentModal] = useState<string | null>(null);
+  const [currentModal, setCurrentModal] = useState<string | null>(null)
 
-  const validDepositAmount = true;
-  const shouldDisplayWrappedOption = false;
+  const validDepositAmount = true
+  const shouldDisplayWrappedOption = false
 
-  let poolType = PoolTypes.USD;
+  let poolType = PoolTypes.USD
   if (poolData) {
-    const POOL = POOLS_MAP[poolData?.name];
-    poolType = POOL.type;
+    const POOL = POOLS_MAP[poolData?.name]
+    poolType = POOL.type
   }
 
   const statsDataRows: InfoSectionProps["rows"] = [
@@ -72,19 +72,19 @@ const FarmDepositPage = (props: Props): ReactElement => {
       title: "Total APR",
       value: poolData?.rapr
         ? `${(Number(poolData?.rapr) + (poolData.apr ? Number(poolData?.apr) : 0) + (poolData.extraapr ? Number(poolData?.extraapr) : 0)).toFixed(
-            2
+            2,
           )}%`
         : poolData?.rapr === 0
         ? "0%"
-        : "-"
-    }
-  ];
+        : "-",
+    },
+  ]
 
   if (poolType !== PoolTypes.LP) {
     statsDataRows.push(
       {
         title: "Fee APR",
-        value: poolData?.apr ? `${Number(poolData?.apr).toFixed(2)}%` : poolData?.rapr === 0 ? "0%" : "-"
+        value: poolData?.apr ? `${Number(poolData?.apr).toFixed(2)}%` : poolData?.rapr === 0 ? "0%" : "-",
       },
       {
         title: "Rewards APR",
@@ -92,9 +92,9 @@ const FarmDepositPage = (props: Props): ReactElement => {
           ? `${Number(poolData?.rapr).toFixed(2)}%` + (poolData?.extraapr ? ` + ${Number(poolData?.extraapr).toFixed(2)}%` : "")
           : poolData?.rapr === 0
           ? "0%"
-          : "-"
-      }
-    );
+          : "-",
+      },
+    )
   }
 
   return (
@@ -122,14 +122,14 @@ const FarmDepositPage = (props: Props): ReactElement => {
               kind="primary"
               size="full"
               onClick={async () => {
-                setCurrentModal("confirm");
-                await onConfirmTransaction?.();
-                setCurrentModal(null);
+                setCurrentModal("confirm")
+                await onConfirmTransaction?.()
+                setCurrentModal(null)
                 analytics.trackEvent({
                   category: "Deposit",
                   action: "Deposit",
-                  name: "Confirm"
-                });
+                  name: "Confirm",
+                })
                 //setCurrentModal("review")
               }}
               disabled={!validDepositAmount || poolData?.isPaused}>
@@ -158,9 +158,9 @@ const FarmDepositPage = (props: Props): ReactElement => {
             <ReviewDeposit
               transactionData={transactionData}
               onConfirm={async (): Promise<void> => {
-                setCurrentModal("confirm");
-                await onConfirmTransaction?.();
-                setCurrentModal(null);
+                setCurrentModal("confirm")
+                await onConfirmTransaction?.()
+                setCurrentModal(null)
               }}
               onClose={(): void => setCurrentModal(null)}
             />
@@ -171,7 +171,7 @@ const FarmDepositPage = (props: Props): ReactElement => {
         </Modal>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default FarmDepositPage;
+export default FarmDepositPage

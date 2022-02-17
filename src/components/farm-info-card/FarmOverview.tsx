@@ -1,36 +1,36 @@
-import "./FarmOverview.scss";
+import "./FarmOverview.scss"
 
-import { AXIAL_JLP_POOL_NAME, AXIAL_MASTERCHEF_CONTRACT_ADDRESS, POOLS_MAP, PoolTypes, TOKENS_MAP } from "../../constants";
-import { PoolDataType, UserShareType } from "../../hooks/usePoolData";
-import React, { ReactElement } from "react";
-import { formatBNToShortString, formatBNToString } from "../../libs";
-import Button from "../button/Button";
-import { Link } from "react-router-dom";
-import { Zero } from "@ethersproject/constants";
-import classNames from "classnames";
-import { ethers } from "ethers";
-import masterchef from "../../constants/abis/masterchef.json";
-import { useActiveWeb3React } from "../../hooks";
-import { useTranslation } from "react-i18next";
-import avaxIcon from "../../assets/icons/AVAX.png";
-import axialLogo from "../../assets/icons/logo_icon.svg"; // this needs a smaller icon logo(24)
-import { LoadingWrapper } from "../shimmer";
-import { analytics } from "../../utils/analytics";
-import { BigNumber } from "ethers";
+import { AXIAL_JLP_POOL_NAME, AXIAL_MASTERCHEF_CONTRACT_ADDRESS, POOLS_MAP, PoolTypes, TOKENS_MAP } from "../../constants"
+import { PoolDataType, UserShareType } from "../../hooks/usePoolData"
+import React, { ReactElement } from "react"
+import { formatBNToShortString, formatBNToString } from "../../libs"
+import Button from "../button/Button"
+import { Link } from "react-router-dom"
+import { Zero } from "@ethersproject/constants"
+import classNames from "classnames"
+import { ethers } from "ethers"
+import masterchef from "../../constants/abis/masterchef.json"
+import { useActiveWeb3React } from "../../hooks"
+import { useTranslation } from "react-i18next"
+import avaxIcon from "../../assets/icons/AVAX.png"
+import axialLogo from "../../assets/icons/logo_icon.svg" // this needs a smaller icon logo(24)
+import { LoadingWrapper } from "../shimmer"
+import { analytics } from "../../utils/analytics"
+import { BigNumber } from "ethers"
 interface Props {
-  poolRoute: string;
-  poolData: PoolDataType;
-  userShareData: UserShareType | null;
-  onClickMigrate?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  poolRoute: string
+  poolData: PoolDataType
+  userShareData: UserShareType | null
+  onClickMigrate?: (e: React.MouseEvent<HTMLButtonElement>) => void
 }
 
 export default function FarmOverview({ poolData, poolRoute, userShareData, onClickMigrate }: Props): ReactElement | null {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
 
-  const { type: poolType, isOutdated } = POOLS_MAP[poolData.name];
-  const formattedDecimals = poolType === PoolTypes.USD ? 2 : 4;
-  const shouldMigrate = !!onClickMigrate;
-  const { library } = useActiveWeb3React();
+  const { type: poolType, isOutdated } = POOLS_MAP[poolData.name]
+  const formattedDecimals = poolType === PoolTypes.USD ? 2 : 4
+  const shouldMigrate = !!onClickMigrate
+  const { library } = useActiveWeb3React()
   const formattedData = {
     name: poolData.name,
     myShare: formatBNToShortString(userShareData?.share || Zero, 18),
@@ -51,13 +51,13 @@ export default function FarmOverview({ poolData, poolRoute, userShareData, onCli
       ? formatBNToShortString(poolType === PoolTypes.LP ? userShareData.usdBalance : userShareData.masterchefBalance?.userInfo.amount || Zero, 18)
       : "",
     tokens: poolData.tokens.map((coin) => {
-      const token = TOKENS_MAP[coin.symbol];
+      const token = TOKENS_MAP[coin.symbol]
       return {
         symbol: token.symbol,
         name: token.name,
         icon: token.icon,
-        value: formatBNToString(coin.value, token.decimals, formattedDecimals)
-      };
+        value: formatBNToString(coin.value, token.decimals, formattedDecimals),
+      }
     }),
     ammTokens:
       poolData.name === AXIAL_JLP_POOL_NAME //add other amm's if needed
@@ -66,79 +66,79 @@ export default function FarmOverview({ poolData, poolRoute, userShareData, onCli
               icon: avaxIcon,
               name: "Wrapped AVAX",
               symbol: "AVAX",
-              value: "0"
+              value: "0",
             },
             {
               icon: axialLogo,
               name: "AxialToken",
               symbol: "AXIAL",
-              value: "0"
-            }
+              value: "0",
+            },
           ]
-        : []
-  };
-  const hasShare = !!userShareData?.masterchefBalance?.userInfo.amount.gt("0");
+        : [],
+  }
+  const hasShare = !!userShareData?.masterchefBalance?.userInfo.amount.gt("0")
 
-  const masterchefContract = new ethers.Contract(AXIAL_MASTERCHEF_CONTRACT_ADDRESS[43114], masterchef, library?.getSigner());
-  let info = [];
+  const masterchefContract = new ethers.Contract(AXIAL_MASTERCHEF_CONTRACT_ADDRESS[43114], masterchef, library?.getSigner())
+  let info = []
 
   if (hasShare) {
     info.push(
       {
         title: "Balance",
-        value: `$${formattedData.userBalanceUSD}`
+        value: `$${formattedData.userBalanceUSD}`,
       },
       {
         title: "Claimable",
-        value: `${formattedData.axialPending}`
-      }
-    );
+        value: `${formattedData.axialPending}`,
+      },
+    )
   }
 
   if (poolType !== PoolTypes.LP) {
     info.push({
       title: "Rewards APR",
-      value: `${formattedData.rapr}${formattedData.extraapr ? " + " + formattedData.extraapr : ""}`
-    });
+      value: `${formattedData.rapr}${formattedData.extraapr ? " + " + formattedData.extraapr : ""}`,
+    })
   }
 
   info = info.concat([
     {
       title: "Total APR",
-      value: `${formattedData.totalapr}`
+      value: `${formattedData.totalapr}`,
     },
     {
       title: "TVL",
-      value: `$${formattedData.TVL}`
-    }
-  ]);
+      value: `$${formattedData.TVL}`,
+    },
+  ])
 
   if (poolData.name === "JLP AVAX-AXIAL") {
     poolData.tokens = [
       {
         percent: "24.19%",
         symbol: "TSD",
-        value: BigNumber.from("0x012410c9d8d3e7774b6dfb")
-      }
-    ];
+        value: BigNumber.from("0x012410c9d8d3e7774b6dfb"),
+      },
+    ]
   }
 
   const handleClaimClick = async () => {
-    const POOL = POOLS_MAP[poolData.name];
+    const POOL = POOLS_MAP[poolData.name]
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    await masterchefContract.withdraw(POOL.lpToken.masterchefId, 0);
+    await masterchefContract.withdraw(POOL.lpToken.masterchefId, 0)
     analytics.trackEvent({
       category: "Farm",
       action: "Claim",
-      name: poolData.name
-    });
-  };
+      name: poolData.name,
+    })
+  }
 
   return (
     <div
       className={classNames("poolOverview", {
-        outdated: isOutdated || shouldMigrate
+        outdated: isOutdated || shouldMigrate,
       })}>
       <div className="left">
         <div className="titleAndTag">
@@ -179,7 +179,7 @@ export default function FarmOverview({ poolData, poolRoute, userShareData, onCli
                   <span>{item.value}</span>
                 </LoadingWrapper>
               </div>
-            );
+            )
           })}
         </div>
         <div className="buttons">
@@ -209,10 +209,10 @@ export default function FarmOverview({ poolData, poolRoute, userShareData, onCli
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 function Tag(props: { children?: React.ReactNode; kind?: "warning" | "error" }) {
-  const { kind = "warning", ...tagProps } = props;
-  return <span className={classNames("tag", kind)} {...tagProps} />;
+  const { kind = "warning", ...tagProps } = props
+  return <span className={classNames("tag", kind)} {...tagProps} />
 }

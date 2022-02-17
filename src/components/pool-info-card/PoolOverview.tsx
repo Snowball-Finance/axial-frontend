@@ -1,27 +1,27 @@
-import "./PoolOverview.scss";
-import { POOLS_MAP, PoolTypes, TOKENS_MAP } from "../../constants";
-import { PoolDataType, UserShareType } from "../../hooks/usePoolData";
-import React, { ReactElement } from "react";
-import { formatBNToShortString, formatBNToString, commify } from "../../libs";
-import Button from "../button/Button";
-import { Link } from "react-router-dom";
-import { Zero } from "@ethersproject/constants";
-import classNames from "classnames";
-import { useTranslation } from "react-i18next";
-import { LoadingWrapper } from "../shimmer";
+import "./PoolOverview.scss"
+import { POOLS_MAP, PoolTypes, TOKENS_MAP } from "../../constants"
+import { PoolDataType, UserShareType } from "../../hooks/usePoolData"
+import React, { ReactElement } from "react"
+import { formatBNToShortString, formatBNToString, commify } from "../../libs"
+import Button from "../button/Button"
+import { Link } from "react-router-dom"
+import { Zero } from "@ethersproject/constants"
+import classNames from "classnames"
+import { useTranslation } from "react-i18next"
+import { LoadingWrapper } from "../shimmer"
 
 interface Props {
-  poolRoute: string;
-  poolData: PoolDataType;
-  userShareData: UserShareType | null;
-  onClickMigrate?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  poolRoute: string
+  poolData: PoolDataType
+  userShareData: UserShareType | null
+  onClickMigrate?: (e: React.MouseEvent<HTMLButtonElement>) => void
 }
 
 export default function PoolOverview({ poolData, poolRoute, userShareData, onClickMigrate }: Props): ReactElement | null {
-  const { t } = useTranslation();
-  const { type: poolType, isOutdated } = POOLS_MAP[poolData.name];
-  const formattedDecimals = poolType === PoolTypes.USD ? 2 : 4;
-  const shouldMigrate = !!onClickMigrate;
+  const { t } = useTranslation()
+  const { type: poolType, isOutdated } = POOLS_MAP[poolData.name]
+  const formattedDecimals = poolType === PoolTypes.USD ? 2 : 4
+  const shouldMigrate = !!onClickMigrate
   const formattedData = {
     name: poolData.name,
     reserve: poolData.reserve ? formatBNToShortString(poolData.reserve, 18) : "",
@@ -29,21 +29,21 @@ export default function PoolOverview({ poolData, poolRoute, userShareData, onCli
     volume: poolData.volume ? `$${commify(Number(poolData.volume).toFixed(2))}` : poolData.volume === 0 ? " - " : "-",
     userBalanceUSD: formatBNToShortString(userShareData?.usdBalance || Zero, 18),
     tokens: poolData.tokens.map((coin) => {
-      const token = TOKENS_MAP[coin.symbol];
+      const token = TOKENS_MAP[coin.symbol]
       return {
         symbol: token.symbol,
         name: token.name,
         icon: token.icon,
-        value: formatBNToString(coin.value, token.decimals, formattedDecimals)
-      };
-    })
-  };
-  const hasShare = !!userShareData?.usdBalance.gt("0");
+        value: formatBNToString(coin.value, token.decimals, formattedDecimals),
+      }
+    }),
+  }
+  const hasShare = !!userShareData?.usdBalance.gt("0")
 
   return (
     <div
       className={classNames("poolOverview", {
-        outdated: isOutdated || shouldMigrate
+        outdated: isOutdated || shouldMigrate,
       })}>
       <div className="left">
         <div className="titleAndTag">
@@ -118,10 +118,10 @@ export default function PoolOverview({ poolData, poolRoute, userShareData, onCli
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 function Tag(props: { children?: React.ReactNode; kind?: "warning" | "error" }) {
-  const { kind = "warning", ...tagProps } = props;
-  return <span className={classNames("tag", kind)} {...tagProps} />;
+  const { kind = "warning", ...tagProps } = props
+  return <span className={classNames("tag", kind)} {...tagProps} />
 }

@@ -1,16 +1,16 @@
-import "./infoSection.scss";
+import "./infoSection.scss"
 
-import React, { ReactElement } from "react";
-import { LoadingWrapper } from "../shimmer";
+import React, { ReactElement } from "react"
+import { LoadingWrapper } from "../shimmer"
 
 export interface InfoSectionProps {
-  title: string;
-  withDivider?: boolean;
+  title: string
+  withDivider?: boolean
   rows: {
-    title: string;
-    value: string;
-    sub?: string;
-  }[];
+    title: string
+    value: string
+    sub?: string
+  }[]
 }
 
 function InfoSection({ rows, withDivider }: InfoSectionProps): ReactElement | null {
@@ -35,13 +35,13 @@ function InfoSection({ rows, withDivider }: InfoSectionProps): ReactElement | nu
                   </div>
                 )}
               </div>
-            );
+            )
           })}
         </div>
       </div>
       {withDivider && <div className="divider"></div>}
     </>
-  );
+  )
 }
 
-export default InfoSection;
+export default InfoSection

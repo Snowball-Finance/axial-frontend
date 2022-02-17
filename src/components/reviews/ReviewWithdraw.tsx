@@ -1,35 +1,35 @@
-import "./ReviewWithdraw.scss";
+import "./ReviewWithdraw.scss"
 
-import React, { ReactElement, useState } from "react";
-import { commify, formatBNToString, formatDeadlineToNumber } from "../../libs";
+import React, { ReactElement, useState } from "react"
+import { commify, formatBNToString, formatDeadlineToNumber } from "../../libs"
 
-import { AppState } from "../../store/index";
-import Button from "../button/Button";
-import { GasPrices } from "../../store/module/user";
-import HighPriceImpactConfirmation from "../highprice-impact-confirmation/HighPriceImpactConfirmation";
-import { ReviewWithdrawData } from "../withdraw/WithdrawPage";
-import { formatGasToString } from "../../libs/gas";
-import { formatSlippageToString } from "../../libs/slippage";
-import { isHighPriceImpact } from "../../libs/priceImpact";
-import { useSelector } from "react-redux";
-import { useTranslation } from "react-i18next";
+import { AppState } from "../../store/index"
+import Button from "../button/Button"
+import { GasPrices } from "../../store/module/user"
+import HighPriceImpactConfirmation from "../highprice-impact-confirmation/HighPriceImpactConfirmation"
+import { ReviewWithdrawData } from "../withdraw/WithdrawPage"
+import { formatGasToString } from "../../libs/gas"
+import { formatSlippageToString } from "../../libs/slippage"
+import { isHighPriceImpact } from "../../libs/priceImpact"
+import { useSelector } from "react-redux"
+import { useTranslation } from "react-i18next"
 
 interface Props {
-  onClose: () => void;
-  onConfirm: () => void;
-  data: ReviewWithdrawData;
-  gas: GasPrices;
+  onClose: () => void
+  onConfirm: () => void
+  data: ReviewWithdrawData
+  gas: GasPrices
 }
 
 function ReviewWithdraw({ onClose, onConfirm, data }: Props): ReactElement {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
   const { slippageCustom, slippageSelected, gasPriceSelected, gasCustom, transactionDeadlineSelected, transactionDeadlineCustom } = useSelector(
-    (state: AppState) => state.user
-  );
-  const { gasStandard, gasFast, gasInstant } = useSelector((state: AppState) => state.application);
-  const [hasConfirmedHighPriceImpact, setHasConfirmedHighPriceImpact] = useState(false);
-  const isHighSlippageTxn = isHighPriceImpact(data.priceImpact);
-  const deadline = formatDeadlineToNumber(transactionDeadlineSelected, transactionDeadlineCustom);
+    (state: AppState) => state.user,
+  )
+  const { gasStandard, gasFast, gasInstant } = useSelector((state: AppState) => state.application)
+  const [hasConfirmedHighPriceImpact, setHasConfirmedHighPriceImpact] = useState(false)
+  const isHighSlippageTxn = isHighPriceImpact(data.priceImpact)
+  const deadline = formatDeadlineToNumber(transactionDeadlineSelected, transactionDeadlineCustom)
   return (
     <div className="reviewWithdraw">
       <h3>{t("youWillReceive")}</h3>
@@ -99,7 +99,7 @@ function ReviewWithdraw({ onClose, onConfirm, data }: Props): ReactElement {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default ReviewWithdraw;
+export default ReviewWithdraw

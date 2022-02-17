@@ -19,129 +19,129 @@ import {
   isMetaPool,
   USDC,
   USDC_AM3D_SWAP_TOKEN,
-  AGGREGATOR_ADDRESSES
-} from "../constants";
+  AGGREGATOR_ADDRESSES,
+} from "../constants"
 
-import { Contract } from "@ethersproject/contracts";
-import ERC20_ABI from "../constants/abis/erc20.json";
-import { Erc20 } from "../../types/ethers-contracts/Erc20";
-import LPTOKEN_UNGUARDED_ABI from "../constants/abis/lpTokenUnguarded.json";
-import METASWAP_DEPOSIT_ABI from "../constants/abis/metaSwapDeposit.json";
-import { LpTokenGuarded } from "../../types/ethers-contracts/LpTokenGuarded";
-import { LpTokenUnguarded } from "../../types/ethers-contracts/LpTokenUnguarded";
-import { MetaSwapDeposit } from "../../types/ethers-contracts/MetaSwapDeposit";
-import SWAP_FLASH_LOAN_NO_WITHDRAW_FEE_ABI from "../constants/abis/swapFlashLoanNoWithdrawFee.json";
-import AGGREGATOR_ABI from "../constants/abis/axialAggregator.json";
-import { SwapFlashLoanNoWithdrawFee } from "../../types/ethers-contracts/SwapFlashLoanNoWithdrawFee";
-import { AxialAggregator } from "../../types/ethers-contracts/AxialAggregator";
-import { getContract } from "../libs";
-import { useActiveWeb3React } from "./index";
-import { useMemo } from "react";
+import { Contract } from "@ethersproject/contracts"
+import ERC20_ABI from "../constants/abis/erc20.json"
+import { Erc20 } from "../../types/ethers-contracts/Erc20"
+import LPTOKEN_UNGUARDED_ABI from "../constants/abis/lpTokenUnguarded.json"
+import METASWAP_DEPOSIT_ABI from "../constants/abis/metaSwapDeposit.json"
+import { LpTokenGuarded } from "../../types/ethers-contracts/LpTokenGuarded"
+import { LpTokenUnguarded } from "../../types/ethers-contracts/LpTokenUnguarded"
+import { MetaSwapDeposit } from "../../types/ethers-contracts/MetaSwapDeposit"
+import SWAP_FLASH_LOAN_NO_WITHDRAW_FEE_ABI from "../constants/abis/swapFlashLoanNoWithdrawFee.json"
+import AGGREGATOR_ABI from "../constants/abis/axialAggregator.json"
+import { SwapFlashLoanNoWithdrawFee } from "../../types/ethers-contracts/SwapFlashLoanNoWithdrawFee"
+import { AxialAggregator } from "../../types/ethers-contracts/AxialAggregator"
+import { getContract } from "../libs"
+import { useActiveWeb3React } from "./index"
+import { useMemo } from "react"
 
 // returns null on errors
 function useContract(
   address: string | undefined,
   ABI: any, // eslint-disable-line @typescript-eslint/no-explicit-any
-  withSignerIfPossible = true
+  withSignerIfPossible = true,
 ): Contract | null {
-  const { library, account } = useActiveWeb3React();
+  const { library, account } = useActiveWeb3React()
 
   return useMemo(() => {
-    if (!address || !ABI || !library) return null;
+    if (!address || !ABI || !library) return null
     try {
-      return getContract(address, ABI, library, withSignerIfPossible && account ? account : undefined);
+      return getContract(address, ABI, library, withSignerIfPossible && account ? account : undefined)
     } catch (error) {
-      console.error("Failed to get contract", error);
-      return null;
+      console.error("Failed to get contract", error)
+      return null
     }
-  }, [address, ABI, library, withSignerIfPossible, account]);
+  }, [address, ABI, library, withSignerIfPossible, account])
 }
 
 export function useTokenContract(t: Token, withSignerIfPossible?: boolean): Contract | null {
-  const { chainId } = useActiveWeb3React();
-  const tokenAddress = chainId ? t.addresses[chainId] : undefined;
-  return useContract(tokenAddress, ERC20_ABI, withSignerIfPossible);
+  const { chainId } = useActiveWeb3React()
+  const tokenAddress = chainId ? t.addresses[chainId] : undefined
+  return useContract(tokenAddress, ERC20_ABI, withSignerIfPossible)
 }
 
 export function useSwapContract(poolName?: PoolName): SwapFlashLoanNoWithdrawFee | MetaSwapDeposit | null {
-  const { chainId, account, library } = useActiveWeb3React();
+  const { chainId, account, library } = useActiveWeb3React()
   return useMemo(() => {
-    if (!poolName || !library || !chainId) return null;
+    if (!poolName || !library || !chainId) return null
     try {
-      const pool = POOLS_MAP[poolName];
+      const pool = POOLS_MAP[poolName]
       if (pool.type === PoolTypes.LP) {
-        return null;
+        return null
       }
       if (isMetaPool(poolName)) {
-        return getContract(pool.addresses[chainId], METASWAP_DEPOSIT_ABI, library, account ?? undefined) as MetaSwapDeposit;
+        return getContract(pool.addresses[chainId], METASWAP_DEPOSIT_ABI, library, account ?? undefined) as MetaSwapDeposit
       } else if (pool) {
-        return getContract(pool.addresses[chainId], SWAP_FLASH_LOAN_NO_WITHDRAW_FEE_ABI, library, account ?? undefined) as SwapFlashLoanNoWithdrawFee;
+        return getContract(pool.addresses[chainId], SWAP_FLASH_LOAN_NO_WITHDRAW_FEE_ABI, library, account ?? undefined) as SwapFlashLoanNoWithdrawFee
       } else {
-        return null;
+        return null
       }
     } catch (error) {
-      console.error("Failed to get contract", error);
-      return null;
+      console.error("Failed to get contract", error)
+      return null
     }
-  }, [chainId, library, account, poolName]);
+  }, [chainId, library, account, poolName])
 }
 
 export function useAggregatorContract(): AxialAggregator | null {
-  const { chainId, account, library } = useActiveWeb3React();
+  const { chainId, account, library } = useActiveWeb3React()
   return useMemo(() => {
-    if (!library || !chainId) return null;
+    if (!library || !chainId) return null
     try {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-      return getContract(AGGREGATOR_ADDRESSES[chainId], AGGREGATOR_ABI, library, account ?? undefined) as AxialAggregator;
+      return getContract(AGGREGATOR_ADDRESSES[chainId], AGGREGATOR_ABI, library, account ?? undefined) as AxialAggregator
     } catch (error) {
-      console.error("Failed to get contract", error);
-      return null;
+      console.error("Failed to get contract", error)
+      return null
     }
-  }, [chainId, library, account]);
+  }, [chainId, library, account])
 }
 
-export function useLPTokenContract<T extends PoolName>(poolName: T): LpTokenUnguarded | null;
+export function useLPTokenContract<T extends PoolName>(poolName: T): LpTokenUnguarded | null
 
 export function useLPTokenContract(poolName: PoolName): LpTokenUnguarded | null {
-  const { chainId, account, library } = useActiveWeb3React();
+  const { chainId, account, library } = useActiveWeb3React()
   return useMemo(() => {
-    if (!poolName || !library || !chainId) return null;
+    if (!poolName || !library || !chainId) return null
     try {
-      const pool = POOLS_MAP[poolName];
-      return getContract(pool.lpToken.addresses[chainId], LPTOKEN_UNGUARDED_ABI, library, account ?? undefined) as LpTokenUnguarded;
+      const pool = POOLS_MAP[poolName]
+      return getContract(pool.lpToken.addresses[chainId], LPTOKEN_UNGUARDED_ABI, library, account ?? undefined) as LpTokenUnguarded
     } catch (error) {
-      console.error("Failed to get contract", error);
-      return null;
+      console.error("Failed to get contract", error)
+      return null
     }
-  }, [chainId, library, account, poolName]);
+  }, [chainId, library, account, poolName])
 }
 
 interface AllContractsObject {
-  [x: string]: LpTokenGuarded | LpTokenUnguarded | Erc20 | null;
+  [x: string]: LpTokenGuarded | LpTokenUnguarded | Erc20 | null
 }
 
 export function useAllContracts(): AllContractsObject | null {
-  const daiContract = useTokenContract(DAI) as Erc20;
-  const tusdContract = useTokenContract(TUSD) as Erc20;
-  const usdtContract = useTokenContract(USDT) as Erc20;
-  const fraxContract = useTokenContract(FRAX) as Erc20;
-  const usdceContract = useTokenContract(USDCe) as Erc20;
-  const tsdContract = useTokenContract(TSD) as Erc20;
-  const mimContract = useTokenContract(MIM) as Erc20;
-  const avaiContract = useTokenContract(AVAI) as Erc20;
-  const usdcContract = useTokenContract(USDC) as Erc20;
+  const daiContract = useTokenContract(DAI) as Erc20
+  const tusdContract = useTokenContract(TUSD) as Erc20
+  const usdtContract = useTokenContract(USDT) as Erc20
+  const fraxContract = useTokenContract(FRAX) as Erc20
+  const usdceContract = useTokenContract(USDCe) as Erc20
+  const tsdContract = useTokenContract(TSD) as Erc20
+  const mimContract = useTokenContract(MIM) as Erc20
+  const avaiContract = useTokenContract(AVAI) as Erc20
+  const usdcContract = useTokenContract(USDC) as Erc20
 
-  const axialas4dSwapTokenContract = useTokenContract(AXIAL_AS4D_SWAP_TOKEN) as LpTokenUnguarded;
+  const axialas4dSwapTokenContract = useTokenContract(AXIAL_AS4D_SWAP_TOKEN) as LpTokenUnguarded
 
-  const axialac4dSwapTokenContract = useTokenContract(AXIAL_AC4D_SWAP_TOKEN) as LpTokenUnguarded;
+  const axialac4dSwapTokenContract = useTokenContract(AXIAL_AC4D_SWAP_TOKEN) as LpTokenUnguarded
 
-  const axialam3dSwapTokenContract = useTokenContract(AXIAL_AM3D_SWAP_TOKEN) as LpTokenUnguarded;
+  const axialam3dSwapTokenContract = useTokenContract(AXIAL_AM3D_SWAP_TOKEN) as LpTokenUnguarded
 
-  const axialaa3dSwapTokenContract = useTokenContract(AXIAL_AA3D_SWAP_TOKEN) as LpTokenUnguarded;
+  const axialaa3dSwapTokenContract = useTokenContract(AXIAL_AA3D_SWAP_TOKEN) as LpTokenUnguarded
 
-  const usdcAm3dSwapTokenContract = useTokenContract(USDC_AM3D_SWAP_TOKEN) as LpTokenUnguarded;
+  const usdcAm3dSwapTokenContract = useTokenContract(USDC_AM3D_SWAP_TOKEN) as LpTokenUnguarded
 
-  const axialjlpTokenContract = useTokenContract(AXIAL_JLP_POOL_TOKEN) as LpTokenUnguarded;
+  const axialjlpTokenContract = useTokenContract(AXIAL_JLP_POOL_TOKEN) as LpTokenUnguarded
 
   return useMemo(() => {
     if (
@@ -160,10 +160,10 @@ export function useAllContracts(): AllContractsObject | null {
         axialam3dSwapTokenContract,
         axialaa3dSwapTokenContract,
         usdcAm3dSwapTokenContract,
-        axialjlpTokenContract
+        axialjlpTokenContract,
       ].some(Boolean)
     )
-      return null;
+      return null
     return {
       [DAI.symbol]: daiContract,
       [TUSD.symbol]: tusdContract,
@@ -179,8 +179,8 @@ export function useAllContracts(): AllContractsObject | null {
       [AXIAL_AM3D_SWAP_TOKEN.symbol]: axialam3dSwapTokenContract,
       [AXIAL_AA3D_SWAP_TOKEN.symbol]: axialaa3dSwapTokenContract,
       [USDC_AM3D_SWAP_TOKEN.symbol]: usdcAm3dSwapTokenContract,
-      [AXIAL_JLP_POOL_TOKEN.symbol]: axialjlpTokenContract
-    };
+      [AXIAL_JLP_POOL_TOKEN.symbol]: axialjlpTokenContract,
+    }
   }, [
     daiContract,
     tusdContract,
@@ -196,6 +196,6 @@ export function useAllContracts(): AllContractsObject | null {
     axialam3dSwapTokenContract,
     axialaa3dSwapTokenContract,
     usdcAm3dSwapTokenContract,
-    axialjlpTokenContract
-  ]);
+    axialjlpTokenContract,
+  ])
 }

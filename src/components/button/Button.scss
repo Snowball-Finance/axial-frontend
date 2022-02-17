@@ -34,13 +34,7 @@ button.button {
     color: $primary-blue;
     &:enabled:hover,
     &:enabled:focus {
-      background: linear-gradient(
-          90deg,
-          rgba(234, 171, 80, 0) 0%,
-          #ffd08c 49.8%,
-          rgba(234, 171, 80, 0) 100%
-        ),
-        #eaab50;
+      background: linear-gradient(90deg, rgba(234, 171, 80, 0) 0%, #ffd08c 49.8%, rgba(234, 171, 80, 0) 100%), #eaab50;
       box-shadow: var(--shadow-hover);
     }
   }

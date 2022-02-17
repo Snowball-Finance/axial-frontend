@@ -1,50 +1,50 @@
-import "./DepositPage.scss";
+import "./DepositPage.scss"
 
-import { PoolDataType, UserShareType } from "../../hooks/usePoolData";
-import React, { ReactElement, useState, useMemo } from "react";
-import AdvancedOptions from "../../components/advance-options/AdvancedOptions";
-import Button from "../../components/button/Button";
+import { PoolDataType, UserShareType } from "../../hooks/usePoolData"
+import React, { ReactElement, useState, useMemo } from "react"
+import AdvancedOptions from "../../components/advance-options/AdvancedOptions"
+import Button from "../../components/button/Button"
 
-import CheckboxInput from "../../components/checkbox-input/CheckboxInput";
-import ConfirmTransaction from "../../components/confirm-transaction/ConfirmTransaction";
-import { DepositTransaction } from "../../interfaces/transactions";
-import Modal from "../../components/modal/Modal";
-import MyShareCard from "../../components/my-share-card/MyShareCard";
-import PoolInfoCard from "../../components/pool-info-card/PoolInfoCard";
-import ReviewDeposit from "../../components/reviews/ReviewDeposit";
-import TokenInput from "../../components/token-input/TokenInput";
-import ToolTip from "../../components/tool-tip/ToolTip";
-import { formatBNToPercentString } from "../../libs";
+import CheckboxInput from "../../components/checkbox-input/CheckboxInput"
+import ConfirmTransaction from "../../components/confirm-transaction/ConfirmTransaction"
+import { DepositTransaction } from "../../interfaces/transactions"
+import Modal from "../../components/modal/Modal"
+import MyShareCard from "../../components/my-share-card/MyShareCard"
+import PoolInfoCard from "../../components/pool-info-card/PoolInfoCard"
+import ReviewDeposit from "../../components/reviews/ReviewDeposit"
+import TokenInput from "../../components/token-input/TokenInput"
+import ToolTip from "../../components/tool-tip/ToolTip"
+import { formatBNToPercentString } from "../../libs"
 //import { logEvent } from "../../libs/googleAnalytics"
-import { useTranslation } from "react-i18next";
-import { isMetaPool, PoolName } from "../../constants";
-import { TransactionStatusType } from "../../hooks/useApproveAndDeposit";
+import { useTranslation } from "react-i18next"
+import { isMetaPool, PoolName } from "../../constants"
+import { TransactionStatusType } from "../../hooks/useApproveAndDeposit"
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 interface Props {
-  title: PoolName;
-  onConfirmTransaction: () => Promise<void>;
-  onChangeTokenInputValue: (tokenSymbol: string, value: string) => void;
-  onToggleDepositWrapped: () => void;
-  shouldDepositWrapped: boolean;
+  title: PoolName
+  onConfirmTransaction: () => Promise<void>
+  onChangeTokenInputValue: (tokenSymbol: string, value: string) => void
+  onToggleDepositWrapped: () => void
+  shouldDepositWrapped: boolean
   tokens: Array<{
-    symbol: string;
-    name: string;
-    icon: string;
-    max: string;
-    inputValue: string;
-  }>;
-  exceedsWallet: boolean;
-  selected?: { [key: string]: any };
-  poolData: PoolDataType | null;
-  myShareData: UserShareType | null;
-  transactionData: DepositTransaction;
-  transactionStatus?: TransactionStatusType;
+    symbol: string
+    name: string
+    icon: string
+    max: string
+    inputValue: string
+  }>
+  exceedsWallet: boolean
+  selected?: { [key: string]: any }
+  poolData: PoolDataType | null
+  myShareData: UserShareType | null
+  transactionData: DepositTransaction
+  transactionStatus?: TransactionStatusType
 }
 
 /* eslint-enable @typescript-eslint/no-explicit-any */
 const DepositPage = (props: Props): ReactElement => {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
   const {
     tokens,
     exceedsWallet,
@@ -55,29 +55,29 @@ const DepositPage = (props: Props): ReactElement => {
     shouldDepositWrapped,
     onChangeTokenInputValue,
     onConfirmTransaction,
-    onToggleDepositWrapped
-  } = props;
+    onToggleDepositWrapped,
+  } = props
 
-  const [currentModal, setCurrentModal] = useState<string | null>(null);
+  const [currentModal, setCurrentModal] = useState<string | null>(null)
 
-  const validDepositAmount = transactionData.to.totalAmount.gt(0);
-  const shouldDisplayWrappedOption = isMetaPool(poolData?.name);
+  const validDepositAmount = transactionData.to.totalAmount.gt(0)
+  const shouldDisplayWrappedOption = isMetaPool(poolData?.name)
 
   const isBalancedPool = useMemo(() => {
-    const tokenCount = poolData?.tokens?.length || 0;
+    const tokenCount = poolData?.tokens?.length || 0
     if (tokenCount > 2) {
-      const threshold = tokenCount === 3 ? 25 : tokenCount === 4 ? 20 : 100 / (tokenCount + 1);
+      const threshold = tokenCount === 3 ? 25 : tokenCount === 4 ? 20 : 100 / (tokenCount + 1)
       for (const token of poolData?.tokens || []) {
-        const percentValue = parseFloat(token.percent.replace("%", "")) || 0;
+        const percentValue = parseFloat(token.percent.replace("%", "")) || 0
         if (percentValue < threshold) {
-          return false;
+          return false
         }
       }
     } else {
-      return null;
+      return null
     }
-    return true;
-  }, [poolData?.tokens]);
+    return true
+  }, [poolData?.tokens])
 
   return (
     <div className="deposit">
@@ -133,7 +133,7 @@ const DepositPage = (props: Props): ReactElement => {
               kind="primary"
               size="full"
               onClick={(): void => {
-                setCurrentModal("review");
+                setCurrentModal("review")
               }}
               disabled={!validDepositAmount || poolData?.isPaused || exceedsWallet}>
               {t("deposit")}
@@ -146,9 +146,9 @@ const DepositPage = (props: Props): ReactElement => {
             <ReviewDeposit
               transactionData={transactionData}
               onConfirm={async (): Promise<void> => {
-                setCurrentModal("confirm");
-                await onConfirmTransaction?.();
-                setCurrentModal(null);
+                setCurrentModal("confirm")
+                await onConfirmTransaction?.()
+                setCurrentModal(null)
               }}
               onClose={(): void => setCurrentModal(null)}
             />
@@ -159,7 +159,7 @@ const DepositPage = (props: Props): ReactElement => {
         </Modal>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default DepositPage;
+export default DepositPage

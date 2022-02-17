@@ -1,9 +1,9 @@
-import "./ToolTip.scss";
+import "./ToolTip.scss"
 
-import React, { ReactElement } from "react";
+import React, { ReactElement } from "react"
 
 interface Props {
-  content: string;
+  content: string
 }
 export default function ToolTip({ content, children }: React.PropsWithChildren<Props>): ReactElement {
   return (
@@ -11,5 +11,5 @@ export default function ToolTip({ content, children }: React.PropsWithChildren<P
       {children}
       <div className="tooltipText">{content}</div>
     </div>
-  );
+  )
 }

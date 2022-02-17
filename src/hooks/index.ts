@@ -1,50 +1,50 @@
-import { ChainId, NetworkContextName } from "../constants";
-import { useEffect, useState } from "react";
+import { ChainId, NetworkContextName } from "../constants"
+import { useEffect, useState } from "react"
 
-import { Web3Provider } from "@ethersproject/providers";
-import { Web3ReactContextInterface } from "@web3-react/core/dist/types";
-import { injected } from "../connectors";
-import { isMobile } from "react-device-detect";
-import { useWeb3React as useWeb3ReactCore } from "@web3-react/core";
+import { Web3Provider } from "@ethersproject/providers"
+import { Web3ReactContextInterface } from "@web3-react/core/dist/types"
+import { injected } from "../connectors"
+import { isMobile } from "react-device-detect"
+import { useWeb3React as useWeb3ReactCore } from "@web3-react/core"
 
 export function useActiveWeb3React(): Web3ReactContextInterface<Web3Provider> & {
-  chainId?: ChainId;
+  chainId?: ChainId
 } {
-  const context = useWeb3ReactCore<Web3Provider>();
-  const contextNetwork = useWeb3ReactCore<Web3Provider>(NetworkContextName);
-  return context.active ? context : contextNetwork;
+  const context = useWeb3ReactCore<Web3Provider>()
+  const contextNetwork = useWeb3ReactCore<Web3Provider>(NetworkContextName)
+  return context.active ? context : contextNetwork
 }
 
 export function useEagerConnect(): boolean {
-  const { activate, active } = useWeb3ReactCore(); // specifically using useWeb3ReactCore because of what this hook does
-  const [tried, setTried] = useState(false);
+  const { activate, active } = useWeb3ReactCore() // specifically using useWeb3ReactCore because of what this hook does
+  const [tried, setTried] = useState(false)
 
   useEffect(() => {
     void injected.isAuthorized().then((isAuthorized) => {
       if (isAuthorized) {
         activate(injected, undefined, true).catch(() => {
-          setTried(true);
-        });
+          setTried(true)
+        })
       } else {
         if (isMobile && window.ethereum) {
           activate(injected, undefined, true).catch(() => {
-            setTried(true);
-          });
+            setTried(true)
+          })
         } else {
-          setTried(true);
+          setTried(true)
         }
       }
-    });
-  }, [activate]); // intentionally only running on mount (make sure it's only mounted once :))
+    })
+  }, [activate]) // intentionally only running on mount (make sure it's only mounted once :))
 
   // if the connection worked, wait until we get confirmation of that to flip the flag
   useEffect(() => {
     if (active) {
-      setTried(true);
+      setTried(true)
     }
-  }, [active]);
+  }, [active])
 
-  return tried;
+  return tried
 }
 
 /**
@@ -53,38 +53,38 @@ export function useEagerConnect(): boolean {
  * @param {boolean} suppress Suppress useEffect behaviour
  */
 export function useInactiveListener(suppress = false): void {
-  const { active, error, activate } = useWeb3ReactCore(); // specifically using useWeb3React because of what this hook does
+  const { active, error, activate } = useWeb3ReactCore() // specifically using useWeb3React because of what this hook does
 
   useEffect(() => {
-    const { ethereum } = window;
+    const { ethereum } = window
 
     if (ethereum && ethereum.on && !active && !error && !suppress) {
       const handleChainChanged = (): void => {
         // eat errors
         activate(injected, undefined, true).catch((error) => {
-          console.error("Failed to activate after chain changed", error);
-        });
-      };
+          console.error("Failed to activate after chain changed", error)
+        })
+      }
 
       const handleAccountsChanged = (accounts: string[]): void => {
         if (accounts.length > 0) {
           // eat errors
           activate(injected, undefined, true).catch((error) => {
-            console.error("Failed to activate after accounts changed", error);
-          });
+            console.error("Failed to activate after accounts changed", error)
+          })
         }
-      };
+      }
 
-      ethereum.on("chainChanged", handleChainChanged);
-      ethereum.on("accountsChanged", handleAccountsChanged);
+      ethereum.on("chainChanged", handleChainChanged)
+      ethereum.on("accountsChanged", handleAccountsChanged)
 
       return (): void => {
         if (ethereum.removeListener) {
-          ethereum.removeListener("chainChanged", handleChainChanged);
-          ethereum.removeListener("accountsChanged", handleAccountsChanged);
+          ethereum.removeListener("chainChanged", handleChainChanged)
+          ethereum.removeListener("accountsChanged", handleAccountsChanged)
         }
-      };
+      }
     }
-    return undefined;
-  }, [active, error, suppress, activate]);
+    return undefined
+  }, [active, error, suppress, activate])
 }

@@ -1,29 +1,29 @@
-import "./ReviewDeposit.scss";
+import "./ReviewDeposit.scss"
 
-import React, { ReactElement, useState } from "react";
-import { commify, formatBNToPercentString, formatBNToString } from "../../libs";
+import React, { ReactElement, useState } from "react"
+import { commify, formatBNToPercentString, formatBNToString } from "../../libs"
 
-import { AppState } from "../../store/index";
-import Button from "../button/Button";
-import { DepositTransaction } from "../../interfaces/transactions";
-import HighPriceImpactConfirmation from "../highprice-impact-confirmation/HighPriceImpactConfirmation";
-import { formatSlippageToString } from "../../libs/slippage";
-import { isHighPriceImpact } from "../../libs/priceImpact";
-import { useSelector } from "react-redux";
-import { useTranslation } from "react-i18next";
+import { AppState } from "../../store/index"
+import Button from "../button/Button"
+import { DepositTransaction } from "../../interfaces/transactions"
+import HighPriceImpactConfirmation from "../highprice-impact-confirmation/HighPriceImpactConfirmation"
+import { formatSlippageToString } from "../../libs/slippage"
+import { isHighPriceImpact } from "../../libs/priceImpact"
+import { useSelector } from "react-redux"
+import { useTranslation } from "react-i18next"
 
 interface Props {
-  onClose: () => void;
-  onConfirm: () => void;
-  transactionData: DepositTransaction;
+  onClose: () => void
+  onConfirm: () => void
+  transactionData: DepositTransaction
 }
 
 function ReviewDeposit({ onClose, onConfirm, transactionData }: Props): ReactElement {
-  const { t } = useTranslation();
-  const { slippageCustom, slippageSelected } = useSelector((state: AppState) => state.user);
-  const [hasConfirmedHighPriceImpact, setHasConfirmedHighPriceImpact] = useState(false);
+  const { t } = useTranslation()
+  const { slippageCustom, slippageSelected } = useSelector((state: AppState) => state.user)
+  const [hasConfirmedHighPriceImpact, setHasConfirmedHighPriceImpact] = useState(false)
 
-  const isHighPriceImpactTxn = isHighPriceImpact(transactionData.priceImpact);
+  const isHighPriceImpactTxn = isHighPriceImpact(transactionData.priceImpact)
 
   return (
     <div className="reviewDeposit">
@@ -114,7 +114,7 @@ function ReviewDeposit({ onClose, onConfirm, transactionData }: Props): ReactEle
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default ReviewDeposit;
+export default ReviewDeposit

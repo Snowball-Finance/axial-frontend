@@ -1,16 +1,16 @@
-import "./HighPriceImpactConfirmation.scss";
+import "./HighPriceImpactConfirmation.scss"
 
-import React, { ReactElement } from "react";
+import React, { ReactElement } from "react"
 
-import CheckboxInput from "../checkbox-input/CheckboxInput";
-import { useTranslation } from "react-i18next";
+import CheckboxInput from "../checkbox-input/CheckboxInput"
+import { useTranslation } from "react-i18next"
 
 interface Props {
-  checked: boolean;
-  onCheck: () => void;
+  checked: boolean
+  onCheck: () => void
 }
 export default function HighPriceImpactConfirmation({ checked, onCheck }: Props): ReactElement {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
   return (
     <div className="highPriceImpactConfirmation">
       {t("highPriceImpactConfirmation")}
@@ -18,5 +18,5 @@ export default function HighPriceImpactConfirmation({ checked, onCheck }: Props)
         <span>{t("iConfirm")}</span> <CheckboxInput checked={checked} onChange={onCheck} />
       </div>
     </div>
-  );
+  )
 }

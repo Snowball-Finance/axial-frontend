@@ -1,20 +1,20 @@
-import React, { ReactElement } from "react";
-import useCopyClipboard from "../hooks/useCopyClipboard";
-import { AnalyticActions, AnalyticCategories, analytics, createEvent } from "../utils/analytics";
+import React, { ReactElement } from "react"
+import useCopyClipboard from "../hooks/useCopyClipboard"
+import { AnalyticActions, AnalyticCategories, analytics, createEvent } from "../utils/analytics"
 
 export default function CopyHelper(props: { toCopy: string; children?: React.ReactNode }): ReactElement {
-  const [isCopied, setCopied] = useCopyClipboard();
+  const [isCopied, setCopied] = useCopyClipboard()
 
   const handleCopy = () => {
-    setCopied(props.toCopy);
+    setCopied(props.toCopy)
     analytics.trackEvent(
       createEvent({
         category: AnalyticCategories.clipboard,
         action: AnalyticActions.copy,
-        name: props.toCopy
-      })
-    );
-  };
+        name: props.toCopy,
+      }),
+    )
+  }
 
   return (
     <button className="textStyle" onClick={handleCopy}>
@@ -38,5 +38,5 @@ export default function CopyHelper(props: { toCopy: string; children?: React.Rea
       )}
       {isCopied ? "" : props.children}
     </button>
-  );
+  )
 }

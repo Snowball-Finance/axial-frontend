@@ -1,15 +1,15 @@
-import "./TransactionSteps.scss";
+import "./TransactionSteps.scss"
 
-import React, { ReactElement } from "react";
-import { TransactionStatusType } from "../../hooks/useApproveAndDeposit";
-import { DepositTransaction } from "../../interfaces/transactions";
-import { POOLS_MAP } from "../../constants";
+import React, { ReactElement } from "react"
+import { TransactionStatusType } from "../../hooks/useApproveAndDeposit"
+import { DepositTransaction } from "../../interfaces/transactions"
+import { POOLS_MAP } from "../../constants"
 
 type Props = {
-  type: "deposit" | "withdraw" | undefined;
-  transactionData?: DepositTransaction;
-  transactionStatus: TransactionStatusType;
-};
+  type: "deposit" | "withdraw" | undefined
+  transactionData?: DepositTransaction
+  transactionStatus: TransactionStatusType
+}
 
 function TransactionSteps({ type, transactionData, transactionStatus }: Props): ReactElement | null {
   if (type === "deposit") {
@@ -32,7 +32,7 @@ function TransactionSteps({ type, transactionData, transactionStatus }: Props): 
           <div className={transactionStatus?.deposit ? "dot checked" : "dot unchecked"} />
         </div>
       </div>
-    );
+    )
   } else if (type === "withdraw") {
     return (
       <div className="oneLine">
@@ -53,9 +53,9 @@ function TransactionSteps({ type, transactionData, transactionStatus }: Props): 
           <div className={transactionStatus?.withdraw ? "dot checked" : "dot unchecked"} />
         </div>
       </div>
-    );
+    )
   }
-  return null;
+  return null
 }
 
-export default TransactionSteps;
+export default TransactionSteps

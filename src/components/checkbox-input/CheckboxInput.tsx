@@ -1,10 +1,10 @@
-import "./CheckboxInput.scss";
+import "./CheckboxInput.scss"
 
-import React, { ReactElement } from "react";
+import React, { ReactElement } from "react"
 
 interface Props {
-  checked: boolean;
-  onChange: () => void;
+  checked: boolean
+  onChange: () => void
 }
 
 export default function CheckboxInput({ checked, onChange }: Props): ReactElement {
@@ -17,5 +17,5 @@ export default function CheckboxInput({ checked, onChange }: Props): ReactElemen
         </svg>
       </div>
     </label>
-  );
+  )
 }

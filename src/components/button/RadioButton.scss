@@ -37,11 +37,7 @@ div.radio {
 
         opacity: 0;
         &:checked + .radio_control {
-          background: radial-gradient(
-            circle at 48% 48%,
-            $primary 42%,
-            rgba(0, 0, 0, 0) 42%
-          );
+          background: radial-gradient(circle at 48% 48%, $primary 42%, rgba(0, 0, 0, 0) 42%);
         }
       }
     }

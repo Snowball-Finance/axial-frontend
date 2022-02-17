@@ -1,7 +1,7 @@
-import "./ToastsContainer.scss";
+import "./ToastsContainer.scss"
 
-import React, { ReactElement } from "react";
+import React, { ReactElement } from "react"
 
 export default function ToastsContainer({ children }: React.PropsWithChildren<unknown>): ReactElement {
-  return <div className={"toast-container"}>{children}</div>;
+  return <div className={"toast-container"}>{children}</div>
 }

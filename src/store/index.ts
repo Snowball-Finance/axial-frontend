@@ -1,24 +1,24 @@
-import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
-import { load, save } from "redux-localstorage-simple";
-import user, { initialState as userInitialState } from "./module/user";
+import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit"
+import { load, save } from "redux-localstorage-simple"
+import user, { initialState as userInitialState } from "./module/user"
 
-import application from "./application";
-import { merge } from "lodash";
+import application from "./application"
+import { merge } from "lodash"
 
-const PERSISTED_KEYS: string[] = ["user"];
+const PERSISTED_KEYS: string[] = ["user"]
 const stateFromStorage = load({
-  states: PERSISTED_KEYS
-});
+  states: PERSISTED_KEYS,
+})
 const store = configureStore({
   reducer: {
     application,
-    user
+    user,
   },
   middleware: [...getDefaultMiddleware({ thunk: false, serializableCheck: false }), save({ states: PERSISTED_KEYS })],
-  preloadedState: merge({}, { user: userInitialState }, stateFromStorage)
-});
+  preloadedState: merge({}, { user: userInitialState }, stateFromStorage),
+})
 
-export default store;
+export default store
 
-export type AppState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
+export type AppState = ReturnType<typeof store.getState>
+export type AppDispatch = typeof store.dispatch

@@ -1,53 +1,53 @@
-import { IS_VIRTUAL_SWAP_ACTIVE, SWAP_ROUTER_FEE, SWAP_TYPES, TOKENS_MAP } from "../../constants";
-import React, { ReactElement, useCallback, useEffect, useMemo, useState } from "react";
-import { SwapData, SwapSide, useCalculateSwapPairs } from "../../hooks/useCalculateSwapPairs";
-import { calculateExchangeRate, calculatePrice, shiftBNDecimals } from "../../libs";
-import { formatUnits, parseUnits } from "@ethersproject/units";
+import { IS_VIRTUAL_SWAP_ACTIVE, SWAP_ROUTER_FEE, SWAP_TYPES, TOKENS_MAP } from "../../constants"
+import React, { ReactElement, useCallback, useEffect, useMemo, useState } from "react"
+import { SwapData, SwapSide, useCalculateSwapPairs } from "../../hooks/useCalculateSwapPairs"
+import { calculateExchangeRate, calculatePrice, shiftBNDecimals } from "../../libs"
+import { formatUnits, parseUnits } from "@ethersproject/units"
 
-import { AppState } from "../../store/index";
-import { BigNumber } from "@ethersproject/bignumber";
-import SwapPage from "./SwapPage";
-import { Zero } from "@ethersproject/constants";
-import { calculateGasEstimate } from "../../libs/gasEstimate";
-import { calculatePriceImpact } from "../../libs/priceImpact";
-import { debounce, multiply } from "lodash";
-import { formatGasToString } from "../../libs/gas";
-import { useActiveWeb3React } from "../../hooks";
-import { useApproveAndSwap } from "../../hooks/useApproveAndSwap";
-import { usePoolTokenBalances } from "../../store/wallet/hooks";
-import { useDispatch, useSelector } from "react-redux";
-import { useAggregatorContract } from "../../hooks/useContract";
-import { useTranslation } from "react-i18next";
-import { analytics } from "../../utils/analytics";
-import { AggregatorSwapParams, BestPath, setSwapInfo } from "../../store/application";
-import { ethers } from "ethers";
+import { AppState } from "../../store/index"
+import { BigNumber } from "@ethersproject/bignumber"
+import SwapPage from "./SwapPage"
+import { Zero } from "@ethersproject/constants"
+import { calculateGasEstimate } from "../../libs/gasEstimate"
+import { calculatePriceImpact } from "../../libs/priceImpact"
+import { debounce, multiply } from "lodash"
+import { formatGasToString } from "../../libs/gas"
+import { useActiveWeb3React } from "../../hooks"
+import { useApproveAndSwap } from "../../hooks/useApproveAndSwap"
+import { usePoolTokenBalances } from "../../store/wallet/hooks"
+import { useDispatch, useSelector } from "react-redux"
+import { useAggregatorContract } from "../../hooks/useContract"
+import { useTranslation } from "react-i18next"
+import { analytics } from "../../utils/analytics"
+import { AggregatorSwapParams, BestPath, setSwapInfo } from "../../store/application"
+import { ethers } from "ethers"
 
 type FormState = {
-  error: null | string;
+  error: null | string
   from: {
-    value: string;
-    valueUSD: BigNumber;
-  } & SwapSide;
+    value: string
+    valueUSD: BigNumber
+  } & SwapSide
   to: {
-    value: BigNumber;
-    valueUSD: BigNumber;
-    valueSynth: BigNumber;
-  } & SwapSide;
-  priceImpact: BigNumber;
-  exchangeRate: BigNumber;
-  route: string[];
-  swapType: SWAP_TYPES;
-  currentSwapPairs: SwapData[];
-};
+    value: BigNumber
+    valueUSD: BigNumber
+    valueSynth: BigNumber
+  } & SwapSide
+  priceImpact: BigNumber
+  exchangeRate: BigNumber
+  route: string[]
+  swapType: SWAP_TYPES
+  currentSwapPairs: SwapData[]
+}
 export interface TokenOption {
-  symbol: string;
-  name: string;
-  valueUSD: BigNumber;
-  amount: BigNumber;
-  icon: string;
-  decimals: number;
-  swapType: SWAP_TYPES | null;
-  isAvailable: boolean;
+  symbol: string
+  name: string
+  valueUSD: BigNumber
+  amount: BigNumber
+  icon: string
+  decimals: number
+  swapType: SWAP_TYPES | null
+  isAvailable: boolean
 }
 
 const EMPTY_FORM_STATE = {
@@ -55,46 +55,46 @@ const EMPTY_FORM_STATE = {
   from: {
     symbol: "",
     value: "0.0",
-    valueUSD: Zero
+    valueUSD: Zero,
   },
   to: {
     symbol: "",
     value: Zero,
     valueUSD: Zero,
-    valueSynth: Zero
+    valueSynth: Zero,
   },
   priceImpact: Zero,
   exchangeRate: Zero,
   route: [],
   swapType: SWAP_TYPES.INVALID,
-  currentSwapPairs: []
-};
+  currentSwapPairs: [],
+}
 
 function Swap(): ReactElement {
-  const { t } = useTranslation();
-  const dispatch = useDispatch();
-  const { chainId, account } = useActiveWeb3React();
-  const approveAndSwap = useApproveAndSwap();
-  const tokenBalances = usePoolTokenBalances();
-  const calculateSwapPairs = useCalculateSwapPairs();
-  const { tokenPricesUSD, gasStandard, gasFast, gasInstant } = useSelector((state: AppState) => state.application);
-  const { gasPriceSelected, gasCustom } = useSelector((state: AppState) => state.user);
+  const { t } = useTranslation()
+  const dispatch = useDispatch()
+  const { chainId, account } = useActiveWeb3React()
+  const approveAndSwap = useApproveAndSwap()
+  const tokenBalances = usePoolTokenBalances()
+  const calculateSwapPairs = useCalculateSwapPairs()
+  const { tokenPricesUSD, gasStandard, gasFast, gasInstant } = useSelector((state: AppState) => state.application)
+  const { gasPriceSelected, gasCustom } = useSelector((state: AppState) => state.user)
 
-  const [formState, setFormState] = useState<FormState>(EMPTY_FORM_STATE);
-  const [prevFormState, setPrevFormState] = useState<FormState>(EMPTY_FORM_STATE);
+  const [formState, setFormState] = useState<FormState>(EMPTY_FORM_STATE)
+  const [prevFormState, setPrevFormState] = useState<FormState>(EMPTY_FORM_STATE)
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-  const swapInfo = useSelector((state: AppState) => state.application.swapInfo);
-  const { swapParams } = swapInfo;
+  const swapInfo = useSelector((state: AppState) => state.application.swapInfo)
+  const { swapParams } = swapInfo
 
-  const aggregatorContract = useAggregatorContract();
+  const aggregatorContract = useAggregatorContract()
 
   // build a representation of pool tokens for the UI
   const tokenOptions = useMemo(() => {
     const allTokens = Object.values(TOKENS_MAP)
       .filter(({ isLPToken }) => !isLPToken)
       .map(({ symbol, name, icon, decimals }) => {
-        const amount = tokenBalances?.[symbol] || Zero;
+        const amount = tokenBalances?.[symbol] || Zero
         return {
           name,
           icon,
@@ -103,16 +103,16 @@ function Swap(): ReactElement {
           amount,
           valueUSD: calculatePrice(amount, tokenPricesUSD?.[symbol], decimals),
           isAvailable: true,
-          swapType: null
-        };
+          swapType: null,
+        }
       })
-      .sort(sortTokenOptions);
+      .sort(sortTokenOptions)
     const toTokens =
       formState.currentSwapPairs.length > 0
         ? formState.currentSwapPairs
             .map(({ to, type: swapType }) => {
-              const { symbol, name, icon, decimals } = TOKENS_MAP[to.symbol];
-              const amount = tokenBalances?.[symbol] || Zero;
+              const { symbol, name, icon, decimals } = TOKENS_MAP[to.symbol]
+              const amount = tokenBalances?.[symbol] || Zero
               return {
                 name,
                 icon,
@@ -121,150 +121,150 @@ function Swap(): ReactElement {
                 amount,
                 valueUSD: calculatePrice(amount, tokenPricesUSD?.[symbol], decimals),
                 swapType,
-                isAvailable: true
+                isAvailable: true,
                 // isAvailable: IS_VIRTUAL_SWAP_ACTIVE
                 //   ? swapType !== SWAP_TYPES.INVALID
                 //   : swapType === SWAP_TYPES.DIRECT, // TODO replace once VSwaps are live
-              };
+              }
             })
             .sort(sortTokenOptions)
-        : allTokens;
+        : allTokens
     // from: all tokens always available. to: limited by selected "from" token.
     return {
       from: allTokens,
-      to: toTokens
-    };
-  }, [tokenPricesUSD, tokenBalances, formState.currentSwapPairs]);
+      to: toTokens,
+    }
+  }, [tokenPricesUSD, tokenBalances, formState.currentSwapPairs])
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const calculateSwapAmount = useCallback(
     debounce(async (formStateArg: FormState) => {
       if (tokenBalances === null || chainId == null) {
-        return;
+        return
       }
       // if (
       //   formStateArg.from.tokenIndex === undefined ||
       //   formStateArg.from.poolName === undefined ||
       //   formStateArg.to.tokenIndex === undefined ||
       //   formStateArg.to.poolName === undefined) { return }
-      const cleanedFormFromValue = formStateArg.from.value.replace(/[$,]/g, ""); // remove common copy/pasted financial characters
+      const cleanedFormFromValue = formStateArg.from.value.replace(/[$,]/g, "") // remove common copy/pasted financial characters
       if (cleanedFormFromValue === "" || isNaN(+cleanedFormFromValue) || formStateArg.to.symbol === "") {
         setFormState((prevState) => ({
           ...prevState,
           to: {
             ...prevState.to,
-            value: Zero
+            value: Zero,
           },
-          priceImpact: Zero
-        }));
-        return;
+          priceImpact: Zero,
+        }))
+        return
       }
-      const amountToGive = parseUnits(cleanedFormFromValue, TOKENS_MAP[formStateArg.from.symbol].decimals);
-      const tokenFrom = TOKENS_MAP[formStateArg.from.symbol];
-      const tokenTo = TOKENS_MAP[formStateArg.to.symbol];
-      let error: string | null = null;
-      let amountToReceive = Zero;
-      const amountMediumSynth = Zero;
-      let path: undefined | string[] = undefined;
+      const amountToGive = parseUnits(cleanedFormFromValue, TOKENS_MAP[formStateArg.from.symbol].decimals)
+      const tokenFrom = TOKENS_MAP[formStateArg.from.symbol]
+      const tokenTo = TOKENS_MAP[formStateArg.to.symbol]
+      let error: string | null = null
+      let amountToReceive = Zero
+      const amountMediumSynth = Zero
+      let path: undefined | string[] = undefined
       if (amountToGive.gt(tokenBalances[formStateArg.from.symbol] || Zero)) {
-        error = t("insufficientBalance");
+        error = t("insufficientBalance")
       }
       if (amountToGive.isZero()) {
-        amountToReceive = Zero;
+        amountToReceive = Zero
       } else if (aggregatorContract != null) {
         try {
           dispatch(
             setSwapInfo({
               ...swapInfo,
               swapParams: null,
-              isGettingBestPath: true
-            })
-          );
+              isGettingBestPath: true,
+            }),
+          )
 
           const findBestPathParams = {
             amountIn: amountToGive,
             tokenIn: tokenFrom.addresses[chainId],
             tokenOut: tokenTo.addresses[chainId],
             maxSteps: 4,
-            gasPrice: ethers.utils.parseUnits("225", "gwei")
-          };
+            gasPrice: ethers.utils.parseUnits("225", "gwei"),
+          }
 
-          console.log("findBestPathParams", findBestPathParams);
+          console.log("findBestPathParams", findBestPathParams)
 
           // Get gas estimate for find best path TODO: is this needed
-          const gasEstimate = await aggregatorContract.estimateGas.findBestPath(findBestPathParams, { gasLimit: 1e9 });
+          const gasEstimate = await aggregatorContract.estimateGas.findBestPath(findBestPathParams, { gasLimit: 1e9 })
 
-          console.debug(`Gas Estimate: ${gasEstimate.toString()}`);
+          console.debug(`Gas Estimate: ${gasEstimate.toString()}`)
 
           // additional gas estimate to make sure we have enough gas
-          const additional = multiply(Number(gasEstimate.toString()), 0.2).toFixed(0);
+          const additional = multiply(Number(gasEstimate.toString()), 0.2).toFixed(0)
           // fetch the best path
           const findBestPathResult = await aggregatorContract.findBestPath(findBestPathParams, {
-            gasLimit: (Number(gasEstimate) + Number(additional)).toString()
-          });
+            gasLimit: (Number(gasEstimate) + Number(additional)).toString(),
+          })
 
           if (!findBestPathResult.bestPath.amounts[findBestPathResult.bestPath.amounts.length - 1]) {
-            console.log("path was not found");
+            console.log("path was not found")
             dispatch(
               setSwapInfo({
                 ...swapInfo,
                 isGettingBestPath: false,
-                swapError: t("swapPathNotFound")
-              })
-            );
-            return;
+                swapError: t("swapPathNotFound"),
+              }),
+            )
+            return
           }
 
           dispatch(
             setSwapInfo({
               ...swapInfo,
-              swapError: null
-            })
-          );
+              swapError: null,
+            }),
+          )
 
-          console.debug(`Best Path: `, findBestPathResult);
-          amountToReceive = findBestPathResult.bestPath.amounts[findBestPathResult.bestPath.amounts.length - 1];
+          console.debug(`Best Path: `, findBestPathResult)
+          amountToReceive = findBestPathResult.bestPath.amounts[findBestPathResult.bestPath.amounts.length - 1]
 
           const bestBath: BestPath = {
             amountIn: amountToGive,
             amountOut: amountToReceive,
             path: findBestPathResult.bestPath.path,
-            adapters: findBestPathResult.bestPath.adapters
-          };
+            adapters: findBestPathResult.bestPath.adapters,
+          }
 
           const swapParams: AggregatorSwapParams = {
             bestPath: bestBath,
             to: account || "",
             fee: SWAP_ROUTER_FEE,
-            useInternalRouter: findBestPathResult.useInternalRouter
-          };
+            useInternalRouter: findBestPathResult.useInternalRouter,
+          }
 
-          const routes: string[] = [];
+          const routes: string[] = []
           findBestPathResult.bestPath.path.forEach((item) => {
-            const token = Object.values(TOKENS_MAP).find((token) => token.addresses[chainId] === item);
+            const token = Object.values(TOKENS_MAP).find((token) => token.addresses[chainId] === item)
             if (token) {
-              routes.push(token.symbol);
+              routes.push(token.symbol)
             }
-          });
-          path = routes;
+          })
+          path = routes
           dispatch(
             setSwapInfo({
               swapParams: swapParams,
               isGettingBestPath: false,
-              swapError: null
-            })
-          );
+              swapError: null,
+            }),
+          )
         } catch (e) {
-          console.debug(e);
+          console.debug(e)
           dispatch(
             setSwapInfo({
               ...swapInfo,
-              isGettingBestPath: false
-            })
-          );
+              isGettingBestPath: false,
+            }),
+          )
         }
       }
-      const toValueUSD = calculatePrice(amountToReceive, tokenPricesUSD?.[tokenTo.symbol], tokenTo.decimals);
-      const priceImpact = calculatePriceImpact(formStateArg.from.valueUSD, toValueUSD);
+      const toValueUSD = calculatePrice(amountToReceive, tokenPricesUSD?.[tokenTo.symbol], tokenTo.decimals)
+      const priceImpact = calculatePriceImpact(formStateArg.from.valueUSD, toValueUSD)
       setFormState((prevState) => {
         const newState = {
           ...prevState,
@@ -273,19 +273,19 @@ function Swap(): ReactElement {
             ...prevState.to,
             value: amountToReceive,
             valueUSD: toValueUSD,
-            valueSynth: amountMediumSynth
+            valueSynth: amountMediumSynth,
           },
           priceImpact,
           exchangeRate: calculateExchangeRate(amountToGive, tokenFrom.decimals, amountToReceive, tokenTo.decimals),
 
-          ...(path && { route: path })
-        };
-        setPrevFormState(newState);
-        return newState;
-      });
+          ...(path && { route: path }),
+        }
+        setPrevFormState(newState)
+        return newState
+      })
     }, 250),
-    [tokenBalances, aggregatorContract, chainId, tokenPricesUSD]
-  );
+    [tokenBalances, aggregatorContract, chainId, tokenPricesUSD],
+  )
 
   useEffect(() => {
     // watch user input fields and calculate other fields if necessary
@@ -294,9 +294,9 @@ function Swap(): ReactElement {
       prevFormState.from.value !== formState.from.value ||
       prevFormState.to.symbol !== formState.to.symbol
     ) {
-      void calculateSwapAmount(formState);
+      void calculateSwapAmount(formState)
     }
-  }, [prevFormState, formState, calculateSwapAmount]);
+  }, [prevFormState, formState, calculateSwapAmount])
 
   function handleUpdateAmountFrom(value: string): void {
     setFormState((prevState) => {
@@ -305,23 +305,23 @@ function Swap(): ReactElement {
         to: {
           ...prevState.to,
           valueUSD: Zero,
-          valueSynth: Zero
+          valueSynth: Zero,
         },
         from: {
           ...prevState.from,
           value,
-          valueUSD: calculatePrice(value, tokenPricesUSD?.[prevState.from.symbol])
+          valueUSD: calculatePrice(value, tokenPricesUSD?.[prevState.from.symbol]),
         },
         priceImpact: Zero,
-        exchangeRate: Zero
-      };
-      return nextState;
-    });
+        exchangeRate: Zero,
+      }
+      return nextState
+    })
   }
   function handleReverseExchangeDirection(): void {
     setFormState((prevState) => {
-      const swapPairs = calculateSwapPairs(TOKENS_MAP[prevState.to.symbol]);
-      const activeSwapPair = swapPairs.find((pair) => pair.to.symbol === prevState.from.symbol);
+      const swapPairs = calculateSwapPairs(TOKENS_MAP[prevState.to.symbol])
+      const activeSwapPair = swapPairs.find((pair) => pair.to.symbol === prevState.from.symbol)
       const nextState = {
         error: null,
         from: {
@@ -329,7 +329,7 @@ function Swap(): ReactElement {
           value: prevState.from.value,
           valueUSD: calculatePrice(prevState.from.value, tokenPricesUSD?.[prevState.to.symbol]),
           poolName: activeSwapPair?.from.poolName,
-          tokenIndex: activeSwapPair?.from.tokenIndex
+          tokenIndex: activeSwapPair?.from.tokenIndex,
         },
         to: {
           symbol: prevState.from.symbol,
@@ -337,29 +337,29 @@ function Swap(): ReactElement {
           valueUSD: Zero,
           valueSynth: Zero,
           poolName: activeSwapPair?.to.poolName,
-          tokenIndex: activeSwapPair?.to.tokenIndex
+          tokenIndex: activeSwapPair?.to.tokenIndex,
         },
         priceImpact: Zero,
         exchangeRate: Zero,
         route: activeSwapPair?.route || [],
         currentSwapPairs: swapPairs,
-        swapType: SWAP_TYPES.DIRECT
-      };
-      return nextState;
-    });
+        swapType: SWAP_TYPES.DIRECT,
+      }
+      return nextState
+    })
     analytics.trackEvent({
       category: "Swap",
       action: "Reverse",
-      name: `${formState.from.symbol} to ${formState.to.symbol}`
-    });
+      name: `${formState.from.symbol} to ${formState.to.symbol}`,
+    })
   }
   function handleUpdateTokenFrom(symbol: string): void {
-    if (symbol === formState.to.symbol) return handleReverseExchangeDirection();
+    if (symbol === formState.to.symbol) return handleReverseExchangeDirection()
     setFormState((prevState) => {
-      const swapPairs = calculateSwapPairs(TOKENS_MAP[symbol]);
-      const activeSwapPair = swapPairs.find((pair) => pair.to.symbol === prevState.to.symbol);
+      const swapPairs = calculateSwapPairs(TOKENS_MAP[symbol])
+      const activeSwapPair = swapPairs.find((pair) => pair.to.symbol === prevState.to.symbol)
       const isValidSwap =
-        IS_VIRTUAL_SWAP_ACTIVE && activeSwapPair ? activeSwapPair.type !== SWAP_TYPES.INVALID : activeSwapPair?.type === SWAP_TYPES.DIRECT;
+        IS_VIRTUAL_SWAP_ACTIVE && activeSwapPair ? activeSwapPair.type !== SWAP_TYPES.INVALID : activeSwapPair?.type === SWAP_TYPES.DIRECT
       const nextState = {
         ...prevState,
         error: null,
@@ -368,7 +368,7 @@ function Swap(): ReactElement {
           symbol,
           valueUSD: calculatePrice(prevState.from.value, tokenPricesUSD?.[symbol]),
           poolName: activeSwapPair?.from.poolName,
-          tokenIndex: activeSwapPair?.from.tokenIndex
+          tokenIndex: activeSwapPair?.from.tokenIndex,
         },
         to: {
           ...prevState.to,
@@ -377,27 +377,27 @@ function Swap(): ReactElement {
           valueUSD: Zero,
           symbol: isValidSwap ? prevState.to.symbol : "",
           poolName: isValidSwap ? activeSwapPair?.to.poolName : undefined,
-          tokenIndex: isValidSwap ? activeSwapPair?.to.tokenIndex : undefined
+          tokenIndex: isValidSwap ? activeSwapPair?.to.tokenIndex : undefined,
         },
         priceImpact: Zero,
         exchangeRate: Zero,
         route: activeSwapPair?.route || [],
         currentSwapPairs: swapPairs,
-        swapType: SWAP_TYPES.DIRECT
-      };
-      return nextState;
-    });
+        swapType: SWAP_TYPES.DIRECT,
+      }
+      return nextState
+    })
   }
 
   function handleUpdateTokenTo(symbol: string): void {
-    if (symbol === formState.from.symbol) return handleReverseExchangeDirection();
+    if (symbol === formState.from.symbol) return handleReverseExchangeDirection()
     setFormState((prevState) => {
-      const activeSwapPair = prevState.currentSwapPairs.find((pair) => pair.to.symbol === symbol);
+      const activeSwapPair = prevState.currentSwapPairs.find((pair) => pair.to.symbol === symbol)
       const nextState = {
         ...prevState,
         from: {
           ...prevState.from,
-          ...(activeSwapPair?.from || {})
+          ...(activeSwapPair?.from || {}),
         },
         error: null,
         to: {
@@ -407,19 +407,19 @@ function Swap(): ReactElement {
           symbol,
           valueUSD: Zero,
           poolName: activeSwapPair?.to.poolName,
-          tokenIndex: activeSwapPair?.to.tokenIndex
+          tokenIndex: activeSwapPair?.to.tokenIndex,
         },
         priceImpact: Zero,
         exchangeRate: Zero,
         route: activeSwapPair?.route || [],
-        swapType: SWAP_TYPES.DIRECT
-      };
-      return nextState;
-    });
+        swapType: SWAP_TYPES.DIRECT,
+      }
+      return nextState
+    })
   }
 
   async function handleConfirmTransaction(): Promise<void> {
-    const fromToken = TOKENS_MAP[formState.from.symbol];
+    const fromToken = TOKENS_MAP[formState.from.symbol]
     if (
       formState.swapType === SWAP_TYPES.INVALID ||
       formState.from.tokenIndex === undefined ||
@@ -427,17 +427,17 @@ function Swap(): ReactElement {
       formState.to.tokenIndex === undefined ||
       formState.to.poolName === undefined
     ) {
-      console.debug("Invalid transaction", formState);
+      console.debug("Invalid transaction", formState)
       setFormState((prevState) => ({
         ...EMPTY_FORM_STATE,
         error: "Invalid Transaction",
         from: {
           ...prevState.from,
           value: "0.0",
-          valueUSD: Zero
-        }
-      }));
-      return;
+          valueUSD: Zero,
+        },
+      }))
+      return
     }
     const dataToApprove = {
       bridgeContract: null,
@@ -447,46 +447,46 @@ function Swap(): ReactElement {
         amount: parseUnits(formState.from.value, fromToken.decimals),
         symbol: formState.from.symbol,
         poolName: formState.from.poolName,
-        tokenIndex: formState.from.tokenIndex
+        tokenIndex: formState.from.tokenIndex,
       },
       to: {
         amount: formState.to.value,
         symbol: formState.to.symbol,
         poolName: formState.to.poolName,
         tokenIndex: formState.to.tokenIndex,
-        amountMediumSynth: formState.to.valueSynth
+        amountMediumSynth: formState.to.valueSynth,
       },
-      swapType: SWAP_TYPES.DIRECT
-    };
+      swapType: SWAP_TYPES.DIRECT,
+    }
 
-    await approveAndSwap(dataToApprove, swapParams);
+    await approveAndSwap(dataToApprove, swapParams)
     // Clear input after deposit
     setFormState((prevState) => ({
       error: null,
       from: {
         ...prevState.from,
         value: "0.0",
-        valueUSD: Zero
+        valueUSD: Zero,
       },
       to: {
         ...prevState.to,
         value: Zero,
-        valueUSD: Zero
+        valueUSD: Zero,
       },
       priceImpact: Zero,
       exchangeRate: Zero,
       route: prevState.route,
       currentSwapPairs: prevState.currentSwapPairs,
-      swapType: prevState.swapType
-    }));
+      swapType: prevState.swapType,
+    }))
 
     dispatch(
       setSwapInfo({
         ...swapInfo,
         isGettingBestPath: false,
-        swapParams: null
-      })
-    );
+        swapParams: null,
+      }),
+    )
 
     try {
       analytics.trackEvent({
@@ -494,15 +494,15 @@ function Swap(): ReactElement {
         action: "Confirm",
         name: `${formState.from.symbol} to ${formState.to.symbol}-${formState.swapType}-fromValue:${
           formState.from.value
-        }-toValue:${formState.to.value.toString()}`
-      });
+        }-toValue:${formState.to.value.toString()}`,
+      })
     } catch (e) {
-      console.log(e);
+      console.log(e)
     }
   }
 
-  const gasPrice = BigNumber.from(formatGasToString({ gasStandard, gasFast, gasInstant }, gasPriceSelected, gasCustom));
-  const gasAmount = calculateGasEstimate(formState.swapType).mul(gasPrice); // units of gas * GWEI/Unit of gas
+  const gasPrice = BigNumber.from(formatGasToString({ gasStandard, gasFast, gasInstant }, gasPriceSelected, gasCustom))
+  const gasAmount = calculateGasEstimate(formState.swapType).mul(gasPrice) // units of gas * GWEI/Unit of gas
 
   const txnGasCost = {
     amount: gasAmount,
@@ -510,8 +510,8 @@ function Swap(): ReactElement {
       ? parseUnits(tokenPricesUSD.ETH.toFixed(2), 18) // USD / ETH  * 10^18
           .mul(gasAmount) // GWEI
           .div(BigNumber.from(10).pow(25)) // USD / ETH * GWEI * ETH / GWEI = USD
-      : null
-  };
+      : null,
+  }
 
   return (
     <SwapPage
@@ -520,13 +520,13 @@ function Swap(): ReactElement {
         pair: `${formState.from.symbol}/${formState.to.symbol}`,
         exchangeRate: formState.exchangeRate,
         priceImpact: formState.priceImpact,
-        route: formState.route
+        route: formState.route,
       }}
       txnGasCost={txnGasCost}
       fromState={formState.from}
       toState={{
         ...formState.to,
-        value: formState.to.symbol === "" ? "0" : formatUnits(formState.to.value, TOKENS_MAP[formState.to.symbol].decimals)
+        value: formState.to.symbol === "" ? "0" : formatUnits(formState.to.value, TOKENS_MAP[formState.to.symbol].decimals),
       }}
       swapType={formState.swapType}
       onChangeFromAmount={handleUpdateAmountFrom}
@@ -536,25 +536,25 @@ function Swap(): ReactElement {
       onConfirmTransaction={handleConfirmTransaction}
       onClickReverseExchangeDirection={handleReverseExchangeDirection}
     />
-  );
+  )
 }
 
-export default Swap;
+export default Swap
 
 const sortTokenOptions = (a: TokenOption, b: TokenOption) => {
   if (a.isAvailable !== b.isAvailable) {
-    return a.isAvailable ? -1 : 1;
+    return a.isAvailable ? -1 : 1
   }
   // if either is invalid, put the valid one first
   if (a.swapType === SWAP_TYPES.INVALID || b.swapType === SWAP_TYPES.INVALID) {
-    return a.swapType === SWAP_TYPES.INVALID ? 1 : -1;
+    return a.swapType === SWAP_TYPES.INVALID ? 1 : -1
   }
   if (a.valueUSD.eq(b.valueUSD)) {
-    const amountA = shiftBNDecimals(a.amount, 18 - a.decimals);
-    const amountB = shiftBNDecimals(b.amount, 18 - b.decimals);
-    return amountA.gt(amountB) ? -1 : 1;
+    const amountA = shiftBNDecimals(a.amount, 18 - a.decimals)
+    const amountB = shiftBNDecimals(b.amount, 18 - b.decimals)
+    return amountA.gt(amountB) ? -1 : 1
   } else if (a.valueUSD.gt(b.valueUSD)) {
-    return -1;
+    return -1
   }
-  return 1;
-};
+  return 1
+}

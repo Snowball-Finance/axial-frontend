@@ -1,35 +1,35 @@
-import "./ReviewMigration.scss";
+import "./ReviewMigration.scss"
 
-import React, { ReactElement } from "react";
-import { commify, formatBNToString } from "../../libs";
+import React, { ReactElement } from "react"
+import { commify, formatBNToString } from "../../libs"
 
-import { AppState } from "../../store/index";
-import { BigNumber } from "@ethersproject/bignumber";
-import Button from "../button/Button";
-import Warning from "../warning/Warning";
-import { calculateGasEstimate } from "../../libs/gasEstimate";
-import { gasBNFromState } from "../../libs/gas";
-import { parseUnits } from "ethers/lib/utils";
-import { useSelector } from "react-redux";
-import { useTranslation } from "react-i18next";
+import { AppState } from "../../store/index"
+import { BigNumber } from "@ethersproject/bignumber"
+import Button from "../button/Button"
+import Warning from "../warning/Warning"
+import { calculateGasEstimate } from "../../libs/gasEstimate"
+import { gasBNFromState } from "../../libs/gas"
+import { parseUnits } from "ethers/lib/utils"
+import { useSelector } from "react-redux"
+import { useTranslation } from "react-i18next"
 
 interface Props {
-  onClose?: () => void;
-  onConfirm?: () => void;
-  migrationAmount?: BigNumber; // 1e18
+  onClose?: () => void
+  onConfirm?: () => void
+  migrationAmount?: BigNumber // 1e18
 }
 
 function ReviewMigration({ onClose, onConfirm, migrationAmount }: Props): ReactElement {
-  const { t } = useTranslation();
-  const { gasPriceSelected, gasCustom } = useSelector((state: AppState) => state.user);
-  const { tokenPricesUSD, gasStandard, gasFast, gasInstant } = useSelector((state: AppState) => state.application);
-  const gasPrice = gasBNFromState({ gasStandard, gasFast, gasInstant }, gasPriceSelected, gasCustom);
-  const gasAmount = calculateGasEstimate("migrate").mul(gasPrice);
+  const { t } = useTranslation()
+  const { gasPriceSelected, gasCustom } = useSelector((state: AppState) => state.user)
+  const { tokenPricesUSD, gasStandard, gasFast, gasInstant } = useSelector((state: AppState) => state.application)
+  const gasPrice = gasBNFromState({ gasStandard, gasFast, gasInstant }, gasPriceSelected, gasCustom)
+  const gasAmount = calculateGasEstimate("migrate").mul(gasPrice)
   const gasValueUSD = tokenPricesUSD?.ETH
     ? parseUnits(tokenPricesUSD.ETH.toFixed(2), 18) // USD / ETH  * 10^18
         .mul(gasAmount) // GWEI
         .div(BigNumber.from(10).pow(25)) // USD / ETH * GWEI * ETH / GWEI = USD
-    : null;
+    : null
 
   return (
     <div className="reviewMigration">
@@ -69,7 +69,7 @@ function ReviewMigration({ onClose, onConfirm, migrationAmount }: Props): ReactE
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default ReviewMigration;
+export default ReviewMigration

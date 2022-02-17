@@ -1,11 +1,11 @@
-import "./Risk.scss";
+import "./Risk.scss"
 
-import React, { ReactElement } from "react";
+import React, { ReactElement } from "react"
 
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next"
 
 function Risk(): ReactElement {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
 
   return (
     <div className="riskpage">
@@ -173,7 +173,7 @@ function Risk(): ReactElement {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default Risk;
+export default Risk

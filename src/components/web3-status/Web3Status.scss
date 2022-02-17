@@ -61,13 +61,7 @@ div.walletStatus {
     &:focus,
     &:active {
       outline: none;
-      background: linear-gradient(
-          90deg,
-          rgba(234, 171, 80, 0) 0%,
-          #ffd08c 49.8%,
-          rgba(234, 171, 80, 0) 100%
-        ),
-        #eaab50;
+      background: linear-gradient(90deg, rgba(234, 171, 80, 0) 0%, #ffd08c 49.8%, rgba(234, 171, 80, 0) 100%), #eaab50;
       border-radius: 75px;
       transform: none;
       transition: none;

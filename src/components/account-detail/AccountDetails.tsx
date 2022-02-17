@@ -1,43 +1,43 @@
-import "./AccountDetails.scss";
+import "./AccountDetails.scss"
 
-import React, { ReactElement } from "react";
-import { commify, formatBNToString } from "../../libs";
-import Copy from "../Copy";
-import Identicon from "../Identicon";
-import { SUPPORTED_WALLETS } from "../../constants";
-import Transactions from "../transactions/Transactions";
-import { Zero } from "@ethersproject/constants";
-import { find } from "lodash";
-import { getEtherscanLink } from "../../libs/getEtherscanLink";
-import { shortenAddress } from "../../libs/shortenAddress";
-import { useActiveWeb3React } from "../../hooks";
-import { usePoolTokenBalances } from "../../store/wallet/hooks";
-import { useTranslation } from "react-i18next";
-import { AnalyticActions, AnalyticCategories, analytics, createEvent } from "../../utils/analytics";
+import React, { ReactElement } from "react"
+import { commify, formatBNToString } from "../../libs"
+import Copy from "../Copy"
+import Identicon from "../Identicon"
+import { SUPPORTED_WALLETS } from "../../constants"
+import Transactions from "../transactions/Transactions"
+import { Zero } from "@ethersproject/constants"
+import { find } from "lodash"
+import { getEtherscanLink } from "../../libs/getEtherscanLink"
+import { shortenAddress } from "../../libs/shortenAddress"
+import { useActiveWeb3React } from "../../hooks"
+import { usePoolTokenBalances } from "../../store/wallet/hooks"
+import { useTranslation } from "react-i18next"
+import { AnalyticActions, AnalyticCategories, analytics, createEvent } from "../../utils/analytics"
 
 interface Props {
-  openOptions: () => void;
+  openOptions: () => void
 }
 
 export default function AccountDetail({ openOptions }: Props): ReactElement {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
 
-  const { account, connector } = useActiveWeb3React();
-  const tokenBalances = usePoolTokenBalances();
-  const ethBalanceFormatted = commify(formatBNToString(tokenBalances?.ETH || Zero, 18, 6));
+  const { account, connector } = useActiveWeb3React()
+  const tokenBalances = usePoolTokenBalances()
+  const ethBalanceFormatted = commify(formatBNToString(tokenBalances?.ETH || Zero, 18, 6))
 
   const handleOptionsClick = (): void => {
     analytics.trackEvent(
       createEvent({
         category: AnalyticCategories.investigation,
         action: AnalyticActions.openOptions,
-        name: "account-options"
-      })
-    );
-    openOptions();
-  };
+        name: "account-options",
+      }),
+    )
+    openOptions()
+  }
 
-  const connectorName = find(SUPPORTED_WALLETS, ["connector", connector])?.name;
+  const connectorName = find(SUPPORTED_WALLETS, ["connector", connector])?.name
 
   return (
     <div className="accountDetail">
@@ -92,5 +92,5 @@ export default function AccountDetail({ openOptions }: Props): ReactElement {
         <Transactions />
       </div>
     </div>
-  );
+  )
 }

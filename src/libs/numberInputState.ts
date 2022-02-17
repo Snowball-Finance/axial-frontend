@@ -1,13 +1,13 @@
-import { BigNumber } from "@ethersproject/bignumber";
-import { formatUnits } from "@ethersproject/units";
-import parseStringToBigNumber from "./parseStringToBigNumber";
+import { BigNumber } from "@ethersproject/bignumber"
+import { formatUnits } from "@ethersproject/units"
+import parseStringToBigNumber from "./parseStringToBigNumber"
 
 export interface NumberInputState {
-  isEmpty: boolean;
-  isValid: boolean;
-  precision: number;
-  valueRaw: string;
-  valueSafe: string; // represents a BigNumber
+  isEmpty: boolean
+  isValid: boolean
+  precision: number
+  valueRaw: string
+  valueSafe: string // represents a BigNumber
 }
 
 /**
@@ -30,17 +30,17 @@ export function numberInputStateCreator(precision: number, fallback: BigNumber) 
         isValid: true,
         precision,
         valueRaw: formatUnits(inputValue, precision),
-        valueSafe: inputValue.toString()
-      };
+        valueSafe: inputValue.toString(),
+      }
     } else {
-      const { value: valueSafe, isFallback } = parseStringToBigNumber(inputValue, precision, fallback);
+      const { value: valueSafe, isFallback } = parseStringToBigNumber(inputValue, precision, fallback)
       return {
         isEmpty: inputValue === "",
         isValid: !isFallback,
         precision,
         valueRaw: inputValue,
-        valueSafe: valueSafe.toString()
-      };
+        valueSafe: valueSafe.toString(),
+      }
     }
-  };
+  }
 }

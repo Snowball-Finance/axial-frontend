@@ -1,15 +1,15 @@
-import "./LPStakingBanner.scss";
+import "./LPStakingBanner.scss"
 
-import React, { ReactElement } from "react";
+import React, { ReactElement } from "react"
 
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next"
 
 interface Props {
-  stakingLink: string;
+  stakingLink: string
 }
 
 function LPStakingBanner({ stakingLink }: Props): ReactElement {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
 
   return (
     <div className="lpStakingBanner">
@@ -21,7 +21,7 @@ function LPStakingBanner({ stakingLink }: Props): ReactElement {
         &gt;
       </p>
     </div>
-  );
+  )
 }
 
-export default LPStakingBanner;
+export default LPStakingBanner

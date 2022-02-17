@@ -1,58 +1,58 @@
-import "./SwapPage.scss";
-import React, { ReactElement, useMemo, useState } from "react";
-import { SWAP_TYPES, getIsVirtualSwap } from "../../constants";
-import { formatBNToPercentString, formatBNToString } from "../../libs";
-import AdvancedOptions from "../../components/advance-options/AdvancedOptions";
-import { AppState } from "../../store/index";
-import { BigNumber } from "@ethersproject/bignumber";
-import Button from "../../components/button/Button";
-import ConfirmTransaction from "../../components/confirm-transaction/ConfirmTransaction";
-import { ReactComponent as InfoIcon } from "../../assets/icons/info.svg";
-import Modal from "../../components/modal/Modal";
-import ReviewSwap from "../../components/reviews/ReviewSwap";
-import { Slippages } from "../../store/module/user";
-import SwapInput from "../../components/swap-input/SwapInput";
-import type { TokenOption } from "../../pages/swap/Swap";
-import { Zero } from "@ethersproject/constants";
-import classNames from "classnames";
-import { commify } from "../../libs";
-import { isLowerRate } from "../../libs/priceImpact";
-import { useActiveWeb3React } from "../../hooks";
-import { useSelector } from "react-redux";
-import { useTranslation } from "react-i18next";
-import { analytics } from "../../utils/analytics";
+import "./SwapPage.scss"
+import React, { ReactElement, useMemo, useState } from "react"
+import { SWAP_TYPES, getIsVirtualSwap } from "../../constants"
+import { formatBNToPercentString, formatBNToString } from "../../libs"
+import AdvancedOptions from "../../components/advance-options/AdvancedOptions"
+import { AppState } from "../../store/index"
+import { BigNumber } from "@ethersproject/bignumber"
+import Button from "../../components/button/Button"
+import ConfirmTransaction from "../../components/confirm-transaction/ConfirmTransaction"
+import { ReactComponent as InfoIcon } from "../../assets/icons/info.svg"
+import Modal from "../../components/modal/Modal"
+import ReviewSwap from "../../components/reviews/ReviewSwap"
+import { Slippages } from "../../store/module/user"
+import SwapInput from "../../components/swap-input/SwapInput"
+import type { TokenOption } from "../../pages/swap/Swap"
+import { Zero } from "@ethersproject/constants"
+import classNames from "classnames"
+import { commify } from "../../libs"
+import { isLowerRate } from "../../libs/priceImpact"
+import { useActiveWeb3React } from "../../hooks"
+import { useSelector } from "react-redux"
+import { useTranslation } from "react-i18next"
+import { analytics } from "../../utils/analytics"
 
 interface Props {
   tokenOptions: {
-    from: TokenOption[];
-    to: TokenOption[];
-  };
+    from: TokenOption[]
+    to: TokenOption[]
+  }
   exchangeRateInfo: {
-    pair: string;
-    exchangeRate: BigNumber;
-    priceImpact: BigNumber;
-    route: string[];
-  };
+    pair: string
+    exchangeRate: BigNumber
+    priceImpact: BigNumber
+    route: string[]
+  }
   txnGasCost: {
-    amount: BigNumber;
-    valueUSD: BigNumber | null; // amount * ethPriceUSD
-  };
-  error: string | null;
-  swapType: SWAP_TYPES;
-  fromState: { symbol: string; value: string; valueUSD: BigNumber };
-  toState: { symbol: string; value: string; valueUSD: BigNumber };
-  onChangeFromToken: (tokenSymbol: string) => void;
-  onChangeFromAmount: (amount: string) => void;
-  onChangeToToken: (tokenSymbol: string) => void;
-  onConfirmTransaction: () => Promise<void>;
-  onClickReverseExchangeDirection: () => void;
+    amount: BigNumber
+    valueUSD: BigNumber | null // amount * ethPriceUSD
+  }
+  error: string | null
+  swapType: SWAP_TYPES
+  fromState: { symbol: string; value: string; valueUSD: BigNumber }
+  toState: { symbol: string; value: string; valueUSD: BigNumber }
+  onChangeFromToken: (tokenSymbol: string) => void
+  onChangeFromAmount: (amount: string) => void
+  onChangeToToken: (tokenSymbol: string) => void
+  onConfirmTransaction: () => Promise<void>
+  onClickReverseExchangeDirection: () => void
 }
 
 const SwapPage = (props: Props): ReactElement => {
-  const { t } = useTranslation();
-  const { isGettingBestPath, swapError } = useSelector((state: AppState) => state.application.swapInfo);
+  const { t } = useTranslation()
+  const { isGettingBestPath, swapError } = useSelector((state: AppState) => state.application.swapInfo)
 
-  const { account } = useActiveWeb3React();
+  const { account } = useActiveWeb3React()
   const {
     tokenOptions,
     exchangeRateInfo,
@@ -65,32 +65,32 @@ const SwapPage = (props: Props): ReactElement => {
     onChangeFromAmount,
     onChangeToToken,
     onConfirmTransaction,
-    onClickReverseExchangeDirection
-  } = props;
+    onClickReverseExchangeDirection,
+  } = props
 
-  const [currentModal, setCurrentModal] = useState<string | null>(null);
+  const [currentModal, setCurrentModal] = useState<string | null>(null)
 
-  const { slippageCustom, slippageSelected } = useSelector((state: AppState) => state.user);
+  const { slippageCustom, slippageSelected } = useSelector((state: AppState) => state.user)
 
   const fromToken = useMemo(() => {
-    return tokenOptions.from.find(({ symbol }) => symbol === fromState.symbol);
-  }, [tokenOptions.from, fromState.symbol]);
+    return tokenOptions.from.find(({ symbol }) => symbol === fromState.symbol)
+  }, [tokenOptions.from, fromState.symbol])
 
-  const formattedPriceImpact = commify(formatBNToPercentString(exchangeRateInfo.priceImpact, 18));
-  const formattedExchangeRate = commify(formatBNToString(exchangeRateInfo.exchangeRate, 18, 6));
-  const formattedRoute = exchangeRateInfo.route.join(" > ");
-  const formattedBalance = commify(formatBNToString(fromToken?.amount || Zero, fromToken?.decimals || 0, 6));
-  const isVirtualSwap = getIsVirtualSwap(swapType);
+  const formattedPriceImpact = commify(formatBNToPercentString(exchangeRateInfo.priceImpact, 18))
+  const formattedExchangeRate = commify(formatBNToString(exchangeRateInfo.exchangeRate, 18, 6))
+  const formattedRoute = exchangeRateInfo.route.join(" > ")
+  const formattedBalance = commify(formatBNToString(fromToken?.amount || Zero, fromToken?.decimals || 0, 6))
+  const isVirtualSwap = getIsVirtualSwap(swapType)
   const isHighSlippage =
-    slippageSelected === Slippages.OneTenth || (slippageSelected === Slippages.Custom && parseFloat(slippageCustom?.valueRaw || "0") < 0.5);
+    slippageSelected === Slippages.OneTenth || (slippageSelected === Slippages.Custom && parseFloat(slippageCustom?.valueRaw || "0") < 0.5)
 
   const modalData = {
     from: fromState,
     to: toState,
     exchangeRateInfo,
     txnGasCost,
-    swapType
-  };
+    swapType,
+  }
 
   return (
     <div className="swapPage">
@@ -114,9 +114,9 @@ const SwapPage = (props: Props): ReactElement => {
               &nbsp;
               <a
                 onClick={() => {
-                  if (fromToken == null) return;
-                  const amtStr = formatBNToString(fromToken.amount, fromToken.decimals || 0);
-                  onChangeFromAmount(amtStr);
+                  if (fromToken == null) return
+                  const amtStr = formatBNToString(fromToken.amount, fromToken.decimals || 0)
+                  onChangeFromAmount(amtStr)
                 }}>
                 {formattedBalance}
               </a>
@@ -207,7 +207,7 @@ const SwapPage = (props: Props): ReactElement => {
           {account && isLowerRate(exchangeRateInfo.exchangeRate) && (
             <div className="exchangeWarning">
               {t("lowSwapRate", {
-                rate: ((+exchangeRateInfo.exchangeRate / 1e18) * 100 - 100).toFixed(2)
+                rate: ((+exchangeRateInfo.exchangeRate / 1e18) * 100 - 100).toFixed(2),
               })}
             </div>
           )}
@@ -226,12 +226,12 @@ const SwapPage = (props: Props): ReactElement => {
               kind="primary"
               size="full"
               onClick={(): void => {
-                setCurrentModal("review");
+                setCurrentModal("review")
                 analytics.trackEvent({
                   category: "Swap",
                   action: "Review",
-                  name: `${fromState.symbol}_${toState.symbol}`
-                });
+                  name: `${fromState.symbol}_${toState.symbol}`,
+                })
               }}
               disabled={!!error || +toState.value <= 0 || isGettingBestPath || swapError !== null}>
               {t("swap")}
@@ -244,14 +244,14 @@ const SwapPage = (props: Props): ReactElement => {
             <ReviewSwap
               onClose={(): void => setCurrentModal(null)}
               onConfirm={async (): Promise<void> => {
-                setCurrentModal("confirm");
+                setCurrentModal("confirm")
                 analytics.trackEvent({
                   category: "Swap",
                   action: "Confirm",
-                  name: `${fromState.symbol}_${toState.symbol}`
-                });
-                await onConfirmTransaction?.();
-                setCurrentModal(null);
+                  name: `${fromState.symbol}_${toState.symbol}`,
+                })
+                await onConfirmTransaction?.()
+                setCurrentModal(null)
               }}
               data={modalData}
             />
@@ -260,7 +260,7 @@ const SwapPage = (props: Props): ReactElement => {
         </Modal>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default SwapPage;
+export default SwapPage

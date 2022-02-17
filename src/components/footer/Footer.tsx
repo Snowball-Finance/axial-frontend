@@ -1,33 +1,33 @@
-import React, { ReactElement } from "react";
-import Version from "../../components/version/Version";
-import styles from "./Footer.module.scss";
+import React, { ReactElement } from "react"
+import Version from "../../components/version/Version"
+import styles from "./Footer.module.scss"
 
 const socialLinks = [
   {
     icon: "docs",
-    href: "https://docs.axial.exchange"
+    href: "https://docs.axial.exchange",
   },
   {
     icon: "discord",
-    href: "https://discord.gg/NPsxMhcCrS"
+    href: "https://discord.gg/NPsxMhcCrS",
   },
   {
     icon: "github",
-    href: "https://github.com/Snowball-Finance"
+    href: "https://github.com/Snowball-Finance",
   },
   {
     icon: "twitter",
-    href: "https://twitter.com/AxialDeFi"
+    href: "https://twitter.com/AxialDeFi",
   },
   {
     icon: "telegram",
-    href: "https://t.me/axialdefi"
+    href: "https://t.me/axialdefi",
   },
   {
     icon: "medium",
-    href: "https://medium.com/@AxialDeFi"
-  }
-];
+    href: "https://medium.com/@AxialDeFi",
+  },
+]
 
 export default function Footer(): ReactElement {
   return (
@@ -39,5 +39,5 @@ export default function Footer(): ReactElement {
         </a>
       ))}
     </footer>
-  );
+  )
 }
