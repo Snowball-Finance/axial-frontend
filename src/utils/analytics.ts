@@ -1,4 +1,4 @@
-import MatomoTracker from "@datapunt/matomo-tracker-js"
+import MatomoTracker from "@datapunt/matomo-tracker-js";
 
 export enum AnalyticCategories {
   investigation = "investigation",
@@ -9,7 +9,7 @@ export enum AnalyticCategories {
   wallet = "wallet",
   error = "error",
   formSubmit = "formSubmit",
-  clipboard = "clipboard",
+  clipboard = "clipboard"
 }
 
 export enum AnalyticActions {
@@ -20,16 +20,16 @@ export enum AnalyticActions {
   add = "add",
   copy = "copy",
   openOptions = "openOptions",
-  remove = "remove",
+  remove = "remove"
 }
 
 interface CreateEventProps {
-  category: AnalyticCategories
-  action: AnalyticActions
-  name?: string
-  value?: number
-  documentTitle?: string
-  href?: string
+  category: AnalyticCategories;
+  action: AnalyticActions;
+  name?: string;
+  value?: number;
+  documentTitle?: string;
+  href?: string;
 }
 export const createEvent = ({
   category,
@@ -37,14 +37,14 @@ export const createEvent = ({
   name,
   value,
   documentTitle,
-  href,
+  href
 }: CreateEventProps): {
-  category: AnalyticCategories
-  action: AnalyticActions
-  name?: string // optional
-  value?: number // optional, numerical value
-  documentTitle?: string // optional
-  href?: string
+  category: AnalyticCategories;
+  action: AnalyticActions;
+  name?: string; // optional
+  value?: number; // optional, numerical value
+  documentTitle?: string; // optional
+  href?: string;
 } => {
   return {
     category,
@@ -52,28 +52,24 @@ export const createEvent = ({
     name, // optional
     value, // optional, numerical value
     documentTitle, // optional
-    href, // optional
-  }
-}
+    href // optional
+  };
+};
 const urlBase = (() => {
   if (process.env.REACT_APP_ANALYTICS_ENDPOINT) {
-    return process.env.REACT_APP_ANALYTICS_ENDPOINT
+    return process.env.REACT_APP_ANALYTICS_ENDPOINT;
   }
-  throw new Error(
-    "No analytics endpoint defined in environment variables, please define REACT_APP_ANALYTICS_ENDPOINT",
-  )
-})()
+  throw new Error("No analytics endpoint defined in environment variables, please define REACT_APP_ANALYTICS_ENDPOINT");
+})();
 
 const siteId = (() => {
   if (process.env.REACT_APP_ANALYTICS_SITE_ID) {
-    return Number(process.env.REACT_APP_ANALYTICS_SITE_ID)
+    return Number(process.env.REACT_APP_ANALYTICS_SITE_ID);
   }
-  throw new Error(
-    "No analytics site id defined in environment variables, please define REACT_APP_ANALYTICS_SITE_ID",
-  )
-})()
+  throw new Error("No analytics site id defined in environment variables, please define REACT_APP_ANALYTICS_SITE_ID");
+})();
 
 export const analytics = new MatomoTracker({
   urlBase,
-  siteId,
-})
+  siteId
+});

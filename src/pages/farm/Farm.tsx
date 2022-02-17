@@ -7,31 +7,29 @@ import {
   AXIAL_JLP_POOL_NAME,
   AXIAL_AM3D_POOL_NAME,
   AXIAL_AA3D_POOL_NAME,
-  USDC_AM3D_POOL_NAME,
-} from "../../constants"
-import React, { ReactElement, useState } from "react"
+  USDC_AM3D_POOL_NAME
+} from "../../constants";
+import React, { ReactElement, useState } from "react";
 
-import ConfirmTransaction from "../../components/confirm-transaction/ConfirmTransaction"
-import Modal from "../../components/modal/Modal"
-import { Zero } from "@ethersproject/constants"
-import styles from "./Farm.module.scss"
-import usePoolData from "../../hooks/usePoolData"
-import FarmOverview from "../../components/farm-info-card/FarmOverview"
+import ConfirmTransaction from "../../components/confirm-transaction/ConfirmTransaction";
+import Modal from "../../components/modal/Modal";
+import { Zero } from "@ethersproject/constants";
+import styles from "./Farm.module.scss";
+import usePoolData from "../../hooks/usePoolData";
+import FarmOverview from "../../components/farm-info-card/FarmOverview";
 
 function Farm(): ReactElement | null {
-  const [as4dPoolData, as4dUserShareData] = usePoolData(AXIAL_AS4D_POOL_NAME)
-  const [ac4dPoolData, ac4dUserShareData] = usePoolData(AXIAL_AC4D_POOL_NAME)
-  const [am3dPoolData, am3dUserShareData] = usePoolData(AXIAL_AM3D_POOL_NAME)
-  const [aa3dPoolData, aa3dUserShareData] = usePoolData(AXIAL_AA3D_POOL_NAME)
-  const [usdcAm3dPoolData, usdcAm3dUserShareData] = usePoolData(
-    USDC_AM3D_POOL_NAME,
-  )
-  const [jlpPoolData, jlpUserShareData] = usePoolData(AXIAL_JLP_POOL_NAME)
-  const [currentModal, setCurrentModal] = useState<string | null>(null)
-  const [filter] = useState<PoolTypes | "all" | "outdated">("all")
+  const [as4dPoolData, as4dUserShareData] = usePoolData(AXIAL_AS4D_POOL_NAME);
+  const [ac4dPoolData, ac4dUserShareData] = usePoolData(AXIAL_AC4D_POOL_NAME);
+  const [am3dPoolData, am3dUserShareData] = usePoolData(AXIAL_AM3D_POOL_NAME);
+  const [aa3dPoolData, aa3dUserShareData] = usePoolData(AXIAL_AA3D_POOL_NAME);
+  const [usdcAm3dPoolData, usdcAm3dUserShareData] = usePoolData(USDC_AM3D_POOL_NAME);
+  const [jlpPoolData, jlpUserShareData] = usePoolData(AXIAL_JLP_POOL_NAME);
+  const [currentModal, setCurrentModal] = useState<string | null>(null);
+  const [filter] = useState<PoolTypes | "all" | "outdated">("all");
   const handleClickMigrate = () => {
-    setCurrentModal("migrate")
-  }
+    setCurrentModal("migrate");
+  };
 
   function getPropsForPool(poolName: PoolName) {
     if (poolName === AXIAL_AS4D_POOL_NAME) {
@@ -39,54 +37,51 @@ function Farm(): ReactElement | null {
         name: AXIAL_AS4D_POOL_NAME,
         poolData: as4dPoolData,
         userShareData: as4dUserShareData,
-        poolRoute: "/rewards/as4d",
-      }
+        poolRoute: "/rewards/as4d"
+      };
     } else if (poolName === AXIAL_AC4D_POOL_NAME) {
       return {
         name: AXIAL_AC4D_POOL_NAME,
         poolData: ac4dPoolData,
         userShareData: ac4dUserShareData,
-        poolRoute: "/rewards/ac4d",
-      }
+        poolRoute: "/rewards/ac4d"
+      };
     } else if (poolName === AXIAL_AM3D_POOL_NAME) {
       return {
         name: AXIAL_AM3D_POOL_NAME,
         poolData: am3dPoolData,
         userShareData: am3dUserShareData,
-        poolRoute: "/rewards/am3d",
-      }
+        poolRoute: "/rewards/am3d"
+      };
     } else if (poolName === AXIAL_AA3D_POOL_NAME) {
       return {
         name: AXIAL_AA3D_POOL_NAME,
         poolData: aa3dPoolData,
         userShareData: aa3dUserShareData,
-        poolRoute: "/rewards/aa3d",
-      }
+        poolRoute: "/rewards/aa3d"
+      };
     } else if (poolName === USDC_AM3D_POOL_NAME) {
       return {
         name: USDC_AM3D_POOL_NAME,
         poolData: usdcAm3dPoolData,
         userShareData: usdcAm3dUserShareData,
-        poolRoute: "/rewards/usdc",
-      }
+        poolRoute: "/rewards/usdc"
+      };
     } else if (poolName === AXIAL_JLP_POOL_NAME) {
       return {
         name: AXIAL_JLP_POOL_NAME,
         poolData: jlpPoolData,
         userShareData: jlpUserShareData,
-        poolRoute: "/rewards/jlp",
-      }
+        poolRoute: "/rewards/jlp"
+      };
     } else {
-      throw new Error("Not mapped Pool")
+      throw new Error("Not mapped Pool");
     }
   }
 
   const visibleFarmList = Object.values(POOLS_MAP).filter(
-    ({ type, migration, isOutdated }) =>
-      filter === "all" ||
-      type === filter ||
-      (filter === "outdated" && (migration || isOutdated)),
-  )
+    ({ type, migration, isOutdated }) => filter === "all" || type === filter || (filter === "outdated" && (migration || isOutdated))
+  );
 
   return (
     <div className={styles.poolsPage}>
@@ -112,56 +107,29 @@ function Farm(): ReactElement | null {
       </ul> */}
       <div className={styles.content}>
         {visibleFarmList
-          .map(
-            ({ name, migration, isOutdated }) =>
-              [getPropsForPool(name), migration, isOutdated] as const,
-          )
-          .sort(
-            ([a, aMigration, aIsOutdated], [b, bMigration, bIsOutdated]) => {
-              // 1. active pools
-              // 2. user pools
-              // 3. higher TVL pools
-              if (aMigration || bMigration || aIsOutdated || bIsOutdated) {
-                return aMigration || aIsOutdated ? 1 : -1
-              } else if (
-                (a.userShareData?.usdBalance || Zero).gt(Zero) ||
-                (b.userShareData?.usdBalance || Zero).gt(Zero)
-              ) {
-                return (a.userShareData?.usdBalance || Zero).gt(
-                  b.userShareData?.usdBalance || Zero,
-                )
-                  ? -1
-                  : 1
-              } else {
-                return (a.poolData?.reserve || Zero).gt(
-                  b.poolData?.reserve || Zero,
-                )
-                  ? -1
-                  : 1
-              }
-            },
-          )
+          .map(({ name, migration, isOutdated }) => [getPropsForPool(name), migration, isOutdated] as const)
+          .sort(([a, aMigration, aIsOutdated], [b, bMigration, bIsOutdated]) => {
+            // 1. active pools
+            // 2. user pools
+            // 3. higher TVL pools
+            if (aMigration || bMigration || aIsOutdated || bIsOutdated) {
+              return aMigration || aIsOutdated ? 1 : -1;
+            } else if ((a.userShareData?.usdBalance || Zero).gt(Zero) || (b.userShareData?.usdBalance || Zero).gt(Zero)) {
+              return (a.userShareData?.usdBalance || Zero).gt(b.userShareData?.usdBalance || Zero) ? -1 : 1;
+            } else {
+              return (a.poolData?.reserve || Zero).gt(b.poolData?.reserve || Zero) ? -1 : 1;
+            }
+          })
           .map(([poolProps, migrationPool]) => (
-            <FarmOverview
-              key={poolProps.name}
-              {...poolProps}
-              onClickMigrate={
-                migrationPool ? () => handleClickMigrate() : undefined
-              }
-            />
+            <FarmOverview key={poolProps.name} {...poolProps} onClickMigrate={migrationPool ? () => handleClickMigrate() : undefined} />
           ))}
-        {visibleFarmList.length === 0 && (
-          <p className={styles.noFarms}>No farms were found.</p>
-        )}
+        {visibleFarmList.length === 0 && <p className={styles.noFarms}>No farms were found.</p>}
       </div>
-      <Modal
-        isOpen={!!currentModal}
-        onClose={(): void => setCurrentModal(null)}
-      >
+      <Modal isOpen={!!currentModal} onClose={(): void => setCurrentModal(null)}>
         {currentModal === "confirm" ? <ConfirmTransaction /> : null}
       </Modal>
     </div>
-  )
+  );
 }
 
-export default Farm
+export default Farm;

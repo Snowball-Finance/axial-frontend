@@ -1,38 +1,38 @@
-import { BigNumber } from "ethers"
-import { GasPrices } from "../store/module/user"
-import { NumberInputState } from "./numberInputState"
+import { BigNumber } from "ethers";
+import { GasPrices } from "../store/module/user";
+import { NumberInputState } from "./numberInputState";
 
 export function gasBNFromState(
   gasPricesGwei: {
-    gasStandard?: number
-    gasFast?: number
-    gasInstant?: number
+    gasStandard?: number;
+    gasFast?: number;
+    gasInstant?: number;
   },
   gasSelected: GasPrices,
-  gasCustom?: NumberInputState,
+  gasCustom?: NumberInputState
 ): BigNumber {
-  const { gasStandard = 0, gasFast = 0, gasInstant = 0 } = gasPricesGwei
-  let gasPrice
+  const { gasStandard = 0, gasFast = 0, gasInstant = 0 } = gasPricesGwei;
+  let gasPrice;
   if (gasSelected === GasPrices.Custom) {
-    gasPrice = gasCustom?.valueSafe
+    gasPrice = gasCustom?.valueSafe;
   } else if (gasSelected === GasPrices.Fast) {
-    gasPrice = gasFast
+    gasPrice = gasFast;
   } else if (gasSelected === GasPrices.Instant) {
-    gasPrice = gasInstant
+    gasPrice = gasInstant;
   } else {
-    gasPrice = gasStandard
+    gasPrice = gasStandard;
   }
-  return BigNumber.from(gasPrice)
+  return BigNumber.from(gasPrice);
 }
 
 export function formatGasToString(
   gasPricesGwei: {
-    gasStandard?: number
-    gasFast?: number
-    gasInstant?: number
+    gasStandard?: number;
+    gasFast?: number;
+    gasInstant?: number;
   },
   gasSelected: GasPrices,
-  gasCustom?: NumberInputState,
+  gasCustom?: NumberInputState
 ): string {
-  return gasBNFromState(gasPricesGwei, gasSelected, gasCustom).toString()
+  return gasBNFromState(gasPricesGwei, gasSelected, gasCustom).toString();
 }

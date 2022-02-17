@@ -1,27 +1,19 @@
-import "./MyShareCard.scss"
+import "./MyShareCard.scss";
 
-import {
-  FXS,
-  ORCA,
-  POOLS_MAP,
-  PoolTypes,
-  TEDDY,
-  TOKENS_MAP,
-  WAVAX,
-} from "../../constants"
-import React, { ReactElement } from "react"
-import { formatBNToPercentString, formatBNToString } from "../../libs"
-import { UserShareType } from "../../hooks/usePoolData"
-import { commify } from "@ethersproject/units"
-import { useTranslation } from "react-i18next"
-import { BigNumber } from "@ethersproject/bignumber"
+import { FXS, ORCA, POOLS_MAP, PoolTypes, TEDDY, TOKENS_MAP, WAVAX } from "../../constants";
+import React, { ReactElement } from "react";
+import { formatBNToPercentString, formatBNToString } from "../../libs";
+import { UserShareType } from "../../hooks/usePoolData";
+import { commify } from "@ethersproject/units";
+import { useTranslation } from "react-i18next";
+import { BigNumber } from "@ethersproject/bignumber";
 
 interface Props {
-  data: UserShareType | null
-  useUsd?: boolean | null
-  usePercent?: boolean | null
-  useMasterchefAmount?: boolean | null
-  usePendingMasterchef?: boolean | null
+  data: UserShareType | null;
+  useUsd?: boolean | null;
+  usePercent?: boolean | null;
+  useMasterchefAmount?: boolean | null;
+  usePendingMasterchef?: boolean | null;
 }
 
 function MyShareCard({
@@ -29,34 +21,26 @@ function MyShareCard({
   useUsd = true,
   usePercent = true,
   useMasterchefAmount = false,
-  usePendingMasterchef = false,
+  usePendingMasterchef = false
 }: Props): ReactElement | null {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
-  if (!data) return null
-  const { type: poolType } = POOLS_MAP[data.name]
-  const formattedDecimals = poolType === PoolTypes.USD ? 2 : 4
+  if (!data) return null;
+  const { type: poolType } = POOLS_MAP[data.name];
+  const formattedDecimals = poolType === PoolTypes.USD ? 2 : 4;
   let hasAVAX = false,
     hasFXS = false,
     hasTEDDY = false,
-    hasORCA = false
+    hasORCA = false;
 
   if (data.masterchefBalance) {
-    hasAVAX =
-      data.masterchefBalance?.pendingTokens?.bonusTokenAddress?.toLowerCase() ===
-      WAVAX.addresses[43114].toLowerCase()
+    hasAVAX = data.masterchefBalance?.pendingTokens?.bonusTokenAddress?.toLowerCase() === WAVAX.addresses[43114].toLowerCase();
 
-    hasFXS =
-      data.masterchefBalance?.pendingTokens?.bonusTokenAddress?.toLowerCase() ===
-      FXS.addresses[43114].toLowerCase()
+    hasFXS = data.masterchefBalance?.pendingTokens?.bonusTokenAddress?.toLowerCase() === FXS.addresses[43114].toLowerCase();
 
-    hasTEDDY =
-      data.masterchefBalance?.pendingTokens?.bonusTokenAddress?.toLowerCase() ===
-      TEDDY.addresses[43114].toLowerCase()
+    hasTEDDY = data.masterchefBalance?.pendingTokens?.bonusTokenAddress?.toLowerCase() === TEDDY.addresses[43114].toLowerCase();
 
-    hasORCA =
-      data.masterchefBalance?.pendingTokens?.bonusTokenAddress?.toLowerCase() ===
-      ORCA.addresses[43114].toLowerCase()
+    hasORCA = data.masterchefBalance?.pendingTokens?.bonusTokenAddress?.toLowerCase() === ORCA.addresses[43114].toLowerCase();
   }
 
   const formattedData = {
@@ -70,65 +54,55 @@ function MyShareCard({
           ? BigNumber.from("0")
           : data.underlyingTokensAmount,
         18,
-        formattedDecimals,
-      ),
+        formattedDecimals
+      )
     ),
     tokens: data.tokens.map((coin) => {
-      const token = TOKENS_MAP[coin.symbol]
+      const token = TOKENS_MAP[coin.symbol];
       return {
         symbol: token.symbol,
         name: token.name,
-        value: commify(formatBNToString(coin.value, 18, formattedDecimals)),
-      }
+        value: commify(formatBNToString(coin.value, 18, formattedDecimals))
+      };
     }),
     rewards: {
       avaxRewards: commify(
         formatBNToString(
-          data.masterchefBalance?.pendingTokens && hasAVAX
-            ? data.masterchefBalance?.pendingTokens?.pendingBonusToken
-            : BigNumber.from("0"),
+          data.masterchefBalance?.pendingTokens && hasAVAX ? data.masterchefBalance?.pendingTokens?.pendingBonusToken : BigNumber.from("0"),
           18,
-          formattedDecimals,
-        ),
+          formattedDecimals
+        )
       ),
       teddyRewards: commify(
         formatBNToString(
-          data.masterchefBalance?.pendingTokens && hasTEDDY
-            ? data.masterchefBalance?.pendingTokens?.pendingBonusToken
-            : BigNumber.from("0"),
+          data.masterchefBalance?.pendingTokens && hasTEDDY ? data.masterchefBalance?.pendingTokens?.pendingBonusToken : BigNumber.from("0"),
           18,
-          formattedDecimals,
-        ),
+          formattedDecimals
+        )
       ),
       fxsRewards: commify(
         formatBNToString(
-          data.masterchefBalance?.pendingTokens && hasFXS
-            ? data.masterchefBalance?.pendingTokens?.pendingBonusToken
-            : BigNumber.from("0"),
+          data.masterchefBalance?.pendingTokens && hasFXS ? data.masterchefBalance?.pendingTokens?.pendingBonusToken : BigNumber.from("0"),
           18,
-          formattedDecimals,
-        ),
+          formattedDecimals
+        )
       ),
       orcaRewards: commify(
         formatBNToString(
-          data.masterchefBalance?.pendingTokens && hasORCA
-            ? data.masterchefBalance?.pendingTokens?.pendingBonusToken
-            : BigNumber.from("0"),
+          data.masterchefBalance?.pendingTokens && hasORCA ? data.masterchefBalance?.pendingTokens?.pendingBonusToken : BigNumber.from("0"),
           18,
-          formattedDecimals,
-        ),
+          formattedDecimals
+        )
       ),
       axialRewards: commify(
         formatBNToString(
-          data.masterchefBalance?.pendingTokens?.pendingAxial
-            ? data.masterchefBalance?.pendingTokens?.pendingAxial
-            : BigNumber.from("0"),
+          data.masterchefBalance?.pendingTokens?.pendingAxial ? data.masterchefBalance?.pendingTokens?.pendingAxial : BigNumber.from("0"),
           18,
-          formattedDecimals,
-        ),
-      ),
-    },
-  }
+          formattedDecimals
+        )
+      )
+    }
+  };
 
   return (
     <div className="myShareCard">
@@ -192,7 +166,7 @@ function MyShareCard({
         ))*/}
       </div>
     </div>
-  )
+  );
 }
 
-export default MyShareCard
+export default MyShareCard;

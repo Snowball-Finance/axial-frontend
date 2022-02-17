@@ -1,38 +1,29 @@
-import "./ReviewDeposit.scss"
+import "./ReviewDeposit.scss";
 
-import React, { ReactElement, useState } from "react"
-import { commify, formatBNToPercentString, formatBNToString } from "../../libs"
+import React, { ReactElement, useState } from "react";
+import { commify, formatBNToPercentString, formatBNToString } from "../../libs";
 
-import { AppState } from "../../store/index"
-import Button from "../button/Button"
-import { DepositTransaction } from "../../interfaces/transactions"
-import HighPriceImpactConfirmation from "../highprice-impact-confirmation/HighPriceImpactConfirmation"
-import { formatSlippageToString } from "../../libs/slippage"
-import { isHighPriceImpact } from "../../libs/priceImpact"
-import { useSelector } from "react-redux"
-import { useTranslation } from "react-i18next"
+import { AppState } from "../../store/index";
+import Button from "../button/Button";
+import { DepositTransaction } from "../../interfaces/transactions";
+import HighPriceImpactConfirmation from "../highprice-impact-confirmation/HighPriceImpactConfirmation";
+import { formatSlippageToString } from "../../libs/slippage";
+import { isHighPriceImpact } from "../../libs/priceImpact";
+import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 interface Props {
-  onClose: () => void
-  onConfirm: () => void
-  transactionData: DepositTransaction
+  onClose: () => void;
+  onConfirm: () => void;
+  transactionData: DepositTransaction;
 }
 
-function ReviewDeposit({
-  onClose,
-  onConfirm,
-  transactionData,
-}: Props): ReactElement {
-  const { t } = useTranslation()
-  const { slippageCustom, slippageSelected } = useSelector(
-    (state: AppState) => state.user,
-  )
-  const [
-    hasConfirmedHighPriceImpact,
-    setHasConfirmedHighPriceImpact,
-  ] = useState(false)
+function ReviewDeposit({ onClose, onConfirm, transactionData }: Props): ReactElement {
+  const { t } = useTranslation();
+  const { slippageCustom, slippageSelected } = useSelector((state: AppState) => state.user);
+  const [hasConfirmedHighPriceImpact, setHasConfirmedHighPriceImpact] = useState(false);
 
-  const isHighPriceImpactTxn = isHighPriceImpact(transactionData.priceImpact)
+  const isHighPriceImpactTxn = isHighPriceImpact(transactionData.priceImpact);
 
   return (
     <div className="reviewDeposit">
@@ -47,9 +38,7 @@ function ReviewDeposit({
                 <span>{token.symbol}</span>
               </div>
               <div className="value">
-                <span className="value">
-                  {commify(formatBNToString(amount, token.decimals))}
-                </span>
+                <span className="value">{commify(formatBNToString(amount, token.decimals))}</span>
               </div>
             </div>
           ))}
@@ -58,11 +47,7 @@ function ReviewDeposit({
               <b>{t("total")}</b>
             </div>
             <div className="value">
-              <b className="value">
-                {commify(
-                  formatBNToString(transactionData.from.totalAmount, 18),
-                )}
-              </b>
+              <b className="value">{commify(formatBNToString(transactionData.from.totalAmount, 18))}</b>
             </div>
           </div>
         </div>
@@ -75,55 +60,36 @@ function ReviewDeposit({
               <span>{transactionData.to.item.token.symbol}</span>
             </div>
             <div className="value">
-              <span className="value">
-                {commify(
-                  formatBNToString(
-                    transactionData.to.item.amount,
-                    transactionData.to.item.token.decimals,
-                  ),
-                )}
-              </span>
+              <span className="value">{commify(formatBNToString(transactionData.to.item.amount, transactionData.to.item.token.decimals))}</span>
             </div>
           </div>
         </div>
         <div className="divider" style={{ height: "1px", width: "100%" }}></div>
         <div className="depositInfoItem">
           <span className="label">{t("shareOfPool")}</span>
-          <span className="value">
-            {formatBNToPercentString(transactionData.shareOfPool, 18)}
-          </span>
+          <span className="value">{formatBNToPercentString(transactionData.shareOfPool, 18)}</span>
         </div>
         {transactionData.txnGasCost?.valueUSD && (
           <div className="depositInfoItem">
             <span className="label">{t("estimatedTxCost")}</span>
-            <span className="value">
-              {`≈$${commify(
-                formatBNToString(transactionData.txnGasCost.valueUSD, 2, 2),
-              )}`}
-            </span>
+            <span className="value">{`≈$${commify(formatBNToString(transactionData.txnGasCost.valueUSD, 2, 2))}`}</span>
           </div>
         )}
         <div className="depositInfoItem">
           <span className="label">{t("maxSlippage")}</span>
-          <span className="value">
-            {formatSlippageToString(slippageSelected, slippageCustom)}%
-          </span>
+          <span className="value">{formatSlippageToString(slippageSelected, slippageCustom)}%</span>
         </div>
         <div className="depositInfoItem">
           <span className="label">{t("rates")}</span>
           <div className="rates value">
-            {transactionData.from.items.map(
-              ({ token, singleTokenPriceUSD }) => (
-                <span key={token.symbol}>
-                  1 {token.symbol} = $
-                  {commify(formatBNToString(singleTokenPriceUSD, 18, 2))}
-                </span>
-              ),
-            )}
+            {transactionData.from.items.map(({ token, singleTokenPriceUSD }) => (
+              <span key={token.symbol}>
+                1 {token.symbol} = ${commify(formatBNToString(singleTokenPriceUSD, 18, 2))}
+              </span>
+            ))}
             {[transactionData.to.item].map(({ token, singleTokenPriceUSD }) => (
               <span key={token.symbol}>
-                1 {token.symbol} = $
-                {commify(formatBNToString(singleTokenPriceUSD, 18, 2))}
+                1 {token.symbol} = ${commify(formatBNToString(singleTokenPriceUSD, 18, 2))}
               </span>
             ))}
           </div>
@@ -132,9 +98,7 @@ function ReviewDeposit({
       {isHighPriceImpactTxn && (
         <HighPriceImpactConfirmation
           checked={hasConfirmedHighPriceImpact}
-          onCheck={(): void =>
-            setHasConfirmedHighPriceImpact((prevState) => !prevState)
-          }
+          onCheck={(): void => setHasConfirmedHighPriceImpact((prevState) => !prevState)}
         />
       )}
       <div className="bottom">
@@ -144,17 +108,13 @@ function ReviewDeposit({
             {t("cancel")}
           </Button>
 
-          <Button
-            onClick={onConfirm}
-            kind="primary"
-            disabled={isHighPriceImpactTxn && !hasConfirmedHighPriceImpact}
-          >
+          <Button onClick={onConfirm} kind="primary" disabled={isHighPriceImpactTxn && !hasConfirmedHighPriceImpact}>
             {t("confirmDeposit")}
           </Button>
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default ReviewDeposit
+export default ReviewDeposit;

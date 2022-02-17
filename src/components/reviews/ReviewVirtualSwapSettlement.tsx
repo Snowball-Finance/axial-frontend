@@ -1,88 +1,59 @@
-import "./ReviewSwap.scss"
+import "./ReviewSwap.scss";
 
-import React, { ReactElement, useState } from "react"
-import { SWAP_TYPES, TOKENS_MAP } from "../../constants"
-import { commify, formatBNToString, formatDeadlineToNumber } from "../../libs"
-import { formatGasToString, gasBNFromState } from "../../libs/gas"
+import React, { ReactElement, useState } from "react";
+import { SWAP_TYPES, TOKENS_MAP } from "../../constants";
+import { commify, formatBNToString, formatDeadlineToNumber } from "../../libs";
+import { formatGasToString, gasBNFromState } from "../../libs/gas";
 
-import { AppState } from "../../store/index"
-import { BigNumber } from "@ethersproject/bignumber"
-import Button from "../button/Button"
-import HighPriceImpactConfirmation from "../highprice-impact-confirmation/HighPriceImpactConfirmation"
-import { ReactComponent as ThinArrowDown } from "../../assets/icons/thinArrowDown.svg"
-import { calculateGasEstimate } from "../../libs/gasEstimate"
-import { formatSlippageToString } from "../../libs/slippage"
-import { isHighPriceImpact } from "../../libs/priceImpact"
-import { parseUnits } from "@ethersproject/units"
-import { useSelector } from "react-redux"
-import { useTranslation } from "react-i18next"
+import { AppState } from "../../store/index";
+import { BigNumber } from "@ethersproject/bignumber";
+import Button from "../button/Button";
+import HighPriceImpactConfirmation from "../highprice-impact-confirmation/HighPriceImpactConfirmation";
+import { ReactComponent as ThinArrowDown } from "../../assets/icons/thinArrowDown.svg";
+import { calculateGasEstimate } from "../../libs/gasEstimate";
+import { formatSlippageToString } from "../../libs/slippage";
+import { isHighPriceImpact } from "../../libs/priceImpact";
+import { parseUnits } from "@ethersproject/units";
+import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 interface Props {
-  onClose: () => void
-  onConfirm: () => void
+  onClose: () => void;
+  onConfirm: () => void;
   data: {
-    from: { symbol: string; value: string }
-    to?: { symbol: string; value: string }
-    swapType: SWAP_TYPES
+    from: { symbol: string; value: string };
+    to?: { symbol: string; value: string };
+    swapType: SWAP_TYPES;
     exchangeRateInfo?: {
-      pair: string
-      exchangeRate: BigNumber
-      priceImpact: BigNumber
-    }
-  }
+      pair: string;
+      exchangeRate: BigNumber;
+      priceImpact: BigNumber;
+    };
+  };
 }
 
-function ReviewVirtualSwapSettlement({
-  onClose,
-  onConfirm,
-  data,
-}: Props): ReactElement {
-  const { t } = useTranslation()
-  const {
-    slippageCustom,
-    slippageSelected,
-    gasPriceSelected,
-    gasCustom,
-    transactionDeadlineSelected,
-    transactionDeadlineCustom,
-  } = useSelector((state: AppState) => state.user)
-  const { tokenPricesUSD, gasStandard, gasFast, gasInstant } = useSelector(
-    (state: AppState) => state.application,
-  )
-  const [
-    hasConfirmedHighPriceImpact,
-    setHasConfirmedHighPriceImpact,
-  ] = useState(false)
-  const fromToken = TOKENS_MAP[data.from.symbol]
-  const toToken = data.to ? TOKENS_MAP[data.to.symbol] : null
-  const isHighPriceImpactTxn = Boolean(
-    data.to?.value &&
-      data.exchangeRateInfo &&
-      isHighPriceImpact(data.exchangeRateInfo.priceImpact),
-  )
-  const deadline = formatDeadlineToNumber(
-    transactionDeadlineSelected,
-    transactionDeadlineCustom,
-  )
-  const gasPrice = gasBNFromState(
-    { gasStandard, gasFast, gasInstant },
-    gasPriceSelected,
-    gasCustom,
-  )
-  const gasAmount = calculateGasEstimate("virtualSwapSettleOrWithdraw").mul(
-    gasPrice,
-  )
+function ReviewVirtualSwapSettlement({ onClose, onConfirm, data }: Props): ReactElement {
+  const { t } = useTranslation();
+  const { slippageCustom, slippageSelected, gasPriceSelected, gasCustom, transactionDeadlineSelected, transactionDeadlineCustom } = useSelector(
+    (state: AppState) => state.user
+  );
+  const { tokenPricesUSD, gasStandard, gasFast, gasInstant } = useSelector((state: AppState) => state.application);
+  const [hasConfirmedHighPriceImpact, setHasConfirmedHighPriceImpact] = useState(false);
+  const fromToken = TOKENS_MAP[data.from.symbol];
+  const toToken = data.to ? TOKENS_MAP[data.to.symbol] : null;
+  const isHighPriceImpactTxn = Boolean(data.to?.value && data.exchangeRateInfo && isHighPriceImpact(data.exchangeRateInfo.priceImpact));
+  const deadline = formatDeadlineToNumber(transactionDeadlineSelected, transactionDeadlineCustom);
+  const gasPrice = gasBNFromState({ gasStandard, gasFast, gasInstant }, gasPriceSelected, gasCustom);
+  const gasAmount = calculateGasEstimate("virtualSwapSettleOrWithdraw").mul(gasPrice);
   const gasValueUSD = tokenPricesUSD?.ETH
     ? parseUnits(tokenPricesUSD.ETH.toFixed(2), 18) // USD / ETH  * 10^18
         .mul(gasAmount) // GWEI
         .div(BigNumber.from(10).pow(25)) // USD / ETH * GWEI * ETH / GWEI = USD
-    : null
-  const isWithdrawAction = !data.from
+    : null;
+  const isWithdrawAction = !data.from;
   return (
     <div className="reviewSwap">
-      <h3>
-        {isWithdrawAction ? t("Review Withdraw") : t("Review Settlement")}
-      </h3>
+      <h3>{isWithdrawAction ? t("Review Withdraw") : t("Review Settlement")}</h3>
       <div className="swapTable">
         <div className="from">
           <img className="tokenIcon" src={fromToken.icon} alt="icon" />
@@ -109,38 +80,24 @@ function ReviewVirtualSwapSettlement({
         <div className="swapInfo">
           {data.exchangeRateInfo && (
             <div className="priceTable">
-              <span className="title">{t("exchangeRate")}</span>{" "}
-              <span className="pair">{data.exchangeRateInfo.pair}</span>
-              <span className="value floatRight">
-                {formatBNToString(data.exchangeRateInfo.exchangeRate, 18, 4)}
-              </span>
+              <span className="title">{t("exchangeRate")}</span> <span className="pair">{data.exchangeRateInfo.pair}</span>
+              <span className="value floatRight">{formatBNToString(data.exchangeRateInfo.exchangeRate, 18, 4)}</span>
             </div>
           )}
 
           <div className="row">
             <span className="title">{t("gas")}</span>
-            <span className="value floatRight">
-              {formatGasToString(
-                { gasStandard, gasFast, gasInstant },
-                gasPriceSelected,
-                gasCustom,
-              )}{" "}
-              GWEI
-            </span>
+            <span className="value floatRight">{formatGasToString({ gasStandard, gasFast, gasInstant }, gasPriceSelected, gasCustom)} GWEI</span>
           </div>
           {gasValueUSD && (
             <div className="row">
               <span className="title">{t("estimatedTxCost")}</span>
-              <span className="value floatRight">
-                {`≈$${commify(formatBNToString(gasValueUSD, 2, 2))}`}
-              </span>
+              <span className="value floatRight">{`≈$${commify(formatBNToString(gasValueUSD, 2, 2))}`}</span>
             </div>
           )}
           <div className="row">
             <span className="title">{t("maxSlippage")}</span>
-            <span className="value floatRight">
-              {formatSlippageToString(slippageSelected, slippageCustom)}%
-            </span>
+            <span className="value floatRight">{formatSlippageToString(slippageSelected, slippageCustom)}%</span>
           </div>
           <div className="row">
             <span className="title">{t("deadline")}</span>
@@ -152,9 +109,7 @@ function ReviewVirtualSwapSettlement({
             <div className="row">
               <HighPriceImpactConfirmation
                 checked={hasConfirmedHighPriceImpact}
-                onCheck={(): void =>
-                  setHasConfirmedHighPriceImpact((prevState) => !prevState)
-                }
+                onCheck={(): void => setHasConfirmedHighPriceImpact((prevState) => !prevState)}
               />
             </div>
           )}
@@ -163,11 +118,7 @@ function ReviewVirtualSwapSettlement({
       <div className="bottom">
         <p>{t("estimatedOutput")}</p>
         <div className="buttonWrapper">
-          <Button
-            onClick={onConfirm}
-            kind="primary"
-            disabled={isHighPriceImpactTxn && !hasConfirmedHighPriceImpact}
-          >
+          <Button onClick={onConfirm} kind="primary" disabled={isHighPriceImpactTxn && !hasConfirmedHighPriceImpact}>
             {t("confirmSwap")}
           </Button>
           <Button onClick={onClose} kind="cancel">
@@ -176,7 +127,7 @@ function ReviewVirtualSwapSettlement({
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default ReviewVirtualSwapSettlement
+export default ReviewVirtualSwapSettlement;

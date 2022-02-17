@@ -1,83 +1,62 @@
-import {
-  updateInfiniteApproval,
-  updatePoolAdvancedMode,
-  updateSlippageCustom,
-  updateSlippageSelected,
-} from "../../store/module/user"
-import { useDispatch, useSelector } from "react-redux"
-import { AppDispatch } from "../../store"
-import { AppState } from "../../store/index"
-import CheckboxInput from "../checkbox-input/CheckboxInput"
-import { PayloadAction } from "@reduxjs/toolkit"
-import React from "react"
-import { Slippages } from "../../store/module/user"
-import ToolTip from "../tool-tip/ToolTip"
-import classNames from "classnames"
-import styles from "./AdvancedOptions.module.scss"
-import { useTranslation } from "react-i18next"
-import { analytics } from "../../utils/analytics"
+import { updateInfiniteApproval, updatePoolAdvancedMode, updateSlippageCustom, updateSlippageSelected } from "../../store/module/user";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch } from "../../store";
+import { AppState } from "../../store/index";
+import CheckboxInput from "../checkbox-input/CheckboxInput";
+import { PayloadAction } from "@reduxjs/toolkit";
+import React from "react";
+import { Slippages } from "../../store/module/user";
+import ToolTip from "../tool-tip/ToolTip";
+import classNames from "classnames";
+import styles from "./AdvancedOptions.module.scss";
+import { useTranslation } from "react-i18next";
+import { analytics } from "../../utils/analytics";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 interface Props {
-  noApprovalCheckbox: boolean
-  noSlippageCheckbox: boolean
+  noApprovalCheckbox: boolean;
+  noSlippageCheckbox: boolean;
 }
 
 export default function AdvancedOptions(props: Props): React.ReactElement {
-  const { t } = useTranslation()
-  const dispatch = useDispatch<AppDispatch>()
-  const {
-    infiniteApproval,
-    slippageCustom,
-    slippageSelected,
-    userPoolAdvancedMode: advanced,
-  } = useSelector((state: AppState) => state.user)
+  const { t } = useTranslation();
+  const dispatch = useDispatch<AppDispatch>();
+  const { infiniteApproval, slippageCustom, slippageSelected, userPoolAdvancedMode: advanced } = useSelector((state: AppState) => state.user);
 
   const handleInfiniteApproval = (): void => {
-    dispatch(updateInfiniteApproval(!infiniteApproval))
+    dispatch(updateInfiniteApproval(!infiniteApproval));
     analytics.trackEvent({
       category: "User",
       action: "Toggled Infinite Approval",
-      name: infiniteApproval ? "Off" : "On",
-    })
-  }
+      name: infiniteApproval ? "Off" : "On"
+    });
+  };
 
   const handleSlippageSelected = (value: Slippages): void => {
-    dispatch(updateSlippageSelected(value))
+    dispatch(updateSlippageSelected(value));
     analytics.trackEvent({
       category: "User",
       action: "Toggled Slippage",
-      name: value,
-    })
-  }
+      name: value
+    });
+  };
 
   const handleSlippageCustom = (value: string): void => {
-    dispatch(updateSlippageCustom(value))
+    dispatch(updateSlippageCustom(value));
     analytics.trackEvent({
       category: "User",
       action: "Updated Slippage Custom",
-      name: value,
-    })
-  }
+      name: value
+    });
+  };
 
   return (
     <div className={styles.advancedOptions}>
       <div className={styles.titleBox}>
         {props.noApprovalCheckbox && props.noSlippageCheckbox ? null : (
-          <span
-            className={styles.title}
-            onClick={(): PayloadAction<boolean> =>
-              dispatch(updatePoolAdvancedMode(!advanced))
-            }
-          >
+          <span className={styles.title} onClick={(): PayloadAction<boolean> => dispatch(updatePoolAdvancedMode(!advanced))}>
             <span className={styles.settings}>
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 16 17"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
+              <svg width="16" height="16" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g clipPath="url(#clip0_15_15299)">
                   <path
                     d="M8 10.5C9.10457 10.5 10 9.60457 10 8.5C10 7.39543 9.10457 6.5 8 6.5C6.89543 6.5 6 7.39543 6 8.5C6 9.60457 6.89543 10.5 8 10.5Z"
@@ -104,14 +83,13 @@ export default function AdvancedOptions(props: Props): React.ReactElement {
 
             <svg
               className={classNames(styles.triangle, {
-                [styles.upsideDown]: advanced,
+                [styles.upsideDown]: advanced
               })}
               width="16"
               height="10"
               viewBox="0 0 16 10"
               fill="#FFF"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+              xmlns="http://www.w3.org/2000/svg">
               <path d="M10.0163 3L6 7.17206L1.98375 3L0.75 4.28441L6 9.75L11.25 4.28441L10.0163 3Z"></path>
             </svg>
           </span>
@@ -120,16 +98,12 @@ export default function AdvancedOptions(props: Props): React.ReactElement {
 
       <div
         className={classNames(styles.tableContainer, {
-          [styles.show]: advanced,
-        })}
-      >
+          [styles.show]: advanced
+        })}>
         <div className={styles.parameter}>
           {!props.noApprovalCheckbox ? (
             <div className={styles.infiniteApproval}>
-              <CheckboxInput
-                checked={infiniteApproval}
-                onChange={handleInfiniteApproval}
-              />
+              <CheckboxInput checked={infiniteApproval} onChange={handleInfiniteApproval} />
               <ToolTip content={t("infiniteApprovalTooltip")}>
                 <div className={styles.labelLine}>
                   <span className={styles.label}>{t("infiniteApproval")}</span>
@@ -146,35 +120,30 @@ export default function AdvancedOptions(props: Props): React.ReactElement {
                 <div className={styles.groupButtons}>
                   <button
                     className={classNames({
-                      [styles.selected]:
-                        slippageSelected === Slippages.OneTenth,
+                      [styles.selected]: slippageSelected === Slippages.OneTenth
                     })}
-                    onClick={() => handleSlippageSelected(Slippages.OneTenth)}
-                  >
+                    onClick={() => handleSlippageSelected(Slippages.OneTenth)}>
                     <span>0.1%</span>
                   </button>
                   <button
                     className={classNames({
-                      [styles.selected]: slippageSelected === Slippages.One,
+                      [styles.selected]: slippageSelected === Slippages.One
                     })}
-                    onClick={() => handleSlippageSelected(Slippages.One)}
-                  >
+                    onClick={() => handleSlippageSelected(Slippages.One)}>
                     <span>1%</span>
                   </button>
                   <div className={styles.custom}>
                     <input
                       value={slippageCustom?.valueRaw}
-                      onChange={(
-                        e: React.ChangeEvent<HTMLInputElement>,
-                      ): void => {
-                        const value = e.target.value
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
+                        const value = e.target.value;
                         if (value && !isNaN(+value)) {
-                          handleSlippageCustom(value)
+                          handleSlippageCustom(value);
                           if (slippageSelected !== Slippages.Custom) {
-                            dispatch(updateSlippageSelected(Slippages.Custom))
+                            dispatch(updateSlippageSelected(Slippages.Custom));
                           }
                         } else {
-                          dispatch(updateSlippageSelected(Slippages.OneTenth))
+                          dispatch(updateSlippageSelected(Slippages.OneTenth));
                         }
                       }}
                     />
@@ -187,5 +156,5 @@ export default function AdvancedOptions(props: Props): React.ReactElement {
         </div>
       </div>
     </div>
-  )
+  );
 }

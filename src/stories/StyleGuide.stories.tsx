@@ -1,7 +1,7 @@
-import "../styles/global.scss"
+import "../styles/global.scss";
 
-import { Button, Heading, Stack, Text } from "@chakra-ui/react"
-import React, { ReactElement } from "react"
+import { Button, Heading, Stack, Text } from "@chakra-ui/react";
+import React, { ReactElement } from "react";
 
 const Headings = () => (
   <Stack spacing={6}>
@@ -30,7 +30,7 @@ const Headings = () => (
       {`(xs) It's time to vault Up!`}
     </Heading>
   </Stack>
-)
+);
 
 const Texts = () => (
   <Stack spacing={3}>
@@ -45,7 +45,7 @@ const Texts = () => (
     <Text fontSize="sm">{`(sm) It's time to vault Up!`}</Text>
     <Text fontSize="xs">{`(xs) It's time to vault Up!`}</Text>
   </Stack>
-)
+);
 
 const Buttons = () => (
   <Stack spacing={8} direction="row" align="center">
@@ -59,7 +59,7 @@ const Buttons = () => (
       </Button>
     </Stack>
   </Stack>
-)
+);
 export const StyleGuide = (): ReactElement => (
   <Stack spacing={4}>
     <Heading as="h2" size="2xl">
@@ -75,9 +75,9 @@ export const StyleGuide = (): ReactElement => (
     </Heading>
     <Buttons />
   </Stack>
-)
+);
 
 export default {
   title: "StyleGuide",
-  component: StyleGuide,
-}
+  component: StyleGuide
+};

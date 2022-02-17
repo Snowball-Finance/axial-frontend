@@ -1,69 +1,50 @@
-import "./PoolOverview.scss"
-import { POOLS_MAP, PoolTypes, TOKENS_MAP } from "../../constants"
-import { PoolDataType, UserShareType } from "../../hooks/usePoolData"
-import React, { ReactElement } from "react"
-import { formatBNToShortString, formatBNToString, commify } from "../../libs"
-import Button from "../button/Button"
-import { Link } from "react-router-dom"
-import { Zero } from "@ethersproject/constants"
-import classNames from "classnames"
-import { useTranslation } from "react-i18next"
-import { LoadingWrapper } from "../shimmer"
+import "./PoolOverview.scss";
+import { POOLS_MAP, PoolTypes, TOKENS_MAP } from "../../constants";
+import { PoolDataType, UserShareType } from "../../hooks/usePoolData";
+import React, { ReactElement } from "react";
+import { formatBNToShortString, formatBNToString, commify } from "../../libs";
+import Button from "../button/Button";
+import { Link } from "react-router-dom";
+import { Zero } from "@ethersproject/constants";
+import classNames from "classnames";
+import { useTranslation } from "react-i18next";
+import { LoadingWrapper } from "../shimmer";
 
 interface Props {
-  poolRoute: string
-  poolData: PoolDataType
-  userShareData: UserShareType | null
-  onClickMigrate?: (e: React.MouseEvent<HTMLButtonElement>) => void
+  poolRoute: string;
+  poolData: PoolDataType;
+  userShareData: UserShareType | null;
+  onClickMigrate?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-export default function PoolOverview({
-  poolData,
-  poolRoute,
-  userShareData,
-  onClickMigrate,
-}: Props): ReactElement | null {
-  const { t } = useTranslation()
-  const { type: poolType, isOutdated } = POOLS_MAP[poolData.name]
-  const formattedDecimals = poolType === PoolTypes.USD ? 2 : 4
-  const shouldMigrate = !!onClickMigrate
+export default function PoolOverview({ poolData, poolRoute, userShareData, onClickMigrate }: Props): ReactElement | null {
+  const { t } = useTranslation();
+  const { type: poolType, isOutdated } = POOLS_MAP[poolData.name];
+  const formattedDecimals = poolType === PoolTypes.USD ? 2 : 4;
+  const shouldMigrate = !!onClickMigrate;
   const formattedData = {
     name: poolData.name,
-    reserve: poolData.reserve
-      ? formatBNToShortString(poolData.reserve, 18)
-      : "",
-    apr: poolData.apr
-      ? `${Number(poolData.apr).toFixed(2)}%`
-      : poolData.apr === 0
-      ? " - "
-      : "-",
-    volume: poolData.volume
-      ? `$${commify(Number(poolData.volume).toFixed(2))}`
-      : poolData.volume === 0
-      ? " - "
-      : "-",
-    userBalanceUSD: formatBNToShortString(
-      userShareData?.usdBalance || Zero,
-      18,
-    ),
+    reserve: poolData.reserve ? formatBNToShortString(poolData.reserve, 18) : "",
+    apr: poolData.apr ? `${Number(poolData.apr).toFixed(2)}%` : poolData.apr === 0 ? " - " : "-",
+    volume: poolData.volume ? `$${commify(Number(poolData.volume).toFixed(2))}` : poolData.volume === 0 ? " - " : "-",
+    userBalanceUSD: formatBNToShortString(userShareData?.usdBalance || Zero, 18),
     tokens: poolData.tokens.map((coin) => {
-      const token = TOKENS_MAP[coin.symbol]
+      const token = TOKENS_MAP[coin.symbol];
       return {
         symbol: token.symbol,
         name: token.name,
         icon: token.icon,
-        value: formatBNToString(coin.value, token.decimals, formattedDecimals),
-      }
-    }),
-  }
-  const hasShare = !!userShareData?.usdBalance.gt("0")
+        value: formatBNToString(coin.value, token.decimals, formattedDecimals)
+      };
+    })
+  };
+  const hasShare = !!userShareData?.usdBalance.gt("0");
 
   return (
     <div
       className={classNames("poolOverview", {
-        outdated: isOutdated || shouldMigrate,
-      })}
-    >
+        outdated: isOutdated || shouldMigrate
+      })}>
       <div className="left">
         <div className="titleAndTag">
           <h4 className="title">{formattedData.name}</h4>
@@ -72,11 +53,7 @@ export default function PoolOverview({
         </div>
         <div className="tokens">
           <span>[</span>
-          <LoadingWrapper
-            height={19}
-            width={140}
-            isLoading={formattedData.tokens.length === 0}
-          >
+          <LoadingWrapper height={19} width={140} isLoading={formattedData.tokens.length === 0}>
             <>
               {formattedData.tokens.map(({ symbol, icon }) => (
                 <div className="token" key={symbol}>
@@ -101,33 +78,21 @@ export default function PoolOverview({
           {formattedData.apr && (
             <div className="margin">
               <span className="label">{`${t("apr")}`}</span>
-              <LoadingWrapper
-                height={19}
-                width={90}
-                isLoading={formattedData.apr === "-"}
-              >
+              <LoadingWrapper height={19} width={90} isLoading={formattedData.apr === "-"}>
                 <span>{formattedData.apr}</span>
               </LoadingWrapper>
             </div>
           )}
           <div className="margin">
             <span className="label">TVL</span>
-            <LoadingWrapper
-              height={19}
-              width={55}
-              isLoading={!formattedData.reserve}
-            >
+            <LoadingWrapper height={19} width={55} isLoading={!formattedData.reserve}>
               <span> {`$${formattedData.reserve}`}</span>
             </LoadingWrapper>
           </div>
           {formattedData.volume && (
             <div>
               <span className="label">{`${t("24HrVolume")}`}</span>
-              <LoadingWrapper
-                height={19}
-                width={90}
-                isLoading={formattedData.volume === "-"}
-              >
+              <LoadingWrapper height={19} width={90} isLoading={formattedData.volume === "-"}>
                 <span>{formattedData.volume}</span>
               </LoadingWrapper>
             </div>
@@ -140,21 +105,12 @@ export default function PoolOverview({
             </Button>
           </Link>
           {shouldMigrate ? (
-            <Button
-              kind="temporary"
-              size="medium"
-              onClick={onClickMigrate}
-              disabled={!hasShare}
-            >
+            <Button kind="temporary" size="medium" onClick={onClickMigrate} disabled={!hasShare}>
               {t("migrate")}
             </Button>
           ) : (
             <Link to={`${poolRoute}/deposit`}>
-              <Button
-                kind="primary"
-                size="medium"
-                disabled={poolData?.isPaused || isOutdated}
-              >
+              <Button kind="primary" size="medium" disabled={poolData?.isPaused || isOutdated}>
                 {t("deposit")}
               </Button>
             </Link>
@@ -162,13 +118,10 @@ export default function PoolOverview({
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-function Tag(props: {
-  children?: React.ReactNode
-  kind?: "warning" | "error"
-}) {
-  const { kind = "warning", ...tagProps } = props
-  return <span className={classNames("tag", kind)} {...tagProps} />
+function Tag(props: { children?: React.ReactNode; kind?: "warning" | "error" }) {
+  const { kind = "warning", ...tagProps } = props;
+  return <span className={classNames("tag", kind)} {...tagProps} />;
 }

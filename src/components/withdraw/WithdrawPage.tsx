@@ -1,92 +1,83 @@
-import "./WithdrawPage.scss"
-import { PoolDataType, UserShareType } from "../../hooks/usePoolData"
-import React, { ReactElement, useState } from "react"
+import "./WithdrawPage.scss";
+import { PoolDataType, UserShareType } from "../../hooks/usePoolData";
+import React, { ReactElement, useState } from "react";
 
-import AdvancedOptions from "../advance-options/AdvancedOptions"
-import { AppState } from "../../store"
-import { BigNumber } from "@ethersproject/bignumber"
-import Button from "../button/Button"
-import ConfirmTransaction from "../confirm-transaction/ConfirmTransaction"
-import Modal from "../modal/Modal"
-import MyShareCard from "../my-share-card/MyShareCard"
-import PoolInfoCard from "../pool-info-card/PoolInfoCard"
-import RadioButton from "../button/RadioButton"
-import ReviewWithdraw from "../reviews/ReviewWithdraw"
-import TokenInput from "../token-input/TokenInput"
-import { WithdrawFormState } from "../../hooks/useWithdrawFormState"
-import { Zero } from "@ethersproject/constants"
-import classNames from "classnames"
-import { formatBNToPercentString } from "../../libs"
-import { useSelector } from "react-redux"
-import { useTranslation } from "react-i18next"
-import { TransactionStatusType } from "../../hooks/useApproveAndDeposit"
-import { analytics } from "../../utils/analytics"
+import AdvancedOptions from "../advance-options/AdvancedOptions";
+import { AppState } from "../../store";
+import { BigNumber } from "@ethersproject/bignumber";
+import Button from "../button/Button";
+import ConfirmTransaction from "../confirm-transaction/ConfirmTransaction";
+import Modal from "../modal/Modal";
+import MyShareCard from "../my-share-card/MyShareCard";
+import PoolInfoCard from "../pool-info-card/PoolInfoCard";
+import RadioButton from "../button/RadioButton";
+import ReviewWithdraw from "../reviews/ReviewWithdraw";
+import TokenInput from "../token-input/TokenInput";
+import { WithdrawFormState } from "../../hooks/useWithdrawFormState";
+import { Zero } from "@ethersproject/constants";
+import classNames from "classnames";
+import { formatBNToPercentString } from "../../libs";
+import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
+import { TransactionStatusType } from "../../hooks/useApproveAndDeposit";
+import { analytics } from "../../utils/analytics";
 
 export interface ReviewWithdrawData {
   withdraw: {
-    name: string
-    value: string
-    icon: string
-  }[]
+    name: string;
+    value: string;
+    icon: string;
+  }[];
   rates: {
-    name: string
-    value: string
-    rate: string
-  }[]
-  slippage: string
-  priceImpact: BigNumber
+    name: string;
+    value: string;
+    rate: string;
+  }[];
+  slippage: string;
+  priceImpact: BigNumber;
   txnGasCost: {
-    amount: BigNumber
-    valueUSD: BigNumber | null // amount * ethPriceUSD
-  }
+    amount: BigNumber;
+    valueUSD: BigNumber | null; // amount * ethPriceUSD
+  };
 }
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 interface Props {
-  title: string
+  title: string;
   tokensData: Array<{
-    symbol: string
-    name: string
-    icon: string
-    inputValue: string
-  }>
-  reviewData: ReviewWithdrawData
-  selected?: { [key: string]: any }
-  poolData: PoolDataType | null
-  myShareData: UserShareType | null
-  formStateData: WithdrawFormState
-  onFormChange: (action: any) => void
-  onConfirmTransaction: () => Promise<void>
-  transactionStatus: TransactionStatusType
+    symbol: string;
+    name: string;
+    icon: string;
+    inputValue: string;
+  }>;
+  reviewData: ReviewWithdrawData;
+  selected?: { [key: string]: any };
+  poolData: PoolDataType | null;
+  myShareData: UserShareType | null;
+  formStateData: WithdrawFormState;
+  onFormChange: (action: any) => void;
+  onConfirmTransaction: () => Promise<void>;
+  transactionStatus: TransactionStatusType;
 }
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
 const WithdrawPage = (props: Props): ReactElement => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
-  const {
-    tokensData,
-    poolData,
-    myShareData,
-    onFormChange,
-    formStateData,
-    reviewData,
-    onConfirmTransaction,
-    transactionStatus,
-  } = props
+  const { tokensData, poolData, myShareData, onFormChange, formStateData, reviewData, onConfirmTransaction, transactionStatus } = props;
 
-  const { gasPriceSelected } = useSelector((state: AppState) => state.user)
-  const [currentModal, setCurrentModal] = useState<string | null>(null)
+  const { gasPriceSelected } = useSelector((state: AppState) => state.user);
+  const [currentModal, setCurrentModal] = useState<string | null>(null);
 
   const onSubmit = (): void => {
-    setCurrentModal("review")
+    setCurrentModal("review");
     analytics.trackEvent({
       category: "Withdraw",
       action: "Review",
-      name: "Review",
-    })
-  }
-  const noShare = !myShareData || myShareData.lpTokenBalance.eq(Zero)
+      name: "Review"
+    });
+  };
+  const noShare = !myShareData || myShareData.lpTokenBalance.eq(Zero);
 
   return (
     <div className={"withdraw " + classNames({ noShare: noShare })}>
@@ -111,12 +102,10 @@ const WithdrawPage = (props: Props): ReactElement => {
                 onChange={(e: React.FormEvent<HTMLInputElement>): void =>
                   onFormChange({
                     fieldName: "percentage",
-                    value: e.currentTarget.value,
+                    value: e.currentTarget.value
                   })
                 }
-                onFocus={(e: React.ChangeEvent<HTMLInputElement>): void =>
-                  e.target.select()
-                }
+                onFocus={(e: React.ChangeEvent<HTMLInputElement>): void => e.target.select()}
                 value={formStateData.percentage ? formStateData.percentage : 0}
               />
             </div>
@@ -128,17 +117,13 @@ const WithdrawPage = (props: Props): ReactElement => {
                 onChange={(e: React.FormEvent<HTMLInputElement>): void =>
                   onFormChange({
                     fieldName: "percentage",
-                    value: e.currentTarget.value,
+                    value: e.currentTarget.value
                   })
                 }
-                onFocus={(e: React.ChangeEvent<HTMLInputElement>): void =>
-                  e.target.select()
-                }
+                onFocus={(e: React.ChangeEvent<HTMLInputElement>): void => e.target.select()}
                 value={formStateData.percentage ? formStateData.percentage : ""}
               />
-              {formStateData.error && (
-                <div className="error">{formStateData.error.message}</div>
-              )}
+              {formStateData.error && <div className="error">{formStateData.error.message}</div>}
             </div>
             <div className="horizontalDisplay">
               <RadioButton
@@ -146,7 +131,7 @@ const WithdrawPage = (props: Props): ReactElement => {
                 onChange={(): void =>
                   onFormChange({
                     fieldName: "withdrawType",
-                    value: "ALL",
+                    value: "ALL"
                   })
                 }
                 label="Combo"
@@ -159,12 +144,12 @@ const WithdrawPage = (props: Props): ReactElement => {
                     onChange={(): void =>
                       onFormChange({
                         fieldName: "withdrawType",
-                        value: t.symbol,
+                        value: t.symbol
                       })
                     }
                     label={t.symbol}
                   />
-                )
+                );
               })}
             </div>
             {tokensData.map((token, index) => (
@@ -176,15 +161,11 @@ const WithdrawPage = (props: Props): ReactElement => {
                     onFormChange({
                       fieldName: "tokenInputs",
                       value: value,
-                      tokenSymbol: token.symbol,
+                      tokenSymbol: token.symbol
                     })
                   }
                 />
-                {index === tokensData.length - 1 ? (
-                  ""
-                ) : (
-                  <div className="formSpace"></div>
-                )}
+                {index === tokensData.length - 1 ? "" : <div className="formSpace"></div>}
               </div>
             ))}
             <div className={"transactionInfoContainer"}>
@@ -195,67 +176,46 @@ const WithdrawPage = (props: Props): ReactElement => {
                   ) : (
                     <span className="slippage">{t("priceImpact")}</span>
                   )}
-                  <span
-                    className={
-                      "value " +
-                      (reviewData.priceImpact.gte(0) ? "bonus" : "slippage")
-                    }
-                  >
+                  <span className={"value " + (reviewData.priceImpact.gte(0) ? "bonus" : "slippage")}>
                     {" "}
                     {formatBNToPercentString(reviewData.priceImpact, 18, 4)}
                   </span>
                 </div>
               </div>
             </div>
-            <AdvancedOptions
-              noApprovalCheckbox={true}
-              noSlippageCheckbox={true}
-            />
+            <AdvancedOptions noApprovalCheckbox={true} noSlippageCheckbox={true} />
             <Button
               kind="primary"
               size="full"
-              disabled={
-                noShare ||
-                !!formStateData.error ||
-                formStateData.lpTokenAmountToSpend.isZero()
-              }
-              onClick={onSubmit}
-            >
+              disabled={noShare || !!formStateData.error || formStateData.lpTokenAmountToSpend.isZero()}
+              onClick={onSubmit}>
               {t("withdraw")}
             </Button>
           </div>
         </div>
-        <Modal
-          isOpen={!!currentModal}
-          onClose={(): void => setCurrentModal(null)}
-        >
+        <Modal isOpen={!!currentModal} onClose={(): void => setCurrentModal(null)}>
           {currentModal === "review" ? (
             <ReviewWithdraw
               data={reviewData}
               gas={gasPriceSelected}
               onConfirm={async (): Promise<void> => {
-                setCurrentModal("confirm")
+                setCurrentModal("confirm");
                 analytics.trackEvent({
                   category: "Withdraw",
                   action: "Confirm",
-                  name: "Confirm",
-                })
-                await onConfirmTransaction?.()
-                setCurrentModal(null)
+                  name: "Confirm"
+                });
+                await onConfirmTransaction?.();
+                setCurrentModal(null);
               }}
               onClose={(): void => setCurrentModal(null)}
             />
           ) : null}
-          {currentModal === "confirm" && (
-            <ConfirmTransaction
-              type="withdraw"
-              transactionStatus={transactionStatus}
-            />
-          )}
+          {currentModal === "confirm" && <ConfirmTransaction type="withdraw" transactionStatus={transactionStatus} />}
         </Modal>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default WithdrawPage
+export default WithdrawPage;

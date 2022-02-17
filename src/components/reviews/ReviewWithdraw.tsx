@@ -1,48 +1,35 @@
-import "./ReviewWithdraw.scss"
+import "./ReviewWithdraw.scss";
 
-import React, { ReactElement, useState } from "react"
-import { commify, formatBNToString, formatDeadlineToNumber } from "../../libs"
+import React, { ReactElement, useState } from "react";
+import { commify, formatBNToString, formatDeadlineToNumber } from "../../libs";
 
-import { AppState } from "../../store/index"
-import Button from "../button/Button"
-import { GasPrices } from "../../store/module/user"
-import HighPriceImpactConfirmation from "../highprice-impact-confirmation/HighPriceImpactConfirmation"
-import { ReviewWithdrawData } from "../withdraw/WithdrawPage"
-import { formatGasToString } from "../../libs/gas"
-import { formatSlippageToString } from "../../libs/slippage"
-import { isHighPriceImpact } from "../../libs/priceImpact"
-import { useSelector } from "react-redux"
-import { useTranslation } from "react-i18next"
+import { AppState } from "../../store/index";
+import Button from "../button/Button";
+import { GasPrices } from "../../store/module/user";
+import HighPriceImpactConfirmation from "../highprice-impact-confirmation/HighPriceImpactConfirmation";
+import { ReviewWithdrawData } from "../withdraw/WithdrawPage";
+import { formatGasToString } from "../../libs/gas";
+import { formatSlippageToString } from "../../libs/slippage";
+import { isHighPriceImpact } from "../../libs/priceImpact";
+import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 interface Props {
-  onClose: () => void
-  onConfirm: () => void
-  data: ReviewWithdrawData
-  gas: GasPrices
+  onClose: () => void;
+  onConfirm: () => void;
+  data: ReviewWithdrawData;
+  gas: GasPrices;
 }
 
 function ReviewWithdraw({ onClose, onConfirm, data }: Props): ReactElement {
-  const { t } = useTranslation()
-  const {
-    slippageCustom,
-    slippageSelected,
-    gasPriceSelected,
-    gasCustom,
-    transactionDeadlineSelected,
-    transactionDeadlineCustom,
-  } = useSelector((state: AppState) => state.user)
-  const { gasStandard, gasFast, gasInstant } = useSelector(
-    (state: AppState) => state.application,
-  )
-  const [
-    hasConfirmedHighPriceImpact,
-    setHasConfirmedHighPriceImpact,
-  ] = useState(false)
-  const isHighSlippageTxn = isHighPriceImpact(data.priceImpact)
-  const deadline = formatDeadlineToNumber(
-    transactionDeadlineSelected,
-    transactionDeadlineCustom,
-  )
+  const { t } = useTranslation();
+  const { slippageCustom, slippageSelected, gasPriceSelected, gasCustom, transactionDeadlineSelected, transactionDeadlineCustom } = useSelector(
+    (state: AppState) => state.user
+  );
+  const { gasStandard, gasFast, gasInstant } = useSelector((state: AppState) => state.application);
+  const [hasConfirmedHighPriceImpact, setHasConfirmedHighPriceImpact] = useState(false);
+  const isHighSlippageTxn = isHighPriceImpact(data.priceImpact);
+  const deadline = formatDeadlineToNumber(transactionDeadlineSelected, transactionDeadlineCustom);
   return (
     <div className="reviewWithdraw">
       <h3>{t("youWillReceive")}</h3>
@@ -63,28 +50,17 @@ function ReviewWithdraw({ onClose, onConfirm, data }: Props): ReactElement {
         <div className="divider"></div>
         <div className="withdrawInfoItem">
           <span className="label">{t("gas")}</span>
-          <span className="value">
-            {formatGasToString(
-              { gasStandard, gasFast, gasInstant },
-              gasPriceSelected,
-              gasCustom,
-            )}{" "}
-            GWEI
-          </span>
+          <span className="value">{formatGasToString({ gasStandard, gasFast, gasInstant }, gasPriceSelected, gasCustom)} GWEI</span>
         </div>
         {data.txnGasCost?.valueUSD && (
           <div className="withdrawInfoItem">
             <span className="label">{t("estimatedTxCost")}</span>
-            <span className="value">
-              {`≈$${commify(formatBNToString(data.txnGasCost.valueUSD, 2, 2))}`}{" "}
-            </span>
+            <span className="value">{`≈$${commify(formatBNToString(data.txnGasCost.valueUSD, 2, 2))}`} </span>
           </div>
         )}
         <div className="withdrawInfoItem">
           <span className="label">{t("maxSlippage")}</span>
-          <span className="value">
-            {formatSlippageToString(slippageSelected, slippageCustom)}%
-          </span>
+          <span className="value">{formatSlippageToString(slippageSelected, slippageCustom)}%</span>
         </div>
         <div className="withdrawInfoItem">
           <span className="label">{t("deadline")}</span>
@@ -107,9 +83,7 @@ function ReviewWithdraw({ onClose, onConfirm, data }: Props): ReactElement {
         <div className="withdrawInfoItem">
           <HighPriceImpactConfirmation
             checked={hasConfirmedHighPriceImpact}
-            onCheck={(): void =>
-              setHasConfirmedHighPriceImpact((prevState) => !prevState)
-            }
+            onCheck={(): void => setHasConfirmedHighPriceImpact((prevState) => !prevState)}
           />
         </div>
       )}
@@ -119,17 +93,13 @@ function ReviewWithdraw({ onClose, onConfirm, data }: Props): ReactElement {
           <Button onClick={onClose} kind="secondary">
             {t("cancel")}
           </Button>
-          <Button
-            onClick={onConfirm}
-            kind="primary"
-            disabled={isHighSlippageTxn && !hasConfirmedHighPriceImpact}
-          >
+          <Button onClick={onConfirm} kind="primary" disabled={isHighSlippageTxn && !hasConfirmedHighPriceImpact}>
             {t("confirmWithdraw")}
           </Button>
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default ReviewWithdraw
+export default ReviewWithdraw;

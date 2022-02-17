@@ -1,31 +1,31 @@
-import "./Web3Status.scss"
+import "./Web3Status.scss";
 
-import React, { ReactElement, useEffect, useState } from "react"
-import AccountDetails from "../account-detail/AccountDetails"
-import ConnectWallet from "../connect-wallet/ConnectWallet"
-import Identicon from "../Identicon"
-import Modal from "../modal/Modal"
-import { useTranslation } from "react-i18next"
-import { useWeb3React, UnsupportedChainIdError } from "@web3-react/core"
-import { addAvalancheNetwork } from "../../connectors"
+import React, { ReactElement, useEffect, useState } from "react";
+import AccountDetails from "../account-detail/AccountDetails";
+import ConnectWallet from "../connect-wallet/ConnectWallet";
+import Identicon from "../Identicon";
+import Modal from "../modal/Modal";
+import { useTranslation } from "react-i18next";
+import { useWeb3React, UnsupportedChainIdError } from "@web3-react/core";
+import { addAvalancheNetwork } from "../../connectors";
 
 const WALLET_VIEWS = {
   OPTIONS: "options",
-  ACCOUNT: "account",
-}
+  ACCOUNT: "account"
+};
 
 const Web3Status = (): ReactElement => {
-  const { account, error } = useWeb3React()
-  const [modalOpen, setModalOpen] = useState(false)
-  const [walletView, setWalletView] = useState(WALLET_VIEWS.ACCOUNT)
-  const { t } = useTranslation()
+  const { account, error } = useWeb3React();
+  const [modalOpen, setModalOpen] = useState(false);
+  const [walletView, setWalletView] = useState(WALLET_VIEWS.ACCOUNT);
+  const { t } = useTranslation();
 
   // always reset to account view
   useEffect(() => {
     if (modalOpen) {
-      setWalletView(WALLET_VIEWS.ACCOUNT)
+      setWalletView(WALLET_VIEWS.ACCOUNT);
     }
-  }, [modalOpen])
+  }, [modalOpen]);
 
   return (
     <div className="walletStatus">
@@ -51,15 +51,13 @@ const Web3Status = (): ReactElement => {
       )}
       <Modal isOpen={modalOpen} onClose={(): void => setModalOpen(false)}>
         {account && walletView === WALLET_VIEWS.ACCOUNT ? (
-          <AccountDetails
-            openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)}
-          />
+          <AccountDetails openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)} />
         ) : (
           <ConnectWallet onClose={(): void => setModalOpen(false)} />
         )}
       </Modal>
     </div>
-  )
-}
+  );
+};
 
-export default Web3Status
+export default Web3Status;

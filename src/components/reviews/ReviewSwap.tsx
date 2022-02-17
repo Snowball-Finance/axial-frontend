@@ -1,84 +1,62 @@
-import "./ReviewSwap.scss"
+import "./ReviewSwap.scss";
 
-import React, { ReactElement, useState } from "react"
-import { SWAP_TYPES, TOKENS_MAP, getIsVirtualSwap } from "../../constants"
-import { commify, formatBNToString, formatDeadlineToNumber } from "../../libs"
+import React, { ReactElement, useState } from "react";
+import { SWAP_TYPES, TOKENS_MAP, getIsVirtualSwap } from "../../constants";
+import { commify, formatBNToString, formatDeadlineToNumber } from "../../libs";
 
-import { AppState } from "../../store/index"
-import { BigNumber } from "@ethersproject/bignumber"
-import Button from "../button/Button"
-import HighPriceImpactConfirmation from "../highprice-impact-confirmation/HighPriceImpactConfirmation"
-import { ReactComponent as ThinArrowDown } from "../../assets/icons/thinArrowDown.svg"
-import classnames from "classnames"
-import { formatGasToString } from "../../libs/gas"
-import { formatSlippageToString } from "../../libs/slippage"
-import iconDown from "../../assets/icons/icon_down.svg"
-import { isHighPriceImpact } from "../../libs/priceImpact"
-import { useSelector } from "react-redux"
-import { useTranslation } from "react-i18next"
+import { AppState } from "../../store/index";
+import { BigNumber } from "@ethersproject/bignumber";
+import Button from "../button/Button";
+import HighPriceImpactConfirmation from "../highprice-impact-confirmation/HighPriceImpactConfirmation";
+import { ReactComponent as ThinArrowDown } from "../../assets/icons/thinArrowDown.svg";
+import classnames from "classnames";
+import { formatGasToString } from "../../libs/gas";
+import { formatSlippageToString } from "../../libs/slippage";
+import iconDown from "../../assets/icons/icon_down.svg";
+import { isHighPriceImpact } from "../../libs/priceImpact";
+import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 interface Props {
-  onClose: () => void
-  onConfirm: () => void
+  onClose: () => void;
+  onConfirm: () => void;
   data: {
-    from: { symbol: string; value: string }
-    to: { symbol: string; value: string }
+    from: { symbol: string; value: string };
+    to: { symbol: string; value: string };
     exchangeRateInfo: {
-      pair: string
-      priceImpact: BigNumber
-      exchangeRate: BigNumber
-      route: string[]
-    }
-    swapType: SWAP_TYPES
+      pair: string;
+      priceImpact: BigNumber;
+      exchangeRate: BigNumber;
+      route: string[];
+    };
+    swapType: SWAP_TYPES;
     txnGasCost: {
-      amount: BigNumber
-      valueUSD: BigNumber | null // amount * ethPriceUSD
-    }
-  }
+      amount: BigNumber;
+      valueUSD: BigNumber | null; // amount * ethPriceUSD
+    };
+  };
 }
 
 function ReviewSwap({ onClose, onConfirm, data }: Props): ReactElement {
-  const { t } = useTranslation()
-  const {
-    slippageCustom,
-    slippageSelected,
-    gasPriceSelected,
-    gasCustom,
-    transactionDeadlineSelected,
-    transactionDeadlineCustom,
-  } = useSelector((state: AppState) => state.user)
-  const { gasStandard, gasFast, gasInstant } = useSelector(
-    (state: AppState) => state.application,
-  )
-  const [
-    hasConfirmedHighPriceImpact,
-    setHasConfirmedHighPriceImpact,
-  ] = useState(false)
-  const isHighPriceImpactTxn = isHighPriceImpact(
-    data.exchangeRateInfo.priceImpact,
-  )
-  const isVirtualSwap = getIsVirtualSwap(data.swapType)
-  const deadline = formatDeadlineToNumber(
-    transactionDeadlineSelected,
-    transactionDeadlineCustom,
-  )
+  const { t } = useTranslation();
+  const { slippageCustom, slippageSelected, gasPriceSelected, gasCustom, transactionDeadlineSelected, transactionDeadlineCustom } = useSelector(
+    (state: AppState) => state.user
+  );
+  const { gasStandard, gasFast, gasInstant } = useSelector((state: AppState) => state.application);
+  const [hasConfirmedHighPriceImpact, setHasConfirmedHighPriceImpact] = useState(false);
+  const isHighPriceImpactTxn = isHighPriceImpact(data.exchangeRateInfo.priceImpact);
+  const isVirtualSwap = getIsVirtualSwap(data.swapType);
+  const deadline = formatDeadlineToNumber(transactionDeadlineSelected, transactionDeadlineCustom);
 
   return (
     <div className="reviewSwap">
       <h3>{t("reviewSwap")}</h3>
       <div className="swapTable">
-        {isVirtualSwap ? (
-          <VirtualSwapTokens data={data} />
-        ) : (
-          <DirectSwapTokens data={data} />
-        )}
+        {isVirtualSwap ? <VirtualSwapTokens data={data} /> : <DirectSwapTokens data={data} />}
         {data.swapType === SWAP_TYPES.SYNTH_TO_SYNTH && (
           <div className="row">
             <span className="aside">
-              {t("virtualSwapSynthToSynthInfo")}{" "}
-              <a href="https://blog.synthetix.io/how-fee-reclamation-rebates-work/">
-                {t("learnMore")}
-              </a>
+              {t("virtualSwapSynthToSynthInfo")} <a href="https://blog.synthetix.io/how-fee-reclamation-rebates-work/">{t("learnMore")}</a>
             </span>
           </div>
         )}
@@ -88,13 +66,7 @@ function ReviewSwap({ onClose, onConfirm, data }: Props): ReactElement {
             <span className="title">{t("price")} </span>
             <span className="pair">{data.exchangeRateInfo.pair}</span>
             <button className="exchange">
-              <svg
-                width="24"
-                height="20"
-                viewBox="0 0 24 20"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
+              <svg width="24" height="20" viewBox="0 0 24 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                   d="M17.4011 12.4196C17.4011 13.7551 16.5999 13.8505 16.4472 13.8505H6.62679L9.14986 11.3274L8.47736 10.6501L5.13869 13.9888C5.04986 14.0782 5 14.1991 5 14.3251C5 14.4511 5.04986 14.572 5.13869 14.6613L8.47736 18L9.14986 17.3275L6.62679 14.8044H16.4472C17.1054 14.8044 18.355 14.3274 18.355 12.4196V10.9888H17.4011V12.4196Z"
                   fill="#D67A0A"
@@ -105,36 +77,21 @@ function ReviewSwap({ onClose, onConfirm, data }: Props): ReactElement {
                 />
               </svg>
             </button>
-            <span className="value floatRight">
-              {formatBNToString(data.exchangeRateInfo.exchangeRate, 18, 6)}
-            </span>
+            <span className="value floatRight">{formatBNToString(data.exchangeRateInfo.exchangeRate, 18, 6)}</span>
           </div>
           <div className="row">
             <span className="title">{t("gas")}</span>
-            <span className="value floatRight">
-              {formatGasToString(
-                { gasStandard, gasFast, gasInstant },
-                gasPriceSelected,
-                gasCustom,
-              )}{" "}
-              GWEI
-            </span>
+            <span className="value floatRight">{formatGasToString({ gasStandard, gasFast, gasInstant }, gasPriceSelected, gasCustom)} GWEI</span>
           </div>
           {data.txnGasCost?.valueUSD && (
             <div className="row">
               <span className="title">{t("estimatedTxCost")}</span>
-              <span className="value floatRight">
-                {`≈$${commify(
-                  formatBNToString(data.txnGasCost.valueUSD, 2, 2),
-                )}`}
-              </span>
+              <span className="value floatRight">{`≈$${commify(formatBNToString(data.txnGasCost.valueUSD, 2, 2))}`}</span>
             </div>
           )}
           <div className="row">
             <span className="title">{t("maxSlippage")}</span>
-            <span className="value floatRight">
-              {formatSlippageToString(slippageSelected, slippageCustom)}%
-            </span>
+            <span className="value floatRight">{formatSlippageToString(slippageSelected, slippageCustom)}%</span>
           </div>
           {!isVirtualSwap && (
             <div className="row">
@@ -148,9 +105,7 @@ function ReviewSwap({ onClose, onConfirm, data }: Props): ReactElement {
             <div className="row">
               <HighPriceImpactConfirmation
                 checked={hasConfirmedHighPriceImpact}
-                onCheck={(): void =>
-                  setHasConfirmedHighPriceImpact((prevState) => !prevState)
-                }
+                onCheck={(): void => setHasConfirmedHighPriceImpact((prevState) => !prevState)}
               />
             </div>
           )}
@@ -162,22 +117,18 @@ function ReviewSwap({ onClose, onConfirm, data }: Props): ReactElement {
           <Button onClick={onClose} kind="secondary">
             {t("cancel")}
           </Button>
-          <Button
-            onClick={onConfirm}
-            kind="primary"
-            disabled={isHighPriceImpactTxn && !hasConfirmedHighPriceImpact}
-          >
+          <Button onClick={onConfirm} kind="primary" disabled={isHighPriceImpactTxn && !hasConfirmedHighPriceImpact}>
             {t("confirmSwap")}
           </Button>
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 function DirectSwapTokens({ data }: { data: Props["data"] }) {
-  const fromToken = TOKENS_MAP[data.from.symbol]
-  const toToken = TOKENS_MAP[data.to.symbol]
+  const fromToken = TOKENS_MAP[data.from.symbol];
+  const toToken = TOKENS_MAP[data.to.symbol];
   return (
     <>
       <div className="row">
@@ -201,33 +152,31 @@ function DirectSwapTokens({ data }: { data: Props["data"] }) {
         </div>
       </div>
     </>
-  )
+  );
 }
 
 function VirtualSwapTokens({ data }: { data: Props["data"] }) {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   return (
     <>
       {data.exchangeRateInfo.route.map((symbol, i) => {
-        const isFirst = i === 0
-        const isLast = i === data.exchangeRateInfo.route.length - 1
-        const token = TOKENS_MAP[symbol]
+        const isFirst = i === 0;
+        const isLast = i === data.exchangeRateInfo.route.length - 1;
+        const token = TOKENS_MAP[symbol];
         return (
           <div className="row" key={symbol}>
             <div className="infoToken">
               {!isFirst && !isLast && <ThinArrowDown className="stepArrow" />}
               <img className="tokenIcon" src={token.icon} alt="icon" />
-              <span className={classnames("tokenName", { grey: isLast })}>
-                {token.symbol}
-              </span>
+              <span className={classnames("tokenName", { grey: isLast })}>{token.symbol}</span>
 
               {(isFirst || isLast) && (
                 <span className="aside">
                   {" "}
                   (
                   {t("stepN", {
-                    step: isFirst ? 1 : 2,
+                    step: isFirst ? 1 : 2
                   })}
                   )
                 </span>
@@ -238,10 +187,10 @@ function VirtualSwapTokens({ data }: { data: Props["data"] }) {
               {isLast && <span className="grey">{data.to.value}</span>}
             </div>
           </div>
-        )
+        );
       })}
     </>
-  )
+  );
 }
 
-export default ReviewSwap
+export default ReviewSwap;

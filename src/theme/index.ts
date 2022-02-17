@@ -1,13 +1,13 @@
-import { ThemeConfig, extendTheme } from "@chakra-ui/react"
+import { ThemeConfig, extendTheme } from "@chakra-ui/react";
 
-import components from "./components/index"
+import components from "./components/index";
 
 // import components from "./components"
 
 const config: ThemeConfig = {
   initialColorMode: "light",
-  useSystemColorMode: false,
-}
+  useSystemColorMode: false
+};
 
 const colors = {
   red: {
@@ -20,7 +20,7 @@ const colors = {
     600: "#ae0404",
     700: "#7d0102",
     800: "#4d0000",
-    900: "#1f0000",
+    900: "#1f0000"
   },
   teal: {
     50: "#d7fffe",
@@ -32,7 +32,7 @@ const colors = {
     600: "#00b39d",
     700: "#008170",
     800: "#004e43",
-    900: "#001c16",
+    900: "#001c16"
   },
   purple: {
     50: "#f4e3ff",
@@ -44,7 +44,7 @@ const colors = {
     600: "#4e00b4",
     700: "#380082",
     800: "#220050",
-    900: "#0d0020",
+    900: "#0d0020"
   },
   gold: {
     50: "#fff6e1",
@@ -56,16 +56,16 @@ const colors = {
     600: "#a77513",
     700: "#77540c",
     800: "#483204",
-    900: "#1a1100",
-  },
-}
+    900: "#1a1100"
+  }
+};
 
 const fonts = {
   body: "Source Code Pro, monospace, sans-serif",
   heading: "Noe Display, Times, serif",
-  mono: "Source Code Pro, monospace, sans-serif",
-}
+  mono: "Source Code Pro, monospace, sans-serif"
+};
 
-const overrides = { config, colors, fonts, components }
+const overrides = { config, colors, fonts, components };
 
-export default extendTheme(overrides)
+export default extendTheme(overrides);

@@ -1,18 +1,14 @@
-import "./RadioButton.scss"
+import "./RadioButton.scss";
 
-import React, { ReactElement } from "react"
+import React, { ReactElement } from "react";
 
 interface Props {
-  checked: boolean
-  onChange: () => void
-  label: string
+  checked: boolean;
+  onChange: () => void;
+  label: string;
 }
 
-export default function RadioButton({
-  checked,
-  onChange,
-  label,
-}: Props): ReactElement {
+export default function RadioButton({ checked, onChange, label }: Props): ReactElement {
   return (
     <div className="radio">
       <label className="radio_wrapper">
@@ -23,5 +19,5 @@ export default function RadioButton({
         <span className="label">{label}</span>
       </label>
     </div>
-  )
+  );
 }
