@@ -29,6 +29,7 @@ import Layout from "./Layout";
 import { LiquidityPage } from './pages/Liquidity/Loadable';
 import { RewardsPage } from './pages/Rewards/Loadable';
 import { SwapPage } from "./pages/Swap/Loadable";
+import { RisksPage } from "./pages/Risks/Loadable";
 
 export function App() {
   const { t } = useTranslation();
@@ -77,6 +78,7 @@ export function App() {
           </Route>
           <Route path={AppPages.LiquidityPage} component={LiquidityPage} />
           <Route path={AppPages.RewardPage} component={RewardsPage} />
+          <Route path={AppPages.RiskPage} component={RisksPage} />
           <Route component={NotFoundPage} />
         </Switch>
       </Layout>
