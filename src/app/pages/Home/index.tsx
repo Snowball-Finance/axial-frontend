@@ -54,7 +54,7 @@ export const HomePage = () => {
 
   return (
     <>
-      <Rewards />
+      {/* <Rewards /> */}
       <ContainedButton onClick={handleNavigateToGovernanceClick}>
         Go To Governance
       </ContainedButton>
