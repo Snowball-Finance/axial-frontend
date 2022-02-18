@@ -19,6 +19,26 @@
     "Rewards": "Rewards",
     "Description": "Rewards Page"
   },
+  "RisksPage": {
+    "Risks": "Risks",
+    "Description": "Risks Page",
+    "RiskContent": {
+      "Title": "Risk",
+      "Description": "Providing liquidity to Axial is risky. Before using the protocol, we highly recommend reading the code and understanding the risks of being a liquidity provider and/or using the Automatic Market Maker (AMM) to trade value-pegged crytpocurrency assets."
+    },
+    "AuditsContent": {
+      "Title": "Audits",
+      "Description": "Providing liquidity to Axial is risky. Before using the protocol, we highly recommend reading the code and understanding the risks of being a liquidity provider and/or using the Automatic Market Maker (AMM) to trade value-pegged crytpocurrency assets."
+    },
+    "AdminKeysContent": {
+      "Title": "Admin Keys",
+      "Description": "Providing liquidity to Axial is risky. Before using the protocol, we highly recommend reading the code and understanding the risks of being a liquidity provider and/or using the Automatic Market Maker (AMM) to trade value-pegged crytpocurrency assets."
+    },
+    "PermanentLossContent": {
+      "Title": "Permanent Loss",
+      "Description": "Providing liquidity to Axial is risky. Before using the protocol, we highly recommend reading the code and understanding the risks of being a liquidity provider and/or using the Automatic Market Maker (AMM) to trade value-pegged crytpocurrency assets."
+    }
+  },
   "Navigation": {
     "swap": "Swap",
     "liquidity": "Liquidity",
