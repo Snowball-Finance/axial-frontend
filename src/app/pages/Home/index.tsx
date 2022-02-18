@@ -17,6 +17,7 @@ import { StakingActions } from "app/containers/BlockChain/Governance/Staking/sli
 import { GovernanceSelectors } from "app/containers/BlockChain/Governance/selectors";
 import { GovernanceActions } from "app/containers/BlockChain/Governance/slice";
 import { StakingSelectors } from "app/containers/BlockChain/Governance/Staking/selectors";
+import { Rewards } from "app/containers/Rewards";
 
 export const HomePage = () => {
   useInjectReducer({ key: sliceKey, reducer: HomePageReducer });
@@ -53,6 +54,7 @@ export const HomePage = () => {
 
   return (
     <>
+      <Rewards />
       <ContainedButton onClick={handleNavigateToGovernanceClick}>
         Go To Governance
       </ContainedButton>
