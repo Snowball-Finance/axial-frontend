@@ -43,6 +43,7 @@ html{
   --poolCardBackground: #00103B;
   --poolCardBorder: #4D2F43;
   --paperBorderRadius:12px;
+  --swapInputbackground: #06041D;
 
   /* ag grid related styles */
   --ag-border-color: transparent;
