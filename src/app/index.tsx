@@ -32,6 +32,8 @@ import { Swap } from "./containers/Swap";
 import SWAP_ROUTER_ABI from "abi/swapRouter.json";
 import { swapTokens } from "./tokens";
 import { Token, TokenSymbols } from "./containers/Swap/types";
+import { Rewards } from "./containers/Rewards";
+import { rewardPools } from "./pools";
 
 // import { Swap } from "./containers/Swap";
 
@@ -71,6 +73,7 @@ export function App() {
         }}
       />
       {/* <PoolsAndGauges abi={GAUGE_PROXY_ABI} initialDataQuery={INFO_QUERY} /> */}
+      <Rewards pools={rewardPools} />
       <Swap
         swapRouterABI={SWAP_ROUTER_ABI}
         swapRouterAddress={"0xBeD9dfE835cd2bB6775f344Ee5E3431b2CbF31FB"}

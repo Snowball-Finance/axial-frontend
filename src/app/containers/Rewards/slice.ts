@@ -14,6 +14,7 @@ export const initialState: ContainerState = {
     [TRANSACTION_TYPES.SWAP]: Date.now(),
     [TRANSACTION_TYPES.MIGRATE]: Date.now(),
   },
+  pools: {},
   tokenPricesUSD: null,
   swapStats: null,
   masterchefApr: null,
@@ -41,6 +42,9 @@ const rewardsSlice = createSlice({
   name: "rewards",
   initialState,
   reducers: {
+    setRewardPools(state, action: PayloadAction<ContainerState["pools"]>) {
+      state.pools = action.payload;
+    },
     updateLastTransactionTimes(
       state,
       action: PayloadAction<LastTransactionTimes>
