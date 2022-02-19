@@ -119,7 +119,6 @@ export function* swap() {
       SWAP_ROUTER_FEE
     );
     const result = yield call(swapTransaction?.wait);
-    console.log({ result });
     if (result.status) {
       toast.success("Swap Successful");
     }
