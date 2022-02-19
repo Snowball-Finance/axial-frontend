@@ -62,6 +62,7 @@
     "format": "prettier --write ./src/**/*.{js,ts,tsx}",
     "checkAll": "yarn checkTs && yarn checkEslint && yarn lint",
     "prepare": "husky install",
+    "postinstall": "typechain  --target ethers-v5 --out-dir src/abi/ethers-contracts 'src/abi/*.json'",
     "generate": "cross-env TS_NODE_PROJECT='./internals/ts-node.tsconfig.json' plop --plopfile internals/generators/plopfile.ts"
   },
   "browserslist": {
@@ -119,6 +120,9 @@
     "serve": "13.0.2",
     "shelljs": "0.8.4",
     "ts-node": "10.4.0",
+    "typechain": "^7.0.0",
+    "@typechain/ethers-v5": "^9.0.0",
+    "@types/async-retry": "^1.4.3",
     "typescript": "4.4.4"
   }
 }
