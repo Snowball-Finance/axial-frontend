@@ -1,71 +1,74 @@
 import { PoolName, POOLS_MAP, Token } from "app/constants";
 import { Web3Selectors } from "app/containers/BlockChain/Web3/selectors";
-import { ContractCall, getMultiContractData, getUserMasterchefInfo } from "app/containers/utils/multicall";
+import {
+  ContractCall,
+  getMultiContractData,
+  getUserMasterchefInfo,
+} from "app/containers/utils/multicall";
 import { BigNumber } from "ethers";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import usePoller from "./usePoller";
 
 interface PoolInfo {
-  amount: BigNumber
-  rewardDebt: BigNumber
+  amount: BigNumber;
+  rewardDebt: BigNumber;
 }
 
 export interface PendingTokens {
-  pendingAxial: BigNumber
-  bonusTokenAddress: string
-  bonusTokenSymbol: string
-  pendingBonusToken: BigNumber
+  pendingAxial: BigNumber;
+  bonusTokenAddress: string;
+  bonusTokenSymbol: string;
+  pendingBonusToken: BigNumber;
 }
 
 export interface MasterchefResponse {
-  userInfo: PoolInfo
-  pendingTokens: PendingTokens
+  userInfo: PoolInfo;
+  pendingTokens: PendingTokens;
 }
 export type TokensMap = {
-  [symbol: string]: Token
-}
+  [symbol: string]: Token;
+};
 
 export const TOKENS_MAP = Object.keys(POOLS_MAP).reduce((acc, poolName) => {
-  const pool = POOLS_MAP[poolName as PoolName]
-  const newAcc = { ...acc }
+  const pool = POOLS_MAP[poolName as PoolName];
+  const newAcc = { ...acc };
   pool.poolTokens.forEach((token) => {
-    newAcc[token.symbol] = token
-  })
-  newAcc[pool.lpToken.symbol] = pool.lpToken
-  return newAcc
-}, {} as TokensMap)
-
+    newAcc[token.symbol] = token;
+  });
+  newAcc[pool.lpToken.symbol] = pool.lpToken;
+  return newAcc;
+}, {} as TokensMap);
 
 export function useMasterchefBalances(): {
-  [token: string]: MasterchefResponse
+  [token: string]: MasterchefResponse;
 } | null {
-  const { account, chainId, library } = useSelector(Web3Selectors.selectWeb3)
+  const { account, chainId, library } = useSelector(Web3Selectors.selectWeb3);
   const [masterchefBalances, setMasterchefBalances] = useState<{
-    [token: string]: MasterchefResponse
-  }>({})
+    [token: string]: MasterchefResponse;
+  }>({});
 
   usePoller((): void => {
     async function pollBalances(): Promise<void> {
-      if (!library || !chainId || !account) return
+      if (!library || !chainId || !account) return;
 
-      const tokens = Object.values(TOKENS_MAP)
+      const tokens = Object.values(TOKENS_MAP);
 
-      const masterchefBalancesCall: ContractCall[] = []
-      const tokenAddressList: string[] = []
+      const masterchefBalancesCall: ContractCall[] = [];
+      const tokenAddressList: string[] = [];
       tokens.forEach((token) => {
         if (token.isLPToken) {
           masterchefBalancesCall.push(
-            getUserMasterchefInfo(account, token.masterchefId, chainId),
-          )
-          tokenAddressList.push(token.addresses[chainId])
+            getUserMasterchefInfo(account, token.masterchefId, chainId)
+          );
+          tokenAddressList.push(token.addresses[chainId]);
         }
-      })
+      });
       const mBalances = await getMultiContractData(
         library,
         masterchefBalancesCall,
-        tokenAddressList,
-      )
+        tokenAddressList
+      );
 
       const _info: MasterchefResponse = {
         userInfo: {
@@ -78,7 +81,7 @@ export function useMasterchefBalances(): {
           pendingAxial: BigNumber.from("0"),
           pendingBonusToken: BigNumber.from("0"),
         },
-      }
+      };
 
       setMasterchefBalances(
         tokens.reduce(
@@ -100,14 +103,14 @@ export function useMasterchefBalances(): {
               },
             },
           }),
-          { _info: _info },
-        ),
-      )
+          { _info: _info }
+        )
+      );
     }
     if (account) {
-      void pollBalances()
+      void pollBalances();
     }
-  }, 15000)
+  }, 15000);
 
-  return masterchefBalances
+  return masterchefBalances;
 }

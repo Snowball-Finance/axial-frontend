@@ -579,9 +579,7 @@ export interface MetaSwap extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    metaSwapStorage(
-      overrides?: CallOverrides
-    ): Promise<
+    metaSwapStorage(overrides?: CallOverrides): Promise<
       [string, BigNumber, BigNumber] & {
         baseSwap: string;
         baseVirtualPrice: BigNumber;
@@ -652,9 +650,7 @@ export interface MetaSwap extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    swapStorage(
-      overrides?: CallOverrides
-    ): Promise<
+    swapStorage(overrides?: CallOverrides): Promise<
       [
         BigNumber,
         BigNumber,
@@ -783,9 +779,7 @@ export interface MetaSwap extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  metaSwapStorage(
-    overrides?: CallOverrides
-  ): Promise<
+  metaSwapStorage(overrides?: CallOverrides): Promise<
     [string, BigNumber, BigNumber] & {
       baseSwap: string;
       baseVirtualPrice: BigNumber;
@@ -856,9 +850,7 @@ export interface MetaSwap extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  swapStorage(
-    overrides?: CallOverrides
-  ): Promise<
+  swapStorage(overrides?: CallOverrides): Promise<
     [
       BigNumber,
       BigNumber,
@@ -987,9 +979,7 @@ export interface MetaSwap extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    metaSwapStorage(
-      overrides?: CallOverrides
-    ): Promise<
+    metaSwapStorage(overrides?: CallOverrides): Promise<
       [string, BigNumber, BigNumber] & {
         baseSwap: string;
         baseVirtualPrice: BigNumber;
@@ -1054,9 +1044,7 @@ export interface MetaSwap extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    swapStorage(
-      overrides?: CallOverrides
-    ): Promise<
+    swapStorage(overrides?: CallOverrides): Promise<
       [
         BigNumber,
         BigNumber,

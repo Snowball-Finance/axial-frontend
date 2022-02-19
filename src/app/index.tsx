@@ -26,8 +26,13 @@ import FEE_DISTRIBUTOR_ABI from "libs/abis/fee-distributor.json";
 import { CONTRACTS } from "config";
 import { StakingPage } from "./pages/StakingPage";
 import Layout from "./Layout";
-import { LiquidityPage } from './pages/Liquidity/Loadable';
-import { RewardsPage } from './pages/Rewards/Loadable';
+import { LiquidityPage } from "./pages/Liquidity/Loadable";
+import { RewardsPage } from "./pages/RewardsPage/Loadable";
+import { Swap } from "./containers/Swap";
+import SWAP_ROUTER_ABI from "abi/swapRouter.json";
+import ERC20_ABI from "abi/erc20.json";
+
+// import { Swap } from "./containers/Swap";
 
 export function App() {
   const { t } = useTranslation();
@@ -65,6 +70,27 @@ export function App() {
         }}
       />
       {/* <PoolsAndGauges abi={GAUGE_PROXY_ABI} initialDataQuery={INFO_QUERY} /> */}
+      <Swap
+        swapRouterABI={SWAP_ROUTER_ABI}
+        swapRouterAddress={"0xBeD9dfE835cd2bB6775f344Ee5E3431b2CbF31FB"}
+        tokens={{
+          "USDT.e": {
+            ABI: ERC20_ABI,
+            address: "0xc7198437980c041c805A1EDcbA50c1Ce5db95118",
+            decimals: 18,
+            symbol: "USDT.e",
+            name: "USDT.e",
+          },
+          FRAX: {
+            ABI: ERC20_ABI,
+            address: "0xD24C2Ad096400B6FBcd2ad8B24E7acBc21A1da64",
+            decimals: 18,
+            symbol: "FRAX",
+            name: "FRAX",
+          },
+        }}
+      />
+
       <Layout>
         <Switch>
           <Route exact path={AppPages.RootPage} component={HomePage} />

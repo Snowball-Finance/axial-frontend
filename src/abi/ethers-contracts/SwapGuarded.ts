@@ -611,9 +611,7 @@ export interface SwapGuarded extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    swapStorage(
-      overrides?: CallOverrides
-    ): Promise<
+    swapStorage(overrides?: CallOverrides): Promise<
       [
         BigNumber,
         BigNumber,
@@ -799,9 +797,7 @@ export interface SwapGuarded extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  swapStorage(
-    overrides?: CallOverrides
-  ): Promise<
+  swapStorage(overrides?: CallOverrides): Promise<
     [
       BigNumber,
       BigNumber,
@@ -979,9 +975,7 @@ export interface SwapGuarded extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    swapStorage(
-      overrides?: CallOverrides
-    ): Promise<
+    swapStorage(overrides?: CallOverrides): Promise<
       [
         BigNumber,
         BigNumber,

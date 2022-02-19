@@ -250,18 +250,14 @@ export class Simplerewarder extends Contract {
       overrides?: CallOverrides
     ): Promise<[BigNumber] & { pending: BigNumber }>;
 
-    poolInfo(
-      overrides?: CallOverrides
-    ): Promise<
+    poolInfo(overrides?: CallOverrides): Promise<
       [BigNumber, BigNumber] & {
         accTokenPerShare: BigNumber;
         lastRewardTimestamp: BigNumber;
       }
     >;
 
-    "poolInfo()"(
-      overrides?: CallOverrides
-    ): Promise<
+    "poolInfo()"(overrides?: CallOverrides): Promise<
       [BigNumber, BigNumber] & {
         accTokenPerShare: BigNumber;
         lastRewardTimestamp: BigNumber;
@@ -382,18 +378,14 @@ export class Simplerewarder extends Contract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
-  poolInfo(
-    overrides?: CallOverrides
-  ): Promise<
+  poolInfo(overrides?: CallOverrides): Promise<
     [BigNumber, BigNumber] & {
       accTokenPerShare: BigNumber;
       lastRewardTimestamp: BigNumber;
     }
   >;
 
-  "poolInfo()"(
-    overrides?: CallOverrides
-  ): Promise<
+  "poolInfo()"(overrides?: CallOverrides): Promise<
     [BigNumber, BigNumber] & {
       accTokenPerShare: BigNumber;
       lastRewardTimestamp: BigNumber;
@@ -506,18 +498,14 @@ export class Simplerewarder extends Contract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    poolInfo(
-      overrides?: CallOverrides
-    ): Promise<
+    poolInfo(overrides?: CallOverrides): Promise<
       [BigNumber, BigNumber] & {
         accTokenPerShare: BigNumber;
         lastRewardTimestamp: BigNumber;
       }
     >;
 
-    "poolInfo()"(
-      overrides?: CallOverrides
-    ): Promise<
+    "poolInfo()"(overrides?: CallOverrides): Promise<
       [BigNumber, BigNumber] & {
         accTokenPerShare: BigNumber;
         lastRewardTimestamp: BigNumber;
@@ -556,18 +544,14 @@ export class Simplerewarder extends Contract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    updatePool(
-      overrides?: CallOverrides
-    ): Promise<
+    updatePool(overrides?: CallOverrides): Promise<
       [BigNumber, BigNumber] & {
         accTokenPerShare: BigNumber;
         lastRewardTimestamp: BigNumber;
       }
     >;
 
-    "updatePool()"(
-      overrides?: CallOverrides
-    ): Promise<
+    "updatePool()"(overrides?: CallOverrides): Promise<
       [BigNumber, BigNumber] & {
         accTokenPerShare: BigNumber;
         lastRewardTimestamp: BigNumber;

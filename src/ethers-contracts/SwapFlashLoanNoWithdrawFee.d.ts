@@ -664,9 +664,7 @@ export class SwapFlashLoanNoWithdrawFee extends Contract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    swapStorage(
-      overrides?: CallOverrides
-    ): Promise<
+    swapStorage(overrides?: CallOverrides): Promise<
       [
         BigNumber,
         BigNumber,
@@ -686,9 +684,7 @@ export class SwapFlashLoanNoWithdrawFee extends Contract {
       }
     >;
 
-    "swapStorage()"(
-      overrides?: CallOverrides
-    ): Promise<
+    "swapStorage()"(overrides?: CallOverrides): Promise<
       [
         BigNumber,
         BigNumber,
@@ -1036,9 +1032,7 @@ export class SwapFlashLoanNoWithdrawFee extends Contract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  swapStorage(
-    overrides?: CallOverrides
-  ): Promise<
+  swapStorage(overrides?: CallOverrides): Promise<
     [
       BigNumber,
       BigNumber,
@@ -1058,9 +1052,7 @@ export class SwapFlashLoanNoWithdrawFee extends Contract {
     }
   >;
 
-  "swapStorage()"(
-    overrides?: CallOverrides
-  ): Promise<
+  "swapStorage()"(overrides?: CallOverrides): Promise<
     [
       BigNumber,
       BigNumber,
@@ -1396,9 +1388,7 @@ export class SwapFlashLoanNoWithdrawFee extends Contract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    swapStorage(
-      overrides?: CallOverrides
-    ): Promise<
+    swapStorage(overrides?: CallOverrides): Promise<
       [
         BigNumber,
         BigNumber,
@@ -1418,9 +1408,7 @@ export class SwapFlashLoanNoWithdrawFee extends Contract {
       }
     >;
 
-    "swapStorage()"(
-      overrides?: CallOverrides
-    ): Promise<
+    "swapStorage()"(overrides?: CallOverrides): Promise<
       [
         BigNumber,
         BigNumber,

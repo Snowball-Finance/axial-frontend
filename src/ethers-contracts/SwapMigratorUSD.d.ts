@@ -127,9 +127,7 @@ export class SwapMigratorUSD extends Contract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    usdPoolMigrationData(
-      overrides?: CallOverrides
-    ): Promise<
+    usdPoolMigrationData(overrides?: CallOverrides): Promise<
       [string, string, string, string] & {
         oldPoolAddress: string;
         oldPoolLPTokenAddress: string;
@@ -138,9 +136,7 @@ export class SwapMigratorUSD extends Contract {
       }
     >;
 
-    "usdPoolMigrationData()"(
-      overrides?: CallOverrides
-    ): Promise<
+    "usdPoolMigrationData()"(overrides?: CallOverrides): Promise<
       [string, string, string, string] & {
         oldPoolAddress: string;
         oldPoolLPTokenAddress: string;
@@ -178,9 +174,7 @@ export class SwapMigratorUSD extends Contract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  usdPoolMigrationData(
-    overrides?: CallOverrides
-  ): Promise<
+  usdPoolMigrationData(overrides?: CallOverrides): Promise<
     [string, string, string, string] & {
       oldPoolAddress: string;
       oldPoolLPTokenAddress: string;
@@ -189,9 +183,7 @@ export class SwapMigratorUSD extends Contract {
     }
   >;
 
-  "usdPoolMigrationData()"(
-    overrides?: CallOverrides
-  ): Promise<
+  "usdPoolMigrationData()"(overrides?: CallOverrides): Promise<
     [string, string, string, string] & {
       oldPoolAddress: string;
       oldPoolLPTokenAddress: string;
@@ -225,9 +217,7 @@ export class SwapMigratorUSD extends Contract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    usdPoolMigrationData(
-      overrides?: CallOverrides
-    ): Promise<
+    usdPoolMigrationData(overrides?: CallOverrides): Promise<
       [string, string, string, string] & {
         oldPoolAddress: string;
         oldPoolLPTokenAddress: string;
@@ -236,9 +226,7 @@ export class SwapMigratorUSD extends Contract {
       }
     >;
 
-    "usdPoolMigrationData()"(
-      overrides?: CallOverrides
-    ): Promise<
+    "usdPoolMigrationData()"(overrides?: CallOverrides): Promise<
       [string, string, string, string] & {
         oldPoolAddress: string;
         oldPoolLPTokenAddress: string;

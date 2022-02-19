@@ -302,9 +302,7 @@ export class LpTokenAMM extends Contract {
 
     "factory()"(overrides?: CallOverrides): Promise<[string]>;
 
-    getReserves(
-      overrides?: CallOverrides
-    ): Promise<
+    getReserves(overrides?: CallOverrides): Promise<
       [BigNumber, BigNumber, number] & {
         _reserve0: BigNumber;
         _reserve1: BigNumber;
@@ -312,9 +310,7 @@ export class LpTokenAMM extends Contract {
       }
     >;
 
-    "getReserves()"(
-      overrides?: CallOverrides
-    ): Promise<
+    "getReserves()"(overrides?: CallOverrides): Promise<
       [BigNumber, BigNumber, number] & {
         _reserve0: BigNumber;
         _reserve1: BigNumber;
@@ -527,9 +523,7 @@ export class LpTokenAMM extends Contract {
 
   "factory()"(overrides?: CallOverrides): Promise<string>;
 
-  getReserves(
-    overrides?: CallOverrides
-  ): Promise<
+  getReserves(overrides?: CallOverrides): Promise<
     [BigNumber, BigNumber, number] & {
       _reserve0: BigNumber;
       _reserve1: BigNumber;
@@ -537,9 +531,7 @@ export class LpTokenAMM extends Contract {
     }
   >;
 
-  "getReserves()"(
-    overrides?: CallOverrides
-  ): Promise<
+  "getReserves()"(overrides?: CallOverrides): Promise<
     [BigNumber, BigNumber, number] & {
       _reserve0: BigNumber;
       _reserve1: BigNumber;
@@ -756,9 +748,7 @@ export class LpTokenAMM extends Contract {
 
     "factory()"(overrides?: CallOverrides): Promise<string>;
 
-    getReserves(
-      overrides?: CallOverrides
-    ): Promise<
+    getReserves(overrides?: CallOverrides): Promise<
       [BigNumber, BigNumber, number] & {
         _reserve0: BigNumber;
         _reserve1: BigNumber;
@@ -766,9 +756,7 @@ export class LpTokenAMM extends Contract {
       }
     >;
 
-    "getReserves()"(
-      overrides?: CallOverrides
-    ): Promise<
+    "getReserves()"(overrides?: CallOverrides): Promise<
       [BigNumber, BigNumber, number] & {
         _reserve0: BigNumber;
         _reserve1: BigNumber;

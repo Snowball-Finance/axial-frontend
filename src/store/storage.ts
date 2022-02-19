@@ -1,5 +1,6 @@
 export enum LocalStorageKeys {
   CONNECTED_TO_WALLET_ONCE = "CONNECTED_TO_WALLET_ONCE",
+  INFINITE_APPROVAL_FOR_SWAP = "INFINITE_APPROVAL_FOR_SWAP",
 }
 
 export enum SessionStorageKeys {

@@ -1,58 +1,69 @@
-import { AddressZero, Zero } from "@ethersproject/constants"
-import { useEffect, useState } from "react"
-import { BigNumber } from "@ethersproject/bignumber"
-import LPTOKEN_UNGUARDED_ABI from "abi/lpTokenUnguarded.json"
-import { LpTokenUnguarded } from "abi/ethers-contracts/LpTokenUnguarded"
-import META_SWAP_ABI from "abi/metaSwap.json"
-import { MetaSwap } from "abi/ethers-contracts/MetaSwap"
-import { parseUnits } from "@ethersproject/units"
-import { useSelector } from "react-redux"
-import { ethers } from "ethers"
-import { SwapFlashLoanNoWithdrawFee } from "abi/ethers-contracts/SwapFlashLoanNoWithdrawFee"
-import { AXIAL_MASTERCHEF_CONTRACT_ADDRESS, extraRewardTokens, PoolName, POOLS_MAP, PoolTypes, TRANSACTION_TYPES } from "app/constants"
-import { useSwapContract } from "./useSwapContract"
-import { selectRewards } from "../selectors"
-import { formatBNToPercentString, getContract, getTokenSymbolForPoolType } from "app/containers/utils/contractUtils"
-import { MasterchefResponse, useMasterchefBalances } from "./usemasterChef"
-import { Web3Selectors } from "app/containers/BlockChain/Web3/selectors"
+import { AddressZero, Zero } from "@ethersproject/constants";
+import { useEffect, useState } from "react";
+import { BigNumber } from "@ethersproject/bignumber";
+import LPTOKEN_UNGUARDED_ABI from "abi/lpTokenUnguarded.json";
+import { LpTokenUnguarded } from "abi/ethers-contracts/LpTokenUnguarded";
+import META_SWAP_ABI from "abi/metaSwap.json";
+import { MetaSwap } from "abi/ethers-contracts/MetaSwap";
+import { parseUnits } from "@ethersproject/units";
+import { useSelector } from "react-redux";
+import { ethers } from "ethers";
+import { SwapFlashLoanNoWithdrawFee } from "abi/ethers-contracts/SwapFlashLoanNoWithdrawFee";
+import {
+  AXIAL_MASTERCHEF_CONTRACT_ADDRESS,
+  extraRewardTokens,
+  PoolName,
+  POOLS_MAP,
+  PoolTypes,
+  TRANSACTION_TYPES,
+} from "app/constants";
+import { useSwapContract } from "./useSwapContract";
+import { selectRewards } from "../selectors";
+import {
+  formatBNToPercentString,
+  getContract,
+  getTokenSymbolForPoolType,
+} from "app/containers/utils/contractUtils";
+import { MasterchefResponse, useMasterchefBalances } from "./usemasterChef";
+import { Web3Selectors } from "app/containers/BlockChain/Web3/selectors";
 
 interface TokenShareType {
-  percent: string
-  symbol: string
-  value: BigNumber
+  percent: string;
+  symbol: string;
+  value: BigNumber;
 }
 
-export type Partners = "keep" | "sharedStake" | "alchemix"
+export type Partners = "keep" | "sharedStake" | "alchemix";
 export interface PoolDataType {
-  adminFee: BigNumber
-  aParameter: BigNumber
-  apr: number | null
-  rapr: number | null
-  extraapr: number | null
-  name: string
-  reserve: BigNumber | null
-  swapFee: BigNumber
-  tokens: TokenShareType[]
-  totalLocked: BigNumber
-  utilization: BigNumber | null
-  virtualPrice: BigNumber
-  volume: number | null
-  isPaused: boolean
-  lpTokenPriceUSD: BigNumber
-  lpToken: string
+  adminFee: BigNumber;
+  aParameter: BigNumber;
+  apr: number | null;
+  rapr: number | null;
+  extraapr: number | null;
+  name: string;
+  reserve: BigNumber | null;
+  swapFee: BigNumber;
+  tokens: TokenShareType[];
+  totalLocked: BigNumber;
+  utilization: BigNumber | null;
+  virtualPrice: BigNumber;
+  volume: number | null;
+  isPaused: boolean;
+  lpTokenPriceUSD: BigNumber;
+  lpToken: string;
 }
 
 export interface UserShareType {
-  lpTokenBalance: BigNumber
-  name: string // TODO: does this need to be on user share?
-  share: BigNumber
-  tokens: TokenShareType[]
-  usdBalance: BigNumber
-  underlyingTokensAmount: BigNumber
-  masterchefBalance: MasterchefResponse | null
+  lpTokenBalance: BigNumber;
+  name: string; // TODO: does this need to be on user share?
+  share: BigNumber;
+  tokens: TokenShareType[];
+  usdBalance: BigNumber;
+  underlyingTokensAmount: BigNumber;
+  masterchefBalance: MasterchefResponse | null;
 }
 
-export type PoolDataHookReturnType = [PoolDataType, UserShareType | null]
+export type PoolDataHookReturnType = [PoolDataType, UserShareType | null];
 
 const emptyPoolData = {
   adminFee: Zero,
@@ -72,33 +83,29 @@ const emptyPoolData = {
   lpTokenPriceUSD: Zero,
   lpToken: "",
   isPaused: false,
-} as PoolDataType
+} as PoolDataType;
 
 export default function usePoolData(
   poolName?: PoolName,
-  useMasterchef?: boolean, //use LP info or masterchef info as source of data for balances
+  useMasterchef?: boolean //use LP info or masterchef info as source of data for balances
 ): PoolDataHookReturnType {
-  const { account, chainId, library } = useSelector(Web3Selectors.selectWeb3)
+  const { account, chainId, library } = useSelector(Web3Selectors.selectWeb3);
 
-  const swapContract = useSwapContract(poolName)
-  const {
-    tokenPricesUSD,
-    lastTransactionTimes,
-    swapStats,
-    masterchefApr,
-  } = useSelector(selectRewards)
-  const lastDepositTime = lastTransactionTimes[TRANSACTION_TYPES.DEPOSIT]
-  const lastWithdrawTime = lastTransactionTimes[TRANSACTION_TYPES.WITHDRAW]
-  const lastSwapTime = lastTransactionTimes[TRANSACTION_TYPES.SWAP]
-  const lastMigrateTime = lastTransactionTimes[TRANSACTION_TYPES.MIGRATE]
-  const masterchefBalances = useMasterchefBalances()
+  const swapContract = useSwapContract(poolName);
+  const { tokenPricesUSD, lastTransactionTimes, swapStats, masterchefApr } =
+    useSelector(selectRewards);
+  const lastDepositTime = lastTransactionTimes[TRANSACTION_TYPES.DEPOSIT];
+  const lastWithdrawTime = lastTransactionTimes[TRANSACTION_TYPES.WITHDRAW];
+  const lastSwapTime = lastTransactionTimes[TRANSACTION_TYPES.SWAP];
+  const lastMigrateTime = lastTransactionTimes[TRANSACTION_TYPES.MIGRATE];
+  const masterchefBalances = useMasterchefBalances();
   const [poolData, setPoolData] = useState<PoolDataHookReturnType>([
     {
       ...emptyPoolData,
       name: poolName || "",
     },
     null,
-  ])
+  ]);
 
   useEffect(() => {
     async function getSwapData(): Promise<void> {
@@ -110,51 +117,51 @@ export default function usePoolData(
         chainId == null
       ) {
         if (poolName && library) {
-          const POOL = POOLS_MAP[poolName]
+          const POOL = POOLS_MAP[poolName];
           if (POOL.type !== PoolTypes.LP) {
-            return
+            return;
           }
 
-          let masterchefPool
+          let masterchefPool;
           if (masterchefApr && masterchefBalances) {
-            masterchefPool = masterchefApr[POOL.addresses[43114]]
+            masterchefPool = masterchefApr[POOL.addresses[43114]];
           } else {
-            return
+            return;
           }
 
           const lpTokenContract = getContract(
             POOL.lpToken.addresses[43114],
             LPTOKEN_UNGUARDED_ABI,
             library,
-            account ?? undefined,
-          ) as LpTokenUnguarded
+            account ?? undefined
+          ) as LpTokenUnguarded;
 
           const [totalLpTokenBalance] = await Promise.all([
             lpTokenContract.balanceOf(AXIAL_MASTERCHEF_CONTRACT_ADDRESS[43114]),
-          ])
+          ]);
 
-          const poolApr = masterchefPool.apr ?? 0
+          const poolApr = masterchefPool.apr ?? 0;
 
-          let DEXLockedBN = BigNumber.from(0)
+          let DEXLockedBN = BigNumber.from(0);
 
           if (
             masterchefPool.tokenPoolPrice > 0 &&
             totalLpTokenBalance.gt("0x0")
           ) {
             const totalLocked =
-              masterchefPool.tokenPoolPrice * (+totalLpTokenBalance / 1e18)
+              masterchefPool.tokenPoolPrice * (+totalLpTokenBalance / 1e18);
             DEXLockedBN = BigNumber.from(totalLocked.toFixed(0)).mul(
-              BigNumber.from(10).pow(18),
-            )
+              BigNumber.from(10).pow(18)
+            );
           }
 
-          let tokenPoolPriceBN = BigNumber.from(0)
+          let tokenPoolPriceBN = BigNumber.from(0);
           try {
             tokenPoolPriceBN = ethers.utils.parseUnits(
-              masterchefPool.tokenPoolPrice.toFixed(2),
-            )
+              masterchefPool.tokenPoolPrice.toFixed(2)
+            );
           } catch (error) {
-            console.log("Error converting Float to BN")
+            console.log("Error converting Float to BN");
           }
 
           const poolData = {
@@ -174,27 +181,28 @@ export default function usePoolData(
             lpTokenPriceUSD: tokenPoolPriceBN,
             lpToken: POOL.lpToken.symbol,
             isPaused: false,
-          }
+          };
 
-          const userMasterchefBalances = masterchefBalances[POOL.lpToken.symbol]
+          const userMasterchefBalances =
+            masterchefBalances[POOL.lpToken.symbol];
           if (!userMasterchefBalances) {
-            setPoolData([poolData, null])
-            return
+            setPoolData([poolData, null]);
+            return;
           }
 
-          const userLpTokenBalance = userMasterchefBalances.userInfo.amount
+          const userLpTokenBalance = userMasterchefBalances.userInfo.amount;
 
           const share = userLpTokenBalance
             ?.mul(BigNumber.from(10).pow(18))
             .div(
               totalLpTokenBalance.isZero()
                 ? BigNumber.from("1")
-                : totalLpTokenBalance,
-            )
+                : totalLpTokenBalance
+            );
 
           const usdBalance = DEXLockedBN.isZero()
             ? BigNumber.from("0")
-            : DEXLockedBN.mul(share).div(BigNumber.from(10).pow(18))
+            : DEXLockedBN.mul(share).div(BigNumber.from(10).pow(18));
 
           const userShareData = account
             ? {
@@ -206,79 +214,78 @@ export default function usePoolData(
                 lpTokenBalance: userLpTokenBalance,
                 masterchefBalance: userMasterchefBalances,
               }
-            : null
+            : null;
 
-          setPoolData([poolData, userShareData])
-          return
+          setPoolData([poolData, userShareData]);
+          return;
         } else {
-          return
+          return;
         }
       }
 
-      const POOL = POOLS_MAP[poolName]
+      const POOL = POOLS_MAP[poolName];
       const userMasterchefBalances = masterchefBalances
         ? masterchefBalances[POOL.lpToken.symbol]
-        : null
-      const effectivePoolTokens = POOL.underlyingPoolTokens || POOL.poolTokens
-      const isMetaSwap = POOL.metaSwapAddresses != null
-      let metaSwapContract
+        : null;
+      const effectivePoolTokens = POOL.underlyingPoolTokens || POOL.poolTokens;
+      const isMetaSwap = POOL.metaSwapAddresses != null;
+      let metaSwapContract;
       if (isMetaSwap) {
         metaSwapContract = getContract(
           POOL.metaSwapAddresses?.[chainId] as string,
           META_SWAP_ABI,
           library,
-          account ?? undefined,
-        ) as MetaSwap
+          account ?? undefined
+        ) as MetaSwap;
       }
       const effectiveSwapContract =
-        metaSwapContract || (swapContract as SwapFlashLoanNoWithdrawFee)
+        metaSwapContract || (swapContract as SwapFlashLoanNoWithdrawFee);
 
       // Swap fees, price, and LP Token data
       const [swapStorage, aParameter, isPaused] = await Promise.all([
         effectiveSwapContract.swapStorage(),
         effectiveSwapContract.getA(),
         effectiveSwapContract.paused(),
-      ])
+      ]);
 
-      const { adminFee, lpToken: lpTokenAddress, swapFee } = swapStorage
+      const { adminFee, lpToken: lpTokenAddress, swapFee } = swapStorage;
       const lpTokenContract = getContract(
         lpTokenAddress,
         LPTOKEN_UNGUARDED_ABI,
         library,
-        account ?? undefined,
-      ) as LpTokenUnguarded
-      const totalLpTokenBalance = await lpTokenContract.totalSupply()
+        account ?? undefined
+      ) as LpTokenUnguarded;
+      const totalLpTokenBalance = await lpTokenContract.totalSupply();
 
-      let poolApr:null|number = null,
-        extraapr:null|number = null,
-        extraUSDPerWeek = 0
+      let poolApr: null | number = null,
+        extraapr: null | number = null,
+        extraUSDPerWeek = 0;
       if (masterchefApr) {
-        poolApr = masterchefApr[POOL.addresses[43114]].apr ?? 0
+        poolApr = masterchefApr[POOL.addresses[43114]].apr ?? 0;
 
         //set extra APR
         if (masterchefApr[POOL.addresses[43114]].extraTokens.length > 0) {
-          const TVL = +totalLpTokenBalance / 10 ** 18
+          const TVL = +totalLpTokenBalance / 10 ** 18;
           for (const token of masterchefApr[POOL.addresses[43114]]
             .extraTokens) {
             const extraReward = extraRewardTokens.find(
               (o) =>
-                o.addresses[43114].toLowerCase() ===
-                token.address.toLowerCase(),
-            )
+                o.addresses[43114].toLowerCase() === token.address.toLowerCase()
+            );
             if (extraReward) {
-              const tokenPrice = tokenPricesUSD[extraReward.symbol]
+              const tokenPrice = tokenPricesUSD[extraReward.symbol];
 
-              const tokensPerSec = ethers.BigNumber.from(token.tokenPerSec)
+              const tokensPerSec = ethers.BigNumber.from(token.tokenPerSec);
               extraUSDPerWeek +=
                 (+tokensPerSec / 10 ** extraReward.decimals) *
                 tokenPrice *
-                604_800
+                604_800;
             } else {
-              console.error(`Not found mapping for token: ${token.address}`)
+              console.error(`Not found mapping for token: ${token.address}`);
             }
           }
           if (extraUSDPerWeek > 0 && TVL > 0) {
-            extraapr = ((extraUSDPerWeek * 52) / TVL) * 100
+            extraapr = ((extraUSDPerWeek * 52) / TVL) * 100;
           }
         }
       }
@@ -287,70 +294,69 @@ export default function usePoolData(
       const userLpTokenBalance =
         useMasterchef && userMasterchefBalances
           ? userMasterchefBalances.userInfo.amount
-          : await lpTokenContract.balanceOf(account || AddressZero)
+          : await lpTokenContract.balanceOf(account || AddressZero);
 
       const virtualPrice = totalLpTokenBalance.isZero()
         ? BigNumber.from(10).pow(18)
-        : await effectiveSwapContract.getVirtualPrice()
+        : await effectiveSwapContract.getVirtualPrice();
 
       // Pool token data
       const tokenBalances: BigNumber[] = await Promise.all(
         effectivePoolTokens.map(async (token, i) => {
-          const balance = await effectiveSwapContract.getTokenBalance(i)
+          const balance = await effectiveSwapContract.getTokenBalance(i);
           return BigNumber.from(10)
             .pow(18 - token.decimals) // cast all to 18 decimals
-            .mul(balance)
-        }),
-      )
+            .mul(balance);
+        })
+      );
       const tokenBalancesSum: BigNumber = tokenBalances.reduce((sum, b) =>
-        sum.add(b),
-      )
+        sum.add(b)
+      );
       const tokenBalancesUSD = effectivePoolTokens.map((token, i, arr) => {
         // use another token to estimate USD price of meta LP tokens
         const symbol =
           isMetaSwap && i === arr.length - 1
             ? getTokenSymbolForPoolType(POOL.type)
-            : token.symbol
-        const balance = tokenBalances[i]
+            : token.symbol;
+        const balance = tokenBalances[i];
         return balance
           .mul(parseUnits(String(tokenPricesUSD[symbol] || 0), 18))
-          .div(BigNumber.from(10).pow(18))
-      })
+          .div(BigNumber.from(10).pow(18));
+      });
       const tokenBalancesUSDSum: BigNumber = tokenBalancesUSD.reduce((sum, b) =>
-        sum.add(b),
-      )
+        sum.add(b)
+      );
       const lpTokenPriceUSD = tokenBalancesSum.isZero()
         ? Zero
         : tokenBalancesUSDSum
             .mul(BigNumber.from(10).pow(18))
-            .div(tokenBalancesSum)
+            .div(tokenBalancesSum);
 
       function calculatePctOfTotalShare(lpTokenAmount: BigNumber): BigNumber {
         const baseCalc =
           useMasterchef && masterchefApr
             ? BigNumber.from(masterchefApr[POOL.addresses[43114]].totalStaked)
-            : totalLpTokenBalance
+            : totalLpTokenBalance;
 
         // returns the % of total lpTokens
         return lpTokenAmount
           .mul(BigNumber.from(10).pow(18))
-          .div(baseCalc.isZero() ? BigNumber.from("1") : baseCalc)
+          .div(baseCalc.isZero() ? BigNumber.from("1") : baseCalc);
       }
 
       // lpToken balance in wallet as a % of total lpTokens, plus lpTokens staked elsewhere
-      const userShare = calculatePctOfTotalShare(userLpTokenBalance)
+      const userShare = calculatePctOfTotalShare(userLpTokenBalance);
       const userPoolTokenBalances = tokenBalances.map((balance) => {
-        return userShare.mul(balance).div(BigNumber.from(10).pow(18))
-      })
+        return userShare.mul(balance).div(BigNumber.from(10).pow(18));
+      });
       const userPoolTokenBalancesSum: BigNumber = userPoolTokenBalances.reduce(
-        (sum, b) => sum.add(b),
-      )
+        (sum, b) => sum.add(b)
+      );
       const userPoolTokenBalancesUSD = tokenBalancesUSD.map((balance) => {
-        return userShare.mul(balance).div(BigNumber.from(10).pow(18))
-      })
-      const userPoolTokenBalancesUSDSum: BigNumber = userPoolTokenBalancesUSD.reduce(
-        (sum, b) => sum.add(b),
-      )
+        return userShare.mul(balance).div(BigNumber.from(10).pow(18));
+      });
+      const userPoolTokenBalancesUSDSum: BigNumber =
+        userPoolTokenBalancesUSD.reduce((sum, b) => sum.add(b));
 
       const poolTokens = effectivePoolTokens.map((token, i) => ({
         symbol: token.symbol,
@@ -360,12 +366,12 @@ export default function usePoolData(
             .div(
               totalLpTokenBalance.isZero()
                 ? BigNumber.from("1")
-                : tokenBalancesSum,
+                : tokenBalancesSum
             ),
-          5,
+          5
         ),
         value: tokenBalances[i],
-      }))
+      }));
       const userPoolTokens = effectivePoolTokens.map((token, i) => ({
         symbol: token.symbol,
         percent: formatBNToPercentString(
@@ -374,17 +380,17 @@ export default function usePoolData(
             .div(
               totalLpTokenBalance.isZero()
                 ? BigNumber.from("1")
-                : tokenBalancesSum,
+                : tokenBalancesSum
             ),
-          5,
+          5
         ),
         value: userPoolTokenBalances[i],
-      }))
-      const poolAddress = POOL.addresses[chainId]
+      }));
+      const poolAddress = POOL.addresses[chainId];
       const { oneDayVolume, apr, utilization } =
         swapStats && poolAddress in swapStats
           ? swapStats[poolAddress]
-          : { oneDayVolume: 0, apr: 0, utilization: null }
+          : { oneDayVolume: 0, apr: 0, utilization: null };
       const poolData = {
         name: poolName,
         rapr: poolApr,
@@ -402,7 +408,7 @@ export default function usePoolData(
         lpTokenPriceUSD,
         lpToken: POOL.lpToken.symbol,
         isPaused,
-      }
+      };
       const userShareData = account
         ? {
             name: poolName,
@@ -413,10 +419,10 @@ export default function usePoolData(
             lpTokenBalance: userLpTokenBalance,
             masterchefBalance: userMasterchefBalances,
           }
-        : null
-      setPoolData([poolData, userShareData])
+        : null;
+      setPoolData([poolData, userShareData]);
     }
-    void getSwapData()
+    void getSwapData();
   }, [
     lastDepositTime,
     lastWithdrawTime,
@@ -432,7 +438,7 @@ export default function usePoolData(
     swapStats,
     masterchefApr,
     useMasterchef,
-  ])
+  ]);
 
-  return poolData
+  return poolData;
 }
