@@ -12,6 +12,16 @@ export interface BestPath {
 export enum TokenSymbols {
   USDTe = "USDT.e",
   FRAX = "FRAX",
+  DAI = "DAI.e",
+  AVAI= "AVAI",
+  TSD = "TSD",
+  USDC= "USDC",
+  MIM= "MIM",
+  TEDDY= "TEDDY",
+  FXS= "FXS",
+  WAVAX= "WAVAX",
+  TUSD= "TUSD",
+  USDCe= "USDC.e",
 }
 
 export interface Token {
@@ -20,6 +30,7 @@ export interface Token {
   address: string;
   decimals: number;
   ABI: any;
+  logo?: string;
 }
 
 export enum GasPrices {

@@ -30,7 +30,8 @@ import { LiquidityPage } from "./pages/Liquidity/Loadable";
 import { RewardsPage } from "./pages/RewardsPage/Loadable";
 import { Swap } from "./containers/Swap";
 import SWAP_ROUTER_ABI from "abi/swapRouter.json";
-import ERC20_ABI from "abi/erc20.json";
+import { swapTokens } from "./tokens";
+import { Token, TokenSymbols } from "./containers/Swap/types";
 
 // import { Swap } from "./containers/Swap";
 
@@ -73,22 +74,7 @@ export function App() {
       <Swap
         swapRouterABI={SWAP_ROUTER_ABI}
         swapRouterAddress={"0xBeD9dfE835cd2bB6775f344Ee5E3431b2CbF31FB"}
-        tokens={{
-          "USDT.e": {
-            ABI: ERC20_ABI,
-            address: "0xc7198437980c041c805A1EDcbA50c1Ce5db95118",
-            decimals: 18,
-            symbol: "USDT.e",
-            name: "USDT.e",
-          },
-          FRAX: {
-            ABI: ERC20_ABI,
-            address: "0xD24C2Ad096400B6FBcd2ad8B24E7acBc21A1da64",
-            decimals: 18,
-            symbol: "FRAX",
-            name: "FRAX",
-          },
-        }}
+        tokens={swapTokens as { [K in TokenSymbols]: Token }}
       />
 
       <Layout>
