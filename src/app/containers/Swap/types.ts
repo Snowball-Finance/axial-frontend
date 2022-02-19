@@ -13,15 +13,15 @@ export enum TokenSymbols {
   USDTe = "USDT.e",
   FRAX = "FRAX",
   DAI = "DAI.e",
-  AVAI= "AVAI",
+  AVAI = "AVAI",
   TSD = "TSD",
-  USDC= "USDC",
-  MIM= "MIM",
-  TEDDY= "TEDDY",
-  FXS= "FXS",
-  WAVAX= "WAVAX",
-  TUSD= "TUSD",
-  USDCe= "USDC.e",
+  USDC = "USDC",
+  MIM = "MIM",
+  TEDDY = "TEDDY",
+  FXS = "FXS",
+  WAVAX = "WAVAX",
+  TUSD = "TUSD",
+  USDCe = "USDC.e",
 }
 
 export interface Token {

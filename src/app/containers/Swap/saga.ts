@@ -74,7 +74,7 @@ export function* swap() {
     const tokensList = Object.values(tokens);
     const swapRouterAddress = yield select(SwapDomains.swapRouterAddress);
     const swapRouterABI = yield select(SwapDomains.swapRouterABI);
-    const swapRouterContract:SwapRouter = new Contract(
+    const swapRouterContract: SwapRouter = new Contract(
       swapRouterAddress,
       swapRouterABI,
       getProviderOrSigner(library, account)

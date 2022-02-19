@@ -56,10 +56,7 @@ export const HomePage = () => {
         test getOptimal Path
       </ContainedButton>
       {bestPath && (
-        <ContainedButton
-          loading={isSwapping}
-          onClick={handleSwapClick}
-        >
+        <ContainedButton loading={isSwapping} onClick={handleSwapClick}>
           test swap
         </ContainedButton>
       )}
