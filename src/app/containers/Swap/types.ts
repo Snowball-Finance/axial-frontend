@@ -28,6 +28,7 @@ export enum TokenSymbols {
   ac4dUSD = "ac4dUSD",
   aa3dUSD = "aa3dUSD",
   am3dUSD = "am3dUSD",
+  ORCA = "ORCA",
 }
 
 export interface Token {

@@ -12,6 +12,7 @@ import {
   getMultiContractData,
   getUserMasterchefInfo,
 } from "../utils/multicall";
+import { fetchSwapStatsNow } from "./providers/getSwapStats";
 import { getVaultRewardAprNow } from "./providers/getVaultRewardsAPR";
 import { RewardsActions } from "./slice";
 import { MasterchefResponse, RewardsState } from "./types";
@@ -113,6 +114,17 @@ export function* getMasterchefAPR() {
     yield put(RewardsActions.setIsGettingMasterchefApr(false));
   }
 }
+export function* getSwapStats() {
+  try {
+    yield put(RewardsActions.setIsGettingSwapStats(true));
+    const stats = yield call(fetchSwapStatsNow);
+    yield put(RewardsActions.setSwapStats(stats));
+    yield put(RewardsActions.setIsGettingSwapStats(false));
+  } catch (e) {
+    console.log(e);
+    yield put(RewardsActions.setIsGettingSwapStats(false));
+  }
+}
 
 export function* rewardsSaga() {
   yield takeLatest(RewardsActions.getRewardPoolsData.type, getRewardPoolsData);
@@ -121,4 +133,5 @@ export function* rewardsSaga() {
     getMasterChefBalances
   );
   yield takeLatest(RewardsActions.getMasterchefAPR.type, getMasterchefAPR);
+  yield takeLatest(RewardsActions.getSwapStats.type, getSwapStats);
 }

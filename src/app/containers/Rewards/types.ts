@@ -77,6 +77,51 @@ export interface Pool {
   lpToken: Token;
 }
 
+interface TokenShareType {
+  percent: string;
+  symbol: string;
+  value: BigNumber;
+}
+
+export interface PoolDataType {
+  adminFee: BigNumber;
+  aParameter: BigNumber;
+  apr: number | null;
+  rapr: number | null;
+  extraapr: number | null;
+  name: string;
+  reserve: BigNumber | null;
+  swapFee: BigNumber;
+  tokens: TokenShareType[];
+  totalLocked: BigNumber;
+  utilization: BigNumber | null;
+  virtualPrice: BigNumber;
+  volume: number | null;
+  isPaused: boolean;
+  lpTokenPriceUSD: BigNumber;
+  lpToken: string;
+}
+
+export interface UserShareData {
+  name: string;
+  share: BigNumber;
+  underlyingTokensAmount: BigNumber;
+  usdBalance: BigNumber;
+  tokens: {
+    symbol: string;
+    percent: string;
+    value: BigNumber;
+  }[];
+  lpTokenBalance: BigNumber;
+  masterchefBalance: MasterchefResponse | null;
+}
+export interface SwapStatsReponse {
+  symbol: string
+  tokenaddress: string
+  swapaddress: string
+  last_apr: number
+  last_vol: number
+}
 export interface RewardsState {
   tokenPricesUSD: any;
   lastTransactionTimes: any;
@@ -84,6 +129,7 @@ export interface RewardsState {
   masterchefApr: MasterchefApr | undefined;
   isGettingMasterChefBalances: boolean;
   isGettingMasterchefApr: boolean;
+  isGettingSwapStats: boolean;
   masterChefBalances: { [key: string]: MasterchefResponse } | undefined;
   pools: { [K in Pools]?: Pool };
 }

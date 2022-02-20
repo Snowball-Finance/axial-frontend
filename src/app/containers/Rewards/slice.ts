@@ -1,5 +1,5 @@
 import { PayloadAction } from "@reduxjs/toolkit";
-import { ContainerState } from "./types";
+import { ContainerState, SwapStatsReponse } from "./types";
 import { createSlice } from "store/toolkit";
 import { useInjectReducer, useInjectSaga } from "store/redux-injectors";
 
@@ -18,8 +18,9 @@ export const initialState: ContainerState = {
   tokenPricesUSD: {},
   isGettingMasterChefBalances: false,
   isGettingMasterchefApr: false,
+  isGettingSwapStats: false,
   masterChefBalances: undefined,
-  swapStats: null,
+  swapStats: undefined,
   masterchefApr: undefined,
 };
 
@@ -59,6 +60,34 @@ const rewardsSlice = createSlice({
       state.masterChefBalances = action.payload;
     },
     getMasterchefAPR(state, action: PayloadAction<void>) {},
+    getSwapStats(state, action: PayloadAction<void>) {},
+    setIsGettingSwapStats(state, action: PayloadAction<boolean>) {
+      state.isGettingSwapStats = action.payload;
+    },
+    setSwapStats(state, action: PayloadAction<SwapStatsReponse[]>): void {
+      const formattedPayload = Object.values(action.payload).reduce(
+        (acc, data) => {
+          if (isNaN(data.last_apr) || isNaN(data.last_vol)) {
+            return acc
+          }
+          const apr = data.last_apr
+          const tvl = 0
+          const oneDayVolume = data.last_vol
+          const utilization = 0
+          return {
+            ...acc,
+            [data.swapaddress]: {
+              apr,
+              tvl,
+              oneDayVolume,
+              utilization,
+            },
+          }
+        },
+        {},
+      )
+      state.swapStats = formattedPayload
+      },
     setIsGettingMasterchefApr(state, action: PayloadAction<boolean>) {},
     setMasterChefAPR(
       state,
@@ -75,9 +104,7 @@ const rewardsSlice = createSlice({
         ...action.payload,
       };
     },
-    updateMasterchefApr(state, action: PayloadAction<MasterchefApr>): void {
-      state.masterchefApr = action.payload;
-    },
+
   },
 });
 

@@ -228,4 +228,22 @@ export const tokens: { [K in TokenSymbols]: Token } = {
     isSynthetic: false,
     masterchefId: 0,
   },
+  ORCA: {
+    ABI: ERC20_ABI,
+    address: "0x8B1d98A91F853218ddbb066F20b8c63E782e2430",
+    decimals: 18,
+    symbol: "ORCA",
+    name: "Orca DAO",
+    logo: axialLogo,
+    geckoId: "orcadao",
+    masterchefId: 0,
+    isSynthetic: false,
+    isLPToken: false,
+  },
 };
+export const extraRewardTokens = [
+  tokens.TEDDY,
+  tokens.FXS,
+  tokens.WAVAX,
+  tokens.ORCA,
+];
