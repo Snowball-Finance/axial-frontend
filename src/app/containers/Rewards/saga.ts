@@ -16,30 +16,33 @@ import {
 import { fetchSwapStatsNow } from "./providers/getSwapStats";
 import { getVaultRewardAprNow } from "./providers/getVaultRewardsAPR";
 import { RewardsActions } from "./slice";
-import { MasterchefResponse, Pool, RewardsState } from "./types";
+import { MasterchefResponse, Pool, Pools, RewardsState } from "./types";
 import { calculatePoolData } from "./utils/calculatePoolData";
 
 export function* getRewardPoolsData(action: {
   type: string;
   payload: RewardsState["pools"];
 }) {
-  const pools: any = { ...action.payload };
+  const pools: RewardsState["pools"] = { ...action.payload };
   const library = yield select(Web3Domains.selectLibraryDomain);
   const account = yield select(Web3Domains.selectAccountDomain);
   const chainId = yield select(Web3Domains.selectChainIDDomain);
   const tokenPricesUSD = yield select(GlobalDomains.tokenPricesUSD);
 
   try {
-    const arrayOfDataGetters = Object.values(pools).map((pool: any) => {
-      const dataToPass = {
-        pool,
-        account,
-        chainId,
-        library,
-        tokenPricesUSD,
-      };
-      return call(calculatePoolData, dataToPass);
-    });
+    //filtered JLP until i can find the bug in getting data
+    const arrayOfDataGetters = Object.values(pools)
+      .filter((pool) => pool.key !== Pools.AXIAL_JLP)
+      .map((pool: any) => {
+        const dataToPass = {
+          pool,
+          account,
+          chainId,
+          library,
+          tokenPricesUSD,
+        };
+        return call(calculatePoolData, dataToPass);
+      });
     const responses = yield all(arrayOfDataGetters);
     console.log(responses);
   } catch (error) {

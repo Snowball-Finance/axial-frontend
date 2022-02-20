@@ -163,7 +163,6 @@ export const calculatePoolData = async (props: Props) => {
   const effectiveSwapContract = swapContract;
 
   // Swap fees, price, and LP Token data
-  console.log({ effectiveSwapContract });
   const [aParameter, isPaused, swapStorage] = await Promise.all([
     effectiveSwapContract.getA(),
     effectiveSwapContract.paused(),

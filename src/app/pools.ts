@@ -1,5 +1,7 @@
 import { Pools, PoolTypes, RewardsState } from "./containers/Rewards/types";
 import METASWAP_DEPOSIT_ABI from "abi/metaSwapDeposit.json";
+import META_SWAP_ABI from "abi/metaSwap.json";
+
 import SWAP_FLASH_LOAN_NO_WITHDRAW_FEE_ABI from "abi/swapFlashLoanNoWithdrawFee.json";
 import { tokens } from "./tokens";
 
@@ -53,7 +55,7 @@ export const pools: RewardsState["pools"] = {
     key: Pools.USDC_AM3D,
     name: "USDC-AM3D Metapool",
     address: "0xba5f105A3E3D7C0eAa36AAa1e3BE11D77F1A6162",
-    swapABI: METASWAP_DEPOSIT_ABI,
+    swapABI: META_SWAP_ABI,
     swapAddress: "0x26694e4047eA77cC96341f0aC491773aC5469d72",
     poolType: PoolTypes.USD,
     poolTokens: [tokens.USDC, tokens["USDC.e"], tokens["DAI.e"], tokens.MIM],
