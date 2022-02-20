@@ -8,6 +8,7 @@ import { all, call, put, select, takeLatest } from "redux-saga/effects";
 import { Web3Domains } from "../BlockChain/Web3/selectors";
 import { getProviderOrSigner } from "../utils/contractUtils";
 import { ContractCall, getMultiContractData, getUserMasterchefInfo } from "../utils/multicall";
+import { getVaultRewardAprNow } from "./providers/getVaultRewardsAPR";
 import { RewardsActions } from "./slice";
 import { MasterchefResponse, RewardsState } from "./types";
 
@@ -90,11 +91,20 @@ export function* getMasterChefBalances() {
     yield put(RewardsActions.setIsGettingMasterChefBalances(false))
     console.log(e)
   }
+}
 
 
+export function* getMasterchefAPR() {
+  try {
+    const aprData = yield call(getVaultRewardAprNow)
+    yield put(RewardsActions.setMasterChefAPR(aprData))
+  } catch (e) {
+    console.log(e)
+  }
 }
 
 export function* rewardsSaga() {
   yield takeLatest(RewardsActions.getRewardPoolsData.type, getRewardPoolsData);
   yield takeLatest(RewardsActions.getMasterChefBalances.type, getMasterChefBalances);
+  yield takeLatest(RewardsActions.getMasterchefAPR.type, getMasterchefAPR);
 }

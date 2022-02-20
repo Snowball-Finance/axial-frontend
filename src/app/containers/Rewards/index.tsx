@@ -28,6 +28,12 @@ export const Rewards: FC<Props> = ({ pools }) => {
     }
     return () => {};
   }, [library,account]);
+useEffect(() => {
+  dispatch(RewardsActions.getMasterchefAPR())
+  return () => {
+    
+  }
+}, [])
 
   return <></>;
 };

@@ -33,7 +33,7 @@ import SWAP_ROUTER_ABI from "abi/swapRouter.json";
 import { tokens } from "./tokens";
 import { Token, TokenSymbols } from "./containers/Swap/types";
 import { Rewards } from "./containers/Rewards";
-import { rewardPools } from "./pools";
+import { pools } from "./pools";
 import { GlobalActions, useGlobalSlice } from "store/slice";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
@@ -86,13 +86,12 @@ useEffect(() => {
         }}
       />
       {/* <PoolsAndGauges abi={GAUGE_PROXY_ABI} initialDataQuery={INFO_QUERY} /> */}
-      <Rewards pools={rewardPools} />
+      <Rewards pools={pools} />
       <Swap
         swapRouterABI={SWAP_ROUTER_ABI}
         swapRouterAddress={"0xBeD9dfE835cd2bB6775f344Ee5E3431b2CbF31FB"}
         tokens={tokens as { [K in TokenSymbols]: Token }}
       />
-
       <Layout>
         <Switch>
           <Route exact path={AppPages.RootPage} component={HomePage} />

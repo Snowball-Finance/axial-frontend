@@ -3,7 +3,7 @@ import METASWAP_DEPOSIT_ABI from "abi/metaSwapDeposit.json";
 import SWAP_FLASH_LOAN_NO_WITHDRAW_FEE_ABI from "abi/swapFlashLoanNoWithdrawFee.json";
 import { tokens } from "./tokens";
 
-export const rewardPools: RewardsState["pools"] = {
+export const pools: RewardsState["pools"] = {
   AXIAL_AS4D: {
     name: "AS4D Stablecoins",
     address: "0x2a716c4933A20Cd8B9f9D9C39Ae7196A85c24228",

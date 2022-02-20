@@ -19,7 +19,7 @@ export const initialState: ContainerState = {
   isGettingMasterChefBalances: false,
   masterChefBalances:undefined,
   swapStats: null,
-  masterchefApr: null,
+  masterchefApr: undefined,
 };
 
 interface LastTransactionTimes {
@@ -52,6 +52,10 @@ const rewardsSlice = createSlice({
     setIsGettingMasterChefBalances(state, action: PayloadAction<boolean>) {},
     setMasterChefBalances(state, action: PayloadAction<ContainerState["masterChefBalances"]>) {
         state.masterChefBalances = action.payload;
+    },
+    getMasterchefAPR(state, action: PayloadAction<void>) {},
+    setMasterChefAPR(state, action: PayloadAction<ContainerState["masterchefApr"]>) {
+      state.masterchefApr = action.payload;
     },
     updateLastTransactionTimes(
       state,

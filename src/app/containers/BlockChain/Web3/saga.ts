@@ -29,7 +29,7 @@ export function* connectToWallet(action: {
       yield put(Web3Actions.setIsConnectingToWallet(false));
     }
   } else {
-    toast.error("error while connecting to wallet");
+    console.error("web3 not activated");
   }
 }
 

@@ -22,6 +22,34 @@ export interface MasterchefResponse {
   pendingTokens: PendingTokens;
 }
 
+export interface ExtraTokens {
+  address: string
+  tokenPerSec: string
+}
+
+export interface PoolInfos {
+  lpToken: string
+  allocPoint: BigNumber
+  lastRewardTimestamp: BigNumber
+  accAxialPerShare: BigNumber
+  rewarder: string
+}
+export interface AxialLPData {
+  AXIALPrice: number
+  LPTVL: number
+  tokenPoolPrice: number
+}
+
+export interface MasterchefApr {
+  [swapAddress: string]: {
+    apr: number
+    lptvl: number
+    totalStaked: string
+    tokenPoolPrice: number
+    extraTokens: ExtraTokens[]
+  }
+}
+
 
 export enum Pools {
   AXIAL_AS4D = "AXIAL_AS4D",
@@ -56,7 +84,7 @@ export interface RewardsState {
   tokenPricesUSD: any;
   lastTransactionTimes: any;
   swapStats: any;
-  masterchefApr: any;
+  masterchefApr: MasterchefApr|undefined;
   isGettingMasterChefBalances: boolean;
   masterChefBalances: { [key: string]: MasterchefResponse }|undefined;
   pools: { [K in Pools]?: Pool };
