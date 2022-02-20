@@ -24,10 +24,10 @@ export enum TokenSymbols {
   USDCe = "USDC.e",
   JLP = "JLP",
   as4dUSD = "as4dUSD",
-  usdcAM3DUSD="usdcAM3DUSD",
-  ac4dUSD="ac4dUSD",
-  aa3dUSD="aa3dUSD",
-  am3dUSD="am3dUSD"
+  usdcAM3DUSD = "usdcAM3DUSD",
+  ac4dUSD = "ac4dUSD",
+  aa3dUSD = "aa3dUSD",
+  am3dUSD = "am3dUSD",
 }
 
 export interface Token {
@@ -39,8 +39,8 @@ export interface Token {
   logo?: string;
   geckoId: string;
   masterchefId?: number;
-  isLPToken: boolean
-isSynthetic: boolean
+  isLPToken: boolean;
+  isSynthetic: boolean;
 }
 
 export enum GasPrices {

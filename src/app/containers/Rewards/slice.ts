@@ -17,7 +17,8 @@ export const initialState: ContainerState = {
   pools: {},
   tokenPricesUSD: {},
   isGettingMasterChefBalances: false,
-  masterChefBalances:undefined,
+  isGettingMasterchefApr: false,
+  masterChefBalances: undefined,
   swapStats: null,
   masterchefApr: undefined,
 };
@@ -44,17 +45,25 @@ const rewardsSlice = createSlice({
   name: "rewards",
   initialState,
   reducers: {
-    getRewardPoolsData(state, action: PayloadAction<ContainerState["pools"]>) {
-    },
+    getRewardPoolsData(
+      state,
+      action: PayloadAction<ContainerState["pools"]>
+    ) {},
     setRewardPoolsData(state, action: PayloadAction<any>) {},
-    getMasterChefBalances(state, action: PayloadAction<void>) {
-    },
+    getMasterChefBalances(state, action: PayloadAction<void>) {},
     setIsGettingMasterChefBalances(state, action: PayloadAction<boolean>) {},
-    setMasterChefBalances(state, action: PayloadAction<ContainerState["masterChefBalances"]>) {
-        state.masterChefBalances = action.payload;
+    setMasterChefBalances(
+      state,
+      action: PayloadAction<ContainerState["masterChefBalances"]>
+    ) {
+      state.masterChefBalances = action.payload;
     },
     getMasterchefAPR(state, action: PayloadAction<void>) {},
-    setMasterChefAPR(state, action: PayloadAction<ContainerState["masterchefApr"]>) {
+    setIsGettingMasterchefApr(state, action: PayloadAction<boolean>) {},
+    setMasterChefAPR(
+      state,
+      action: PayloadAction<ContainerState["masterchefApr"]>
+    ) {
       state.masterchefApr = action.payload;
     },
     updateLastTransactionTimes(

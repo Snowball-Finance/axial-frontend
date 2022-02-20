@@ -16,29 +16,31 @@ const otherTokens = {
   AXIAL: "axial-token",
   AVAI: "orca-avai",
   ORCA: "orcadao",
-}
+};
 
 interface CoinGeckoResponse {
   [tokenSymbol: string]: {
-    usd: number
-  }
+    usd: number;
+  };
 }
 
 export function* getTokenPricesUSD() {
-
-  const tokenIds = { ...otherTokens }
+  const tokenIds = { ...otherTokens };
   for (const key in tokens) {
     if (Object.prototype.hasOwnProperty.call(tokens, key)) {
       const element: Token = tokens[key];
       if (!element.isLPToken) {
-        tokenIds[key] = element.geckoId
+        tokenIds[key] = element.geckoId;
       }
     }
   }
   try {
-    yield put(GlobalActions.setIsGettingTokenPrices(true))
-    const prices = {}
-    const response: CoinGeckoResponse = yield call(getTokenPricesAPI, Object.values(tokenIds))
+    yield put(GlobalActions.setIsGettingTokenPrices(true));
+    const prices = {};
+    const response: CoinGeckoResponse = yield call(
+      getTokenPricesAPI,
+      Object.values(tokenIds)
+    );
     for (const responseGeckoId in response) {
       if (Object.prototype.hasOwnProperty.call(response, responseGeckoId)) {
         const price = response[responseGeckoId].usd;
@@ -46,25 +48,22 @@ export function* getTokenPricesUSD() {
           if (Object.prototype.hasOwnProperty.call(tokenIds, key)) {
             const element = tokenIds[key];
             if (element === responseGeckoId) {
-              prices[key] = price
-              break
+              prices[key] = price;
+              break;
             }
           }
         }
       }
     }
-    yield put(GlobalActions.setTokenPricesUSD(prices))
+    yield put(GlobalActions.setTokenPricesUSD(prices));
   } catch (e) {
-    console.log(e)
-    toast.error("Error getting token prices")
+    console.log(e);
+    toast.error("Error getting token prices");
   } finally {
-    yield put(GlobalActions.setIsGettingTokenPrices(false))
+    yield put(GlobalActions.setIsGettingTokenPrices(false));
   }
 }
 
 export function* globalSaga() {
-  yield takeLatest(
-    GlobalActions.getTokenPricesUSD.type,
-    getTokenPricesUSD
-  );
+  yield takeLatest(GlobalActions.getTokenPricesUSD.type, getTokenPricesUSD);
 }

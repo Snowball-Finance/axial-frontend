@@ -18,22 +18,20 @@ interface Props {
 
 export const Rewards: FC<Props> = ({ pools }) => {
   useRewardsSlice();
-  const library=useSelector(Web3Selectors.selectLibrary)
-  const account=useSelector(Web3Selectors.selectAccount)
+  const library = useSelector(Web3Selectors.selectLibrary);
+  const account = useSelector(Web3Selectors.selectAccount);
   const dispatch = useDispatch();
   useEffect(() => {
-    if(library && account){
+    if (library && account) {
       dispatch(RewardsActions.getRewardPoolsData(pools));
-      dispatch(RewardsActions.getMasterChefBalances())
+      dispatch(RewardsActions.getMasterChefBalances());
     }
     return () => {};
-  }, [library,account]);
-useEffect(() => {
-  dispatch(RewardsActions.getMasterchefAPR())
-  return () => {
-    
-  }
-}, [])
+  }, [library, account]);
+  useEffect(() => {
+    dispatch(RewardsActions.getMasterchefAPR());
+    return () => {};
+  }, []);
 
   return <></>;
 };

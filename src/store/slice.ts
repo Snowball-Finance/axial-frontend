@@ -9,8 +9,8 @@ interface ContainerState {
 }
 // The initial state of the LoginPage container
 export const initialState: ContainerState = {
-  isGettingTokenPrices:false,
-  tokenPricesUSD:{},
+  isGettingTokenPrices: false,
+  tokenPricesUSD: {},
 };
 
 const globalSlice = createSlice({
@@ -18,7 +18,10 @@ const globalSlice = createSlice({
   initialState,
   reducers: {
     getTokenPricesUSD(state, action: PayloadAction<void>) {},
-    setTokenPricesUSD(state, action: PayloadAction<ContainerState["tokenPricesUSD"]>) {
+    setTokenPricesUSD(
+      state,
+      action: PayloadAction<ContainerState["tokenPricesUSD"]>
+    ) {
       state.tokenPricesUSD = action.payload;
     },
     setIsGettingTokenPrices(state, action: PayloadAction<boolean>) {

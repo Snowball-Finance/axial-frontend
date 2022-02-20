@@ -42,15 +42,13 @@ import { useDispatch } from "react-redux";
 
 export function App() {
   const { t } = useTranslation();
-  useGlobalSlice()
-  const dispatch=useDispatch()
-  
-useEffect(() => {
-  dispatch(GlobalActions.getTokenPricesUSD())
-  return () => {
-  }
-}, [])
+  useGlobalSlice();
+  const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(GlobalActions.getTokenPricesUSD());
+    return () => {};
+  }, []);
 
   return (
     <>

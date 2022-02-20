@@ -1,5 +1,5 @@
 import ERC20_ABI from "abi/erc20.json";
-import {  Token, TokenSymbols } from "./containers/Swap/types";
+import { Token, TokenSymbols } from "./containers/Swap/types";
 import axialLogo from "assets/icons/logo_icon.svg"; // this needs a smaller icon logo(24)
 import daiLogo from "assets/icons/dai.svg";
 import fraxLogo from "assets/icons/frax.svg";
@@ -9,7 +9,6 @@ import tusdLogo from "assets/icons/tusd.svg";
 import usdcLogo from "assets/icons/usdc.svg";
 import usdtLogo from "assets/icons/usdt.svg";
 import avaiLogo from "assets/icons/avai.svg";
-
 
 export const tokens: { [K in TokenSymbols]: Token } = {
   "USDT.e": {
@@ -22,7 +21,7 @@ export const tokens: { [K in TokenSymbols]: Token } = {
     decimals: 6,
     masterchefId: 0,
     isSynthetic: false,
-    isLPToken: false
+    isLPToken: false,
   },
   usdcAM3DUSD: {
     address: "0xA57E0D32Aa27D3b1D5AFf6a8A786C6A4DADb818F",
@@ -34,9 +33,8 @@ export const tokens: { [K in TokenSymbols]: Token } = {
     geckoId: "usdcam3dusd",
     masterchefId: 5,
     isSynthetic: false,
-    isLPToken: true
-
-},
+    isLPToken: true,
+  },
   ac4dUSD: {
     address: "0x4da067E13974A4d32D342d86fBBbE4fb0f95f382",
     ABI: ERC20_ABI,
@@ -47,36 +45,36 @@ export const tokens: { [K in TokenSymbols]: Token } = {
     geckoId: "ac4dusd",
     masterchefId: 1,
     isSynthetic: false,
-    isLPToken: true
-},
-aa3dUSD: {
-  address: "0xaD556e7dc377d9089C6564f9E8d275f5EE4da22d",
-  ABI: ERC20_ABI,
-  decimals: 18,
-  symbol: "aa3dUSD",
-  name: "AA3D AVAI/MIM/USDC.e",
-  logo: axialLogo,
-  geckoId: "aa3dusd",
-  masterchefId: 4,
-  isSynthetic: false,
-  isLPToken: true
-},
+    isLPToken: true,
+  },
+  aa3dUSD: {
+    address: "0xaD556e7dc377d9089C6564f9E8d275f5EE4da22d",
+    ABI: ERC20_ABI,
+    decimals: 18,
+    symbol: "aa3dUSD",
+    name: "AA3D AVAI/MIM/USDC.e",
+    logo: axialLogo,
+    geckoId: "aa3dusd",
+    masterchefId: 4,
+    isSynthetic: false,
+    isLPToken: true,
+  },
 
-am3dUSD: {
-  address: "0xc161E4B11FaF62584EFCD2100cCB461A2DdE64D1",
-  ABI: ERC20_ABI,
-  decimals: 18,
-  symbol: "am3dUSD",
-  name: "AM3D MIM/USDC.e/DAI.e",
-  logo: axialLogo,
-  geckoId: "am3dusd",
-  masterchefId: 3,
-  isSynthetic: false,
-  isLPToken: true
-},
+  am3dUSD: {
+    address: "0xc161E4B11FaF62584EFCD2100cCB461A2DdE64D1",
+    ABI: ERC20_ABI,
+    decimals: 18,
+    symbol: "am3dUSD",
+    name: "AM3D MIM/USDC.e/DAI.e",
+    logo: axialLogo,
+    geckoId: "am3dusd",
+    masterchefId: 3,
+    isSynthetic: false,
+    isLPToken: true,
+  },
   as4dUSD: {
     ABI: ERC20_ABI,
-    address:"0x3A7387f8BA3ebFFa4A0ECcB1733e940CE2275D3f",
+    address: "0x3A7387f8BA3ebFFa4A0ECcB1733e940CE2275D3f",
     decimals: 18,
     symbol: "as4dUSD",
     name: "AS4D DAI.e/USDC.e/USDT.e/TUSD",
@@ -85,7 +83,7 @@ am3dUSD: {
     isSynthetic: false,
     isLPToken: true,
     logo: axialLogo,
-},
+  },
   JLP: {
     ABI: ERC20_ABI,
     address: "0x5305A6c4DA88391F4A9045bF2ED57F4BF0cF4f62",
@@ -94,9 +92,9 @@ am3dUSD: {
     name: "JLP",
     geckoId: "jlpavaxaxial",
     logo: axialLogo,
-    masterchefId:2,
+    masterchefId: 2,
     isSynthetic: false,
-    isLPToken: true
+    isLPToken: true,
   },
   FRAX: {
     ABI: ERC20_ABI,
@@ -105,10 +103,10 @@ am3dUSD: {
     symbol: "FRAX",
     name: "Frax",
     logo: fraxLogo,
-    geckoId:"frax",
+    geckoId: "frax",
     masterchefId: 0,
     isSynthetic: false,
-    isLPToken: false
+    isLPToken: false,
   },
   FXS: {
     ABI: ERC20_ABI,
@@ -117,10 +115,10 @@ am3dUSD: {
     symbol: "FXS",
     name: "Frax Share",
     logo: axialLogo,
-    geckoId:"frax-share",
-    isLPToken:false,
-    isSynthetic:false,
-    masterchefId:0
+    geckoId: "frax-share",
+    isLPToken: false,
+    isSynthetic: false,
+    masterchefId: 0,
   },
   "DAI.e": {
     ABI: ERC20_ABI,
@@ -132,7 +130,7 @@ am3dUSD: {
     name: "Dai",
     masterchefId: 0,
     isSynthetic: false,
-    isLPToken: false
+    isLPToken: false,
   },
   AVAI: {
     ABI: ERC20_ABI,
@@ -140,11 +138,11 @@ am3dUSD: {
     decimals: 18,
     symbol: "AVAI",
     logo: avaiLogo,
-    geckoId:"orca-avai",
+    geckoId: "orca-avai",
     name: "Orca AVAI",
     masterchefId: 0,
     isSynthetic: false,
-    isLPToken: false
+    isLPToken: false,
   },
   TSD: {
     ABI: ERC20_ABI,
@@ -153,10 +151,10 @@ am3dUSD: {
     symbol: "TSD",
     name: "Teddy Dollar",
     logo: tsdLogo,
-    geckoId:"teddy-dollar",
+    geckoId: "teddy-dollar",
     masterchefId: 0,
     isSynthetic: false,
-    isLPToken: false
+    isLPToken: false,
   },
   USDC: {
     ABI: ERC20_ABI,
@@ -165,10 +163,10 @@ am3dUSD: {
     symbol: "USDC",
     name: "Native USDC",
     logo: usdcLogo,
-    geckoId:"usd-coin",
+    geckoId: "usd-coin",
     masterchefId: 0,
     isSynthetic: false,
-    isLPToken: false
+    isLPToken: false,
   },
   MIM: {
     ABI: ERC20_ABI,
@@ -177,10 +175,10 @@ am3dUSD: {
     symbol: "MIM",
     name: "Magic Internet Money",
     logo: mimLogo,
-    geckoId:"magic-internet-money",
+    geckoId: "magic-internet-money",
     masterchefId: 0,
     isSynthetic: false,
-    isLPToken: false
+    isLPToken: false,
   },
   TEDDY: {
     ABI: ERC20_ABI,
@@ -189,10 +187,10 @@ am3dUSD: {
     symbol: "TEDDY",
     name: "Teddy",
     logo: axialLogo,
-    geckoId:"teddy",
-    isLPToken:false,
-    isSynthetic:false,
-    masterchefId:0
+    geckoId: "teddy",
+    isLPToken: false,
+    isSynthetic: false,
+    masterchefId: 0,
   },
   WAVAX: {
     ABI: ERC20_ABI,
@@ -201,10 +199,10 @@ am3dUSD: {
     symbol: "WAVAX",
     name: "Wrapped AVAX",
     logo: axialLogo,
-    geckoId:"avalanche-2",
-    isLPToken:false,
-    isSynthetic:false,
-    masterchefId:0
+    geckoId: "avalanche-2",
+    isLPToken: false,
+    isSynthetic: false,
+    masterchefId: 0,
   },
   TUSD: {
     ABI: ERC20_ABI,
@@ -213,10 +211,10 @@ am3dUSD: {
     symbol: "TUSD",
     name: "TUSD",
     logo: tusdLogo,
-    geckoId:'true-usd',
+    geckoId: "true-usd",
     masterchefId: 0,
     isSynthetic: false,
-    isLPToken: false
+    isLPToken: false,
   },
   "USDC.e": {
     ABI: ERC20_ABI,
@@ -225,9 +223,9 @@ am3dUSD: {
     symbol: "USDC.e",
     name: "USDC.e",
     logo: usdcLogo,
-    geckoId:"usd-coin",
+    geckoId: "usd-coin",
     isLPToken: false,
-isSynthetic: false,
-masterchefId: 0,
+    isSynthetic: false,
+    masterchefId: 0,
   },
 };
