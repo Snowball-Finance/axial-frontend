@@ -1,6 +1,7 @@
 import {
   formatBNToPercentString,
   getContract,
+  getProviderOrSigner,
   getTokenSymbolForPoolType,
 } from "app/containers/utils/contractUtils";
 import { pools } from "app/pools";
@@ -14,44 +15,47 @@ import {
 } from "../constants";
 import META_SWAP_ABI from "abi/metaSwap.json";
 
-import { BigNumber, ethers } from "ethers";
+import { BigNumber, Contract, ethers } from "ethers";
 import { MetaSwap } from "abi/ethers-contracts/MetaSwap";
 import { SwapFlashLoanNoWithdrawFee } from "abi/ethers-contracts/SwapFlashLoanNoWithdrawFee";
 import { extraRewardTokens } from "app/tokens";
 import { parseUnits } from "ethers/lib/utils";
+import { GlobalState } from "store/slice";
 
 interface Props {
-  poolName: string;
-  swapContract: any;
-  tokenPricesUSD: number;
+  pool: Pool;
+  tokenPricesUSD: GlobalState["tokenPricesUSD"];
   library: any;
   chainId: number;
-  masterchefApr: RewardsState["masterchefApr"];
-  masterchefBalances: RewardsState["masterChefBalances"];
+  useMasterchef?: boolean;
+  masterchefApr?: RewardsState["masterchefApr"];
+  masterchefBalances?: RewardsState["masterChefBalances"];
   account: string;
-  swapStats: RewardsState["swapStats"];
+  swapStats?: RewardsState["swapStats"];
 }
 export const calculatePoolData = async (props: Props) => {
   const {
-    poolName,
-    swapContract,
+    pool,
     tokenPricesUSD,
     library,
     chainId,
     masterchefApr,
     masterchefBalances,
     account,
+    useMasterchef,
     swapStats,
   } = props;
-  if (
-    poolName == null ||
-    swapContract == null ||
-    tokenPricesUSD == null ||
-    library == null ||
-    chainId == null
-  ) {
-    if (poolName && library) {
-      const POOL: Pool = pools[poolName];
+  const swapContract = new Contract(
+    pool.swapAddress || pool.address,
+    pool.swapABI,
+    getProviderOrSigner(library, account)
+  );
+
+  const poolKey = pool.key;
+  if (tokenPricesUSD == null || library == null || chainId == null) {
+    if (poolKey && library) {
+      //@ts-ignore ignored because we will always have pool
+      const POOL: Pool = pools[poolKey];
       if (POOL.poolType !== PoolTypes.LP) {
         return;
       }
@@ -69,11 +73,9 @@ export const calculatePoolData = async (props: Props) => {
         library,
         account ?? undefined
       ) as LpTokenUnguarded;
-
       const [totalLpTokenBalance] = await Promise.all([
         lpTokenContract.balanceOf(AXIAL_MASTERCHEF_CONTRACT_ADDRESS),
       ]);
-
       const poolApr = masterchefPool.apr ?? 0;
 
       let DEXLockedBN = BigNumber.from(0);
@@ -96,7 +98,7 @@ export const calculatePoolData = async (props: Props) => {
       }
 
       const poolData = {
-        name: poolName,
+        name: poolKey,
         rapr: poolApr,
         tokens: [],
         reserve: BigNumber.from("0"),
@@ -135,7 +137,7 @@ export const calculatePoolData = async (props: Props) => {
 
       const userShareData = account
         ? {
-            name: poolName,
+            name: poolKey,
             share: share,
             underlyingTokensAmount: userLpTokenBalance,
             usdBalance: usdBalance,
@@ -150,30 +152,22 @@ export const calculatePoolData = async (props: Props) => {
       return;
     }
   }
-
-  const POOL: Pool = pools[poolName];
+  //@ts-ignore ignored because we will always have pool
+  const POOL: Pool = pools[poolKey];
   const userMasterchefBalances = masterchefBalances
     ? masterchefBalances[POOL.lpToken.symbol]
     : null;
   const effectivePoolTokens = POOL.underlyingPoolTokens || POOL.poolTokens;
   const isMetaSwap = POOL.swapAddress != null;
-  let metaSwapContract;
-  if (isMetaSwap) {
-    metaSwapContract = getContract(
-      POOL.swapAddress as string,
-      META_SWAP_ABI,
-      library,
-      account ?? undefined
-    ) as MetaSwap;
-  }
-  const effectiveSwapContract =
-    metaSwapContract || (swapContract as SwapFlashLoanNoWithdrawFee);
+
+  const effectiveSwapContract = swapContract;
 
   // Swap fees, price, and LP Token data
-  const [swapStorage, aParameter, isPaused] = await Promise.all([
-    effectiveSwapContract.swapStorage(),
+  console.log({ effectiveSwapContract });
+  const [aParameter, isPaused, swapStorage] = await Promise.all([
     effectiveSwapContract.getA(),
     effectiveSwapContract.paused(),
+    effectiveSwapContract?.swapStorage(),
   ]);
 
   const { adminFee, lpToken: lpTokenAddress, swapFee } = swapStorage;
@@ -215,9 +209,10 @@ export const calculatePoolData = async (props: Props) => {
   }
 
   //      lpTokenContract.add(masterchef)
-  const userLpTokenBalance = userMasterchefBalances
-    ? userMasterchefBalances.userInfo.amount
-    : await lpTokenContract.balanceOf(account || ZERO_ADDRESS);
+  const userLpTokenBalance =
+    useMasterchef && userMasterchefBalances
+      ? userMasterchefBalances.userInfo.amount
+      : await lpTokenContract.balanceOf(account || ZERO_ADDRESS);
 
   const virtualPrice = totalLpTokenBalance.isZero()
     ? BigNumber.from(10).pow(18)
@@ -254,9 +249,10 @@ export const calculatePoolData = async (props: Props) => {
     : tokenBalancesUSDSum.mul(BigNumber.from(10).pow(18)).div(tokenBalancesSum);
 
   function calculatePctOfTotalShare(lpTokenAmount: BigNumber): BigNumber {
-    const baseCalc = masterchefApr
-      ? BigNumber.from(masterchefApr[POOL.address].totalStaked)
-      : totalLpTokenBalance;
+    const baseCalc =
+      useMasterchef && masterchefApr
+        ? BigNumber.from(masterchefApr[POOL.address].totalStaked)
+        : totalLpTokenBalance;
 
     // returns the % of total lpTokens
     return lpTokenAmount
@@ -308,7 +304,7 @@ export const calculatePoolData = async (props: Props) => {
       ? swapStats[poolAddress]
       : { oneDayVolume: 0, apr: 0, utilization: null };
   const poolData = {
-    name: poolName,
+    name: poolKey,
     rapr: poolApr,
     tokens: poolTokens,
     reserve: tokenBalancesUSDSum,
@@ -327,7 +323,7 @@ export const calculatePoolData = async (props: Props) => {
   };
   const userShareData = account
     ? {
-        name: poolName,
+        name: poolKey,
         share: userShare,
         underlyingTokensAmount: userPoolTokenBalancesSum,
         usdBalance: userPoolTokenBalancesUSDSum,

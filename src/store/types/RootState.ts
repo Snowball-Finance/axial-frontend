@@ -11,6 +11,7 @@ import { StakingPageState } from "app/pages/StakingPage/types";
 import { RewardsState } from "app/containers/Rewards/types";
 // import { SwapState } from 'app/containers/Swap/types';
 import { SwapState } from "app/containers/Swap/types";
+import { GlobalState } from "store/slice";
 // [IMPORT NEW CONTAINERSTATE ABOVE] < Needed for generating containers seamlessly
 
 /* 
@@ -20,7 +21,7 @@ import { SwapState } from "app/containers/Swap/types";
   So, not available always
 */
 export interface RootState {
-  global?: any;
+  global?: GlobalState;
   homePage?: HomePageState;
   router?: RouterState;
   web3?: Web3State;

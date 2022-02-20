@@ -15,7 +15,6 @@ export const initialState: ContainerState = {
     [TRANSACTION_TYPES.MIGRATE]: Date.now(),
   },
   pools: {},
-  tokenPricesUSD: {},
   isGettingMasterChefBalances: false,
   isGettingMasterchefApr: false,
   isGettingSwapStats: false,
@@ -68,12 +67,12 @@ const rewardsSlice = createSlice({
       const formattedPayload = Object.values(action.payload).reduce(
         (acc, data) => {
           if (isNaN(data.last_apr) || isNaN(data.last_vol)) {
-            return acc
+            return acc;
           }
-          const apr = data.last_apr
-          const tvl = 0
-          const oneDayVolume = data.last_vol
-          const utilization = 0
+          const apr = data.last_apr;
+          const tvl = 0;
+          const oneDayVolume = data.last_vol;
+          const utilization = 0;
           return {
             ...acc,
             [data.swapaddress]: {
@@ -82,12 +81,12 @@ const rewardsSlice = createSlice({
               oneDayVolume,
               utilization,
             },
-          }
+          };
         },
-        {},
-      )
-      state.swapStats = formattedPayload
-      },
+        {}
+      );
+      state.swapStats = formattedPayload;
+    },
     setIsGettingMasterchefApr(state, action: PayloadAction<boolean>) {},
     setMasterChefAPR(
       state,
@@ -104,7 +103,6 @@ const rewardsSlice = createSlice({
         ...action.payload,
       };
     },
-
   },
 });
 

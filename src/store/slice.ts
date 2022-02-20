@@ -3,12 +3,12 @@ import { TokenSymbols } from "app/containers/Swap/types";
 import { createSlice } from "store/toolkit";
 import { useInjectReducer, useInjectSaga } from "./redux-injectors";
 import { globalSaga } from "./saga";
-interface ContainerState {
+export interface GlobalState {
   isGettingTokenPrices: boolean;
   tokenPricesUSD: { [K in TokenSymbols]?: number };
 }
 // The initial state of the LoginPage container
-export const initialState: ContainerState = {
+export const initialState: GlobalState = {
   isGettingTokenPrices: false,
   tokenPricesUSD: {},
 };
@@ -20,7 +20,7 @@ const globalSlice = createSlice({
     getTokenPricesUSD(state, action: PayloadAction<void>) {},
     setTokenPricesUSD(
       state,
-      action: PayloadAction<ContainerState["tokenPricesUSD"]>
+      action: PayloadAction<GlobalState["tokenPricesUSD"]>
     ) {
       state.tokenPricesUSD = action.payload;
     },

@@ -75,6 +75,7 @@ export interface Pool {
   underlyingPoolTokens?: Token[];
   underlyingPool?: string;
   lpToken: Token;
+  key: Pools;
 }
 
 interface TokenShareType {
@@ -116,14 +117,13 @@ export interface UserShareData {
   masterchefBalance: MasterchefResponse | null;
 }
 export interface SwapStatsReponse {
-  symbol: string
-  tokenaddress: string
-  swapaddress: string
-  last_apr: number
-  last_vol: number
+  symbol: string;
+  tokenaddress: string;
+  swapaddress: string;
+  last_apr: number;
+  last_vol: number;
 }
 export interface RewardsState {
-  tokenPricesUSD: any;
   lastTransactionTimes: any;
   swapStats: any;
   masterchefApr: MasterchefApr | undefined;

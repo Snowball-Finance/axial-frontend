@@ -1,6 +1,7 @@
 // import { take, call, put, select, takeLatest } from 'redux-saga/effects';
 // import { actions } from './slice';
 
+import { GlobalDomains } from "app/appSelectors";
 import { tokens } from "app/tokens";
 import { Console } from "console";
 import { BigNumber, Contract } from "ethers";
@@ -15,25 +16,34 @@ import {
 import { fetchSwapStatsNow } from "./providers/getSwapStats";
 import { getVaultRewardAprNow } from "./providers/getVaultRewardsAPR";
 import { RewardsActions } from "./slice";
-import { MasterchefResponse, RewardsState } from "./types";
+import { MasterchefResponse, Pool, RewardsState } from "./types";
+import { calculatePoolData } from "./utils/calculatePoolData";
 
 export function* getRewardPoolsData(action: {
   type: string;
   payload: RewardsState["pools"];
 }) {
-  const pools = { ...action.payload };
+  const pools: any = { ...action.payload };
   const library = yield select(Web3Domains.selectLibraryDomain);
   const account = yield select(Web3Domains.selectAccountDomain);
-  for (const key in pools) {
-    if (Object.prototype.hasOwnProperty.call(pools, key)) {
-      const pool: any = pools[key];
-      const contract = new Contract(
-        pool.address,
-        pool.swapABI,
-        getProviderOrSigner(library, account)
-      );
-      pool.contract = contract;
-    }
+  const chainId = yield select(Web3Domains.selectChainIDDomain);
+  const tokenPricesUSD = yield select(GlobalDomains.tokenPricesUSD);
+
+  try {
+    const arrayOfDataGetters = Object.values(pools).map((pool: any) => {
+      const dataToPass = {
+        pool,
+        account,
+        chainId,
+        library,
+        tokenPricesUSD,
+      };
+      return call(calculatePoolData, dataToPass);
+    });
+    const responses = yield all(arrayOfDataGetters);
+    console.log(responses);
+  } catch (error) {
+    console.log(error);
   }
 }
 

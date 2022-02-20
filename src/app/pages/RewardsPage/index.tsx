@@ -13,7 +13,6 @@ import { PoolCards } from "./components/PoolCards";
 
 export const RewardsPage: FC = () => {
   const { t } = useTranslation();
-
   return (
     <>
       <Helmet>
