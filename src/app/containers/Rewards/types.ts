@@ -1,5 +1,28 @@
 /* --- STATE --- */
 
+import { BigNumber, Contract } from "ethers";
+import { Token } from "../Swap/types";
+
+
+interface PoolInfo {
+  amount: BigNumber;
+  rewardDebt: BigNumber;
+}
+
+export interface PendingTokens {
+  pendingAxial: BigNumber;
+  bonusTokenAddress: string;
+  bonusTokenSymbol: string;
+  pendingBonusToken: BigNumber;
+}
+
+
+export interface MasterchefResponse {
+  userInfo: PoolInfo;
+  pendingTokens: PendingTokens;
+}
+
+
 export enum Pools {
   AXIAL_AS4D = "AXIAL_AS4D",
   AXIAL_AC4D = "AXIAL_AC4D",
@@ -23,13 +46,10 @@ export interface Pool {
   swapABI: any;
   swapAddress?: string;
   poolType: PoolTypes;
-  lpToken: {
-    address: string;
-    logo: string;
-    symbol: string;
-    decimal: number;
-    masterChefId: number;
-  };
+  poolTokens:Token[]
+  underlyingPoolTokens?:Token[]
+  underlyingPool?:string
+  lpToken: Token;
 }
 
 export interface RewardsState {
@@ -37,6 +57,8 @@ export interface RewardsState {
   lastTransactionTimes: any;
   swapStats: any;
   masterchefApr: any;
+  isGettingMasterChefBalances: boolean;
+  masterChefBalances: { [key: string]: MasterchefResponse }|undefined;
   pools: { [K in Pools]?: Pool };
 }
 

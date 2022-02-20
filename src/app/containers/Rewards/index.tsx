@@ -5,7 +5,8 @@
  */
 
 import React, { FC, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Web3Selectors } from "../BlockChain/Web3/selectors";
 
 import { RewardsActions, useRewardsSlice } from "./slice";
 
@@ -17,11 +18,16 @@ interface Props {
 
 export const Rewards: FC<Props> = ({ pools }) => {
   useRewardsSlice();
+  const library=useSelector(Web3Selectors.selectLibrary)
+  const account=useSelector(Web3Selectors.selectAccount)
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(RewardsActions.setRewardPools(pools));
+    if(library && account){
+      dispatch(RewardsActions.getRewardPoolsData(pools));
+      dispatch(RewardsActions.getMasterChefBalances())
+    }
     return () => {};
-  }, []);
+  }, [library,account]);
 
   return <></>;
 };

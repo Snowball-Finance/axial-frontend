@@ -30,15 +30,28 @@ import { LiquidityPage } from "./pages/Liquidity/Loadable";
 import { RewardsPage } from "./pages/RewardsPage/Loadable";
 import { Swap } from "./containers/Swap";
 import SWAP_ROUTER_ABI from "abi/swapRouter.json";
-import { swapTokens } from "./tokens";
+import { tokens } from "./tokens";
 import { Token, TokenSymbols } from "./containers/Swap/types";
 import { Rewards } from "./containers/Rewards";
 import { rewardPools } from "./pools";
+import { GlobalActions, useGlobalSlice } from "store/slice";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 
 // import { Swap } from "./containers/Swap";
 
 export function App() {
   const { t } = useTranslation();
+  useGlobalSlice()
+  const dispatch=useDispatch()
+  
+useEffect(() => {
+  dispatch(GlobalActions.getTokenPricesUSD())
+  return () => {
+  }
+}, [])
+
+
   return (
     <>
       <Helmet
@@ -77,7 +90,7 @@ export function App() {
       <Swap
         swapRouterABI={SWAP_ROUTER_ABI}
         swapRouterAddress={"0xBeD9dfE835cd2bB6775f344Ee5E3431b2CbF31FB"}
-        tokens={swapTokens as { [K in TokenSymbols]: Token }}
+        tokens={tokens as { [K in TokenSymbols]: Token }}
       />
 
       <Layout>
