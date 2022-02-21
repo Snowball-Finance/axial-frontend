@@ -192,7 +192,8 @@ function Swap(): ReactElement {
 
           // Get gas estimate for find best path TODO: is this needed
           const gasEstimate = await aggregatorContract.estimateGas.findBestPath(findBestPathParams, { gasLimit: 1e9 })
-
+          //@ts-ignore
+          // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
           console.debug(`Gas Estimate: ${gasEstimate.toString()}`)
 
           // additional gas estimate to make sure we have enough gas
@@ -239,7 +240,7 @@ function Swap(): ReactElement {
           }
 
           const routes: string[] = []
-          findBestPathResult.bestPath.path.forEach((item) => {
+          findBestPathResult.bestPath.path.forEach((item: string) => {
             const token = Object.values(TOKENS_MAP).find((token) => token.addresses[chainId] === item)
             if (token) {
               routes.push(token.symbol)
@@ -421,11 +422,9 @@ function Swap(): ReactElement {
   async function handleConfirmTransaction(): Promise<void> {
     const fromToken = TOKENS_MAP[formState.from.symbol]
     if (
-      formState.swapType === SWAP_TYPES.INVALID ||
-      formState.from.tokenIndex === undefined ||
-      formState.from.poolName === undefined ||
-      formState.to.tokenIndex === undefined ||
-      formState.to.poolName === undefined
+      formState.from.symbol === '' ||
+      formState.to.symbol === '' ||
+      formState.to.value === Zero 
     ) {
       console.debug("Invalid transaction", formState)
       setFormState((prevState) => ({
@@ -458,7 +457,7 @@ function Swap(): ReactElement {
       },
       swapType: SWAP_TYPES.DIRECT,
     }
-
+//@ts-ignore
     await approveAndSwap(dataToApprove, swapParams)
     // Clear input after deposit
     setFormState((prevState) => ({

@@ -1,4 +1,9 @@
-import { ContractCall, getMultiContractData, getUserBalance, getUserMasterchefInfo } from "../../libs/multicall"
+import {
+  ContractCall,
+  getMultiContractData,
+  getUserBalance,
+  getUserMasterchefInfo,
+} from "../../libs/multicall"
 import { BigNumber } from "@ethersproject/bignumber"
 import { TOKENS_MAP } from "../../constants"
 import { useActiveWeb3React } from "../../hooks"
@@ -40,11 +45,17 @@ export function useMasterchefBalances(): {
       const tokenAddressList: string[] = []
       tokens.forEach((token) => {
         if (token.isLPToken) {
-          masterchefBalancesCall.push(getUserMasterchefInfo(account, token.masterchefId, chainId))
+          masterchefBalancesCall.push(
+            getUserMasterchefInfo(account, token.masterchefId, chainId),
+          )
           tokenAddressList.push(token.addresses[chainId])
         }
       })
-      const mBalances = await getMultiContractData(library, masterchefBalancesCall, tokenAddressList)
+      const mBalances = await getMultiContractData(
+        library,
+        masterchefBalancesCall,
+        tokenAddressList,
+      )
 
       const _info: MasterchefResponse = {
         userInfo: {
@@ -70,9 +81,12 @@ export function useMasterchefBalances(): {
               },
               pendingTokens: {
                 pendingAxial: mBalances[t.addresses[chainId]]?.pendingTokens[0], // eslint-disable-line
-                bonusTokenAddress: mBalances[t.addresses[chainId]]?.pendingTokens[1], // eslint-disable-line
-                bonusTokenSymbol: mBalances[t.addresses[chainId]]?.pendingTokens[2], // eslint-disable-line
-                pendingBonusToken: mBalances[t.addresses[chainId]]?.pendingTokens[3], // eslint-disable-line
+                bonusTokenAddress:
+                  mBalances[t.addresses[chainId]]?.pendingTokens[1], // eslint-disable-line
+                bonusTokenSymbol:
+                  mBalances[t.addresses[chainId]]?.pendingTokens[2], // eslint-disable-line
+                pendingBonusToken:
+                  mBalances[t.addresses[chainId]]?.pendingTokens[3], // eslint-disable-line
               },
             },
           }),
