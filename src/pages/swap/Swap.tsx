@@ -147,7 +147,7 @@ function Swap(): ReactElement {
       //   formStateArg.to.tokenIndex === undefined ||
       //   formStateArg.to.poolName === undefined) { return }
       const cleanedFormFromValue = formStateArg.from.value.replace(/[$,]/g, "") // remove common copy/pasted financial characters
-      if (cleanedFormFromValue === "" || isNaN(+cleanedFormFromValue) || formStateArg.to.symbol === "") {
+      if (cleanedFormFromValue === "" || isNaN(+cleanedFormFromValue) || formStateArg.to.symbol === ""|| formStateArg.from.symbol === "") {
         setFormState((prevState) => ({
           ...prevState,
           to: {
