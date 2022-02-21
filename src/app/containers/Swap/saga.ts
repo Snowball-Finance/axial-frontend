@@ -67,7 +67,7 @@ export function* findBestPath(action: {
 export function* swap() {
   try {
     yield put(SwapActions.setIsSwapping(true));
-    const gasPrice:GenericGasResponse= yield select(GlobalDomains.gasPrice);
+    const gasPrice: GenericGasResponse = yield select(GlobalDomains.gasPrice);
     const library = yield select(Web3Domains.selectLibraryDomain);
     const account = yield select(Web3Domains.selectAccountDomain);
     const bestPath: BestPath = yield select(SwapDomains.bestPath);
@@ -102,7 +102,7 @@ export function* swap() {
       account,
       amountToGive,
       infiniteApproval,
-      parseUnits((gasPrice?.gasStandard||"45").toString(), 9), //gasPrice
+      parseUnits((gasPrice?.gasStandard || "45").toString(), 9), //gasPrice
       {
         onTransactionError: () => {
           toast.error("Transaction failed");

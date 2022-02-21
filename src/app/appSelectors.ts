@@ -7,6 +7,7 @@ export const GlobalDomains = {
     state?.global?.isGettingTokenPrices || false,
   tokenPricesUSD: (state: RootState) => state?.global?.tokenPricesUSD || {},
   gasPrice: (state: RootState) => state?.global?.gasPrice || undefined,
+  tokens: (state: RootState) => state?.global?.tokens || undefined,
 };
 
 export const globalSelectors = {
@@ -20,4 +21,5 @@ export const globalSelectors = {
     (tokenPricesUSD) => tokenPricesUSD
   ),
   gasPrice: createSelector([GlobalDomains.gasPrice], (gasPrice) => gasPrice),
+  tokens: createSelector([GlobalDomains.tokens], (tokens) => tokens),
 };

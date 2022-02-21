@@ -42,6 +42,7 @@ export interface Token {
   masterchefId?: number;
   isLPToken: boolean;
   isSynthetic: boolean;
+  balance?: BigNumber;
 }
 
 export enum GasPrices {

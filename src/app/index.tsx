@@ -36,20 +36,37 @@ import { Rewards } from "./containers/Rewards";
 import { pools } from "./pools";
 import { GlobalActions, useGlobalSlice } from "store/slice";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Web3Selectors } from "./containers/BlockChain/Web3/selectors";
 
 // import { Swap } from "./containers/Swap";
 
 export function App() {
   const { t } = useTranslation();
+
   useGlobalSlice();
   const dispatch = useDispatch();
+
+  const account = useSelector(Web3Selectors.selectAccount);
+  const library = useSelector(Web3Selectors.selectLibrary);
+
+  useEffect(() => {
+    dispatch(GlobalActions.setTokens(tokens));
+    return () => {};
+  }, []);
 
   useEffect(() => {
     dispatch(GlobalActions.getTokenPricesUSD());
     dispatch(GlobalActions.getGasPrice());
     return () => {};
   }, []);
+
+  useEffect(() => {
+    if (account && library) {
+      dispatch(GlobalActions.getTokenBalances());
+    }
+    return () => {};
+  }, [account, library]);
 
   return (
     <>
