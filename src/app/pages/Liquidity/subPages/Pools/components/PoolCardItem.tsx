@@ -130,7 +130,12 @@ export const PoolCardItem: FC = () => {
             <Grid item>
               <Grid container spacing={2}>
                 <Grid item>
-                  <ContainedButton width={120} onClick={()=>handleNavigateToDeposit("ac4d")}>Deposit</ContainedButton>
+                  <ContainedButton
+                    width={120}
+                    onClick={() => handleNavigateToDeposit("ac4d")}
+                  >
+                    Deposit
+                  </ContainedButton>
                 </Grid>
 
                 <Grid item>

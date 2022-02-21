@@ -15,11 +15,13 @@ import { CssVariables } from "../../../../styles/cssVariables/cssVariables";
 
 const StyledSelect = styled(Select)<SelectProps>(({ theme }) => ({
   maxHeight: "45px",
-  borderRadius: "10px",
-  border: `1px solid ${CssVariables.ctaBlue}`,
+  borderRadius: CssVariables.buttonBorderRadius,
+  border: `2px solid ${CssVariables.poolCardBorder}`,
   boxShadow: "none",
+
   "& .MuiInputBase-input": {
     ...BaseInputStyles({ theme }),
+    background: "transparent",
     paddingTop: "9px",
     paddingBottom: "9px",
     color: CssVariables.white,

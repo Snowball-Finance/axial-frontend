@@ -26,8 +26,10 @@ import FEE_DISTRIBUTOR_ABI from "libs/abis/fee-distributor.json";
 import { CONTRACTS } from "config";
 import { StakingPage } from "./pages/StakingPage";
 import Layout from "./Layout";
-import { LiquidityPage } from './pages/Liquidity/Loadable';
-import { RewardsPage } from './pages/Rewards/Loadable';
+import { LiquidityPage } from "./pages/Liquidity/Loadable";
+import { RewardsPage } from "./pages/Rewards/Loadable";
+import { SwapPage } from "./pages/Swap/Loadable";
+import { RisksPage } from "./pages/Risks/Loadable";
 
 export function App() {
   const { t } = useTranslation();
@@ -67,7 +69,7 @@ export function App() {
       {/* <PoolsAndGauges abi={GAUGE_PROXY_ABI} initialDataQuery={INFO_QUERY} /> */}
       <Layout>
         <Switch>
-          <Route exact path={AppPages.RootPage} component={HomePage} />
+          <Route exact path={AppPages.RootPage} component={SwapPage} />
           <Route path={AppPages.GovernancePage}>
             <GovernancePage />
           </Route>
@@ -76,6 +78,7 @@ export function App() {
           </Route>
           <Route path={AppPages.LiquidityPage} component={LiquidityPage} />
           <Route path={AppPages.RewardPage} component={RewardsPage} />
+          <Route path={AppPages.RiskPage} component={RisksPage} />
           <Route component={NotFoundPage} />
         </Switch>
       </Layout>

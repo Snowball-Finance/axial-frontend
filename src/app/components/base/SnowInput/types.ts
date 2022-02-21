@@ -1,5 +1,5 @@
 export interface InputInterface {
-    onChange: (v: string) => void;
-    value?: string;
-    placeHolder?: string;
-  }
+  onChange: (v: string) => void;
+  value?: string;
+  placeHolder?: string;
+}

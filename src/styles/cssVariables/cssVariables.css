@@ -1,10 +1,5 @@
 html{
   font-family: Montserrat,Rubik,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
-  background-image: url('../../assets/images/website-background.svg');
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: fixed;
-  background-position: center;
 }
 
 :root{
@@ -42,6 +37,7 @@ html{
   --chipBackgroundColor:#3a2e6b;
   --poolCardBackground: #00103B;
   --poolCardBorder: #4D2F43;
+  --swapInputbackground: #06041D;
   --paperBorderRadius:12px;
   --swapInputbackground: #06041D;
 
