@@ -15,6 +15,7 @@ import {
 } from "../utils/multicall";
 import { fetchSwapStatsNow } from "./providers/getSwapStats";
 import { getVaultRewardAprNow } from "./providers/getVaultRewardsAPR";
+import { RewardsDomains } from "./selectors";
 import { RewardsActions } from "./slice";
 import { MasterchefResponse, Pool, Pools, RewardsState } from "./types";
 import { calculatePoolData } from "./utils/calculatePoolData";
@@ -23,17 +24,20 @@ export function* getRewardPoolsData(action: {
   type: string;
   payload: RewardsState["pools"];
 }) {
-  const pools: RewardsState["pools"] = { ...action.payload };
+  yield put(RewardsActions.setRewardPools(action.payload));
+  const pools:RewardsState['pools']=yield select(RewardsDomains.pools)
   const library = yield select(Web3Domains.selectLibraryDomain);
   const account = yield select(Web3Domains.selectAccountDomain);
   const chainId = yield select(Web3Domains.selectChainIDDomain);
   const tokenPricesUSD = yield select(GlobalDomains.tokenPricesUSD);
-
+if(library){
   try {
     //filtered JLP until i can find the bug in getting data
+    const poolKeys: Pools[] = []
     const arrayOfDataGetters = Object.values(pools)
       .filter((pool) => pool.key !== Pools.AXIAL_JLP)
       .map((pool: any) => {
+        poolKeys.push(pool.key)
         const dataToPass = {
           pool,
           account,
@@ -44,10 +48,19 @@ export function* getRewardPoolsData(action: {
         return call(calculatePoolData, dataToPass);
       });
     const responses = yield all(arrayOfDataGetters);
-    console.log(responses);
+    const tmpPools={}
+    poolKeys.forEach((key: Pools, index) => {
+      if(responses[index]){
+        tmpPools[key]={...pools[key], ...responses[index]}
+      }
+    })
+    console.log(tmpPools)
+    yield put(RewardsActions.setRewardPools(tmpPools));
   } catch (error) {
     console.log(error);
   }
+}
+
 }
 
 export function* getMasterChefBalances() {

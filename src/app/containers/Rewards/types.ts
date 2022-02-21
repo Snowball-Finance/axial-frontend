@@ -76,6 +76,8 @@ export interface Pool {
   underlyingPool?: string;
   lpToken: Token;
   key: Pools;
+  poolData?: PoolData;
+  userShareData?: UserShareData;
 }
 
 interface TokenShareType {
@@ -84,7 +86,7 @@ interface TokenShareType {
   value: BigNumber;
 }
 
-export interface PoolDataType {
+export interface PoolData {
   adminFee: BigNumber;
   aParameter: BigNumber;
   apr: number | null;
