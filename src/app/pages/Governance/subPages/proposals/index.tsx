@@ -16,8 +16,8 @@ import { useDispatch } from "react-redux";
 import {
   StakingPageActions,
   useStakingPageSlice,
-} from "app/pages/StakingPage/slice";
-import { DepositAndWithdrawTab } from "app/pages/StakingPage/types";
+} from "app/pages/Staking/slice";
+import { DepositAndWithdrawTab } from "app/pages/Staking/types";
 import { push } from "connected-react-router";
 import { AppPages } from "app/types";
 

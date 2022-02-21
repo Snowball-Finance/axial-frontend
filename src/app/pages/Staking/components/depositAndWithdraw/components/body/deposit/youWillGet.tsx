@@ -1,5 +1,5 @@
 import { styled } from "@mui/material";
-import { StakingPageSelectors } from "app/pages/StakingPage/selectors";
+import { StakingPageSelectors } from "app/pages/Staking/selectors";
 import { env } from "environment";
 import { translations } from "locales/i18n";
 import { useTranslation } from "react-i18next";

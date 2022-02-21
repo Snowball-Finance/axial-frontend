@@ -5,9 +5,9 @@ import {
   RadioGroup,
   styled,
 } from "@mui/material";
-import { StakingPageSelectors } from "app/pages/StakingPage/selectors";
-import { StakingPageActions } from "app/pages/StakingPage/slice";
-import { DepositUnlockPeriod } from "app/pages/StakingPage/types";
+import { StakingPageSelectors } from "app/pages/Staking/selectors";
+import { StakingPageActions } from "app/pages/Staking/slice";
+import { DepositUnlockPeriod } from "app/pages/Staking/types";
 import { translations } from "locales/i18n";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";

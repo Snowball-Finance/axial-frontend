@@ -1,7 +1,7 @@
 import { styled, Tab, Tabs } from "@mui/material";
-import { StakingPageSelectors } from "app/pages/StakingPage/selectors";
-import { StakingPageActions } from "app/pages/StakingPage/slice";
-import { DepositAndWithdrawTab } from "app/pages/StakingPage/types";
+import { StakingPageSelectors } from "app/pages/Staking/selectors";
+import { StakingPageActions } from "app/pages/Staking/slice";
+import { DepositAndWithdrawTab } from "app/pages/Staking/types";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { CssVariables } from "styles/cssVariables/cssVariables";

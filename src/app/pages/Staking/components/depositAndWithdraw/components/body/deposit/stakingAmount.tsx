@@ -1,7 +1,7 @@
 import { styled } from "@mui/material";
 import { OutlinedButton } from "app/components/common/buttons/outlinedButton";
-import { StakingPageSelectors } from "app/pages/StakingPage/selectors";
-import { StakingPageActions } from "app/pages/StakingPage/slice";
+import { StakingPageSelectors } from "app/pages/Staking/selectors";
+import { StakingPageActions } from "app/pages/Staking/slice";
 import { env } from "environment";
 import { translations } from "locales/i18n";
 import { ChangeEventHandler } from "react";
