@@ -47,6 +47,7 @@ export function App() {
 
   useEffect(() => {
     dispatch(GlobalActions.getTokenPricesUSD());
+    dispatch(GlobalActions.getGasPrice());
     return () => {};
   }, []);
 

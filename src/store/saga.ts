@@ -1,4 +1,5 @@
 import { Token } from "app/containers/Swap/types";
+import { gasPriceAPI } from "app/providers/gasPrice";
 import { getTokenPricesAPI } from "app/providers/tokenPrice";
 import { tokens } from "app/tokens";
 import { toast } from "react-toastify";
@@ -64,6 +65,18 @@ export function* getTokenPricesUSD() {
   }
 }
 
+export function* getGasPrice(){
+  try {
+  const res=yield call(gasPriceAPI);
+  yield put(GlobalActions.setGasPrice(res));
+  } catch (e) {
+    console.log(e);
+    toast.error("Error getting gas price");
+  }
+}
+
+
 export function* globalSaga() {
   yield takeLatest(GlobalActions.getTokenPricesUSD.type, getTokenPricesUSD);
+  yield takeLatest(GlobalActions.getGasPrice.type, getGasPrice);
 }

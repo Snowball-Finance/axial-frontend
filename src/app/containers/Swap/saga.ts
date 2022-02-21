@@ -1,6 +1,6 @@
 import { Erc20 } from "abi/ethers-contracts";
 import { BigNumber, Contract } from "ethers";
-import { SwapRouter } from "ethers-contracts/SwapRouter";
+import { SwapRouter } from "abi/ethers-contracts/SwapRouter";
 import { parseUnits } from "ethers/lib/utils";
 import { multiply } from "precise-math";
 import { toast } from "react-toastify";
@@ -12,6 +12,8 @@ import { SWAP_ROUTER_FEE } from "./constants";
 import { SwapDomains } from "./selectors";
 import { SwapActions } from "./slice";
 import { BestPath, ContainerState, FindBestPathPayload } from "./types";
+import { GenericGasResponse } from "app/providers/gasPrice";
+import { GlobalDomains } from "app/appSelectors";
 
 // import { actions } from './slice';
 
@@ -65,6 +67,7 @@ export function* findBestPath(action: {
 export function* swap() {
   try {
     yield put(SwapActions.setIsSwapping(true));
+    const gasPrice:GenericGasResponse= yield select(GlobalDomains.gasPrice);
     const library = yield select(Web3Domains.selectLibraryDomain);
     const account = yield select(Web3Domains.selectAccountDomain);
     const bestPath: BestPath = yield select(SwapDomains.bestPath);
@@ -99,7 +102,7 @@ export function* swap() {
       account,
       amountToGive,
       infiniteApproval,
-      parseUnits("45", 9), //gasPrice
+      parseUnits((gasPrice?.gasStandard||"45").toString(), 9), //gasPrice
       {
         onTransactionError: () => {
           throw new Error("Your transaction could not be completed");
