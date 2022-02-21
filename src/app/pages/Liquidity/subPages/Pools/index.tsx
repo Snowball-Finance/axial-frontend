@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import { Grid, styled } from "@mui/material";
 
 import { Max1040 } from "app/components/wrappers/max1040";
-import { PoolCardItem } from "./PoolCardItem";
+import { PoolCardItem } from "./components/PoolCardItem";
 
 export const PoolCards: FC = () => {
   return (

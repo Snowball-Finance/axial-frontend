@@ -3,7 +3,7 @@ import { styled } from "@mui/material";
 
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
-import backgroundImage from "../../assets/images/website-background.svg"
+import backgroundImage from "../../assets/images/website-background.svg";
 
 export default function Layout({
   children,
@@ -31,7 +31,7 @@ const StyledLayout = styled("div")({
   backgroundRepeat: "no-repeat",
   backgroundSize: "cover",
   backgroundAttachment: "fixed",
-  backgroundPosition: "center"
+  backgroundPosition: "center",
 });
 
 const HeaderWrapper = styled("div")({

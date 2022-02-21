@@ -6,7 +6,7 @@ export enum AppPages {
   HomePage = "/home",
   GovernancePage = "/governance",
   StakingPage = "/staking",
-  LiquidityPage = "/pools",
+  LiquidityPage = "/liquidity",
   RewardPage = "/rewards",
   RiskPage = "/risk",
 }

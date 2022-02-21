@@ -23,7 +23,7 @@ export const RewardsPage: FC = () => {
           content={`${t(translations.RewardsPage.Description())}`}
         />
       </Helmet>
-      
+
       <PoolCards />
     </>
   );

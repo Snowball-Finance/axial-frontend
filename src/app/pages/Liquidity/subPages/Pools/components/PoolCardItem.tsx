@@ -1,19 +1,28 @@
 import React, { FC } from "react";
 import { styled, Grid, Typography } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { push } from "connected-react-router";
 
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { ContainedButton } from "app/components/common/buttons/containedButton";
 import { OutlinedButton } from "app/components/common/buttons/outlinedButton";
 import snobIcon from "assets/images/logo.svg";
+import { AppPages } from "app/types";
 
 export const PoolCardItem: FC = () => {
+  const dispatch = useDispatch();
+
+  const handleNavigateToDeposit = (poolIndex: string) => {
+    dispatch(push(`${AppPages.LiquidityPage}/${poolIndex}/deposit`));
+  };
+
   return (
     <StyledPoolCard>
       <Grid container direction="column" spacing={4}>
         <Grid item>
           <Grid container justifyContent="space-between" alignItems="center">
             <Grid item>
-              <PoolHeaderText variant="h5">AC4D</PoolHeaderText>
+              <PoolHeaderText variant="h5">AS4D</PoolHeaderText>
             </Grid>
 
             <Grid item>
@@ -121,7 +130,12 @@ export const PoolCardItem: FC = () => {
             <Grid item>
               <Grid container spacing={2}>
                 <Grid item>
-                  <ContainedButton width={120}>Deposit</ContainedButton>
+                  <ContainedButton
+                    width={120}
+                    onClick={() => handleNavigateToDeposit("ac4d")}
+                  >
+                    Deposit
+                  </ContainedButton>
                 </Grid>
 
                 <Grid item>

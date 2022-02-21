@@ -39,5 +39,5 @@ const StyledSwapCard = styled("div")({
   backgroundColor: CssVariables.poolCardBackground,
   border: `4px solid ${CssVariables.poolCardBorder}`,
   borderRadius: "20px",
-  paddingBottom: "40px"
+  paddingBottom: "40px",
 });

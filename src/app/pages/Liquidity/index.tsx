@@ -9,7 +9,7 @@ import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 
 import { translations } from "locales/i18n";
-import { PoolCards } from "./components/PoolCards";
+import { LiquidityBody } from "./body";
 
 export const LiquidityPage: FC = () => {
   const { t } = useTranslation();
@@ -24,7 +24,7 @@ export const LiquidityPage: FC = () => {
         />
       </Helmet>
 
-      <PoolCards />
+      <LiquidityBody />
     </>
   );
 };

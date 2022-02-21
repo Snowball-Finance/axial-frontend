@@ -18,7 +18,7 @@ const StyledSelect = styled(Select)<SelectProps>(({ theme }) => ({
   borderRadius: CssVariables.buttonBorderRadius,
   border: `2px solid ${CssVariables.poolCardBorder}`,
   boxShadow: "none",
-  
+
   "& .MuiInputBase-input": {
     ...BaseInputStyles({ theme }),
     background: "transparent",
