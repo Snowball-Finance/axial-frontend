@@ -3,11 +3,9 @@
 
 import { GlobalDomains } from "app/appSelectors";
 import { tokens } from "app/tokens";
-import { Console } from "console";
-import { BigNumber, Contract } from "ethers";
+import { BigNumber } from "ethers";
 import { all, call, put, select, takeLatest } from "redux-saga/effects";
 import { Web3Domains } from "../BlockChain/Web3/selectors";
-import { getProviderOrSigner } from "../utils/contractUtils";
 import {
   ContractCall,
   getMultiContractData,
@@ -30,34 +28,30 @@ export function* getRewardPoolsData(action: {
   const account = yield select(Web3Domains.selectAccountDomain);
   const chainId = yield select(Web3Domains.selectChainIDDomain);
   const tokenPricesUSD = yield select(GlobalDomains.tokenPricesUSD);
+
   try {
-    //filtered JLP until i can find the bug in getting data
     const poolKeys: Pools[] = [];
-    const arrayOfDataGetters = Object.values(pools)
-      .filter((pool) => pool.key !== Pools.AXIAL_JLP)
-      .map((pool: any) => {
-        poolKeys.push(pool.key);
-        const dataToPass = {
-          pool,
-          account,
-          chainId,
-          library,
-          tokenPricesUSD,
-        };
-        return call(calculatePoolData, dataToPass);
-      });
+    const arrayOfDataGetters = Object.values(pools).map((pool: any) => {
+      poolKeys.push(pool.key);
+      const dataToPass = {
+        pool,
+        account,
+        chainId,
+        library,
+        tokenPricesUSD,
+      };
+      return call(calculatePoolData, dataToPass);
+    });
     const responses = yield all(arrayOfDataGetters);
     const tmpPools = {};
-    let hasSomething = false;
     poolKeys.forEach((key: Pools, index) => {
-      if (responses[index]) {
-        tmpPools[key] = { ...pools[key], ...responses[index] };
-        hasSomething = true;
-      }
+      //because some pools like AXIAL_JLP dont have a response
+      tmpPools[key] = {
+        ...pools[key],
+        ...(responses[index] && responses[index]),
+      };
     });
-    if (hasSomething) {
-      yield put(RewardsActions.setRewardPools(tmpPools));
-    }
+    yield put(RewardsActions.setRewardPools(tmpPools));
   } catch (error) {
     console.log(error);
   }

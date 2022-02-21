@@ -52,10 +52,16 @@ export const calculatePoolData = async (props: Props) => {
   );
 
   const poolKey = pool.key;
-  if (tokenPricesUSD == null || library == null || chainId == null) {
+  //@ts-ignore ignored because we will always have pool( POOL.poolType)
+  const POOL: Pool = pools[poolKey];
+  if (
+    tokenPricesUSD == null ||
+    library == null ||
+    chainId == null ||
+    POOL.poolType === PoolTypes.LP
+  ) {
     if (poolKey && library) {
       //@ts-ignore ignored because we will always have pool
-      const POOL: Pool = pools[poolKey];
       if (POOL.poolType !== PoolTypes.LP) {
         return;
       }
@@ -153,7 +159,6 @@ export const calculatePoolData = async (props: Props) => {
     }
   }
   //@ts-ignore ignored because we will always have pool
-  const POOL: Pool = pools[poolKey];
   const userMasterchefBalances = masterchefBalances
     ? masterchefBalances[POOL.lpToken.symbol]
     : null;
