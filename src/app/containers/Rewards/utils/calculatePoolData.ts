@@ -53,19 +53,19 @@ export const calculatePoolData = async (props: Props) => {
 
   const poolKey = pool.key;
   if (tokenPricesUSD == null || library == null || chainId == null) {
-    console.log(1)
+    console.log(1);
     if (poolKey && library) {
-      console.log(2)
+      console.log(2);
       //@ts-ignore ignored because we will always have pool
       const POOL: Pool = pools[poolKey];
       if (POOL.poolType !== PoolTypes.LP) {
-        console.log(3)
+        console.log(3);
         return;
       }
 
       let masterchefPool;
       if (masterchefApr && masterchefBalances) {
-        console.log(4)
+        console.log(4);
         masterchefPool = masterchefApr[POOL.address];
       } else {
         return;

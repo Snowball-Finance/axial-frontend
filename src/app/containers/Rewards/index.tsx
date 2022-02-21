@@ -21,8 +21,8 @@ export const Rewards: FC<Props> = ({ pools }) => {
   useRewardsSlice();
   const library = useSelector(Web3Selectors.selectLibrary);
   const account = useSelector(Web3Selectors.selectAccount);
-  const masterchefApr=useSelector(RewardsSelectors.masterchefApr)
-  const masterchefBalances=useSelector(RewardsSelectors.masterChefBalances)
+  const masterchefApr = useSelector(RewardsSelectors.masterchefApr);
+  const masterchefBalances = useSelector(RewardsSelectors.masterChefBalances);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -32,12 +32,10 @@ export const Rewards: FC<Props> = ({ pools }) => {
     return () => {};
   }, [library, account]);
 
-useEffect(() => {
-  dispatch(RewardsActions.getRewardPoolsData(pools));
-  return () => {
-  }
-}, [masterchefApr,masterchefBalances,account])
-
+  useEffect(() => {
+    dispatch(RewardsActions.getRewardPoolsData(pools));
+    return () => {};
+  }, [masterchefApr, masterchefBalances, account]);
 
   useEffect(() => {
     dispatch(RewardsActions.getMasterchefAPR());

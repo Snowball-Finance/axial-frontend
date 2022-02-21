@@ -49,7 +49,7 @@ const rewardsSlice = createSlice({
       state,
       action: PayloadAction<ContainerState["pools"]>
     ) {},
-    setRewardPools(state, action: PayloadAction<ContainerState['pools']>) {
+    setRewardPools(state, action: PayloadAction<ContainerState["pools"]>) {
       state.pools = action.payload;
     },
     getMasterChefBalances(state, action: PayloadAction<void>) {},
