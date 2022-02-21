@@ -30,35 +30,36 @@ export function* getRewardPoolsData(action: {
   const account = yield select(Web3Domains.selectAccountDomain);
   const chainId = yield select(Web3Domains.selectChainIDDomain);
   const tokenPricesUSD = yield select(GlobalDomains.tokenPricesUSD);
-  if (library) {
-    try {
-      //filtered JLP until i can find the bug in getting data
-      const poolKeys: Pools[] = [];
-      const arrayOfDataGetters = Object.values(pools)
-        .filter((pool) => pool.key !== Pools.AXIAL_JLP)
-        .map((pool: any) => {
-          poolKeys.push(pool.key);
-          const dataToPass = {
-            pool,
-            account,
-            chainId,
-            library,
-            tokenPricesUSD,
-          };
-          return call(calculatePoolData, dataToPass);
-        });
-      const responses = yield all(arrayOfDataGetters);
-      const tmpPools = {};
-      poolKeys.forEach((key: Pools, index) => {
-        if (responses[index]) {
-          tmpPools[key] = { ...pools[key], ...responses[index] };
-        }
+  try {
+    //filtered JLP until i can find the bug in getting data
+    const poolKeys: Pools[] = [];
+    const arrayOfDataGetters = Object.values(pools)
+      .filter((pool) => pool.key !== Pools.AXIAL_JLP)
+      .map((pool: any) => {
+        poolKeys.push(pool.key);
+        const dataToPass = {
+          pool,
+          account,
+          chainId,
+          library,
+          tokenPricesUSD,
+        };
+        return call(calculatePoolData, dataToPass);
       });
-      console.log(tmpPools);
+    const responses = yield all(arrayOfDataGetters);
+    const tmpPools = {};
+    let hasSomething = false;
+    poolKeys.forEach((key: Pools, index) => {
+      if (responses[index]) {
+        tmpPools[key] = { ...pools[key], ...responses[index] };
+        hasSomething = true;
+      }
+    });
+    if (hasSomething) {
       yield put(RewardsActions.setRewardPools(tmpPools));
-    } catch (error) {
-      console.log(error);
     }
+  } catch (error) {
+    console.log(error);
   }
 }
 
