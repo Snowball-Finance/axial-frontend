@@ -6,14 +6,19 @@ import { push } from "connected-react-router";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { ContainedButton } from "app/components/common/buttons/containedButton";
 import { OutlinedButton } from "app/components/common/buttons/outlinedButton";
-import snobIcon from "assets/images/logo.svg";
 import { AppPages } from "app/types";
+import { Info } from "./Info";
+import { TokenImages } from "./TokenImages";
 
 export const PoolCardItem: FC = () => {
   const dispatch = useDispatch();
 
   const handleNavigateToDeposit = (poolIndex: string) => {
     dispatch(push(`${AppPages.LiquidityPage}/${poolIndex}/deposit`));
+  };
+
+  const handleNavigateToWithdraw = (poolIndex: string) => {
+    dispatch(push(`${AppPages.LiquidityPage}/${poolIndex}/withdraw`));
   };
 
   return (
@@ -26,53 +31,7 @@ export const PoolCardItem: FC = () => {
             </Grid>
 
             <Grid item>
-              <Grid
-                container
-                spacing={4}
-                justifyContent="space-between"
-                alignItems="center"
-              >
-                <Grid item>
-                  <Grid container spacing={1}>
-                    <Grid item>
-                      <PoolInfoTitleText variant="body1">
-                        Swap APR
-                      </PoolInfoTitleText>
-                    </Grid>
-                    <Grid item>
-                      <PoolInfoSubTitleText variant="body2">
-                        2.44%
-                      </PoolInfoSubTitleText>
-                    </Grid>
-                  </Grid>
-                </Grid>
-                <Grid item>
-                  <Grid container spacing={1}>
-                    <Grid item>
-                      <PoolInfoTitleText variant="body1">TVL</PoolInfoTitleText>
-                    </Grid>
-                    <Grid item>
-                      <PoolInfoSubTitleText variant="body2">
-                        $4.3M
-                      </PoolInfoSubTitleText>
-                    </Grid>
-                  </Grid>
-                </Grid>
-                <Grid item>
-                  <Grid container spacing={1}>
-                    <Grid item>
-                      <PoolInfoTitleText variant="body1">
-                        24h volume
-                      </PoolInfoTitleText>
-                    </Grid>
-                    <Grid item>
-                      <PoolInfoSubTitleText variant="body2">
-                        $784,782.18
-                      </PoolInfoSubTitleText>
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </Grid>
+              <Info />
             </Grid>
           </Grid>
         </Grid>
@@ -80,51 +39,7 @@ export const PoolCardItem: FC = () => {
         <Grid item>
           <Grid container justifyContent="space-between" alignItems="center">
             <Grid item>
-              <Grid container spacing={2} alignItems="center">
-                <Grid item>
-                  <Grid container spacing={1} alignItems="center">
-                    <Grid item>
-                      <PoolTokenImage src={snobIcon} alt="token1" />
-                    </Grid>
-                    <Grid item>
-                      <PoolInfoTitleText>AXIAL</PoolInfoTitleText>
-                    </Grid>
-                  </Grid>
-                </Grid>
-
-                <Grid item>
-                  <Grid container spacing={1} alignItems="center">
-                    <Grid item>
-                      <PoolTokenImage src={snobIcon} alt="token1" />
-                    </Grid>
-                    <Grid item>
-                      <PoolInfoTitleText>AXIAL</PoolInfoTitleText>
-                    </Grid>
-                  </Grid>
-                </Grid>
-
-                <Grid item>
-                  <Grid container spacing={1} alignItems="center">
-                    <Grid item>
-                      <PoolTokenImage src={snobIcon} alt="token1" />
-                    </Grid>
-                    <Grid item>
-                      <PoolInfoTitleText>AXIAL</PoolInfoTitleText>
-                    </Grid>
-                  </Grid>
-                </Grid>
-
-                <Grid item>
-                  <Grid container spacing={1} alignItems="center">
-                    <Grid item>
-                      <PoolTokenImage src={snobIcon} alt="token1" />
-                    </Grid>
-                    <Grid item>
-                      <PoolInfoTitleText>AXIAL</PoolInfoTitleText>
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </Grid>
+              <TokenImages />
             </Grid>
 
             <Grid item>
@@ -139,7 +54,12 @@ export const PoolCardItem: FC = () => {
                 </Grid>
 
                 <Grid item>
-                  <OutlinedButton width={120}>Withdraw</OutlinedButton>
+                  <OutlinedButton
+                    width={120}
+                    onClick={() => handleNavigateToWithdraw("ac4d")}
+                  >
+                    Withdraw
+                  </OutlinedButton>
                 </Grid>
               </Grid>
             </Grid>
@@ -160,19 +80,4 @@ const StyledPoolCard = styled("div")({
 const PoolHeaderText = styled(Typography)({
   color: CssVariables.white,
   fontSize: "26px",
-});
-
-const PoolInfoTitleText = styled(Typography)({
-  color: CssVariables.white,
-  fontSize: "16px",
-  fontWeight: "bold",
-});
-
-const PoolInfoSubTitleText = styled(Typography)({
-  color: CssVariables.white,
-  fontSize: "16px",
-});
-
-const PoolTokenImage = styled("img")({
-  width: "33px",
 });

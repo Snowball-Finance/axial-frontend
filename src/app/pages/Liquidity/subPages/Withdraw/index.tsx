@@ -1,15 +1,15 @@
 import React, { FC } from "react";
 import { Grid, styled } from "@mui/material";
 
-import { AddLiquidity } from "./components/AddLiquidity";
+import { WithdrawInput } from "./components/Input";
 import { CurrencyReserve } from "../../components/CurrencyReserve";
 
-export const Deposit: FC = () => {
+export const Withdraw: FC = () => {
   return (
     <PageWrapper>
       <Grid container spacing={4}>
         <Grid item>
-          <AddLiquidity />
+          <WithdrawInput />
         </Grid>
 
         <Grid item>

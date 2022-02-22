@@ -7,39 +7,35 @@ import axialIcon from "assets/images/logo.svg";
 
 export const CurrencyInput: FC = () => {
   return (
-    <Grid container direction="column">
-      <Grid item alignSelf="flex-end">
-        <BalanceText variant="body2">wallet balance 0.00</BalanceText>
-      </Grid>
-
-      <StyledCurrencyInput item>
-        <Grid container justifyContent="space-between" alignItems="center">
+    <StyledCurrencyInput
+      container
+      justifyContent="space-between"
+      alignItems="center"
+    >
+      <Grid item>
+        <Grid container spacing={1}>
           <Grid item>
-            <Grid container spacing={1}>
-              <Grid item>
-                <IconImage src={axialIcon} alt="icon"></IconImage>
-              </Grid>
-
-              <Grid item>
-                <TokenText variant="h6">Axial</TokenText>
-              </Grid>
-            </Grid>
+            <IconImage src={axialIcon} alt="icon"></IconImage>
           </Grid>
 
           <Grid item>
-            <Grid container spacing={1} alignItems="center">
-              <Grid item>
-                <CurrencyInputField value="0.00" onChange={() => {}} />
-              </Grid>
-
-              <Grid item>
-                <InputText variant="body2">=$0.0</InputText>
-              </Grid>
-            </Grid>
+            <TokenText variant="h6">Axial</TokenText>
           </Grid>
         </Grid>
-      </StyledCurrencyInput>
-    </Grid>
+      </Grid>
+
+      <Grid item>
+        <Grid container spacing={1} alignItems="center">
+          <Grid item>
+            <CurrencyInputField value="0.00" onChange={() => {}} />
+          </Grid>
+
+          <Grid item>
+            <InputText variant="body2">=$0.0</InputText>
+          </Grid>
+        </Grid>
+      </Grid>
+    </StyledCurrencyInput>
   );
 };
 
@@ -53,10 +49,6 @@ const StyledCurrencyInput = styled(Grid)({
 
 const IconImage = styled("img")({
   width: "33px",
-});
-
-const BalanceText = styled(Typography)({
-  color: CssVariables.white,
 });
 
 const TokenText = styled(Typography)({

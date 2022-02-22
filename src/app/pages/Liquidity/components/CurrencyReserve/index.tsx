@@ -2,8 +2,8 @@ import React, { FC } from "react";
 import { styled, Grid, Typography } from "@mui/material";
 
 import { CssVariables } from "styles/cssVariables/cssVariables";
-import { Info } from "./components/Info";
-import { MyShare } from "./components/MyShare";
+import { CurrencyInfo } from "./CurrencyInfo";
+import { MyShare } from "./MyShare";
 
 export const CurrencyReserve: FC = () => {
   return (
@@ -14,7 +14,7 @@ export const CurrencyReserve: FC = () => {
         </Grid>
 
         <Grid item>
-          <Info />
+          <CurrencyInfo />
         </Grid>
 
         <Grid item>
