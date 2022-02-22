@@ -1,13 +1,20 @@
 import React, { FC } from "react";
 import { Grid, styled } from "@mui/material";
 
+import { CurrencyReserve } from "../../components/CurrencyReserve";
+import { WithdrawInput } from "./components/Input";
+
 export const Withdraw: FC = () => {
   return (
     <PageWrapper>
       <Grid container spacing={4}>
-        <Grid item></Grid>
+        <Grid item>
+          <WithdrawInput />
+        </Grid>
 
-        <Grid item></Grid>
+        <Grid item>
+          <CurrencyReserve />
+        </Grid>
       </Grid>
     </PageWrapper>
   );
