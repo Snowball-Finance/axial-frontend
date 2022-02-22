@@ -9,7 +9,7 @@ import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 
 import { translations } from "locales/i18n";
-import { PoolCards } from "./components/PoolCards";
+import { RewardsBody } from "./body";
 
 export const RewardsPage: FC = () => {
   const { t } = useTranslation();
@@ -24,7 +24,7 @@ export const RewardsPage: FC = () => {
         />
       </Helmet>
 
-      <PoolCards />
+      <RewardsBody />
     </>
   );
 };
