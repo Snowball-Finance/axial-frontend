@@ -108,6 +108,8 @@ const FarmDepositPage = (props: Props): ReactElement => {
     )
   }
 
+  const nameOfPoolToRedirect = props.title?.split(" ")[0];
+
   return (
     <div className="deposit">
       <div className="content">
@@ -169,7 +171,7 @@ const FarmDepositPage = (props: Props): ReactElement => {
             <a
               target="_blank"
               rel="noreferrer"
-              href="https://app.snowball.network/compound-and-earn"
+              href={`https://app.snowball.network/compound-and-earn?pool=${nameOfPoolToRedirect}`}
             >
               <Button kind="secondary" size="full">
                 {t("Compound with Snowball")}
