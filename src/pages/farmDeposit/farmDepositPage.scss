@@ -119,3 +119,10 @@ div.deposit {
   text-align: center;
   padding: 12px;
 }
+
+.compoundWithSnowball {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  column-gap: 5px;
+}

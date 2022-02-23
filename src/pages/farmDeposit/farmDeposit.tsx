@@ -7,6 +7,7 @@ import {
 import {
   AXIAL_AS4D_POOL_NAME,
   POOLS_MAP,
+  POOLS_INFO_MAP,
   PoolName,
   Token,
 } from "../../constants"
@@ -32,6 +33,7 @@ import { usePoolTokenBalances } from "../../store/wallet/hooks"
 import { useSelector } from "react-redux"
 import { useSwapContract } from "../../hooks/useContract"
 import { analytics } from "../../utils/analytics"
+import { usePoolsInfoByAddressQuery } from "../../hooks/usePoolsInfoByAddressQuery"
 
 interface Props {
   poolName: PoolName
@@ -41,12 +43,15 @@ function FarmDeposit({
   poolName = AXIAL_AS4D_POOL_NAME,
 }: Props): ReactElement | null {
   const POOL = POOLS_MAP[poolName]
+  const POOL_INFO_ADDRESS = POOLS_INFO_MAP[poolName]?.snowglobeAddress
+  const POOL_INFO_PAIR_NAME = POOLS_INFO_MAP[poolName]?.pair
   const { account } = useActiveWeb3React()
   const { approveAndDeposit, transactionStatus } = useApproveAndDeposit(
     poolName,
   )
   const [poolData, userShareData] = usePoolData(poolName, true)
   const swapContract = useSwapContract(poolName)
+  const { data: poolsInfoByAddress, loading: poolsInfoByAddressLoading } = usePoolsInfoByAddressQuery(POOL_INFO_ADDRESS)
   const allTokens = useMemo(() => {
     const arr = Array.from(
       new Set(POOL.poolTokens.concat(POOL.underlyingPoolTokens || [])),
@@ -241,6 +246,9 @@ function FarmDeposit({
       myShareData={userShareData}
       transactionData={depositTransaction}
       transactionStatus={transactionStatus}
+      poolsInfoByAddressLoading={poolsInfoByAddressLoading}
+      poolsInfoByAddress={poolsInfoByAddress}
+      poolsInfoPairName={POOL_INFO_PAIR_NAME}
     />
   )
 }
