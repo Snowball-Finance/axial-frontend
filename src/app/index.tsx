@@ -112,7 +112,7 @@ export function App() {
       />
       <Layout>
         <Switch>
-          <Route exact path={AppPages.RootPage} component={SwapPage} />
+          <Route exact path={AppPages.RootPage} component={HomePage} />
           <Route path={AppPages.GovernancePage}>
             <GovernancePage />
           </Route>
