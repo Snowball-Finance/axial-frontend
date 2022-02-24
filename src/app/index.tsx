@@ -26,8 +26,6 @@ import FEE_DISTRIBUTOR_ABI from "libs/abis/fee-distributor.json";
 import { CONTRACTS } from "config";
 import { StakingPage } from "./pages/Staking";
 import Layout from "./Layout";
-import { LiquidityPage } from "./pages/Liquidity/Loadable";
-import { RewardsPage } from "./pages/Rewards/Loadable";
 import { SwapPage } from "./pages/Swap/Loadable";
 import { RisksPage } from "./pages/Risks/Loadable";
 import { LiquidityPage } from "./pages/Liquidity/Loadable";
