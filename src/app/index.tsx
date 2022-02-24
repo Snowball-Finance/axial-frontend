@@ -28,6 +28,10 @@ import { StakingPage } from "./pages/Staking";
 import Layout from "./Layout";
 import { LiquidityPage } from "./pages/Liquidity/Loadable";
 import { RewardsPage } from "./pages/Rewards/Loadable";
+import { SwapPage } from "./pages/Swap/Loadable";
+import { RisksPage } from "./pages/Risks/Loadable";
+import { LiquidityPage } from "./pages/Liquidity/Loadable";
+import { RewardsPage } from "./pages/Rewards/Loadable";
 import { Swap } from "./containers/Swap";
 import SWAP_ROUTER_ABI from "abi/swapRouter.json";
 import { tokens } from "./tokens";
@@ -110,7 +114,7 @@ export function App() {
       />
       <Layout>
         <Switch>
-          <Route exact path={AppPages.RootPage} component={HomePage} />
+          <Route exact path={AppPages.RootPage} component={SwapPage} />
           <Route path={AppPages.GovernancePage}>
             <GovernancePage />
           </Route>
@@ -119,6 +123,7 @@ export function App() {
           </Route>
           <Route path={AppPages.LiquidityPage} component={LiquidityPage} />
           <Route path={AppPages.RewardPage} component={RewardsPage} />
+          <Route path={AppPages.RiskPage} component={RisksPage} />
           <Route component={NotFoundPage} />
         </Switch>
       </Layout>

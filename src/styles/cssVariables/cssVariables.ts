@@ -33,4 +33,5 @@ export enum CssVariables {
   bodyTextColor = "var(--bodyTextColor)",
   poolCardBackground = "var(--poolCardBackground)",
   poolCardBorder = "var(--poolCardBorder)",
+  swapInputbackground = "var(--swapInputbackground)",
 }
