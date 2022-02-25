@@ -165,5 +165,7 @@
   "yes": "是",
   "youWillReceive": "您会收到",
   "yourRecentTransactions": "您近期的交易记录会在此显示。",
-  "24HrVolume": "日流量"
+  "24HrVolume": "日流量",
+  "compoundWithSnowball": "与雪球复合",
+  "APY": "APY"
 }

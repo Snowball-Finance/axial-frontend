@@ -194,5 +194,7 @@
   "yes": "Yes",
   "youWillReceive": "You will receive",
   "yourRecentTransactions": "Your recent transactions will be here.",
-  "24HrVolume": "24h Volume"
+  "24HrVolume": "24h Volume",
+  "compoundWithSnowball": "Compound with Snowball",
+  "APY": "APY"
 }

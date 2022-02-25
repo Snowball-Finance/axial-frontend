@@ -21,6 +21,8 @@ import FarmInfoCard from "../../components/farm-info-card/FarmInfoCard"
 import { POOLS_MAP, PoolTypes } from "../../constants"
 import { analytics } from "../../utils/analytics"
 import { TransactionStatusType } from "../../hooks/useApproveAndDeposit"
+import { PoolsInfoByAddressQueryResponse } from "../../hooks/usePoolsInfoByAddressQuery"
+import { LoadingWrapper } from "../../components/shimmer"
 interface Props {
   title: string
   onConfirmTransaction: () => Promise<void>
@@ -39,6 +41,9 @@ interface Props {
   myShareData: UserShareType | null
   transactionData: DepositTransaction
   transactionStatus: TransactionStatusType
+  poolsInfoByAddressLoading: boolean
+  poolsInfoByAddress: PoolsInfoByAddressQueryResponse | undefined
+  poolsInfoPairName: string
 }
 
 /* eslint-enable @typescript-eslint/no-explicit-any */
@@ -56,6 +61,9 @@ const FarmDepositPage = (props: Props): ReactElement => {
     onChangeTokenInputValue,
     onConfirmTransaction,
     onToggleDepositWrapped,
+    poolsInfoByAddressLoading,
+    poolsInfoByAddress,
+    poolsInfoPairName,
   } = props
 
   const [currentModal, setCurrentModal] = useState<string | null>(null)
@@ -108,7 +116,14 @@ const FarmDepositPage = (props: Props): ReactElement => {
     )
   }
 
-  const nameOfPoolToRedirect = props.title?.split(" ")[0];
+  let compoundWithSnowballAPY = 0
+
+  if (poolsInfoByAddress && poolsInfoByAddress.PoolsInfoByAddress) {
+    compoundWithSnowballAPY =
+      poolsInfoByAddress?.PoolsInfoByAddress.gaugeInfo.snobYearlyAPR +
+      poolsInfoByAddress?.PoolsInfoByAddress.yearlyAPY +
+      poolsInfoByAddress?.PoolsInfoByAddress.yearlySwapFees
+  }
 
   return (
     <div className="deposit">
@@ -171,10 +186,24 @@ const FarmDepositPage = (props: Props): ReactElement => {
             <a
               target="_blank"
               rel="noreferrer"
-              href={`https://app.snowball.network/compound-and-earn?pool=${nameOfPoolToRedirect}`}
+              href={`https://app.snowball.network/compound-and-earn?pool=${poolsInfoPairName}`}
             >
-              <Button kind="secondary" size="full">
-                {t("Compound with Snowball")}
+              <Button
+                kind="secondary"
+                size="full"
+                disabled={!poolsInfoPairName}
+              >
+                <div className="compoundWithSnowball">
+                  <div>{t("compoundWithSnowball")}:</div>
+                  <LoadingWrapper
+                    height={19}
+                    width={"50"}
+                    isLoading={poolsInfoByAddressLoading}
+                  >
+                    {compoundWithSnowballAPY.toFixed(2)}%
+                  </LoadingWrapper>
+                  <div>{t("APY")}</div>
+                </div>
               </Button>
             </a>
           </div>{" "}

@@ -658,6 +658,38 @@ export const IS_VIRTUAL_SWAP_ACTIVE = false
 
 export const SWAP_ROUTER_ADDRESSES: { [chainId in ChainId]: string } = {
   [ChainId.MAINNET]: "0xBeD9dfE835cd2bB6775f344Ee5E3431b2CbF31FB",
-  [ChainId.HARDHAT]: "0xBeD9dfE835cd2bB6775f344Ee5E3431b2CbF31FB",//ZERO_ADDRESS,
+  [ChainId.HARDHAT]: "0xBeD9dfE835cd2bB6775f344Ee5E3431b2CbF31FB", //ZERO_ADDRESS,
 }
-export const SWAP_ROUTER_FEE=BigNumber.from(0)
+export const SWAP_ROUTER_FEE = BigNumber.from(0)
+
+export type PoolInfoByAddress = {
+  pair: string
+  snowglobeAddress: string
+}
+
+export type PoolInfoByAddressMap = {
+  [poolName: string]: PoolInfoByAddress
+}
+
+export const POOLS_INFO_MAP: PoolInfoByAddressMap = {
+  [AXIAL_AS4D_POOL_NAME]: {
+    pair: "AS4D",
+    snowglobeAddress: "0xB164cA68a881cb7cabaE22fcd2AC02008561d40F",
+  },
+  [AXIAL_AC4D_POOL_NAME]: {
+    pair: "AC4D",
+    snowglobeAddress: "0xce589add607A2e541EEa8eEFB3544e3B0Ba2dFf9",
+  },
+  [AXIAL_AM3D_POOL_NAME]: {
+    pair: "AM3D",
+    snowglobeAddress: "0x35c21956ca9876f98059C12F81E31425bB30b53D",
+  },
+  [AXIAL_AA3D_POOL_NAME]: {
+    pair: "AA3D",
+    snowglobeAddress: "0xb4281C75bab70734CDe886A9f6624385e88429CC",
+  },
+  [AXIAL_JLP_POOL_NAME]: {
+    pair: "AVAX-AXIAL",
+    snowglobeAddress: "0xa9ebe7B640F65077c16803Ff1275D790796038a0",
+  },
+}

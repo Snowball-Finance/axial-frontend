@@ -3,6 +3,7 @@ import "./i18n"
 
 import { ChakraProvider, ColorModeScript } from "@chakra-ui/react"
 import { Web3ReactProvider, createWeb3ReactRoot } from "@web3-react/core"
+import { ApolloProvider } from '@apollo/client';
 import { logError, sendWebVitalsToGA } from "./libs/googleAnalytics"
 
 import App from "./pages/App"
@@ -16,6 +17,7 @@ import getLibrary from "./libs/getLibrary"
 import { getNetworkLibrary } from "./connectors"
 import reportWebVitals from "./reportWebVitals"
 import store from "./store"
+import { apolloClient } from "./libs/apollo";
 
 const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName)
 
@@ -32,11 +34,13 @@ ReactDOM.render(
       <ChakraProvider theme={chakraTheme}>
         <Web3ReactProvider getLibrary={getLibrary}>
           <Web3ProviderNetwork getLibrary={getNetworkLibrary}>
-            <Provider store={store}>
-              <Router>
-                <App />
-              </Router>
-            </Provider>
+            <ApolloProvider client={apolloClient}>
+              <Provider store={store}>
+                <Router>
+                  <App />
+                </Router>
+              </Provider>
+            </ApolloProvider>
           </Web3ProviderNetwork>
         </Web3ReactProvider>
       </ChakraProvider>
