@@ -4,7 +4,7 @@ import { styled, Grid, Typography } from "@mui/material";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import axialIcon from "assets/images/logo.svg";
 
-export const Info: FC = () => {
+export const CurrencyInfo: FC = () => {
   return (
     <StyledInfo>
       <Grid container direction="column" spacing={2}>

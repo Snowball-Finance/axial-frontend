@@ -5,6 +5,7 @@ import { AppPages } from "app/types";
 import { LiquiditySubPages } from "./routes";
 import { PoolCards } from "./subPages/Pools";
 import { Deposit } from "./subPages/Deposit";
+import { Withdraw } from "./subPages/Withdraw";
 
 export const LiquidityBody = () => {
   return (
@@ -15,6 +16,9 @@ export const LiquidityBody = () => {
         </Route>
         <Route exact path={`${LiquiditySubPages.deposit}`}>
           <Deposit />
+        </Route>
+        <Route exact path={`${LiquiditySubPages.withdraw}`}>
+          <Withdraw />
         </Route>
       </Switch>
     </PageWrapper>

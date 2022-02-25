@@ -6,4 +6,5 @@ export enum LiquidityPathQueries {
 
 export const LiquiditySubPages = {
   deposit: `${AppPages.LiquidityPage}/:${LiquidityPathQueries.poolIndex}/deposit`,
+  withdraw: `${AppPages.LiquidityPage}/:${LiquidityPathQueries.poolIndex}/withdraw`,
 };

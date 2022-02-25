@@ -34,4 +34,6 @@ export enum CssVariables {
   poolCardBackground = "var(--poolCardBackground)",
   poolCardBorder = "var(--poolCardBorder)",
   swapInputbackground = "var(--swapInputbackground)",
+  radioWidth = "var(--radioWidth)",
+  radioHeight = "var(--radioHeight)",
 }
