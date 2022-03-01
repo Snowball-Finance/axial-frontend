@@ -17,9 +17,16 @@ import ArrowDownIcon from "assets/images/iconComponents/arrowDown";
 import ArrowUpIcon from "assets/images/iconComponents/arrowUp";
 import { CurrencyInput } from "./components/CurrencyInput";
 import { AdvanceOption } from "./components/AdvanceOption";
+import { useSelector } from "react-redux";
+import { globalSelectors } from "app/appSelectors";
+import { useSwapPageSlice } from "./slice";
 
 export const SwapPage: FC = () => {
+  useSwapPageSlice()
+
   const { t } = useTranslation();
+
+const tokens=useSelector(globalSelectors.tokens)
 
   return (
     <>
