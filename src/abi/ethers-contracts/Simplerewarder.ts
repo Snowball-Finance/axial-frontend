@@ -237,7 +237,9 @@ export interface Simplerewarder extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber] & { pending: BigNumber }>;
 
-    poolInfo(overrides?: CallOverrides): Promise<
+    poolInfo(
+      overrides?: CallOverrides
+    ): Promise<
       [BigNumber, BigNumber] & {
         accTokenPerShare: BigNumber;
         lastRewardTimestamp: BigNumber;
@@ -300,7 +302,9 @@ export interface Simplerewarder extends BaseContract {
 
   pendingTokens(_user: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-  poolInfo(overrides?: CallOverrides): Promise<
+  poolInfo(
+    overrides?: CallOverrides
+  ): Promise<
     [BigNumber, BigNumber] & {
       accTokenPerShare: BigNumber;
       lastRewardTimestamp: BigNumber;
@@ -359,7 +363,9 @@ export interface Simplerewarder extends BaseContract {
 
     pendingTokens(_user: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-    poolInfo(overrides?: CallOverrides): Promise<
+    poolInfo(
+      overrides?: CallOverrides
+    ): Promise<
       [BigNumber, BigNumber] & {
         accTokenPerShare: BigNumber;
         lastRewardTimestamp: BigNumber;

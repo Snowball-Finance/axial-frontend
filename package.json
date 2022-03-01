@@ -83,7 +83,7 @@
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx}": [
-      "npm run eslint -- --fix"
+      "npm run checkAll"
     ]
   },
   "devDependencies": {
