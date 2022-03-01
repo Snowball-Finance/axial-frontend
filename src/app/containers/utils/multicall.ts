@@ -9,12 +9,6 @@ import { ethers } from "ethers";
 //we need to disable all unsafe protections for any types
 //because all returns from this lib are generic
 
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 interface ReturnValues {
   [index: string]: any;
 }

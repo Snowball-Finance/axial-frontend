@@ -1,5 +1,4 @@
 import { Subject } from "rxjs";
-/*eslint-disable*/
 enum MessageNames {
   SET_INPUT_ERROR = "SET_INPUT_ERROR",
   SETLOADING = "SETLOADING",

@@ -35,7 +35,7 @@ export async function getAVAXPrice(): Promise<number> {
       config
     );
     const AVAXPrice = response.data.data.bundle.ethPrice;
-    if(!AVAXPrice) {
+    if (!AVAXPrice) {
       throw new Error("AVAX price not found");
     }
     return AVAXPrice;
@@ -53,22 +53,16 @@ export async function getAXIALPriceWithLP(): Promise<AxialLPData> {
     lpAMM,
     provider
   );
-  // eslint-disable-next-line
   const [reserves, AVAXPrice] = await Promise.all([
     lpContract.getReserves(),
     getAVAXPrice(),
   ]);
-  // eslint-disable-next-line
   const AxialQt = reserves._reserve1;
-  // eslint-disable-next-line
   const AVAXQt = reserves._reserve0;
-  // eslint-disable-next-line
   const axialAVAXPrice = AVAXQt / AxialQt;
 
   if (AVAXPrice) {
-    // eslint-disable-next-line
     const supply = (await lpContract.totalSupply()) / 1e18;
-    // eslint-disable-next-line
     const tvl = (reserves._reserve0 / 1e18) * AVAXPrice * 2;
     const tokenPoolPrice = tvl / supply;
 
@@ -108,7 +102,6 @@ export async function getVaultRewardAprNow(): Promise<MasterchefApr> {
         erc20,
         provider
       );
-      // eslint-disable-next-line
       const balanceToken = (await tokenContract.balanceOf(
         AXIAL_MASTERCHEF_CONTRACT_ADDRESS
       )) as BigNumber;
@@ -117,7 +110,6 @@ export async function getVaultRewardAprNow(): Promise<MasterchefApr> {
         TVL = 0;
       if (pool.poolType !== PoolTypes.LP) {
         try {
-          // eslint-disable-next-line
           virtualPrice = await swapTokenContract.getVirtualPrice();
         } catch (error) {
           virtualPrice = ethers.utils.parseUnits("1", 18);

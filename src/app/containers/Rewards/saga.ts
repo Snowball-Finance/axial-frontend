@@ -100,14 +100,14 @@ export function* getMasterChefBalances() {
         ...acc,
         [t.symbol]: {
           userInfo: {
-            amount: balanceResponses[t.address]?.userInfo[0], // eslint-disable-line
-            rewardDebt: balanceResponses[t.address]?.userInfo[1], // eslint-disable-line
+            amount: balanceResponses[t.address]?.userInfo[0],
+            rewardDebt: balanceResponses[t.address]?.userInfo[1],
           },
           pendingTokens: {
-            pendingAxial: balanceResponses[t.address]?.pendingTokens[0], // eslint-disable-line
-            bonusTokenAddress: balanceResponses[t.address]?.pendingTokens[1], // eslint-disable-line
-            bonusTokenSymbol: balanceResponses[t.address]?.pendingTokens[2], // eslint-disable-line
-            pendingBonusToken: balanceResponses[t.address]?.pendingTokens[3], // eslint-disable-line
+            pendingAxial: balanceResponses[t.address]?.pendingTokens[0],
+            bonusTokenAddress: balanceResponses[t.address]?.pendingTokens[1],
+            bonusTokenSymbol: balanceResponses[t.address]?.pendingTokens[2],
+            pendingBonusToken: balanceResponses[t.address]?.pendingTokens[3],
           },
         },
       }),

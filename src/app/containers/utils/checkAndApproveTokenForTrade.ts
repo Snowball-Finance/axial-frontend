@@ -59,8 +59,7 @@ export default async function checkAndApproveTokenForTrade(
       callbacks.onTransactionSuccess?.(confirmedTransaction);
     } catch (error: any) {
       toast.error("Transaction failed");
-          throw new Error("Your transaction could not be completed");
-
+      throw new Error("Your transaction could not be completed");
     }
   }
   if (existingAllowance.gt("0")) {

@@ -102,10 +102,7 @@ export function* swap() {
       account,
       amountToGive,
       infiniteApproval,
-      parseUnits((gasPrice?.gasStandard || "45").toString(), 9), //gasPrice
-      {
-        
-      }
+      parseUnits((gasPrice?.gasStandard || "45").toString(), 9) //gasPrice
     );
     const swapData = {
       amountIn: amountToGive,
