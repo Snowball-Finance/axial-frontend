@@ -306,7 +306,7 @@ export const calculatePoolData = async (props: Props) => {
   const { oneDayVolume, apr, utilization } =
     swapStats && poolAddress in swapStats
       ? swapStats[poolAddress]
-      : { oneDayVolume: 0, apr: 0, utilization: null };
+      : { oneDayVolume: 0, apr: 0, utilization: undefined };
   const poolData = {
     name: poolKey,
     rapr: poolApr,
@@ -318,7 +318,7 @@ export const calculatePoolData = async (props: Props) => {
     swapFee: swapFee,
     aParameter: aParameter,
     volume: oneDayVolume,
-    utilization: utilization ? parseUnits(utilization, 18) : null,
+    utilization: utilization ? parseUnits(utilization, 18) : undefined,
     apr: apr,
     extraapr: extraapr,
     lpTokenPriceUSD,
@@ -335,6 +335,6 @@ export const calculatePoolData = async (props: Props) => {
         lpTokenBalance: userLpTokenBalance,
         masterchefBalance: userMasterchefBalances,
       }
-    : null;
+    : undefined;
   return { poolData, userShareData };
 };

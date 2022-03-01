@@ -104,10 +104,7 @@ export function* swap() {
       infiniteApproval,
       parseUnits((gasPrice?.gasStandard || "45").toString(), 9), //gasPrice
       {
-        onTransactionError: () => {
-          toast.error("Transaction failed");
-          throw new Error("Your transaction could not be completed");
-        },
+        
       }
     );
     const swapData = {

@@ -34,9 +34,10 @@ export async function getAVAXPrice(): Promise<number> {
       query,
       config
     );
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    const AVAXPrice = response.data.data.bundle.ethPrice as number;
-
+    const AVAXPrice = response.data.data.bundle.ethPrice;
+    if(!AVAXPrice) {
+      throw new Error("AVAX price not found");
+    }
     return AVAXPrice;
   } catch (error) {
     console.error("Error retriving AVAX price");
@@ -133,7 +134,6 @@ export async function getVaultRewardAprNow(): Promise<MasterchefApr> {
         masterchefContract.axialPerSec(),
       ]);
 
-      // eslint-disable-next-line
       const axialPerSecond: number = axialPerSecondRes / 1e18;
 
       let poolFraction = 0;

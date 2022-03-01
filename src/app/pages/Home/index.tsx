@@ -48,7 +48,6 @@ export const HomePage = () => {
 
   return (
     <>
-      {/* <Rewards /> */}
       <ContainedButton
         loading={isGettingBestSwapPath}
         onClick={handleGetBestSwapPathClick}

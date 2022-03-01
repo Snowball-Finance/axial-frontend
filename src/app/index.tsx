@@ -26,7 +26,6 @@ import FEE_DISTRIBUTOR_ABI from "libs/abis/fee-distributor.json";
 import { CONTRACTS } from "config";
 import { StakingPage } from "./pages/Staking";
 import Layout from "./Layout";
-import { SwapPage } from "./pages/Swap/Loadable";
 import { RisksPage } from "./pages/Risks/Loadable";
 import { LiquidityPage } from "./pages/Liquidity/Loadable";
 import { RewardsPage } from "./pages/Rewards/Loadable";
@@ -40,8 +39,6 @@ import { GlobalActions, useGlobalSlice } from "store/slice";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Web3Selectors } from "./containers/BlockChain/Web3/selectors";
-
-// import { Swap } from "./containers/Swap";
 
 export function App() {
   const { t } = useTranslation();
@@ -103,7 +100,6 @@ export function App() {
           },
         }}
       />
-      {/* <PoolsAndGauges abi={GAUGE_PROXY_ABI} initialDataQuery={INFO_QUERY} /> */}
       <Rewards pools={pools} />
       <Swap
         swapRouterABI={SWAP_ROUTER_ABI}

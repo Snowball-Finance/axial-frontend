@@ -6,6 +6,7 @@ import { LpTokenGuarded } from "abi/ethers-contracts/LpTokenGuarded";
 import { LpTokenUnguarded } from "abi/ethers-contracts/LpTokenUnguarded";
 import { MaxUint256 } from "@ethersproject/constants";
 import { Zero } from "@ethersproject/constants";
+import { toast } from "react-toastify";
 
 /**
  * Checks if a spender is allowed to spend some amount of a token.
@@ -56,10 +57,10 @@ export default async function checkAndApproveTokenForTrade(
       const confirmedTransaction = await approvalTransaction.wait();
       cleanupOnStart?.();
       callbacks.onTransactionSuccess?.(confirmedTransaction);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      callbacks.onTransactionError?.(error);
-      throw error;
+      toast.error("Transaction failed");
+          throw new Error("Your transaction could not be completed");
+
     }
   }
   if (existingAllowance.gt("0")) {
