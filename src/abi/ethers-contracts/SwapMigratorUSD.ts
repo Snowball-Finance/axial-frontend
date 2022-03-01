@@ -120,7 +120,9 @@ export interface SwapMigratorUSD extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    usdPoolMigrationData(overrides?: CallOverrides): Promise<
+    usdPoolMigrationData(
+      overrides?: CallOverrides
+    ): Promise<
       [string, string, string, string] & {
         oldPoolAddress: string;
         oldPoolLPTokenAddress: string;
@@ -144,7 +146,9 @@ export interface SwapMigratorUSD extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  usdPoolMigrationData(overrides?: CallOverrides): Promise<
+  usdPoolMigrationData(
+    overrides?: CallOverrides
+  ): Promise<
     [string, string, string, string] & {
       oldPoolAddress: string;
       oldPoolLPTokenAddress: string;
@@ -164,7 +168,9 @@ export interface SwapMigratorUSD extends BaseContract {
 
     rescue(token: string, to: string, overrides?: CallOverrides): Promise<void>;
 
-    usdPoolMigrationData(overrides?: CallOverrides): Promise<
+    usdPoolMigrationData(
+      overrides?: CallOverrides
+    ): Promise<
       [string, string, string, string] & {
         oldPoolAddress: string;
         oldPoolLPTokenAddress: string;
