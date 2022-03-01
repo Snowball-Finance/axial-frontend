@@ -56,13 +56,14 @@
     "eject": "react-scripts eject",
     "start:prod": "yarn build && serve -s build",
     "checkTs": "tsc --noEmit",
-    "lint": "prettier --check ./src/**/*.{js,ts,tsx}",
+    "checkFormat": "prettier --check ./src/**/*.{js,ts,tsx}",
     "checkEslint": "yarn eslint ./src",
     "formatEslint": "yarn eslint --fix ./src",
     "format": "prettier --write ./src/**/*.{js,ts,tsx}",
-    "checkAll": "yarn checkTs && yarn checkEslint && yarn lint",
+    "checkAll": "yarn checkTs && yarn checkEslint && yarn checkFormat",
     "prepare": "husky install",
-    "generate": "cross-env TS_NODE_PROJECT='./internals/ts-node.tsconfig.json' plop --plopfile internals/generators/plopfile.ts"  
+    "postinstall": "typechain  --target ethers-v5 --out-dir src/abi/ethers-contracts 'src/abi/*.json'",
+    "generate": "cross-env TS_NODE_PROJECT='./internals/ts-node.tsconfig.json' plop --plopfile internals/generators/plopfile.ts"
   },
   "browserslist": {
     "production": [
@@ -119,6 +120,9 @@
     "serve": "13.0.2",
     "shelljs": "0.8.4",
     "ts-node": "10.4.0",
+    "typechain": "^7.0.0",
+    "@typechain/ethers-v5": "^9.0.0",
+    "@types/async-retry": "^1.4.3",
     "typescript": "4.4.4"
   }
 }

@@ -24,15 +24,49 @@ import GOVERNANCE_ABI from "libs/abis/vote-governance.json";
 import SNOWCONE_ABI from "libs/abis/snowcone.json";
 import FEE_DISTRIBUTOR_ABI from "libs/abis/fee-distributor.json";
 import { CONTRACTS } from "config";
-import { StakingPage } from "./pages/StakingPage";
+import { StakingPage } from "./pages/Staking";
 import Layout from "./Layout";
+import { RisksPage } from "./pages/Risks/Loadable";
 import { LiquidityPage } from "./pages/Liquidity/Loadable";
 import { RewardsPage } from "./pages/Rewards/Loadable";
-import { SwapPage } from "./pages/Swap/Loadable";
-import { RisksPage } from "./pages/Risks/Loadable";
+import { Swap } from "./containers/Swap";
+import SWAP_ROUTER_ABI from "abi/swapRouter.json";
+import { tokens } from "./tokens";
+import { Token, TokenSymbols } from "./containers/Swap/types";
+import { Rewards } from "./containers/Rewards";
+import { pools } from "./pools";
+import { GlobalActions, useGlobalSlice } from "store/slice";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Web3Selectors } from "./containers/BlockChain/Web3/selectors";
 
 export function App() {
   const { t } = useTranslation();
+
+  useGlobalSlice();
+  const dispatch = useDispatch();
+
+  const account = useSelector(Web3Selectors.selectAccount);
+  const library = useSelector(Web3Selectors.selectLibrary);
+
+  useEffect(() => {
+    dispatch(GlobalActions.setTokens(tokens));
+    return () => {};
+  }, []);
+
+  useEffect(() => {
+    dispatch(GlobalActions.getTokenPricesUSD());
+    dispatch(GlobalActions.getGasPrice());
+    return () => {};
+  }, []);
+
+  useEffect(() => {
+    if (account && library) {
+      dispatch(GlobalActions.getTokenBalances());
+    }
+    return () => {};
+  }, [account, library]);
+
   return (
     <>
       <Helmet
@@ -66,10 +100,15 @@ export function App() {
           },
         }}
       />
-      {/* <PoolsAndGauges abi={GAUGE_PROXY_ABI} initialDataQuery={INFO_QUERY} /> */}
+      <Rewards pools={pools} />
+      <Swap
+        swapRouterABI={SWAP_ROUTER_ABI}
+        swapRouterAddress={"0xBeD9dfE835cd2bB6775f344Ee5E3431b2CbF31FB"}
+        tokens={tokens as { [K in TokenSymbols]: Token }}
+      />
       <Layout>
         <Switch>
-          <Route exact path={AppPages.RootPage} component={SwapPage} />
+          <Route exact path={AppPages.RootPage} component={HomePage} />
           <Route path={AppPages.GovernancePage}>
             <GovernancePage />
           </Route>

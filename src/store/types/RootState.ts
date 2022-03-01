@@ -7,7 +7,11 @@ import { GovernanceState } from "app/containers/BlockChain/Governance/types";
 import { PoolsAndGaugesState } from "app/containers/PoolsAndGauges/types";
 import { GovernancePageState } from "app/pages/Governance/types";
 import { StakingState } from "app/containers/BlockChain/Governance/Staking/types";
-import { StakingPageState } from "app/pages/StakingPage/types";
+import { StakingPageState } from "app/pages/Staking/types";
+import { RewardsState } from "app/containers/Rewards/types";
+// import { SwapState } from 'app/containers/Swap/types';
+import { SwapState } from "app/containers/Swap/types";
+import { GlobalState } from "store/slice";
 // [IMPORT NEW CONTAINERSTATE ABOVE] < Needed for generating containers seamlessly
 
 /* 
@@ -17,7 +21,7 @@ import { StakingPageState } from "app/pages/StakingPage/types";
   So, not available always
 */
 export interface RootState {
-  global?: any;
+  global?: GlobalState;
   homePage?: HomePageState;
   router?: RouterState;
   web3?: Web3State;
@@ -28,5 +32,7 @@ export interface RootState {
   governancePage?: GovernancePageState;
   staking?: StakingState;
   stakingPage?: StakingPageState;
+  rewards?: RewardsState;
+  swap?: SwapState;
   // [INSERT NEW REDUCER KEY ABOVE] < Needed for generating containers seamlessly
 }

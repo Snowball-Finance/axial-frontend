@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 import { toast } from "react-toastify";
-import { all, call, delay, put, select, takeLatest } from "redux-saga/effects";
+import { all, call, put, select, takeLatest } from "redux-saga/effects";
 import { GovernanceActions } from "./slice";
 import { ContainerState, Proposal } from "./types";
 import { BNToFloat } from "common/format";

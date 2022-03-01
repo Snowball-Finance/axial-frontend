@@ -13,7 +13,6 @@ import { RewardsBody } from "./body";
 
 export const RewardsPage: FC = () => {
   const { t } = useTranslation();
-
   return (
     <>
       <Helmet>
