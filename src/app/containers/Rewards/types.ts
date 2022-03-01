@@ -1,6 +1,6 @@
 /* --- STATE --- */
 
-import { BigNumber, Contract } from "ethers";
+import { BigNumber } from "ethers";
 import { Token } from "../Swap/types";
 
 interface PoolInfo {

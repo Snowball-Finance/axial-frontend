@@ -1,5 +1,4 @@
 import { Pools, PoolTypes, RewardsState } from "./containers/Rewards/types";
-import METASWAP_DEPOSIT_ABI from "abi/metaSwapDeposit.json";
 import META_SWAP_ABI from "abi/metaSwap.json";
 
 import SWAP_FLASH_LOAN_NO_WITHDRAW_FEE_ABI from "abi/swapFlashLoanNoWithdrawFee.json";

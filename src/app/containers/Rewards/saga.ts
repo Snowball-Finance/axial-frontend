@@ -15,7 +15,7 @@ import { fetchSwapStatsNow } from "./providers/getSwapStats";
 import { getVaultRewardAprNow } from "./providers/getVaultRewardsAPR";
 import { RewardsDomains } from "./selectors";
 import { RewardsActions } from "./slice";
-import { MasterchefResponse, Pool, Pools, RewardsState } from "./types";
+import { MasterchefResponse, Pools, RewardsState } from "./types";
 import { calculatePoolData } from "./utils/calculatePoolData";
 
 export function* getRewardPoolsData(action: {

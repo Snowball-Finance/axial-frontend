@@ -1,10 +1,4 @@
-import {
-  AxialLPData,
-  ExtraTokens,
-  MasterchefApr,
-  PoolInfos,
-  PoolTypes,
-} from "../types";
+import { AxialLPData, ExtraTokens, MasterchefApr, PoolTypes } from "../types";
 import axios from "axios";
 import { BigNumber, ethers } from "ethers";
 import { rpcUrl } from "app/containers/BlockChain/utils/wallet/connectors";

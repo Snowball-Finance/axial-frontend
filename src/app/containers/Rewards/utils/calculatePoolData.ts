@@ -13,11 +13,8 @@ import {
   Zero,
   ZERO_ADDRESS,
 } from "../constants";
-import META_SWAP_ABI from "abi/metaSwap.json";
 
 import { BigNumber, Contract, ethers } from "ethers";
-import { MetaSwap } from "abi/ethers-contracts/MetaSwap";
-import { SwapFlashLoanNoWithdrawFee } from "abi/ethers-contracts/SwapFlashLoanNoWithdrawFee";
 import { extraRewardTokens } from "app/tokens";
 import { parseUnits } from "ethers/lib/utils";
 import { GlobalState } from "store/slice";

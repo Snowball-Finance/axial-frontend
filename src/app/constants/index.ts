@@ -1,15 +1,12 @@
 import axialLogo from "assets/icons/logo_icon.svg"; // this needs a smaller icon logo(24)
-import coinbasewalletIcon from "assets/icons/coinbasewallet.svg";
 import daiLogo from "assets/icons/dai.svg";
 import fraxLogo from "assets/icons/frax.svg";
 import tsdLogo from "assets/icons/tsd.svg";
 import mimLogo from "assets/icons/mim.svg";
-import metamaskIcon from "assets/icons/metamask.svg";
 import tusdLogo from "assets/icons/tusd.svg";
 import usdcLogo from "assets/icons/usdc.svg";
 import usdtLogo from "assets/icons/usdt.svg";
 import avaiLogo from "assets/icons/avai.svg";
-import walletconnectIcon from "assets/icons/walletconnect.svg";
 
 export const AXIAL_AS4D_POOL_NAME = "AS4D Stablecoins";
 export const AXIAL_AC4D_POOL_NAME = "AC4D Stablecoins";

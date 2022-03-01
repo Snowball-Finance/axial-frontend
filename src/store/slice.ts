@@ -1,7 +1,6 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 import { Token, TokenSymbols } from "app/containers/Swap/types";
 import { GenericGasResponse } from "app/providers/gasPrice";
-import { tokens } from "app/tokens";
 import { createSlice } from "store/toolkit";
 import { useInjectReducer, useInjectSaga } from "./redux-injectors";
 import { globalSaga } from "./saga";

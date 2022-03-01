@@ -1,9 +1,9 @@
 import { JsonRpcSigner, Web3Provider } from "@ethersproject/providers";
 import { BigNumber, Contract, ContractInterface } from "ethers";
-import { AddressZero, Zero } from "@ethersproject/constants";
+import { AddressZero } from "@ethersproject/constants";
 import { getAddress } from "@ethersproject/address";
 import { PoolTypes } from "app/constants";
-import { formatUnits, parseUnits } from "@ethersproject/units";
+import { formatUnits } from "@ethersproject/units";
 
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(value: string): string | false {
