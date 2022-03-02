@@ -32,7 +32,7 @@ export const Info: FC = () => {
           </Grid>
         </Grid>
       </Grid>
-      
+
       <Grid item>
         <Grid container spacing={1}>
           <Grid item>

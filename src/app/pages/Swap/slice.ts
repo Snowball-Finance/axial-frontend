@@ -1,21 +1,21 @@
-import { PayloadAction } from '@reduxjs/toolkit';
-import { ContainerState } from './types';
+import { PayloadAction } from "@reduxjs/toolkit";
+import { ContainerState } from "./types";
 import { createSlice } from "store/toolkit";
 import { useInjectReducer, useInjectSaga } from "store/redux-injectors";
 
-import { swapPageSaga } from './saga';
+import { swapPageSaga } from "./saga";
 import { Token } from "app/containers/Swap/types";
 
 // The initial state of the SwapPage2 container
 export const initialState: ContainerState = {
   selectedFromToken: undefined,
   selectedToToken: undefined,
-  fromAmount: '0',
-  toAmount: '0',
+  fromAmount: "0",
+  toAmount: "0",
 };
 
 const swapPageSlice = createSlice({
-  name: 'swapPage',
+  name: "swapPage",
   initialState,
   reducers: {
     setSelectedFromToken(state, action: PayloadAction<Token>) {
@@ -29,14 +29,18 @@ const swapPageSlice = createSlice({
     },
     setEnteredToAmount(state, action: PayloadAction<string>) {
       state.toAmount = action.payload;
-    }
+    },
   },
 });
 
-export const { actions:SwapPageActions, reducer:SwapPageReducer, name: sliceKey } = swapPageSlice;
+export const {
+  actions: SwapPageActions,
+  reducer: SwapPageReducer,
+  name: sliceKey,
+} = swapPageSlice;
 
-export const useSwapPageSlice=()=>{
-useInjectReducer({ key: sliceKey, reducer: SwapPageReducer });
-useInjectSaga({ key: sliceKey, saga: swapPageSaga });
-return { SwapPageActions }
-}
+export const useSwapPageSlice = () => {
+  useInjectReducer({ key: sliceKey, reducer: SwapPageReducer });
+  useInjectSaga({ key: sliceKey, saga: swapPageSaga });
+  return { SwapPageActions };
+};

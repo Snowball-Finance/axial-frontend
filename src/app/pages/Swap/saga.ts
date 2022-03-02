@@ -1,9 +1,3 @@
+import {} from "./slice";
 
-import {  } from "./slice";
-
-
-
-
-export function* swapPageSaga() {
-
-}
+export function* swapPageSaga() {}

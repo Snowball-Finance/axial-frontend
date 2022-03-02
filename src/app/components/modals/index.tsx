@@ -1,5 +1,3 @@
-export const GlobalModals=()=>{
-  return (
-    <></>
-  )
-}
+export const GlobalModals = () => {
+  return <></>;
+};

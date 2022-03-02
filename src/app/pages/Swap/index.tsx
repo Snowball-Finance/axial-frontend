@@ -20,10 +20,9 @@ import { AdvanceOption } from "./components/AdvanceOption";
 import { useSwapPageSlice } from "./slice";
 
 export const SwapPage: FC = () => {
-  useSwapPageSlice()
+  useSwapPageSlice();
 
   const { t } = useTranslation();
-
 
   return (
     <>
