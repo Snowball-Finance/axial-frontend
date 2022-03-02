@@ -4,7 +4,7 @@ import { RootState } from "store/types";
 import { initialState } from "./slice";
 
 export const SwapDomains = {
-  mainDomain: (state: RootState) => state. || initialState,
+  mainDomain: (state: RootState) => state.swap || initialState,
   swapRouterABI: (state: RootState) =>
     state.swap?.swapRouterABI || initialState.swapRouterABI,
   swapRouterAddress: (state: RootState) =>
