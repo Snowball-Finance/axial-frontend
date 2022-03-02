@@ -34,6 +34,7 @@ export interface RootState {
   staking?: StakingState;
   stakingPage?: StakingPageState;
   rewards?: RewardsState;
+  swap?: SwapState;
   swapPage?: SwapPageState;
   // [INSERT NEW REDUCER KEY ABOVE] < Needed for generating containers seamlessly
 }
