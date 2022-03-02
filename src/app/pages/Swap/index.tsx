@@ -22,11 +22,11 @@ import { globalSelectors } from "app/appSelectors";
 import { useSwapPageSlice } from "./slice";
 
 export const SwapPage: FC = () => {
-  useSwapPageSlice()
+  useSwapPageSlice();
 
   const { t } = useTranslation();
 
-const tokens=useSelector(globalSelectors.tokens)
+  const tokens = useSelector(globalSelectors.tokens);
 
   return (
     <>
