@@ -39,6 +39,7 @@ import { GlobalActions, useGlobalSlice } from "store/slice";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Web3Selectors } from "./containers/BlockChain/Web3/selectors";
+import { GlobalModals } from "./components/modals";
 
 export function App() {
   const { t } = useTranslation();
@@ -75,6 +76,7 @@ export function App() {
       >
         <meta name="description" content="Axial" />
       </Helmet>
+      <GlobalModals />
       <BlockChain
         mainTokenABI={SNOWBALL_ABI}
         governance={{
