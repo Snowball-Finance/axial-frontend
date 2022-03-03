@@ -8,6 +8,7 @@ export enum CssVariables {
   mildBlue = "var(--mildBlue)",
   ctaBlue = "var(--ctaBlue)",
   primary = "var(--primary)",
+  warning = "var(--warning)",
   opaqueGreen = "var(--opaqueGreen)",
   paperBorderRadius = "var(--paperBorderRadius)",
   buttonBorderRadius = "var(--buttonBorderRadius)",

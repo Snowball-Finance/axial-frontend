@@ -7,6 +7,10 @@
     "GettingUserPools": "Getting User Pools...",
     "SearchPoolName": "Search Pool Name..."
   },
+  "Errors":{
+    "ErrorConnectingWallet": "Error Connecting to Wallet",
+    "NotConnectedToSupportedNetwork":"You're connected to an unsupported network, please Switch to Avalanche."
+  },
   "HomePage": {
     "home": "Home",
     "description": "Home Page"
@@ -55,6 +59,7 @@
     "NoConnectedWallet": "No Connected Wallet",
     "Balance": "Balance",
     "GoBackTo": "Go Back To {{name}}",
+    "ConnectToAvalanche": "Connect To Avalanche",
     "Yes": "Yes",
     "No": "No",
     "Search": "Search",
