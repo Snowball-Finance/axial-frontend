@@ -1,50 +1,113 @@
-import { createSelector } from '@reduxjs/toolkit';
+import { createSelector } from "@reduxjs/toolkit";
+import { BigNumber } from "ethers";
+
+import { BNToString } from "common/format";
 import { GlobalDomains } from "app/appSelectors";
+import { RootState } from "store/types";
+import { initialState } from "./slice";
+import { TokenOption } from "./types";
 
-import { RootState } from 'store/types';
-import { initialState } from './slice';
+export const SwapPageDomains = {
+  swapPage: (state: RootState) => state.swapPage || initialState,
+  fromTokenError: (state: RootState) =>
+    state.swapPage?.fromTokenError || initialState.fromTokenError,
+  fromToken: (state: RootState) =>
+    state.swapPage?.fromToken || initialState.fromToken,
+  fromAmount: (state: RootState) =>
+    state.swapPage?.fromAmount || initialState.fromAmount,
+  toToken: (state: RootState) =>
+    state.swapPage?.toToken || initialState.toToken,
+  searchValue: (state: RootState) =>
+    state.swapPage?.searchValue || initialState.searchValue,
+};
 
-
-export const SwapPageDomains={
-  swapPage : (state: RootState) => state.swapPage || initialState,
-  selectedFromToken:(state: RootState) => state.swapPage?.selectedFromToken || initialState.selectedFromToken,
-  selectedToToken:(state: RootState) => state.swapPage?.selectedToToken || initialState.selectedToToken,
-  fromAmount:(state: RootState) => state.swapPage?.fromAmount || initialState.fromAmount,
-  toAmount:(state: RootState) => state.swapPage?.toAmount || initialState.toAmount,
-}
-
-export const SwapPageSelectors={
-  selectSwapPage : createSelector(
+export const SwapPageSelectors = {
+  selectSwapPage: createSelector(
     SwapPageDomains.swapPage,
-    swapPageState => swapPageState,
+    (swapPageState) => swapPageState
   ),
-selectOrderedFromTokens : createSelector(
-  GlobalDomains.tokens,SwapPageDomains.selectedToToken,
-  (tokens,toToken) => {
-    //do the logic here to filter and sort the tokens
- 
-  }
-),
-selectOrderedToTokens : createSelector(
-  GlobalDomains.tokens,SwapPageDomains.selectedFromToken,
-  (tokens,fromToken) => {
-  }
-),
-  selectSelectedFromToken : createSelector(
-    SwapPageDomains.selectedFromToken,
-    selectedFromToken => selectedFromToken,
+  fromTokenOptions: createSelector(
+    GlobalDomains.tokens,
+    SwapPageDomains.toToken,
+    SwapPageDomains.searchValue,
+    (tokens, tokenChange, searchValue) => {
+      const fromTokens: TokenOption[] = [];
+      for (let key in tokens) {
+        if (tokens.hasOwnProperty(key) && tokenChange?.symbol !== key) {
+          const { name, symbol, logo, decimals, balance } = tokens[key];
+          const tokenBalance = BNToString(
+            balance ?? BigNumber.from(0),
+            decimals
+          );
+          fromTokens.push({
+            value: symbol,
+            label: name,
+            icon: logo,
+            balance: tokenBalance || "0",
+            decimals,
+          });
+        }
+      }
+      return fromTokens
+        .filter((item) =>
+          item.value.toLowerCase().includes(searchValue.toLowerCase())
+        )
+        .sort(
+          (a: TokenOption, b: TokenOption) =>
+            parseFloat(b?.balance) - parseFloat(a?.balance)
+        );
+    }
   ),
-  selectSelectedToToken : createSelector(
-    SwapPageDomains.selectedToToken,
-    selectedToToken => selectedToToken,
+  toTokenOptions: createSelector(
+    GlobalDomains.tokens,
+    SwapPageDomains.fromToken,
+    SwapPageDomains.searchValue,
+    (tokens, fromToken, searchValue) => {
+      const toTokens: TokenOption[] = [];
+      for (let key in tokens) {
+        if (tokens.hasOwnProperty(key) && fromToken?.symbol !== key) {
+          const { name, symbol, logo, decimals, balance } = tokens[key];
+          const tokenBalance = BNToString(
+            balance ?? BigNumber.from(0),
+            decimals
+          );
+          toTokens.push({
+            value: symbol,
+            label: name,
+            icon: logo,
+            balance: tokenBalance || "0",
+            decimals,
+          });
+        }
+      }
+      return toTokens
+        .filter((item) =>
+          item.value.toLowerCase().includes(searchValue.toLowerCase())
+        )
+        .sort(
+          (a: TokenOption, b: TokenOption) =>
+            parseFloat(b?.balance) - parseFloat(a?.balance)
+        );
+    }
   ),
-  selectFromAmount : createSelector(
+  selectedFromToken: createSelector(
+    SwapPageDomains.fromToken,
+    (fromToken) => fromToken
+  ),
+  selectedFromAmount: createSelector(
     SwapPageDomains.fromAmount,
-    fromAmount => fromAmount,
+    (fromAmount) => fromAmount
   ),
-  selectToAmount : createSelector(
-    SwapPageDomains.toAmount,
-    toAmount => toAmount,
+  selectedToToken: createSelector(
+    SwapPageDomains.toToken,
+    (toToken) => toToken
   ),
-}
-
+  errorMessage: createSelector(
+    SwapPageDomains.fromTokenError,
+    (error) => error
+  ),
+  searchValue: createSelector(
+    SwapPageDomains.searchValue,
+    (searchValue) => searchValue
+  ),
+};

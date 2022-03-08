@@ -1,42 +1,54 @@
-import { PayloadAction } from '@reduxjs/toolkit';
-import { ContainerState } from './types';
+import { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "store/toolkit";
 import { useInjectReducer, useInjectSaga } from "store/redux-injectors";
 
-import { swapPageSaga } from './saga';
+import { swapPageSaga } from "./saga";
+import { ContainerState, TokenChangePayload } from "./types";
 import { Token } from "app/containers/Swap/types";
 
-// The initial state of the SwapPage2 container
 export const initialState: ContainerState = {
-  selectedFromToken: undefined,
-  selectedToToken: undefined,
-  fromAmount: '0',
-  toAmount: '0',
+  fromTokenError: "",
+  fromToken: undefined,
+  toToken: undefined,
+  fromAmount: "",
+  searchValue: "",
 };
 
 const swapPageSlice = createSlice({
-  name: 'swapPage',
+  name: "swapPage",
   initialState,
   reducers: {
-    setSelectedFromToken(state, action: PayloadAction<Token>) {
-      state.selectedFromToken = action.payload;
+    setFromToken(state, action: PayloadAction<Token>) {
+      state.fromToken = action.payload;
     },
-    setSelectedToToken(state, action: PayloadAction<Token>) {
-      state.selectedToToken = action.payload;
+    setToToken(state, action: PayloadAction<Token>) {
+      state.toToken = action.payload;
     },
-    setEnteredFromAmount(state, action: PayloadAction<string>) {
+    setFromAmount(state, action: PayloadAction<string>) {
       state.fromAmount = action.payload;
     },
-    setEnteredToAmount(state, action: PayloadAction<string>) {
-      state.toAmount = action.payload;
-    }
+    setSearchValue(state, action: PayloadAction<string>) {
+      state.searchValue = action.payload;
+    },
+    setFromTokenError(state, action: PayloadAction<string>) {
+      state.fromTokenError = action.payload;
+    },
+    amountChange(state, action: PayloadAction<string>) {},
+    tokenChange(state, action: PayloadAction<TokenChangePayload>) {},
+    searchingToken(state, action: PayloadAction<string>) {},
+    maxAmountSelection() {},
+    reverseTokenChange() {},
   },
 });
 
-export const { actions:SwapPageActions, reducer:SwapPageReducer, name: sliceKey } = swapPageSlice;
+export const {
+  actions: SwapPageActions,
+  reducer: SwapPageReducer,
+  name: sliceKey,
+} = swapPageSlice;
 
-export const useSwapPageSlice=()=>{
-useInjectReducer({ key: sliceKey, reducer: SwapPageReducer });
-useInjectSaga({ key: sliceKey, saga: swapPageSaga });
-return { SwapPageActions }
-}
+export const useSwapPageSlice = () => {
+  useInjectReducer({ key: sliceKey, reducer: SwapPageReducer });
+  useInjectSaga({ key: sliceKey, saga: swapPageSaga });
+  return { SwapPageActions };
+};
