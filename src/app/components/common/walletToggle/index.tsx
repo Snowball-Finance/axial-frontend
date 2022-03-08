@@ -2,13 +2,17 @@ import { Web3Selectors } from "app/containers/BlockChain/Web3/selectors";
 import { Web3Actions } from "app/containers/BlockChain/Web3/slice";
 import { ConnectorPayload } from "app/containers/BlockChain/Web3/types";
 import { translations } from "locales/i18n";
-import React, { useEffect } from "react";
+import React, { FC, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { LocalStorageKeys, storage } from "../../../../store/storage";
 import { ContainedButton } from "../buttons/containedButton";
 
-export const WalletToggle = () => {
+interface WalletToggleProps {
+  fullWidth?: boolean;
+}
+
+export const WalletToggle: FC<WalletToggleProps> = ({ fullWidth }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const isConnecting = useSelector(Web3Selectors.selectIsConnectingToWallet);
@@ -35,8 +39,7 @@ export const WalletToggle = () => {
   return (
     <ContainedButton
       color="primary"
-      height={36}
-      width={220}
+      height={40.5}
       loading={isConnecting}
       onClick={handleButtonClick}
     >

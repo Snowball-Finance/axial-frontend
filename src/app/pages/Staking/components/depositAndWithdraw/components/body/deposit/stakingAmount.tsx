@@ -1,20 +1,14 @@
 import { styled } from "@mui/material";
-import { OutlinedButton } from "app/components/common/buttons/outlinedButton";
 import { StakingPageSelectors } from "app/pages/Staking/selectors";
 import { StakingPageActions } from "app/pages/Staking/slice";
 import { env } from "environment";
-import { translations } from "locales/i18n";
 import { ChangeEventHandler } from "react";
-import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { CssVariables } from "styles/cssVariables/cssVariables";
+import { CssVariables, FontFamilies } from "styles/cssVariables/cssVariables";
 
 export const StakingAmount = () => {
-  const { t } = useTranslation();
   const dispatch = useDispatch();
-  const handleMaxClick = () => {
-    dispatch(StakingPageActions.stakeAllTheBalances());
-  };
+
 
   const enteredAmount = useSelector(
     StakingPageSelectors.selectEnteredMainTokenToStake
@@ -27,23 +21,19 @@ export const StakingAmount = () => {
 
   return (
     <Wrapper>
-      <NameIconAndMaxButtonWrapper>
-        <Icon src={env.GOVERNANCE_TOKEN_LOGO_ADDRESS} />
-        <MainTokenName>{env.MAIN_TOKEN_NAME}</MainTokenName>
-        <MaxButton onClick={handleMaxClick}>
-          {t(translations.Common.Max())}
-        </MaxButton>
-      </NameIconAndMaxButtonWrapper>
       <AmountInput
         autoFocus
         onChange={handleAmountInputChange}
         value={enteredAmount}
       />
+       <NameIconWrapper>
+        <Icon src={env.GOVERNANCE_TOKEN_LOGO_ADDRESS} />
+        <MainTokenName>{env.MAIN_TOKEN_NAME}</MainTokenName>
+      </NameIconWrapper>
     </Wrapper>
   );
 };
 
-const MaxButton = styled(OutlinedButton)({});
 
 const MainTokenName = styled("span")({
   color: CssVariables.commonTextColor,
@@ -59,21 +49,25 @@ const AmountInput = styled("input")({
   flex: 1,
   border: "none",
   outline: "none",
-  fontSize: "16px",
-  fontWeight: "600",
+  fontSize: "26px",
+fontFamily:FontFamilies.FugazOne,
   color: CssVariables.commonTextColor,
   padding: "0 0 0 8px",
   background: "transparent",
+  maxWidth:'calc(100% - 125px )'
 });
 
-const NameIconAndMaxButtonWrapper = styled("div")({
+const NameIconWrapper = styled("div")({
   display: "flex",
   gap: "16px",
   alignItems: "center",
+  padding: '0px 12px',
+    border: `4px solid ${CssVariables.cardBorder}`,
+    borderRadius: CssVariables.paperBorderRadius
 });
 const Wrapper = styled("div")({
   padding: "16px 18px",
   borderRadius: CssVariables.paperBorderRadius,
-  border: `1px solid ${CssVariables.ctaBlue}`,
+  border: `4px solid ${CssVariables.cardBorder}`,
   display: "flex",
 });

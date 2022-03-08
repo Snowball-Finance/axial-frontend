@@ -1,38 +1,44 @@
 import { styled } from "@mui/material";
-import { env } from "environment";
 import { translations } from "locales/i18n";
 import { useTranslation } from "react-i18next";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { Balance } from "./balance";
-import { StakingBottomDescriptions } from "./bottomDescriptions";
 import { LockPeriod } from "./lockPeriod";
+import { MaxButton } from "./maxButton";
 import { BalanceSlider } from "./slider";
 import { StakeButton } from "./stakeButton";
-import { StakeOptions } from "./stakeOptions";
+import { AdvancedOptions } from "./advancedOptions";
 import { StakingAmount } from "./stakingAmount";
 import { DepositYouWillGet } from "./youWillGet";
 
 export const Deposit = () => {
   const { t } = useTranslation();
-  const mainToken = env.MAIN_TOKEN_NAME;
   return (
     <Wrapper>
-      <Title>
-        {t(translations.Staking.Stake())} {mainToken}
-      </Title>
       <BalanceAndAmountWrapper>
-        <Balance />
+        <TitleAndMaxWrapper>
+      <Title>
+        {t(translations.Staking.Deposit())} 
+      </Title>
+      <MaxButton />
+      </TitleAndMaxWrapper>
         <StakingAmount />
+        <Balance />
       </BalanceAndAmountWrapper>
       <LockPeriod />
       <BalanceSlider />
-      <StakeOptions />
+      <AdvancedOptions />
       <StakeButton />
       <DepositYouWillGet />
-      <StakingBottomDescriptions />
     </Wrapper>
   );
 };
+
+const TitleAndMaxWrapper= styled("div")({
+  display: 'flex',
+  justifyContent: 'space-between',
+  marginTop: "16px",
+})
 
 const BalanceAndAmountWrapper = styled("div")({});
 const Title = styled("h6")({
@@ -40,7 +46,7 @@ const Title = styled("h6")({
   fontWeight: "600",
   color: CssVariables.commonTextColor,
   margin: 0,
-  marginTop: "16px",
+  textTransform:'uppercase'
 });
 const Wrapper = styled("div")({
   display: "flex",

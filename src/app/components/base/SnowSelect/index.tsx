@@ -16,7 +16,7 @@ import { CssVariables } from "../../../../styles/cssVariables/cssVariables";
 const StyledSelect = styled(Select)<SelectProps>(({ theme }) => ({
   maxHeight: "45px",
   borderRadius: CssVariables.buttonBorderRadius,
-  border: `2px solid ${CssVariables.poolCardBorder}`,
+  border: `2px solid ${CssVariables.cardBorder}`,
   boxShadow: "none",
 
   "& .MuiInputBase-input": {

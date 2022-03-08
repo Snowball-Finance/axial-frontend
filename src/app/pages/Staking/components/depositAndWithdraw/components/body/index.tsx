@@ -17,4 +17,6 @@ export const DepositAndWithdrawBody = () => {
   );
 };
 
-const Wrapper = styled("div")({});
+const Wrapper = styled("div")({
+  padding: "0 32px",
+});

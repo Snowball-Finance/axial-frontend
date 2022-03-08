@@ -122,7 +122,7 @@ const StyledSwapCard = styled("div")({
   width: 650,
   margin: "0px auto",
   backgroundColor: CssVariables.poolCardBackground,
-  border: `4px solid ${CssVariables.poolCardBorder}`,
+  border: `4px solid ${CssVariables.cardBorder}`,
   borderRadius: "20px",
   padding: "20px",
 });

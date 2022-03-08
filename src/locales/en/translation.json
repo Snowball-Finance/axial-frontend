@@ -9,6 +9,7 @@
   },
   "Errors":{
     "ErrorConnectingWallet": "Error Connecting to Wallet",
+    "NoProvider": "No browser extension detected, install MetaMask on desktop or visit from a dApp browser on mobile.",
     "NotConnectedToSupportedNetwork":"You're connected to an unsupported network, please Switch to Avalanche."
   },
   "HomePage": {
@@ -59,7 +60,9 @@
     "NoConnectedWallet": "No Connected Wallet",
     "Balance": "Balance",
     "GoBackTo": "Go Back To {{name}}",
-    "ConnectToAvalanche": "Connect To Avalanche",
+    "SwitchToAvalanche": "Switch To Avalanche",
+    "DownloadMetamask": "Download Metamask",
+    "ErrorConnectingWallet": "Error Connecting to Wallet",
     "Yes": "Yes",
     "No": "No",
     "Search": "Search",
@@ -157,6 +160,7 @@
     "WithdrawTokens": "Withdraw Tokens",
     "LockPeriod": "Lock Period",
     "StakeOptions": "Stake Options",
+    "AdvancedOptions": "Advanced Options",
     "AvailableToWithdraw_AMOUNT_GOVERNANCETOKENNAME": "Available to withdraw: {{amount}} {{governanceTokenName}}",
     "UnlockTokensDaily": "Unlock Tokens Daily",
     "UnlockTokensAtTheEndOfTheLockingPeriod": "Unlock Tokens At The End Of The Locking Period",
@@ -172,7 +176,7 @@
     "Your {{governanceTokenName}} tokens will linearly decrease in amount and will be unlocked daily. Daily you can withdraw your {{mainTokenName}} tokens.",
     "WithdrawBottomDescriptions_GOVERNANCETOKENNAME_MAINTOKENNAME":"Your {{governanceTokenName}} tokens will linearly decrease in amount and will be unlocked daily. Daily you can withdraw your {{mainTokenName}} tokens.",
     "StakingPageFirstDescTitle_MAINTOKENNAME":"Stake your {{mainTokenName}} to earn tokens, boost your yields and vote.",
-    "StakingPageFirstDesc":"Cheesecake jelly beans cookie halvah chocolate toffee candy. Sweet roll cake halvah topping lemon drops. Bonbon toffee danish halvah lollipop.",
+    "StakingPageFirstDesc":"Your {{governanceTokenName}} tokens will linearly decrease in amount and will be unlocked daily. Daily you can withdraw your {{mainTokenName}} tokens.  Read more",
     "StakingPageSecondDescTitle":"Temporarily stake your tokens",
     "StakingPageSecondDesc_GOVERNANCETOKENNAME_MAINTOKENNAME":"Your {{governanceTokenName}} tokens will linearly decrease in amount and will be unlocked daily. Daily you can withdraw your {{mainTokenName}} tokens.",
     "epochs":{

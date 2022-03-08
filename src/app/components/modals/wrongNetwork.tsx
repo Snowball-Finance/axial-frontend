@@ -46,7 +46,7 @@ export const WrongNetworkModalAlert: FC = () => {
         </ErrorDescription>
         <ActionsWrapper>
           <ContainedButton onClick={handleSwitchToAvalancheClick}>
-            {t(translations.Common.ConnectToAvalanche())}
+            {t(translations.Common.SwitchToAvalanche())}
           </ContainedButton>
         </ActionsWrapper>
       </Wrapper>

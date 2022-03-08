@@ -24,7 +24,7 @@ const options = (t: any) => [
   },
 ];
 
-export const StakeOptions = () => {
+export const AdvancedOptions = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -38,7 +38,8 @@ export const StakeOptions = () => {
 
   return (
     <Wrapper>
-      <Title>{t(translations.Staking.StakeOptions())}</Title>
+      <Title>{t(translations.Staking.AdvancedOptions())}</Title>
+      <OptionsWrapper>
       <FormControl>
         <RadioGroup
           aria-labelledby="demo-controlled-radio-buttons-group"
@@ -56,15 +57,23 @@ export const StakeOptions = () => {
           ))}
         </RadioGroup>
       </FormControl>
+      </OptionsWrapper>
     </Wrapper>
   );
 };
 
+const OptionsWrapper = styled("div")({
+  border: `4px solid ${CssVariables.cardBorder}`,
+  padding: '24px 16px',
+  borderRadius:CssVariables.paperBorderRadius
+})
+
+
 const Title = styled("h6")({
-  fontSize: "16px",
-  fontWeight: "400",
+  fontSize: "26px",
   margin: 0,
   color: CssVariables.commonTextColor,
+textTransform:'uppercase',
 });
 
 const Wrapper = styled("div")({
@@ -75,7 +84,6 @@ const Wrapper = styled("div")({
   },
   ".MuiFormControlLabel-label": {
     flex: 1,
-    textAlign: "center",
     color: CssVariables.commonTextColor,
   },
   ".MuiButtonBase-root:not(.Mui-checked)": {

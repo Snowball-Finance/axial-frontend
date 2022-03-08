@@ -10,6 +10,7 @@ import { BigNumber } from "ethers";
 import { translations } from "locales/i18n";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { CssVariables } from "styles/cssVariables/cssVariables";
 import { mobile } from "styles/media";
 import { StakingPageActions } from "../../slice";
 import { DepositAndWithdrawTab } from "../../types";
@@ -45,19 +46,25 @@ export const OverallInfoCard = () => {
   };
 
   return (
+    <Wrapper>
+          <Title>
+        {t(translations.Staking.StakingPageFirstDescTitle_MAINTOKENNAME(), {
+          mainTokenName: env.MAIN_TOKEN_NAME,
+        })}
+      </Title>
     <StyledSnowPaper>
       <LeftWrapper>
         <Info
           title={t(translations.Staking.TokensLocked())}
           value={`${lockedTokenAmount} ${env.MAIN_TOKEN_NAME}`}
-          help={<>info</>}
+          // help={<>info</>}
         />
         <Info
           title={t(translations.Staking.GOVERNANCETOKENNAME_Balance(), {
             governanceTokenName: env.GOVERNANCE_TOKEN_NAME,
           })}
           value={`${governanceTokenBalance} ${env.GOVERNANCE_TOKEN_NAME}`}
-          help={<>info</>}
+          // help={<>info</>}
         />
         <Filler />
         <OutlinedButton>{t(translations.Staking.HowItWorks())}</OutlinedButton>
@@ -79,8 +86,34 @@ export const OverallInfoCard = () => {
         </ContainedButton>
       </RightWrapper>
     </StyledSnowPaper>
+    <Desc>{t(translations.Staking.StakingPageFirstDesc(),{
+        mainTokenName: env.MAIN_TOKEN_NAME,
+        governanceTokenName: env.GOVERNANCE_TOKEN_NAME,
+      })}</Desc>
+    </Wrapper>
   );
 };
+
+const Wrapper=styled('div')({
+  display: 'flex',
+  flexDirection: 'column',
+  gap:'24px',
+  maxWidth:'560px'
+})
+
+const Desc = styled("div")({
+  fontSize: "18px",
+  fontWeight: 400,
+  color: CssVariables.commonTextColor,
+});
+
+const Title = styled("h1")({
+  fontSize: "26px",
+  fontWeight: 700,
+  margin: 0,
+  color: CssVariables.commonTextColor,
+  marginBottom: "20px",
+});
 
 const Filler = styled("div")({
   flex: 1,
@@ -105,6 +138,7 @@ const StyledSnowPaper = styled(SnowPaper)({
   display: "flex",
   gap: "12px",
   flex: 1,
+  border:`4px solid ${CssVariables.cardBorder}`,
   [mobile]: {
     maxWidth: "unset",
     width: "100%",

@@ -33,8 +33,13 @@ export enum CssVariables {
   paperBackground = "var(--paperBackground)",
   bodyTextColor = "var(--bodyTextColor)",
   poolCardBackground = "var(--poolCardBackground)",
-  poolCardBorder = "var(--poolCardBorder)",
+  cardBorder = "var(--cardBorder)",
   swapInputbackground = "var(--swapInputbackground)",
   radioWidth = "var(--radioWidth)",
   radioHeight = "var(--radioHeight)",
+}
+
+export enum FontFamilies {
+  FugazOne='Fugaz One',
+  IBMPlexSans='IBM Plex Sans'
 }

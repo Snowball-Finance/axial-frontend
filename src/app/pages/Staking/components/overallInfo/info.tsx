@@ -13,7 +13,7 @@ export const Info: FC<Props> = ({ value, help, title }) => {
   return (
     <Wrapper>
       <Title>
-        <span>{title}</span>
+        <>{title}</>
         {help && (
           <Tooltip arrow title={help}>
             <Box>
@@ -27,16 +27,19 @@ export const Info: FC<Props> = ({ value, help, title }) => {
   );
 };
 
-const Value = styled("h6")({
+const Value = styled("div")({
   margin: 0,
-  fontSize: "16px",
-  fontWeight: 400,
   color: CssVariables.commonTextColor,
+  fontSize: "18px",
+  fontWeight: 400,
+  fontFamily:'IBM Plex Sans !important',
 });
 
-const Title = styled("div")({
+const Title = styled("h6")({
   display: "flex",
   gap: "6px",
+  fontSize: "16px",
+  margin: 0,
   color: CssVariables.commonTextColor,
 });
 
