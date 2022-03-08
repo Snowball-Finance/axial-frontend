@@ -11,7 +11,7 @@ import { StakingPageState } from "app/pages/Staking/types";
 import { RewardsState } from "app/containers/Rewards/types";
 import { SwapState } from "app/containers/Swap/types";
 import { GlobalState } from "store/slice";
-import { SwapPageState } from 'app/pages/Swap/types';
+import { SwapPageState } from "app/pages/Swap/types";
 // [IMPORT NEW CONTAINERSTATE ABOVE] < Needed for generating containers seamlessly
 
 /* 
