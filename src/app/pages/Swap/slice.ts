@@ -35,7 +35,6 @@ const swapPageSlice = createSlice({
     },
     amountChange(state, action: PayloadAction<string>) {},
     tokenChange(state, action: PayloadAction<TokenChangePayload>) {},
-    searchingToken(state, action: PayloadAction<string>) {},
     maxAmountSelection() {},
     reverseTokenChange() {},
   },

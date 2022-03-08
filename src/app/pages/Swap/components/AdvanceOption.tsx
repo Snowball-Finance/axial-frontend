@@ -7,11 +7,11 @@ import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { SnowInput } from "app/components/base/SnowInput";
 import { SwapActions } from "app/containers/Swap/slice";
-import { SwapDomains } from "app/containers/Swap/selectors";
+import { SwapSelectors } from "app/containers/Swap/selectors";
 
 export const AdvanceOption: FC = () => {
   const { t } = useTranslation();
-  const infiniteApproval = useSelector(SwapDomains.infiniteApproval);
+  const infiniteApproval = useSelector(SwapSelectors.selectInfiniteApproval);
   const dispatch = useDispatch();
 
   const handleInfiniteApproval = () => {

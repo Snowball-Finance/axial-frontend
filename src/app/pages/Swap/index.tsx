@@ -7,25 +7,25 @@
 import React, { FC, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
-import { styled, Grid, IconButton } from "@mui/material";
+import { styled, Grid } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { parseUnits } from "@ethersproject/units";
 
 import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { ContainedButton } from "app/components/common/buttons/containedButton";
-import ReverseSwapArrow from "assets/images/iconComponents/reverseSwapArrow";
 import { SwapSelectors } from "app/containers/Swap/selectors";
 import { SwapActions } from "app/containers/Swap/slice";
 import { TokenSymbols } from "app/containers/Swap/types";
 import { Web3Selectors } from "app/containers/BlockChain/Web3/selectors";
+import { WalletToggle } from "app/components/common/walletToggle";
+import { useSwapPageSlice } from "./slice";
+import { SwapPageSelectors } from "./selectors";
 import { AdvanceOption } from "./components/AdvanceOption";
-import { SwapPageActions, useSwapPageSlice } from "./slice";
 import { FromToken } from "./components/FromToken";
 import { ToToken } from "./components/ToToken";
-import { SwapPageSelectors } from "./selectors";
 import { BestPath } from "./components/BestPath";
-import { WalletToggle } from "app/components/common/walletToggle";
+import { ReverseSwap } from "./components/ReverseSwap";
 
 export const SwapPage: FC = () => {
   useSwapPageSlice();
@@ -59,10 +59,6 @@ export const SwapPage: FC = () => {
     }
   }, [selectedFromToken?.symbol, selectedToToken?.symbol, selectedFromAmount]);
 
-  const handleReverseTokenChange = () => {
-    dispatch(SwapPageActions.reverseTokenChange());
-  };
-
   const handleSwap = () => {
     dispatch(SwapActions.swap());
   };
@@ -87,14 +83,7 @@ export const SwapPage: FC = () => {
         >
           <FromToken />
 
-          <Grid item>
-            <IconButton
-              aria-label="reverse swap"
-              onClick={handleReverseTokenChange}
-            >
-              <ReverseSwapArrow color={CssVariables.white} />
-            </IconButton>
-          </Grid>
+          <ReverseSwap />
 
           <ToToken />
 

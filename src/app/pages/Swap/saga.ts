@@ -55,15 +55,9 @@ export function* maxAmountSelection() {
   yield put(SwapPageActions.setFromAmount(maxAmount));
 }
 
-export function* searchingToken(action: { type: string; payload: string }) {
-  const { payload } = action;
-  yield put(SwapPageActions.setSearchValue(payload));
-}
-
 export function* swapPageSaga() {
   yield takeLatest(SwapPageActions.tokenChange.type, tokenChange);
   yield takeLatest(SwapPageActions.reverseTokenChange.type, reverseTokenChange);
   yield takeLatest(SwapPageActions.amountChange.type, amountChange);
   yield takeLatest(SwapPageActions.maxAmountSelection.type, maxAmountSelection);
-  yield takeLatest(SwapPageActions.searchingToken.type, searchingToken);
 }
