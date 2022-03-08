@@ -14,6 +14,7 @@ import { SwapActions } from "./slice";
 import { BestPath, ContainerState, FindBestPathPayload } from "./types";
 import { GenericGasResponse } from "app/providers/gasPrice";
 import { GlobalDomains } from "app/appSelectors";
+import { GlobalActions } from "store/slice";
 
 // import { actions } from './slice';
 
@@ -25,10 +26,9 @@ export function* findBestPath(action: {
     yield put(SwapActions.setIsGettingBestPath(true));
     const swapRouterAddress = yield select(SwapDomains.swapRouterAddress);
     const swapRouterABI = yield select(SwapDomains.swapRouterABI);
-    const { amountToGive, toTokenSymbol, fromTokenSymbol } = action.payload;
-    const tokens = yield select(SwapDomains.swapTokens);
-    const fromTokenAddress = tokens[fromTokenSymbol].address;
-    const toTokenAddress = tokens[toTokenSymbol].address;
+    const { amountToGive, toToken, fromToken } = action.payload;
+    const fromTokenAddress = fromToken.address;
+    const toTokenAddress = toToken.address;
     const library = yield select(Web3Domains.selectLibraryDomain);
     const account = yield select(Web3Domains.selectAccountDomain);
 
@@ -121,6 +121,7 @@ export function* swap() {
       toast.success("Swap Successful");
     }
     yield put(SwapActions.setIsSwapping(false));
+    yield put(GlobalActions.getTokenBalances());
   } catch (error) {
     console.log(error);
     yield put(SwapActions.setIsSwapping(false));

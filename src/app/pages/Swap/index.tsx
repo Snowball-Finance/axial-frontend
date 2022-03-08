@@ -16,7 +16,6 @@ import { CssVariables } from "styles/cssVariables/cssVariables";
 import { ContainedButton } from "app/components/common/buttons/containedButton";
 import { SwapSelectors } from "app/containers/Swap/selectors";
 import { SwapActions } from "app/containers/Swap/slice";
-import { TokenSymbols } from "app/containers/Swap/types";
 import { Web3Selectors } from "app/containers/BlockChain/Web3/selectors";
 import { WalletToggle } from "app/components/common/walletToggle";
 import { useSwapPageSlice } from "./slice";
@@ -39,6 +38,9 @@ export const SwapPage: FC = () => {
   const bestPath = useSelector(SwapSelectors.selectBestPath);
   const account = useSelector(Web3Selectors.selectAccount);
   const errorMessage = useSelector(SwapPageSelectors.errorMessage);
+  const isGettingBestSwapPath = useSelector(
+    SwapSelectors.selectIsGettingBestPath
+  );
 
   useEffect(() => {
     if (
@@ -48,12 +50,12 @@ export const SwapPage: FC = () => {
     ) {
       dispatch(
         SwapActions.findBestPath({
-          fromTokenSymbol: TokenSymbols.USDTe, // TODO: Need to work on it
+          fromToken: selectedFromToken,
           amountToGive: parseUnits(
             selectedFromAmount,
             selectedFromToken?.decimals
           ),
-          toTokenSymbol: TokenSymbols.TUSD, // TODO: Need to work on it, static code
+          toToken: selectedToToken,
         })
       );
     }
@@ -99,7 +101,12 @@ export const SwapPage: FC = () => {
                 width={220}
                 onClick={handleSwap}
                 loading={isSwapping}
-                disabled={isSwapping || !bestPath || !!errorMessage}
+                disabled={
+                  isSwapping ||
+                  !bestPath ||
+                  !!errorMessage ||
+                  isGettingBestSwapPath
+                }
               >
                 {errorMessage
                   ? errorMessage
