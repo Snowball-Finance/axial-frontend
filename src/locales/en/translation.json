@@ -21,7 +21,31 @@
   },
   "SwapPage": {
     "Swap": "Swap",
-    "Description": "Swap Page"
+    "Description": "Swap Page",
+    "SwapButton": "Swap",
+    "FromToken": {
+      "From": "From",
+      "Max": "Max",
+      "WalletBalance": "wallet balance"
+    },
+    "ToToken": {
+      "To": "To",
+      "WalletBalance": "wallet balance"
+    },
+    "AdvanceOption": {
+      "Title": "advance options",
+      "InfiniteApproval": "approve permanently",
+      "MaxSlippage": "max slippage"
+    },
+    "TokenSearch": {
+      "SelectToken": "Select Token",
+      "Placeholder": "Please select token"
+    },
+    "BestPath": {
+      "Rate": "Rate",
+      "PriceImpact": "Price Impact",
+      "Path": "Path"
+    }
   },
   "RisksPage": {
     "Risks": "Risks",

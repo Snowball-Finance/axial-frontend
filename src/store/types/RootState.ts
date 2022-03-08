@@ -9,7 +9,6 @@ import { GovernancePageState } from "app/pages/Governance/types";
 import { StakingState } from "app/containers/BlockChain/Governance/Staking/types";
 import { StakingPageState } from "app/pages/Staking/types";
 import { RewardsState } from "app/containers/Rewards/types";
-// import { SwapState } from 'app/containers/Swap/types';
 import { SwapState } from "app/containers/Swap/types";
 import { GlobalState } from "store/slice";
 import { SwapPageState } from "app/pages/Swap/types";

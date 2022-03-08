@@ -12,7 +12,8 @@ const StyledButton = styled(SnowButton)(({ theme }) => ({
   border: `2px solid ${CssVariables.white}`,
   borderRadius: CssVariables.buttonBorderRadius,
   "&.Mui-disabled": {
-    color: CssVariables.paperBackground,
+    color: CssVariables.white,
     backgroundColor: CssVariables.primaryDisabled,
+    opacity: 0.5
   },
 }));

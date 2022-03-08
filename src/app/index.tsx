@@ -8,7 +8,6 @@
 
 import { Helmet } from "react-helmet-async";
 import { Switch, Route } from "react-router-dom";
-import { HomePage } from "./pages/Home/Loadable";
 import { NotFoundPage } from "./pages/NotFound/Loadable";
 import { useTranslation } from "react-i18next";
 import { translations } from "locales/i18n";
@@ -39,6 +38,7 @@ import { GlobalActions, useGlobalSlice } from "store/slice";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Web3Selectors } from "./containers/BlockChain/Web3/selectors";
+import { SwapPage } from "./pages/Swap";
 
 export function App() {
   const { t } = useTranslation();
@@ -108,7 +108,7 @@ export function App() {
       />
       <Layout>
         <Switch>
-          <Route exact path={AppPages.RootPage} component={HomePage} />
+          <Route exact path={AppPages.RootPage} component={SwapPage} />
           <Route path={AppPages.GovernancePage}>
             <GovernancePage />
           </Route>
