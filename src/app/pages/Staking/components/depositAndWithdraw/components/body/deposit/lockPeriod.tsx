@@ -20,8 +20,8 @@ export const LockPeriod = () => {
 
 const Title = styled("h6")({
   margin: 0,
-  fontSize: '26px',
-  textTransform:'uppercase',
+  fontSize: "26px",
+  textTransform: "uppercase",
 });
 
 const Wrapper = styled("div")({
@@ -33,6 +33,6 @@ const InputWrapper = styled("div")({
   borderRadius: CssVariables.paperBorderRadius,
   border: `4px solid ${CssVariables.cardBorder}`,
   minHeight: "46px",
-  textAlign:'end',
-  fontSize: '26px',
+  textAlign: "end",
+  fontSize: "26px",
 });

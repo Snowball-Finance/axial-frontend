@@ -88,6 +88,9 @@
     "Discord": "Discord"
   },
   "GovernancePage": {
+    "Status": "Status",
+    "Date": "Date",
+    
     "ProposalNotFound": "Proposal Not Found",
     "VotingPeriodShouldBeBetween": "Voting period should be between {{min}} and {{max}} {{unit}}",
     "ActiveProposals": "Active Proposals",
@@ -110,10 +113,15 @@
     "Requiredfields": "Required fields",
     "Proposedby": "Proposed by",
     "For": "For",
+    "Votes_FOR_AGAINST": "Votes {{type}}",
     "Against": "Against",
     "VotingPeriod": "Voting Period",
     "PeriodInDaysToVote": "Period in days to vote...",
     "DiscussionURL": "Discussion URL",
+    "ReadyForExecution": "Ready For Execution",
+    "Active": "Active",
+    "ProposalNumber": "Proposal #{{number}}",
+    "Defeated": "Defeated",
     "SwitchVote": "Switch Vote",
     "ProsConsDocumentURL": "Pros - Cons Document URL",
     "YouHaventVotedOnThisProposalYet": "You haven't voted on this proposal yet",

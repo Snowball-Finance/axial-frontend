@@ -40,23 +40,23 @@ export const AdvancedOptions = () => {
     <Wrapper>
       <Title>{t(translations.Staking.AdvancedOptions())}</Title>
       <OptionsWrapper>
-      <FormControl>
-        <RadioGroup
-          aria-labelledby="demo-controlled-radio-buttons-group"
-          name="controlled-radio-buttons-group"
-          value={selectedPeriod}
-          onChange={(_, v) => handleRadioChange(v as DepositUnlockPeriod)}
-        >
-          {options(t).map((option, index) => (
-            <FormControlLabel
-              key={index}
-              value={option.value}
-              control={<Radio />}
-              label={option.label}
-            />
-          ))}
-        </RadioGroup>
-      </FormControl>
+        <FormControl>
+          <RadioGroup
+            aria-labelledby="demo-controlled-radio-buttons-group"
+            name="controlled-radio-buttons-group"
+            value={selectedPeriod}
+            onChange={(_, v) => handleRadioChange(v as DepositUnlockPeriod)}
+          >
+            {options(t).map((option, index) => (
+              <FormControlLabel
+                key={index}
+                value={option.value}
+                control={<Radio />}
+                label={option.label}
+              />
+            ))}
+          </RadioGroup>
+        </FormControl>
       </OptionsWrapper>
     </Wrapper>
   );
@@ -64,16 +64,15 @@ export const AdvancedOptions = () => {
 
 const OptionsWrapper = styled("div")({
   border: `4px solid ${CssVariables.cardBorder}`,
-  padding: '24px 16px',
-  borderRadius:CssVariables.paperBorderRadius
-})
-
+  padding: "24px 16px",
+  borderRadius: CssVariables.paperBorderRadius,
+});
 
 const Title = styled("h6")({
   fontSize: "26px",
   margin: 0,
   color: CssVariables.commonTextColor,
-textTransform:'uppercase',
+  textTransform: "uppercase",
 });
 
 const Wrapper = styled("div")({

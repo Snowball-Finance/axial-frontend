@@ -47,59 +47,63 @@ export const OverallInfoCard = () => {
 
   return (
     <Wrapper>
-          <Title>
+      <Title>
         {t(translations.Staking.StakingPageFirstDescTitle_MAINTOKENNAME(), {
           mainTokenName: env.MAIN_TOKEN_NAME,
         })}
       </Title>
-    <StyledSnowPaper>
-      <LeftWrapper>
-        <Info
-          title={t(translations.Staking.TokensLocked())}
-          value={`${lockedTokenAmount} ${env.MAIN_TOKEN_NAME}`}
-          // help={<>info</>}
-        />
-        <Info
-          title={t(translations.Staking.GOVERNANCETOKENNAME_Balance(), {
-            governanceTokenName: env.GOVERNANCE_TOKEN_NAME,
-          })}
-          value={`${governanceTokenBalance} ${env.GOVERNANCE_TOKEN_NAME}`}
-          // help={<>info</>}
-        />
-        <Filler />
-        <OutlinedButton>{t(translations.Staking.HowItWorks())}</OutlinedButton>
-      </LeftWrapper>
-      <RightWrapper>
-        <Info
-          title={t(translations.Staking.TokensEarned())}
-          value={`${earnedTokensAmount} ${env.MAIN_TOKEN_NAME}`}
-        />
-        <Info
-          title={t(translations.Staking.DailyUnlocked())}
-          value={`${dailyUnlockedAmount} ${env.MAIN_TOKEN_NAME}`}
-        />
-        <Filler />
-        <ContainedButton onClick={handleStakeClick}>
-          {t(translations.Staking.Stake_MAINTOKENNAME(), {
-            mainTokenName: env.MAIN_TOKEN_NAME,
-          })}
-        </ContainedButton>
-      </RightWrapper>
-    </StyledSnowPaper>
-    <Desc>{t(translations.Staking.StakingPageFirstDesc(),{
-        mainTokenName: env.MAIN_TOKEN_NAME,
-        governanceTokenName: env.GOVERNANCE_TOKEN_NAME,
-      })}</Desc>
+      <StyledSnowPaper>
+        <LeftWrapper>
+          <Info
+            title={t(translations.Staking.TokensLocked())}
+            value={`${lockedTokenAmount} ${env.MAIN_TOKEN_NAME}`}
+            // help={<>info</>}
+          />
+          <Info
+            title={t(translations.Staking.GOVERNANCETOKENNAME_Balance(), {
+              governanceTokenName: env.GOVERNANCE_TOKEN_NAME,
+            })}
+            value={`${governanceTokenBalance} ${env.GOVERNANCE_TOKEN_NAME}`}
+            // help={<>info</>}
+          />
+          <Filler />
+          <OutlinedButton>
+            {t(translations.Staking.HowItWorks())}
+          </OutlinedButton>
+        </LeftWrapper>
+        <RightWrapper>
+          <Info
+            title={t(translations.Staking.TokensEarned())}
+            value={`${earnedTokensAmount} ${env.MAIN_TOKEN_NAME}`}
+          />
+          <Info
+            title={t(translations.Staking.DailyUnlocked())}
+            value={`${dailyUnlockedAmount} ${env.MAIN_TOKEN_NAME}`}
+          />
+          <Filler />
+          <ContainedButton onClick={handleStakeClick}>
+            {t(translations.Staking.Stake_MAINTOKENNAME(), {
+              mainTokenName: env.MAIN_TOKEN_NAME,
+            })}
+          </ContainedButton>
+        </RightWrapper>
+      </StyledSnowPaper>
+      <Desc>
+        {t(translations.Staking.StakingPageFirstDesc(), {
+          mainTokenName: env.MAIN_TOKEN_NAME,
+          governanceTokenName: env.GOVERNANCE_TOKEN_NAME,
+        })}
+      </Desc>
     </Wrapper>
   );
 };
 
-const Wrapper=styled('div')({
-  display: 'flex',
-  flexDirection: 'column',
-  gap:'24px',
-  maxWidth:'560px'
-})
+const Wrapper = styled("div")({
+  display: "flex",
+  flexDirection: "column",
+  gap: "24px",
+  maxWidth: "560px",
+});
 
 const Desc = styled("div")({
   fontSize: "18px",
@@ -138,7 +142,7 @@ const StyledSnowPaper = styled(SnowPaper)({
   display: "flex",
   gap: "12px",
   flex: 1,
-  border:`4px solid ${CssVariables.cardBorder}`,
+  border: `4px solid ${CssVariables.cardBorder}`,
   [mobile]: {
     maxWidth: "unset",
     width: "100%",

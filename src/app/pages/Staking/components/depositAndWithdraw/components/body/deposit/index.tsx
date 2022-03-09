@@ -17,11 +17,9 @@ export const Deposit = () => {
     <Wrapper>
       <BalanceAndAmountWrapper>
         <TitleAndMaxWrapper>
-      <Title>
-        {t(translations.Staking.Deposit())} 
-      </Title>
-      <MaxButton />
-      </TitleAndMaxWrapper>
+          <Title>{t(translations.Staking.Deposit())}</Title>
+          <MaxButton />
+        </TitleAndMaxWrapper>
         <StakingAmount />
         <Balance />
       </BalanceAndAmountWrapper>
@@ -34,11 +32,11 @@ export const Deposit = () => {
   );
 };
 
-const TitleAndMaxWrapper= styled("div")({
-  display: 'flex',
-  justifyContent: 'space-between',
+const TitleAndMaxWrapper = styled("div")({
+  display: "flex",
+  justifyContent: "space-between",
   marginTop: "16px",
-})
+});
 
 const BalanceAndAmountWrapper = styled("div")({});
 const Title = styled("h6")({
@@ -46,7 +44,7 @@ const Title = styled("h6")({
   fontWeight: "600",
   color: CssVariables.commonTextColor,
   margin: 0,
-  textTransform:'uppercase'
+  textTransform: "uppercase",
 });
 const Wrapper = styled("div")({
   display: "flex",

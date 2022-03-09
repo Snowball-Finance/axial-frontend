@@ -55,17 +55,17 @@ export const StakingTabs = () => {
   );
 };
 const Wrapper = styled("div")({
-  padding:'0 32px 14px 32px',
+  padding: "0 32px 14px 32px",
   borderBottom: `6px solid ${CssVariables.cardBorder}`,
   ".MuiTabs-indicator": {
-    display: 'none',
+    display: "none",
   },
   span: {
     textTransform: "uppercase",
     fontSize: "26px",
     fontWeight: 600,
     color: CssVariables.commonTextColor,
-    fontFamily: 'Fugaz One !important',
+    fontFamily: "Fugaz One !important",
   },
   ".Mui-selected": {
     span: {

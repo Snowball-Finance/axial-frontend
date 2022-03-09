@@ -40,6 +40,6 @@ export enum CssVariables {
 }
 
 export enum FontFamilies {
-  FugazOne='Fugaz One',
-  IBMPlexSans='IBM Plex Sans'
+  FugazOne = "Fugaz One !important",
+  IBMPlexSans = "IBM Plex Sans !important",
 }

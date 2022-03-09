@@ -20,9 +20,14 @@ export const VoteProgressBar: FC<VoteProgressBarProps> = ({
   type,
   height,
 }) => {
+  const t = title.split(":")[0] + " : ";
+  const v = title.split(":")[1];
+
   return (
     <Wrapper>
-      <Title>{title}</Title>
+      <Title type={type}>
+        {t} <span>{v}</span>
+      </Title>
       <StyledLinearProgress
         variant="determinate"
         value={percent}
@@ -67,12 +72,19 @@ const StyledLinearProgress = styled(LinearProgress)<{
   };
 });
 
-const Title = styled("p")({
+const Title = styled("p")<{ type?: VoteProgressBarType }>(({ type }) => ({
   marginTop: 0,
   marginBottom: "0px",
   fontSize: "12px",
-  color: CssVariables.commonTextColor,
-});
+  fontWeight: 700,
+  color:
+    type === VoteProgressBarType.against
+      ? CssVariables.red
+      : CssVariables.green,
+  span: {
+    fontWeight: 400,
+  },
+}));
 
 const Wrapper = styled("div")({
   width: "100%",

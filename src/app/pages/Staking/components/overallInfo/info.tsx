@@ -32,7 +32,7 @@ const Value = styled("div")({
   color: CssVariables.commonTextColor,
   fontSize: "18px",
   fontWeight: 400,
-  fontFamily:'IBM Plex Sans !important',
+  fontFamily: "IBM Plex Sans !important",
 });
 
 const Title = styled("h6")({
