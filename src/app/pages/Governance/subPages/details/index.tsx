@@ -71,14 +71,30 @@ export const ProposalDetails = () => {
         ).toLocaleLowerCase()}
       />
       <Box mb="16px" />
+      <ProposalListItem proposal={proposal} short />
+      <Box mb="16px" />
+
+      <VoteStatus proposal={proposal} />
+
+      <Box mb="16px" />
+      {isActive && (
+        <>
+          <VotePower />
+          <Box mb="16px" />
+          <VoteButtons proposal={proposal} />
+          <Box mb="16px" />
+        </>
+      )}
+      <AdditionalData
+        discordLink={proposal?.metadata?.discussion}
+        documentLink={proposal?.metadata?.document}
+        startTime={proposal.startDate}
+        endTime={proposal.endDate}
+      />
+      <Box mb="16px" />
+
       <ContentWrapper>
         <Left>
-          <ProposalListItem proposal={proposal} short />
-          {isActive && (
-            <Votes>
-              <VoteBars />
-            </Votes>
-          )}
           <Descriptions>
             <Title>{t(translations.Common.Description())}</Title>
             <div
@@ -91,25 +107,6 @@ export const ProposalDetails = () => {
             ></div>
           </Descriptions>
         </Left>
-        <Right>
-          <VoteStatus proposal={proposal} />
-          {isActive ? (
-            <>
-              <VotePower />
-              <VoteButtons proposal={proposal} />
-            </>
-          ) : (
-            <VotesColumn>
-              <VoteBars />
-            </VotesColumn>
-          )}
-          <AdditionalData
-            discordLink={proposal?.metadata?.discussion}
-            documentLink={proposal?.metadata?.document}
-            startTime={proposal.startDate}
-            endTime={proposal.endDate}
-          />
-        </Right>
       </ContentWrapper>
     </Wrapper>
   );

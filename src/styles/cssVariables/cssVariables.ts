@@ -1,6 +1,7 @@
 export enum CssVariables {
   white = "var(--white)",
   black = "var(--black)",
+  actionColor = "var(--actionColor)",
   navigationTabBackground = "var(--navigationTabBackground)",
   activeNAvigationTabBackground = "var(--activeNAvigationTabBackground)",
   navigationTabTextColor = "var(--navigationTabTextColor)",

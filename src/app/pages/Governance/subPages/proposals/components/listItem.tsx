@@ -107,9 +107,10 @@ export const ProposalListItem: FC<ProposalListItemProps> = ({
         {!short && (
           <>
             <DetailButtonWrapper>
-              <ContainedButton onClick={handleDetailsClick}>
-                {t(translations.Common.Details())}
-              </ContainedButton>
+              <InfoButton
+                title={t(translations.Common.Details())}
+                onClick={handleDetailsClick}
+              />
             </DetailButtonWrapper>
           </>
         )}
