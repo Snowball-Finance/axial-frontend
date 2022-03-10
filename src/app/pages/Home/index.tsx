@@ -11,9 +11,9 @@ import { homePageSaga } from "./saga";
 import { ContainedButton } from "app/components/common/buttons/containedButton";
 import { useDispatch, useSelector } from "react-redux";
 import { SwapActions } from "app/containers/Swap/slice";
-import { BigNumber } from "ethers";
+// import { BigNumber } from "ethers";
 import { SwapSelectors } from "app/containers/Swap/selectors";
-import { TokenSymbols } from "app/containers/Swap/types";
+// import { TokenSymbols } from "app/containers/Swap/types";
 
 export const HomePage = () => {
   useInjectReducer({ key: sliceKey, reducer: HomePageReducer });
@@ -26,15 +26,15 @@ export const HomePage = () => {
   const isSwapping = useSelector(SwapSelectors.selectIsSwapping);
   const bestPath = useSelector(SwapSelectors.selectBestPath);
 
-  const handleGetBestSwapPathClick = () => {
-    dispatch(
-      SwapActions.findBestPath({
-        fromTokenSymbol: TokenSymbols.USDTe,
-        amountToGive: BigNumber.from(1),
-        toTokenSymbol: TokenSymbols.FRAX,
-      })
-    );
-  };
+  // const handleGetBestSwapPathClick = () => {
+  //   dispatch(
+  //     SwapActions.findBestPath({
+  //       fromTokenSymbol: TokenSymbols.USDTe,
+  //       amountToGive: BigNumber.from(1),
+  //       toTokenSymbol: TokenSymbols.FRAX,
+  //     })
+  //   );
+  // };
   const handleSwapClick = () => {
     dispatch(SwapActions.swap());
   };
@@ -43,7 +43,7 @@ export const HomePage = () => {
     <>
       <ContainedButton
         loading={isGettingBestSwapPath}
-        onClick={handleGetBestSwapPathClick}
+        // onClick={handleGetBestSwapPathClick}
       >
         test getOptimal Path
       </ContainedButton>
