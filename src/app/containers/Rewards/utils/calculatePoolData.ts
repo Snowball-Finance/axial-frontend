@@ -47,7 +47,6 @@ export const calculatePoolData = async (props: Props) => {
     pool.swapABI,
     getProviderOrSigner(library, account)
   );
-
   const poolKey = pool.key;
   //@ts-ignore ignored because we will always have pool( POOL.poolType)
   const POOL: Pool = pools[poolKey];

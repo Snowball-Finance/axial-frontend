@@ -28,14 +28,6 @@ export const WalletToggle: FC<WalletToggleProps> = ({ fullWidth }) => {
     dispatch(Web3Actions.connectToWallet({ walletName }));
   };
 
-  useEffect(() => {
-    if (storage.read(LocalStorageKeys.CONNECTED_TO_WALLET_ONCE)) {
-      setTimeout(() => {
-        dispatch(Web3Actions.connectToWallet({ walletName }));
-      }, 200);
-    }
-  }, []);
-
   return (
     <ContainedButton
       color="primary"
