@@ -4,10 +4,12 @@
  *
  */
 
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
-import { styled, Grid, Typography } from "@mui/material";
+import { styled, Grid } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { parseUnits } from "@ethersproject/units";
 
 import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
@@ -17,12 +19,33 @@ import ArrowDownIcon from "assets/images/iconComponents/arrowDown";
 import ArrowUpIcon from "assets/images/iconComponents/arrowUp";
 import { CurrencyInput } from "./components/CurrencyInput";
 import { AdvanceOption } from "./components/AdvanceOption";
+import { SwapSelectors } from "app/containers/Swap/selectors";
+import { SwapActions } from "app/containers/Swap/slice";
+import { Web3Selectors } from "app/containers/BlockChain/Web3/selectors";
+import { WalletToggle } from "app/components/common/walletToggle";
 import { useSwapPageSlice } from "./slice";
+import { SwapPageSelectors } from "./selectors";
+import { AdvanceOption } from "./components/AdvanceOption";
+import { FromToken } from "./components/FromToken";
+import { ToToken } from "./components/ToToken";
+import { BestPath } from "./components/BestPath";
+import { ReverseSwap } from "./components/ReverseSwap";
 
 export const SwapPage: FC = () => {
   useSwapPageSlice();
 
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const isSwapping = useSelector(SwapSelectors.selectIsSwapping);
+  const selectedFromToken = useSelector(SwapPageSelectors.selectedFromToken);
+  const selectedToToken = useSelector(SwapPageSelectors.selectedToToken);
+  const selectedFromAmount = useSelector(SwapPageSelectors.selectedFromAmount);
+  const bestPath = useSelector(SwapSelectors.selectBestPath);
+  const account = useSelector(Web3Selectors.selectAccount);
+  const errorMessage = useSelector(SwapPageSelectors.errorMessage);
+  const isGettingBestSwapPath = useSelector(
+    SwapSelectors.selectIsGettingBestPath
+  );
 
   return (
     <>
@@ -40,77 +63,40 @@ export const SwapPage: FC = () => {
           direction="column"
           justifyContent="center"
           alignItems="center"
-          spacing={3}
+          spacing={2}
         >
-          <StyledContainerItem item xs={12}>
-            <Grid container direction="column" spacing={1}>
-              <Grid item>
-                <Grid
-                  container
-                  justifyContent="space-between"
-                  alignItems="center"
-                >
-                  <Grid item>
-                    <HeaderText variant="h5">FROM</HeaderText>
-                  </Grid>
+          <FromToken />
 
-                  <Grid item>
-                    <MaxText>Max</MaxText>
-                  </Grid>
-                </Grid>
-              </Grid>
+          <ReverseSwap />
 
-              <Grid item>
-                <CurrencyInput />
-              </Grid>
+          <ToToken />
 
-              <Grid item>
-                <Grid container justifyContent="flex-end">
-                  <Grid item>
-                    <BalanceText>wallet balance 0.00</BalanceText>
-                  </Grid>
-                </Grid>
-              </Grid>
-
-              <Grid item></Grid>
-            </Grid>
-          </StyledContainerItem>
-
-          <Grid item>
-            <ArrowUpIcon color={CssVariables.white} />
-            <ArrowDownIcon color={CssVariables.white} />
-          </Grid>
-
-          <StyledContainerItem item>
-            <Grid container direction="column" spacing={1}>
-              <Grid item>
-                <Grid container justifyContent="space-between">
-                  <Grid item>
-                    <HeaderText variant="h5">TO</HeaderText>
-                  </Grid>
-                </Grid>
-              </Grid>
-
-              <Grid item>
-                <CurrencyInput />
-              </Grid>
-
-              <Grid item>
-                <Grid container justifyContent="flex-end">
-                  <Grid item>
-                    <BalanceText>wallet balance 0.00</BalanceText>
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Grid>
-          </StyledContainerItem>
+          <BestPath />
 
           <StyledContainerItem item>
             <AdvanceOption />
           </StyledContainerItem>
 
           <Grid item>
-            <ContainedButton width={220}>Swap</ContainedButton>
+            {account ? (
+              <ContainedButton
+                width={220}
+                onClick={handleSwap}
+                loading={isSwapping}
+                disabled={
+                  isSwapping ||
+                  !bestPath ||
+                  !!errorMessage ||
+                  isGettingBestSwapPath
+                }
+              >
+                {errorMessage
+                  ? errorMessage
+                  : t(translations.SwapPage.SwapButton())}
+              </ContainedButton>
+            ) : (
+              <WalletToggle />
+            )}
           </Grid>
         </StyledContainer>
       </StyledSwapCard>
@@ -134,16 +120,4 @@ const StyledContainer = styled(Grid)({
 
 const StyledContainerItem = styled(Grid)({
   width: "100%",
-});
-
-const HeaderText = styled(Typography)({
-  color: CssVariables.white,
-});
-
-const MaxText = styled(TextButton)({
-  fontSize: "1.5rem",
-});
-
-const BalanceText = styled(Typography)({
-  color: CssVariables.white,
 });

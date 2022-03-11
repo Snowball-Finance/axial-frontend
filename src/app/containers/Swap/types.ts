@@ -65,8 +65,8 @@ export interface SwapState {
 
 export interface FindBestPathPayload {
   amountToGive: BigNumber;
-  fromTokenSymbol: TokenSymbols;
-  toTokenSymbol: TokenSymbols;
+  fromToken: Token;
+  toToken: Token;
 }
 
 export type ContainerState = SwapState;

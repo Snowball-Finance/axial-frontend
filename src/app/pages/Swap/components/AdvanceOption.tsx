@@ -1,24 +1,44 @@
 import React, { FC } from "react";
 import { styled, Grid, Typography, Checkbox } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
+import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { SnowInput } from "app/components/base/SnowInput";
+import { SwapActions } from "app/containers/Swap/slice";
+import { SwapSelectors } from "app/containers/Swap/selectors";
 
 export const AdvanceOption: FC = () => {
+  const { t } = useTranslation();
+  const infiniteApproval = useSelector(SwapSelectors.selectInfiniteApproval);
+  const dispatch = useDispatch();
+
+  const handleInfiniteApproval = () => {
+    dispatch(SwapActions.setInfiniteApproval(!infiniteApproval));
+  };
+
   return (
     <StyledAdvanceOption>
       <Grid container direction="column" spacing={2}>
         <Grid item>
-          <Text variant="body2">advance options</Text>
+          <Text variant="body2">
+            {t(translations.SwapPage.AdvanceOption.Title())}
+          </Text>
         </Grid>
 
         <Grid item>
           <Grid container alignItems="center" justifyContent="flex-start">
             <Grid item>
-              <Checkbox defaultChecked />
+              <Checkbox
+                checked={infiniteApproval}
+                onChange={handleInfiniteApproval}
+              />
             </Grid>
             <Grid item>
-              <Text variant="body2">approve permanently</Text>
+              <Text variant="body2">
+                {t(translations.SwapPage.AdvanceOption.InfiniteApproval())}
+              </Text>
             </Grid>
           </Grid>
         </Grid>
@@ -26,7 +46,9 @@ export const AdvanceOption: FC = () => {
         <Grid item>
           <Grid container alignItems="center" spacing={2}>
             <Grid item>
-              <Text variant="body2">max slippage:</Text>
+              <Text variant="body2">
+                {t(translations.SwapPage.AdvanceOption.MaxSlippage())}:
+              </Text>
             </Grid>
             <Grid item>
               <Grid container alignItems="center" spacing={1}>
