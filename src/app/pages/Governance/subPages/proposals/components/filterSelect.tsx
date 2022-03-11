@@ -1,4 +1,4 @@
-import { paperClasses, styled } from "@mui/material";
+import { styled } from "@mui/material";
 import { SnowPaper } from "app/components/base/SnowPaper";
 import { SnowSelect } from "app/components/base/SnowSelect";
 import { SnowSelectInterface } from "app/components/base/SnowSelect/types";

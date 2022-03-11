@@ -38,5 +38,5 @@ const ToInputText = styled(Typography)({
 });
 
 const ToTokenTextLoader = styled(Skeleton)({
-  backgroundColor: CssVariables.poolCardBorder,
+  backgroundColor: CssVariables.cardBorder,
 });

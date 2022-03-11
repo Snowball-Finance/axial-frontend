@@ -1,4 +1,4 @@
-import { Divider, styled } from "@mui/material";
+import { styled } from "@mui/material";
 import { SnowPaper } from "app/components/base/SnowPaper";
 import ClickIcon from "assets/images/iconComponents/clock";
 import DiscordChatIcon from "assets/images/iconComponents/discordChat";

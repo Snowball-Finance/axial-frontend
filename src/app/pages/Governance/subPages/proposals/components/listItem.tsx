@@ -1,14 +1,10 @@
-import { Box, Chip, Divider, styled } from "@mui/material";
-
+import { Box, Divider, styled } from "@mui/material";
 import { SnowPaper, SnowPaperInterface } from "app/components/base/SnowPaper";
-import { ContainedButton } from "app/components/common/buttons/containedButton";
 import { InfoButton } from "app/components/common/buttons/infoButton";
 import {
   Proposal,
   ProposalStates,
 } from "app/containers/BlockChain/Governance/types";
-import ChevronRightInCircle from "assets/images/iconComponents/chevronRightInCircle";
-import { Tick } from "assets/images/iconComponents/tick";
 import { push } from "connected-react-router";
 import { translations } from "locales/i18n";
 import { FC } from "react";
@@ -17,7 +13,6 @@ import { useDispatch } from "react-redux";
 import { CssVariables, FontFamilies } from "styles/cssVariables/cssVariables";
 import { mobile } from "styles/media";
 import { GovernanceSubPages } from "../../../routes";
-
 import { forAndAgainst } from "../../../utils/votes";
 import { TitleAndValue } from "./titleAndValue";
 import { VoteProgressBar, VoteProgressBarType } from "./voteProgressBar";
@@ -124,51 +119,6 @@ const BottomWrapper = styled("div")({
 });
 const DataWrapper = styled("div")({});
 
-const DateAndChip = styled("div")({});
-
-const DateChip = styled(Chip)({
-  background: CssVariables.chipBackgroundColor,
-  color: CssVariables.white,
-  borderRadius: CssVariables.paperBorderRadius,
-  fontSize: "12px",
-  maxHeight: "24px",
-  marginBottom: "16px",
-  marginTop: "6px",
-});
-
-const StatusChip = styled(Chip)<{ state: ProposalStates }>(({ state }) => {
-  let background = CssVariables.primary;
-  let color = CssVariables.paperBackground;
-  switch (state) {
-    case ProposalStates.readyForExecution:
-      background = CssVariables.chipBackgroundColor;
-      color = CssVariables.white;
-      break;
-    case ProposalStates.active:
-      background = CssVariables.primary;
-      color = CssVariables.paperBackground;
-      break;
-    case ProposalStates.executed:
-      background = CssVariables.opaqueGreen;
-      color = CssVariables.white;
-      break;
-    default:
-      break;
-  }
-  return {
-    background,
-    color,
-    borderRadius: CssVariables.paperBorderRadius,
-    fontSize: "12px",
-    maxHeight: "24px",
-    span: {
-      display: "flex",
-      gap: "6px",
-      alignItems: "center",
-    },
-  };
-});
-
 const DarkText = styled("p")<{ size: number }>(({ size }) => ({
   color: CssVariables.commonTextColor,
   margin: 0,
@@ -200,17 +150,6 @@ const VotesBarWrapper = styled("div")({
     gap: "6px",
   },
 });
-
-const DateAndMiscWrapper = styled("div")<{ short: "true" | "" }>(
-  ({ short }) => ({
-    [mobile]: {
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-      ...(short && { flexDirection: "column", alignItems: "start" }),
-    },
-  })
-);
 
 const IndexNameAndStatusWrapper = styled(Box)({
   display: "flex",

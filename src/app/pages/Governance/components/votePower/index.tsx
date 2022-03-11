@@ -2,7 +2,6 @@ import { styled } from "@mui/material";
 import { SnowPaper } from "app/components/base/SnowPaper";
 import { FC } from "react";
 import { useSelector } from "react-redux";
-import xSnobBalanceBackground from "assets/images/vote-power.png";
 import { CssVariables, FontFamilies } from "styles/cssVariables/cssVariables";
 import { useTranslation } from "react-i18next";
 import { translations } from "locales/i18n";
