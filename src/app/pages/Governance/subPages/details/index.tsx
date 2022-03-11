@@ -73,9 +73,7 @@ export const ProposalDetails = () => {
       <Box mb="16px" />
       <ProposalListItem proposal={proposal} short />
       <Box mb="16px" />
-
       <VoteStatus proposal={proposal} />
-
       <Box mb="16px" />
       {isActive && (
         <>
