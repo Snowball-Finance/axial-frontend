@@ -161,13 +161,13 @@ const ButtonContainer = styled("div")({
   justifyContent: "space-between",
   alignItems: "center",
   borderRadius: CssVariables.buttonBorderRadius,
-  border: `2px solid ${CssVariables.poolCardBorder}`,
+  border: `2px solid ${CssVariables.cardBorder}`,
   padding: 10,
   cursor: "pointer",
 });
 
 const SearchContainer = styled(Grid)({
-  border: `2px solid ${CssVariables.poolCardBorder}`,
+  border: `2px solid ${CssVariables.cardBorder}`,
   borderRadius: CssVariables.buttonBorderRadius,
   padding: "0 !important",
   margin: 0,

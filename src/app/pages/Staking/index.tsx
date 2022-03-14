@@ -6,9 +6,7 @@
 import { useStakingPageSlice } from "./slice";
 import { styled } from "@mui/material";
 import { DepositAndWithdraw } from "./components/depositAndWithdraw";
-import { OverallInfoCard } from "./components/overallInfoCard";
-import { StakingDescription } from "./components/descriptions/stakingDescs";
-import { DepositAndWithdrawCardDescription } from "./components/descriptions/depositAndWithdrawCardDescs";
+import { OverallInfoCard } from "./components/overallInfo";
 import { Max1040 } from "app/components/wrappers/max1040";
 import { mobile } from "styles/media";
 
@@ -19,13 +17,11 @@ export function StakingPage(props: Props) {
   return (
     <Wrapper>
       <InfoSection>
-        <StakingDescription />
         <OverallInfoCard />
       </InfoSection>
       <Spacer />
       <DepositAndWithdrawSection>
         <DepositAndWithdraw />
-        <DepositAndWithdrawCardDescription />
       </DepositAndWithdrawSection>
     </Wrapper>
   );

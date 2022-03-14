@@ -67,7 +67,7 @@ export const MyShare: FC = () => {
 const StyledMyShare = styled("div")({
   width: "100%",
   backgroundColor: CssVariables.swapInputbackground,
-  border: `4px solid ${CssVariables.poolCardBorder}`,
+  border: `4px solid ${CssVariables.cardBorder}`,
   borderRadius: "20px",
   padding: 20,
 });

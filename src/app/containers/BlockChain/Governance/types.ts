@@ -1,12 +1,6 @@
 import { BigNumber, Contract } from "ethers";
 
 /* --- STATE --- */
-export enum ProposalFilters {
-  New = "new",
-  All = "all",
-  Active = "Active",
-}
-
 export enum ProposalStates {
   active = "Active",
   new = "New",
@@ -15,6 +9,12 @@ export enum ProposalStates {
   executed = "Executed",
   vetoed = "Vetoed",
   passed = "Passed",
+}
+export enum ProposalFilters {
+  All = "all",
+  Active = "Active",
+  ReadyForExecution = "Ready For Execution",
+  Defeated = "Defeated",
 }
 
 interface ProposalMetadata {

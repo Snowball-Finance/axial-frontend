@@ -16,9 +16,8 @@ import { CssVariables } from "../../../../styles/cssVariables/cssVariables";
 const StyledSelect = styled(Select)<SelectProps>(({ theme }) => ({
   maxHeight: "45px",
   borderRadius: CssVariables.buttonBorderRadius,
-  border: `2px solid ${CssVariables.poolCardBorder}`,
+  border: `2px solid ${CssVariables.primary}`,
   boxShadow: "none",
-
   "& .MuiInputBase-input": {
     ...BaseInputStyles({ theme }),
     background: "transparent",
@@ -31,6 +30,9 @@ const StyledSelect = styled(Select)<SelectProps>(({ theme }) => ({
     height: "42px",
     marginTop: "-8px",
     color: CssVariables.white,
+  },
+  "& .MuiPaper-root": {
+    borderRadius: CssVariables.buttonBorderRadius,
   },
   ".MuiOutlinedInput-input": {
     color: CssVariables.grey,
@@ -66,6 +68,11 @@ export const SnowSelect: FC<SnowSelectInterface> = ({
       fullWidth
       labelId="Select"
       value={selectedValue}
+      MenuProps={{
+        classes: {
+          paper: "selectPaper",
+        },
+      }}
       IconComponent={ArrowDropDownRoundedIcon}
       onChange={(e) => handleSelectChange(e)}
       {...(isFilter && {

@@ -133,5 +133,5 @@ const Text = styled(Typography)({
 });
 
 const TextLoader = styled(Skeleton)({
-  backgroundColor: CssVariables.poolCardBorder,
+  backgroundColor: CssVariables.cardBorder,
 });

@@ -106,7 +106,7 @@ const StyledWithdrawInput = styled("div")({
   width: 600,
   margin: "0 auto",
   backgroundColor: CssVariables.poolCardBackground,
-  border: `4px solid ${CssVariables.poolCardBorder}`,
+  border: `4px solid ${CssVariables.cardBorder}`,
   borderRadius: "20px",
   padding: "40px",
 });
@@ -180,7 +180,7 @@ const WithdrawSlider = styled(Slider)({
 const StyledWithdrawOption = styled(FormControl)({
   width: "100%",
   backgroundColor: CssVariables.swapInputbackground,
-  border: `4px solid ${CssVariables.poolCardBorder}`,
+  border: `4px solid ${CssVariables.cardBorder}`,
   borderRadius: "20px",
   padding: "5px 20px",
   color: CssVariables.white,

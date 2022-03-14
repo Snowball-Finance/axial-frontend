@@ -7,6 +7,11 @@
     "GettingUserPools": "Getting User Pools...",
     "SearchPoolName": "Search Pool Name..."
   },
+  "Errors":{
+    "ErrorConnectingWallet": "Error Connecting to Wallet",
+    "NoProvider": "No browser extension detected, install MetaMask on desktop or visit from a dApp browser on mobile.",
+    "NotConnectedToSupportedNetwork":"You're connected to an unsupported network, please Switch to Avalanche."
+  },
   "HomePage": {
     "home": "Home",
     "description": "Home Page"
@@ -79,6 +84,9 @@
     "NoConnectedWallet": "No Connected Wallet",
     "Balance": "Balance",
     "GoBackTo": "Go Back To {{name}}",
+    "SwitchToAvalanche": "Switch To Avalanche",
+    "DownloadMetamask": "Download Metamask",
+    "ErrorConnectingWallet": "Error Connecting to Wallet",
     "Yes": "Yes",
     "No": "No",
     "Search": "Search",
@@ -104,6 +112,9 @@
     "Discord": "Discord"
   },
   "GovernancePage": {
+    "Status": "Status",
+    "Date": "Date",
+    
     "ProposalNotFound": "Proposal Not Found",
     "VotingPeriodShouldBeBetween": "Voting period should be between {{min}} and {{max}} {{unit}}",
     "ActiveProposals": "Active Proposals",
@@ -126,10 +137,15 @@
     "Requiredfields": "Required fields",
     "Proposedby": "Proposed by",
     "For": "For",
+    "Votes_FOR_AGAINST": "Votes {{type}}",
     "Against": "Against",
     "VotingPeriod": "Voting Period",
     "PeriodInDaysToVote": "Period in days to vote...",
     "DiscussionURL": "Discussion URL",
+    "ReadyForExecution": "Ready For Execution",
+    "Active": "Active",
+    "ProposalNumber": "Proposal #{{number}}",
+    "Defeated": "Defeated",
     "SwitchVote": "Switch Vote",
     "ProsConsDocumentURL": "Pros - Cons Document URL",
     "YouHaventVotedOnThisProposalYet": "You haven't voted on this proposal yet",
@@ -176,6 +192,7 @@
     "WithdrawTokens": "Withdraw Tokens",
     "LockPeriod": "Lock Period",
     "StakeOptions": "Stake Options",
+    "AdvancedOptions": "Advanced Options",
     "AvailableToWithdraw_AMOUNT_GOVERNANCETOKENNAME": "Available to withdraw: {{amount}} {{governanceTokenName}}",
     "UnlockTokensDaily": "Unlock Tokens Daily",
     "UnlockTokensAtTheEndOfTheLockingPeriod": "Unlock Tokens At The End Of The Locking Period",
@@ -191,7 +208,7 @@
     "Your {{governanceTokenName}} tokens will linearly decrease in amount and will be unlocked daily. Daily you can withdraw your {{mainTokenName}} tokens.",
     "WithdrawBottomDescriptions_GOVERNANCETOKENNAME_MAINTOKENNAME":"Your {{governanceTokenName}} tokens will linearly decrease in amount and will be unlocked daily. Daily you can withdraw your {{mainTokenName}} tokens.",
     "StakingPageFirstDescTitle_MAINTOKENNAME":"Stake your {{mainTokenName}} to earn tokens, boost your yields and vote.",
-    "StakingPageFirstDesc":"Cheesecake jelly beans cookie halvah chocolate toffee candy. Sweet roll cake halvah topping lemon drops. Bonbon toffee danish halvah lollipop.",
+    "StakingPageFirstDesc":"Your {{governanceTokenName}} tokens will linearly decrease in amount and will be unlocked daily. Daily you can withdraw your {{mainTokenName}} tokens.  Read more",
     "StakingPageSecondDescTitle":"Temporarily stake your tokens",
     "StakingPageSecondDesc_GOVERNANCETOKENNAME_MAINTOKENNAME":"Your {{governanceTokenName}} tokens will linearly decrease in amount and will be unlocked daily. Daily you can withdraw your {{mainTokenName}} tokens.",
     "epochs":{

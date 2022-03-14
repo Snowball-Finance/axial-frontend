@@ -44,7 +44,7 @@ const StyledAddLiquidity = styled("div")({
   width: 600,
   margin: "0 auto",
   backgroundColor: CssVariables.poolCardBackground,
-  border: `4px solid ${CssVariables.poolCardBorder}`,
+  border: `4px solid ${CssVariables.cardBorder}`,
   borderRadius: "20px",
   padding: "40px",
 });

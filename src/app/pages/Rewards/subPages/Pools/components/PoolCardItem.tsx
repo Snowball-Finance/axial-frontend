@@ -82,7 +82,7 @@ export const PoolCardItem: FC = () => {
 
 const StyledPoolCard = styled("div")({
   backgroundColor: CssVariables.poolCardBackground,
-  border: `4px solid ${CssVariables.poolCardBorder}`,
+  border: `4px solid ${CssVariables.cardBorder}`,
   borderRadius: "20px",
   padding: "20px",
 });
