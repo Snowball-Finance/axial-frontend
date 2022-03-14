@@ -18,7 +18,32 @@
   },
   "LiquidityPage": {
     "Liquidity": "Liquidity",
-    "Description": "Liquidity Page"
+    "Description": "Liquidity Page",
+    "CurrencyReserves": "Currency Reserves",
+    "Info": {
+      "Balance": "Balance",
+      "SwapAPR": "Swap APR",
+      "TVL": "TVL",
+      "24hVolume": "24h volume"
+    },
+    "ActionButtons": {
+      "Deposit": "Deposit",
+      "Withdraw": "Withdraw"
+    },
+    "MyShare": {
+      "Title": "My Share",
+      "OfPool": "of pool",
+      "USDBalance": "USD Balance",
+      "Total": "Total"
+    },
+    "AddLiquidity": {
+      "Title": "Add Liquidity"
+    },
+    "Withdraw": {
+      "Title": "Withdraw",
+      "WithdrawlPercentage": "Withdrawl Percentage",
+      "Bonus": "Bonus"
+    }
   },
   "RewardsPage": {
     "Rewards": "Rewards",

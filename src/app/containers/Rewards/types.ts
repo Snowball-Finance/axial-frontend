@@ -80,7 +80,7 @@ export interface Pool {
   userShareData?: UserShareData;
 }
 
-interface TokenShareType {
+export interface TokenShareType {
   percent: string;
   symbol: string;
   value: BigNumber;

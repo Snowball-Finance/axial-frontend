@@ -1,31 +1,29 @@
 import React, { FC } from "react";
-import {
-  styled,
-  Grid,
-  Typography,
-  Slider,
-  RadioGroup,
-  FormControl,
-  FormControlLabel,
-} from "@mui/material";
+import { styled, Grid, Typography, Slider } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
+import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { SnowInput } from "app/components/base/SnowInput";
 import { ContainedButton } from "app/components/common/buttons/containedButton";
-import { CurrencyInput } from "../../../../components/CurrencyInput";
-import { SnowRadio } from "app/components/base/SnowRadio";
+import { CurrencyInput } from "./CurrencyInput";
+import { Selection } from "./Selection";
 
 export const WithdrawInput: FC = () => {
+  const { t } = useTranslation();
+
   return (
     <StyledWithdrawInput>
       <Grid container direction="column" spacing={2}>
         <Grid item>
-          <HeaderText variant="h4">Withdraw</HeaderText>
+          <HeaderText variant="h4">
+            {t(translations.LiquidityPage.Withdraw.Title())}
+          </HeaderText>
         </Grid>
 
         <Grid item>
           <WithdrawSlider
-            defaultValue={50}
+            defaultValue={0}
             aria-label="Default"
             valueLabelDisplay="auto"
           />
@@ -35,7 +33,8 @@ export const WithdrawInput: FC = () => {
           <Grid container justifyContent="space-between" alignItems="center">
             <Grid item>
               <SubtitleText variant="body2">
-                withdrawl percentage (%):
+                {t(translations.LiquidityPage.Withdraw.WithdrawlPercentage())}{" "}
+                (%):
               </SubtitleText>
             </Grid>
 
@@ -45,48 +44,16 @@ export const WithdrawInput: FC = () => {
           </Grid>
         </Grid>
 
-        <Grid item>
-          <StyledWithdrawOption>
-            <StyledRadioGroup row>
-              <FormControlLabel
-                value="combo"
-                control={<SnowRadio />}
-                label="Combo"
-              />
-              <FormControlLabel
-                value="tusd"
-                control={<SnowRadio />}
-                label="TUSD"
-              />
-              <FormControlLabel
-                value="mim"
-                control={<SnowRadio />}
-                label="MIM"
-              />
-              <FormControlLabel
-                value="frax"
-                control={<SnowRadio />}
-                label="FRAX"
-              />
-              <FormControlLabel
-                value="dai.e"
-                control={<SnowRadio />}
-                label="DAI.e"
-              />
-            </StyledRadioGroup>
-          </StyledWithdrawOption>
-        </Grid>
+        <Selection />
 
-        {[1, 2, 3, 4].map((inputItem) => (
-          <Grid item key={inputItem}>
-            <CurrencyInput />
-          </Grid>
-        ))}
+        <CurrencyInput />
 
         <Grid item>
           <Grid container justifyContent="space-between">
             <Grid item>
-              <SubtitleText variant="body2">bonus (%):</SubtitleText>
+              <SubtitleText variant="body2">
+                {t(translations.LiquidityPage.Withdraw.Bonus())} (%):
+              </SubtitleText>
             </Grid>
             <Grid item>
               <SubtitleText variant="body2">0%</SubtitleText>
@@ -95,7 +62,9 @@ export const WithdrawInput: FC = () => {
         </Grid>
 
         <Grid item alignSelf="center">
-          <ContainedButton width={220}>Withdraw</ContainedButton>
+          <ContainedButton width={220}>
+            {t(translations.LiquidityPage.ActionButtons.Withdraw())}
+          </ContainedButton>
         </Grid>
       </Grid>
     </StyledWithdrawInput>
@@ -175,20 +144,4 @@ const WithdrawSlider = styled(Slider)({
       transform: "rotate(45deg)",
     },
   },
-});
-
-const StyledWithdrawOption = styled(FormControl)({
-  width: "100%",
-  backgroundColor: CssVariables.swapInputbackground,
-  border: `4px solid ${CssVariables.cardBorder}`,
-  borderRadius: "20px",
-  padding: "5px 20px",
-  color: CssVariables.white,
-});
-
-const StyledRadioGroup = styled(RadioGroup)({
-  width: "100%",
-  display: "flex",
-  justifyContent: "space-between",
-  color: CssVariables.white,
 });

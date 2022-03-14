@@ -1,39 +1,35 @@
 import React, { FC } from "react";
 import { styled, Grid, Typography } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
+import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { ContainedButton } from "app/components/common/buttons/containedButton";
 import { AdvanceOption } from "./AdvanceOption";
-import { CurrencyInput } from "../../../../components/CurrencyInput";
+import { CurrencyInput } from "./CurrencyInput";
 
 export const AddLiquidity: FC = () => {
+  const { t } = useTranslation();
+
   return (
     <StyledAddLiquidity>
       <Grid container direction="column" spacing={2}>
         <Grid item>
-          <HeaderText variant="h4">ADD LIQUIDITY</HeaderText>
+          <HeaderText variant="h4">
+            {t(translations.LiquidityPage.AddLiquidity.Title())}
+          </HeaderText>
         </Grid>
 
-        {[1, 2, 3, 4].map((inputItem) => (
-          <Grid item key={inputItem}>
-            <Grid container direction="column" spacing={1}>
-              <Grid item alignSelf="end">
-                <BalanceText variant="body2">Wallet balance: 0.00</BalanceText>
-              </Grid>
-
-              <Grid item>
-                <CurrencyInput />
-              </Grid>
-            </Grid>
-          </Grid>
-        ))}
+        <CurrencyInput />
 
         <Grid item>
           <AdvanceOption />
         </Grid>
 
         <Grid item alignSelf="center">
-          <ContainedButton width={220}>Deposit</ContainedButton>
+          <ContainedButton width={220}>
+            {t(translations.LiquidityPage.ActionButtons.Deposit())}
+          </ContainedButton>
         </Grid>
       </Grid>
     </StyledAddLiquidity>
@@ -52,9 +48,4 @@ const StyledAddLiquidity = styled("div")({
 const HeaderText = styled(Typography)({
   color: CssVariables.white,
   fontSize: "26px",
-});
-
-const BalanceText = styled(Typography)({
-  color: CssVariables.white,
-  fontSize: "16px",
 });

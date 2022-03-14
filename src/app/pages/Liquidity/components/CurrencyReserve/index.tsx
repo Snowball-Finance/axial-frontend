@@ -1,16 +1,22 @@
 import React, { FC } from "react";
 import { styled, Grid, Typography } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
+import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { CurrencyInfo } from "./CurrencyInfo";
 import { MyShare } from "./MyShare";
 
 export const CurrencyReserve: FC = () => {
+  const { t } = useTranslation();
+
   return (
     <StyledCurrencyReserve>
       <Grid container direction="column" spacing={2}>
         <Grid item>
-          <HeaderText variant="h4">CURRENCY RESERVES</HeaderText>
+          <HeaderText variant="h4">
+            {t(translations.LiquidityPage.CurrencyReserves())}
+          </HeaderText>
         </Grid>
 
         <Grid item>
