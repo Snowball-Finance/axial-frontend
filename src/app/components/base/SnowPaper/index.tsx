@@ -8,7 +8,7 @@ export interface SnowPaperInterface extends PaperProps {
 }
 
 const StyledPaper = styled(Paper)<PaperProps>(({ theme }) => ({
-  borderRadius: "10px",
+  borderRadius: CssVariables.paperBorderRadius,
   backgroundColor: CssVariables.paperBackground,
 }));
 

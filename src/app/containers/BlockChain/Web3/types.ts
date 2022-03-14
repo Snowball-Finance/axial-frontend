@@ -12,6 +12,7 @@ export interface Web3Interface {
   account: string | null | undefined;
   connector: AbstractConnector | undefined;
   library: any;
+  networkLibrary:any;
   chainId: number | undefined;
   error: Error | undefined;
 }

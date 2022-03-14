@@ -8,6 +8,7 @@ import { ProposalFilters } from "app/containers/BlockChain/Governance/types";
 import { translations } from "locales/i18n";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { CssVariables } from "styles/cssVariables/cssVariables";
 import { mobile } from "styles/media";
 const selectOptions = ({ t }): SnowSelectInterface["options"] => [
   {
@@ -15,8 +16,16 @@ const selectOptions = ({ t }): SnowSelectInterface["options"] => [
     value: ProposalFilters.All,
   },
   {
-    label: t(translations.GovernancePage.ActiveProposals()),
+    label: t(translations.GovernancePage.ReadyForExecution()),
+    value: ProposalFilters.ReadyForExecution,
+  },
+  {
+    label: t(translations.GovernancePage.Active()),
     value: ProposalFilters.Active,
+  },
+  {
+    label: t(translations.GovernancePage.Defeated()),
+    value: ProposalFilters.Defeated,
   },
 ];
 
@@ -30,7 +39,7 @@ export const ProposalFilterSelect = () => {
     dispatch(GovernanceActions.setProposalFilter(v));
   };
   return (
-    <SnowPaper>
+    <StyledSnowPaper>
       <StyledSelect
         //@ts-ignore ignored because we know it's ok to pass the value as Proposal filter enum
         onChange={handleFilterChange}
@@ -38,9 +47,13 @@ export const ProposalFilterSelect = () => {
         isFilter
         selectedValue={selectedFilter}
       />
-    </SnowPaper>
+    </StyledSnowPaper>
   );
 };
+
+const StyledSnowPaper = styled(SnowPaper)({
+  borderRadius: CssVariables.buttonBorderRadius,
+});
 
 const StyledSelect = styled(SnowSelect)({
   minWidth: "205px",

@@ -3,7 +3,7 @@ import { CssVariables } from "styles/cssVariables/cssVariables";
 
 export const BaseInputStyles = ({ theme }: { theme: Theme }) => {
   return {
-    borderRadius: 10,
+    borderRadius: CssVariables.paperBorderRadius,
     position: "relative",
     backgroundColor: CssVariables.paperBackground,
     border: "1px solid transparent",

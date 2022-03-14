@@ -2,8 +2,7 @@ import { styled } from "@mui/material";
 import { SnowPaper } from "app/components/base/SnowPaper";
 import { FC } from "react";
 import { useSelector } from "react-redux";
-import xSnobBalanceBackground from "assets/images/vote-power.png";
-import { CssVariables } from "styles/cssVariables/cssVariables";
+import { CssVariables, FontFamilies } from "styles/cssVariables/cssVariables";
 import { useTranslation } from "react-i18next";
 import { translations } from "locales/i18n";
 import { mobile } from "styles/media";
@@ -44,14 +43,17 @@ const Upper = styled("span")({
 });
 
 const ContentTitle = styled("p")({
-  fontSize: "0.875rem",
+  fontSize: "16px",
+  fontFamily: FontFamilies.FugazOne,
   color: CssVariables.white,
+  margin: 0,
 });
 
 const VotingTokenValue = styled("p")({
-  fontSize: "24px",
+  fontSize: "21px",
   color: CssVariables.white,
   margin: 0,
+  fontFamily: FontFamilies.IBMPlexSans,
   display: "flex",
   gap: "6px",
 });
@@ -74,11 +76,11 @@ const LogoWrapper = styled("div")({
 });
 
 const Wrapper = styled(SnowPaper)({
-  backgroundImage: `url(${xSnobBalanceBackground})`,
-  backgroundColor: CssVariables.primary,
+  backgroundColor: CssVariables.paperBackground,
   backgroundSize: "cover",
-  minWidth: "345px",
-  minHeight: "160px",
+  minWidth: "100%",
+  border: `4px solid ${CssVariables.cardBorder}`,
+  minHeight: "110px",
   display: "flex",
   padding: "16px",
   [mobile]: {

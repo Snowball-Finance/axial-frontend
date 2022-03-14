@@ -24,7 +24,7 @@ export function* getRewardPoolsData(action: {
 }) {
   yield put(RewardsActions.setRewardPools(action.payload));
   const pools: RewardsState["pools"] = yield select(RewardsDomains.pools);
-  const library = yield select(Web3Domains.selectLibraryDomain);
+  const networkLibrary = yield select(Web3Domains.selectNetworkLibraryDomain);
   const account = yield select(Web3Domains.selectAccountDomain);
   const chainId = yield select(Web3Domains.selectChainIDDomain);
   const tokenPricesUSD = yield select(GlobalDomains.tokenPricesUSD);
@@ -40,7 +40,7 @@ export function* getRewardPoolsData(action: {
         pool,
         account,
         chainId,
-        library,
+        library:networkLibrary,
         tokenPricesUSD,
         masterchefApr,
         masterchefBalance,

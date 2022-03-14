@@ -5,7 +5,7 @@ import { ContainedButton } from "./containedButton";
 
 export interface InfoButtonProps {
   title: string;
-  icon: ReactNode;
+  icon?: ReactNode;
   fullWidth?: boolean;
   contained?: boolean;
   onClick?: () => void;
@@ -24,7 +24,7 @@ export const InfoButton: FC<InfoButtonProps> = ({
       {...{ fullWidth, contained }}
     >
       {title}
-      <Box display="flex">{icon}</Box>
+      {icon && <Box display="flex">{icon}</Box>}
     </StyledContainedButton>
   );
 };
@@ -33,14 +33,16 @@ const StyledContainedButton = styled(ContainedButton)({
   display: "flex",
   gap: "8px",
   backgroundColor: "transparent",
-  color: CssVariables.primary,
-  border: `1px solid ${CssVariables.primary}`,
+  color: CssVariables.actionColor,
+  border: `1px solid ${CssVariables.actionColor}`,
   borderRadius: CssVariables.buttonBorderRadius,
   fontSize: "16px",
   fontWeight: 600,
   maxHeight: "32px",
   "&:hover": {
     color: CssVariables.white,
+    backgroundColor: CssVariables.actionColor,
+    borderColor: CssVariables.white,
     path: {
       stroke: CssVariables.white,
     },

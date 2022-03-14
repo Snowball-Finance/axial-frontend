@@ -12,8 +12,10 @@ export const initialState: ContainerState = {
   active: false,
   connector: undefined,
   library: undefined,
+  networkLibrary: undefined,
   chainId: undefined,
   error: undefined,
+
 };
 
 const web3Slice = createSlice({
@@ -22,6 +24,7 @@ const web3Slice = createSlice({
   reducers: {
     setWeb3(state, action: PayloadAction<Web3Interface>) {
       state.library = action.payload.library;
+      state.networkLibrary = action.payload.networkLibrary;
       state.connector = action.payload.connector;
       state.active = action.payload.active;
       state.account = action.payload.account;

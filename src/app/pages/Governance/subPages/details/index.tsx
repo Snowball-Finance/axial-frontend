@@ -10,12 +10,7 @@ import { CssVariables } from "styles/cssVariables/cssVariables";
 import { mobile } from "styles/media";
 import { VotePower } from "../../components/votePower";
 import { GovernanceSubPages } from "../../routes";
-import { forAndAgainst } from "../../utils/votes";
 import { ProposalListItem } from "../proposals/components/listItem";
-import {
-  VoteProgressBar,
-  VoteProgressBarType,
-} from "../proposals/components/voteProgressBar";
 import { AdditionalData } from "./components/additionalData";
 import { TopBackButton } from "./components/topBackButton";
 import { VoteButtons } from "./components/voteButtons";
@@ -37,28 +32,10 @@ export const ProposalDetails = () => {
     return <>proposal not found</>;
   }
 
-  const { forVotes, againstVotes } = forAndAgainst({ proposal });
 
   const { state } = proposal;
 
-  const VoteBars = () => (
-    <>
-      <VoteProgressBar
-        height="11px"
-        title={`${t(translations.Common.For())}: ${forVotes.formattedVotes}`}
-        percent={forVotes.percent}
-        type={VoteProgressBarType.for}
-      />
-      <VoteProgressBar
-        height="11px"
-        title={`${t(translations.Common.Against())}: ${
-          againstVotes.formattedVotes
-        }`}
-        percent={againstVotes.percent}
-        type={VoteProgressBarType.against}
-      />
-    </>
-  );
+
 
   const isActive = state === ProposalStates.active;
 
@@ -71,14 +48,28 @@ export const ProposalDetails = () => {
         ).toLocaleLowerCase()}
       />
       <Box mb="16px" />
+      <ProposalListItem proposal={proposal} short />
+      <Box mb="16px" />
+      <VoteStatus proposal={proposal} />
+      <Box mb="16px" />
+      {isActive && (
+        <>
+          <VotePower />
+          <Box mb="16px" />
+          <VoteButtons proposal={proposal} />
+          <Box mb="16px" />
+        </>
+      )}
+      <AdditionalData
+        discordLink={proposal?.metadata?.discussion}
+        documentLink={proposal?.metadata?.document}
+        startTime={proposal.startDate}
+        endTime={proposal.endDate}
+      />
+      <Box mb="16px" />
+
       <ContentWrapper>
         <Left>
-          <ProposalListItem proposal={proposal} short />
-          {isActive && (
-            <Votes>
-              <VoteBars />
-            </Votes>
-          )}
           <Descriptions>
             <Title>{t(translations.Common.Description())}</Title>
             <div
@@ -91,25 +82,6 @@ export const ProposalDetails = () => {
             ></div>
           </Descriptions>
         </Left>
-        <Right>
-          <VoteStatus proposal={proposal} />
-          {isActive ? (
-            <>
-              <VotePower />
-              <VoteButtons proposal={proposal} />
-            </>
-          ) : (
-            <VotesColumn>
-              <VoteBars />
-            </VotesColumn>
-          )}
-          <AdditionalData
-            discordLink={proposal?.metadata?.discussion}
-            documentLink={proposal?.metadata?.document}
-            startTime={proposal.startDate}
-            endTime={proposal.endDate}
-          />
-        </Right>
       </ContentWrapper>
     </Wrapper>
   );
@@ -143,28 +115,7 @@ const Left = styled(Box)({
   flexDirection: "column",
   gap: "16px",
 });
-const Right = styled(Box)({
-  display: "flex",
-  flexDirection: "column",
-  gap: "16px",
-  minWidth: "420px",
-  maxWidth: "420px",
-});
 
-const Votes = styled(SnowPaper)({
-  display: "flex",
-  padding: "12px 16px",
-  gap: "36px",
-  height: "58px",
-  alignItems: "center",
-});
-
-const VotesColumn = styled(SnowPaper)({
-  display: "flex",
-  flexDirection: "column",
-  padding: "12px 16px",
-  gap: "16px",
-});
 
 const Wrapper = styled(Max1040)({
   margin: "auto",

@@ -1,4 +1,4 @@
-import { Divider, styled } from "@mui/material";
+import { styled } from "@mui/material";
 import { SnowPaper } from "app/components/base/SnowPaper";
 import ClickIcon from "assets/images/iconComponents/clock";
 import DiscordChatIcon from "assets/images/iconComponents/discordChat";
@@ -27,42 +27,48 @@ export const AdditionalData: FC<AdditionalDataProps> = ({
   };
   return (
     <Wrapper>
-      {discordLink ? (
-        <LinkContainer onClick={() => handleLinkClick(discordLink)}>
-          <DiscordChatIcon />
-          {t(translations.GovernancePage.DiscussionofproposalinDiscord())}
-          <ExternalLinkIcon />
-        </LinkContainer>
-      ) : (
-        <></>
-      )}
-      {documentLink ? (
-        <LinkContainer onClick={() => handleLinkClick(documentLink)}>
-          <DocumentIcon color={CssVariables.commonTextColor} />
-          {t(translations.GovernancePage.ProposalDocument())}
-          <ExternalLinkIcon />
-        </LinkContainer>
-      ) : (
-        <></>
-      )}
-      <Divider />
-      <TimeWrapper>
-        <IconAndTimeContainer>
-          <ClickIcon color={CssVariables.commonTextColor} />
-          {t(translations.GovernancePage.Votingperiodbegins())}
-        </IconAndTimeContainer>
-        <Time>{new Date(startTime).toLocaleString()}</Time>
-      </TimeWrapper>
-      <TimeWrapper>
-        <IconAndTimeContainer>
-          <ClickIcon color={CssVariables.commonTextColor} />
-          {t(translations.GovernancePage.Votingperiodends())}
-        </IconAndTimeContainer>
-        <Time>{new Date(endTime).toLocaleString()}</Time>
-      </TimeWrapper>
+      <LinksWrapper>
+        {discordLink ? (
+          <LinkContainer onClick={() => handleLinkClick(discordLink)}>
+            <DiscordChatIcon />
+            {t(translations.GovernancePage.DiscussionofproposalinDiscord())}
+            <ExternalLinkIcon />
+          </LinkContainer>
+        ) : (
+          <></>
+        )}
+        {documentLink ? (
+          <LinkContainer onClick={() => handleLinkClick(documentLink)}>
+            <DocumentIcon color={CssVariables.commonTextColor} />
+            {t(translations.GovernancePage.ProposalDocument())}
+            <ExternalLinkIcon />
+          </LinkContainer>
+        ) : (
+          <></>
+        )}
+      </LinksWrapper>
+      <TimesWrapper>
+        <TimeWrapper>
+          <IconAndTimeContainer>
+            <ClickIcon color={CssVariables.commonTextColor} />
+            {t(translations.GovernancePage.Votingperiodbegins())} :
+          </IconAndTimeContainer>
+          <Time>{new Date(startTime).toLocaleString()}</Time>
+        </TimeWrapper>
+        <TimeWrapper>
+          <IconAndTimeContainer>
+            <ClickIcon color={CssVariables.commonTextColor} />
+            {t(translations.GovernancePage.Votingperiodends())} :
+          </IconAndTimeContainer>
+          <Time>{new Date(endTime).toLocaleString()}</Time>
+        </TimeWrapper>
+      </TimesWrapper>
     </Wrapper>
   );
 };
+
+const LinksWrapper = styled("div")({});
+const TimesWrapper = styled("div")({});
 
 const Time = styled("p")({
   margin: 0,
@@ -77,7 +83,9 @@ const IconAndTimeContainer = styled("div")({
   gap: "8px",
 });
 
-const TimeWrapper = styled("div")({});
+const TimeWrapper = styled("div")({
+  display: "flex",
+});
 
 const LinkContainer = styled("div")({
   display: "flex",
@@ -89,6 +97,5 @@ const Wrapper = styled(SnowPaper)({
   padding: "20px",
   display: "flex",
   gap: "16px",
-  flexDirection: "column",
   color: CssVariables.commonTextColor,
 });

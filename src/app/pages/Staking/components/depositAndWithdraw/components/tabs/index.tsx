@@ -33,7 +33,7 @@ export const StakingTabs = () => {
       <Tabs
         value={selectedTab}
         onChange={(_, v) => handleTabChange(v)}
-        indicatorColor="primary"
+        // indicatorColor="primary"
         textColor="primary"
       >
         {tabs(t).map((item, index: number) => {
@@ -55,14 +55,17 @@ export const StakingTabs = () => {
   );
 };
 const Wrapper = styled("div")({
+  padding: "0 32px 14px 32px",
+  borderBottom: `6px solid ${CssVariables.cardBorder}`,
   ".MuiTabs-indicator": {
-    backgroundColor: CssVariables.primary,
+    display: "none",
   },
   span: {
-    textTransform: "none",
-    fontSize: "16px",
+    textTransform: "uppercase",
+    fontSize: "26px",
     fontWeight: 600,
-    color: CssVariables.navigationTabTextColor,
+    color: CssVariables.commonTextColor,
+    fontFamily: "Fugaz One !important",
   },
   ".Mui-selected": {
     span: {

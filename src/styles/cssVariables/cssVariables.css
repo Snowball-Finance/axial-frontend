@@ -1,12 +1,24 @@
 html{
   font-family: Montserrat,Rubik,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
 }
+.selectPaper{
+  background: var(--paperBackground) !important;
+  color: var(--commonTextColor) !important;
+  border-radius: var(--paperBorderRadius) !important;
+  border: 2px solid var(--primary);
+}
+.selectPaper li{
+  font-size: 16px !important;
+  font-family: 'IBM Plex Sans'!important;
+}
 
 :root{
   --white:white;
   --black:black;
   --primary: #60A88B;
   --secondary:#EAAB50;
+  --actionColor:#D15E2C;
+  --warning:#ebd033;
   --mainBackgroundColor:#31386B;
   --navigationTabBackground: #f5f5f5;
   --lightTint: #f7f7f7;
@@ -36,7 +48,7 @@ html{
   --primaryDisabled: #588A89;
   --chipBackgroundColor:#3a2e6b;
   --poolCardBackground: #00103B;
-  --poolCardBorder: #4D2F43;
+  --cardBorder: #4D2F43;
   --swapInputbackground: #06041D;
   --paperBorderRadius:12px;
   --swapInputbackground: #06041D;

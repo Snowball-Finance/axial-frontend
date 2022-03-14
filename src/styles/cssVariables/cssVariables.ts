@@ -1,6 +1,7 @@
 export enum CssVariables {
   white = "var(--white)",
   black = "var(--black)",
+  actionColor = "var(--actionColor)",
   navigationTabBackground = "var(--navigationTabBackground)",
   activeNAvigationTabBackground = "var(--activeNAvigationTabBackground)",
   navigationTabTextColor = "var(--navigationTabTextColor)",
@@ -8,6 +9,7 @@ export enum CssVariables {
   mildBlue = "var(--mildBlue)",
   ctaBlue = "var(--ctaBlue)",
   primary = "var(--primary)",
+  warning = "var(--warning)",
   opaqueGreen = "var(--opaqueGreen)",
   paperBorderRadius = "var(--paperBorderRadius)",
   buttonBorderRadius = "var(--buttonBorderRadius)",
@@ -32,8 +34,13 @@ export enum CssVariables {
   paperBackground = "var(--paperBackground)",
   bodyTextColor = "var(--bodyTextColor)",
   poolCardBackground = "var(--poolCardBackground)",
-  poolCardBorder = "var(--poolCardBorder)",
+  cardBorder = "var(--cardBorder)",
   swapInputbackground = "var(--swapInputbackground)",
   radioWidth = "var(--radioWidth)",
   radioHeight = "var(--radioHeight)",
+}
+
+export enum FontFamilies {
+  FugazOne = "Fugaz One !important",
+  IBMPlexSans = "IBM Plex Sans !important",
 }
