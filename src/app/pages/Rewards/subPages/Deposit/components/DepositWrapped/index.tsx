@@ -2,9 +2,9 @@ import React, { FC } from "react";
 import { styled, Grid, Typography } from "@mui/material";
 
 import { CssVariables } from "styles/cssVariables/cssVariables";
-import { AdvanceOption } from "./components/AdvanceOption";
+import { AdvanceOption } from "./AdvanceOption";
 import { ContainedButton } from "app/components/common/buttons/containedButton";
-import { CurrencyInput } from "./components/CurrencyInput";
+import { CurrencyInput } from "./CurrencyInput";
 import { OutlinedButton } from "app/components/common/buttons/outlinedButton";
 
 export const DepositWrapped: FC = () => {

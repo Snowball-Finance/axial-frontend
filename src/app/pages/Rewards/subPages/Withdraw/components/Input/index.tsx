@@ -3,7 +3,7 @@ import { styled, Grid, Typography, Slider } from "@mui/material";
 
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { ContainedButton } from "app/components/common/buttons/containedButton";
-import { CurrencyInput } from "./components/CurrencyInput";
+import { CurrencyInput } from "./CurrencyInput";
 
 export const WithdrawInput: FC = () => {
   return (

@@ -13,4 +13,9 @@ const StyledButton = styled(SnowButton)(({ theme }) => ({
   "&:hover": {
     borderWidth: "2px",
   },
+  "&.Mui-disabled": {
+    border: `2px solid ${CssVariables.primaryDisabled}`,
+    color: CssVariables.primaryDisabled,
+    opacity: 0.5,
+  },
 }));

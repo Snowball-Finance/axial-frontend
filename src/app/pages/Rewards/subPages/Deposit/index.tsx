@@ -1,5 +1,6 @@
 import React, { FC } from "react";
 import { Grid, styled } from "@mui/material";
+
 import { DepositWrapped } from "./components/DepositWrapped";
 import { CurrencyReserve } from "../../components/CurrencyReserve";
 
