@@ -143,5 +143,5 @@ const PoolInfoSubTitleText = styled(Typography)({
 });
 
 const TextLoader = styled(Skeleton)({
-  backgroundColor: CssVariables.poolCardBorder,
+  backgroundColor: CssVariables.primary,
 });
