@@ -4,14 +4,12 @@ import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 
 import { translations } from "locales/i18n";
-import { pools } from "app/pools";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { Zero } from "app/containers/Rewards/constants";
 import {
   commify,
   formatBNToShortString,
 } from "app/containers/utils/contractUtils";
-import { RewardsSelectors } from "app/containers/Rewards/selectors";
 import { LiquidityPageSelectors } from "app/pages/Liquidity/selectors";
 import { PoolDataProps } from "app/pages/Liquidity/types";
 
@@ -28,9 +26,6 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
   const userShareData = useSelector(
     LiquidityPageSelectors.liquidityUserShareData(poolKey)
   );
-  const masterchefBalance = useSelector(RewardsSelectors.masterChefBalances);
-
-  const tokenKey = pools[poolKey].lpToken.symbol;
 
   const formattedData = {
     reserve: poolData?.reserve
@@ -52,8 +47,7 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
     ),
   };
 
-  const hasShare =
-    masterchefBalance && !!masterchefBalance[tokenKey]?.userInfo.amount.gt("0");
+  const hasShare = !!userShareData?.usdBalance.gt("0");
   let info: InfoData[] = [];
 
   if (hasShare) {
