@@ -16,10 +16,10 @@ export interface TokenChangePayload {
 
 export interface TokenOption {
   value: string;
-  label: string;
   icon: string;
   decimals: number;
   balance: string;
+  balanceUSD: string;
 }
 
 export type ContainerState = SwapPageState;

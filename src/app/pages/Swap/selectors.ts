@@ -1,11 +1,15 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { BigNumber } from "ethers";
 
-import { BNToString } from "common/format";
 import { GlobalDomains } from "app/appSelectors";
 import { RootState } from "store/types";
 import { initialState } from "./slice";
 import { TokenOption } from "./types";
+import {
+  calculatePrice,
+  formatBNToString,
+} from "app/containers/utils/contractUtils";
+import { Zero } from "app/containers/Rewards/constants";
+import { TOKENS_MAP } from "app/constants";
 
 export const SwapPageDomains = {
   swapPage: (state: RootState) => state.swapPage || initialState,
@@ -28,26 +32,35 @@ export const SwapPageSelectors = {
   ),
   fromTokenOptions: createSelector(
     GlobalDomains.tokens,
+    GlobalDomains.tokenPricesUSD,
     SwapPageDomains.toToken,
     SwapPageDomains.searchValue,
-    (tokens, tokenChange, searchValue) => {
+    (tokens, tokenPricesUSD, tokenChange, searchValue) => {
       const fromTokens: TokenOption[] = [];
-      for (let key in tokens) {
-        if (tokens.hasOwnProperty(key) && tokenChange?.symbol !== key) {
-          const { name, symbol, logo, decimals, balance } = tokens[key];
-          const tokenBalance = BNToString(
-            balance ?? BigNumber.from(0),
+      const visibleTokens = Object.values(TOKENS_MAP).filter(
+        ({ isLPToken }) => !isLPToken
+      );
+
+      visibleTokens.forEach(({ symbol, icon, decimals }) => {
+        if (tokenChange?.symbol !== symbol) {
+          const tokenBalance = formatBNToString(
+            tokens?.[symbol].balance || Zero,
             decimals
           );
+          const tokenBalanceUSD =
+            calculatePrice(tokenBalance, tokenPricesUSD?.[symbol], decimals) ||
+            Zero;
+
           fromTokens.push({
             value: symbol,
-            label: name,
-            icon: logo,
-            balance: tokenBalance || "0",
+            icon,
+            balance: tokenBalance,
+            balanceUSD: formatBNToString(tokenBalanceUSD, 18, 2),
             decimals,
           });
         }
-      }
+      });
+
       return fromTokens
         .filter((item) =>
           item.value.toLowerCase().includes(searchValue.toLowerCase())
@@ -60,26 +73,36 @@ export const SwapPageSelectors = {
   ),
   toTokenOptions: createSelector(
     GlobalDomains.tokens,
+    GlobalDomains.tokenPricesUSD,
     SwapPageDomains.fromToken,
     SwapPageDomains.searchValue,
-    (tokens, fromToken, searchValue) => {
+    (tokens, tokenPricesUSD, fromToken, searchValue) => {
       const toTokens: TokenOption[] = [];
-      for (let key in tokens) {
-        if (tokens.hasOwnProperty(key) && fromToken?.symbol !== key) {
-          const { name, symbol, logo, decimals, balance } = tokens[key];
-          const tokenBalance = BNToString(
-            balance ?? BigNumber.from(0),
+      const visibleTokens = Object.values(TOKENS_MAP).filter(
+        ({ isLPToken }) => !isLPToken
+      );
+
+      visibleTokens.forEach(({ symbol, icon, decimals }) => {
+        if (fromToken?.symbol !== symbol) {
+          const tokenBalance = formatBNToString(
+            tokens?.[symbol].balance || Zero,
             decimals
           );
+
+          const tokenBalanceUSD =
+            calculatePrice(tokenBalance, tokenPricesUSD?.[symbol], decimals) ||
+            Zero;
+
           toTokens.push({
             value: symbol,
-            label: name,
-            icon: logo,
-            balance: tokenBalance || "0",
+            icon,
+            balance: tokenBalance,
+            balanceUSD: formatBNToString(tokenBalanceUSD, 18, 2),
             decimals,
           });
         }
-      }
+      });
+
       return toTokens
         .filter((item) =>
           item.value.toLowerCase().includes(searchValue.toLowerCase())

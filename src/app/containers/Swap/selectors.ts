@@ -14,6 +14,8 @@ export const SwapDomains = {
     state.swap?.isGettingBestPath || initialState.isGettingBestPath,
   infiniteApproval: (state: RootState) =>
     state.swap?.infiniteApproval || initialState.infiniteApproval,
+  slippageSelected: (state: RootState) =>
+    state.swap?.slippageSelected || initialState.slippageSelected,
   bestPath: (state: RootState) => state.swap?.bestPath || initialState.bestPath,
   isSwapping: (state: RootState) =>
     state.swap?.isSwapping || initialState.isSwapping,
@@ -48,5 +50,9 @@ export const SwapSelectors = {
   selectInfiniteApproval: createSelector(
     [SwapDomains.infiniteApproval],
     (infiniteApproval) => infiniteApproval
+  ),
+  selectSlippageSelected: createSelector(
+    [SwapDomains.slippageSelected],
+    (slippageSelected) => slippageSelected
   ),
 };

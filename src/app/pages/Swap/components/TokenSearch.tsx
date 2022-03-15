@@ -1,14 +1,5 @@
 import React, { FC, useState } from "react";
-import {
-  styled,
-  Grid,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  List,
-  ListItemButton,
-  Typography,
-} from "@mui/material";
+import { styled, Grid, List, ListItemButton, Typography } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
@@ -19,6 +10,7 @@ import { SearchInput } from "app/components/base/searchInput";
 import { Token } from "app/containers/Swap/types";
 import { SwapPageSelectors } from "../selectors";
 import { TokenOption } from "../types";
+import { SnowModal } from "app/components/common/modal";
 
 export interface Props {
   options: TokenOption[];
@@ -76,80 +68,82 @@ export const TokenSearch: FC<Props> = ({
       </ButtonContainer>
 
       {open && (
-        <Dialog
+        <SnowModal
           onClose={() => setOpen(false)}
-          open={open}
-          fullWidth
-          maxWidth="xs"
+          isOpen={open}
+          title={`${t(translations.SwapPage.TokenSearch.SelectToken())}`}
         >
-          <DialogTitle>
-            {t(translations.SwapPage.TokenSearch.SelectToken())}
-          </DialogTitle>
+          <ModalContainer container>
+            <SearchContainer item xs={12}>
+              <SearchInput
+                value={searchValue}
+                onChange={handleSearch}
+                placeHolder={t(translations.SwapPage.TokenSearch.Placeholder())}
+              />
+            </SearchContainer>
 
-          <DialogContent>
-            <Grid container direction="column" spacing={2}>
-              <SearchContainer item xs={12}>
-                <SearchInput
-                  value={searchValue}
-                  onChange={handleSearch}
-                  placeHolder={t(
-                    translations.SwapPage.TokenSearch.Placeholder()
-                  )}
-                />
-              </SearchContainer>
-
-              <Grid item>
-                <List>
-                  {options?.map((item) => {
-                    return (
-                      <ListItemButton
-                        key={item.value}
-                        onClick={() => handleTokenSelection(item.value)}
+            <Grid item xs={12}>
+              <TokensContainer>
+                {options?.map((item) => {
+                  return (
+                    <ListItemButton
+                      key={item.value}
+                      onClick={() => handleTokenSelection(item.value)}
+                    >
+                      <Grid
+                        container
+                        justifyContent="space-between"
+                        alignItems="center"
                       >
-                        <Grid
-                          container
-                          justifyContent="space-between"
-                          alignItems="center"
-                        >
-                          <Grid item>
-                            <Grid container spacing={1} alignItems="center">
-                              <Grid item>
-                                <TokenIcon
-                                  src={item.icon}
-                                  alt={`token-${item.value}`}
-                                />
-                              </Grid>
-                              <Grid item>
-                                <Grid container direction="column">
-                                  <Grid item>
-                                    <TokenTitle variant="body2">
-                                      {item.value}
-                                    </TokenTitle>
-                                  </Grid>
-                                  <Grid item>
-                                    <TokenSubTitle variant="caption">
-                                      {item.label}
-                                    </TokenSubTitle>
-                                  </Grid>
-                                </Grid>
-                              </Grid>
+                        <TokenIconContainer item>
+                          <Grid
+                            container
+                            spacing={1}
+                            alignItems="center"
+                            justifyContent="center"
+                          >
+                            <Grid item>
+                              <TokenIcon
+                                src={item.icon}
+                                alt={`token-${item.value}`}
+                              />
+                            </Grid>
+
+                            <Grid item>
+                              <TokenTitle variant="body2">
+                                {item.value}
+                              </TokenTitle>
                             </Grid>
                           </Grid>
+                        </TokenIconContainer>
 
-                          <Grid item>
-                            <TokenSubTitle variant="caption">
-                              {item.balance}
-                            </TokenSubTitle>
+                        <Grid item>
+                          <Grid
+                            container
+                            direction="column"
+                            alignItems="flex-end"
+                          >
+                            <Grid item>
+                              <TokenTitle variant="body2">
+                                {item.balance}
+                              </TokenTitle>
+                            </Grid>
+
+                            <Grid item>
+                              <TokenSubTitle variant="caption">
+                                ≈${item.balanceUSD}
+                              </TokenSubTitle>
+                            </Grid>
                           </Grid>
                         </Grid>
-                      </ListItemButton>
-                    );
-                  })}
-                </List>
-              </Grid>
+                      </Grid>
+                    </ListItemButton>
+                  );
+                })}
+              </TokensContainer>
             </Grid>
-          </DialogContent>
-        </Dialog>
+          </ModalContainer>
+        </SnowModal>
       )}
     </>
   );
@@ -166,12 +160,28 @@ const ButtonContainer = styled("div")({
   cursor: "pointer",
 });
 
+const ModalContainer = styled(Grid)({
+  padding: 20,
+});
+
 const SearchContainer = styled(Grid)({
   border: `2px solid ${CssVariables.cardBorder}`,
   borderRadius: CssVariables.buttonBorderRadius,
-  padding: "0 !important",
-  margin: 0,
   marginTop: 20,
+  marginBottom: 20
+});
+
+const TokensContainer = styled(List)({
+  border: `2px solid ${CssVariables.cardBorder}`,
+  borderRadius: 10,
+  padding: 10,
+});
+
+const TokenIconContainer = styled(Grid)({
+  border: `2px solid ${CssVariables.cardBorder}`,
+  borderRadius: CssVariables.buttonBorderRadius,
+  padding: 5,
+  minWidth: 150,
 });
 
 const Text = styled(Typography)({
