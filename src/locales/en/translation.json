@@ -28,6 +28,10 @@
     "Swap": "Swap",
     "Description": "Swap Page",
     "SwapButton": "Swap",
+    "ReviewSwap": {
+      "Title": "Review Swap",
+      "InfoDescription": "Output is estimated. if the price changes by more than the max slippage your transaction will revert"
+    },
     "FromToken": {
       "From": "From",
       "Max": "Max",

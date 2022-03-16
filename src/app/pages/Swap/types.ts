@@ -1,4 +1,5 @@
 import { Token } from "app/containers/Swap/types";
+import { BigNumber } from "ethers";
 
 /* --- STATE --- */
 export interface SwapPageState {
@@ -7,6 +8,7 @@ export interface SwapPageState {
   toToken: Token | undefined;
   fromAmount: string;
   searchValue: string;
+  isSwapModalOpen: boolean;
 }
 
 export interface TokenChangePayload {
@@ -18,8 +20,8 @@ export interface TokenOption {
   value: string;
   icon: string;
   decimals: number;
-  balance: string;
-  balanceUSD: string;
+  balance: BigNumber;
+  balanceUSD: BigNumber;
 }
 
 export type ContainerState = SwapPageState;

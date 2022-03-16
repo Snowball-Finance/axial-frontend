@@ -7,9 +7,11 @@ import { TokenOption } from "./types";
 import {
   calculatePrice,
   formatBNToString,
+  shiftBNDecimals,
 } from "app/containers/utils/contractUtils";
 import { Zero } from "app/containers/Rewards/constants";
 import { TOKENS_MAP } from "app/constants";
+import { SwapDomains } from "app/containers/Swap/selectors";
 
 export const SwapPageDomains = {
   swapPage: (state: RootState) => state.swapPage || initialState,
@@ -23,6 +25,8 @@ export const SwapPageDomains = {
     state.swapPage?.toToken || initialState.toToken,
   searchValue: (state: RootState) =>
     state.swapPage?.searchValue || initialState.searchValue,
+  isSwapModalOpen: (state: RootState) =>
+    state.swapPage?.isSwapModalOpen || initialState.isSwapModalOpen,
 };
 
 export const SwapPageSelectors = {
@@ -54,8 +58,8 @@ export const SwapPageSelectors = {
           fromTokens.push({
             value: symbol,
             icon,
-            balance: tokenBalance,
-            balanceUSD: formatBNToString(tokenBalanceUSD, 18, 2),
+            balance: tokens?.[symbol].balance,
+            balanceUSD: tokenBalanceUSD,
             decimals,
           });
         }
@@ -65,10 +69,16 @@ export const SwapPageSelectors = {
         .filter((item) =>
           item.value.toLowerCase().includes(searchValue.toLowerCase())
         )
-        .sort(
-          (a: TokenOption, b: TokenOption) =>
-            parseFloat(b?.balance) - parseFloat(a?.balance)
-        );
+        .sort((a: TokenOption, b: TokenOption) => {
+          if (a.balanceUSD.eq(b.balanceUSD)) {
+            const amountA = shiftBNDecimals(a.balance || Zero, 18 - a.decimals);
+            const amountB = shiftBNDecimals(b.balance || Zero, 18 - b.decimals);
+            return amountA.gt(amountB) ? -1 : 1;
+          } else if (a.balanceUSD.gt(b.balanceUSD)) {
+            return -1;
+          }
+          return 1;
+        });
     }
   ),
   toTokenOptions: createSelector(
@@ -88,7 +98,6 @@ export const SwapPageSelectors = {
             tokens?.[symbol].balance || Zero,
             decimals
           );
-
           const tokenBalanceUSD =
             calculatePrice(tokenBalance, tokenPricesUSD?.[symbol], decimals) ||
             Zero;
@@ -96,8 +105,8 @@ export const SwapPageSelectors = {
           toTokens.push({
             value: symbol,
             icon,
-            balance: tokenBalance,
-            balanceUSD: formatBNToString(tokenBalanceUSD, 18, 2),
+            balance: tokens?.[symbol].balance,
+            balanceUSD: tokenBalanceUSD,
             decimals,
           });
         }
@@ -107,10 +116,16 @@ export const SwapPageSelectors = {
         .filter((item) =>
           item.value.toLowerCase().includes(searchValue.toLowerCase())
         )
-        .sort(
-          (a: TokenOption, b: TokenOption) =>
-            parseFloat(b?.balance) - parseFloat(a?.balance)
-        );
+        .sort((a: TokenOption, b: TokenOption) => {
+          if (a.balanceUSD.eq(b.balanceUSD)) {
+            const amountA = shiftBNDecimals(a.balance || Zero, 18 - a.decimals);
+            const amountB = shiftBNDecimals(b.balance || Zero, 18 - b.decimals);
+            return amountA.gt(amountB) ? -1 : 1;
+          } else if (a.balanceUSD.gt(b.balanceUSD)) {
+            return -1;
+          }
+          return 1;
+        });
     }
   ),
   selectedFromToken: createSelector(
@@ -120,6 +135,20 @@ export const SwapPageSelectors = {
   selectedFromAmount: createSelector(
     SwapPageDomains.fromAmount,
     (fromAmount) => fromAmount
+  ),
+  selectedToAmount: createSelector(
+    SwapDomains.bestPath,
+    SwapPageDomains.toToken,
+    (bestPath, toToken) => {
+      if (toToken) {
+        return formatBNToString(
+          bestPath?.amounts[bestPath?.amounts.length - 1] || Zero,
+          toToken?.decimals || 18
+        );
+      }
+
+      return "0.0";
+    }
   ),
   selectedToToken: createSelector(
     SwapPageDomains.toToken,
@@ -132,5 +161,9 @@ export const SwapPageSelectors = {
   searchValue: createSelector(
     SwapPageDomains.searchValue,
     (searchValue) => searchValue
+  ),
+  isModalOpen: createSelector(
+    SwapPageDomains.isSwapModalOpen,
+    (isSwapModalOpen) => isSwapModalOpen
   ),
 };

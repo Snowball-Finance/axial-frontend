@@ -11,6 +11,8 @@ import { Token } from "app/containers/Swap/types";
 import { SwapPageSelectors } from "../selectors";
 import { TokenOption } from "../types";
 import { SnowModal } from "app/components/common/modal";
+import { formatBNToString } from "app/containers/utils/contractUtils";
+import { Zero } from "app/containers/Rewards/constants";
 
 export interface Props {
   options: TokenOption[];
@@ -125,13 +127,13 @@ export const TokenSearch: FC<Props> = ({
                           >
                             <Grid item>
                               <TokenTitle variant="body2">
-                                {item.balance}
+                                {formatBNToString(item.balance || Zero, item.decimals)}
                               </TokenTitle>
                             </Grid>
 
                             <Grid item>
                               <TokenSubTitle variant="caption">
-                                ≈${item.balanceUSD}
+                                ≈${formatBNToString(item.balanceUSD || Zero, 18, 2)}
                               </TokenSubTitle>
                             </Grid>
                           </Grid>

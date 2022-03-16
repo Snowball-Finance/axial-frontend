@@ -108,3 +108,8 @@ export function calculateExchangeRate(
         .div(amountFrom.mul(BigNumber.from(10).pow(18 - tokenPrecisionFrom)))
     : BigNumber.from("0");
 }
+
+export function shiftBNDecimals(bn: BigNumber, shiftAmount: number): BigNumber {
+  if (shiftAmount < 0) throw new Error("shiftAmount must be positive");
+  return bn.mul(BigNumber.from(10).pow(shiftAmount));
+}

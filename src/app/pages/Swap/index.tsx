@@ -17,7 +17,7 @@ import { FromToken } from "./components/FromToken";
 import { ToToken } from "./components/ToToken";
 import { BestPath } from "./components/BestPath";
 import { ReverseSwap } from "./components/ReverseSwap";
-import { ActionButton } from "./components/ActionButton";
+import { Actions } from "./components/Actions";
 
 export const SwapPage: FC = () => {
   useSwapPageSlice();
@@ -52,7 +52,7 @@ export const SwapPage: FC = () => {
 
           <AdvanceOption />
 
-          <ActionButton />
+          <Actions />
         </StyledContainer>
       </StyledSwapCard>
     </>
