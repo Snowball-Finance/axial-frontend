@@ -19,9 +19,11 @@ const StyledSnowPaper = styled(SnowPaper)({
   position: "relative",
   maxWidth: "490px",
   flex: 1,
+  marginRight:'65px',
   border: `4px solid ${CssVariables.cardBorder}`,
   [mobile]: {
     maxWidth: "unset",
     width: "100%",
+    marginRight: "0px",
   },
 });
