@@ -1,5 +1,10 @@
 import { PayloadAction } from "@reduxjs/toolkit";
-import { ContainerState, SwapStatsReponse } from "./types";
+import {
+  ApproveAndDepositPayload,
+  ContainerState,
+  Pools,
+  SwapStatsReponse,
+} from "./types";
 import { createSlice } from "store/toolkit";
 import { useInjectReducer, useInjectSaga } from "store/redux-injectors";
 
@@ -105,6 +110,10 @@ const rewardsSlice = createSlice({
         ...action.payload,
       };
     },
+    approveAndDeposit(
+      state,
+      action: PayloadAction<ApproveAndDepositPayload>
+    ) {},
   },
 });
 

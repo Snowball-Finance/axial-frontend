@@ -1,7 +1,7 @@
 /* --- STATE --- */
 
 import { BigNumber } from "ethers";
-import { Token } from "../Swap/types";
+import { Token, TokenSymbols } from "../Swap/types";
 
 interface PoolInfo {
   amount: BigNumber;
@@ -78,6 +78,12 @@ export interface Pool {
   key: Pools;
   poolData?: PoolData;
   userShareData?: UserShareData;
+}
+export interface ApproveAndDepositPayload {
+  poolName: Pools;
+  amount: string;
+  masterchefDeposit: boolean;
+  tokenAmounts: { [K in TokenSymbols]: BigNumber };
 }
 
 interface TokenShareType {
