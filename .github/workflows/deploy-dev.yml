@@ -2,7 +2,7 @@ name: Dev env deployment
 on:
   push:
     branches:
-    - develop
+    - v2
 jobs:
   deployment:
     runs-on: ubuntu-latest
