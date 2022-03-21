@@ -81,10 +81,22 @@ export interface Pool {
 }
 export interface ApproveAndDepositPayload {
   poolName: Pools;
-  amount: string;
-  masterchefDeposit: boolean;
-  tokenAmounts: { [K in TokenSymbols]: BigNumber };
+  masterchefDeposit?: boolean;
+  tokenAmounts: { [K in TokenSymbols]?: BigNumber };
 }
+
+export enum WithdrawType{
+  ALL="ALL",
+  IMBALANCE="IMBALANCE",
+}
+export interface ApproveAndWithdrawPayload {
+  poolName: Pools;
+  masterchefwithdraw?: boolean;
+  type:WithdrawType,
+  lpTokenAmountToSpend: BigNumber;
+  tokenAmounts: { [K in TokenSymbols]?: BigNumber };
+}
+
 
 interface TokenShareType {
   percent: string;
@@ -140,6 +152,8 @@ export interface RewardsState {
   isGettingSwapStats: boolean;
   masterChefBalances: { [key: string]: MasterchefResponse } | undefined;
   pools: { [K in Pools]?: Pool };
+  isDepositing: boolean;
+  tokensInQueueToApprove: { [K in TokenSymbols]?: boolean };
 }
 
 export type ContainerState = RewardsState;

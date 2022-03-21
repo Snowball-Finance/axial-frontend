@@ -22,6 +22,11 @@ export const RewardsDomains = {
     state.rewards?.swapStats || initialState.swapStats,
   masterchefApr: (state: RootState) =>
     state.rewards?.masterchefApr || initialState.masterchefApr,
+  tokensInQueueToApprove: (state: RootState) =>
+    state.rewards?.tokensInQueueToApprove || initialState.tokensInQueueToApprove,
+    isDepositing: (state: RootState) =>
+    state.rewards?.isDepositing || initialState.isDepositing,
+
 };
 
 export const RewardsSelectors = {
@@ -52,4 +57,9 @@ export const RewardsSelectors = {
     RewardsDomains.masterchefApr,
     (masterchefApr) => masterchefApr
   ),
+  tokensInQueueToApprove: createSelector(
+    RewardsDomains.tokensInQueueToApprove,
+    (tokensInQueueToApprove) => tokensInQueueToApprove
+  ),
+  isDepositing: createSelector(RewardsDomains.isDepositing, (isDepositing) => isDepositing)
 };

@@ -10,6 +10,8 @@ import usdcLogo from "assets/icons/usdc.svg";
 import usdtLogo from "assets/icons/usdt.svg";
 import avaiLogo from "assets/icons/avai.svg";
 
+
+//symbol should be identical to key of token
 export const tokens: { [K in TokenSymbols]: Token } = {
   "USDT.e": {
     ABI: ERC20_ABI,

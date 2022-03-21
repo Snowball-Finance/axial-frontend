@@ -1,6 +1,7 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 import {
   ApproveAndDepositPayload,
+  ApproveAndWithdrawPayload,
   ContainerState,
   Pools,
   SwapStatsReponse,
@@ -10,6 +11,7 @@ import { useInjectReducer, useInjectSaga } from "store/redux-injectors";
 
 import { rewardsSaga } from "./saga";
 import { TRANSACTION_TYPES } from "app/constants";
+import { TokenSymbols } from "../Swap/types";
 
 // The initial state of the Rewards container
 export const initialState: ContainerState = {
@@ -26,6 +28,8 @@ export const initialState: ContainerState = {
   masterChefBalances: undefined,
   swapStats: undefined,
   masterchefApr: undefined,
+  isDepositing: false,
+  tokensInQueueToApprove:{}
 };
 
 interface LastTransactionTimes {
@@ -114,6 +118,26 @@ const rewardsSlice = createSlice({
       state,
       action: PayloadAction<ApproveAndDepositPayload>
     ) {},
+    setIsDepositing(
+      state,
+      action: PayloadAction<boolean>
+    ) {
+      state.isDepositing = action.payload;
+    },
+    setApprovalForTokenInQueue(state, action: PayloadAction<{
+      tokenSymbol:TokenSymbols,
+      approved: boolean
+    }>) {
+      const tmp={...state.tokensInQueueToApprove}
+      tmp[action.payload.tokenSymbol]=action.payload.approved
+      state.tokensInQueueToApprove = tmp
+    },
+    emptyTokensInQueueForApproval(state, action: PayloadAction<void>) {
+      state.tokensInQueueToApprove = {}
+    },
+    approveAndWithdraw(state, action: PayloadAction<ApproveAndWithdrawPayload>){
+      
+    }
   },
 });
 
