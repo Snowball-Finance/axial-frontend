@@ -33,7 +33,7 @@ export const Rewards: FC<Props> = ({ pools }) => {
   }, [library, account]);
 
   useEffect(() => {
-    if(networkLibrary){
+    if (networkLibrary) {
       dispatch(RewardsActions.getRewardPoolsData(pools));
     }
     return () => {};

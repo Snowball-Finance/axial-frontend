@@ -85,18 +85,17 @@ export interface ApproveAndDepositPayload {
   tokenAmounts: { [K in TokenSymbols]?: BigNumber };
 }
 
-export enum WithdrawType{
-  ALL="ALL",
-  IMBALANCE="IMBALANCE",
+export enum WithdrawType {
+  ALL = "ALL",
+  IMBALANCE = "IMBALANCE",
 }
 export interface ApproveAndWithdrawPayload {
   poolName: Pools;
   masterchefwithdraw?: boolean;
-  type:WithdrawType,
+  type: WithdrawType;
   lpTokenAmountToSpend: BigNumber;
   tokenAmounts: { [K in TokenSymbols]?: BigNumber };
 }
-
 
 interface TokenShareType {
   percent: string;

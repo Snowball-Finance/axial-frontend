@@ -180,41 +180,55 @@ export function* approveSingleToken({
   gasPrice: BigNumber;
   amount: BigNumber;
 }) {
-  try{
-  const library = yield select(Web3Domains.selectLibraryDomain);
-  const account = yield select(Web3Domains.selectAccountDomain);
-  const infiniteApproval = yield select(GlobalDomains.infiniteApproval);
-  const tokenContract = new Contract(
-    token.address,
-    token.ABI,
-    getProviderOrSigner(library, account)
-  );
-  yield call(
-    checkAndApproveTokenForTrade,
-    tokenContract as Erc20,
-    swapAddress,
-    account,
-    amount,
-    infiniteApproval,
-    gasPrice,
-    {
-      onTransactionError: () => {
-        throw new Error("Your transaction could not be completed");
-      },
-    }
-  );
-  yield put(RewardsActions.setApprovalForTokenInQueue({tokenSymbol:token.symbol as TokenSymbols, approved:true}));
-  }
-  catch(e){
+  try {
+    const library = yield select(Web3Domains.selectLibraryDomain);
+    const account = yield select(Web3Domains.selectAccountDomain);
+    const infiniteApproval = yield select(GlobalDomains.infiniteApproval);
+    const tokenContract = new Contract(
+      token.address,
+      token.ABI,
+      getProviderOrSigner(library, account)
+    );
+    yield call(
+      checkAndApproveTokenForTrade,
+      tokenContract as Erc20,
+      swapAddress,
+      account,
+      amount,
+      infiniteApproval,
+      gasPrice,
+      {
+        onTransactionError: () => {
+          throw new Error("Your transaction could not be completed");
+        },
+      }
+    );
+    yield put(
+      RewardsActions.setApprovalForTokenInQueue({
+        tokenSymbol: token.symbol as TokenSymbols,
+        approved: true,
+      })
+    );
+  } catch (e) {
     console.log(e);
-    yield put(RewardsActions.setApprovalForTokenInQueue({tokenSymbol:token.symbol as TokenSymbols, approved:false}));
+    yield put(
+      RewardsActions.setApprovalForTokenInQueue({
+        tokenSymbol: token.symbol as TokenSymbols,
+        approved: false,
+      })
+    );
   }
 }
 
-export function* resetTokensInQueueForApproval(tokenSymbols:TokenSymbols[]){
+export function* resetTokensInQueueForApproval(tokenSymbols: TokenSymbols[]) {
   for (let i = 0; i < tokenSymbols.length; i++) {
     const tokenSymbol = tokenSymbols[i];
-    yield put(RewardsActions.setApprovalForTokenInQueue({tokenSymbol:tokenSymbol as TokenSymbols, approved:false}));
+    yield put(
+      RewardsActions.setApprovalForTokenInQueue({
+        tokenSymbol: tokenSymbol as TokenSymbols,
+        approved: false,
+      })
+    );
   }
 }
 
@@ -222,7 +236,6 @@ export function* approveAndDeposit(action: {
   type: string;
   payload: ApproveAndDepositPayload;
 }) {
-
   const { poolName, masterchefDeposit, tokenAmounts } = action.payload;
   const pools = yield select(RewardsDomains.pools);
   const pool: Pool = pools[poolName];
@@ -230,13 +243,15 @@ export function* approveAndDeposit(action: {
   const shouldDepositWrapped = pool.swapAddress === undefined ? false : true;
 
   const poolTokens = shouldDepositWrapped
-  ? (pool.underlyingPoolTokens as Token[])
-  : masterchefDeposit
+    ? (pool.underlyingPoolTokens as Token[])
+    : masterchefDeposit
     ? [pool.lpToken]
-    : pool.poolTokens
-    const tokenSymbols=poolTokens.map(token=>token.symbol) as TokenSymbols[];
-    yield put(RewardsActions.emptyTokensInQueueForApproval())
-    yield call(resetTokensInQueueForApproval, tokenSymbols);
+    : pool.poolTokens;
+  const tokenSymbols = poolTokens.map(
+    (token) => token.symbol
+  ) as TokenSymbols[];
+  yield put(RewardsActions.emptyTokensInQueueForApproval());
+  yield call(resetTokensInQueueForApproval, tokenSymbols);
 
   try {
     yield put(RewardsActions.setIsDepositing(true));
@@ -310,11 +325,13 @@ export function* approveAndDeposit(action: {
 
       const deadline = formatDeadlineToNumber(transactionDeadline);
       const txnAmounts = poolTokens.map(({ symbol }) => {
-        const amount=tokenAmounts[symbol].toString();
-        return amount
+        const amount = tokenAmounts[symbol].toString();
+        return amount;
       });
 
-      const txnDeadline = Math.round(new Date().getTime() / 1000 + 60 * deadline);
+      const txnDeadline = Math.round(
+        new Date().getTime() / 1000 + 60 * deadline
+      );
 
       const spendTransaction = yield call(
         (targetContract as SwapFlashLoanNoWithdrawFee)?.addLiquidity,
@@ -331,58 +348,60 @@ export function* approveAndDeposit(action: {
       );
     }
     yield put(RewardsActions.setIsDepositing(false));
-
-  }
-  catch (e) {
+  } catch (e) {
     console.log(e);
     yield put(RewardsActions.setIsDepositing(false));
     yield call(resetTokensInQueueForApproval, tokenSymbols);
-  }
-  finally{
+  } finally {
     yield call(resetTokensInQueueForApproval, tokenSymbols);
   }
 }
 
-export function* approveAndWithdraw(action:{type:string,payload:ApproveAndWithdrawPayload}) {
+export function* approveAndWithdraw(action: {
+  type: string;
+  payload: ApproveAndWithdrawPayload;
+}) {
   const slipage = Slippages.OneTenth;
   const transactionDeadline = Deadlines.Twenty;
-const infiniteApproval = yield select(GlobalDomains.infiniteApproval);
-const pools=yield select(RewardsDomains.pools);
-const library=yield select(Web3Domains.selectLibraryDomain);
-const account=yield select(Web3Domains.selectAccountDomain);
-const tokens=yield select(GlobalDomains.tokens);
-const {poolName,tokenAmounts,masterchefwithdraw,type,lpTokenAmountToSpend}=action.payload
-const pool:Pool=pools[poolName];
-const {userShareData}=pool
+  const infiniteApproval = yield select(GlobalDomains.infiniteApproval);
+  const pools = yield select(RewardsDomains.pools);
+  const library = yield select(Web3Domains.selectLibraryDomain);
+  const account = yield select(Web3Domains.selectAccountDomain);
+  const tokens = yield select(GlobalDomains.tokens);
+  const {
+    poolName,
+    tokenAmounts,
+    masterchefwithdraw,
+    type,
+    lpTokenAmountToSpend,
+  } = action.payload;
+  const pool: Pool = pools[poolName];
+  const { userShareData } = pool;
 
-
-const targetContract=new Contract(
-  pool.address,
-  pool.swapABI,
-  getProviderOrSigner(library, account)
-);
-const gasPrices: GenericGasResponse = yield select(GlobalDomains.gasPrice);
-const { gasFast, gasInstant, gasStandard } = gasPrices;
-const masterchefContract = new Contract(
-  AXIAL_MASTERCHEF_CONTRACT_ADDRESS,
-  MASTERCHEF_ABI,
-  library?.getSigner(),
-)
-const lpTokenContract = getContract(
-  pool.lpToken.address,
-  LPTOKEN_UNGUARDED_ABI,
-  library,
-  account ?? undefined
-) as LpTokenUnguarded;
-const gasPrice = parseUnits(String(gasFast) || "45", 9);
-if(!masterchefwithdraw){
-  const allowanceAmount =
-  type === WithdrawType.IMBALANCE
-    ? addSlippage(
-        lpTokenAmountToSpend,
-        slipage,
-      )
-    : lpTokenAmountToSpend
+  const targetContract = new Contract(
+    pool.address,
+    pool.swapABI,
+    getProviderOrSigner(library, account)
+  );
+  const gasPrices: GenericGasResponse = yield select(GlobalDomains.gasPrice);
+  const { gasFast, gasInstant, gasStandard } = gasPrices;
+  const masterchefContract = new Contract(
+    AXIAL_MASTERCHEF_CONTRACT_ADDRESS,
+    MASTERCHEF_ABI,
+    library?.getSigner()
+  );
+  const lpTokenContract = getContract(
+    pool.lpToken.address,
+    LPTOKEN_UNGUARDED_ABI,
+    library,
+    account ?? undefined
+  ) as LpTokenUnguarded;
+  const gasPrice = parseUnits(String(gasFast) || "45", 9);
+  if (!masterchefwithdraw) {
+    const allowanceAmount =
+      type === WithdrawType.IMBALANCE
+        ? addSlippage(lpTokenAmountToSpend, slipage)
+        : lpTokenAmountToSpend;
     yield call(
       checkAndApproveTokenForTrade,
       lpTokenContract as LpTokenUnguarded,
@@ -398,73 +417,48 @@ if(!masterchefwithdraw){
       }
     );
     console.debug(
-      `lpTokenAmountToSpend: ${formatUnits(
-        lpTokenAmountToSpend,
-        18,
-      )}`,
-    )
+      `lpTokenAmountToSpend: ${formatUnits(lpTokenAmountToSpend, 18)}`
+    );
     const deadline = Math.round(
       new Date().getTime() / 1000 +
-        60 *
-          formatDeadlineToNumber(
-            transactionDeadline,
-          ),
-    )
-    let spendTransaction
+        60 * formatDeadlineToNumber(transactionDeadline)
+    );
+    let spendTransaction;
 
     if (type === WithdrawType.ALL) {
-      spendTransaction = yield call(targetContract.removeLiquidity,
+      spendTransaction = yield call(
+        targetContract.removeLiquidity,
         lpTokenAmountToSpend,
         pool.poolTokens.map(({ symbol }) =>
-          subtractSlippage(
-            BigNumber.from(tokenAmounts[symbol]),
-            slipage,
-          ),
+          subtractSlippage(BigNumber.from(tokenAmounts[symbol]), slipage)
         ),
-        deadline,
-      )
+        deadline
+      );
     } else if (type === "IMBALANCE") {
-      spendTransaction = yield call(targetContract.removeLiquidityImbalance,
-        pool.poolTokens.map(
-          ({ symbol }) => tokenAmounts[symbol],
-        ),
-        addSlippage(
-          lpTokenAmountToSpend,
-          slipage,
-        ),
-        deadline,
-      )
+      spendTransaction = yield call(
+        targetContract.removeLiquidityImbalance,
+        pool.poolTokens.map(({ symbol }) => tokenAmounts[symbol]),
+        addSlippage(lpTokenAmountToSpend, slipage),
+        deadline
+      );
     } else {
-
-      spendTransaction = yield call(targetContract.removeLiquidityOneToken,
+      spendTransaction = yield call(
+        targetContract.removeLiquidityOneToken,
         lpTokenAmountToSpend,
-        pool.poolTokens.findIndex(
-          ({ symbol }) => symbol === type,
-        ),
-        subtractSlippage(
-          tokenAmounts[type],
-          slipage,
-        ),
-        deadline,
-      )
+        pool.poolTokens.findIndex(({ symbol }) => symbol === type),
+        subtractSlippage(tokenAmounts[type], slipage),
+        deadline
+      );
     }
 
-    yield call (spendTransaction.wait)
-
-
-
-
-
-
-}else{
-  yield call(
-    masterchefContract.withdraw,
-    pool.lpToken.masterchefId,
-    tokenAmounts[pool.lpToken.symbol]
-  );
-}
-
-
+    yield call(spendTransaction.wait);
+  } else {
+    yield call(
+      masterchefContract.withdraw,
+      pool.lpToken.masterchefId,
+      tokenAmounts[pool.lpToken.symbol]
+    );
+  }
 }
 
 export function* rewardsSaga() {

@@ -29,7 +29,7 @@ export const initialState: ContainerState = {
   swapStats: undefined,
   masterchefApr: undefined,
   isDepositing: false,
-  tokensInQueueToApprove:{}
+  tokensInQueueToApprove: {},
 };
 
 interface LastTransactionTimes {
@@ -118,26 +118,27 @@ const rewardsSlice = createSlice({
       state,
       action: PayloadAction<ApproveAndDepositPayload>
     ) {},
-    setIsDepositing(
-      state,
-      action: PayloadAction<boolean>
-    ) {
+    setIsDepositing(state, action: PayloadAction<boolean>) {
       state.isDepositing = action.payload;
     },
-    setApprovalForTokenInQueue(state, action: PayloadAction<{
-      tokenSymbol:TokenSymbols,
-      approved: boolean
-    }>) {
-      const tmp={...state.tokensInQueueToApprove}
-      tmp[action.payload.tokenSymbol]=action.payload.approved
-      state.tokensInQueueToApprove = tmp
+    setApprovalForTokenInQueue(
+      state,
+      action: PayloadAction<{
+        tokenSymbol: TokenSymbols;
+        approved: boolean;
+      }>
+    ) {
+      const tmp = { ...state.tokensInQueueToApprove };
+      tmp[action.payload.tokenSymbol] = action.payload.approved;
+      state.tokensInQueueToApprove = tmp;
     },
     emptyTokensInQueueForApproval(state, action: PayloadAction<void>) {
-      state.tokensInQueueToApprove = {}
+      state.tokensInQueueToApprove = {};
     },
-    approveAndWithdraw(state, action: PayloadAction<ApproveAndWithdrawPayload>){
-      
-    }
+    approveAndWithdraw(
+      state,
+      action: PayloadAction<ApproveAndWithdrawPayload>
+    ) {},
   },
 });
 
