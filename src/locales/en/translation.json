@@ -22,7 +22,13 @@
   },
   "RewardsPage": {
     "Rewards": "Rewards",
-    "Description": "Rewards Page"
+    "Description": "Rewards Page",
+    "Modal": {
+      "Deposit": "Deposit",
+      "Approval": "Approval",
+      "Steps": "Steps",
+      "Withdraw": "Withdraw"
+    }
   },
   "SwapPage": {
     "Swap": "Swap",
