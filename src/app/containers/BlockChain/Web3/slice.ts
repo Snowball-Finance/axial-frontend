@@ -15,7 +15,6 @@ export const initialState: ContainerState = {
   networkLibrary: undefined,
   chainId: undefined,
   error: undefined,
-
 };
 
 const web3Slice = createSlice({

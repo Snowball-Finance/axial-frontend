@@ -13,8 +13,7 @@ export const initialState: ContainerState = {
   bestPath: undefined,
   isSwapping: false,
   tokens: {},
-  infiniteApproval:
-    storage.read(LocalStorageKeys.INFINITE_APPROVAL_FOR_SWAP) || false,
+
   selectedGasPrice: GasPrices.Standard,
 };
 
@@ -44,13 +43,7 @@ const swapSlice = createSlice({
     setIsSwapping(state, action: PayloadAction<boolean>) {
       state.isSwapping = action.payload;
     },
-    setInfiniteApproval(state, action: PayloadAction<boolean>) {
-      state.infiniteApproval = action.payload;
-      storage.write(
-        LocalStorageKeys.INFINITE_APPROVAL_FOR_SWAP,
-        action.payload
-      );
-    },
+
     swap() {},
   },
 });

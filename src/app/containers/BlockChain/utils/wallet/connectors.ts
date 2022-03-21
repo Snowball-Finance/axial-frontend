@@ -17,8 +17,8 @@ const AVALANCHE_MAINNET_PARAMS = {
 };
 
 export const NETWORK_CHAIN_ID: number = parseInt(
-  process.env.REACT_APP_CHAIN_ID ?? "43114",
-)
+  process.env.REACT_APP_CHAIN_ID ?? "43114"
+);
 
 const walletLink = new WalletLinkConnector({
   url: AVALANCHE_MAINNET_PARAMS.rpcUrls[0],
@@ -29,7 +29,7 @@ const walletLink = new WalletLinkConnector({
 
 export const network = new NetworkConnector({
   urls: { [NETWORK_CHAIN_ID]: rpcUrl },
-})
+});
 
 const injected = new InjectedConnector({
   supportedChainIds: [Number(AVALANCHE_MAINNET_PARAMS.chainId)],

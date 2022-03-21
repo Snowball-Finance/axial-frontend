@@ -50,12 +50,9 @@ export const calculatePoolData = async (props: Props) => {
   const poolKey = pool.key;
   //@ts-ignore ignored because we will always have pool( POOL.poolType)
   const POOL: Pool = pools[poolKey];
-  if (
-    tokenPricesUSD == null ||
-    POOL.poolType === PoolTypes.LP
-  ) {
-    if(!library){
-      return
+  if (tokenPricesUSD == null || POOL.poolType === PoolTypes.LP) {
+    if (!library) {
+      return;
     }
     if (poolKey && library) {
       //@ts-ignore ignored because we will always have pool

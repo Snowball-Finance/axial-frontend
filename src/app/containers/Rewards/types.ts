@@ -1,7 +1,7 @@
 /* --- STATE --- */
 
 import { BigNumber } from "ethers";
-import { Token } from "../Swap/types";
+import { Token, TokenSymbols } from "../Swap/types";
 
 interface PoolInfo {
   amount: BigNumber;
@@ -79,6 +79,23 @@ export interface Pool {
   poolData?: PoolData;
   userShareData?: UserShareData;
 }
+export interface ApproveAndDepositPayload {
+  poolName: Pools;
+  masterchefDeposit?: boolean;
+  tokenAmounts: { [K in TokenSymbols]?: BigNumber };
+}
+
+export enum WithdrawType {
+  ALL = "ALL",
+  IMBALANCE = "IMBALANCE",
+}
+export interface ApproveAndWithdrawPayload {
+  poolName: Pools;
+  masterchefwithdraw?: boolean;
+  type: WithdrawType;
+  lpTokenAmountToSpend: BigNumber;
+  tokenAmounts: { [K in TokenSymbols]?: BigNumber };
+}
 
 interface TokenShareType {
   percent: string;
@@ -134,6 +151,8 @@ export interface RewardsState {
   isGettingSwapStats: boolean;
   masterChefBalances: { [key: string]: MasterchefResponse } | undefined;
   pools: { [K in Pools]?: Pool };
+  isDepositing: boolean;
+  tokensInQueueToApprove: { [K in TokenSymbols]?: boolean };
 }
 
 export type ContainerState = RewardsState;

@@ -32,10 +32,7 @@ export const ProposalDetails = () => {
     return <>proposal not found</>;
   }
 
-
   const { state } = proposal;
-
-
 
   const isActive = state === ProposalStates.active;
 
@@ -115,7 +112,6 @@ const Left = styled(Box)({
   flexDirection: "column",
   gap: "16px",
 });
-
 
 const Wrapper = styled(Max1040)({
   margin: "auto",
