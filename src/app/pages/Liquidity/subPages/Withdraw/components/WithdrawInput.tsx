@@ -55,6 +55,7 @@ export const WithdrawInput: FC = () => {
                 {t(translations.LiquidityPage.Withdraw.Bonus())} (%):
               </SubtitleText>
             </Grid>
+
             <Grid item>
               <SubtitleText variant="body2">0%</SubtitleText>
             </Grid>

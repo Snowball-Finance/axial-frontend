@@ -21,6 +21,7 @@
     "Description": "Liquidity Page",
     "CurrencyReserves": "Currency Reserves",
     "WalletBalance": "Wallet Balance",
+    "Message": "Output is estimated. If the price changes by more than the max slippage your transaction will revert.",
     "Info": {
       "Balance": "Balance",
       "SwapAPR": "Swap APR",
@@ -44,6 +45,22 @@
       "Title": "Withdraw",
       "WithdrawlPercentage": "Withdrawl Percentage",
       "Bonus": "Bonus"
+    },
+    "Modal": {
+      "ReviewDeposit": "Review Deposit",
+      "Total": "Total",
+      "Receiving": "Receiving",
+      "ShareOfPoll": "share of pool",
+      "MaxSlippage": "max slippage",
+      "Rates": "rates",
+      "ReviewWithdraw": "Review Withdraw",
+      "Gas": "gas",
+      "TxnDeadline": "txn deadline"
+    },
+    "Buttons": {
+      "Cancel": "Cancel",
+      "ConfirmDeposit": "Confirm Deposit",
+      "ConfirmWithdraw": "Confirm Withdraw"
     }
   },
   "RewardsPage": {
