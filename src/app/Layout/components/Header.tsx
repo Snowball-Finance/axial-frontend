@@ -5,6 +5,7 @@ import { isMobile } from "react-device-detect";
 import LogoIcon from "../../../assets/images/logo.svg";
 import { WalletToggle } from "app/components/common/walletToggle";
 import NavigationDrawer from "./NavigationDrawer";
+import { mobile } from "styles/media";
 
 export default function Header(): ReactElement {
   return (
@@ -31,7 +32,7 @@ const StyledHeader = styled("header")(({ theme }) => ({
   justifyContent: "space-between",
   alignItems: "center",
 
-  [theme.breakpoints.down("sm")]: {
+  [mobile]: {
     paddingLeft: 10,
     paddingRight: 10,
     flexDirection: "row",
@@ -42,7 +43,7 @@ const StyledHeader = styled("header")(({ theme }) => ({
 const Logo = styled("img")(({ theme }) => ({
   width: 190,
 
-  [theme.breakpoints.down("sm")]: {
+  [mobile]: {
     width: 100,
   },
 }));

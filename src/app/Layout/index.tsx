@@ -5,6 +5,7 @@ import { isMobile } from "react-device-detect";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import backgroundImage from "../../assets/images/website-background.svg";
+import { mobile } from "styles/media";
 
 export default function Layout({
   children,
@@ -36,7 +37,7 @@ const StyledLayout = styled("div")(({ theme }) => ({
   backgroundAttachment: "fixed",
   backgroundPosition: "center",
 
-  [theme.breakpoints.down("sm")]: {
+  [mobile]: {
     width: "fit-content",
   },
 }));
@@ -59,7 +60,7 @@ const MainWrapper = styled("div")(({ theme }) => ({
   marginBottom: 50,
   marginLeft: "25%",
 
-  [theme.breakpoints.down("sm")]: {
+  [mobile]: {
     marginLeft: 0,
   },
 }));
