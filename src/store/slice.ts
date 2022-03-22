@@ -12,7 +12,6 @@ export interface GlobalState {
   tokens: { [K in TokenSymbols]?: Token } | undefined;
   infiniteApproval: boolean;
   tokensInQueueToApprove: { [K in TokenSymbols]?: boolean };
-
 }
 // The initial state of the LoginPage container
 export const initialState: GlobalState = {
