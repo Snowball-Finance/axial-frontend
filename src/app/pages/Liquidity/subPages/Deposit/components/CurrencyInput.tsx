@@ -2,7 +2,9 @@ import React, { FC } from "react";
 import { styled, Grid, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
+import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { SnowInput } from "app/components/base/SnowInput";
 import { LiquidityPageSelectors } from "app/pages/Liquidity/selectors";
@@ -15,6 +17,8 @@ import { globalSelectors } from "app/appSelectors";
 type TParams = { poolIndex: string };
 
 export const CurrencyInput: FC = () => {
+  const { t } = useTranslation();
+
   const { poolIndex } = useParams<TParams>();
   const poolKey = getKeyFromPoolIndex(poolIndex) || "";
   const poolTokens = useSelector(
@@ -27,7 +31,7 @@ export const CurrencyInput: FC = () => {
       <Grid container direction="column" spacing={1}>
         <Grid item alignSelf="end">
           <BalanceText variant="body2">
-            Wallet balance:{" "}
+            {t(translations.LiquidityPage.WalletBalance())}:{" "}
             {tokens &&
               BNToString(
                 tokens[pool.symbol].balance ?? Zero,

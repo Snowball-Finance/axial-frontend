@@ -20,6 +20,7 @@
     "Liquidity": "Liquidity",
     "Description": "Liquidity Page",
     "CurrencyReserves": "Currency Reserves",
+    "WalletBalance": "Wallet Balance",
     "Info": {
       "Balance": "Balance",
       "SwapAPR": "Swap APR",
