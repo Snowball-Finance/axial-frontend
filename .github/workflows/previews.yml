@@ -11,13 +11,13 @@ jobs:
     - name: setup NodeJS
       uses: actions/setup-node@v1
       with:
-        node-version: 16.13.1
+        node-version: 16.14.0
     - name: Install
       run: |
-        npm install
+        yarn
     - name: Build
       run: |
-        npm run build
+        yarn build
     - name: Get branch name
       id: branch-name
       uses: tj-actions/branch-names@v5

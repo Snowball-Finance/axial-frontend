@@ -16,13 +16,13 @@ jobs:
     - name: setup NodeJS
       uses: actions/setup-node@v1
       with:
-        node-version: 16.13.1
+        node-version: 16.14.0
     - name: Install
       run: |
-        npm install
+        yarn
     - name: Build
       run: |
-        npm run build
+        yarn build
     
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
