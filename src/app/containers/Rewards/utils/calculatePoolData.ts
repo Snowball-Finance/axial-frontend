@@ -35,7 +35,6 @@ export const calculatePoolData = async (props: Props) => {
     pool,
     tokenPricesUSD,
     library,
-    chainId,
     masterchefApr,
     masterchefBalances,
     account,
