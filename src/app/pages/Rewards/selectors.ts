@@ -3,9 +3,9 @@ import { Zero } from "app/containers/Rewards/constants";
 
 import { RewardsDomains } from "app/containers/Rewards/selectors";
 import { Pool, Pools } from "app/containers/Rewards/types";
-import { BigNumber } from "ethers";
 import { RootState } from "store/types";
 import { initialState } from "./slice";
+import { axialJlpToken } from "./staticValue";
 
 export const RewardsPageDomains = {
   rewardsPage: (state: RootState) => state.rewardsPage || initialState,
@@ -55,13 +55,7 @@ export const RewardsPageSelectors = {
     createSelector(RewardsDomains.pools, (pools) => {
       if (key === Pools.AXIAL_JLP) {
         return {
-          tokens: [
-            {
-              percent: "24.19%",
-              symbol: "TSD",
-              value: BigNumber.from("0x012410c9d8d3e7774b6dfb"),
-            },
-          ],
+          tokens: axialJlpToken,
         };
       }
       return pools[key].poolData;

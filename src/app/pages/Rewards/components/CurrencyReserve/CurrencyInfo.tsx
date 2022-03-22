@@ -9,6 +9,7 @@ import { getKeyFromPoolIndex } from "app/pages/Rewards/constants";
 import { PoolTypes, TokenShareType } from "app/containers/Rewards/types";
 import { formatBNToString } from "app/containers/utils/contractUtils";
 import { pools } from "app/pools";
+import { tokens } from "app/tokens";
 
 type TParams = { poolIndex: string };
 
@@ -19,7 +20,7 @@ export const CurrencyInfo: FC = () => {
     RewardsPageSelectors.rewardsPoolData(poolKey)
   );
 
-  const formattedDecimals = pools[poolKey].poolType === PoolTypes.USD ? 2 : 4
+  const formattedDecimals = pools[poolKey].poolType === PoolTypes.USD ? 2 : 4;
 
   return (
     <StyledInfo>
@@ -29,9 +30,12 @@ export const CurrencyInfo: FC = () => {
             <Grid container alignItems="center">
               <Grid item xs={4}>
                 <Grid container spacing={1}>
-                  {/* <Grid item>
-                    <IconImage src={axialIcon} alt="icon"></IconImage>
-                  </Grid> */}
+                  <Grid item>
+                    <IconImage
+                      src={tokens[infoItem.symbol].logo}
+                      alt="icon"
+                    ></IconImage>
+                  </Grid>
 
                   <Grid item>
                     <TokenText variant="h6">{infoItem.symbol}</TokenText>
@@ -50,7 +54,9 @@ export const CurrencyInfo: FC = () => {
                   </Grid>
 
                   <Grid item>
-                    <BalanceText variant="body2">${formatBNToString(infoItem.value, 18, formattedDecimals)}</BalanceText>
+                    <BalanceText variant="body2">
+                      ${formatBNToString(infoItem.value, 18, formattedDecimals)}
+                    </BalanceText>
                   </Grid>
                 </Grid>
               </Grid>
@@ -70,9 +76,9 @@ const StyledInfo = styled("div")({
   padding: 20,
 });
 
-// const IconImage = styled("img")({
-//   width: "33px",
-// });
+const IconImage = styled("img")({
+  width: "33px",
+});
 
 const TokenText = styled(Typography)({
   color: CssVariables.white,
