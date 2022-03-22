@@ -51,7 +51,10 @@ export const LiquidityPageSelectors = {
   liquidityPool: (key: string) =>
     createSelector(RewardsDomains.pools, (pools) => pools[key]),
   liquidityPoolTokens: (key: string) =>
-    createSelector(RewardsDomains.pools, (pools) => pools[key].poolTokens),
+    createSelector(
+      RewardsDomains.pools,
+      (pools) => pools[key].underlyingPoolTokens || pools[key].poolTokens
+    ),
   liquidityPoolData: (key: string) =>
     createSelector(RewardsDomains.pools, (pools) => pools[key].poolData),
   liquidityUserShareData: (key: string) =>
