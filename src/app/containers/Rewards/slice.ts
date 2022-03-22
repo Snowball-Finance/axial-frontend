@@ -3,7 +3,6 @@ import {
   ApproveAndDepositPayload,
   ApproveAndWithdrawPayload,
   ContainerState,
-  Pools,
   SwapStatsReponse,
 } from "./types";
 import { createSlice } from "store/toolkit";
@@ -11,7 +10,6 @@ import { useInjectReducer, useInjectSaga } from "store/redux-injectors";
 
 import { rewardsSaga } from "./saga";
 import { TRANSACTION_TYPES } from "app/constants";
-import { TokenSymbols } from "../Swap/types";
 
 // The initial state of the Rewards container
 export const initialState: ContainerState = {

@@ -1,6 +1,5 @@
 import { globalSelectors } from "app/appSelectors";
 import { ContainedButton } from "app/components/common/buttons/containedButton";
-import { RewardsSelectors } from "app/containers/Rewards/selectors";
 import { RewardsActions } from "app/containers/Rewards/slice";
 import { Pools, WithdrawType } from "app/containers/Rewards/types";
 import { TokenSymbols } from "app/containers/Swap/types";

@@ -4,7 +4,7 @@
 import { GlobalDomains } from "app/appSelectors";
 import { tokens } from "app/tokens";
 import { BigNumber, Contract } from "ethers";
-import { all, call, delay, put, select, takeLatest } from "redux-saga/effects";
+import { all, call, put, select, takeLatest } from "redux-saga/effects";
 import { Web3Domains } from "../BlockChain/Web3/selectors";
 import { getContract, getProviderOrSigner } from "../utils/contractUtils";
 import {
@@ -34,14 +34,13 @@ import { AXIAL_MASTERCHEF_CONTRACT_ADDRESS } from "./constants";
 import MASTERCHEF_ABI from "abi/masterchef.json";
 import { parseUnits } from "@ethersproject/units";
 import checkAndApproveTokenForTrade from "../utils/checkAndApproveTokenForTrade";
-import { SwapDomains } from "../Swap/selectors";
 import { Erc20, SwapFlashLoanNoWithdrawFee } from "abi/ethers-contracts";
 import { IS_DEV } from "environment";
 import { addSlippage, Slippages, subtractSlippage } from "./utils/slippage";
 import { Deadlines, formatDeadlineToNumber } from "./utils/deadline";
-import { BNToString } from "common/format";
 import { formatUnits } from "ethers/lib/utils";
 import { GlobalActions } from "store/slice";
+
 export function* getRewardPoolsData(action: {
   type: string;
   payload: RewardsState["pools"];
@@ -281,7 +280,7 @@ export function* approveAndDeposit(action: {
     ) as LpTokenUnguarded;
 
     const gasPrices: GenericGasResponse = yield select(GlobalDomains.gasPrice);
-    const { gasFast, gasInstant, gasStandard } = gasPrices;
+    const { gasFast } = gasPrices;
     const gasPrice = parseUnits(String(gasFast) || "45", 9);
     if (IS_DEV) {
       for (const token of poolTokens) {
@@ -368,7 +367,6 @@ export function* approveAndWithdraw(action: {
   const pools = yield select(RewardsDomains.pools);
   const library = yield select(Web3Domains.selectLibraryDomain);
   const account = yield select(Web3Domains.selectAccountDomain);
-  const tokens = yield select(GlobalDomains.tokens);
   const {
     poolName,
     tokenAmounts,
@@ -377,7 +375,6 @@ export function* approveAndWithdraw(action: {
     lpTokenAmountToSpend,
   } = action.payload;
   const pool: Pool = pools[poolName];
-  const { userShareData } = pool;
 
   const targetContract = new Contract(
     pool.address,
@@ -385,7 +382,7 @@ export function* approveAndWithdraw(action: {
     getProviderOrSigner(library, account)
   );
   const gasPrices: GenericGasResponse = yield select(GlobalDomains.gasPrice);
-  const { gasFast, gasInstant, gasStandard } = gasPrices;
+  const { gasFast } = gasPrices;
   const masterchefContract = new Contract(
     AXIAL_MASTERCHEF_CONTRACT_ADDRESS,
     MASTERCHEF_ABI,

@@ -3,7 +3,6 @@ import { ContainerState, FindBestPathPayload, GasPrices } from "./types";
 import { createSlice } from "store/toolkit";
 import { useInjectReducer, useInjectSaga } from "store/redux-injectors";
 import { swapSaga } from "./saga";
-import { LocalStorageKeys, storage } from "store/storage";
 
 // The initial state of the Swap container
 export const initialState: ContainerState = {
