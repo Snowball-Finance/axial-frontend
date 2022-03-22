@@ -152,7 +152,6 @@ export interface RewardsState {
   masterChefBalances: { [key: string]: MasterchefResponse } | undefined;
   pools: { [K in Pools]?: Pool };
   isDepositing: boolean;
-  tokensInQueueToApprove: { [K in TokenSymbols]?: boolean };
 }
 
 export type ContainerState = RewardsState;

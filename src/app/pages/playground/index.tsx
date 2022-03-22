@@ -60,7 +60,7 @@ export const Playground = () => {
       })
     );
   };
-  const tokensInQueue = useSelector(RewardsSelectors.tokensInQueueToApprove);
+  const tokensInQueue = useSelector(globalSelectors.tokensInQueueToApprove);
   return (
     <>
       <ContainedButton onClick={handleDepositIntoAM3DStablecoinsButtonClicked}>

@@ -11,6 +11,9 @@ export const GlobalDomains = {
   tokens: (state: RootState) => state?.global?.tokens || undefined,
   infiniteApproval: (state: RootState) =>
     state.global?.infiniteApproval || initialState.infiniteApproval,
+    tokensInQueueToApprove: (state: RootState) =>
+    state.global?.tokensInQueueToApprove ||
+    initialState.tokensInQueueToApprove,
 };
 
 export const globalSelectors = {
@@ -28,5 +31,9 @@ export const globalSelectors = {
   infiniteApproval: createSelector(
     [GlobalDomains.infiniteApproval],
     (infiniteApproval) => infiniteApproval
+  ),
+  tokensInQueueToApprove: createSelector(
+    GlobalDomains.tokensInQueueToApprove,
+    (tokensInQueueToApprove) => tokensInQueueToApprove
   ),
 };

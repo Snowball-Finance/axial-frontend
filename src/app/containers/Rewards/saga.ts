@@ -41,6 +41,7 @@ import { addSlippage, Slippages, subtractSlippage } from "./utils/slippage";
 import { Deadlines, formatDeadlineToNumber } from "./utils/deadline";
 import { BNToString } from "common/format";
 import { formatUnits } from "ethers/lib/utils";
+import { GlobalActions } from "store/slice";
 export function* getRewardPoolsData(action: {
   type: string;
   payload: RewardsState["pools"];
@@ -204,7 +205,7 @@ export function* approveSingleToken({
       }
     );
     yield put(
-      RewardsActions.setApprovalForTokenInQueue({
+      GlobalActions.setApprovalForTokenInQueue({
         tokenSymbol: token.symbol as TokenSymbols,
         approved: true,
       })
@@ -212,7 +213,7 @@ export function* approveSingleToken({
   } catch (e) {
     console.log(e);
     yield put(
-      RewardsActions.setApprovalForTokenInQueue({
+      GlobalActions.setApprovalForTokenInQueue({
         tokenSymbol: token.symbol as TokenSymbols,
         approved: false,
       })
@@ -224,7 +225,7 @@ export function* resetTokensInQueueForApproval(tokenSymbols: TokenSymbols[]) {
   for (let i = 0; i < tokenSymbols.length; i++) {
     const tokenSymbol = tokenSymbols[i];
     yield put(
-      RewardsActions.setApprovalForTokenInQueue({
+      GlobalActions.setApprovalForTokenInQueue({
         tokenSymbol: tokenSymbol as TokenSymbols,
         approved: false,
       })
@@ -250,7 +251,7 @@ export function* approveAndDeposit(action: {
   const tokenSymbols = poolTokens.map(
     (token) => token.symbol
   ) as TokenSymbols[];
-  yield put(RewardsActions.emptyTokensInQueueForApproval());
+  yield put(GlobalActions.emptyTokensInQueueForApproval());
   yield call(resetTokensInQueueForApproval, tokenSymbols);
 
   try {
