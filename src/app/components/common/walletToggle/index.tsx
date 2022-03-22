@@ -2,7 +2,7 @@ import { Web3Selectors } from "app/containers/BlockChain/Web3/selectors";
 import { Web3Actions } from "app/containers/BlockChain/Web3/slice";
 import { ConnectorPayload } from "app/containers/BlockChain/Web3/types";
 import { translations } from "locales/i18n";
-import React, { FC, useEffect } from "react";
+import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { LocalStorageKeys, storage } from "../../../../store/storage";
