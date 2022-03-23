@@ -1,1 +1,1 @@
-export const NetworkContextName = "NETWORK"
+export const NetworkContextName = "NETWORK";

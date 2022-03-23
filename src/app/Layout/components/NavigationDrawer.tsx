@@ -7,6 +7,7 @@ import { NavLink } from "react-router-dom";
 import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { navigationRoutes } from "../constants";
+import { mobile } from "styles/media";
 
 export default function NavigationDrawer(): ReactElement {
   const { t } = useTranslation();
@@ -26,21 +27,20 @@ export default function NavigationDrawer(): ReactElement {
         onClose={toggleDrawer}
         elevation={0}
       >
-        <StyledContainer
-          container
-          direction="column"
-          justifyContent="space-around"
-          alignItems="center"
-        >
-          <Grid item alignSelf="end">
-            <CloseIcon
-              color="primary"
-              fontSize="large"
-              onClick={toggleDrawer}
-            />
+        <StyledContainer container alignItems="center">
+          <Grid item xs={12}>
+            <Grid container justifyContent="end">
+              <Grid item>
+                <CloseIcon
+                  color="primary"
+                  fontSize="medium"
+                  onClick={toggleDrawer}
+                />
+              </Grid>
+            </Grid>
           </Grid>
 
-          <Grid item>
+          <Grid item xs={12}>
             <List>
               {navigationRoutes.map((nav) => (
                 <ListItem key={nav.name}>
@@ -102,6 +102,10 @@ const ListNavItem = styled(NavLink)({
   fontWeight: "bold",
   fontSize: "42px",
   textTransform: "uppercase",
+
+  [mobile]: {
+    fontSize: "30px",
+  },
 });
 
 const MenuIcon = styled(Menu)({

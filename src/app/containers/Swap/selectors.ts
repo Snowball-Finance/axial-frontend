@@ -12,8 +12,6 @@ export const SwapDomains = {
   swapTokens: (state: RootState) => state.swap?.tokens || initialState.tokens,
   isGettingBestPath: (state: RootState) =>
     state.swap?.isGettingBestPath || initialState.isGettingBestPath,
-  infiniteApproval: (state: RootState) =>
-    state.swap?.infiniteApproval || initialState.infiniteApproval,
   bestPath: (state: RootState) => state.swap?.bestPath || initialState.bestPath,
   isSwapping: (state: RootState) =>
     state.swap?.isSwapping || initialState.isSwapping,
@@ -44,9 +42,5 @@ export const SwapSelectors = {
   selectSwapTokens: createSelector(
     [SwapDomains.swapTokens],
     (tokens) => tokens
-  ),
-  selectInfiniteApproval: createSelector(
-    [SwapDomains.infiniteApproval],
-    (infiniteApproval) => infiniteApproval
   ),
 };

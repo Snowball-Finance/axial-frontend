@@ -4,11 +4,14 @@ import { GenericGasResponse } from "app/providers/gasPrice";
 import { createSlice } from "store/toolkit";
 import { useInjectReducer, useInjectSaga } from "./redux-injectors";
 import { globalSaga } from "./saga";
+import { LocalStorageKeys, storage } from "./storage";
 export interface GlobalState {
   isGettingTokenPrices: boolean;
   tokenPricesUSD: { [K in TokenSymbols]?: number };
   gasPrice: GenericGasResponse | undefined;
   tokens: { [K in TokenSymbols]?: Token } | undefined;
+  infiniteApproval: boolean;
+  tokensInQueueToApprove: { [K in TokenSymbols]?: boolean };
 }
 // The initial state of the LoginPage container
 export const initialState: GlobalState = {
@@ -16,6 +19,8 @@ export const initialState: GlobalState = {
   tokenPricesUSD: {},
   gasPrice: undefined,
   tokens: undefined,
+  infiniteApproval: storage.read(LocalStorageKeys.INFINITE_APPROVAL) || false,
+  tokensInQueueToApprove: {},
 };
 
 const globalSlice = createSlice({
@@ -40,6 +45,24 @@ const globalSlice = createSlice({
       state.gasPrice = action.payload;
     },
     getTokenBalances(state, action: PayloadAction<void>) {},
+    setInfiniteApproval(state, action: PayloadAction<boolean>) {
+      state.infiniteApproval = action.payload;
+      storage.write(LocalStorageKeys.INFINITE_APPROVAL, action.payload);
+    },
+    setApprovalForTokenInQueue(
+      state,
+      action: PayloadAction<{
+        tokenSymbol: TokenSymbols;
+        approved: boolean;
+      }>
+    ) {
+      const tmp = { ...state.tokensInQueueToApprove };
+      tmp[action.payload.tokenSymbol] = action.payload.approved;
+      state.tokensInQueueToApprove = tmp;
+    },
+    emptyTokensInQueueForApproval(state, action: PayloadAction<void>) {
+      state.tokensInQueueToApprove = {};
+    },
   },
 });
 
