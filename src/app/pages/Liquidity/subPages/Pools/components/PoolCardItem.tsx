@@ -1,25 +1,18 @@
 import React, { FC } from "react";
 import { styled, Grid, Typography } from "@mui/material";
-import { useDispatch } from "react-redux";
-import { push } from "connected-react-router";
+import { useSelector } from "react-redux";
 
 import { CssVariables } from "styles/cssVariables/cssVariables";
-import { ContainedButton } from "app/components/common/buttons/containedButton";
-import { OutlinedButton } from "app/components/common/buttons/outlinedButton";
-import { AppPages } from "app/types";
+import { PoolCardItemProps } from "app/pages/Liquidity/types";
+import { LiquidityPageSelectors } from "app/pages/Liquidity/selectors";
+import { TokenImages } from "app/pages/Liquidity/components/TokenImages";
 import { Info } from "./Info";
-import { TokenImages } from "./TokenImages";
+import { ActionButtons } from "./ActionButtons";
 
-export const PoolCardItem: FC = () => {
-  const dispatch = useDispatch();
-
-  const handleNavigateToDeposit = (poolIndex: string) => {
-    dispatch(push(`${AppPages.LiquidityPage}/${poolIndex}/deposit`));
-  };
-
-  const handleNavigateToWithdraw = (poolIndex: string) => {
-    dispatch(push(`${AppPages.LiquidityPage}/${poolIndex}/withdraw`));
-  };
+export const PoolCardItem: FC<PoolCardItemProps> = ({ poolKey }) => {
+  const liquidityPool = useSelector(
+    LiquidityPageSelectors.liquidityPool(poolKey)
+  );
 
   return (
     <StyledPoolCard>
@@ -27,11 +20,11 @@ export const PoolCardItem: FC = () => {
         <Grid item>
           <Grid container justifyContent="space-between" alignItems="center">
             <Grid item>
-              <PoolHeaderText variant="h5">AS4D</PoolHeaderText>
+              <PoolHeaderText variant="h5">{liquidityPool.name}</PoolHeaderText>
             </Grid>
 
             <Grid item>
-              <Info />
+              <Info poolKey={poolKey} />
             </Grid>
           </Grid>
         </Grid>
@@ -39,29 +32,11 @@ export const PoolCardItem: FC = () => {
         <Grid item>
           <Grid container justifyContent="space-between" alignItems="center">
             <Grid item>
-              <TokenImages />
+              <TokenImages poolKey={poolKey} />
             </Grid>
 
             <Grid item>
-              <Grid container spacing={2}>
-                <Grid item>
-                  <ContainedButton
-                    width={120}
-                    onClick={() => handleNavigateToDeposit("ac4d")}
-                  >
-                    Deposit
-                  </ContainedButton>
-                </Grid>
-
-                <Grid item>
-                  <OutlinedButton
-                    width={120}
-                    onClick={() => handleNavigateToWithdraw("ac4d")}
-                  >
-                    Withdraw
-                  </OutlinedButton>
-                </Grid>
-              </Grid>
+              <ActionButtons poolKey={poolKey} />
             </Grid>
           </Grid>
         </Grid>

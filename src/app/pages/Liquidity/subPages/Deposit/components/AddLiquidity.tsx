@@ -4,34 +4,37 @@ import { useTranslation } from "react-i18next";
 
 import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
-import { CurrencyInfo } from "./CurrencyInfo";
-import { MyShare } from "./MyShare";
+import { AdvanceOption } from "../../../../../components/common/advancedOptions";
+import { CurrencyInputs } from "./CurrencyInput";
+import { DepositButton } from "./depositButton";
 
-export const CurrencyReserve: FC = () => {
+export const AddLiquidity: FC = () => {
   const { t } = useTranslation();
 
   return (
-    <StyledCurrencyReserve>
+    <StyledAddLiquidity>
       <Grid container direction="column" spacing={2}>
         <Grid item>
           <HeaderText variant="h4">
-            {t(translations.LiquidityPage.CurrencyReserves())}
+            {t(translations.LiquidityPage.AddLiquidity.Title())}
           </HeaderText>
         </Grid>
 
-        <Grid item>
-          <CurrencyInfo />
-        </Grid>
+        <CurrencyInputs />
 
         <Grid item>
-          <MyShare />
+          <AdvanceOption />
+        </Grid>
+
+        <Grid item alignSelf="center">
+          <DepositButton />
         </Grid>
       </Grid>
-    </StyledCurrencyReserve>
+    </StyledAddLiquidity>
   );
 };
 
-const StyledCurrencyReserve = styled("div")({
+const StyledAddLiquidity = styled("div")({
   width: 600,
   margin: "0 auto",
   backgroundColor: CssVariables.poolCardBackground,

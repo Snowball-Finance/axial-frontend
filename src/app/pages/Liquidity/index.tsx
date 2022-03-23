@@ -10,8 +10,11 @@ import { useTranslation } from "react-i18next";
 
 import { translations } from "locales/i18n";
 import { LiquidityBody } from "./body";
+import { useLiquidityPageSlice } from "./slice";
 
 export const LiquidityPage: FC = () => {
+  useLiquidityPageSlice();
+
   const { t } = useTranslation();
 
   return (

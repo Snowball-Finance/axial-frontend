@@ -2,9 +2,15 @@ import { PayloadAction } from "@reduxjs/toolkit";
 import { Token, TokenSymbols } from "app/containers/Swap/types";
 import { GenericGasResponse } from "app/providers/gasPrice";
 import { createSlice } from "store/toolkit";
+import {
+  NumberInputState,
+  slippageCustomStateCreator,
+  Slippages,
+} from "utils/slippage";
 import { useInjectReducer, useInjectSaga } from "./redux-injectors";
 import { globalSaga } from "./saga";
 import { LocalStorageKeys, storage } from "./storage";
+
 export interface GlobalState {
   isGettingTokenPrices: boolean;
   tokenPricesUSD: { [K in TokenSymbols]?: number };
@@ -12,6 +18,8 @@ export interface GlobalState {
   tokens: { [K in TokenSymbols]?: Token } | undefined;
   infiniteApproval: boolean;
   tokensInQueueToApprove: { [K in TokenSymbols]?: boolean };
+  selectedSlippage: Slippages;
+  customSlippage: NumberInputState | undefined;
 }
 // The initial state of the LoginPage container
 export const initialState: GlobalState = {
@@ -21,6 +29,8 @@ export const initialState: GlobalState = {
   tokens: undefined,
   infiniteApproval: storage.read(LocalStorageKeys.INFINITE_APPROVAL) || false,
   tokensInQueueToApprove: {},
+  selectedSlippage: Slippages.OneTenth,
+  customSlippage: undefined,
 };
 
 const globalSlice = createSlice({
@@ -62,6 +72,14 @@ const globalSlice = createSlice({
     },
     emptyTokensInQueueForApproval(state, action: PayloadAction<void>) {
       state.tokensInQueueToApprove = {};
+    },
+    setSlippage(state, action: PayloadAction<Slippages>) {
+      state.customSlippage = undefined;
+      state.selectedSlippage = action.payload;
+    },
+    setCustomSlippage(state, action: PayloadAction<string>) {
+      state.selectedSlippage = Slippages.Custom;
+      state.customSlippage = slippageCustomStateCreator(action.payload);
     },
   },
 });
