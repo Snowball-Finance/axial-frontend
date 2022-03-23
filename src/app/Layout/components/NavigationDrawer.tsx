@@ -119,4 +119,5 @@ const CloseIcon = styled(Close)({
   border: "2px solid",
   borderRadius: "50%",
   padding: 2,
+  float: "right"
 });
