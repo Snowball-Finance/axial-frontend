@@ -1,4 +1,6 @@
 import { ContainedButton } from "app/components/common/buttons/containedButton";
+import { NeedsWalletConnection } from "app/components/common/needsWalletConnection";
+import { WalletToggle } from "app/components/common/walletToggle";
 import { RewardsSelectors } from "app/containers/Rewards/selectors";
 import { LiquidityPageSelectors } from "app/pages/Liquidity/selectors";
 import { LiquidityPageActions } from "app/pages/Liquidity/slice";
@@ -20,14 +22,19 @@ export const DepositButton = () => {
     dispatch(LiquidityPageActions.deposit());
   };
   return (
-    <ContainedButton
-      width={220}
-      height={42}
-      disabled={disabled}
-      loading={isDepositing}
-      onClick={handleDepositClick}
-    >
-      {t(translations.LiquidityPage.ActionButtons.Deposit())}
-    </ContainedButton>
+    <NeedsWalletConnection
+      connected={
+        <ContainedButton
+          width={220}
+          height={42}
+          disabled={disabled}
+          loading={isDepositing}
+          onClick={handleDepositClick}
+        >
+          {t(translations.LiquidityPage.ActionButtons.Deposit())}
+        </ContainedButton>
+      }
+      disConnected={<WalletToggle />}
+    />
   );
 };
