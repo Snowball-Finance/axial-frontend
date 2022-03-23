@@ -14,6 +14,6 @@ const StyledButton = styled(SnowButton)(({ theme }) => ({
   "&.Mui-disabled": {
     color: CssVariables.white,
     backgroundColor: CssVariables.primaryDisabled,
-    opacity: 0.5
+    opacity: 0.5,
   },
 }));

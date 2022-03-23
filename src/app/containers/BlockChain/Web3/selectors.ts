@@ -10,7 +10,8 @@ export const Web3Domains = {
   selectChainIDDomain: (state: RootState) => state.web3?.chainId || undefined,
   selectAccountDomain: (state: RootState) => state.web3?.account || undefined,
   selectLibraryDomain: (state: RootState) => state.web3?.library || undefined,
-  selectNetworkLibraryDomain: (state: RootState) => state.web3?.networkLibrary || undefined,
+  selectNetworkLibraryDomain: (state: RootState) =>
+    state.web3?.networkLibrary || undefined,
 };
 
 export const Web3Selectors = {
