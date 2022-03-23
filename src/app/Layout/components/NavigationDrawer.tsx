@@ -86,12 +86,12 @@ const StyledIconContainer = styled("div")({
   alignSelf: "end",
   position: "absolute",
   right: 20,
-  top: 20
+  top: 20,
 });
 
 const List = styled("ul")({
   listStyleType: "none",
-  marginTop: 50
+  marginTop: 50,
 });
 
 const ListItem = styled("li")({
@@ -122,5 +122,6 @@ const CloseIcon = styled(Close)({
   border: "2px solid",
   borderRadius: "50%",
   padding: 2,
-  float: "right"
+  float: "right",
+  zIndex: 1300,
 });
