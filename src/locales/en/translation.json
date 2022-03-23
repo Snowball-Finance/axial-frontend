@@ -39,7 +39,19 @@
   },
   "RewardsPage": {
     "Rewards": "Rewards",
-    "Description": "Rewards Page"
+    "Description": "Rewards Page",
+    "Info": {
+      "Balance": "Balance",
+      "Claimable": "Claimable",
+      "RewardsAPR": "Rewards APR",
+      "TotalAPR": "Total APR",
+      "TVL": "TVL"
+    },
+    "ActionButtons" : {
+      "Deposit": "Deposit",
+      "Withdraw": "Withdraw",
+      "Claim": "Claim"
+    }
   },
   "SwapPage": {
     "Swap": "Swap",

@@ -1,18 +1,29 @@
 import React, { FC } from "react";
 import { styled, Grid, Typography } from "@mui/material";
+import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { SnowInput } from "app/components/base/SnowInput";
-import { TokenImages } from "./TokenImages";
+import { getKeyFromPoolIndex } from "app/pages/Rewards/constants";
+import { RewardsPageSelectors } from "app/pages/Rewards/selectors";
+import { TokenImages } from "app/pages/Rewards/components/TokenImages";
+
+type TParams = { poolIndex: string };
 
 export const CurrencyInput: FC = () => {
+  const { poolIndex } = useParams<TParams>();
+  const poolKey = getKeyFromPoolIndex(poolIndex) || "";
+  const rewardsPool =
+    useSelector(RewardsPageSelectors.rewardsPool(poolKey));
+
   return (
     <StyledAdvanceOption>
       <Grid container direction="column" spacing={2}>
         <Grid item>
           <Grid container justifyContent="space-between" alignItems="center">
             <Grid item>
-              <HeaderText variant="h4">AC4D (USD)</HeaderText>
+              <HeaderText variant="h4">{rewardsPool?.name}</HeaderText>
             </Grid>
 
             <Grid item>
@@ -24,7 +35,7 @@ export const CurrencyInput: FC = () => {
         <Grid item>
           <Grid container justifyContent="space-between" alignItems="center">
             <Grid item>
-              <TokenImages />
+              <TokenImages poolKey={poolKey}/>
             </Grid>
 
             <Grid item>
