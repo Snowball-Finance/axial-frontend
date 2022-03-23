@@ -1,5 +1,5 @@
 import React, { ReactElement, useState } from "react";
-import { Drawer, Grid, styled } from "@mui/material";
+import { Drawer, styled } from "@mui/material";
 import { Menu, Close } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
 import { NavLink } from "react-router-dom";
@@ -27,48 +27,42 @@ export default function NavigationDrawer(): ReactElement {
         onClose={toggleDrawer}
         elevation={0}
       >
-        <StyledContainer container alignItems="center">
-          <Grid item xs={12}>
-            <Grid container justifyContent="end">
-              <Grid item>
-                <CloseIcon
-                  color="primary"
-                  fontSize="medium"
+        <StyledContainer>
+          <StyledIconContainer>
+            <CloseIcon
+              color="primary"
+              fontSize="medium"
+              onClick={toggleDrawer}
+            />
+          </StyledIconContainer>
+
+          <List>
+            {navigationRoutes.map((nav) => (
+              <ListItem key={nav.name}>
+                <ListNavItem
+                  exact
+                  to={nav.to}
+                  activeStyle={{
+                    color: CssVariables.primary,
+                  }}
+                  isActive={(match, location) => {
+                    let pathStrings = location.pathname.split("/");
+
+                    if (match) {
+                      return true;
+                    } else if (pathStrings[1] === nav.name) {
+                      return true;
+                    } else {
+                      return false;
+                    }
+                  }}
                   onClick={toggleDrawer}
-                />
-              </Grid>
-            </Grid>
-          </Grid>
-
-          <Grid item xs={12}>
-            <List>
-              {navigationRoutes.map((nav) => (
-                <ListItem key={nav.name}>
-                  <ListNavItem
-                    exact
-                    to={nav.to}
-                    activeStyle={{
-                      color: CssVariables.primary,
-                    }}
-                    isActive={(match, location) => {
-                      let pathStrings = location.pathname.split("/");
-
-                      if (match) {
-                        return true;
-                      } else if (pathStrings[1] === nav.name) {
-                        return true;
-                      } else {
-                        return false;
-                      }
-                    }}
-                    onClick={toggleDrawer}
-                  >
-                    {t(translations.Navigation[nav.name]())}
-                  </ListNavItem>
-                </ListItem>
-              ))}
-            </List>
-          </Grid>
+                >
+                  {t(translations.Navigation[nav.name]())}
+                </ListNavItem>
+              </ListItem>
+            ))}
+          </List>
         </StyledContainer>
       </StyledDrawer>
     </>
@@ -82,8 +76,15 @@ const StyledDrawer = styled(Drawer)({
   },
 });
 
-const StyledContainer = styled(Grid)({
+const StyledContainer = styled("div")({
   padding: 20,
+  display: "flex",
+  flexDirection: "column",
+  rowGap: 20,
+});
+
+const StyledIconContainer = styled("div")({
+  alignSelf: "end",
 });
 
 const List = styled("ul")({
