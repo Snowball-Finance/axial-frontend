@@ -29,6 +29,7 @@ export default function NavigationDrawer(): ReactElement {
       >
         <StyledContainer>
           <StyledIconContainer>
+            <div />
             <CloseIcon
               color="primary"
               fontSize="medium"
@@ -77,21 +78,19 @@ const StyledDrawer = styled(Drawer)({
 });
 
 const StyledContainer = styled("div")({
+  padding: 20,
   display: "flex",
   flexDirection: "column",
   rowGap: 20,
 });
 
 const StyledIconContainer = styled("div")({
-  alignSelf: "end",
-  position: "absolute",
-  right: 20,
-  top: 20,
+  display: "flex",
+  justifyContent: "space-between",
 });
 
 const List = styled("ul")({
   listStyleType: "none",
-  marginTop: 50,
 });
 
 const ListItem = styled("li")({
@@ -122,6 +121,4 @@ const CloseIcon = styled(Close)({
   border: "2px solid",
   borderRadius: "50%",
   padding: 2,
-  float: "right",
-  zIndex: 1300,
 });
