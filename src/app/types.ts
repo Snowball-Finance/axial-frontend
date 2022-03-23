@@ -4,6 +4,7 @@ import { ethers } from "ethers";
 export enum AppPages {
   RootPage = "/",
   HomePage = "/home",
+  Playground = "/playground",
   GovernancePage = "/governance",
   StakingPage = "/staking",
   LiquidityPage = "/liquidity",

@@ -54,9 +54,9 @@ const InfoSection = styled("div")({
 
 const Wrapper = styled(Max1040)({
   margin: "auto",
-  display: 'flex',
-    flexDirection: 'column',
-    alignItems: "center",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
   [mobile]: {
     padding: "0 36px",
   },

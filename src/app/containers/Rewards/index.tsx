@@ -33,9 +33,11 @@ export const Rewards: FC<Props> = ({ pools }) => {
   }, [library, account]);
 
   useEffect(() => {
-    dispatch(RewardsActions.getRewardPoolsData(pools));
+    if (networkLibrary) {
+      dispatch(RewardsActions.getRewardPoolsData(pools));
+    }
     return () => {};
-  }, [masterchefApr, masterchefBalances,networkLibrary]);
+  }, [masterchefApr, masterchefBalances, networkLibrary]);
 
   useEffect(() => {
     dispatch(RewardsActions.getMasterchefAPR());
