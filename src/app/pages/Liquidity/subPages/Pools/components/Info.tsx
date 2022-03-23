@@ -10,8 +10,8 @@ import {
   commify,
   formatBNToShortString,
 } from "app/containers/utils/contractUtils";
-import { LiquidityPageSelectors } from "app/pages/Liquidity/selectors";
 import { PoolDataProps } from "app/pages/Liquidity/types";
+import { RewardsSelectors } from "app/containers/Rewards/selectors";
 
 interface InfoData {
   title: string;
@@ -20,12 +20,8 @@ interface InfoData {
 
 export const Info: FC<PoolDataProps> = ({ poolKey }) => {
   const { t } = useTranslation();
-  const poolData = useSelector(
-    LiquidityPageSelectors.liquidityPoolData(poolKey)
-  );
-  const userShareData = useSelector(
-    LiquidityPageSelectors.liquidityUserShareData(poolKey)
-  );
+  const poolData = useSelector(RewardsSelectors.poolData(poolKey));
+  const userShareData = useSelector(RewardsSelectors.userShareData(poolKey));
 
   const formattedData = {
     reserve: poolData?.reserve

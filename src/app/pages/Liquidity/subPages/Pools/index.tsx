@@ -14,7 +14,7 @@ export const PoolCards: FC = () => {
       <Grid container spacing={2}>
         {liquidityPools.map((pool) => (
           <Grid item key={pool.key} xs={12}>
-            <PoolCardItem poolKey={pool.key}/>
+            <PoolCardItem poolKey={pool.key} />
           </Grid>
         ))}
       </Grid>

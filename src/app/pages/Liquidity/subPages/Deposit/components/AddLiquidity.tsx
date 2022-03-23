@@ -4,9 +4,9 @@ import { useTranslation } from "react-i18next";
 
 import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
-import { ContainedButton } from "app/components/common/buttons/containedButton";
-import { AdvanceOption } from "./AdvanceOption";
-import { CurrencyInput } from "./CurrencyInput";
+import { AdvanceOption } from "../../../../../components/common/advancedOptions";
+import { CurrencyInputs } from "./CurrencyInput";
+import { DepositButton } from "./depositButton";
 
 export const AddLiquidity: FC = () => {
   const { t } = useTranslation();
@@ -20,16 +20,14 @@ export const AddLiquidity: FC = () => {
           </HeaderText>
         </Grid>
 
-        <CurrencyInput />
+        <CurrencyInputs />
 
         <Grid item>
           <AdvanceOption />
         </Grid>
 
         <Grid item alignSelf="center">
-          <ContainedButton width={220}>
-            {t(translations.LiquidityPage.ActionButtons.Deposit())}
-          </ContainedButton>
+          <DepositButton />
         </Grid>
       </Grid>
     </StyledAddLiquidity>

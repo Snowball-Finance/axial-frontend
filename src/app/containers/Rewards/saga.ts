@@ -36,7 +36,7 @@ import { parseUnits } from "@ethersproject/units";
 import checkAndApproveTokenForTrade from "../utils/checkAndApproveTokenForTrade";
 import { Erc20, SwapFlashLoanNoWithdrawFee } from "abi/ethers-contracts";
 import { IS_DEV } from "environment";
-import { addSlippage, Slippages, subtractSlippage } from "./utils/slippage";
+import { addSlippage, subtractSlippage } from "../../../utils/slippage";
 import { Deadlines, formatDeadlineToNumber } from "./utils/deadline";
 import { formatUnits } from "ethers/lib/utils";
 import { GlobalActions } from "store/slice";
@@ -261,7 +261,8 @@ export function* approveAndDeposit(action: {
 
   try {
     yield put(RewardsActions.setIsDepositing(true));
-    const slipage = Slippages.OneTenth;
+    const selectedSlippage = yield select(GlobalDomains.selectedSlippage);
+    const customSlippage = yield select(GlobalDomains.customSlippage);
     const transactionDeadline = Deadlines.Twenty;
 
     const library = yield select(Web3Domains.selectLibraryDomain);
@@ -327,7 +328,7 @@ export function* approveAndDeposit(action: {
         );
       }
 
-      minToMint = subtractSlippage(minToMint, slipage);
+      minToMint = subtractSlippage(minToMint, selectedSlippage, customSlippage);
 
       const deadline = formatDeadlineToNumber(transactionDeadline);
       const txnAmounts = poolTokens.map(({ symbol }) => {
@@ -367,7 +368,8 @@ export function* approveAndWithdraw(action: {
   type: string;
   payload: ApproveAndWithdrawPayload;
 }) {
-  const slipage = Slippages.OneTenth;
+  const selectedSlippage = yield select(GlobalDomains.selectedSlippage);
+  const customSlippage = yield select(GlobalDomains.customSlippage);
   const transactionDeadline = Deadlines.Twenty;
   const infiniteApproval = yield select(GlobalDomains.infiniteApproval);
   const pools = yield select(RewardsDomains.pools);
@@ -404,7 +406,7 @@ export function* approveAndWithdraw(action: {
   if (!masterchefwithdraw) {
     const allowanceAmount =
       type === WithdrawType.IMBALANCE
-        ? addSlippage(lpTokenAmountToSpend, slipage)
+        ? addSlippage(lpTokenAmountToSpend, selectedSlippage, customSlippage)
         : lpTokenAmountToSpend;
     yield call(
       checkAndApproveTokenForTrade,
@@ -434,7 +436,11 @@ export function* approveAndWithdraw(action: {
         targetContract.removeLiquidity,
         lpTokenAmountToSpend,
         pool.poolTokens.map(({ symbol }) =>
-          subtractSlippage(BigNumber.from(tokenAmounts[symbol]), slipage)
+          subtractSlippage(
+            BigNumber.from(tokenAmounts[symbol]),
+            selectedSlippage,
+            customSlippage
+          )
         ),
         deadline
       );
@@ -442,7 +448,7 @@ export function* approveAndWithdraw(action: {
       spendTransaction = yield call(
         targetContract.removeLiquidityImbalance,
         pool.poolTokens.map(({ symbol }) => tokenAmounts[symbol]),
-        addSlippage(lpTokenAmountToSpend, slipage),
+        addSlippage(lpTokenAmountToSpend, selectedSlippage, customSlippage),
         deadline
       );
     } else {
@@ -450,7 +456,7 @@ export function* approveAndWithdraw(action: {
         targetContract.removeLiquidityOneToken,
         lpTokenAmountToSpend,
         pool.poolTokens.findIndex(({ symbol }) => symbol === type),
-        subtractSlippage(tokenAmounts[type], slipage),
+        subtractSlippage(tokenAmounts[type], selectedSlippage, customSlippage),
         deadline
       );
     }

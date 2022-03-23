@@ -6,7 +6,7 @@ import { Pool, PoolTypes } from "app/containers/Rewards/types";
 import { RootState } from "store/types";
 import { initialState } from "./slice";
 
-const LiquidityPageDomains = {
+export const LiquidityPageDomains = {
   liquidityPage: (state: RootState) => state.liquidityPage || initialState,
   pools: (state: RootState) => state.liquidityPage?.pools || initialState.pools,
   pool: (state: RootState) => state.liquidityPage?.pool || initialState.pool,
@@ -16,6 +16,9 @@ const LiquidityPageDomains = {
     state.liquidityPage?.poolData || initialState.poolData,
   userShareData: (state: RootState) =>
     state.liquidityPage?.userShareData || initialState.userShareData,
+  depositTokenAmounts: (state: RootState) =>
+    state.liquidityPage?.depositTokenAmounts ||
+    initialState.depositTokenAmounts,
 };
 
 export const LiquidityPageSelectors = {
@@ -48,15 +51,24 @@ export const LiquidityPageSelectors = {
       }
     });
   }),
+  selectedPool: createSelector(LiquidityPageDomains.pool, (pool) => pool),
   liquidityPool: (key: string) =>
     createSelector(RewardsDomains.pools, (pools) => pools[key]),
   liquidityPoolTokens: (key: string) =>
+    createSelector(RewardsDomains.pools, (pools) => {
+      if (pools[key]) {
+        return pools[key].underlyingPoolTokens || pools[key].poolTokens;
+      }
+      return [];
+    }),
+
+  liquidityDepositTokenAmounts: createSelector(
+    LiquidityPageDomains.depositTokenAmounts,
+    (depositTokenAmounts) => depositTokenAmounts
+  ),
+  liquidityDepositTokenAmount: (key: string) =>
     createSelector(
-      RewardsDomains.pools,
-      (pools) => pools[key].underlyingPoolTokens || pools[key].poolTokens
+      LiquidityPageDomains.depositTokenAmounts,
+      (depositTokenAmounts) => depositTokenAmounts[key]
     ),
-  liquidityPoolData: (key: string) =>
-    createSelector(RewardsDomains.pools, (pools) => pools[key].poolData),
-  liquidityUserShareData: (key: string) =>
-    createSelector(RewardsDomains.pools, (pools) => pools[key].userShareData),
 };

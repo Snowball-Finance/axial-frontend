@@ -1,5 +1,5 @@
 import { Pool, PoolData, UserShareData } from "app/containers/Rewards/types";
-import { Token } from "app/containers/Swap/types";
+import { Token, TokenSymbols } from "app/containers/Swap/types";
 
 /* --- STATE --- */
 export interface LiquidityPageState {
@@ -8,6 +8,7 @@ export interface LiquidityPageState {
   poolTokens: Token[] | undefined;
   poolData: PoolData | undefined;
   userShareData: UserShareData | undefined;
+  depositTokenAmounts: { [K in TokenSymbols]?: string };
 }
 
 export interface PoolCardItemProps {

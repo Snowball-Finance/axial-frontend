@@ -4,21 +4,19 @@ import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import { CssVariables } from "styles/cssVariables/cssVariables";
-import { LiquidityPageSelectors } from "app/pages/Liquidity/selectors";
 import { getKeyFromPoolIndex } from "app/pages/Liquidity/constants";
 import { PoolTypes, TokenShareType } from "app/containers/Rewards/types";
 import { formatBNToString } from "app/containers/utils/contractUtils";
 import { pools } from "app/pools";
 import { tokens } from "app/tokens";
+import { RewardsSelectors } from "app/containers/Rewards/selectors";
 
 type TParams = { poolIndex: string };
 
 export const CurrencyInfo: FC = () => {
   const { poolIndex } = useParams<TParams>();
   const poolKey = getKeyFromPoolIndex(poolIndex) || "";
-  const rewardsPoolData = useSelector(
-    LiquidityPageSelectors.liquidityPoolData(poolKey)
-  );
+  const rewardsPoolData = useSelector(RewardsSelectors.poolData(poolKey));
 
   const formattedDecimals = pools[poolKey].poolType === PoolTypes.USD ? 2 : 4;
 

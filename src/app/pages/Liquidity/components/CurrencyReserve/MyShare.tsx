@@ -11,7 +11,6 @@ import {
   formatBNToPercentString,
   formatBNToShortString,
 } from "app/containers/utils/contractUtils";
-import { LiquidityPageSelectors } from "app/pages/Liquidity/selectors";
 import { getKeyFromPoolIndex } from "app/pages/Liquidity/constants";
 import { RewardsSelectors } from "app/containers/Rewards/selectors";
 import { pools } from "app/pools";
@@ -23,9 +22,7 @@ export const MyShare: FC = () => {
   const { t } = useTranslation();
   const { poolIndex } = useParams<TParams>();
   const poolKey = getKeyFromPoolIndex(poolIndex) || "";
-  const userShareData = useSelector(
-    LiquidityPageSelectors.liquidityUserShareData(poolKey)
-  );
+  const userShareData = useSelector(RewardsSelectors.userShareData(poolKey));
   const masterchefBalance = useSelector(RewardsSelectors.masterChefBalances);
 
   const tokenKey = pools[poolKey].lpToken.symbol;

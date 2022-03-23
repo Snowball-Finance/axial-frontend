@@ -54,9 +54,12 @@ export const RewardsSelectors = {
     RewardsDomains.masterchefApr,
     (masterchefApr) => masterchefApr
   ),
-
   isDepositing: createSelector(
     RewardsDomains.isDepositing,
     (isDepositing) => isDepositing
   ),
+  poolData: (key: string) =>
+    createSelector(RewardsDomains.pools, (pools) => pools[key]?.poolData),
+  userShareData: (key: string) =>
+    createSelector(RewardsDomains.pools, (pools) => pools[key]?.userShareData),
 };

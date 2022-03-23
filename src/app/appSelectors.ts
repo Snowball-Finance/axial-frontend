@@ -13,6 +13,10 @@ export const GlobalDomains = {
     state.global?.infiniteApproval || initialState.infiniteApproval,
   tokensInQueueToApprove: (state: RootState) =>
     state.global?.tokensInQueueToApprove || initialState.tokensInQueueToApprove,
+  selectedSlippage: (state: RootState) =>
+    state.global?.selectedSlippage || initialState.selectedSlippage,
+  customSlippage: (state: RootState) =>
+    state.global?.customSlippage || initialState.customSlippage,
 };
 
 export const globalSelectors = {
@@ -34,5 +38,13 @@ export const globalSelectors = {
   tokensInQueueToApprove: createSelector(
     GlobalDomains.tokensInQueueToApprove,
     (tokensInQueueToApprove) => tokensInQueueToApprove
+  ),
+  selectedSlippage: createSelector(
+    [GlobalDomains.selectedSlippage],
+    (slippage) => slippage
+  ),
+  customSlippage: createSelector(
+    [GlobalDomains.customSlippage],
+    (customSlippage) => customSlippage
   ),
 };
