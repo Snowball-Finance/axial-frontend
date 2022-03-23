@@ -1,21 +1,16 @@
 import React, { FC } from "react";
 import { styled, Grid, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
-import { useTranslation } from "react-i18next";
-
-import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { LiquidityPageSelectors } from "app/pages/Liquidity/selectors";
 import { Token, TokenSymbols } from "app/containers/Swap/types";
-import { BNToString } from "common/format";
-import { Zero } from "app/containers/Rewards/constants";
 import { globalSelectors } from "app/appSelectors";
 import { LiquidityDepositInput } from "./input";
 import { Pool } from "app/containers/Rewards/types";
+import { WalletBalance } from "./walletBalance";
 
 export const CurrencyInputs: FC = () => {
-  const { t } = useTranslation();
-  const tokens = useSelector(globalSelectors.tokens);
+  const tokens = useSelector(globalSelectors.tokens)as Token[];
   const pool = useSelector(LiquidityPageSelectors.selectedPool) as Pool;
   const poolTokens = pool.underlyingPoolTokens || pool.poolTokens;
 
@@ -25,14 +20,7 @@ export const CurrencyInputs: FC = () => {
         <Grid item key={token.address}>
           <Grid container direction="column" spacing={1}>
             <Grid item alignSelf="end">
-              <BalanceText variant="body2">
-                {t(translations.LiquidityPage.WalletBalance())}:{" "}
-                {tokens &&
-                  BNToString(
-                    tokens[token.symbol].balance ?? Zero,
-                    tokens[token.symbol].decimals
-                  )}
-              </BalanceText>
+           <WalletBalance token={tokens[token.symbol]} />
             </Grid>
 
             <Grid item>
@@ -95,7 +83,3 @@ const InputText = styled(Typography)({
   color: CssVariables.white,
 });
 
-const BalanceText = styled(Typography)({
-  color: CssVariables.white,
-  fontSize: "16px",
-});
