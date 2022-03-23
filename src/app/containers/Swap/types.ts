@@ -65,8 +65,6 @@ export interface SwapState {
   isGettingBestPath: boolean;
   bestPath: BestPath | undefined;
   isSwapping: boolean;
-  infiniteApproval: boolean;
-  slippageSelected: Slippages;
   selectedGasPrice: GasPrices;
 }
 

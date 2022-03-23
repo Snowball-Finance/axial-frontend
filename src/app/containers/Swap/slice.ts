@@ -1,14 +1,8 @@
 import { PayloadAction } from "@reduxjs/toolkit";
-import {
-  ContainerState,
-  FindBestPathPayload,
-  GasPrices,
-  Slippages,
-} from "./types";
+import { ContainerState, FindBestPathPayload, GasPrices } from "./types";
 import { createSlice } from "store/toolkit";
 import { useInjectReducer, useInjectSaga } from "store/redux-injectors";
 import { swapSaga } from "./saga";
-import { LocalStorageKeys, storage } from "store/storage";
 
 // The initial state of the Swap container
 export const initialState: ContainerState = {
@@ -18,9 +12,6 @@ export const initialState: ContainerState = {
   bestPath: undefined,
   isSwapping: false,
   tokens: {},
-  infiniteApproval:
-    storage.read(LocalStorageKeys.INFINITE_APPROVAL_FOR_SWAP) || false,
-  slippageSelected: Slippages.OneTenth,
   selectedGasPrice: GasPrices.Standard,
 };
 
@@ -49,16 +40,6 @@ const swapSlice = createSlice({
     },
     setIsSwapping(state, action: PayloadAction<boolean>) {
       state.isSwapping = action.payload;
-    },
-    setInfiniteApproval(state, action: PayloadAction<boolean>) {
-      state.infiniteApproval = action.payload;
-      storage.write(
-        LocalStorageKeys.INFINITE_APPROVAL_FOR_SWAP,
-        action.payload
-      );
-    },
-    setSlippageSelected(state, action: PayloadAction<Slippages>) {
-      state.slippageSelected = action.payload;
     },
     swap() {},
   },

@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import {
   styled,
   Grid,
@@ -14,91 +14,105 @@ import { SnowInput } from "app/components/base/SnowInput";
 import { ContainedButton } from "app/components/common/buttons/containedButton";
 import { CurrencyInput } from "../../../../components/CurrencyInput";
 import { SnowRadio } from "app/components/base/SnowRadio";
+import { SnowModal } from "app/components/common/modal";
+import { WithdrawModal } from "app/pages/Liquidity/components/modal/Withdraw";
 
 export const WithdrawInput: FC = () => {
+  const [open, setOpen] = useState<boolean>(false); //TODO: implemented for testing, please change the functionality while integration
+
   return (
-    <StyledWithdrawInput>
-      <Grid container direction="column" spacing={2}>
-        <Grid item>
-          <HeaderText variant="h4">Withdraw</HeaderText>
-        </Grid>
+    <>
+      <StyledWithdrawInput>
+        <Grid container direction="column" spacing={2}>
+          <Grid item>
+            <HeaderText variant="h4">Withdraw</HeaderText>
+          </Grid>
 
-        <Grid item>
-          <WithdrawSlider
-            defaultValue={50}
-            aria-label="Default"
-            valueLabelDisplay="auto"
-          />
-        </Grid>
+          <Grid item>
+            <WithdrawSlider
+              defaultValue={50}
+              aria-label="Default"
+              valueLabelDisplay="auto"
+            />
+          </Grid>
 
-        <Grid item>
-          <Grid container justifyContent="space-between" alignItems="center">
-            <Grid item>
-              <SubtitleText variant="body2">
-                withdrawl percentage (%):
-              </SubtitleText>
-            </Grid>
+          <Grid item>
+            <Grid container justifyContent="space-between" alignItems="center">
+              <Grid item>
+                <SubtitleText variant="body2">
+                  withdrawl percentage (%):
+                </SubtitleText>
+              </Grid>
 
-            <Grid item>
-              <InputField value="0.00" onChange={() => {}} />
+              <Grid item>
+                <InputField value="0.00" onChange={() => {}} />
+              </Grid>
             </Grid>
           </Grid>
-        </Grid>
 
-        <Grid item>
-          <StyledWithdrawOption>
-            <StyledRadioGroup row>
-              <FormControlLabel
-                value="combo"
-                control={<SnowRadio />}
-                label="Combo"
-              />
-              <FormControlLabel
-                value="tusd"
-                control={<SnowRadio />}
-                label="TUSD"
-              />
-              <FormControlLabel
-                value="mim"
-                control={<SnowRadio />}
-                label="MIM"
-              />
-              <FormControlLabel
-                value="frax"
-                control={<SnowRadio />}
-                label="FRAX"
-              />
-              <FormControlLabel
-                value="dai.e"
-                control={<SnowRadio />}
-                label="DAI.e"
-              />
-            </StyledRadioGroup>
-          </StyledWithdrawOption>
-        </Grid>
-
-        {[1, 2, 3, 4].map((inputItem) => (
-          <Grid item key={inputItem}>
-            <CurrencyInput />
+          <Grid item>
+            <StyledWithdrawOption>
+              <StyledRadioGroup row>
+                <FormControlLabel
+                  value="combo"
+                  control={<SnowRadio />}
+                  label="Combo"
+                />
+                <FormControlLabel
+                  value="tusd"
+                  control={<SnowRadio />}
+                  label="TUSD"
+                />
+                <FormControlLabel
+                  value="mim"
+                  control={<SnowRadio />}
+                  label="MIM"
+                />
+                <FormControlLabel
+                  value="frax"
+                  control={<SnowRadio />}
+                  label="FRAX"
+                />
+                <FormControlLabel
+                  value="dai.e"
+                  control={<SnowRadio />}
+                  label="DAI.e"
+                />
+              </StyledRadioGroup>
+            </StyledWithdrawOption>
           </Grid>
-        ))}
 
-        <Grid item>
-          <Grid container justifyContent="space-between">
-            <Grid item>
-              <SubtitleText variant="body2">bonus (%):</SubtitleText>
+          {[1, 2, 3, 4].map((inputItem) => (
+            <Grid item key={inputItem}>
+              <CurrencyInput />
             </Grid>
-            <Grid item>
-              <SubtitleText variant="body2">0%</SubtitleText>
+          ))}
+
+          <Grid item>
+            <Grid container justifyContent="space-between">
+              <Grid item>
+                <SubtitleText variant="body2">bonus (%):</SubtitleText>
+              </Grid>
+              <Grid item>
+                <SubtitleText variant="body2">0%</SubtitleText>
+              </Grid>
             </Grid>
           </Grid>
-        </Grid>
 
-        <Grid item alignSelf="center">
-          <ContainedButton width={220}>Withdraw</ContainedButton>
+          <Grid item alignSelf="center">
+            <ContainedButton width={220} onClick={() => setOpen(true)}>
+              Withdraw
+            </ContainedButton>
+          </Grid>
         </Grid>
-      </Grid>
-    </StyledWithdrawInput>
+      </StyledWithdrawInput>
+
+      {open && (
+        <SnowModal isOpen={open} onClose={() => setOpen(false)}>
+          <WithdrawModal />
+        </SnowModal>
+      )}
+    </>
   );
 };
 

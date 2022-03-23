@@ -6,26 +6,18 @@ import { useTranslation } from "react-i18next";
 import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { SnowInput } from "app/components/base/SnowInput";
-import { SwapActions } from "app/containers/Swap/slice";
-import { SwapSelectors } from "app/containers/Swap/selectors";
-import { OutlinedButton } from "app/components/common/buttons/outlinedButton";
-import { Slippages } from "app/containers/Swap/types";
+import { globalSelectors } from "app/appSelectors";
+import { GlobalActions } from "store/slice";
 import { ContainedButton } from "app/components/common/buttons/containedButton";
+import { OutlinedButton } from "app/components/common/buttons/outlinedButton";
 
 export const AdvanceOption: FC = () => {
   const { t } = useTranslation();
-  const infiniteApproval = useSelector(SwapSelectors.selectInfiniteApproval);
-  const selectSlippageSelected = useSelector(
-    SwapSelectors.selectSlippageSelected
-  );
+  const infiniteApproval = useSelector(globalSelectors.infiniteApproval);
   const dispatch = useDispatch();
 
   const handleInfiniteApproval = () => {
-    dispatch(SwapActions.setInfiniteApproval(!infiniteApproval));
-  };
-
-  const handleSlippageSelected = (value: Slippages) => {
-    dispatch(SwapActions.setSlippageSelected(value));
+    dispatch(GlobalActions.setInfiniteApproval(!infiniteApproval));
   };
 
   return (
@@ -63,27 +55,11 @@ export const AdvanceOption: FC = () => {
               </Grid>
 
               <Grid item>
-                {selectSlippageSelected === Slippages.OneTenth ? (
-                  <ContainedButton>0.1%</ContainedButton>
-                ) : (
-                  <OutlinedButton
-                    onClick={() => handleSlippageSelected(Slippages.OneTenth)}
-                  >
-                    0.1%
-                  </OutlinedButton>
-                )}
+                <ContainedButton>0.1%</ContainedButton>
               </Grid>
 
               <Grid item>
-                {selectSlippageSelected === Slippages.One ? (
-                  <ContainedButton>1%</ContainedButton>
-                ) : (
-                  <OutlinedButton
-                    onClick={() => handleSlippageSelected(Slippages.One)}
-                  >
-                    1%
-                  </OutlinedButton>
-                )}
+                <OutlinedButton>1%</OutlinedButton>
               </Grid>
 
               <Grid item>

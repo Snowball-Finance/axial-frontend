@@ -82,7 +82,7 @@ export function* swap() {
       swapRouterABI,
       getProviderOrSigner(library, account)
     ) as SwapRouter;
-    const infiniteApproval = yield select(SwapDomains.infiniteApproval);
+    const infiniteApproval = yield select(GlobalDomains.infiniteApproval);
     const fromTokenAddress = bestPath.path[0];
     const fromTokenABI = tokensList.find(
       (token) => token.address === fromTokenAddress
