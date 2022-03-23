@@ -77,7 +77,6 @@ const StyledDrawer = styled(Drawer)({
 });
 
 const StyledContainer = styled("div")({
-  padding: 20,
   display: "flex",
   flexDirection: "column",
   rowGap: 20,
@@ -85,10 +84,14 @@ const StyledContainer = styled("div")({
 
 const StyledIconContainer = styled("div")({
   alignSelf: "end",
+  position: "absolute",
+  right: 20,
+  top: 20
 });
 
 const List = styled("ul")({
   listStyleType: "none",
+  marginTop: 50
 });
 
 const ListItem = styled("li")({
