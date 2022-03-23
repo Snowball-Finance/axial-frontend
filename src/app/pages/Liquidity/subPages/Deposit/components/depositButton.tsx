@@ -12,7 +12,9 @@ export const DepositButton = () => {
   const depositTokens = useSelector(
     LiquidityPageSelectors.liquidityDepositTokenAmounts
   );
-  const disabled = Object.keys(depositTokens).length === 0;
+  const disabled = Object.values(depositTokens).every(
+    (tokenAmount) => tokenAmount === "0"
+  );
   const isDepositing = useSelector(RewardsSelectors.isDepositing);
   const handleDepositClick = () => {
     dispatch(LiquidityPageActions.deposit());

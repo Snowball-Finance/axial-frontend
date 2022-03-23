@@ -4,26 +4,26 @@ import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import { CssVariables } from "styles/cssVariables/cssVariables";
-import { getKeyFromPoolIndex } from "app/pages/Liquidity/constants";
 import { PoolTypes, TokenShareType } from "app/containers/Rewards/types";
 import { formatBNToString } from "app/containers/utils/contractUtils";
 import { pools } from "app/pools";
 import { tokens } from "app/tokens";
 import { RewardsSelectors } from "app/containers/Rewards/selectors";
+import { getKeyFromPoolIndex } from "../../constants";
 
 type TParams = { poolIndex: string };
 
 export const CurrencyInfo: FC = () => {
   const { poolIndex } = useParams<TParams>();
   const poolKey = getKeyFromPoolIndex(poolIndex) || "";
-  const rewardsPoolData = useSelector(RewardsSelectors.poolData(poolKey));
+  const poolData = useSelector(RewardsSelectors.poolData(poolKey));
 
   const formattedDecimals = pools[poolKey].poolType === PoolTypes.USD ? 2 : 4;
 
   return (
     <StyledInfo>
       <Grid container spacing={4}>
-        {rewardsPoolData?.tokens.map((infoItem: TokenShareType) => (
+        {poolData?.tokens.map((infoItem: TokenShareType) => (
           <Grid item key={infoItem.symbol} xs={12}>
             <Grid container justifyContent="space-between" alignItems="center">
               <Grid item xs={4}>

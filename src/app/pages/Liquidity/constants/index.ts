@@ -38,3 +38,4 @@ export const getKeyFromPoolIndex = (poolIndex: string) => {
       return null;
   }
 };
+export const zeroString = "0";

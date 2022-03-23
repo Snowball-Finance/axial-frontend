@@ -1,6 +1,7 @@
 import { styled } from "@mui/material";
 import { SnowInput } from "app/components/base/SnowInput";
 import { TokenSymbols } from "app/containers/Swap/types";
+import { zeroString } from "app/pages/Liquidity/constants";
 import { LiquidityPageSelectors } from "app/pages/Liquidity/selectors";
 import { LiquidityPageActions } from "app/pages/Liquidity/slice";
 import { memo } from "react";
@@ -13,7 +14,7 @@ export const LiquidityDepositInput = memo(
     const value =
       useSelector(
         LiquidityPageSelectors.liquidityDepositTokenAmount(tokenSymbol)
-      ) || "0.0";
+      ) || zeroString;
 
     const handleInputChange = (e: string) => {
       dispatch(
