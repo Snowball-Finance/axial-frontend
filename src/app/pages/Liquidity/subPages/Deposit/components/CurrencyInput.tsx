@@ -10,7 +10,7 @@ import { Pool } from "app/containers/Rewards/types";
 import { WalletBalance } from "./walletBalance";
 
 export const CurrencyInputs: FC = () => {
-  const tokens = useSelector(globalSelectors.tokens)as Token[];
+  const tokens = useSelector(globalSelectors.tokens) as Token[];
   const pool = useSelector(LiquidityPageSelectors.selectedPool) as Pool;
   const poolTokens = pool.underlyingPoolTokens || pool.poolTokens;
 
@@ -20,7 +20,7 @@ export const CurrencyInputs: FC = () => {
         <Grid item key={token.address}>
           <Grid container direction="column" spacing={1}>
             <Grid item alignSelf="end">
-           <WalletBalance token={tokens[token.symbol]} />
+              <WalletBalance token={tokens[token.symbol]} />
             </Grid>
 
             <Grid item>
@@ -82,4 +82,3 @@ const TokenText = styled(Typography)({
 const InputText = styled(Typography)({
   color: CssVariables.white,
 });
-

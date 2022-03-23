@@ -29,6 +29,10 @@ export const globalSelectors = {
     [GlobalDomains.tokenPricesUSD],
     (tokenPricesUSD) => tokenPricesUSD
   ),
+  tokenPriceInUsdt: (token: string) =>
+    createSelector(GlobalDomains.tokenPricesUSD, (prices) => {
+      return prices[token] || 0;
+    }),
   gasPrice: createSelector([GlobalDomains.gasPrice], (gasPrice) => gasPrice),
   tokens: createSelector([GlobalDomains.tokens], (tokens) => tokens),
   infiniteApproval: createSelector(

@@ -11,7 +11,6 @@ export const Withdraw: FC = () => {
         <Grid item>
           <WithdrawInput />
         </Grid>
-
         <Grid item>
           <CurrencyReserve />
         </Grid>

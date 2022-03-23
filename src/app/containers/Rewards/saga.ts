@@ -368,106 +368,118 @@ export function* approveAndWithdraw(action: {
   type: string;
   payload: ApproveAndWithdrawPayload;
 }) {
-  const selectedSlippage = yield select(GlobalDomains.selectedSlippage);
-  const customSlippage = yield select(GlobalDomains.customSlippage);
-  const transactionDeadline = Deadlines.Twenty;
-  const infiniteApproval = yield select(GlobalDomains.infiniteApproval);
-  const pools = yield select(RewardsDomains.pools);
-  const library = yield select(Web3Domains.selectLibraryDomain);
-  const account = yield select(Web3Domains.selectAccountDomain);
-  const {
-    poolName,
-    tokenAmounts,
-    masterchefwithdraw,
-    type,
-    lpTokenAmountToSpend,
-  } = action.payload;
-  const pool: Pool = pools[poolName];
+  yield put(RewardsActions.setIsWithdrawing(true));
+  try {
+    const selectedSlippage = yield select(GlobalDomains.selectedSlippage);
+    const customSlippage = yield select(GlobalDomains.customSlippage);
+    const transactionDeadline = Deadlines.Twenty;
+    const infiniteApproval = yield select(GlobalDomains.infiniteApproval);
+    const pools = yield select(RewardsDomains.pools);
+    const library = yield select(Web3Domains.selectLibraryDomain);
+    const account = yield select(Web3Domains.selectAccountDomain);
 
-  const targetContract = new Contract(
-    pool.address,
-    pool.swapABI,
-    getProviderOrSigner(library, account)
-  );
-  const gasPrices: GenericGasResponse = yield select(GlobalDomains.gasPrice);
-  const { gasFast } = gasPrices;
-  const masterchefContract = new Contract(
-    AXIAL_MASTERCHEF_CONTRACT_ADDRESS,
-    MASTERCHEF_ABI,
-    library?.getSigner()
-  );
-  const lpTokenContract = getContract(
-    pool.lpToken.address,
-    LPTOKEN_UNGUARDED_ABI,
-    library,
-    account ?? undefined
-  ) as LpTokenUnguarded;
-  const gasPrice = parseUnits(String(gasFast) || "45", 9);
-  if (!masterchefwithdraw) {
-    const allowanceAmount =
-      type === WithdrawType.IMBALANCE
-        ? addSlippage(lpTokenAmountToSpend, selectedSlippage, customSlippage)
-        : lpTokenAmountToSpend;
-    yield call(
-      checkAndApproveTokenForTrade,
-      lpTokenContract as LpTokenUnguarded,
-      pool.swapAddress || pool.address,
-      account,
-      allowanceAmount,
-      infiniteApproval,
-      gasPrice,
-      {
-        onTransactionError: () => {
-          throw new Error("Your transaction could not be completed");
-        },
-      }
-    );
-    console.debug(
-      `lpTokenAmountToSpend: ${formatUnits(lpTokenAmountToSpend, 18)}`
-    );
-    const deadline = Math.round(
-      new Date().getTime() / 1000 +
-        60 * formatDeadlineToNumber(transactionDeadline)
-    );
-    let spendTransaction;
+    const {
+      poolName,
+      tokenAmounts,
+      masterchefwithdraw,
+      type,
+      lpTokenAmountToSpend,
+    } = action.payload;
+    const pool: Pool = pools[poolName];
 
-    if (type === WithdrawType.ALL) {
-      spendTransaction = yield call(
-        targetContract.removeLiquidity,
-        lpTokenAmountToSpend,
-        pool.poolTokens.map(({ symbol }) =>
+    const targetContract = new Contract(
+      pool.address,
+      pool.swapABI,
+      getProviderOrSigner(library, account)
+    );
+    const gasPrices: GenericGasResponse = yield select(GlobalDomains.gasPrice);
+    const { gasFast } = gasPrices;
+    const masterchefContract = new Contract(
+      AXIAL_MASTERCHEF_CONTRACT_ADDRESS,
+      MASTERCHEF_ABI,
+      library?.getSigner()
+    );
+    const lpTokenContract = getContract(
+      pool.lpToken.address,
+      LPTOKEN_UNGUARDED_ABI,
+      library,
+      account ?? undefined
+    ) as LpTokenUnguarded;
+    const gasPrice = parseUnits(String(gasFast) || "45", 9);
+    if (!masterchefwithdraw) {
+      const allowanceAmount =
+        type === WithdrawType.IMBALANCE
+          ? addSlippage(lpTokenAmountToSpend, selectedSlippage, customSlippage)
+          : lpTokenAmountToSpend;
+      yield call(
+        checkAndApproveTokenForTrade,
+        lpTokenContract as LpTokenUnguarded,
+        pool.swapAddress || pool.address,
+        account,
+        allowanceAmount,
+        infiniteApproval,
+        gasPrice,
+        {
+          onTransactionError: () => {
+            throw new Error("Your transaction could not be completed");
+          },
+        }
+      );
+      console.debug(
+        `lpTokenAmountToSpend: ${formatUnits(lpTokenAmountToSpend, 18)}`
+      );
+      const deadline = Math.round(
+        new Date().getTime() / 1000 +
+          60 * formatDeadlineToNumber(transactionDeadline)
+      );
+      let spendTransaction;
+
+      if (type === WithdrawType.ALL) {
+        spendTransaction = yield call(
+          targetContract.removeLiquidity,
+          lpTokenAmountToSpend,
+          pool.poolTokens.map(({ symbol }) =>
+            subtractSlippage(
+              BigNumber.from(tokenAmounts[symbol]),
+              selectedSlippage,
+              customSlippage
+            )
+          ),
+          deadline
+        );
+      } else if (type === "IMBALANCE") {
+        spendTransaction = yield call(
+          targetContract.removeLiquidityImbalance,
+          pool.poolTokens.map(({ symbol }) => tokenAmounts[symbol]),
+          addSlippage(lpTokenAmountToSpend, selectedSlippage, customSlippage),
+          deadline
+        );
+      } else {
+        spendTransaction = yield call(
+          targetContract.removeLiquidityOneToken,
+          lpTokenAmountToSpend,
+          pool.poolTokens.findIndex(({ symbol }) => symbol === type),
           subtractSlippage(
-            BigNumber.from(tokenAmounts[symbol]),
+            tokenAmounts[type],
             selectedSlippage,
             customSlippage
-          )
-        ),
-        deadline
-      );
-    } else if (type === "IMBALANCE") {
-      spendTransaction = yield call(
-        targetContract.removeLiquidityImbalance,
-        pool.poolTokens.map(({ symbol }) => tokenAmounts[symbol]),
-        addSlippage(lpTokenAmountToSpend, selectedSlippage, customSlippage),
-        deadline
-      );
+          ),
+          deadline
+        );
+      }
+
+      yield call(spendTransaction.wait);
     } else {
-      spendTransaction = yield call(
-        targetContract.removeLiquidityOneToken,
-        lpTokenAmountToSpend,
-        pool.poolTokens.findIndex(({ symbol }) => symbol === type),
-        subtractSlippage(tokenAmounts[type], selectedSlippage, customSlippage),
-        deadline
+      yield call(
+        masterchefContract.withdraw,
+        pool.lpToken.masterchefId,
+        tokenAmounts[pool.lpToken.symbol]
       );
     }
-
-    yield call(spendTransaction.wait);
-  } else {
-    yield call(
-      masterchefContract.withdraw,
-      pool.lpToken.masterchefId,
-      tokenAmounts[pool.lpToken.symbol]
-    );
+    yield put(RewardsActions.setIsWithdrawing(false));
+  } catch (e) {
+    console.log(e);
+    yield put(RewardsActions.setIsWithdrawing(false));
   }
 }
 

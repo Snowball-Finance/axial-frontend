@@ -5,7 +5,7 @@ import { useInjectReducer, useInjectSaga } from "store/redux-injectors";
 import { liquidityPageSaga } from "./saga";
 import { PayloadAction } from "@reduxjs/toolkit";
 import { TokenSymbols } from "app/containers/Swap/types";
-import { Pool } from "app/containers/Rewards/types";
+import { ApproveAndWithdrawPayload, Pool } from "app/containers/Rewards/types";
 import { zeroString } from "./constants";
 
 // The initial state of the LiquidityPage container
@@ -16,6 +16,9 @@ export const initialState: ContainerState = {
   poolData: undefined,
   userShareData: undefined,
   depositTokenAmounts: {},
+  withdrawTokenAmounts: {},
+  withdrawPercentage: 0,
+  selectedTokenToWithdraw: "combo",
 };
 
 const liquidityPageSlice = createSlice({
@@ -28,10 +31,11 @@ const liquidityPageSlice = createSlice({
         const tmp = {};
         const tokens = action.payload.poolTokens;
         for (let k in tokens) {
-          const token=tokens[k]
+          const token = tokens[k];
           tmp[token.symbol] = zeroString;
         }
         state.depositTokenAmounts = tmp;
+        state.withdrawTokenAmounts = tmp;
       }
     },
     setLiquidityDepositTokenAmount(
@@ -52,6 +56,31 @@ const liquidityPageSlice = createSlice({
       state.depositTokenAmounts = allValues;
     },
     deposit() {},
+    withdraw(state, action: PayloadAction<ApproveAndWithdrawPayload>) {},
+    setWithdrawPercentage(state, action: PayloadAction<number>) {
+      state.withdrawPercentage = action.payload;
+    },
+    setSelectedTokenToWithdraw(
+      state,
+      action: PayloadAction<"combo" | TokenSymbols>
+    ) {
+      state.selectedTokenToWithdraw = action.payload;
+    },
+    setAmountForTokenToWithdraw(
+      state,
+      action: PayloadAction<{ symbol: TokenSymbols; value: string }>
+    ) {
+      state.withdrawPercentage = 0;
+      state.selectedTokenToWithdraw = action.payload.symbol;
+      const amounts = { ...state.withdrawTokenAmounts };
+      const { symbol, value } = action.payload;
+      if (!isNaN(parseFloat(value))) {
+        amounts[symbol] = value;
+      } else {
+        amounts[symbol] = zeroString;
+      }
+      state.withdrawTokenAmounts = amounts;
+    },
   },
 });
 

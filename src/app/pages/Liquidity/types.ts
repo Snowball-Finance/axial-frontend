@@ -9,6 +9,9 @@ export interface LiquidityPageState {
   poolData: PoolData | undefined;
   userShareData: UserShareData | undefined;
   depositTokenAmounts: { [K in TokenSymbols]?: string };
+  withdrawTokenAmounts: { [K in TokenSymbols]?: string };
+  withdrawPercentage: number;
+  selectedTokenToWithdraw: "combo" | TokenSymbols;
 }
 
 export interface PoolCardItemProps {

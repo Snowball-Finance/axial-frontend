@@ -1,6 +1,6 @@
 import { GlobalDomains } from "app/appSelectors";
 import { RewardsActions } from "app/containers/Rewards/slice";
-import { Pool } from "app/containers/Rewards/types";
+import { ApproveAndWithdrawPayload, Pool } from "app/containers/Rewards/types";
 import { floatToBN } from "common/format";
 import { put, select, takeLatest } from "redux-saga/effects";
 import { LiquidityPageDomains } from "./selectors";
@@ -28,6 +28,15 @@ export function* deposit() {
   );
 }
 
+export function* withdraw(action: {
+  type: string;
+  payload: ApproveAndWithdrawPayload;
+}) {
+  const { payload } = action;
+  yield put(RewardsActions.approveAndWithdraw(payload));
+}
+
 export function* liquidityPageSaga() {
   yield takeLatest(LiquidityPageActions.deposit.type, deposit);
+  yield takeLatest(LiquidityPageActions.withdraw.type, withdraw);
 }

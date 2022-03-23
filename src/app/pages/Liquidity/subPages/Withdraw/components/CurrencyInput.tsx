@@ -4,10 +4,11 @@ import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
 import { CssVariables } from "styles/cssVariables/cssVariables";
-import { SnowInput } from "app/components/base/SnowInput";
 import { LiquidityPageSelectors } from "app/pages/Liquidity/selectors";
 import { getKeyFromPoolIndex } from "app/pages/Liquidity/constants";
 import { Token } from "app/containers/Swap/types";
+import { WithdrawInput } from "./input";
+import { EquivalentWithdrawAmount } from "./equivalentWithdrawAmount";
 
 type TParams = { poolIndex: string };
 
@@ -18,8 +19,8 @@ export const CurrencyInput: FC = () => {
     LiquidityPageSelectors.liquidityPoolTokens(poolKey)
   );
 
-  return poolTokens?.map((pool: Token) => (
-    <Grid item key={pool.address}>
+  return poolTokens?.map((token: Token) => (
+    <Grid item key={token.address}>
       <Grid container direction="column" spacing={1}>
         <Grid item>
           <StyledCurrencyInput
@@ -30,11 +31,11 @@ export const CurrencyInput: FC = () => {
             <Grid item>
               <Grid container spacing={1}>
                 <Grid item>
-                  <IconImage src={pool.logo} alt="icon"></IconImage>
+                  <IconImage src={token.logo} alt="icon"></IconImage>
                 </Grid>
 
                 <Grid item>
-                  <TokenText variant="h6">{pool.symbol}</TokenText>
+                  <TokenText variant="h6">{token.symbol}</TokenText>
                 </Grid>
               </Grid>
             </Grid>
@@ -42,11 +43,11 @@ export const CurrencyInput: FC = () => {
             <Grid item>
               <Grid container spacing={1} alignItems="center">
                 <Grid item>
-                  <CurrencyInputField value="0.00" onChange={() => {}} />
+                  <WithdrawInput token={token} />
                 </Grid>
 
                 <Grid item>
-                  <InputText variant="body2">=$0.0</InputText>
+                  <EquivalentWithdrawAmount token={token} />
                 </Grid>
               </Grid>
             </Grid>
@@ -71,20 +72,4 @@ const IconImage = styled("img")({
 
 const TokenText = styled(Typography)({
   color: CssVariables.white,
-});
-
-const InputText = styled(Typography)({
-  color: CssVariables.white,
-});
-
-const CurrencyInputField = styled(SnowInput)({
-  ".MuiInputBase-root": {
-    color: CssVariables.white,
-    fontSize: "16px",
-    width: 80,
-  },
-
-  ".MuiOutlinedInput-notchedOutline": {
-    border: "none",
-  },
 });

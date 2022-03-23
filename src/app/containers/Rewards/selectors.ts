@@ -24,6 +24,8 @@ export const RewardsDomains = {
     state.rewards?.masterchefApr || initialState.masterchefApr,
   isDepositing: (state: RootState) =>
     state.rewards?.isDepositing || initialState.isDepositing,
+  isWithdrawing: (state: RootState) =>
+    state.rewards?.isWithdrawing || initialState.isWithdrawing,
 };
 
 export const RewardsSelectors = {
@@ -57,6 +59,10 @@ export const RewardsSelectors = {
   isDepositing: createSelector(
     RewardsDomains.isDepositing,
     (isDepositing) => isDepositing
+  ),
+  isWithdrawing: createSelector(
+    RewardsDomains.isWithdrawing,
+    (isWithdrawing) => isWithdrawing
   ),
   poolData: (key: string) =>
     createSelector(RewardsDomains.pools, (pools) => pools[key]?.poolData),
