@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, memo } from "react";
 import {
   styled,
   Grid,
@@ -18,7 +18,7 @@ import { LiquidityPageActions } from "app/pages/Liquidity/slice";
 
 type TParams = { poolIndex: string };
 
-export const Selection: FC = () => {
+export const Selection: FC = memo(() => {
   const dispatch = useDispatch();
   const { poolIndex } = useParams<TParams>();
   const poolKey = getKeyFromPoolIndex(poolIndex) || "";
@@ -58,7 +58,7 @@ export const Selection: FC = () => {
       </StyledWithdrawOption>
     </Grid>
   );
-};
+},()=>true);
 
 const StyledWithdrawOption = styled(FormControl)({
   width: "100%",
