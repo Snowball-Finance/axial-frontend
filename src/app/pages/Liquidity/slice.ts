@@ -28,7 +28,8 @@ const liquidityPageSlice = createSlice({
         const tmp = {};
         const tokens = action.payload.poolTokens;
         for (let k in tokens) {
-          tmp[k] = zeroString;
+          const token=tokens[k]
+          tmp[token.symbol] = zeroString;
         }
         state.depositTokenAmounts = tmp;
       }

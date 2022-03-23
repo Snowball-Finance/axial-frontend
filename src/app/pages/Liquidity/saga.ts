@@ -19,6 +19,7 @@ export function* deposit() {
     const toSend = floatToBN(num, tokens[k].decimals);
     tmp[k] = toSend;
   }
+
   yield put(
     RewardsActions.approveAndDeposit({
       poolName: pool.key,
