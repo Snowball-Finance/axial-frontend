@@ -9,6 +9,8 @@ export interface RewardsPageState {
   poolData: PoolData | undefined;
   userShareData: UserShareData | undefined;
   depositValue: string;
+  withdrawPercentage: number;
+  withdrawAmount: string;
 }
 
 export interface PoolCardItemProps {

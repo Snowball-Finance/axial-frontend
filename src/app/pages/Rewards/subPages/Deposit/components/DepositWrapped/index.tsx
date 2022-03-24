@@ -12,14 +12,11 @@ import { pools } from "app/pools";
 import { Pool } from "app/containers/Rewards/types";
 import { RewardsPageActions } from "app/pages/Rewards/slice";
 import { DepositButton } from "./depositButton";
-import { useTranslation } from "react-i18next";
 import { WalletBalance } from "./walletBalance";
-import { globalSelectors } from "app/appSelectors";
 import { RewardsPageSelectors } from "app/pages/Rewards/selectors";
 type TParams = { poolIndex: string };
 
 export const DepositWrapped: FC = () => {
-  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { poolIndex } = useParams<TParams>();
   const poolKey = getKeyFromPoolIndex(poolIndex) || "";
@@ -85,11 +82,6 @@ const StyledAddLiquidity = styled("div")({
 const HeaderText = styled(Typography)({
   color: CssVariables.white,
   fontSize: "26px",
-});
-
-const BalanceText = styled(Typography)({
-  color: CssVariables.white,
-  fontSize: "16px",
 });
 
 const OrText = styled(Typography)({
