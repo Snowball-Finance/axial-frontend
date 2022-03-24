@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { LiquidityPageActions } from "../../slice";
 import { Pool } from "app/containers/Rewards/types";
 import { LiquidityPageSelectors } from "../../selectors";
+
 type TParams = { poolIndex: string };
 
 export const Deposit: FC = () => {

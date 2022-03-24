@@ -13,7 +13,7 @@ import { SwapState } from "app/containers/Swap/types";
 import { GlobalState } from "store/slice";
 import { SwapPageState } from "app/pages/Swap/types";
 import { LiquidityPageState } from "app/pages/Liquidity/types";
-import { RewardsPageState } from 'app/pages/Rewards/types';
+import { RewardsPageState } from "app/pages/Rewards/types";
 // [IMPORT NEW CONTAINERSTATE ABOVE] < Needed for generating containers seamlessly
 
 /* 

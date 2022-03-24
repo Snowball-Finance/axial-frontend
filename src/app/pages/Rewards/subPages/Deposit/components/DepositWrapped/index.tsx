@@ -1,13 +1,37 @@
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import { styled, Grid, Typography } from "@mui/material";
 
 import { CssVariables } from "styles/cssVariables/cssVariables";
-import { AdvanceOption } from "./AdvanceOption";
-import { ContainedButton } from "app/components/common/buttons/containedButton";
 import { CurrencyInput } from "./CurrencyInput";
 import { OutlinedButton } from "app/components/common/buttons/outlinedButton";
+import { AdvanceOption } from "app/components/common/advancedOptions";
+import { useParams } from "react-router-dom";
+import { getKeyFromPoolIndex } from "app/pages/Rewards/constants";
+import { useDispatch, useSelector } from "react-redux";
+import { pools } from "app/pools";
+import { Pool } from "app/containers/Rewards/types";
+import { RewardsPageActions } from "app/pages/Rewards/slice";
+import { DepositButton } from "./depositButton";
+import { useTranslation } from "react-i18next";
+import { WalletBalance } from "./walletBalance";
+import { globalSelectors } from "app/appSelectors";
+import { RewardsPageSelectors } from "app/pages/Rewards/selectors";
+type TParams = { poolIndex: string };
 
 export const DepositWrapped: FC = () => {
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const { poolIndex } = useParams<TParams>();
+  const poolKey = getKeyFromPoolIndex(poolIndex) || "";
+  const pool = useSelector(RewardsPageSelectors.selectedPool);
+
+  useEffect(() => {
+    if (poolKey) {
+      const pool = pools[poolKey] as Pool;
+      dispatch(RewardsPageActions.setSelectedPool(pool));
+    }
+  }, [poolKey]);
+
   return (
     <StyledAddLiquidity>
       <Grid container direction="column" spacing={2}>
@@ -16,7 +40,7 @@ export const DepositWrapped: FC = () => {
         </Grid>
 
         <Grid item alignSelf="end">
-          <BalanceText variant="body2">Wallet balance: 0.00</BalanceText>
+          {pool && <WalletBalance token={pool?.lpToken} />}
         </Grid>
 
         <Grid item>
@@ -30,7 +54,7 @@ export const DepositWrapped: FC = () => {
         <Grid item>
           <Grid container spacing={2} direction="column" alignItems="center">
             <Grid item>
-              <ContainedButton width={220}>Deposit</ContainedButton>
+              <DepositButton />
             </Grid>
 
             <Grid item>

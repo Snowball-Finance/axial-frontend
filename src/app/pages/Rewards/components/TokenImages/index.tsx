@@ -20,18 +20,22 @@ export const TokenImages: FC<TokenImageProps> = ({ poolKey }) => {
 
   return (
     <Grid container spacing={2} alignItems="center">
-      {poolTokens.map((token: Token) => (
-        <Grid item key={token.address}>
-          <Grid container spacing={1} alignItems="center">
-            <Grid item>
-              <PoolTokenImage src={token.logo} alt={`token-${token.symbol}`} />
-            </Grid>
-            <Grid item>
-              <PoolInfoTitleText>{token.symbol}</PoolInfoTitleText>
+      {poolTokens &&
+        poolTokens.map((token: Token) => (
+          <Grid item key={token.address}>
+            <Grid container spacing={1} alignItems="center">
+              <Grid item>
+                <PoolTokenImage
+                  src={token.logo}
+                  alt={`token-${token.symbol}`}
+                />
+              </Grid>
+              <Grid item>
+                <PoolInfoTitleText>{token.symbol}</PoolInfoTitleText>
+              </Grid>
             </Grid>
           </Grid>
-        </Grid>
-      ))}
+        ))}
     </Grid>
   );
 };
