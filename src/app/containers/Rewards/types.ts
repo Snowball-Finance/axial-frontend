@@ -152,6 +152,7 @@ export interface RewardsState {
   masterChefBalances: { [key: string]: MasterchefResponse } | undefined;
   pools: { [K in Pools]?: Pool };
   isDepositing: boolean;
+  isWithdrawing: boolean;
 }
 
 export type ContainerState = RewardsState;

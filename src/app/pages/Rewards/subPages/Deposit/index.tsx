@@ -11,7 +11,6 @@ export const Deposit: FC = () => {
         <Grid item>
           <DepositWrapped />
         </Grid>
-
         <Grid item>
           <CurrencyReserve />
         </Grid>

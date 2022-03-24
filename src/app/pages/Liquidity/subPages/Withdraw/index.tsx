@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { Grid, styled } from "@mui/material";
 
-import { WithdrawInput } from "./components/Input";
+import { WithdrawInput } from "./components/WithdrawInput";
 import { CurrencyReserve } from "../../components/CurrencyReserve";
 
 export const Withdraw: FC = () => {
@@ -11,7 +11,6 @@ export const Withdraw: FC = () => {
         <Grid item>
           <WithdrawInput />
         </Grid>
-
         <Grid item>
           <CurrencyReserve />
         </Grid>

@@ -16,7 +16,7 @@ export const RewardsPage: FC = () => {
   useRewardsPageSlice();
 
   const { t } = useTranslation();
-  
+
   return (
     <>
       <Helmet>

@@ -1,16 +1,37 @@
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import { styled, Grid, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 
 import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
-import { AdvanceOption } from "app/pages/Rewards/components/AdvanceOption";
-import { ContainedButton } from "app/components/common/buttons/containedButton";
 import { CurrencyInput } from "./CurrencyInput";
+import { AdvanceOption } from "app/components/common/advancedOptions";
+import { useParams } from "react-router-dom";
+import { getKeyFromPoolIndex } from "app/pages/Rewards/constants";
+import { useDispatch, useSelector } from "react-redux";
+import { pools } from "app/pools";
+import { Pool } from "app/containers/Rewards/types";
+import { RewardsPageActions } from "app/pages/Rewards/slice";
+import { DepositButton } from "./depositButton";
+import { WalletBalance } from "./walletBalance";
+import { RewardsPageSelectors } from "app/pages/Rewards/selectors";
 import { CompoundWithSnowball } from "./CompoundWithSnowball";
+type TParams = { poolIndex: string };
 
 export const DepositWrapped: FC = () => {
   const { t } = useTranslation();
+
+  const dispatch = useDispatch();
+  const { poolIndex } = useParams<TParams>();
+  const poolKey = getKeyFromPoolIndex(poolIndex) || "";
+  const pool = useSelector(RewardsPageSelectors.selectedPool);
+
+  useEffect(() => {
+    if (poolKey) {
+      const pool = pools[poolKey] as Pool;
+      dispatch(RewardsPageActions.setSelectedPool(pool));
+    }
+  }, [poolKey]);
 
   return (
     <StyledAddLiquidity>
@@ -22,9 +43,7 @@ export const DepositWrapped: FC = () => {
         </Grid>
 
         <Grid item alignSelf="end">
-          <BalanceText variant="body2">
-            {t(translations.RewardsPage.WalletBalance())}: 0.00
-          </BalanceText>
+          {pool && <WalletBalance token={pool?.lpToken} />}
         </Grid>
 
         <Grid item>
@@ -38,9 +57,7 @@ export const DepositWrapped: FC = () => {
         <Grid item>
           <Grid container spacing={2} direction="column" alignItems="center">
             <Grid item>
-              <ContainedButton width={220}>
-                {t(translations.RewardsPage.ActionButtons.Deposit())}
-              </ContainedButton>
+              <DepositButton />
             </Grid>
 
             <Grid item>
@@ -71,11 +88,6 @@ const StyledAddLiquidity = styled("div")({
 const HeaderText = styled(Typography)({
   color: CssVariables.white,
   fontSize: "26px",
-});
-
-const BalanceText = styled(Typography)({
-  color: CssVariables.white,
-  fontSize: "16px",
 });
 
 const OrText = styled(Typography)({

@@ -1,5 +1,6 @@
 html{
-  font-family: Montserrat,Rubik,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+  font-family:'IBM Plex Sans', Montserrat,Rubik,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+background: #0a0124;
 }
 .selectPaper{
   background: var(--paperBackground) !important;

@@ -86,10 +86,11 @@ export const MyShare: FC = () => {
             <Grid item>
               <BalanceText variant="body2">
                 $
-                {masterchefBalance && formatBNToShortString(
-                  masterchefBalance[tokenKey]?.userInfo.amount || Zero,
-                  18
-                )}
+                {masterchefBalance &&
+                  formatBNToShortString(
+                    masterchefBalance[tokenKey]?.userInfo.amount || Zero,
+                    18
+                  )}
               </BalanceText>
             </Grid>
           </Grid>

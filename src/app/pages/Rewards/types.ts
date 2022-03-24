@@ -10,6 +10,9 @@ export interface RewardsPageState {
   userShareData: UserShareData | undefined;
   isCompoundWithSnowballLoading: boolean;
   compoundWithSnowballAPY: string;
+  depositValue: string;
+  withdrawPercentage: number;
+  withdrawAmount: string;
 }
 
 export interface PoolCardItemProps {
