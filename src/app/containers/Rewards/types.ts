@@ -80,8 +80,9 @@ export interface Pool {
   userShareData?: UserShareData;
 }
 export interface ApproveAndDepositPayload {
-  poolName: Pools;
+  poolKey: Pools;
   masterchefDeposit?: boolean;
+  shouldDepositWrapped:boolean;
   tokenAmounts: { [K in TokenSymbols]?: BigNumber };
 }
 

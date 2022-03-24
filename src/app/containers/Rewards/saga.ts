@@ -242,11 +242,10 @@ export function* approveAndDeposit(action: {
   type: string;
   payload: ApproveAndDepositPayload;
 }) {
-  const { poolName, masterchefDeposit, tokenAmounts } = action.payload;
+  const { poolKey, masterchefDeposit, tokenAmounts,shouldDepositWrapped } = action.payload;
   const pools = yield select(RewardsDomains.pools);
-  const pool: Pool = pools[poolName];
+  const pool: Pool = pools[poolKey];
 
-  const shouldDepositWrapped = pool.swapAddress === undefined ? false : true;
 
   const poolTokens = shouldDepositWrapped
     ? (pool.underlyingPoolTokens as Token[])
