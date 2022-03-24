@@ -22,7 +22,8 @@ export function* deposit() {
       dataToSend.tokenAmounts[element.symbol] = floatToBN(0, element.decimals);
     });
   }
-  yield put(RewardsActions.approveAndDeposit(dataToSend));
+  console.log({dataToSend})
+  // yield put(RewardsActions.approveAndDeposit(dataToSend));
 }
 
 export function* withdraw(){

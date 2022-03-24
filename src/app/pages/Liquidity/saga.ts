@@ -1,8 +1,8 @@
 import { GlobalDomains } from "app/appSelectors";
 import { RewardsActions } from "app/containers/Rewards/slice";
-import { ApproveAndWithdrawPayload, Pool } from "app/containers/Rewards/types";
+import { ApproveAndDepositPayload, ApproveAndWithdrawPayload, Pool } from "app/containers/Rewards/types";
 import { floatToBN } from "common/format";
-import { put, select, takeLatest } from "redux-saga/effects";
+import { delay, put, select, takeLatest } from "redux-saga/effects";
 import { LiquidityPageDomains } from "./selectors";
 import { LiquidityPageActions } from "./slice";
 
@@ -19,13 +19,14 @@ export function* deposit() {
     const toSend = floatToBN(num, tokens[k].decimals);
     tmp[k] = toSend;
   }
-
-  yield put(
-    RewardsActions.approveAndDeposit({
-      poolName: pool.key,
-      tokenAmounts: tmp,
-    })
-  );
+const dataToSend:ApproveAndDepositPayload={
+  poolName: pool.key,
+  tokenAmounts: tmp,
+}
+console.log(dataToSend)
+  // yield put(
+  //   RewardsActions.approveAndDeposit(dataToSend)
+  // );
 }
 
 export function* withdraw(action: {
@@ -33,7 +34,9 @@ export function* withdraw(action: {
   payload: ApproveAndWithdrawPayload;
 }) {
   const { payload } = action;
-  yield put(RewardsActions.approveAndWithdraw(payload));
+  console.log(payload)
+  // yield put(RewardsActions.approveAndWithdraw(payload));
+  yield delay(0)
 }
 
 export function* liquidityPageSaga() {
