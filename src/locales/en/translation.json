@@ -40,6 +40,17 @@
   "RewardsPage": {
     "Rewards": "Rewards",
     "Description": "Rewards Page",
+    "WalletBalance": "Wallet balance",
+    "Deposit": {
+      "Title": "Deposit Wrapped",
+      "Or": "Or",
+      "CompoundWithSnowball": "Compound with snowball",
+      "APY": "APY"
+    },
+    "Withdraw": {
+      "Title": "Withdraw",
+      "WithdrawlPercentage": "Withdrawl percentage"
+    },
     "Info": {
       "Balance": "Balance",
       "Claimable": "Claimable",

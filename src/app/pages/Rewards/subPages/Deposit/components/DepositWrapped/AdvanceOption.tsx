@@ -6,16 +6,17 @@ import { useTranslation } from "react-i18next";
 import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { SnowInput } from "app/components/base/SnowInput";
-import { SwapActions } from "app/containers/Swap/slice";
-import { SwapSelectors } from "app/containers/Swap/selectors";
+import { globalSelectors } from "app/appSelectors";
+import { GlobalActions } from "store/slice";
 
 export const AdvanceOption: FC = () => {
   const { t } = useTranslation();
-  const infiniteApproval = useSelector(SwapSelectors.selectInfiniteApproval);
+  const infiniteApproval = useSelector(globalSelectors.infiniteApproval);
+
   const dispatch = useDispatch();
 
   const handleInfiniteApproval = () => {
-    dispatch(SwapActions.setInfiniteApproval(!infiniteApproval));
+    dispatch(GlobalActions.setInfiniteApproval(!infiniteApproval));
   };
 
   return (

@@ -1,22 +1,30 @@
 import React, { FC } from "react";
 import { styled, Grid, Typography } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
+import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { AdvanceOption } from "./AdvanceOption";
 import { ContainedButton } from "app/components/common/buttons/containedButton";
 import { CurrencyInput } from "./CurrencyInput";
-import { OutlinedButton } from "app/components/common/buttons/outlinedButton";
+import { CompoundWithSnowball } from "./CompoundWithSnowball";
 
 export const DepositWrapped: FC = () => {
+  const { t } = useTranslation();
+
   return (
     <StyledAddLiquidity>
       <Grid container direction="column" spacing={2}>
         <Grid item>
-          <HeaderText variant="h4">DEPOSIT WRAPPED</HeaderText>
+          <HeaderText variant="h4">
+            {t(translations.RewardsPage.Deposit.Title())}
+          </HeaderText>
         </Grid>
 
         <Grid item alignSelf="end">
-          <BalanceText variant="body2">Wallet balance: 0.00</BalanceText>
+          <BalanceText variant="body2">
+            {t(translations.RewardsPage.WalletBalance())}: 0.00
+          </BalanceText>
         </Grid>
 
         <Grid item>
@@ -30,17 +38,19 @@ export const DepositWrapped: FC = () => {
         <Grid item>
           <Grid container spacing={2} direction="column" alignItems="center">
             <Grid item>
-              <ContainedButton width={220}>Deposit</ContainedButton>
+              <ContainedButton width={220}>
+                {t(translations.RewardsPage.ActionButtons.Deposit())}
+              </ContainedButton>
             </Grid>
 
             <Grid item>
-              <OrText variant="body2">Or</OrText>
+              <OrText variant="body2">
+                {t(translations.RewardsPage.Deposit.Or())}
+              </OrText>
             </Grid>
 
             <Grid item>
-              <OutlinedButton width={420}>
-                COMPOUND WITH SNOWBALL
-              </OutlinedButton>
+              <CompoundWithSnowball />
             </Grid>
           </Grid>
         </Grid>

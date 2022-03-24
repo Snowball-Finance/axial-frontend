@@ -8,6 +8,8 @@ export interface RewardsPageState {
   poolTokens: Token[] | undefined;
   poolData: PoolData | undefined;
   userShareData: UserShareData | undefined;
+  isCompoundWithSnowballLoading: boolean;
+  compoundWithSnowballAPY: string;
 }
 
 export interface PoolCardItemProps {
@@ -34,5 +36,14 @@ export enum PoolsRouteIndex {
   AXIAL_JLP_ROUTE = "jlp",
   USDC_AM3D_ROUTE = "usdc-am3d",
 }
+
+export type PoolInfoByAddress = {
+  pair: string;
+  snowglobeAddress: string;
+};
+
+export type PoolInfoByAddressMap = {
+  [poolName: string]: PoolInfoByAddress;
+};
 
 export type ContainerState = RewardsPageState;
