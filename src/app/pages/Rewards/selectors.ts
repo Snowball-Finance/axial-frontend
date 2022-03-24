@@ -19,6 +19,12 @@ export const RewardsPageDomains = {
     state.rewardsPage?.poolData || initialState.poolData,
   userShareData: (state: RootState) =>
     state.rewardsPage?.userShareData || initialState.userShareData,
+  isCompoundWithSnowballLoading: (state: RootState) =>
+    state.rewardsPage?.isCompoundWithSnowballLoading ||
+    initialState.isCompoundWithSnowballLoading,
+  compoundWithSnowballAPY: (state: RootState) =>
+    state.rewardsPage?.compoundWithSnowballAPY ||
+    initialState.compoundWithSnowballAPY,
   depositValue: (state: RootState) =>
     state.rewardsPage?.depositValue || initialState.depositValue,
   withdrawPercentage: (state: RootState) =>
@@ -60,7 +66,12 @@ export const RewardsPageSelectors = {
     createSelector(RewardsDomains.pools, (pools) => pools[key]),
   selectedPool: createSelector(RewardsPageDomains.pool, (pool) => pool),
   rewardsPoolTokens: (key: string) =>
-    createSelector(RewardsDomains.pools, (pools) => pools[key]?.poolTokens),
+    createSelector(RewardsDomains.pools, (pools) => {
+      if (pools[key]) {
+        return pools[key].underlyingPoolTokens || pools[key].poolTokens;
+      }
+      return [];
+    }),
   rewardsPoolData: (key: string) =>
     createSelector(RewardsDomains.pools, (pools) => {
       if (key === Pools.AXIAL_JLP) {
@@ -72,6 +83,14 @@ export const RewardsPageSelectors = {
     }),
   rewardsUserShareData: (key: string) =>
     createSelector(RewardsDomains.pools, (pools) => pools[key]?.userShareData),
+  compoundWithSnowballLoading: createSelector(
+    RewardsPageDomains.isCompoundWithSnowballLoading,
+    (isLoading) => isLoading
+  ),
+  calculatedCompoundWithSnowballAPY: createSelector(
+    RewardsPageDomains.compoundWithSnowballAPY,
+    (APYValue) => APYValue
+  ),
   depositValue: createSelector(
     RewardsPageDomains.depositValue,
     (depositValue) => depositValue

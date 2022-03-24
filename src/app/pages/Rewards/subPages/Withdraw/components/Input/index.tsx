@@ -1,6 +1,8 @@
 import React, { FC } from "react";
 import { styled, Grid, Typography } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
+import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { CurrencyInput } from "./CurrencyInput";
 import { RewardsWithdrawSlider } from "./slider";
@@ -8,11 +10,15 @@ import { Percentage } from "./percentageText";
 import { RewardsWithdrawButton } from "./withdrawButton";
 
 export const WithdrawInput: FC = () => {
+  const { t } = useTranslation();
+
   return (
     <StyledAddLiquidity>
       <Grid container direction="column" spacing={2}>
         <Grid item>
-          <HeaderText variant="h4">Withdraw</HeaderText>
+          <HeaderText variant="h4">
+            {t(translations.RewardsPage.Withdraw.Title())}
+          </HeaderText>
         </Grid>
 
         <Grid item>
@@ -23,7 +29,8 @@ export const WithdrawInput: FC = () => {
           <Grid container justifyContent="space-between">
             <Grid item>
               <PercentageText variant="body2">
-                withdrawl percentage (%):
+                {t(translations.RewardsPage.Withdraw.WithdrawlPercentage())}{" "}
+                (%):
               </PercentageText>
             </Grid>
             <Grid item>

@@ -1,9 +1,10 @@
 import React, { FC, useEffect } from "react";
 import { styled, Grid, Typography } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
+import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { CurrencyInput } from "./CurrencyInput";
-import { OutlinedButton } from "app/components/common/buttons/outlinedButton";
 import { AdvanceOption } from "app/components/common/advancedOptions";
 import { useParams } from "react-router-dom";
 import { getKeyFromPoolIndex } from "app/pages/Rewards/constants";
@@ -14,9 +15,12 @@ import { RewardsPageActions } from "app/pages/Rewards/slice";
 import { DepositButton } from "./depositButton";
 import { WalletBalance } from "./walletBalance";
 import { RewardsPageSelectors } from "app/pages/Rewards/selectors";
+import { CompoundWithSnowball } from "./CompoundWithSnowball";
 type TParams = { poolIndex: string };
 
 export const DepositWrapped: FC = () => {
+  const { t } = useTranslation();
+
   const dispatch = useDispatch();
   const { poolIndex } = useParams<TParams>();
   const poolKey = getKeyFromPoolIndex(poolIndex) || "";
@@ -33,7 +37,9 @@ export const DepositWrapped: FC = () => {
     <StyledAddLiquidity>
       <Grid container direction="column" spacing={2}>
         <Grid item>
-          <HeaderText variant="h4">DEPOSIT WRAPPED</HeaderText>
+          <HeaderText variant="h4">
+            {t(translations.RewardsPage.Deposit.Title())}
+          </HeaderText>
         </Grid>
 
         <Grid item alignSelf="end">
@@ -55,13 +61,13 @@ export const DepositWrapped: FC = () => {
             </Grid>
 
             <Grid item>
-              <OrText variant="body2">Or</OrText>
+              <OrText variant="body2">
+                {t(translations.RewardsPage.Deposit.Or())}
+              </OrText>
             </Grid>
 
             <Grid item>
-              <OutlinedButton width={420}>
-                COMPOUND WITH SNOWBALL
-              </OutlinedButton>
+              <CompoundWithSnowball />
             </Grid>
           </Grid>
         </Grid>

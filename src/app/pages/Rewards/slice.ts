@@ -1,10 +1,11 @@
+import { PayloadAction } from "@reduxjs/toolkit";
+
 import { ContainerState } from "./types";
 import { createSlice } from "store/toolkit";
 import { useInjectReducer, useInjectSaga } from "store/redux-injectors";
 
 import { rewardsPageSaga } from "./saga";
 import { zeroString } from "../Liquidity/constants";
-import { PayloadAction } from "@reduxjs/toolkit";
 import { Pool } from "app/containers/Rewards/types";
 import { divide, multiply } from "precise-math";
 
@@ -15,6 +16,8 @@ export const initialState: ContainerState = {
   poolTokens: undefined,
   poolData: undefined,
   userShareData: undefined,
+  isCompoundWithSnowballLoading: false,
+  compoundWithSnowballAPY: "0.00",
   depositValue: zeroString,
   withdrawPercentage: 0,
   withdrawAmount: zeroString,
@@ -24,6 +27,13 @@ const rewardsPageSlice = createSlice({
   name: "rewardsPage",
   initialState,
   reducers: {
+    setCompoundWithSnowballLoading(state, action: PayloadAction<boolean>) {
+      state.isCompoundWithSnowballLoading = action.payload;
+    },
+    setCompoundWithSnowballAPY(state, action: PayloadAction<string>) {
+      state.compoundWithSnowballAPY = action.payload;
+    },
+    poolInfoByAddress(state, action: PayloadAction<string>) {},
     setSelectedPool(state, action: PayloadAction<Pool | undefined>) {
       state.pool = action.payload;
     },
