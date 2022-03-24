@@ -1,8 +1,10 @@
-import { RewardsActions } from "app/containers/Rewards/slice";
+import { Web3Domains } from "app/containers/BlockChain/Web3/selectors";
+import { AXIAL_MASTERCHEF_CONTRACT_ADDRESS } from "app/containers/Rewards/constants";
+import masterchef from "abi/masterchef.json"
 import { ApproveAndDepositPayload, ApproveAndWithdrawPayload, Pool, WithdrawType } from "app/containers/Rewards/types";
 import { floatToBN } from "common/format";
-import { BigNumber } from "ethers";
-import { put, select, takeLatest } from "redux-saga/effects";
+import { BigNumber, ethers } from "ethers";
+import { call, put, select, takeLatest } from "redux-saga/effects";
 import { RewardsPageDomains } from "./selectors";
 import { RewardsPageActions } from "./slice";
 
@@ -43,7 +45,24 @@ export function* withdraw(){
 
 }
 
+export function* claim(action:{type:string,payload:Pool}){
+  const pool=action.payload
+  const library=yield select(Web3Domains.selectLibraryDomain)
+  const materchefContract  = new ethers.Contract(
+    AXIAL_MASTERCHEF_CONTRACT_ADDRESS,
+    masterchef,
+    library?.getSigner(),
+  )
+  try{
+    yield call(materchefContract.withdraw,pool.lpToken.masterchefId,0)
+  }
+  catch(e){
+    console.log(e)
+  }
+}
+
 export function* rewardsPageSaga() {
   yield takeLatest(RewardsPageActions.deposit.type, deposit);
   yield takeLatest(RewardsPageActions.withdraw.type, withdraw);
+  yield takeLatest(RewardsPageActions.claim.type, claim);
 }

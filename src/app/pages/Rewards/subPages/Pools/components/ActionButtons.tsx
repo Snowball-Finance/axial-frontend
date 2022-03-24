@@ -12,6 +12,8 @@ import { ActionButtonProps } from "app/pages/Rewards/types";
 import { getPoolIndexFromKey } from "app/pages/Rewards/constants";
 import { RewardsSelectors } from "app/containers/Rewards/selectors";
 import { pools } from "app/pools";
+import { RewardsPageActions } from "app/pages/Rewards/slice";
+import { Pool } from "app/containers/Rewards/types";
 
 export const ActionButtons: FC<ActionButtonProps> = ({ poolKey }) => {
   const { t } = useTranslation();
@@ -29,6 +31,10 @@ export const ActionButtons: FC<ActionButtonProps> = ({ poolKey }) => {
     const poolIndex = getPoolIndexFromKey(poolKey);
     dispatch(push(`${AppPages.RewardPage}/${poolIndex}/withdraw`));
   };
+
+  const handleClaimClick=(pool:Pool)=>{
+    dispatch(RewardsPageActions.claim(pool))
+  }
 
   return (
     <Grid container spacing={2}>
@@ -53,6 +59,7 @@ export const ActionButtons: FC<ActionButtonProps> = ({ poolKey }) => {
       <Grid item>
         <OutlinedButton
           width={120}
+          onClick={()=>handleClaimClick(pools[poolKey])}
           disabled={
             masterchefBalance &&
             masterchefBalance[tokenKey]?.pendingTokens.pendingAxial.eq("0x0")

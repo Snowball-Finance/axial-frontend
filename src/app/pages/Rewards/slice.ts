@@ -32,6 +32,7 @@ const rewardsPageSlice = createSlice({
     },
     deposit() {},
     withdraw() {},
+    claim(state,action:PayloadAction<Pool>){},
     setWithdrawPercentage(state, action: PayloadAction<{percent:number,balance:number}>) {
       state.withdrawPercentage = action.payload.percent;
       //calculate percentage of balance
