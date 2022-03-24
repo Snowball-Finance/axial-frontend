@@ -14,10 +14,12 @@ import { RewardsSelectors } from "app/containers/Rewards/selectors";
 import { pools } from "app/pools";
 import { RewardsPageActions } from "app/pages/Rewards/slice";
 import { Pool } from "app/containers/Rewards/types";
+import { Web3Selectors } from "app/containers/BlockChain/Web3/selectors";
 
 export const ActionButtons: FC<ActionButtonProps> = ({ poolKey }) => {
   const { t } = useTranslation();
   const masterchefBalance = useSelector(RewardsSelectors.masterChefBalances);
+  const account=useSelector(Web3Selectors.selectAccount)
   const dispatch = useDispatch();
 
   const tokenKey = pools[poolKey].lpToken.symbol;
@@ -61,8 +63,8 @@ export const ActionButtons: FC<ActionButtonProps> = ({ poolKey }) => {
           width={120}
           onClick={()=>handleClaimClick(pools[poolKey])}
           disabled={
-            masterchefBalance &&
-            masterchefBalance[tokenKey]?.pendingTokens.pendingAxial.eq("0x0")
+            !account || (masterchefBalance &&
+            masterchefBalance[tokenKey]?.pendingTokens.pendingAxial.eq("0x0"))
           }
         >
           {t(translations.RewardsPage.ActionButtons.Claim())}

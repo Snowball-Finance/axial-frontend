@@ -10,6 +10,7 @@ import { BigNumber, ethers } from "ethers";
 import { RewardsPageDomains } from "./selectors";
 import { RewardsPageActions } from "./slice";
 import { getPoolInfoByAddressAPI } from "./providers/getPoolInfoByAddress";
+import { RewardsActions } from "app/containers/Rewards/slice";
 
 export function* poolInfoByAddress(action: { type: string; payload: string }) {
   const { payload } = action;
@@ -40,19 +41,14 @@ export function* deposit() {
   const value = yield select(RewardsPageDomains.depositValue) || "0";
   const token = selectedPool.lpToken;
   const dataToSend: ApproveAndDepositPayload = {
-    poolName: selectedPool.key,
+    poolKey: selectedPool.key,
     masterchefDeposit: true,
+    shouldDepositWrapped:false,
     tokenAmounts: {
       [token.symbol]: floatToBN(Number(value), token.decimals),
     },
   };
-  if (selectedPool.underlyingPoolTokens) {
-    selectedPool.underlyingPoolTokens.forEach((element) => {
-      dataToSend.tokenAmounts[element.symbol] = floatToBN(0, element.decimals);
-    });
-  }
-  console.log({dataToSend})
-  // yield put(RewardsActions.approveAndDeposit(dataToSend));
+  yield put(RewardsActions.approveAndDeposit(dataToSend));
 }
 
 export function* withdraw(){
