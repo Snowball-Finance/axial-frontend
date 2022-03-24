@@ -77,6 +77,12 @@
       "Deposit": "Deposit",
       "Withdraw": "Withdraw",
       "Claim": "Claim"
+    },
+    "Modal": {
+      "Deposit": "Deposit",
+      "Approval": "Approval",
+      "Steps": "Steps",
+      "Withdraw": "Withdraw"
     }
   },
   "SwapPage": {
