@@ -4,7 +4,7 @@ variable "zone_id" {
 }
 
 variable "domain_name" {
-  description = "The domain name to used this use this ACM on"
+  description = "The domain name used on this ACM"
   type        = string
 }
 
