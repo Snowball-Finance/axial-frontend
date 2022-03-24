@@ -31,7 +31,6 @@ export const RewardsPageDomains = {
     state.rewardsPage?.withdrawPercentage || initialState.withdrawPercentage,
   withdrawAmount: (state: RootState) =>
     state.rewardsPage?.withdrawAmount || initialState.withdrawAmount,
-
 };
 
 export const RewardsPageSelectors = {
@@ -104,15 +103,20 @@ export const RewardsPageSelectors = {
     (withdrawAmount) => withdrawAmount
   ),
   equivalentWithdrawAmount: createSelector(
-    [RewardsPageDomains.pool, RewardsPageDomains.withdrawAmount,GlobalDomains.tokenPricesUSD],
-    (pool,withdrawAmount,prices)=>{
-      if(pool &&prices){
-        const token=pool.lpToken
-        const price=prices[token.symbol]
-        if(price && !isNaN(Number(withdrawAmount))){
-          return multiply(Number(withdrawAmount),price)
+    [
+      RewardsPageDomains.pool,
+      RewardsPageDomains.withdrawAmount,
+      GlobalDomains.tokenPricesUSD,
+    ],
+    (pool, withdrawAmount, prices) => {
+      if (pool && prices) {
+        const token = pool.lpToken;
+        const price = prices[token.symbol];
+        if (price && !isNaN(Number(withdrawAmount))) {
+          return multiply(Number(withdrawAmount), price);
         }
-        return 0
+        return 0;
       }
-    })
+    }
+  ),
 };

@@ -109,8 +109,8 @@ const StyledAccordion = styled(Accordion)({
   border: `4px solid ${CssVariables.cardBorder}`,
 
   "&.MuiPaper-root": {
-      borderRadius: "20px",
-  }
+    borderRadius: "20px",
+  },
 });
 
 const StyledAccordionSummary = styled(AccordionSummary)({});

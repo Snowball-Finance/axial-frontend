@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { styled, Grid, Typography } from "@mui/material";
-import {  useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { LiquidityPageSelectors } from "app/pages/Liquidity/selectors";
 import { Token, TokenSymbols } from "app/containers/Swap/types";
@@ -12,8 +12,10 @@ import { WalletBalance } from "./walletBalance";
 export const CurrencyInputs: FC = () => {
   const tokens = useSelector(globalSelectors.tokens) as Token[];
   const pool = useSelector(LiquidityPageSelectors.selectedPool) as Pool;
-  const depositRaw=useSelector(LiquidityPageSelectors.depositRaw)
-  const poolTokens = depositRaw?pool.poolTokens :(pool.underlyingPoolTokens||pool.poolTokens) ;
+  const depositRaw = useSelector(LiquidityPageSelectors.depositRaw);
+  const poolTokens = depositRaw
+    ? pool.poolTokens
+    : pool.underlyingPoolTokens || pool.poolTokens;
   return (
     <>
       {poolTokens?.map((token: Token) => (
@@ -62,7 +64,6 @@ export const CurrencyInputs: FC = () => {
     </>
   );
 };
-
 
 const StyledCurrencyInput = styled(Grid)({
   width: "100%",

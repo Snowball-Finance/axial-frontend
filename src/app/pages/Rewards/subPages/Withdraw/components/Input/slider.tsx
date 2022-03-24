@@ -7,36 +7,37 @@ import { BNToFloat } from "common/format";
 import { useDispatch, useSelector } from "react-redux";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 
-export const RewardsWithdrawSlider=()=>{
-  const dispatch=useDispatch()
-  const sliderValue=useSelector(RewardsPageSelectors.withdrawPercentage)
-  const pool=useSelector(RewardsPageSelectors.selectedPool)
-const tokens=useSelector(globalSelectors.tokens)
-const account=useSelector(Web3Selectors.selectAccount)
+export const RewardsWithdrawSlider = () => {
+  const dispatch = useDispatch();
+  const sliderValue = useSelector(RewardsPageSelectors.withdrawPercentage);
+  const pool = useSelector(RewardsPageSelectors.selectedPool);
+  const tokens = useSelector(globalSelectors.tokens);
+  const account = useSelector(Web3Selectors.selectAccount);
 
-  const handleSliderChange=(e:number)=>{
-if(tokens && pool){
-  const balance=tokens[pool.lpToken.symbol].balance
+  const handleSliderChange = (e: number) => {
+    if (tokens && pool) {
+      const balance = tokens[pool.lpToken.symbol].balance;
 
-  dispatch(RewardsPageActions.setWithdrawPercentage({
-    percent:e,
-    balance:BNToFloat(balance,pool.lpToken.decimals)||0
-  }))
-}
-    
-  }
-  return(
+      dispatch(
+        RewardsPageActions.setWithdrawPercentage({
+          percent: e,
+          balance: BNToFloat(balance, pool.lpToken.decimals) || 0,
+        })
+      );
+    }
+  };
+  return (
     <WithdrawSlider
-    onChange={(e,v)=>{
-      handleSliderChange(v as number)
-    }}
-    disabled={!account}
-    value={sliderValue}
-    aria-label="Default"
-    valueLabelDisplay="auto"
-  />
-  )
-}
+      onChange={(e, v) => {
+        handleSliderChange(v as number);
+      }}
+      disabled={!account}
+      value={sliderValue}
+      aria-label="Default"
+      valueLabelDisplay="auto"
+    />
+  );
+};
 
 const WithdrawSlider = styled(Slider)({
   color: CssVariables.primary,

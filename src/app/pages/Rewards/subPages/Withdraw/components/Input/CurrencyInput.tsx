@@ -27,7 +27,7 @@ export const CurrencyInput: FC = () => {
             </Grid>
 
             <Grid item>
-<WithdrawInput />
+              <WithdrawInput />
             </Grid>
           </Grid>
         </Grid>
@@ -39,7 +39,7 @@ export const CurrencyInput: FC = () => {
             </Grid>
 
             <Grid item>
-             <EquivalentInUsdt />
+              <EquivalentInUsdt />
             </Grid>
           </Grid>
         </Grid>
@@ -60,7 +60,3 @@ const HeaderText = styled(Typography)({
   color: CssVariables.bodyTextColor,
   fontSize: "26px",
 });
-
-
-
-

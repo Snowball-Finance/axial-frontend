@@ -37,7 +37,7 @@ export const WithdrawButton = () => {
         tmpAmounts[k] = toSend;
       }
       const dataToSend: ApproveAndWithdrawPayload = {
-        poolName: selectedPool.key,
+        poolKey: selectedPool.key,
         type: WithdrawType.IMBALANCE,
         lpTokenAmountToSpend: BigNumber.from(0),
         tokenAmounts: tmpAmounts,

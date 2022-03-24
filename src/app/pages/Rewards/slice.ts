@@ -42,17 +42,23 @@ const rewardsPageSlice = createSlice({
     },
     deposit() {},
     withdraw() {},
-    claim(state,action:PayloadAction<Pool>){},
-    setWithdrawPercentage(state, action: PayloadAction<{percent:number,balance:number}>) {
+    claim(state, action: PayloadAction<Pool>) {},
+    setWithdrawPercentage(
+      state,
+      action: PayloadAction<{ percent: number; balance: number }>
+    ) {
       state.withdrawPercentage = action.payload.percent;
       //calculate percentage of balance
-      const amount=multiply(action.payload.balance,(divide(action.payload.percent,100)));
-      state.withdrawAmount=amount.toString();
+      const amount = multiply(
+        action.payload.balance,
+        divide(action.payload.percent, 100)
+      );
+      state.withdrawAmount = amount.toString();
     },
     setWithdrawAmount(state, action: PayloadAction<string>) {
-      state.withdrawPercentage=0
+      state.withdrawPercentage = 0;
       state.withdrawAmount = action.payload;
-    }
+    },
   },
 });
 

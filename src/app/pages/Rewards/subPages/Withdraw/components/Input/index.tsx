@@ -22,7 +22,7 @@ export const WithdrawInput: FC = () => {
         </Grid>
 
         <Grid item>
-       <RewardsWithdrawSlider />
+          <RewardsWithdrawSlider />
         </Grid>
 
         <Grid item>
@@ -44,7 +44,7 @@ export const WithdrawInput: FC = () => {
         </Grid>
 
         <Grid item alignSelf="center">
-         <RewardsWithdrawButton />
+          <RewardsWithdrawButton />
         </Grid>
       </Grid>
     </StyledAddLiquidity>
@@ -69,5 +69,3 @@ const PercentageText = styled(Typography)({
   color: CssVariables.white,
   fontSize: "16px",
 });
-
-

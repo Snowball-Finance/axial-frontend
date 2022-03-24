@@ -13,7 +13,7 @@ import { LiquidityPageSelectors } from "app/pages/Liquidity/selectors";
 
 export const AddLiquidity: FC = () => {
   const { t } = useTranslation();
-const pool=useSelector(LiquidityPageSelectors.selectedPool)
+  const pool = useSelector(LiquidityPageSelectors.selectedPool);
   return (
     <StyledAddLiquidity>
       <Grid container direction="column" spacing={2}>
@@ -24,7 +24,7 @@ const pool=useSelector(LiquidityPageSelectors.selectedPool)
         </Grid>
 
         <CurrencyInputs />
-{pool?.underlyingPoolTokens && <DepositWrappedCheckbox />}
+        {pool?.underlyingPoolTokens && <DepositWrappedCheckbox />}
         <Grid item>
           <AdvanceOption />
         </Grid>

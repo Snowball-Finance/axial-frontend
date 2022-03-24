@@ -242,10 +242,10 @@ export function* approveAndDeposit(action: {
   type: string;
   payload: ApproveAndDepositPayload;
 }) {
-  const { poolKey, masterchefDeposit, tokenAmounts,shouldDepositWrapped } = action.payload;
+  const { poolKey, masterchefDeposit, tokenAmounts, shouldDepositWrapped } =
+    action.payload;
   const pools = yield select(RewardsDomains.pools);
   const pool: Pool = pools[poolKey];
-
 
   const poolTokens = shouldDepositWrapped
     ? (pool.underlyingPoolTokens as Token[])
@@ -378,13 +378,13 @@ export function* approveAndWithdraw(action: {
     const account = yield select(Web3Domains.selectAccountDomain);
 
     const {
-      poolName,
+       poolKey,
       tokenAmounts,
       masterchefwithdraw,
       type,
       lpTokenAmountToSpend,
     } = action.payload;
-    const pool: Pool = pools[poolName];
+    const pool: Pool = pools[poolKey];
 
     const targetContract = new Contract(
       pool.address,

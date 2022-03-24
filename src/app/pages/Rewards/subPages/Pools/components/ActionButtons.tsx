@@ -19,7 +19,7 @@ import { Web3Selectors } from "app/containers/BlockChain/Web3/selectors";
 export const ActionButtons: FC<ActionButtonProps> = ({ poolKey }) => {
   const { t } = useTranslation();
   const masterchefBalance = useSelector(RewardsSelectors.masterChefBalances);
-  const account=useSelector(Web3Selectors.selectAccount)
+  const account = useSelector(Web3Selectors.selectAccount);
   const dispatch = useDispatch();
 
   const tokenKey = pools[poolKey].lpToken.symbol;
@@ -34,9 +34,9 @@ export const ActionButtons: FC<ActionButtonProps> = ({ poolKey }) => {
     dispatch(push(`${AppPages.RewardPage}/${poolIndex}/withdraw`));
   };
 
-  const handleClaimClick=(pool:Pool)=>{
-    dispatch(RewardsPageActions.claim(pool))
-  }
+  const handleClaimClick = (pool: Pool) => {
+    dispatch(RewardsPageActions.claim(pool));
+  };
 
   return (
     <Grid container spacing={2}>
@@ -61,10 +61,11 @@ export const ActionButtons: FC<ActionButtonProps> = ({ poolKey }) => {
       <Grid item>
         <OutlinedButton
           width={120}
-          onClick={()=>handleClaimClick(pools[poolKey])}
+          onClick={() => handleClaimClick(pools[poolKey])}
           disabled={
-            !account || (masterchefBalance &&
-            masterchefBalance[tokenKey]?.pendingTokens.pendingAxial.eq("0x0"))
+            !account ||
+            (masterchefBalance &&
+              masterchefBalance[tokenKey]?.pendingTokens.pendingAxial.eq("0x0"))
           }
         >
           {t(translations.RewardsPage.ActionButtons.Claim())}

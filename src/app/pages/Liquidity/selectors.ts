@@ -30,8 +30,8 @@ export const LiquidityPageDomains = {
   withdrawTokenAmounts: (state: RootState) =>
     state.liquidityPage?.withdrawTokenAmounts ||
     initialState.withdrawTokenAmounts,
-    depositRaw: (state: RootState) =>
-    state.liquidityPage?.depositRaw || initialState.depositRaw
+  depositRaw: (state: RootState) =>
+    state.liquidityPage?.depositRaw || initialState.depositRaw,
 };
 
 export const LiquidityPageSelectors = {
@@ -122,10 +122,10 @@ export const LiquidityPageSelectors = {
         return tokensObject;
       }
     ),
-    depositRaw: createSelector(
-      LiquidityPageDomains.depositRaw,
-      (depositRaw) => depositRaw
-    ),
+  depositRaw: createSelector(
+    LiquidityPageDomains.depositRaw,
+    (depositRaw) => depositRaw
+  ),
 };
 
 interface CalculatorProps {
