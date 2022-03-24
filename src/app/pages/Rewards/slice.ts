@@ -6,6 +6,7 @@ import { rewardsPageSaga } from "./saga";
 import { zeroString } from "../Liquidity/constants";
 import { PayloadAction } from "@reduxjs/toolkit";
 import { Pool } from "app/containers/Rewards/types";
+import { divide, multiply } from "precise-math";
 
 // The initial state of the RewardsPage container
 export const initialState: ContainerState = {
@@ -15,6 +16,8 @@ export const initialState: ContainerState = {
   poolData: undefined,
   userShareData: undefined,
   depositValue: zeroString,
+  withdrawPercentage: 0,
+  withdrawAmount: zeroString,
 };
 
 const rewardsPageSlice = createSlice({
@@ -28,6 +31,17 @@ const rewardsPageSlice = createSlice({
       state.depositValue = action.payload;
     },
     deposit() {},
+    withdraw() {},
+    setWithdrawPercentage(state, action: PayloadAction<{percent:number,balance:number}>) {
+      state.withdrawPercentage = action.payload.percent;
+      //calculate percentage of balance
+      const amount=multiply(action.payload.balance,(divide(action.payload.percent,100)));
+      state.withdrawAmount=amount.toString();
+    },
+    setWithdrawAmount(state, action: PayloadAction<string>) {
+      state.withdrawPercentage=0
+      state.withdrawAmount = action.payload;
+    }
   },
 });
 

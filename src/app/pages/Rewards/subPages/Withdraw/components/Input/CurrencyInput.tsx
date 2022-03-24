@@ -4,17 +4,18 @@ import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import { CssVariables } from "styles/cssVariables/cssVariables";
-import { SnowInput } from "app/components/base/SnowInput";
 import { getKeyFromPoolIndex } from "app/pages/Rewards/constants";
 import { RewardsPageSelectors } from "app/pages/Rewards/selectors";
 import { TokenImages } from "app/pages/Rewards/components/TokenImages";
+import { WithdrawInput } from "./input";
+import { EquivalentInUsdt } from "./equivalentAmount";
 
 type TParams = { poolIndex: string };
 
 export const CurrencyInput: FC = () => {
   const { poolIndex } = useParams<TParams>();
   const poolKey = getKeyFromPoolIndex(poolIndex) || "";
-  const rewardsPool = useSelector(RewardsPageSelectors.rewardsPool(poolKey));
+  const pool = useSelector(RewardsPageSelectors.rewardsPool(poolKey));
 
   return (
     <StyledAdvanceOption>
@@ -22,11 +23,11 @@ export const CurrencyInput: FC = () => {
         <Grid item>
           <Grid container justifyContent="space-between" alignItems="center">
             <Grid item>
-              <HeaderText variant="h4">{rewardsPool?.name}</HeaderText>
+              <HeaderText variant="h4">{pool?.name}</HeaderText>
             </Grid>
 
             <Grid item>
-              <CurrencyInputField value="0.00" onChange={() => {}} />
+<WithdrawInput />
             </Grid>
           </Grid>
         </Grid>
@@ -38,7 +39,7 @@ export const CurrencyInput: FC = () => {
             </Grid>
 
             <Grid item>
-              <InputText variant="body2">=$0.0</InputText>
+             <EquivalentInUsdt />
             </Grid>
           </Grid>
         </Grid>
@@ -60,23 +61,6 @@ const HeaderText = styled(Typography)({
   fontSize: "26px",
 });
 
-const CurrencyInputField = styled(SnowInput)({
-  ".MuiInputBase-root": {
-    color: CssVariables.white,
-    fontSize: "16px",
-    width: 80,
-  },
 
-  ".MuiInputBase-input": {
-    textAlign: "end",
-    padding: 0,
-  },
 
-  ".MuiOutlinedInput-notchedOutline": {
-    border: "none",
-  },
-});
 
-const InputText = styled(Typography)({
-  color: CssVariables.white,
-});

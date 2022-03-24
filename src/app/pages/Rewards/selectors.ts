@@ -1,8 +1,10 @@
 import { createSelector } from "@reduxjs/toolkit";
+import { GlobalDomains } from "app/appSelectors";
 import { Zero } from "app/containers/Rewards/constants";
 
 import { RewardsDomains } from "app/containers/Rewards/selectors";
 import { Pool, Pools } from "app/containers/Rewards/types";
+import { multiply } from "precise-math";
 import { RootState } from "store/types";
 import { initialState } from "./slice";
 import { axialJlpToken } from "./staticValue";
@@ -19,6 +21,11 @@ export const RewardsPageDomains = {
     state.rewardsPage?.userShareData || initialState.userShareData,
   depositValue: (state: RootState) =>
     state.rewardsPage?.depositValue || initialState.depositValue,
+  withdrawPercentage: (state: RootState) =>
+    state.rewardsPage?.withdrawPercentage || initialState.withdrawPercentage,
+  withdrawAmount: (state: RootState) =>
+    state.rewardsPage?.withdrawAmount || initialState.withdrawAmount,
+
 };
 
 export const RewardsPageSelectors = {
@@ -69,4 +76,24 @@ export const RewardsPageSelectors = {
     RewardsPageDomains.depositValue,
     (depositValue) => depositValue
   ),
+  withdrawPercentage: createSelector(
+    RewardsPageDomains.withdrawPercentage,
+    (withdrawPercentage) => withdrawPercentage
+  ),
+  withdrawAmount: createSelector(
+    RewardsPageDomains.withdrawAmount,
+    (withdrawAmount) => withdrawAmount
+  ),
+  equivalentWithdrawAmount: createSelector(
+    [RewardsPageDomains.pool, RewardsPageDomains.withdrawAmount,GlobalDomains.tokenPricesUSD],
+    (pool,withdrawAmount,prices)=>{
+      if(pool &&prices){
+        const token=pool.lpToken
+        const price=prices[token.symbol]
+        if(price && !isNaN(Number(withdrawAmount))){
+          return multiply(Number(withdrawAmount),price)
+        }
+        return 0
+      }
+    })
 };

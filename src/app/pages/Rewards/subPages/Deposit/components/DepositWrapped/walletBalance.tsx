@@ -1,7 +1,6 @@
 import { styled, Typography } from "@mui/material";
 import { Zero } from "app/containers/Rewards/constants";
-import { Token, TokenSymbols } from "app/containers/Swap/types";
-import { LiquidityPageActions } from "app/pages/Liquidity/slice";
+import { Token } from "app/containers/Swap/types";
 import { RewardsPageActions } from "app/pages/Rewards/slice";
 import { BNToString } from "common/format";
 import { translations } from "locales/i18n";
