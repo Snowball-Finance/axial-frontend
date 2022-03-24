@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 
 import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
-import { AdvanceOption } from "./AdvanceOption";
+import { AdvanceOption } from "app/pages/Rewards/components/AdvanceOption";
 import { ContainedButton } from "app/components/common/buttons/containedButton";
 import { CurrencyInput } from "./CurrencyInput";
 import { CompoundWithSnowball } from "./CompoundWithSnowball";
