@@ -1,8 +1,7 @@
 import { GlobalDomains } from "app/appSelectors";
-import { RewardsActions } from "app/containers/Rewards/slice";
 import { ApproveAndDepositPayload, ApproveAndWithdrawPayload, Pool } from "app/containers/Rewards/types";
 import { floatToBN } from "common/format";
-import { delay, put, select, takeLatest } from "redux-saga/effects";
+import { delay, select, takeLatest } from "redux-saga/effects";
 import { LiquidityPageDomains } from "./selectors";
 import { LiquidityPageActions } from "./slice";
 

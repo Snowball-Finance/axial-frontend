@@ -24,9 +24,9 @@ export const CurrencyInfo: FC = () => {
 
   return (
     <StyledInfo>
-      <Grid container direction="column" spacing={2}>
+      <Grid container spacing={4}>
         {rewardsPoolData?.tokens.map((infoItem: TokenShareType) => (
-          <Grid item key={infoItem.symbol}>
+          <Grid item key={infoItem.symbol} xs={12}>
             <Grid container alignItems="center">
               <Grid item xs={4}>
                 <Grid container spacing={1}>

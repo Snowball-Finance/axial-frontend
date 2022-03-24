@@ -1,12 +1,39 @@
+import { toast } from "react-toastify";
+import { call, put, select, takeLatest } from "redux-saga/effects";
+
 import { Web3Domains } from "app/containers/BlockChain/Web3/selectors";
 import { AXIAL_MASTERCHEF_CONTRACT_ADDRESS } from "app/containers/Rewards/constants";
 import masterchef from "abi/masterchef.json"
 import { ApproveAndDepositPayload, ApproveAndWithdrawPayload, Pool, WithdrawType } from "app/containers/Rewards/types";
 import { floatToBN } from "common/format";
 import { BigNumber, ethers } from "ethers";
-import { call, put, select, takeLatest } from "redux-saga/effects";
 import { RewardsPageDomains } from "./selectors";
 import { RewardsPageActions } from "./slice";
+import { getPoolInfoByAddressAPI } from "./providers/getPoolInfoByAddress";
+
+export function* poolInfoByAddress(action: { type: string; payload: string }) {
+  const { payload } = action;
+
+  yield put(RewardsPageActions.setCompoundWithSnowballLoading(true));
+
+  try {
+    const { data } = yield call(getPoolInfoByAddressAPI, payload);
+    const compoundWithSnowballAPY =
+      data?.PoolsInfoByAddress.gaugeInfo.snobYearlyAPR +
+      data?.PoolsInfoByAddress.yearlyAPY +
+      data?.PoolsInfoByAddress.yearlySwapFees;
+
+    yield put(
+      RewardsPageActions.setCompoundWithSnowballAPY(compoundWithSnowballAPY)
+    );
+  } catch (error) {
+    console.log("error", error);
+    toast.error("error while getting pool info");
+  } finally {
+    yield put(RewardsPageActions.setCompoundWithSnowballLoading(false));
+  }
+}
+
 
 export function* deposit() {
   const selectedPool: Pool = yield select(RewardsPageDomains.pool);
@@ -62,6 +89,10 @@ export function* claim(action:{type:string,payload:Pool}){
 }
 
 export function* rewardsPageSaga() {
+  yield takeLatest(
+    RewardsPageActions.poolInfoByAddress.type,
+    poolInfoByAddress
+  );
   yield takeLatest(RewardsPageActions.deposit.type, deposit);
   yield takeLatest(RewardsPageActions.withdraw.type, withdraw);
   yield takeLatest(RewardsPageActions.claim.type, claim);
