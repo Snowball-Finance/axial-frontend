@@ -7,10 +7,13 @@ import { CssVariables } from "styles/cssVariables/cssVariables";
 import { AdvanceOption } from "../../../../../components/common/advancedOptions";
 import { CurrencyInputs } from "./CurrencyInput";
 import { DepositButton } from "./depositButton";
+import { DepositWrappedCheckbox } from "./depositWrappedCheckbox";
+import { useSelector } from "react-redux";
+import { LiquidityPageSelectors } from "app/pages/Liquidity/selectors";
 
 export const AddLiquidity: FC = () => {
   const { t } = useTranslation();
-
+const pool=useSelector(LiquidityPageSelectors.selectedPool)
   return (
     <StyledAddLiquidity>
       <Grid container direction="column" spacing={2}>
@@ -21,7 +24,7 @@ export const AddLiquidity: FC = () => {
         </Grid>
 
         <CurrencyInputs />
-
+{pool?.underlyingPoolTokens && <DepositWrappedCheckbox />}
         <Grid item>
           <AdvanceOption />
         </Grid>

@@ -30,10 +30,12 @@ export const LiquidityPageDomains = {
   withdrawTokenAmounts: (state: RootState) =>
     state.liquidityPage?.withdrawTokenAmounts ||
     initialState.withdrawTokenAmounts,
+    depositRaw: (state: RootState) =>
+    state.liquidityPage?.depositRaw || initialState.depositRaw
 };
 
 export const LiquidityPageSelectors = {
-  selectliquidityPage: createSelector(
+  selectLiquidityPage: createSelector(
     LiquidityPageDomains.liquidityPage,
     (liquidityPageState) => liquidityPageState
   ),
@@ -119,6 +121,10 @@ export const LiquidityPageSelectors = {
         }
         return tokensObject;
       }
+    ),
+    depositRaw: createSelector(
+      LiquidityPageDomains.depositRaw,
+      (depositRaw) => depositRaw
     ),
 };
 

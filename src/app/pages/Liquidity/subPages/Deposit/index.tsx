@@ -29,7 +29,6 @@ export const Deposit: FC = () => {
     <PageWrapper>
       <Grid container spacing={4}>
         <Grid item>{pool && <AddLiquidity />}</Grid>
-
         <Grid item>
           <CurrencyReserve />
         </Grid>

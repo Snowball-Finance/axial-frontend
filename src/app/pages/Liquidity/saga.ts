@@ -10,6 +10,7 @@ export function* deposit() {
   const depositTokenAmounts = yield select(
     LiquidityPageDomains.depositTokenAmounts
   );
+  const depositRaw=yield select(LiquidityPageDomains.depositRaw)
   const tokens = yield select(GlobalDomains.tokens);
   const pool: Pool = yield select(LiquidityPageDomains.pool);
   const tmp = {};
@@ -22,7 +23,7 @@ export function* deposit() {
 const dataToSend:ApproveAndDepositPayload={
   poolKey: pool.key,
   tokenAmounts: tmp,
-  shouldDepositWrapped: pool.swapAddress === undefined ? false : true
+  shouldDepositWrapped: pool.swapAddress === undefined ? false : (!depositRaw)
 }
   yield put(
     RewardsActions.approveAndDeposit(dataToSend)

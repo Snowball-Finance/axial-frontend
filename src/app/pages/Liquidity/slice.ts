@@ -19,6 +19,7 @@ export const initialState: ContainerState = {
   withdrawTokenAmounts: {},
   withdrawPercentage: 0,
   selectedTokenToWithdraw: "combo",
+  depositRaw:false
 };
 
 const liquidityPageSlice = createSlice({
@@ -38,6 +39,19 @@ const liquidityPageSlice = createSlice({
         state.withdrawTokenAmounts = tmp;
       }
     },
+    resetTokens(state) {
+      const pool=state.pool
+      if(pool){
+      const depositWrapped=state.depositRaw
+      const tokens=depositWrapped?pool.underlyingPoolTokens : pool.poolTokens;
+      const tmp = {};
+      for (let k in tokens) {
+        const token = tokens[k];
+        tmp[token.symbol] = zeroString;
+      }
+      state.depositTokenAmounts = tmp;
+      }
+    },
     setLiquidityDepositTokenAmount(
       state,
       action: PayloadAction<{ symbol: TokenSymbols; value: string }>
@@ -54,6 +68,9 @@ const liquidityPageSlice = createSlice({
       const allValues = { ...state.depositTokenAmounts };
       allValues[symbol] = valueToApply;
       state.depositTokenAmounts = allValues;
+    },
+    setDepositRaw(state, action: PayloadAction<boolean>) {
+      state.depositRaw = action.payload;
     },
     deposit() {},
     withdraw(state, action: PayloadAction<ApproveAndWithdrawPayload>) {},

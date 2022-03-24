@@ -12,6 +12,7 @@ export interface LiquidityPageState {
   withdrawTokenAmounts: { [K in TokenSymbols]?: string };
   withdrawPercentage: number;
   selectedTokenToWithdraw: "combo" | TokenSymbols;
+  depositRaw:boolean
 }
 
 export interface PoolCardItemProps {
