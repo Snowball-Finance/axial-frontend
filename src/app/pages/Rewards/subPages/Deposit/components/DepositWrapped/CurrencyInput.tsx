@@ -4,18 +4,17 @@ import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import { CssVariables } from "styles/cssVariables/cssVariables";
-import { SnowInput } from "app/components/base/SnowInput";
 import { getKeyFromPoolIndex } from "app/pages/Rewards/constants";
 import { RewardsPageSelectors } from "app/pages/Rewards/selectors";
 import { TokenImages } from "app/pages/Rewards/components/TokenImages";
+import { RewardsDepositInput } from "./input";
 
 type TParams = { poolIndex: string };
 
 export const CurrencyInput: FC = () => {
   const { poolIndex } = useParams<TParams>();
   const poolKey = getKeyFromPoolIndex(poolIndex) || "";
-  const rewardsPool =
-    useSelector(RewardsPageSelectors.rewardsPool(poolKey));
+  const rewardsPool = useSelector(RewardsPageSelectors.rewardsPool(poolKey));
 
   return (
     <StyledAdvanceOption>
@@ -27,7 +26,7 @@ export const CurrencyInput: FC = () => {
             </Grid>
 
             <Grid item>
-              <CurrencyInputField value="0.00" onChange={() => {}} />
+              <RewardsDepositInput />
             </Grid>
           </Grid>
         </Grid>
@@ -35,7 +34,7 @@ export const CurrencyInput: FC = () => {
         <Grid item>
           <Grid container justifyContent="space-between" alignItems="center">
             <Grid item>
-              <TokenImages poolKey={poolKey}/>
+              <TokenImages poolKey={poolKey} />
             </Grid>
 
             <Grid item>
@@ -59,23 +58,6 @@ const StyledAdvanceOption = styled("div")({
 const HeaderText = styled(Typography)({
   color: CssVariables.bodyTextColor,
   fontSize: "26px",
-});
-
-const CurrencyInputField = styled(SnowInput)({
-  ".MuiInputBase-root": {
-    color: CssVariables.white,
-    fontSize: "16px",
-    width: 80,
-  },
-
-  ".MuiInputBase-input": {
-    textAlign: "end",
-    padding: 0,
-  },
-
-  ".MuiOutlinedInput-notchedOutline": {
-    border: "none",
-  },
 });
 
 const InputText = styled(Typography)({

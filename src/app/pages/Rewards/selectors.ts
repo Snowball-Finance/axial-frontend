@@ -17,6 +17,8 @@ export const RewardsPageDomains = {
     state.rewardsPage?.poolData || initialState.poolData,
   userShareData: (state: RootState) =>
     state.rewardsPage?.userShareData || initialState.userShareData,
+  depositValue: (state: RootState) =>
+    state.rewardsPage?.depositValue || initialState.depositValue,
 };
 
 export const RewardsPageSelectors = {
@@ -49,8 +51,9 @@ export const RewardsPageSelectors = {
   }),
   rewardsPool: (key: string) =>
     createSelector(RewardsDomains.pools, (pools) => pools[key]),
+  selectedPool: createSelector(RewardsPageDomains.pool, (pool) => pool),
   rewardsPoolTokens: (key: string) =>
-    createSelector(RewardsDomains.pools, (pools) => pools[key].poolTokens),
+    createSelector(RewardsDomains.pools, (pools) => pools[key]?.poolTokens),
   rewardsPoolData: (key: string) =>
     createSelector(RewardsDomains.pools, (pools) => {
       if (key === Pools.AXIAL_JLP) {
@@ -58,8 +61,12 @@ export const RewardsPageSelectors = {
           tokens: axialJlpToken,
         };
       }
-      return pools[key].poolData;
+      return pools[key]?.poolData;
     }),
   rewardsUserShareData: (key: string) =>
-    createSelector(RewardsDomains.pools, (pools) => pools[key].userShareData),
+    createSelector(RewardsDomains.pools, (pools) => pools[key]?.userShareData),
+  depositValue: createSelector(
+    RewardsPageDomains.depositValue,
+    (depositValue) => depositValue
+  ),
 };

@@ -18,47 +18,50 @@ import { LiquidityPageActions } from "app/pages/Liquidity/slice";
 
 type TParams = { poolIndex: string };
 
-export const Selection: FC = memo(() => {
-  const dispatch = useDispatch();
-  const { poolIndex } = useParams<TParams>();
-  const poolKey = getKeyFromPoolIndex(poolIndex) || "";
-  const poolTokens = useSelector(
-    LiquidityPageSelectors.liquidityPoolTokens(poolKey)
-  );
-  const selectedToken = useSelector(
-    LiquidityPageSelectors.selectedTokenToWithdraw
-  );
-  const setSelectedTokenToWithdraw = (e: "combo" | TokenSymbols) => {
-    dispatch(
-      LiquidityPageActions.setSelectedTokenToWithdraw(e as TokenSymbols)
+export const Selection: FC = memo(
+  () => {
+    const dispatch = useDispatch();
+    const { poolIndex } = useParams<TParams>();
+    const poolKey = getKeyFromPoolIndex(poolIndex) || "";
+    const poolTokens = useSelector(
+      LiquidityPageSelectors.liquidityPoolTokens(poolKey)
     );
-  };
-  return (
-    <Grid item>
-      <StyledWithdrawOption>
-        <StyledRadioGroup row>
-          <FormControlLabel
-            onClick={() => setSelectedTokenToWithdraw("combo")}
-            value={selectedToken}
-            control={<SnowRadio value={"combo"} />}
-            label="Combo"
-          />
-          {poolTokens.map((token: Token) => (
+    const selectedToken = useSelector(
+      LiquidityPageSelectors.selectedTokenToWithdraw
+    );
+    const setSelectedTokenToWithdraw = (e: "combo" | TokenSymbols) => {
+      dispatch(
+        LiquidityPageActions.setSelectedTokenToWithdraw(e as TokenSymbols)
+      );
+    };
+    return (
+      <Grid item>
+        <StyledWithdrawOption>
+          <StyledRadioGroup row>
             <FormControlLabel
-              key={token.address}
+              onClick={() => setSelectedTokenToWithdraw("combo")}
               value={selectedToken}
-              onClick={() =>
-                setSelectedTokenToWithdraw(token.symbol as TokenSymbols)
-              }
-              control={<SnowRadio value={token.symbol} />}
-              label={token.symbol}
+              control={<SnowRadio value={"combo"} />}
+              label="Combo"
             />
-          ))}
-        </StyledRadioGroup>
-      </StyledWithdrawOption>
-    </Grid>
-  );
-},()=>true);
+            {poolTokens.map((token: Token) => (
+              <FormControlLabel
+                key={token.address}
+                value={selectedToken}
+                onClick={() =>
+                  setSelectedTokenToWithdraw(token.symbol as TokenSymbols)
+                }
+                control={<SnowRadio value={token.symbol} />}
+                label={token.symbol}
+              />
+            ))}
+          </StyledRadioGroup>
+        </StyledWithdrawOption>
+      </Grid>
+    );
+  },
+  () => true
+);
 
 const StyledWithdrawOption = styled(FormControl)({
   width: "100%",

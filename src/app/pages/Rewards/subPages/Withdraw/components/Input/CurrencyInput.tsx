@@ -14,8 +14,7 @@ type TParams = { poolIndex: string };
 export const CurrencyInput: FC = () => {
   const { poolIndex } = useParams<TParams>();
   const poolKey = getKeyFromPoolIndex(poolIndex) || "";
-  const rewardsPool =
-    useSelector(RewardsPageSelectors.rewardsPool(poolKey));
+  const rewardsPool = useSelector(RewardsPageSelectors.rewardsPool(poolKey));
 
   return (
     <StyledAdvanceOption>
@@ -35,7 +34,7 @@ export const CurrencyInput: FC = () => {
         <Grid item>
           <Grid container justifyContent="space-between" alignItems="center">
             <Grid item>
-              <TokenImages poolKey={poolKey}/>
+              <TokenImages poolKey={poolKey} />
             </Grid>
 
             <Grid item>

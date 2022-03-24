@@ -8,6 +8,7 @@ export interface RewardsPageState {
   poolTokens: Token[] | undefined;
   poolData: PoolData | undefined;
   userShareData: UserShareData | undefined;
+  depositValue: string;
 }
 
 export interface PoolCardItemProps {
