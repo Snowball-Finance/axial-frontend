@@ -36,7 +36,9 @@ jobs:
       id: branch
 
     - name: Deploy branch to S3 bucket
-      run: aws s3 cp --recursive build/ s3://${{secrets.DEV_S3_BUCKET}}/${{ steps.branch.outputs.current }}
+      run: | 
+        aws s3 cp --recursive build/ s3://${{secrets.DEV_S3_BUCKET}}/${{ steps.branch.outputs.current }}
+        aws cloudfront create-invalidation --distribution-id ${{ secrets.DEV_DISTRIBUTION_ID }} --paths "/*"
   
   display-link:
     runs-on: ubuntu-latest
