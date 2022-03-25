@@ -18,6 +18,7 @@ import { ToToken } from "./components/ToToken";
 import { BestPath } from "./components/BestPath";
 import { ReverseSwap } from "./components/ReverseSwap";
 import { Actions } from "./components/Actions";
+import { mobile } from "styles/media";
 
 export const SwapPage: FC = () => {
   useSwapPageSlice();
@@ -66,9 +67,17 @@ const StyledSwapCard = styled("div")({
   border: `4px solid ${CssVariables.cardBorder}`,
   borderRadius: "20px",
   padding: "20px",
+
+  [mobile]: {
+    width: "100%",
+  },
 });
 
 const StyledContainer = styled(Grid)({
   width: 550,
   margin: "auto",
+
+  [mobile]: {
+    width: "100%",
+  },
 });

@@ -21,6 +21,7 @@ import { SwapPageSelectors } from "app/pages/Swap/selectors";
 import { SwapPageActions } from "app/pages/Swap/slice";
 import { SwapActions } from "app/containers/Swap/slice";
 import { globalSelectors } from "app/appSelectors";
+import { mobile } from "styles/media";
 
 export const Review: FC = () => {
   const { t } = useTranslation();
@@ -81,9 +82,9 @@ export const Review: FC = () => {
     <ReviewContainer container spacing={2}>
       <Grid item xs={12}>
         <TokenContainer>
-          <Grid container direction="column" spacing={1}>
+          <Grid container justifyContent="space-between" spacing={1}>
             {tokenInfo.map((token) => (
-              <Grid item key={token.symbol}>
+              <Grid item key={token.symbol} xs={12}>
                 <Grid
                   container
                   justifyContent="space-between"
@@ -109,8 +110,8 @@ export const Review: FC = () => {
                     </Grid>
                   </TokenIconContainer>
 
-                  <Grid item>
-                    <TokenTitle variant="h6">{token.value}</TokenTitle>
+                  <Grid item xs zeroMinWidth>
+                    <TokenTitle variant="h6" noWrap align="right">{token.value}</TokenTitle>
                   </Grid>
                 </Grid>
               </Grid>
@@ -153,6 +154,10 @@ export const Review: FC = () => {
 const ReviewContainer = styled(Grid)({
   maxWidth: 600,
   minHeight: 500,
+
+  [mobile]: {
+    maxWidth: "80vw"
+  }
 });
 
 const TokenContainer = styled("div")({
@@ -162,6 +167,10 @@ const TokenContainer = styled("div")({
   borderRadius: "20px",
   padding: 20,
   marginTop: 20,
+
+  [mobile]: {
+    maxWidth: "100%",
+  }
 });
 
 const TokenIconContainer = styled(Grid)({
@@ -169,6 +178,10 @@ const TokenIconContainer = styled(Grid)({
   borderRadius: CssVariables.buttonBorderRadius,
   padding: 5,
   minWidth: 150,
+
+  [mobile]: {
+    minWidth: 100,
+  },
 });
 
 const TokenTitle = styled(Typography)({
@@ -181,6 +194,10 @@ const InfoText = styled(Typography)({
 
 const TokenIcon = styled("img")({
   width: "33px",
+
+  [mobile]: {
+    width: "20px",
+  },
 });
 
 const InfoContainer = styled("div")({

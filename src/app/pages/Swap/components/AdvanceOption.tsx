@@ -48,7 +48,7 @@ export const AdvanceOption: FC = () => {
 
           <Grid item>
             <Grid container alignItems="center" spacing={2}>
-              <Grid item>
+              <Grid item xs={12} xl>
                 <Text variant="body2">
                   {t(translations.SwapPage.AdvanceOption.MaxSlippage())}:
                 </Text>

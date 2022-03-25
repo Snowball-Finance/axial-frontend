@@ -13,6 +13,7 @@ import { TokenOption } from "../types";
 import { SnowModal } from "app/components/common/modal";
 import { formatBNToString } from "app/containers/utils/contractUtils";
 import { Zero } from "app/containers/Rewards/constants";
+import { mobile } from "styles/media";
 
 export interface Props {
   options: TokenOption[];
@@ -56,7 +57,7 @@ export const TokenSearch: FC<Props> = ({
     }
 
     return (
-      <Text variant="body2">
+      <Text variant="body2" noWrap>
         {t(translations.SwapPage.TokenSearch.Placeholder())}
       </Text>
     );
@@ -119,24 +120,18 @@ export const TokenSearch: FC<Props> = ({
                           </Grid>
                         </TokenIconContainer>
 
-                        <Grid item>
-                          <Grid
-                            container
-                            direction="column"
-                            alignItems="flex-end"
-                          >
-                            <Grid item>
-                              <TokenTitle variant="body2">
-                                {formatBNToString(item.balance || Zero, item.decimals)}
-                              </TokenTitle>
-                            </Grid>
+                        <Grid item xs zeroMinWidth>
+                          <TokenTitle variant="body1" noWrap align="right">
+                            {formatBNToString(
+                              item.balance || Zero,
+                              item.decimals
+                            )}
+                          </TokenTitle>
 
-                            <Grid item>
-                              <TokenSubTitle variant="caption">
-                                ≈${formatBNToString(item.balanceUSD || Zero, 18, 2)}
-                              </TokenSubTitle>
-                            </Grid>
-                          </Grid>
+                          <TokenSubTitle variant="body2" noWrap align="right">
+                            ≈$
+                            {formatBNToString(item.balanceUSD || Zero, 18, 2)}
+                          </TokenSubTitle>
                         </Grid>
                       </Grid>
                     </ListItemButton>
@@ -164,13 +159,18 @@ const ButtonContainer = styled("div")({
 
 const ModalContainer = styled(Grid)({
   padding: 20,
+
+  [mobile]: {
+    width: "100%",
+    padding: 5,
+  },
 });
 
 const SearchContainer = styled(Grid)({
   border: `2px solid ${CssVariables.cardBorder}`,
   borderRadius: CssVariables.buttonBorderRadius,
   marginTop: 20,
-  marginBottom: 20
+  marginBottom: 20,
 });
 
 const TokensContainer = styled(List)({
@@ -184,6 +184,10 @@ const TokenIconContainer = styled(Grid)({
   borderRadius: CssVariables.buttonBorderRadius,
   padding: 5,
   minWidth: 150,
+
+  [mobile]: {
+    minWidth: 100,
+  },
 });
 
 const Text = styled(Typography)({
@@ -200,6 +204,10 @@ const TokenSubTitle = styled(Typography)({});
 
 const TokenIcon = styled("img")({
   width: "33px",
+
+  [mobile]: {
+    width: "20px",
+  },
 });
 
 const SelectIcon = styled(KeyboardArrowDownIcon)({
