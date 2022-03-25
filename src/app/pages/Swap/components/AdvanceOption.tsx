@@ -33,7 +33,7 @@ export const AdvanceOption: FC = () => {
           <Grid item>
             <Grid container alignItems="center" justifyContent="flex-start">
               <Grid item>
-                <Checkbox
+                <CustomCheckbox
                   checked={infiniteApproval}
                   onChange={handleInfiniteApproval}
                 />
@@ -114,4 +114,10 @@ const PercentageText = styled(Typography)({
 
 const StyledContainerItem = styled(Grid)({
   width: "100%",
+});
+
+const CustomCheckbox = styled(Checkbox)({
+  path: {
+    fill: CssVariables.primary,
+  },
 });
