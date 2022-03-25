@@ -5,6 +5,7 @@ import { DepositAndWithdrawTab } from "app/pages/Staking/types";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { CssVariables } from "styles/cssVariables/cssVariables";
+import { mobile } from "styles/media";
 
 const tabs = (t: any): { title: string; value: DepositAndWithdrawTab }[] => [
   {
@@ -74,4 +75,9 @@ const Wrapper = styled("div")({
   },
   borderBottomLeftRadius: 0,
   borderBottomRightRadius: 0,
+
+  [mobile]: {
+    width: "100%",
+    padding: 0,
+  },
 });

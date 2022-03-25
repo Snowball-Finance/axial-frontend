@@ -5,6 +5,7 @@ import { env } from "environment";
 import { ChangeEventHandler } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { CssVariables, FontFamilies } from "styles/cssVariables/cssVariables";
+import { mobile } from "styles/media";
 
 export const StakingAmount = () => {
   const dispatch = useDispatch();
@@ -53,6 +54,11 @@ const AmountInput = styled("input")({
   padding: "0 0 0 8px",
   background: "transparent",
   maxWidth: "calc(100% - 125px )",
+
+  [mobile]: {
+    width: "100%",
+    padding: 0,
+  },
 });
 
 const NameIconWrapper = styled("div")({
@@ -62,10 +68,20 @@ const NameIconWrapper = styled("div")({
   padding: "0px 12px",
   border: `4px solid ${CssVariables.cardBorder}`,
   borderRadius: CssVariables.paperBorderRadius,
+
+  [mobile]: {
+    width: "100%",
+    padding: 0,
+  },
 });
+
 const Wrapper = styled("div")({
   padding: "16px 18px",
   borderRadius: CssVariables.paperBorderRadius,
   border: `4px solid ${CssVariables.cardBorder}`,
   display: "flex",
+
+  [mobile]: {
+    width: "100%",
+  },
 });

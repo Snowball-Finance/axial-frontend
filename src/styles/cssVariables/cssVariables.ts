@@ -38,6 +38,7 @@ export enum CssVariables {
   swapInputbackground = "var(--swapInputbackground)",
   radioWidth = "var(--radioWidth)",
   radioHeight = "var(--radioHeight)",
+  navigationDrawerBackground = "var(--navigationDrawerBackground)",
 }
 
 export enum FontFamilies {
