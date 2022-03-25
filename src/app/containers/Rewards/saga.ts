@@ -378,7 +378,7 @@ export function* approveAndWithdraw(action: {
     const account = yield select(Web3Domains.selectAccountDomain);
 
     const {
-       poolKey,
+      poolKey,
       tokenAmounts,
       masterchefwithdraw,
       type,
