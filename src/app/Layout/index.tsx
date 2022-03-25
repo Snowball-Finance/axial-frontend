@@ -38,7 +38,8 @@ const StyledLayout = styled("div")(({ theme }) => ({
   backgroundPosition: "center",
 
   [mobile]: {
-    width: "fit-content",
+    width: "100%",
+    overflowX: "hidden",
   },
 }));
 
@@ -62,5 +63,6 @@ const MainWrapper = styled("div")(({ theme }) => ({
 
   [mobile]: {
     marginLeft: 0,
+    padding: "0 5px",
   },
 }));
