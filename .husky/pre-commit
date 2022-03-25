@@ -17,7 +17,6 @@ npm run checkFormat ||
 #         false; 
 # )
 
-# TODO : I disabled checkTs(reduce spend time) until we recreate skeleton.  
 # Check tsconfig standards
 npm run checkTs ||
 (
@@ -27,15 +26,15 @@ npm run checkTs ||
 )
 
 # If everything passes... Now we can commit
-echo '  Trying to build now.'
+# echo '  Trying to build now.'
 
-npm run build ||
-(
-    echo ' build failed ❌
-            CRA build failed: View the errors above to see why. 
-    '
-    false;
-)
+# npm run build ||
+# (
+#     echo ' build failed ❌
+#             CRA build failed: View the errors above to see why. 
+#     '
+#     false;
+# )
 
 # If everything passes... Now we can commit
 echo '✅✅✅✅ committing. ✅✅✅✅'

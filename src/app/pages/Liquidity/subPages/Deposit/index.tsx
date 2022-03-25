@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { LiquidityPageActions } from "../../slice";
 import { Pool } from "app/containers/Rewards/types";
 import { LiquidityPageSelectors } from "../../selectors";
+import { DepositConfirmationModal } from "./components/depositConfirmationModal";
 
 type TParams = { poolIndex: string };
 
@@ -26,14 +27,17 @@ export const Deposit: FC = () => {
     }
   }, [poolKey]);
   return (
-    <PageWrapper>
-      <Grid container spacing={4}>
-        <Grid item>{pool && <AddLiquidity />}</Grid>
-        <Grid item>
-          <CurrencyReserve />
+    <>
+      <DepositConfirmationModal />
+      <PageWrapper>
+        <Grid container spacing={4}>
+          <Grid item>{pool && <AddLiquidity />}</Grid>
+          <Grid item>
+            <CurrencyReserve />
+          </Grid>
         </Grid>
-      </Grid>
-    </PageWrapper>
+      </PageWrapper>
+    </>
   );
 };
 

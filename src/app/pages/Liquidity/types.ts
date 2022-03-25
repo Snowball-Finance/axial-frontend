@@ -13,6 +13,7 @@ export interface LiquidityPageState {
   withdrawPercentage: number;
   selectedTokenToWithdraw: "combo" | TokenSymbols;
   depositRaw: boolean;
+  depositConfirmationData: any;
 }
 
 export interface PoolCardItemProps {
