@@ -11,10 +11,21 @@ import { IconWithTitle } from "./components/IconWithTitle";
 import { Message } from "./components/Message";
 import { Rates } from "./components/Rates";
 import { Total } from "./components/Total";
+import { RewardsSelectors } from "app/containers/Rewards/selectors";
+import { LiquidityPageActions } from "../../slice";
+import { useDispatch, useSelector } from "react-redux";
 
 export const DepositModal: FC = () => {
   const { t } = useTranslation();
-
+  const dispatch = useDispatch();
+  //TODO: implement data
+  const isDepositing = useSelector(RewardsSelectors.isDepositing);
+  const handleCancelClick = () => {
+    dispatch(LiquidityPageActions.setDepositConfirmationData(undefined));
+  };
+  const handleDepositClick = () => {
+    dispatch(LiquidityPageActions.deposit());
+  };
   return (
     <Grid container direction="column" spacing={1}>
       <Grid item>
@@ -118,12 +129,15 @@ export const DepositModal: FC = () => {
       <Grid item>
         <Grid container justifyContent="center" alignItems="center" spacing={2}>
           <Grid item>
-            <OutlinedButton>
+            <OutlinedButton onClick={handleCancelClick}>
               {t(translations.LiquidityPage.Buttons.Cancel())}
             </OutlinedButton>
           </Grid>
           <Grid item>
-            <ContainedButton>
+            <ContainedButton
+              onClick={handleDepositClick}
+              loading={isDepositing}
+            >
               {t(translations.LiquidityPage.Buttons.ConfirmDeposit())}
             </ContainedButton>
           </Grid>

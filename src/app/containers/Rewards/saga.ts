@@ -40,6 +40,7 @@ import { addSlippage, subtractSlippage } from "../../../utils/slippage";
 import { Deadlines, formatDeadlineToNumber } from "./utils/deadline";
 import { formatUnits } from "ethers/lib/utils";
 import { GlobalActions } from "store/slice";
+import { toast } from "react-toastify";
 
 export function* getRewardPoolsData(action: {
   type: string;
@@ -354,12 +355,17 @@ export function* approveAndDeposit(action: {
       );
     }
     yield put(RewardsActions.setIsDepositing(false));
-  } catch (e) {
+  } catch (e: any) {
     console.log(e);
+    if (e.code === -32603) {
+      toast.error("balance is not enough for this transaction");
+    }
     yield put(RewardsActions.setIsDepositing(false));
-    yield call(resetTokensInQueueForApproval, tokenSymbols);
+    yield put(GlobalActions.emptyTokensInQueueForApproval());
+    // yield call(resetTokensInQueueForApproval, tokenSymbols);
   } finally {
-    yield call(resetTokensInQueueForApproval, tokenSymbols);
+    yield put(GlobalActions.emptyTokensInQueueForApproval());
+    // yield call(resetTokensInQueueForApproval, tokenSymbols);
   }
 }
 

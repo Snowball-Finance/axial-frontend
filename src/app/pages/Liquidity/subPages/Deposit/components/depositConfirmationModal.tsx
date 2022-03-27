@@ -7,12 +7,12 @@ import { useDispatch, useSelector } from "react-redux";
 
 export const DepositConfirmationModal: FC = () => {
   const dispatch = useDispatch();
-  const open = useSelector(LiquidityPageSelectors.depositConfirmationData);
+  const data = useSelector(LiquidityPageSelectors.depositConfirmationData);
   const handleClose = () => {
     dispatch(LiquidityPageActions.setDepositConfirmationData(undefined));
   };
   return (
-    <SnowModal isOpen={open} onClose={handleClose}>
+    <SnowModal isOpen={data} onClose={handleClose}>
       <DepositModal />
     </SnowModal>
   );

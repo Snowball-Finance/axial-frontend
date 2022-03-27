@@ -21,6 +21,7 @@ export const initialState: ContainerState = {
   selectedTokenToWithdraw: "combo",
   depositRaw: false,
   depositConfirmationData: undefined,
+  withdrawConfirmationData: undefined,
 };
 
 const liquidityPageSlice = createSlice({
@@ -103,6 +104,9 @@ const liquidityPageSlice = createSlice({
     },
     setDepositConfirmationData(state, action: PayloadAction<any>) {
       state.depositConfirmationData = action.payload;
+    },
+    setWithdrawConfirmationData(state, action: PayloadAction<any>) {
+      state.withdrawConfirmationData = action.payload;
     },
   },
 });
