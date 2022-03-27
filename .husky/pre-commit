@@ -5,7 +5,7 @@
 # yarn checkFormat ||
 # (
 #     echo 'bad styling!
-#             Prettier Check Failed. Run npm run format, add changes and try commit again.';
+#             Prettier Check Failed. Run yarn format, add changes and try commit again.';
 #     false;
 # )
 
@@ -21,7 +21,7 @@
 # yarn checkTs ||
 # (
 #     echo 'checking types failed!
-#             Are you seriously trying to write that? Make the changes required above.'
+#              Make the changes required above.'
 #     false;
 # )
 
