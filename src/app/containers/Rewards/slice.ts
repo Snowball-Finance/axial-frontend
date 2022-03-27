@@ -122,7 +122,6 @@ const rewardsSlice = createSlice({
     setIsWithdrawing(state, action: PayloadAction<boolean>) {
       state.isWithdrawing = action.payload;
     },
-
     approveAndWithdraw(
       state,
       action: PayloadAction<ApproveAndWithdrawPayload>
