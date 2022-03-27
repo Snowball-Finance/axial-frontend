@@ -76,8 +76,8 @@ const liquidityPageSlice = createSlice({
     setDepositRaw(state, action: PayloadAction<boolean>) {
       state.depositRaw = action.payload;
     },
-    deposit() {},
-    withdraw(state, action: PayloadAction<ApproveAndWithdrawPayload>) {},
+    deposit() { },
+    withdraw(state, action: PayloadAction<ApproveAndWithdrawPayload>) { },
     setWithdrawPercentage(state, action: PayloadAction<number>) {
       state.withdrawPercentage = action.payload;
     },
@@ -85,6 +85,15 @@ const liquidityPageSlice = createSlice({
       state,
       action: PayloadAction<"combo" | TokenSymbols>
     ) {
+      const amounts = { ...state.withdrawTokenAmounts };
+      const tmp = {}
+      for (const key in amounts) {
+        if (Object.prototype.hasOwnProperty.call(amounts, key)) {
+          tmp[key] = zeroString;
+        }
+      }
+      state.withdrawTokenAmounts = tmp;
+      state.withdrawPercentage = 0
       state.selectedTokenToWithdraw = action.payload;
     },
     setAmountForTokenToWithdraw(
