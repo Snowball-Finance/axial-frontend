@@ -85,11 +85,6 @@
     "npm": ">=6.4.1",
     "node": ">=14.17.0"
   },
-  "lint-staged": {
-    "*.{ts,tsx,js,jsx}": [
-      "npm run eslint -- --fix"
-    ]
-  },
   "devDependencies": {
     "@babel/core": "^7.16.0",
     "@testing-library/jest-dom": "5.15.0",
@@ -116,8 +111,7 @@
     "eslint-config-react": "1.1.7",
     "eslint-plugin-prettier": "4.0.0",
     "http-proxy-middleware": "2.0.1",
-    "husky": "7.0.4",
-    "lint-staged": "12.3.7",
+    "husky": "^7.0.0",
     "node-plop": "0.25.0",
     "plop": "2.6.0",
     "prettier": "2.4.1",
