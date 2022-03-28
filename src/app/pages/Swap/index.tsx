@@ -12,7 +12,7 @@ import { styled, Grid } from "@mui/material";
 import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { useSwapPageSlice } from "./slice";
-import { AdvanceOption } from "./components/AdvanceOption";
+import { AdvanceOption } from "app/components/common/advancedOptions";
 import { FromToken } from "./components/FromToken";
 import { ToToken } from "./components/ToToken";
 import { BestPath } from "./components/BestPath";
@@ -51,7 +51,9 @@ export const SwapPage: FC = () => {
 
           <BestPath />
 
-          <AdvanceOption />
+          <StyledAdvanceContainer item xs={12}>
+            <AdvanceOption />
+          </StyledAdvanceContainer>
 
           <Actions />
         </StyledContainer>
@@ -66,18 +68,20 @@ const StyledSwapCard = styled("div")({
   backgroundColor: CssVariables.poolCardBackground,
   border: `4px solid ${CssVariables.cardBorder}`,
   borderRadius: "20px",
-  padding: "20px",
+  padding: "40px",
 
+  [mobile]: {
+    width: "100%",
+    padding: "10px 0px 10px 15px",
+  },
+});
+
+const StyledContainer = styled(Grid)({
   [mobile]: {
     width: "100%",
   },
 });
 
-const StyledContainer = styled(Grid)({
-  width: 550,
-  margin: "auto",
-
-  [mobile]: {
-    width: "100%",
-  },
+const StyledAdvanceContainer = styled(Grid)({
+  width: "100%",
 });

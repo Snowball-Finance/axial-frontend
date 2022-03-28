@@ -1,9 +1,11 @@
 import React, { ReactElement } from "react";
 import { styled } from "@mui/material";
+import { isMobile } from "react-device-detect";
 
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import backgroundImage from "../../assets/images/website-background.svg";
+import { mobile } from "styles/media";
 
 export default function Layout({
   children,
@@ -14,16 +16,18 @@ export default function Layout({
         <Header />
       </HeaderWrapper>
 
-      <SidebarWrapper>
-        <Sidebar />
-      </SidebarWrapper>
+      {!isMobile && (
+        <SidebarWrapper>
+          <Sidebar />
+        </SidebarWrapper>
+      )}
 
       <MainWrapper>{children}</MainWrapper>
     </StyledLayout>
   );
 }
 
-const StyledLayout = styled("div")({
+const StyledLayout = styled("div")(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   minHeight: "100vh",
@@ -32,7 +36,12 @@ const StyledLayout = styled("div")({
   backgroundSize: "cover",
   backgroundAttachment: "fixed",
   backgroundPosition: "center",
-});
+
+  [mobile]: {
+    width: "100%",
+    overflowX: "hidden",
+  },
+}));
 
 const HeaderWrapper = styled("div")({
   position: "fixed",
@@ -47,8 +56,13 @@ const SidebarWrapper = styled("div")({
   minHeight: "90vh",
 });
 
-const MainWrapper = styled("div")({
+const MainWrapper = styled("div")(({ theme }) => ({
   marginTop: 100,
   marginBottom: 50,
   marginLeft: "25%",
-});
+
+  [mobile]: {
+    marginLeft: 0,
+    padding: "0 5px",
+  },
+}));

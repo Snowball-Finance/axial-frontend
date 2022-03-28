@@ -90,7 +90,7 @@ export const BestPath: FC = () => {
   }
 
   return (
-    <StyledContainerItem item>
+    <StyledContainerItem item xs={12}>
       <StyledBestPath>
         <Grid container direction="column" spacing={1}>
           <Grid item>

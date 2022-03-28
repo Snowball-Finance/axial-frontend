@@ -52,6 +52,7 @@ html{
   --swapInputbackground: #06041D;
   --paperBorderRadius:12px;
   --swapInputbackground: #06041D;
+  --navigationDrawerBackground: rgba(6, 4, 29, 0.9);
 
   /* Radio */
   --radioWidth: 24px;

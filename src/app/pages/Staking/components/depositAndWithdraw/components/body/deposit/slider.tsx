@@ -5,6 +5,7 @@ import { translations } from "locales/i18n";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { CssVariables } from "styles/cssVariables/cssVariables";
+import { mobile } from "styles/media";
 
 const marks = (t: any) => [
   {
@@ -59,5 +60,10 @@ const Wrapper = styled("div")({
   },
   ".MuiSlider-markLabel": {
     color: CssVariables.commonTextColor,
+  },
+
+  [mobile]: {
+    width: "90%",
+    padding: 0
   },
 });

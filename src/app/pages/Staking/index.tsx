@@ -58,6 +58,7 @@ const Wrapper = styled(Max1040)({
   flexDirection: "column",
   alignItems: "center",
   [mobile]: {
-    padding: "0 36px",
+    padding: 0,
+    width: "100%"
   },
 });
