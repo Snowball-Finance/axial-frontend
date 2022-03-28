@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Grid } from "@mui/material";
+import { Grid, styled } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { push } from "connected-react-router";
 import { useTranslation } from "react-i18next";
@@ -15,6 +15,7 @@ import { pools } from "app/pools";
 import { RewardsPageActions } from "app/pages/Rewards/slice";
 import { Pool } from "app/containers/Rewards/types";
 import { Web3Selectors } from "app/containers/BlockChain/Web3/selectors";
+import { mobile } from "styles/media";
 
 export const ActionButtons: FC<ActionButtonProps> = ({ poolKey }) => {
   const { t } = useTranslation();
@@ -39,7 +40,7 @@ export const ActionButtons: FC<ActionButtonProps> = ({ poolKey }) => {
   };
 
   return (
-    <Grid container spacing={2}>
+    <StyledContainer container spacing={{ xs: 1, xl: 2 }}>
       <Grid item>
         <ContainedButton
           width={120}
@@ -71,6 +72,15 @@ export const ActionButtons: FC<ActionButtonProps> = ({ poolKey }) => {
           {t(translations.RewardsPage.ActionButtons.Claim())}
         </OutlinedButton>
       </Grid>
-    </Grid>
+    </StyledContainer>
   );
 };
+
+const StyledContainer = styled(Grid)({
+  flexDirection: "row",
+  [mobile]: {
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "column",
+  },
+});

@@ -13,6 +13,7 @@ import {
 } from "app/pages/Rewards/constants";
 import { RewardsPageSelectors } from "app/pages/Rewards/selectors";
 import { CssVariables } from "styles/cssVariables/cssVariables";
+import { mobile } from "styles/media";
 
 type TParams = { poolIndex: string };
 
@@ -43,7 +44,7 @@ export const CompoundWithSnowball: FC = () => {
       rel="noreferrer"
       href={`https://app.snowball.network/compound-and-earn?pool=${poolPairName}`}
     >
-      <OutlinedButton width={420} disabled={!poolAddress}>
+      <Button disabled={!poolAddress}>
         <Grid container spacing={1} alignItems="center" justifyContent="center">
           <Grid item>
             {t(translations.RewardsPage.Deposit.CompoundWithSnowball())}
@@ -59,7 +60,7 @@ export const CompoundWithSnowball: FC = () => {
           </Grid>
           <Grid item>{t(translations.RewardsPage.Deposit.APY())}</Grid>
         </Grid>
-      </OutlinedButton>
+      </Button>
     </Anchor>
   );
 };
@@ -71,4 +72,12 @@ const Anchor = styled("a")({
 
 const TextLoader = styled(Skeleton)({
   backgroundColor: CssVariables.primary,
+});
+
+const Button = styled(OutlinedButton)({
+  width: 420,
+
+  [mobile]: {
+    width: "100%",
+  },
 });

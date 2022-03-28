@@ -8,6 +8,7 @@ import { TokenImageProps } from "app/pages/Rewards/types";
 import { Token } from "app/containers/Swap/types";
 import { Pools } from "app/containers/Rewards/types";
 import { JLPToken } from "./JLPToken";
+import { mobile } from "styles/media";
 
 export const TokenImages: FC<TokenImageProps> = ({ poolKey }) => {
   const poolTokens = useSelector(
@@ -19,7 +20,7 @@ export const TokenImages: FC<TokenImageProps> = ({ poolKey }) => {
   }
 
   return (
-    <Grid container spacing={2} alignItems="center">
+    <StyledContainer container spacing={{ xs: 1, xl: 2 }} alignItems="center">
       {poolTokens &&
         poolTokens.map((token: Token) => (
           <Grid item key={token.address}>
@@ -36,16 +37,32 @@ export const TokenImages: FC<TokenImageProps> = ({ poolKey }) => {
             </Grid>
           </Grid>
         ))}
-    </Grid>
+    </StyledContainer>
   );
 };
+
+const StyledContainer = styled(Grid)({
+  justifyContent: "space-between",
+
+  [mobile]: {
+    fontSize: "14px",
+  },
+});
 
 const PoolInfoTitleText = styled(Typography)({
   color: CssVariables.white,
   fontSize: "16px",
   fontWeight: "bold",
+
+  [mobile]: {
+    fontSize: "14px",
+  },
 });
 
 const PoolTokenImage = styled("img")({
   width: "33px",
+
+  [mobile]: {
+    width: "25px",
+  },
 });

@@ -14,15 +14,16 @@ import { PoolCardItemProps } from "app/pages/Rewards/types";
 import { RewardsPageSelectors } from "app/pages/Rewards/selectors";
 import { Info } from "./Info";
 import { ActionButtons } from "./ActionButtons";
+import { mobile } from "styles/media";
 
 export const PoolCardItem: FC<PoolCardItemProps> = ({ poolKey }) => {
   const rewardsPool = useSelector(RewardsPageSelectors.rewardsPool(poolKey));
 
   return (
     <StyledPoolCard>
-      <Grid container direction="column" spacing={4}>
+      <StyledPoolContainer container>
         <Grid item>
-          <Grid container justifyContent="space-between" alignItems="center">
+          <StyledPoolChildContainer container>
             <Grid item>
               <PoolHeaderText variant="h5">{rewardsPool.name}</PoolHeaderText>
             </Grid>
@@ -30,11 +31,11 @@ export const PoolCardItem: FC<PoolCardItemProps> = ({ poolKey }) => {
             <Grid item>
               <Info poolKey={poolKey} />
             </Grid>
-          </Grid>
+          </StyledPoolChildContainer>
         </Grid>
 
         <Grid item>
-          <Grid container justifyContent="space-between" alignItems="center">
+          <StyledPoolChildContainer container>
             <Grid item>
               <TokenImages poolKey={poolKey} />
             </Grid>
@@ -42,9 +43,9 @@ export const PoolCardItem: FC<PoolCardItemProps> = ({ poolKey }) => {
             <Grid item>
               <ActionButtons poolKey={poolKey} />
             </Grid>
-          </Grid>
+          </StyledPoolChildContainer>
         </Grid>
-      </Grid>
+      </StyledPoolContainer>
     </StyledPoolCard>
   );
 };
@@ -54,6 +55,29 @@ const StyledPoolCard = styled("div")({
   border: `4px solid ${CssVariables.cardBorder}`,
   borderRadius: "20px",
   padding: "20px",
+});
+
+const StyledPoolContainer = styled(Grid)({
+  flexDirection: "column",
+  rowGap: 20,
+  [mobile]: {
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+    columnGap: 20,
+  },
+});
+
+const StyledPoolChildContainer = styled(Grid)({
+  justifyContent: "space-between",
+  alignItems: "center",
+
+  [mobile]: {
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "column",
+    rowGap: 20,
+  },
 });
 
 const PoolHeaderText = styled(Typography)({

@@ -7,9 +7,10 @@ import { CssVariables } from "styles/cssVariables/cssVariables";
 import { RewardsPageSelectors } from "app/pages/Rewards/selectors";
 import { getKeyFromPoolIndex } from "app/pages/Rewards/constants";
 import { PoolTypes, TokenShareType } from "app/containers/Rewards/types";
-import { formatBNToString } from "app/containers/utils/contractUtils";
+import { commify, formatBNToString } from "app/containers/utils/contractUtils";
 import { pools } from "app/pools";
 import { tokens } from "app/tokens";
+import { mobile } from "styles/media";
 
 type TParams = { poolIndex: string };
 
@@ -43,19 +44,24 @@ export const CurrencyInfo: FC = () => {
                 </Grid>
               </Grid>
 
-              <Grid item xs={4}>
+              <Grid item xs={3}>
                 <BalanceText variant="body2">{infoItem.percent}</BalanceText>
               </Grid>
 
-              <Grid item xs={4}>
-                <Grid container spacing={1} alignItems="center">
-                  <Grid item>
-                    <BalanceLabelText variant="body1">TVL</BalanceLabelText>
+              <Grid item xs={5}>
+                <Grid container alignItems="center" spacing={1}>
+                  <Grid item xs={4} alignSelf="right">
+                    <BalanceLabelText variant="body1" align="right">
+                      TVL
+                    </BalanceLabelText>
                   </Grid>
 
-                  <Grid item>
-                    <BalanceText variant="body2">
-                      ${formatBNToString(infoItem.value, 18, formattedDecimals)}
+                  <Grid item xs zeroMinWidth alignSelf="left">
+                    <BalanceText variant="body2" noWrap align="left">
+                      $
+                      {commify(
+                        formatBNToString(infoItem.value, 18, formattedDecimals)
+                      )}
                     </BalanceText>
                   </Grid>
                 </Grid>
@@ -74,14 +80,26 @@ const StyledInfo = styled("div")({
   border: `4px solid ${CssVariables.cardBorder}`,
   borderRadius: "20px",
   padding: 20,
+
+  [mobile]: {
+    padding: 10,
+  },
 });
 
 const IconImage = styled("img")({
   width: "33px",
+
+  [mobile]: {
+    width: "25px",
+  },
 });
 
 const TokenText = styled(Typography)({
   color: CssVariables.white,
+
+  [mobile]: {
+    fontSize: "1rem",
+  },
 });
 
 const BalanceLabelText = styled(Typography)({

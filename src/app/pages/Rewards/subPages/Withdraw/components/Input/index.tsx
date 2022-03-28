@@ -8,6 +8,7 @@ import { CurrencyInput } from "./CurrencyInput";
 import { RewardsWithdrawSlider } from "./slider";
 import { Percentage } from "./percentageText";
 import { RewardsWithdrawButton } from "./withdrawButton";
+import { mobile } from "styles/media";
 
 export const WithdrawInput: FC = () => {
   const { t } = useTranslation();
@@ -58,6 +59,11 @@ const StyledAddLiquidity = styled("div")({
   border: `4px solid ${CssVariables.cardBorder}`,
   borderRadius: "20px",
   padding: "40px",
+
+  [mobile]: {
+    width: "100%",
+    padding: "20px",
+  },
 });
 
 const HeaderText = styled(Typography)({

@@ -23,7 +23,7 @@ export const CurrencyInput: FC = () => {
         <Grid item>
           <Grid container justifyContent="space-between" alignItems="center">
             <Grid item>
-              <HeaderText variant="h4">{pool?.name}</HeaderText>
+              <HeaderText variant="h4">{pool?.lpToken?.symbol}</HeaderText>
             </Grid>
 
             <Grid item>

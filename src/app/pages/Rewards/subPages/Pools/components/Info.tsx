@@ -12,6 +12,7 @@ import { PoolTypes } from "app/containers/Rewards/types";
 import { Zero } from "app/containers/Rewards/constants";
 import { formatBNToShortString } from "app/containers/utils/contractUtils";
 import { RewardsSelectors } from "app/containers/Rewards/selectors";
+import { mobile } from "styles/media";
 
 interface InfoData {
   title: string;
@@ -101,12 +102,7 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
   ]);
 
   return (
-    <Grid
-      container
-      spacing={4}
-      justifyContent="space-between"
-      alignItems="center"
-    >
+    <StyledContainer container spacing={{ xs: 2, xl: 4 }}>
       {info.map((item, index) => (
         <Grid item key={index}>
           <Grid container spacing={1}>
@@ -127,9 +123,18 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
           </Grid>
         </Grid>
       ))}
-    </Grid>
+    </StyledContainer>
   );
 };
+
+const StyledContainer = styled(Grid)({
+  justifyContent: "space-between",
+  alignItems: "center",
+
+  [mobile]: {
+    flexDirection: "column",
+  },
+});
 
 const PoolInfoTitleText = styled(Typography)({
   color: CssVariables.white,

@@ -16,6 +16,8 @@ import { DepositButton } from "./depositButton";
 import { WalletBalance } from "./walletBalance";
 import { RewardsPageSelectors } from "app/pages/Rewards/selectors";
 import { CompoundWithSnowball } from "./CompoundWithSnowball";
+import { mobile } from "styles/media";
+
 type TParams = { poolIndex: string };
 
 export const DepositWrapped: FC = () => {
@@ -83,6 +85,11 @@ const StyledAddLiquidity = styled("div")({
   border: `4px solid ${CssVariables.cardBorder}`,
   borderRadius: "20px",
   padding: "40px",
+
+  [mobile]: {
+    width: "100%",
+    padding: "20px",
+  },
 });
 
 const HeaderText = styled(Typography)({

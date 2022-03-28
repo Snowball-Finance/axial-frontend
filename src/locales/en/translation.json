@@ -33,6 +33,9 @@
       "Deposit": "Deposit",
       "Withdraw": "Withdraw"
     },
+    "CurrencyReserve": {
+      "Title": "Currency Reserves"
+    },
     "MyShare": {
       "Title": "My Share",
       "OfPool": "of pool",
@@ -89,6 +92,15 @@
       "Deposit": "Deposit",
       "Withdraw": "Withdraw",
       "Claim": "Claim"
+    },
+    "CurrencyReserve": {
+      "Title": "Currency Reserves"
+    },
+    "MyShare": {
+      "Title": "My Share",
+      "OfPool": "of pool",
+      "USDBalance": "USD Balance",
+      "Total": "Total"
     },
     "Modal": {
       "Deposit": "Deposit",
