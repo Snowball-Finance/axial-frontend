@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next";
 
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { contents } from "../../constants";
+import { mobile } from "styles/media";
 
 export const Content: FC = () => {
   const { t } = useTranslation();
@@ -38,6 +39,10 @@ export const Content: FC = () => {
 const StyledContainer = styled(Grid)({
   width: 600,
   margin: "0px auto",
+
+  [mobile]: {
+    width: "100%",
+  },
 });
 
 const TitleText = styled(Typography)({

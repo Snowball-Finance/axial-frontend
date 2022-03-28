@@ -12,6 +12,7 @@ import { styled } from "@mui/material";
 import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { Content } from "./components/Content";
+import { mobile } from "styles/media";
 
 export const RisksPage: FC = () => {
   const { t } = useTranslation();
@@ -40,4 +41,8 @@ const StyledSwapCard = styled("div")({
   border: `4px solid ${CssVariables.cardBorder}`,
   borderRadius: "20px",
   paddingBottom: "40px",
+
+  [mobile]: {
+    width: "100%"
+  }
 });
