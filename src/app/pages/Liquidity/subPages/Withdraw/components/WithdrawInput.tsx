@@ -14,6 +14,7 @@ import { Pool } from "app/containers/Rewards/types";
 import { LiquidityPageActions } from "app/pages/Liquidity/slice";
 import { WithdrawButton } from "./withdrawButton";
 import { PercentageText } from "./percentageText";
+import { mobile } from "styles/media";
 
 type TParams = { poolIndex: string };
 
@@ -44,14 +45,14 @@ export const WithdrawInput: FC = () => {
 
         <Grid item>
           <Grid container justifyContent="space-between" alignItems="center">
-            <Grid item>
+            <Grid item xs={8}>
               <SubtitleText variant="body2">
                 {t(translations.LiquidityPage.Withdraw.WithdrawlPercentage())}{" "}
                 (%):
               </SubtitleText>
             </Grid>
 
-            <Grid item>
+            <Grid item xs={4}>
               <PercentageText />
             </Grid>
           </Grid>
@@ -90,6 +91,11 @@ const StyledWithdrawInput = styled("div")({
   border: `4px solid ${CssVariables.cardBorder}`,
   borderRadius: "20px",
   padding: "40px",
+
+  [mobile]: {
+    width: "100%",
+    padding: "20px",
+  },
 });
 
 const HeaderText = styled(Typography)({

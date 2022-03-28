@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Grid } from "@mui/material";
+import { Grid, styled } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { push } from "connected-react-router";
 import { useTranslation } from "react-i18next";
@@ -10,6 +10,7 @@ import { OutlinedButton } from "app/components/common/buttons/outlinedButton";
 import { AppPages } from "app/types";
 import { ActionButtonProps } from "app/pages/Liquidity/types";
 import { getPoolIndexFromKey } from "app/pages/Liquidity/constants";
+import { mobile } from "styles/media";
 
 export const ActionButtons: FC<ActionButtonProps> = ({ poolKey }) => {
   const { t } = useTranslation();
@@ -26,7 +27,7 @@ export const ActionButtons: FC<ActionButtonProps> = ({ poolKey }) => {
   };
 
   return (
-    <Grid container spacing={2}>
+    <StyledContainer container spacing={{ xs: 1, xl: 2 }}>
       <Grid item>
         <ContainedButton
           width={120}
@@ -44,6 +45,15 @@ export const ActionButtons: FC<ActionButtonProps> = ({ poolKey }) => {
           {t(translations.LiquidityPage.ActionButtons.Withdraw())}
         </OutlinedButton>
       </Grid>
-    </Grid>
+    </StyledContainer>
   );
 };
+
+const StyledContainer = styled(Grid)({
+  flexDirection: "row",
+  [mobile]: {
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "column",
+  },
+});

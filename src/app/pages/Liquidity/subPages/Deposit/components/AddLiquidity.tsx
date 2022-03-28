@@ -10,6 +10,7 @@ import { DepositButton } from "./depositButton";
 import { DepositWrappedCheckbox } from "./depositWrappedCheckbox";
 import { useSelector } from "react-redux";
 import { LiquidityPageSelectors } from "app/pages/Liquidity/selectors";
+import { mobile } from "styles/media";
 
 export const AddLiquidity: FC = () => {
   const { t } = useTranslation();
@@ -44,6 +45,11 @@ const StyledAddLiquidity = styled("div")({
   border: `4px solid ${CssVariables.cardBorder}`,
   borderRadius: "20px",
   padding: "40px",
+
+  [mobile]: {
+    width: "100%",
+    padding: "20px",
+  },
 });
 
 const HeaderText = styled(Typography)({

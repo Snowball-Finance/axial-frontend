@@ -4,6 +4,7 @@ import { Grid, styled } from "@mui/material";
 import { WithdrawInput } from "./components/WithdrawInput";
 import { CurrencyReserve } from "../../components/CurrencyReserve";
 import { WithdrawConfirmation } from "./components/withdrawConfirmationModal";
+import { mobile } from "styles/media";
 
 export const Withdraw: FC = () => {
   return (
@@ -26,4 +27,8 @@ export const Withdraw: FC = () => {
 const PageWrapper = styled("div")({
   width: 650,
   margin: "0 auto",
+
+  [mobile]: {
+    width: "100%",
+  },
 });

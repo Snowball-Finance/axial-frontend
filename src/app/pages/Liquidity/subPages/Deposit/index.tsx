@@ -11,6 +11,7 @@ import { LiquidityPageActions } from "../../slice";
 import { Pool } from "app/containers/Rewards/types";
 import { LiquidityPageSelectors } from "../../selectors";
 import { DepositConfirmationModal } from "./components/depositConfirmationModal";
+import { mobile } from "styles/media";
 
 type TParams = { poolIndex: string };
 
@@ -44,4 +45,8 @@ export const Deposit: FC = () => {
 const PageWrapper = styled("div")({
   width: 650,
   margin: "0 auto",
+
+  [mobile]: {
+    width: "100%",
+  },
 });
