@@ -3,19 +3,23 @@ import { Grid, styled } from "@mui/material";
 
 import { WithdrawInput } from "./components/WithdrawInput";
 import { CurrencyReserve } from "../../components/CurrencyReserve";
+import { WithdrawConfirmation } from "./components/withdrawConfirmationModal";
 
 export const Withdraw: FC = () => {
   return (
-    <PageWrapper>
-      <Grid container spacing={4}>
-        <Grid item>
-          <WithdrawInput />
+    <>
+      <WithdrawConfirmation />
+      <PageWrapper>
+        <Grid container spacing={4}>
+          <Grid item>
+            <WithdrawInput />
+          </Grid>
+          <Grid item>
+            <CurrencyReserve />
+          </Grid>
         </Grid>
-        <Grid item>
-          <CurrencyReserve />
-        </Grid>
-      </Grid>
-    </PageWrapper>
+      </PageWrapper>
+    </>
   );
 };
 

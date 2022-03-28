@@ -19,7 +19,7 @@ export const DepositButton = () => {
   );
   const isDepositing = useSelector(RewardsSelectors.isDepositing);
   const handleDepositClick = () => {
-    dispatch(LiquidityPageActions.deposit());
+    dispatch(LiquidityPageActions.setDepositConfirmationData(true));
   };
   return (
     <NeedsWalletConnection

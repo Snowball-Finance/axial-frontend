@@ -68,7 +68,7 @@ export function* withdraw() {
     RewardsPageDomains.withdrawPercentage
   );
   let effectiveUserLPTokenBalance = BigNumber.from(amount);
-  if (userShareData) {
+  if (userShareData && withdrawPercentage) {
     effectiveUserLPTokenBalance =
       userShareData.masterchefBalance?.userInfo.amount
         .mul(parseUnits(withdrawPercentage.toString(), 5)) // difference between numerator and denominator because we're going from 100 to 1.00

@@ -11,9 +11,49 @@ import { IconWithTitle } from "./components/IconWithTitle";
 import { Message } from "./components/Message";
 import { Rates } from "./components/Rates";
 import { Total } from "./components/Total";
+import { useDispatch, useSelector } from "react-redux";
+import { LiquidityPageActions } from "../../slice";
+import { RewardsSelectors } from "app/containers/Rewards/selectors";
+import { LiquidityPageSelectors } from "../../selectors";
+import { globalSelectors } from "app/appSelectors";
+import { floatToBN } from "common/format";
+import {
+  ApproveAndWithdrawPayload,
+  WithdrawType,
+} from "app/containers/Rewards/types";
+import { BigNumber } from "ethers";
 
 export const WithdrawModal: FC = () => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const isWithdrawing = useSelector(RewardsSelectors.isWithdrawing);
+  const selectedPool = useSelector(LiquidityPageSelectors.selectedPool);
+  const tokens = useSelector(globalSelectors.tokens);
+  const withdrawTokens = useSelector(
+    LiquidityPageSelectors.withdrawTokenToShow()
+  );
+  const handleCancelClick = () => {
+    dispatch(LiquidityPageActions.setWithdrawConfirmationData(undefined));
+  };
+
+  const handleWithdrawClick = () => {
+    if (selectedPool && tokens) {
+      const tmpAmounts = {};
+      for (let k in withdrawTokens) {
+        const v = withdrawTokens[k];
+        const num = Number(v);
+        const toSend = floatToBN(num, tokens[k].decimals);
+        tmpAmounts[k] = toSend;
+      }
+      const dataToSend: ApproveAndWithdrawPayload = {
+        poolKey: selectedPool.key,
+        type: WithdrawType.IMBALANCE,
+        lpTokenAmountToSpend: BigNumber.from(0),
+        tokenAmounts: tmpAmounts,
+      };
+      dispatch(LiquidityPageActions.withdraw(dataToSend));
+    }
+  };
 
   return (
     <Grid container direction="column" spacing={1}>
@@ -110,12 +150,15 @@ export const WithdrawModal: FC = () => {
       <Grid item>
         <Grid container justifyContent="center" alignItems="center" spacing={2}>
           <Grid item>
-            <OutlinedButton>
+            <OutlinedButton onClick={handleCancelClick}>
               {t(translations.LiquidityPage.Buttons.Cancel())}
             </OutlinedButton>
           </Grid>
           <Grid item>
-            <ContainedButton>
+            <ContainedButton
+              loading={isWithdrawing}
+              onClick={handleWithdrawClick}
+            >
               {t(translations.LiquidityPage.Buttons.ConfirmWithdraw())}
             </ContainedButton>
           </Grid>
