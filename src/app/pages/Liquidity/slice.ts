@@ -1,4 +1,4 @@
-import { ContainerState } from "./types";
+import { ContainerState, DepositTransactionData } from "./types";
 import { createSlice } from "store/toolkit";
 import { useInjectReducer, useInjectSaga } from "store/redux-injectors";
 
@@ -22,6 +22,7 @@ export const initialState: ContainerState = {
   depositRaw: false,
   depositConfirmationData: undefined,
   withdrawConfirmationData: undefined,
+  depositTransactionData: undefined,
 };
 
 const liquidityPageSlice = createSlice({
@@ -76,8 +77,8 @@ const liquidityPageSlice = createSlice({
     setDepositRaw(state, action: PayloadAction<boolean>) {
       state.depositRaw = action.payload;
     },
-    deposit() { },
-    withdraw(state, action: PayloadAction<ApproveAndWithdrawPayload>) { },
+    deposit() {},
+    withdraw(state, action: PayloadAction<ApproveAndWithdrawPayload>) {},
     setWithdrawPercentage(state, action: PayloadAction<number>) {
       state.withdrawPercentage = action.payload;
     },
@@ -86,14 +87,14 @@ const liquidityPageSlice = createSlice({
       action: PayloadAction<"combo" | TokenSymbols>
     ) {
       const amounts = { ...state.withdrawTokenAmounts };
-      const tmp = {}
+      const tmp = {};
       for (const key in amounts) {
         if (Object.prototype.hasOwnProperty.call(amounts, key)) {
           tmp[key] = zeroString;
         }
       }
       state.withdrawTokenAmounts = tmp;
-      state.withdrawPercentage = 0
+      state.withdrawPercentage = 0;
       state.selectedTokenToWithdraw = action.payload;
     },
     setAmountForTokenToWithdraw(
@@ -117,6 +118,13 @@ const liquidityPageSlice = createSlice({
     setWithdrawConfirmationData(state, action: PayloadAction<any>) {
       state.withdrawConfirmationData = action.payload;
     },
+    setDepositTransactionData(
+      state,
+      action: PayloadAction<DepositTransactionData>
+    ) {
+      state.depositTransactionData = action.payload;
+    },
+    buildTransactionData() {},
   },
 });
 

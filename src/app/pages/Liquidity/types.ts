@@ -1,5 +1,6 @@
 import { Pool, PoolData, UserShareData } from "app/containers/Rewards/types";
 import { Token, TokenSymbols } from "app/containers/Swap/types";
+import { BigNumber } from "ethers";
 
 /* --- STATE --- */
 export interface LiquidityPageState {
@@ -15,6 +16,7 @@ export interface LiquidityPageState {
   depositRaw: boolean;
   depositConfirmationData: any;
   withdrawConfirmationData: any;
+  depositTransactionData: DepositTransactionData | undefined;
 }
 
 export interface PoolCardItemProps {
@@ -31,6 +33,27 @@ export interface PoolDataProps {
 
 export interface ActionButtonProps {
   poolKey: string;
+}
+
+interface FromTokens {
+  symbol: string;
+  value: number;
+}
+
+interface ToTokens {
+  symbol: string;
+  value: BigNumber;
+}
+
+export interface FromTransactionData {
+  tokens: FromTokens[];
+  total: number;
+}
+
+export interface DepositTransactionData {
+  from: FromTransactionData;
+  to: ToTokens;
+  share: boolean | undefined;
 }
 
 export enum PoolsRouteIndex {

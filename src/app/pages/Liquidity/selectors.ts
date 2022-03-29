@@ -38,6 +38,9 @@ export const LiquidityPageDomains = {
   withdrawConfirmationData: (state: RootState) =>
     state.liquidityPage?.withdrawConfirmationData ||
     initialState.withdrawConfirmationData,
+  depositTransactionData: (state: RootState) =>
+    state.liquidityPage?.depositTransactionData ||
+    initialState.depositTransactionData,
 };
 
 export const LiquidityPageSelectors = {
@@ -139,6 +142,10 @@ export const LiquidityPageSelectors = {
   withdrawConfirmationData: createSelector(
     LiquidityPageDomains.withdrawConfirmationData,
     (withdrawConfirmationData) => withdrawConfirmationData
+  ),
+  depositTransactionData: createSelector(
+    LiquidityPageDomains.depositTransactionData,
+    (depositTransactionData) => depositTransactionData
   ),
 };
 

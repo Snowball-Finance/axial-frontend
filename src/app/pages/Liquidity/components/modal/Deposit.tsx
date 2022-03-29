@@ -1,6 +1,7 @@
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import { styled, Grid, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
 
 import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
@@ -13,19 +14,31 @@ import { Rates } from "./components/Rates";
 import { Total } from "./components/Total";
 import { RewardsSelectors } from "app/containers/Rewards/selectors";
 import { LiquidityPageActions } from "../../slice";
-import { useDispatch, useSelector } from "react-redux";
+import { LiquidityPageSelectors } from "../../selectors";
+import { Receiving } from "./components/Receiving";
+import { Slippage } from "./components/Slippage";
 
 export const DepositModal: FC = () => {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
-  //TODO: implement data
+
   const isDepositing = useSelector(RewardsSelectors.isDepositing);
+  const depositTransactionData = useSelector(
+    LiquidityPageSelectors.depositTransactionData
+  );
+
+  const dispatch = useDispatch();
+
   const handleCancelClick = () => {
     dispatch(LiquidityPageActions.setDepositConfirmationData(undefined));
   };
   const handleDepositClick = () => {
     dispatch(LiquidityPageActions.deposit());
   };
+
+  useEffect(() => {
+    dispatch(LiquidityPageActions.buildTransactionData());
+  }, []);
+
   return (
     <Grid container direction="column" spacing={1}>
       <Grid item>
@@ -37,19 +50,19 @@ export const DepositModal: FC = () => {
       <Grid item>
         <CardWrapper>
           <Grid container direction="column" spacing={2}>
-            {[1, 2, 3, 4].map((item) => (
-              <Grid item key={item}>
+            {depositTransactionData?.from.tokens.map((item) => (
+              <Grid item key={item.symbol}>
                 <Grid
                   container
                   justifyContent="space-between"
                   alignItems="center"
                 >
                   <Grid item>
-                    <IconWithTitle />
+                    <IconWithTitle tokenSymbol={item.symbol} />
                   </Grid>
 
                   <Grid item>
-                    <Text variant="h6">1.054525</Text>
+                    <Text variant="h6">{item.value}</Text>
                   </Grid>
                 </Grid>
               </Grid>
@@ -69,19 +82,7 @@ export const DepositModal: FC = () => {
       </Grid>
 
       <Grid item>
-        <CardWrapper>
-          <Grid container justifyContent="space-between" alignItems="center">
-            <Grid item>
-              <Text variant="h6">
-                <IconWithTitle />
-              </Text>
-            </Grid>
-
-            <Grid item>
-              <Text variant="h6">1.054525</Text>
-            </Grid>
-          </Grid>
-        </CardWrapper>
+        <Receiving />
       </Grid>
 
       <Grid item>
@@ -96,23 +97,13 @@ export const DepositModal: FC = () => {
                 </Grid>
 
                 <Grid item>
-                  <Text variant="body2">0.001%</Text>
+                  <Text variant="body2">0.00%</Text>
                 </Grid>
               </Grid>
             </Grid>
 
             <Grid item>
-              <Grid container justifyContent="space-between">
-                <Grid item>
-                  <Text variant="body2">
-                    {t(translations.LiquidityPage.Modal.MaxSlippage())}
-                  </Text>
-                </Grid>
-
-                <Grid item>
-                  <Text variant="body2">0.1%</Text>
-                </Grid>
-              </Grid>
+              <Slippage />
             </Grid>
 
             <Grid item>

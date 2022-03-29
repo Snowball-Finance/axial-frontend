@@ -1,3 +1,6 @@
+import { Contract } from "ethers";
+import { call, delay, put, select, takeLatest } from "redux-saga/effects";
+
 import { GlobalDomains } from "app/appSelectors";
 import { RewardsActions } from "app/containers/Rewards/slice";
 import {
@@ -6,9 +9,82 @@ import {
   Pool,
 } from "app/containers/Rewards/types";
 import { floatToBN } from "common/format";
-import { delay, put, select, takeLatest } from "redux-saga/effects";
 import { LiquidityPageDomains } from "./selectors";
 import { LiquidityPageActions } from "./slice";
+import { SwapFlashLoanNoWithdrawFee } from "abi/ethers-contracts";
+import { getProviderOrSigner } from "app/containers/utils/contractUtils";
+import { Web3Domains } from "app/containers/BlockChain/Web3/selectors";
+import { Token } from "app/containers/Swap/types";
+import { FromTransactionData } from "./types";
+
+export function* buildTransactionData() {
+  const depositTokenAmounts = yield select(
+    LiquidityPageDomains.depositTokenAmounts
+  );
+  const depositRaw = yield select(LiquidityPageDomains.depositRaw);
+  const tokens = yield select(GlobalDomains.tokens);
+  const pool: Pool = yield select(LiquidityPageDomains.pool);
+  const fromStateData: FromTransactionData = {
+    tokens: [],
+    total: 0,
+  };
+  const tokenAmounts = {};
+  for (let tokenKey in depositTokenAmounts) {
+    const v = depositTokenAmounts[tokenKey];
+    const num = Number(v);
+    const toSend = floatToBN(num, tokens[tokenKey].decimals);
+    tokenAmounts[tokenKey] = toSend;
+    if (num > 0) {
+      fromStateData.tokens = [
+        ...fromStateData?.tokens,
+        {
+          symbol: tokenKey,
+          value: parseFloat(depositTokenAmounts[tokenKey]),
+        },
+      ];
+      fromStateData.total =
+        fromStateData.total + parseFloat(depositTokenAmounts[tokenKey]);
+    }
+  }
+
+  try {
+    const library = yield select(Web3Domains.selectLibraryDomain);
+    const account = yield select(Web3Domains.selectAccountDomain);
+    const targetContract = new Contract(
+      pool.swapAddress || pool.address,
+      pool.swapABI,
+      getProviderOrSigner(library, account)
+    );
+
+    const shouldDepositWrapped =
+      pool.swapAddress === undefined ? false : !depositRaw;
+
+    const poolTokens = shouldDepositWrapped
+      ? (pool.underlyingPoolTokens as Token[])
+      : pool.poolTokens;
+
+    const minToMint = yield call(
+      (targetContract as SwapFlashLoanNoWithdrawFee).calculateTokenAmount,
+      poolTokens.map(({ symbol }) => tokenAmounts[symbol]),
+      true
+    );
+
+    const shareOfPool = pool.poolData?.totalLocked.gt(0);
+
+    yield put(
+      LiquidityPageActions.setDepositTransactionData({
+        from: fromStateData,
+        to: {
+          symbol: pool?.lpToken.symbol,
+          value: minToMint,
+        },
+        share: shareOfPool,
+      })
+    );
+  } catch (error) {
+    console.log("error", error);
+  }
+}
 
 export function* deposit() {
   const depositTokenAmounts = yield select(
@@ -44,6 +120,10 @@ export function* withdraw(action: {
 }
 
 export function* liquidityPageSaga() {
+  yield takeLatest(
+    LiquidityPageActions.buildTransactionData.type,
+    buildTransactionData
+  );
   yield takeLatest(LiquidityPageActions.deposit.type, deposit);
   yield takeLatest(LiquidityPageActions.withdraw.type, withdraw);
 }

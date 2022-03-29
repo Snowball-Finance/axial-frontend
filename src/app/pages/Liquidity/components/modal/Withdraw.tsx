@@ -7,7 +7,7 @@ import { CssVariables } from "styles/cssVariables/cssVariables";
 import { CardWrapper } from "app/components/wrappers/Card";
 import { OutlinedButton } from "app/components/common/buttons/outlinedButton";
 import { ContainedButton } from "app/components/common/buttons/containedButton";
-import { IconWithTitle } from "./components/IconWithTitle";
+// import { IconWithTitle } from "./components/IconWithTitle";
 import { Message } from "./components/Message";
 import { Rates } from "./components/Rates";
 import { Total } from "./components/Total";
@@ -74,7 +74,7 @@ export const WithdrawModal: FC = () => {
                   alignItems="center"
                 >
                   <Grid item>
-                    <IconWithTitle />
+                    {/* <IconWithTitle /> */}
                   </Grid>
 
                   <Grid item>

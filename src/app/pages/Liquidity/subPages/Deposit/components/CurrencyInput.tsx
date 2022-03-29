@@ -8,6 +8,7 @@ import { globalSelectors } from "app/appSelectors";
 import { LiquidityDepositInput } from "./input";
 import { Pool } from "app/containers/Rewards/types";
 import { WalletBalance } from "./walletBalance";
+import { EquivalentTokenPriceUSD } from "app/pages/Liquidity/subPages/Deposit/components/EquivalentTokenPriceUSD";
 
 export const CurrencyInputs: FC = () => {
   const tokens = useSelector(globalSelectors.tokens) as Token[];
@@ -52,7 +53,7 @@ export const CurrencyInputs: FC = () => {
                     </Grid>
 
                     <Grid item>
-                      <InputText variant="body2">=$0.0</InputText>
+                      <EquivalentTokenPriceUSD token={token} />
                     </Grid>
                   </Grid>
                 </Grid>
@@ -78,9 +79,5 @@ const IconImage = styled("img")({
 });
 
 const TokenText = styled(Typography)({
-  color: CssVariables.white,
-});
-
-const InputText = styled(Typography)({
   color: CssVariables.white,
 });
