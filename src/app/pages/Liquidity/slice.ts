@@ -116,7 +116,7 @@ const liquidityPageSlice = createSlice({
     },
     setDepositTransactionData(
       state,
-      action: PayloadAction<DepositTransactionData|undefined>
+      action: PayloadAction<DepositTransactionData | undefined>
     ) {
       state.depositTransactionData = action.payload;
     },

@@ -43,6 +43,6 @@ const StyledSwapCard = styled("div")({
   paddingBottom: "40px",
 
   [mobile]: {
-    width: "100%"
-  }
+    width: "100%",
+  },
 });

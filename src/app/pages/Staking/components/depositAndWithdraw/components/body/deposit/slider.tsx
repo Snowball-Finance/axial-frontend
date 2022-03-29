@@ -64,6 +64,6 @@ const Wrapper = styled("div")({
 
   [mobile]: {
     width: "90%",
-    padding: 0
+    padding: 0,
   },
 });

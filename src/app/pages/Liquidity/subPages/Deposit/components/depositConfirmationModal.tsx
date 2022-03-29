@@ -12,7 +12,7 @@ export const DepositConfirmationModal: FC = () => {
     dispatch(LiquidityPageActions.setDepositTransactionData(undefined));
   };
   return (
-    <SnowModal isOpen={data!==undefined} onClose={handleClose}>
+    <SnowModal isOpen={data !== undefined} onClose={handleClose}>
       <DepositModal />
     </SnowModal>
   );

@@ -73,9 +73,7 @@ export const WithdrawModal: FC = () => {
                   justifyContent="space-between"
                   alignItems="center"
                 >
-                  <Grid item>
-                    {/* <IconWithTitle /> */}
-                  </Grid>
+                  <Grid item>{/* <IconWithTitle /> */}</Grid>
 
                   <Grid item>
                     <Text variant="h6">1.054525</Text>
