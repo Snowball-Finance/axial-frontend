@@ -29,15 +29,11 @@ export const DepositModal: FC = () => {
   const dispatch = useDispatch();
 
   const handleCancelClick = () => {
-    dispatch(LiquidityPageActions.setDepositConfirmationData(undefined));
+    dispatch(LiquidityPageActions.setDepositTransactionData(undefined));
   };
   const handleDepositClick = () => {
     dispatch(LiquidityPageActions.deposit());
   };
-
-  useEffect(() => {
-    dispatch(LiquidityPageActions.buildTransactionData());
-  }, []);
 
   return (
     <Grid container direction="column" spacing={1}>

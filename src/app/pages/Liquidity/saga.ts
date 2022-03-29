@@ -106,7 +106,7 @@ export function* deposit() {
     shouldDepositWrapped: pool.swapAddress === undefined ? false : !depositRaw,
   };
   yield put(RewardsActions.approveAndDeposit(dataToSend));
-  yield put(LiquidityPageActions.setDepositConfirmationData(undefined));
+  yield put(LiquidityPageActions.setDepositTransactionData(undefined));
 }
 
 export function* withdraw(action: {

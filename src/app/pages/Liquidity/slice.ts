@@ -20,7 +20,6 @@ export const initialState: ContainerState = {
   withdrawPercentage: 0,
   selectedTokenToWithdraw: "combo",
   depositRaw: false,
-  depositConfirmationData: undefined,
   withdrawConfirmationData: undefined,
   depositTransactionData: undefined,
 };
@@ -112,15 +111,12 @@ const liquidityPageSlice = createSlice({
       }
       state.withdrawTokenAmounts = amounts;
     },
-    setDepositConfirmationData(state, action: PayloadAction<any>) {
-      state.depositConfirmationData = action.payload;
-    },
     setWithdrawConfirmationData(state, action: PayloadAction<any>) {
       state.withdrawConfirmationData = action.payload;
     },
     setDepositTransactionData(
       state,
-      action: PayloadAction<DepositTransactionData>
+      action: PayloadAction<DepositTransactionData|undefined>
     ) {
       state.depositTransactionData = action.payload;
     },

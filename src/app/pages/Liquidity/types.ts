@@ -14,7 +14,6 @@ export interface LiquidityPageState {
   withdrawPercentage: number;
   selectedTokenToWithdraw: "combo" | TokenSymbols;
   depositRaw: boolean;
-  depositConfirmationData: any;
   withdrawConfirmationData: any;
   depositTransactionData: DepositTransactionData | undefined;
 }

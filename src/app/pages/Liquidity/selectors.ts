@@ -32,9 +32,6 @@ export const LiquidityPageDomains = {
     initialState.withdrawTokenAmounts,
   depositRaw: (state: RootState) =>
     state.liquidityPage?.depositRaw || initialState.depositRaw,
-  depositConfirmationData: (state: RootState) =>
-    state.liquidityPage?.depositConfirmationData ||
-    initialState.depositConfirmationData,
   withdrawConfirmationData: (state: RootState) =>
     state.liquidityPage?.withdrawConfirmationData ||
     initialState.withdrawConfirmationData,
@@ -134,10 +131,6 @@ export const LiquidityPageSelectors = {
   depositRaw: createSelector(
     LiquidityPageDomains.depositRaw,
     (depositRaw) => depositRaw
-  ),
-  depositConfirmationData: createSelector(
-    LiquidityPageDomains.depositConfirmationData,
-    (depositConfirmationData) => depositConfirmationData
   ),
   withdrawConfirmationData: createSelector(
     LiquidityPageDomains.withdrawConfirmationData,
