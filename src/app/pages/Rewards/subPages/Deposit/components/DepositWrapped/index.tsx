@@ -1,7 +1,6 @@
-import React, { FC, useEffect } from "react";
+import React, { FC } from "react";
 import { styled, Grid, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
-
 import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { CurrencyInput } from "./CurrencyInput";
@@ -12,8 +11,6 @@ import { WalletBalance } from "./walletBalance";
 import { RewardsPageSelectors } from "app/pages/Rewards/selectors";
 import { CompoundWithSnowball } from "./CompoundWithSnowball";
 import { mobile } from "styles/media";
-
-type TParams = { poolIndex: string };
 
 export const DepositWrapped: FC = () => {
   const { t } = useTranslation();
