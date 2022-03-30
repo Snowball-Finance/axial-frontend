@@ -3,6 +3,7 @@ import { styled, Grid, Typography } from "@mui/material";
 
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { tokens } from "app/tokens";
+import { mobile } from "styles/media";
 
 export const IconWithTitle: FC<{ tokenSymbol?: string }> = ({
   tokenSymbol = "",
@@ -29,10 +30,18 @@ const TokenIconContainer = styled("div")({
   borderRadius: CssVariables.buttonBorderRadius,
   padding: 5,
   minWidth: 150,
+
+  [mobile]: {
+    minWidth: 100,
+  },
 });
 
 const TokenTitle = styled(Typography)({});
 
 const TokenIcon = styled("img")({
   width: "33px",
+
+  [mobile]: {
+    width: "25px",
+  },
 });

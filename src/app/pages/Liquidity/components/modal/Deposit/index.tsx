@@ -8,15 +8,16 @@ import { CssVariables } from "styles/cssVariables/cssVariables";
 import { CardWrapper } from "app/components/wrappers/Card";
 import { OutlinedButton } from "app/components/common/buttons/outlinedButton";
 import { ContainedButton } from "app/components/common/buttons/containedButton";
-import { IconWithTitle } from "./components/IconWithTitle";
-import { Message } from "./components/Message";
+import { RewardsSelectors } from "app/containers/Rewards/selectors";
+import { LiquidityPageActions } from "../../../slice";
+import { LiquidityPageSelectors } from "../../../selectors";
+import { IconWithTitle } from "../components/IconWithTitle";
+import { Message } from "../components/Message";
+import { Slippage } from "../components/Slippage";
 import { Rates } from "./components/Rates";
 import { Total } from "./components/Total";
-import { RewardsSelectors } from "app/containers/Rewards/selectors";
-import { LiquidityPageActions } from "../../slice";
-import { LiquidityPageSelectors } from "../../selectors";
 import { Receiving } from "./components/Receiving";
-import { Slippage } from "./components/Slippage";
+import { Share } from "./components/Share";
 
 export const DepositModal: FC = () => {
   const { t } = useTranslation();
@@ -31,6 +32,7 @@ export const DepositModal: FC = () => {
   const handleCancelClick = () => {
     dispatch(LiquidityPageActions.setDepositTransactionData(undefined));
   };
+  
   const handleDepositClick = () => {
     dispatch(LiquidityPageActions.deposit());
   };
@@ -52,13 +54,16 @@ export const DepositModal: FC = () => {
                   container
                   justifyContent="space-between"
                   alignItems="center"
+                  spacing={{ xs: 2, xl: 0 }}
                 >
                   <Grid item>
                     <IconWithTitle tokenSymbol={item.symbol} />
                   </Grid>
 
-                  <Grid item>
-                    <Text variant="h6">{item.value}</Text>
+                  <Grid item xs zeroMinWidth>
+                    <Text variant="h6" noWrap align="right">
+                      {item.value}
+                    </Text>
                   </Grid>
                 </Grid>
               </Grid>
@@ -85,17 +90,7 @@ export const DepositModal: FC = () => {
         <CardWrapper>
           <Grid container direction="column" spacing={1}>
             <Grid item>
-              <Grid container justifyContent="space-between">
-                <Grid item>
-                  <Text variant="body2">
-                    {t(translations.LiquidityPage.Modal.ShareOfPoll())}
-                  </Text>
-                </Grid>
-
-                <Grid item>
-                  <Text variant="body2">0.00%</Text>
-                </Grid>
-              </Grid>
+              <Share />
             </Grid>
 
             <Grid item>

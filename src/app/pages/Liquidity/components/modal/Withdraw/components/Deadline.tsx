@@ -7,20 +7,22 @@ import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { LiquidityPageSelectors } from "app/pages/Liquidity/selectors";
 
-export const Total: FC = () => {
+export const Deadline: FC = () => {
   const { t } = useTranslation();
-  const depositTransactionData = useSelector(
-    LiquidityPageSelectors.depositTransactionData
+  const withdrawReviewData = useSelector(
+    LiquidityPageSelectors.withdrawReviewData
   );
 
   return (
     <Grid container justifyContent="space-between" alignItems="center">
       <Grid item>
-        <Text variant="h6">{t(translations.LiquidityPage.Modal.Total())}</Text>
+        <Text variant="body2">
+          {t(translations.LiquidityPage.Modal.TxnDeadline())}
+        </Text>
       </Grid>
 
       <Grid item>
-        <Text variant="h6">{depositTransactionData?.from.total}</Text>
+        <Text variant="body2">{withdrawReviewData?.deadline} min</Text>
       </Grid>
     </Grid>
   );

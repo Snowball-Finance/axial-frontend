@@ -1,4 +1,8 @@
-import { ContainerState, DepositTransactionData } from "./types";
+import {
+  ContainerState,
+  DepositTransactionData,
+  WithdrawReviewData,
+} from "./types";
 import { createSlice } from "store/toolkit";
 import { useInjectReducer, useInjectSaga } from "store/redux-injectors";
 
@@ -20,8 +24,8 @@ export const initialState: ContainerState = {
   withdrawPercentage: 0,
   selectedTokenToWithdraw: "combo",
   depositRaw: false,
-  withdrawConfirmationData: undefined,
   depositTransactionData: undefined,
+  withdrawReviewData: undefined,
 };
 
 const liquidityPageSlice = createSlice({
@@ -111,16 +115,20 @@ const liquidityPageSlice = createSlice({
       }
       state.withdrawTokenAmounts = amounts;
     },
-    setWithdrawConfirmationData(state, action: PayloadAction<any>) {
-      state.withdrawConfirmationData = action.payload;
-    },
     setDepositTransactionData(
       state,
       action: PayloadAction<DepositTransactionData | undefined>
     ) {
       state.depositTransactionData = action.payload;
     },
+    setWithdrawReviewData(
+      state,
+      action: PayloadAction<WithdrawReviewData | undefined>
+    ) {
+      state.withdrawReviewData = action.payload;
+    },
     buildTransactionData() {},
+    buildWithdrawReviewData() {},
   },
 });
 
