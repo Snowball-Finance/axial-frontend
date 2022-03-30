@@ -14,8 +14,8 @@ export interface LiquidityPageState {
   withdrawPercentage: number;
   selectedTokenToWithdraw: "combo" | TokenSymbols;
   depositRaw: boolean;
-  withdrawConfirmationData: any;
   depositTransactionData: DepositTransactionData | undefined;
+  withdrawReviewData: WithdrawReviewData | undefined;
 }
 
 export interface PoolCardItemProps {
@@ -53,6 +53,13 @@ export interface DepositTransactionData {
   from: FromTransactionData;
   to: ToTokens;
   share: boolean | undefined;
+}
+
+export interface WithdrawReviewData {
+  tokens: FromTokens[];
+  total: number;
+  deadline: number;
+  gasPrice: string;
 }
 
 export enum PoolsRouteIndex {

@@ -32,12 +32,11 @@ export const LiquidityPageDomains = {
     initialState.withdrawTokenAmounts,
   depositRaw: (state: RootState) =>
     state.liquidityPage?.depositRaw || initialState.depositRaw,
-  withdrawConfirmationData: (state: RootState) =>
-    state.liquidityPage?.withdrawConfirmationData ||
-    initialState.withdrawConfirmationData,
   depositTransactionData: (state: RootState) =>
     state.liquidityPage?.depositTransactionData ||
     initialState.depositTransactionData,
+  withdrawReviewData: (state: RootState) =>
+    state.liquidityPage?.withdrawReviewData || initialState.withdrawReviewData,
 };
 
 export const LiquidityPageSelectors = {
@@ -132,13 +131,13 @@ export const LiquidityPageSelectors = {
     LiquidityPageDomains.depositRaw,
     (depositRaw) => depositRaw
   ),
-  withdrawConfirmationData: createSelector(
-    LiquidityPageDomains.withdrawConfirmationData,
-    (withdrawConfirmationData) => withdrawConfirmationData
-  ),
   depositTransactionData: createSelector(
     LiquidityPageDomains.depositTransactionData,
     (depositTransactionData) => depositTransactionData
+  ),
+  withdrawReviewData: createSelector(
+    LiquidityPageDomains.withdrawReviewData,
+    (withdrawReviewData) => withdrawReviewData
   ),
 };
 

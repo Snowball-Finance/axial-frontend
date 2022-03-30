@@ -9,13 +9,18 @@ import {
   Pool,
 } from "app/containers/Rewards/types";
 import { floatToBN } from "common/format";
-import { LiquidityPageDomains } from "./selectors";
+import { LiquidityPageDomains, LiquidityPageSelectors } from "./selectors";
 import { LiquidityPageActions } from "./slice";
 import { SwapFlashLoanNoWithdrawFee } from "abi/ethers-contracts";
 import { getProviderOrSigner } from "app/containers/utils/contractUtils";
 import { Web3Domains } from "app/containers/BlockChain/Web3/selectors";
 import { Token } from "app/containers/Swap/types";
 import { FromTransactionData } from "./types";
+import { GenericGasResponse } from "app/providers/gasPrice";
+import {
+  Deadlines,
+  formatDeadlineToNumber,
+} from "app/containers/Rewards/utils/deadline";
 
 export function* buildTransactionData() {
   const depositTokenAmounts = yield select(
@@ -86,6 +91,46 @@ export function* buildTransactionData() {
   }
 }
 
+export function* buildWithdrawReviewData() {
+  const withdrawTokens = yield select(
+    LiquidityPageSelectors.withdrawTokenToShow()
+  );
+  const transactionDeadline = Deadlines.Twenty;
+
+  let tokensData: any = [];
+  let total = 0;
+
+  for (let tokenKey in withdrawTokens) {
+    if (Number(withdrawTokens[tokenKey]) > 0) {
+      tokensData = [
+        ...tokensData,
+        {
+          symbol: tokenKey,
+          value: parseFloat(withdrawTokens[tokenKey]),
+        },
+      ];
+      total = total + parseFloat(withdrawTokens[tokenKey]);
+    }
+  }
+
+  try {
+    const gasPrices: GenericGasResponse = yield select(GlobalDomains.gasPrice);
+    const { gasFast } = gasPrices;
+    const deadline = formatDeadlineToNumber(transactionDeadline);
+
+    yield put(
+      LiquidityPageActions.setWithdrawReviewData({
+        tokens: tokensData,
+        total,
+        deadline,
+        gasPrice: gasFast.toString(),
+      })
+    );
+  } catch (error) {
+    console.log("error", error);
+  }
+}
+
 export function* deposit() {
   const depositTokenAmounts = yield select(
     LiquidityPageDomains.depositTokenAmounts
@@ -123,6 +168,10 @@ export function* liquidityPageSaga() {
   yield takeLatest(
     LiquidityPageActions.buildTransactionData.type,
     buildTransactionData
+  );
+  yield takeLatest(
+    LiquidityPageActions.buildWithdrawReviewData.type,
+    buildWithdrawReviewData
   );
   yield takeLatest(LiquidityPageActions.deposit.type, deposit);
   yield takeLatest(LiquidityPageActions.withdraw.type, withdraw);

@@ -1,5 +1,7 @@
 import React, { FC } from "react";
 import { styled, Grid, Typography } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { BigNumber } from "ethers";
 import { useTranslation } from "react-i18next";
 
 import { translations } from "locales/i18n";
@@ -7,33 +9,38 @@ import { CssVariables } from "styles/cssVariables/cssVariables";
 import { CardWrapper } from "app/components/wrappers/Card";
 import { OutlinedButton } from "app/components/common/buttons/outlinedButton";
 import { ContainedButton } from "app/components/common/buttons/containedButton";
-// import { IconWithTitle } from "./components/IconWithTitle";
-import { Message } from "./components/Message";
-import { Rates } from "./components/Rates";
-import { Total } from "./components/Total";
-import { useDispatch, useSelector } from "react-redux";
-import { LiquidityPageActions } from "../../slice";
 import { RewardsSelectors } from "app/containers/Rewards/selectors";
-import { LiquidityPageSelectors } from "../../selectors";
 import { globalSelectors } from "app/appSelectors";
-import { floatToBN } from "common/format";
 import {
   ApproveAndWithdrawPayload,
   WithdrawType,
 } from "app/containers/Rewards/types";
-import { BigNumber } from "ethers";
+import { LiquidityPageActions } from "../../../slice";
+import { LiquidityPageSelectors } from "../../../selectors";
+import { IconWithTitle } from "../components/IconWithTitle";
+import { Message } from "../components/Message";
+import { Rates } from "./components/Rates";
+import { Total } from "./components/Total";
+import { floatToBN } from "common/format";
+import { Slippage } from "../components/Slippage";
+import { Deadline } from "./components/Deadline";
+import { GasPrice } from "./components/GasPrice";
 
 export const WithdrawModal: FC = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const isWithdrawing = useSelector(RewardsSelectors.isWithdrawing);
   const selectedPool = useSelector(LiquidityPageSelectors.selectedPool);
+  const withdrawReviewData = useSelector(
+    LiquidityPageSelectors.withdrawReviewData
+  );
   const tokens = useSelector(globalSelectors.tokens);
   const withdrawTokens = useSelector(
     LiquidityPageSelectors.withdrawTokenToShow()
   );
+
   const handleCancelClick = () => {
-    dispatch(LiquidityPageActions.setWithdrawConfirmationData(undefined));
+    dispatch(LiquidityPageActions.setWithdrawReviewData(undefined));
   };
 
   const handleWithdrawClick = () => {
@@ -66,17 +73,22 @@ export const WithdrawModal: FC = () => {
       <Grid item>
         <CardWrapper>
           <Grid container direction="column" spacing={2}>
-            {[1, 2, 3, 4].map((item) => (
-              <Grid item key={item}>
+            {withdrawReviewData?.tokens.map((item) => (
+              <Grid item key={item.symbol}>
                 <Grid
                   container
                   justifyContent="space-between"
                   alignItems="center"
+                  spacing={{ xs: 2, xl: 0 }}
                 >
-                  <Grid item>{/* <IconWithTitle /> */}</Grid>
-
                   <Grid item>
-                    <Text variant="h6">1.054525</Text>
+                    <IconWithTitle tokenSymbol={item.symbol} />
+                  </Grid>
+
+                  <Grid item xs zeroMinWidth>
+                    <Text variant="h6" noWrap align="right">
+                      {item.value}
+                    </Text>
                   </Grid>
                 </Grid>
               </Grid>
@@ -93,45 +105,15 @@ export const WithdrawModal: FC = () => {
         <CardWrapper>
           <Grid container direction="column" spacing={1}>
             <Grid item>
-              <Grid container justifyContent="space-between">
-                <Grid item>
-                  <Text variant="body2">
-                    {t(translations.LiquidityPage.Modal.Gas())}
-                  </Text>
-                </Grid>
-
-                <Grid item>
-                  <Text variant="body2">58 GWEI</Text>
-                </Grid>
-              </Grid>
+              <GasPrice />
             </Grid>
 
             <Grid item>
-              <Grid container justifyContent="space-between">
-                <Grid item>
-                  <Text variant="body2">
-                    {t(translations.LiquidityPage.Modal.MaxSlippage())}
-                  </Text>
-                </Grid>
-
-                <Grid item>
-                  <Text variant="body2">0.1%</Text>
-                </Grid>
-              </Grid>
+              <Slippage />
             </Grid>
 
             <Grid item>
-              <Grid container justifyContent="space-between">
-                <Grid item>
-                  <Text variant="body2">
-                    {t(translations.LiquidityPage.Modal.TxnDeadline())}
-                  </Text>
-                </Grid>
-
-                <Grid item>
-                  <Text variant="body2">20 min</Text>
-                </Grid>
-              </Grid>
+              <Deadline />
             </Grid>
 
             <Grid item>
