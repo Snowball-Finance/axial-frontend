@@ -32,7 +32,6 @@ export const DepositModal: FC = () => {
   const handleCancelClick = () => {
     dispatch(LiquidityPageActions.setDepositTransactionData(undefined));
   };
-
   const handleDepositClick = () => {
     dispatch(LiquidityPageActions.deposit());
   };
