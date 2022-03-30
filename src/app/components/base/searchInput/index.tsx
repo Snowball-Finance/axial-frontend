@@ -4,6 +4,7 @@ import { ChangeEvent } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
+import { CssVariables } from "styles/cssVariables/cssVariables";
 
 interface SearchInputInterface {
   onChange: (v: string) => void;
@@ -23,6 +24,7 @@ const Input = styled("input")({
   height: "45px",
   outline: "none",
   padding: "0px 12px",
+  color: CssVariables.white
 });
 const EndIconWrapper = styled("div")({
   position: "absolute",

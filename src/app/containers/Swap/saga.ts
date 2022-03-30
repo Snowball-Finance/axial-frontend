@@ -29,7 +29,7 @@ export function* findBestPath(action: {
     const { amountToGive, toToken, fromToken } = action.payload;
     const fromTokenAddress = fromToken.address;
     const toTokenAddress = toToken.address;
-    const library = yield select(Web3Domains.selectLibraryDomain);
+    const library = yield select(Web3Domains.selectNetworkLibraryDomain);
     const account = yield select(Web3Domains.selectAccountDomain);
 
     const swapContract = new Contract(
@@ -82,7 +82,7 @@ export function* swap() {
       swapRouterABI,
       getProviderOrSigner(library, account)
     ) as SwapRouter;
-    const infiniteApproval = yield select(SwapDomains.infiniteApproval);
+    const infiniteApproval = yield select(GlobalDomains.infiniteApproval);
     const fromTokenAddress = bestPath.path[0];
     const fromTokenABI = tokensList.find(
       (token) => token.address === fromTokenAddress

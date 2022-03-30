@@ -4,6 +4,8 @@ import { AddressZero } from "@ethersproject/constants";
 import { getAddress } from "@ethersproject/address";
 import { PoolTypes } from "app/constants";
 import { formatUnits } from "@ethersproject/units";
+import { parseUnits } from "ethers/lib/utils";
+import { Zero } from "app/containers/Rewards/constants";
 
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(value: string): string | false {
@@ -75,4 +77,79 @@ export function formatBNToString(
         0,
         decimalIdx + (decimalPlaces > 0 ? decimalPlaces + 1 : 0) // don't include decimal point if places = 0
       );
+}
+
+export function calculatePrice(
+  amount: BigNumber | string,
+  tokenPrice = 0,
+  decimals?: number
+): BigNumber {
+  // returns amount * price as BN 18 precision
+  if (typeof amount === "string") {
+    if (isNaN(+amount)) return Zero;
+    return parseUnits((+amount * tokenPrice).toFixed(2), 18);
+  } else if (decimals != null) {
+    return amount
+      .mul(parseUnits(tokenPrice.toFixed(2), 18))
+      .div(BigNumber.from(10).pow(decimals));
+  }
+  return Zero;
+}
+
+export function calculateExchangeRate(
+  amountFrom: BigNumber,
+  tokenPrecisionFrom: number,
+  amountTo: BigNumber,
+  tokenPrecisionTo: number
+): BigNumber {
+  return amountFrom.gt("0")
+    ? amountTo
+        .mul(BigNumber.from(10).pow(36 - tokenPrecisionTo)) // convert to standard 1e18 precision
+        .div(amountFrom.mul(BigNumber.from(10).pow(18 - tokenPrecisionFrom)))
+    : BigNumber.from("0");
+}
+
+export function shiftBNDecimals(bn: BigNumber, shiftAmount: number): BigNumber {
+  if (shiftAmount < 0) throw new Error("shiftAmount must be positive");
+  return bn.mul(BigNumber.from(10).pow(shiftAmount));
+}
+
+export function formatBNToShortString(
+  bn: BigNumber,
+  nativePrecision: number
+): string {
+  const bnStr = bn.toString();
+  const numLen = bnStr.length - nativePrecision;
+  if (numLen <= 0) return "0.0";
+  const div = Math.floor((numLen - 1) / 3);
+  const mod = numLen % 3;
+  const suffixes = ["", "k", "m", "b", "t"];
+  return `${bnStr.substr(0, mod || 3)}.${bnStr[mod || 3]}${suffixes[div]}`;
+}
+
+export function commify(str: string): string {
+  const parts = str.split(".");
+  if (parts.length > 2)
+    throw new Error("commify string cannot have > 1 period");
+  const [partA, partB] = parts;
+  if (partA.length === 0) return partB === undefined ? "" : `.${partB}`;
+  const mod = partA.length % 3;
+  const div = Math.floor(partA.length / 3);
+  // define a fixed length array given the expected # of commas added
+  const commaAArr = new Array(partA.length + (mod === 0 ? div - 1 : div));
+  // init pointers for original string and for commified array
+  let commaAIdx = commaAArr.length - 1;
+  // iterate original string backwards from the decimals since that's how commas are added
+  for (let i = partA.length - 1; i >= 0; i--) {
+    // revIdx is the distance from the decimal place eg "3210."
+    const revIdx = partA.length - 1 - i;
+    // add the character to the array
+    commaAArr[commaAIdx--] = partA[i];
+    // add a comma if we are a multiple of 3 from the decimal
+    if ((revIdx + 1) % 3 === 0) {
+      commaAArr[commaAIdx--] = ",";
+    }
+  }
+  const commifiedA = commaAArr.join("");
+  return partB === undefined ? commifiedA : `${commifiedA}.${partB}`;
 }

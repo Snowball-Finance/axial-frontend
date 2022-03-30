@@ -10,6 +10,7 @@ import { StakeButton } from "./stakeButton";
 import { AdvancedOptions } from "./advancedOptions";
 import { StakingAmount } from "./stakingAmount";
 import { DepositYouWillGet } from "./youWillGet";
+import { mobile } from "styles/media";
 
 export const Deposit = () => {
   const { t } = useTranslation();
@@ -50,4 +51,8 @@ const Wrapper = styled("div")({
   display: "flex",
   flexDirection: "column",
   gap: "16px",
+
+  [mobile]: {
+    width: "100%",
+  },
 });

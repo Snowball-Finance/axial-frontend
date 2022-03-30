@@ -1,9 +1,40 @@
 import React, { FC } from "react";
 import { styled, Grid, Typography } from "@mui/material";
+import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
+import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
+import {
+  formatBNToString,
+  formatBNToPercentString,
+  formatBNToShortString,
+} from "app/containers/utils/contractUtils";
+import { getKeyFromPoolIndex } from "app/pages/Rewards/constants";
+import { RewardsPageSelectors } from "app/pages/Rewards/selectors";
+import { RewardsSelectors } from "app/containers/Rewards/selectors";
+import { pools } from "app/pools";
+import { Zero } from "app/containers/Rewards/constants";
+
+type TParams = { poolIndex: string };
 
 export const MyShare: FC = () => {
+  const { t } = useTranslation();
+
+  const { poolIndex } = useParams<TParams>();
+  const poolKey = getKeyFromPoolIndex(poolIndex) || "";
+  const userShareData = useSelector(
+    RewardsPageSelectors.rewardsUserShareData(poolKey)
+  );
+  const masterchefBalance = useSelector(RewardsSelectors.masterChefBalances);
+
+  const tokenKey = pools[poolKey].lpToken.symbol;
+
+  if (!userShareData) {
+    return null;
+  }
+
   return (
     <StyledMyShare>
       <Grid container direction="column" spacing={2}>
@@ -15,12 +46,15 @@ export const MyShare: FC = () => {
             spacing={1}
           >
             <Grid item>
-              <MyShareTitle variant="h5">MY SHARE</MyShareTitle>
+              <MyShareTitle variant="h5">
+                {t(translations.RewardsPage.MyShare.Title())}
+              </MyShareTitle>
             </Grid>
 
             <Grid item>
               <MyShareBalanceText variant="body2">
-                0.50% of pool
+                {formatBNToPercentString(userShareData.share, 18)}{" "}
+                {t(translations.RewardsPage.MyShare.OfPool())}
               </MyShareBalanceText>
             </Grid>
           </Grid>
@@ -34,11 +68,15 @@ export const MyShare: FC = () => {
             spacing={1}
           >
             <Grid item>
-              <BalanceLabelText variant="body1">USD Balance:</BalanceLabelText>
+              <BalanceLabelText variant="body1">
+                {t(translations.RewardsPage.MyShare.USDBalance())}:
+              </BalanceLabelText>
             </Grid>
 
             <Grid item>
-              <BalanceText variant="body2">$15,540.45</BalanceText>
+              <BalanceText variant="body2">
+                ${formatBNToString(userShareData.usdBalance, 18, 2)}
+              </BalanceText>
             </Grid>
           </Grid>
         </Grid>
@@ -51,11 +89,20 @@ export const MyShare: FC = () => {
             spacing={1}
           >
             <Grid item>
-              <BalanceLabelText variant="body1">Total:</BalanceLabelText>
+              <BalanceLabelText variant="body1">
+                {t(translations.RewardsPage.MyShare.Total())}:
+              </BalanceLabelText>
             </Grid>
 
             <Grid item>
-              <BalanceText variant="body2">$15,540.45</BalanceText>
+              <BalanceText variant="body2">
+                $
+                {masterchefBalance &&
+                  formatBNToShortString(
+                    masterchefBalance[tokenKey]?.userInfo.amount || Zero,
+                    18
+                  )}
+              </BalanceText>
             </Grid>
           </Grid>
         </Grid>

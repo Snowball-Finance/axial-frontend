@@ -1,5 +1,10 @@
 import { PayloadAction } from "@reduxjs/toolkit";
-import { ContainerState, SwapStatsReponse } from "./types";
+import {
+  ApproveAndDepositPayload,
+  ApproveAndWithdrawPayload,
+  ContainerState,
+  SwapStatsReponse,
+} from "./types";
 import { createSlice } from "store/toolkit";
 import { useInjectReducer, useInjectSaga } from "store/redux-injectors";
 
@@ -21,6 +26,8 @@ export const initialState: ContainerState = {
   masterChefBalances: undefined,
   swapStats: undefined,
   masterchefApr: undefined,
+  isDepositing: false,
+  isWithdrawing: false,
 };
 
 interface LastTransactionTimes {
@@ -105,6 +112,20 @@ const rewardsSlice = createSlice({
         ...action.payload,
       };
     },
+    approveAndDeposit(
+      state,
+      action: PayloadAction<ApproveAndDepositPayload>
+    ) {},
+    setIsDepositing(state, action: PayloadAction<boolean>) {
+      state.isDepositing = action.payload;
+    },
+    setIsWithdrawing(state, action: PayloadAction<boolean>) {
+      state.isWithdrawing = action.payload;
+    },
+    approveAndWithdraw(
+      state,
+      action: PayloadAction<ApproveAndWithdrawPayload>
+    ) {},
   },
 });
 

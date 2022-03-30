@@ -52,6 +52,12 @@ export enum GasPrices {
   Custom = "CUSTOM",
 }
 
+export enum Slippages {
+  One = "ONE",
+  OneTenth = "ONE_TENTH",
+  Custom = "CUSTOM",
+}
+
 export interface SwapState {
   swapRouterAddress: string;
   swapRouterABI: any;
@@ -59,7 +65,6 @@ export interface SwapState {
   isGettingBestPath: boolean;
   bestPath: BestPath | undefined;
   isSwapping: boolean;
-  infiniteApproval: boolean;
   selectedGasPrice: GasPrices;
 }
 

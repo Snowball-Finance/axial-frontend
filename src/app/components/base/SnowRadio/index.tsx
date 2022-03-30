@@ -2,6 +2,7 @@ import React, { FC } from "react";
 import { styled, Radio } from "@mui/material";
 import { RadioProps } from "@mui/material/Radio";
 import { CssVariables } from "styles/cssVariables/cssVariables";
+import { mobile } from "styles/media";
 
 export const SnowRadio: FC<RadioProps> = (props) => {
   return (
@@ -32,6 +33,11 @@ const BpIcon = styled("span")({
   "input:disabled ~ &": {
     boxShadow: "none",
     background: CssVariables.primaryDisabled,
+  },
+
+  [mobile]: {
+    width: 16,
+    height: 16,
   },
 });
 

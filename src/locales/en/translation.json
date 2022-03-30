@@ -18,11 +18,90 @@
   },
   "LiquidityPage": {
     "Liquidity": "Liquidity",
-    "Description": "Liquidity Page"
+    "Description": "Liquidity Page",
+    "CurrencyReserves": "Currency Reserves",
+    "DepositWrapped":"Deposit Wrapped",
+    "WalletBalance": "Wallet Balance",
+    "Message": "Output is estimated. If the price changes by more than the max slippage your transaction will revert.",
+    "Info": {
+      "Balance": "Balance",
+      "SwapAPR": "Swap APR",
+      "TVL": "TVL",
+      "24hVolume": "24h volume"
+    },
+    "ActionButtons": {
+      "Deposit": "Deposit",
+      "Withdraw": "Withdraw"
+    },
+    "CurrencyReserve": {
+      "Title": "Currency Reserves"
+    },
+    "MyShare": {
+      "Title": "My Share",
+      "OfPool": "of pool",
+      "USDBalance": "USD Balance",
+      "Total": "Total"
+    },
+    "AddLiquidity": {
+      "Title": "Add Liquidity"
+    },
+    "Withdraw": {
+      "Title": "Withdraw",
+      "WithdrawlPercentage": "Withdrawl Percentage",
+      "Bonus": "Bonus"
+    },
+    "Modal": {
+      "ReviewDeposit": "Review Deposit",
+      "Total": "Total",
+      "Receiving": "Receiving",
+      "ShareOfPoll": "share of pool",
+      "MaxSlippage": "max slippage",
+      "Rates": "rates",
+      "ReviewWithdraw": "Review Withdraw",
+      "Gas": "gas",
+      "TxnDeadline": "txn deadline"
+    },
+    "Buttons": {
+      "Cancel": "Cancel",
+      "ConfirmDeposit": "Confirm Deposit",
+      "ConfirmWithdraw": "Confirm Withdraw"
+    }
   },
   "RewardsPage": {
     "Rewards": "Rewards",
     "Description": "Rewards Page",
+    "WalletBalance": "Wallet balance",
+    "Deposit": {
+      "Title": "Deposit Wrapped",
+      "Or": "Or",
+      "CompoundWithSnowball": "Compound with snowball",
+      "APY": "APY"
+    },
+    "Withdraw": {
+      "Title": "Withdraw",
+      "WithdrawlPercentage": "Withdrawl percentage"
+    },
+    "Info": {
+      "Balance": "Balance",
+      "Claimable": "Claimable",
+      "RewardsAPR": "Rewards APR",
+      "TotalAPR": "Total APR",
+      "TVL": "TVL"
+    },
+    "ActionButtons" : {
+      "Deposit": "Deposit",
+      "Withdraw": "Withdraw",
+      "Claim": "Claim"
+    },
+    "CurrencyReserve": {
+      "Title": "Currency Reserves"
+    },
+    "MyShare": {
+      "Title": "My Share",
+      "OfPool": "of pool",
+      "USDBalance": "USD Balance",
+      "Total": "Total"
+    },
     "Modal": {
       "Deposit": "Deposit",
       "Approval": "Approval",
@@ -34,6 +113,10 @@
     "Swap": "Swap",
     "Description": "Swap Page",
     "SwapButton": "Swap",
+    "ReviewSwap": {
+      "Title": "Review Swap",
+      "InfoDescription": "Output is estimated. if the price changes by more than the max slippage your transaction will revert"
+    },
     "FromToken": {
       "From": "From",
       "Max": "Max",

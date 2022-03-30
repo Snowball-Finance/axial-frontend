@@ -40,6 +40,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Web3Selectors } from "./containers/BlockChain/Web3/selectors";
 import { SwapPage } from "./pages/Swap";
 import { GlobalModals } from "./components/modals";
+import { Playground } from "./pages/playground";
 
 export function App() {
   const { t } = useTranslation();
@@ -120,6 +121,7 @@ export function App() {
           <Route path={AppPages.LiquidityPage} component={LiquidityPage} />
           <Route path={AppPages.RewardPage} component={RewardsPage} />
           <Route path={AppPages.RiskPage} component={RisksPage} />
+          <Route path={AppPages.Playground} component={Playground} />
           <Route component={NotFoundPage} />
         </Switch>
       </Layout>
