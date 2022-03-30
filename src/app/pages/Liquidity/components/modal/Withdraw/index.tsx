@@ -52,6 +52,7 @@ export const WithdrawModal: FC = () => {
         const toSend = floatToBN(num, tokens[k].decimals);
         tmpAmounts[k] = toSend;
       }
+      //TODO: fix this data
       const dataToSend: ApproveAndWithdrawPayload = {
         poolKey: selectedPool.key,
         type: WithdrawType.IMBALANCE,

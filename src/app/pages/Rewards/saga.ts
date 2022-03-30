@@ -67,7 +67,8 @@ export function* withdraw() {
   const withdrawPercentage: number = yield select(
     RewardsPageDomains.withdrawPercentage
   );
-  let effectiveUserLPTokenBalance = BigNumber.from(amount);
+  let effectiveUserLPTokenBalance =
+    floatToBN(amount, pool.lpToken.decimals) || BigNumber.from("0");
   if (userShareData && withdrawPercentage) {
     effectiveUserLPTokenBalance =
       userShareData.masterchefBalance?.userInfo.amount

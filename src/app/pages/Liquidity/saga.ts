@@ -1,5 +1,5 @@
 import { Contract } from "ethers";
-import { call, delay, put, select, takeLatest } from "redux-saga/effects";
+import { call, put, select, takeLatest } from "redux-saga/effects";
 
 import { GlobalDomains } from "app/appSelectors";
 import { RewardsActions } from "app/containers/Rewards/slice";
@@ -159,9 +159,9 @@ export function* withdraw(action: {
   payload: ApproveAndWithdrawPayload;
 }) {
   const { payload } = action;
-  console.log(payload);
-  // yield put(RewardsActions.approveAndWithdraw(payload));
-  yield delay(0);
+  // console.log(payload);
+  yield put(RewardsActions.approveAndWithdraw(payload));
+  // yield delay(0);
 }
 
 export function* liquidityPageSaga() {
