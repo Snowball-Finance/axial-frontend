@@ -19,7 +19,7 @@ export const WithdrawButton = () => {
     (tokenAmount) => tokenAmount === "0"
   );
   const isWithdrawing = useSelector(RewardsSelectors.isWithdrawing);
-  
+
   const handleWithdrawClick = () => {
     dispatch(LiquidityPageActions.buildWithdrawReviewData());
   };

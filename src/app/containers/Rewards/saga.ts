@@ -472,7 +472,6 @@ export function* approveAndWithdraw(action: {
           deadline
         );
       }
-
       yield call(spendTransaction.wait);
     } else {
       yield call(
@@ -482,8 +481,11 @@ export function* approveAndWithdraw(action: {
       );
     }
     yield put(RewardsActions.setIsWithdrawing(false));
-  } catch (e) {
+  } catch (e: any) {
     console.log(e);
+    if (e?.code === -32603) {
+      toast.error("balance is not enough for this transaction");
+    }
     yield put(RewardsActions.setIsWithdrawing(false));
   }
 }
