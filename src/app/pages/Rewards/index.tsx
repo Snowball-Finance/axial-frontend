@@ -10,9 +10,13 @@ import { useTranslation } from "react-i18next";
 
 import { translations } from "locales/i18n";
 import { RewardsBody } from "./body";
+import { useRewardsPageSlice } from "./slice";
 
 export const RewardsPage: FC = () => {
+  useRewardsPageSlice();
+
   const { t } = useTranslation();
+
   return (
     <>
       <Helmet>

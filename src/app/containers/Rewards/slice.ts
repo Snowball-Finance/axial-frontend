@@ -27,6 +27,7 @@ export const initialState: ContainerState = {
   swapStats: undefined,
   masterchefApr: undefined,
   isDepositing: false,
+  isWithdrawing: false,
 };
 
 interface LastTransactionTimes {
@@ -118,7 +119,9 @@ const rewardsSlice = createSlice({
     setIsDepositing(state, action: PayloadAction<boolean>) {
       state.isDepositing = action.payload;
     },
-
+    setIsWithdrawing(state, action: PayloadAction<boolean>) {
+      state.isWithdrawing = action.payload;
+    },
     approveAndWithdraw(
       state,
       action: PayloadAction<ApproveAndWithdrawPayload>

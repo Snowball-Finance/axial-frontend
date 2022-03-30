@@ -53,6 +53,6 @@ const Wrapper = styled("div")({
   gap: "16px",
 
   [mobile]: {
-    width: "100%"
-  }
+    width: "100%",
+  },
 });

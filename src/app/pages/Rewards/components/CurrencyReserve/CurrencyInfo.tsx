@@ -1,40 +1,68 @@
 import React, { FC } from "react";
 import { styled, Grid, Typography } from "@mui/material";
+import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import { CssVariables } from "styles/cssVariables/cssVariables";
-import axialIcon from "assets/images/logo.svg";
+import { RewardsPageSelectors } from "app/pages/Rewards/selectors";
+import { getKeyFromPoolIndex } from "app/pages/Rewards/constants";
+import { PoolTypes, TokenShareType } from "app/containers/Rewards/types";
+import { commify, formatBNToString } from "app/containers/utils/contractUtils";
+import { pools } from "app/pools";
+import { tokens } from "app/tokens";
+import { mobile } from "styles/media";
+
+type TParams = { poolIndex: string };
 
 export const CurrencyInfo: FC = () => {
+  const { poolIndex } = useParams<TParams>();
+  const poolKey = getKeyFromPoolIndex(poolIndex) || "";
+  const rewardsPoolData = useSelector(
+    RewardsPageSelectors.rewardsPoolData(poolKey)
+  );
+
+  const formattedDecimals = pools[poolKey].poolType === PoolTypes.USD ? 2 : 4;
+
   return (
     <StyledInfo>
-      <Grid container direction="column" spacing={2}>
-        {[1, 2, 3, 4].map((infoItem) => (
-          <Grid item key={infoItem}>
-            <Grid container justifyContent="space-between" alignItems="center">
-              <Grid item>
+      <Grid container spacing={4}>
+        {rewardsPoolData?.tokens.map((infoItem: TokenShareType) => (
+          <Grid item key={infoItem.symbol} xs={12}>
+            <Grid container alignItems="center">
+              <Grid item xs={4}>
                 <Grid container spacing={1}>
                   <Grid item>
-                    <IconImage src={axialIcon} alt="icon"></IconImage>
+                    <IconImage
+                      src={tokens[infoItem.symbol].logo}
+                      alt="icon"
+                    ></IconImage>
                   </Grid>
 
                   <Grid item>
-                    <TokenText variant="h6">Axial</TokenText>
+                    <TokenText variant="h6">{infoItem.symbol}</TokenText>
                   </Grid>
                 </Grid>
               </Grid>
 
-              <Grid item>
-                <BalanceText variant="body2">18.80%</BalanceText>
+              <Grid item xs={3}>
+                <BalanceText variant="body2">{infoItem.percent}</BalanceText>
               </Grid>
 
-              <Grid item>
-                <Grid container spacing={1} alignItems="center">
-                  <Grid item>
-                    <BalanceLabelText variant="body1">TVL</BalanceLabelText>
+              <Grid item xs={5}>
+                <Grid container alignItems="center" spacing={1}>
+                  <Grid item xs={4} alignSelf="right">
+                    <BalanceLabelText variant="body1" align="right">
+                      TVL
+                    </BalanceLabelText>
                   </Grid>
 
-                  <Grid item>
-                    <BalanceText variant="body2">$765,996.95</BalanceText>
+                  <Grid item xs zeroMinWidth alignSelf="left">
+                    <BalanceText variant="body2" noWrap align="left">
+                      $
+                      {commify(
+                        formatBNToString(infoItem.value, 18, formattedDecimals)
+                      )}
+                    </BalanceText>
                   </Grid>
                 </Grid>
               </Grid>
@@ -52,14 +80,26 @@ const StyledInfo = styled("div")({
   border: `4px solid ${CssVariables.cardBorder}`,
   borderRadius: "20px",
   padding: 20,
+
+  [mobile]: {
+    padding: 10,
+  },
 });
 
 const IconImage = styled("img")({
   width: "33px",
+
+  [mobile]: {
+    width: "25px",
+  },
 });
 
 const TokenText = styled(Typography)({
   color: CssVariables.white,
+
+  [mobile]: {
+    fontSize: "1rem",
+  },
 });
 
 const BalanceLabelText = styled(Typography)({
