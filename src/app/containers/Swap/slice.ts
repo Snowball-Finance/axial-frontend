@@ -12,7 +12,6 @@ export const initialState: ContainerState = {
   bestPath: undefined,
   isSwapping: false,
   tokens: {},
-
   selectedGasPrice: GasPrices.Standard,
 };
 
@@ -42,7 +41,6 @@ const swapSlice = createSlice({
     setIsSwapping(state, action: PayloadAction<boolean>) {
       state.isSwapping = action.payload;
     },
-
     swap() {},
   },
 });

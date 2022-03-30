@@ -12,16 +12,17 @@ export const initialState: ContainerState = {
   toToken: undefined,
   fromAmount: "",
   searchValue: "",
+  isSwapModalOpen: false,
 };
 
 const swapPageSlice = createSlice({
   name: "swapPage",
   initialState,
   reducers: {
-    setFromToken(state, action: PayloadAction<Token>) {
+    setFromToken(state, action: PayloadAction<Token | undefined>) {
       state.fromToken = action.payload;
     },
-    setToToken(state, action: PayloadAction<Token>) {
+    setToToken(state, action: PayloadAction<Token | undefined>) {
       state.toToken = action.payload;
     },
     setFromAmount(state, action: PayloadAction<string>) {
@@ -33,10 +34,14 @@ const swapPageSlice = createSlice({
     setFromTokenError(state, action: PayloadAction<string>) {
       state.fromTokenError = action.payload;
     },
+    setSwapModalOpen(state, action: PayloadAction<boolean>) {
+      state.isSwapModalOpen = action.payload;
+    },
     amountChange(state, action: PayloadAction<string>) {},
     tokenChange(state, action: PayloadAction<TokenChangePayload>) {},
     maxAmountSelection() {},
     reverseTokenChange() {},
+    confirmSwap() {},
   },
 });
 

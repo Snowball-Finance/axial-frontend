@@ -1,11 +1,17 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { BigNumber } from "ethers";
 
-import { BNToString } from "common/format";
 import { GlobalDomains } from "app/appSelectors";
 import { RootState } from "store/types";
 import { initialState } from "./slice";
 import { TokenOption } from "./types";
+import {
+  calculatePrice,
+  formatBNToString,
+  shiftBNDecimals,
+} from "app/containers/utils/contractUtils";
+import { Zero } from "app/containers/Rewards/constants";
+import { TOKENS_MAP } from "app/constants";
+import { SwapDomains } from "app/containers/Swap/selectors";
 
 export const SwapPageDomains = {
   swapPage: (state: RootState) => state.swapPage || initialState,
@@ -19,6 +25,8 @@ export const SwapPageDomains = {
     state.swapPage?.toToken || initialState.toToken,
   searchValue: (state: RootState) =>
     state.swapPage?.searchValue || initialState.searchValue,
+  isSwapModalOpen: (state: RootState) =>
+    state.swapPage?.isSwapModalOpen || initialState.isSwapModalOpen,
 };
 
 export const SwapPageSelectors = {
@@ -28,66 +36,96 @@ export const SwapPageSelectors = {
   ),
   fromTokenOptions: createSelector(
     GlobalDomains.tokens,
+    GlobalDomains.tokenPricesUSD,
     SwapPageDomains.toToken,
     SwapPageDomains.searchValue,
-    (tokens, tokenChange, searchValue) => {
+    (tokens, tokenPricesUSD, tokenChange, searchValue) => {
       const fromTokens: TokenOption[] = [];
-      for (let key in tokens) {
-        if (tokens.hasOwnProperty(key) && tokenChange?.symbol !== key) {
-          const { name, symbol, logo, decimals, balance } = tokens[key];
-          const tokenBalance = BNToString(
-            balance ?? BigNumber.from(0),
+      const visibleTokens = Object.values(TOKENS_MAP).filter(
+        ({ isLPToken }) => !isLPToken
+      );
+
+      visibleTokens.forEach(({ symbol, icon, decimals }) => {
+        if (tokenChange?.symbol !== symbol) {
+          const tokenBalance = formatBNToString(
+            tokens?.[symbol].balance || Zero,
             decimals
           );
+          const tokenBalanceUSD =
+            calculatePrice(tokenBalance, tokenPricesUSD?.[symbol], decimals) ||
+            Zero;
+
           fromTokens.push({
             value: symbol,
-            label: name,
-            icon: logo,
-            balance: tokenBalance || "0",
+            icon,
+            balance: tokens?.[symbol].balance,
+            balanceUSD: tokenBalanceUSD,
             decimals,
           });
         }
-      }
+      });
+
       return fromTokens
         .filter((item) =>
           item.value.toLowerCase().includes(searchValue.toLowerCase())
         )
-        .sort(
-          (a: TokenOption, b: TokenOption) =>
-            parseFloat(b?.balance) - parseFloat(a?.balance)
-        );
+        .sort((a: TokenOption, b: TokenOption) => {
+          if (a.balanceUSD.eq(b.balanceUSD)) {
+            const amountA = shiftBNDecimals(a.balance || Zero, 18 - a.decimals);
+            const amountB = shiftBNDecimals(b.balance || Zero, 18 - b.decimals);
+            return amountA.gt(amountB) ? -1 : 1;
+          } else if (a.balanceUSD.gt(b.balanceUSD)) {
+            return -1;
+          }
+          return 1;
+        });
     }
   ),
   toTokenOptions: createSelector(
     GlobalDomains.tokens,
+    GlobalDomains.tokenPricesUSD,
     SwapPageDomains.fromToken,
     SwapPageDomains.searchValue,
-    (tokens, fromToken, searchValue) => {
+    (tokens, tokenPricesUSD, fromToken, searchValue) => {
       const toTokens: TokenOption[] = [];
-      for (let key in tokens) {
-        if (tokens.hasOwnProperty(key) && fromToken?.symbol !== key) {
-          const { name, symbol, logo, decimals, balance } = tokens[key];
-          const tokenBalance = BNToString(
-            balance ?? BigNumber.from(0),
+      const visibleTokens = Object.values(TOKENS_MAP).filter(
+        ({ isLPToken }) => !isLPToken
+      );
+
+      visibleTokens.forEach(({ symbol, icon, decimals }) => {
+        if (fromToken?.symbol !== symbol) {
+          const tokenBalance = formatBNToString(
+            tokens?.[symbol].balance || Zero,
             decimals
           );
+          const tokenBalanceUSD =
+            calculatePrice(tokenBalance, tokenPricesUSD?.[symbol], decimals) ||
+            Zero;
+
           toTokens.push({
             value: symbol,
-            label: name,
-            icon: logo,
-            balance: tokenBalance || "0",
+            icon,
+            balance: tokens?.[symbol].balance,
+            balanceUSD: tokenBalanceUSD,
             decimals,
           });
         }
-      }
+      });
+
       return toTokens
         .filter((item) =>
           item.value.toLowerCase().includes(searchValue.toLowerCase())
         )
-        .sort(
-          (a: TokenOption, b: TokenOption) =>
-            parseFloat(b?.balance) - parseFloat(a?.balance)
-        );
+        .sort((a: TokenOption, b: TokenOption) => {
+          if (a.balanceUSD.eq(b.balanceUSD)) {
+            const amountA = shiftBNDecimals(a.balance || Zero, 18 - a.decimals);
+            const amountB = shiftBNDecimals(b.balance || Zero, 18 - b.decimals);
+            return amountA.gt(amountB) ? -1 : 1;
+          } else if (a.balanceUSD.gt(b.balanceUSD)) {
+            return -1;
+          }
+          return 1;
+        });
     }
   ),
   selectedFromToken: createSelector(
@@ -97,6 +135,20 @@ export const SwapPageSelectors = {
   selectedFromAmount: createSelector(
     SwapPageDomains.fromAmount,
     (fromAmount) => fromAmount
+  ),
+  selectedToAmount: createSelector(
+    SwapDomains.bestPath,
+    SwapPageDomains.toToken,
+    (bestPath, toToken) => {
+      if (toToken) {
+        return formatBNToString(
+          bestPath?.amounts[bestPath?.amounts.length - 1] || Zero,
+          toToken?.decimals || 18
+        );
+      }
+
+      return "0.0";
+    }
   ),
   selectedToToken: createSelector(
     SwapPageDomains.toToken,
@@ -109,5 +161,9 @@ export const SwapPageSelectors = {
   searchValue: createSelector(
     SwapPageDomains.searchValue,
     (searchValue) => searchValue
+  ),
+  isModalOpen: createSelector(
+    SwapPageDomains.isSwapModalOpen,
+    (isSwapModalOpen) => isSwapModalOpen
   ),
 };

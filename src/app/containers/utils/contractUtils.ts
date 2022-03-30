@@ -4,6 +4,8 @@ import { AddressZero } from "@ethersproject/constants";
 import { getAddress } from "@ethersproject/address";
 import { PoolTypes } from "app/constants";
 import { formatUnits } from "@ethersproject/units";
+import { parseUnits } from "ethers/lib/utils";
+import { Zero } from "app/containers/Rewards/constants";
 
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(value: string): string | false {
@@ -75,6 +77,41 @@ export function formatBNToString(
         0,
         decimalIdx + (decimalPlaces > 0 ? decimalPlaces + 1 : 0) // don't include decimal point if places = 0
       );
+}
+
+export function calculatePrice(
+  amount: BigNumber | string,
+  tokenPrice = 0,
+  decimals?: number
+): BigNumber {
+  // returns amount * price as BN 18 precision
+  if (typeof amount === "string") {
+    if (isNaN(+amount)) return Zero;
+    return parseUnits((+amount * tokenPrice).toFixed(2), 18);
+  } else if (decimals != null) {
+    return amount
+      .mul(parseUnits(tokenPrice.toFixed(2), 18))
+      .div(BigNumber.from(10).pow(decimals));
+  }
+  return Zero;
+}
+
+export function calculateExchangeRate(
+  amountFrom: BigNumber,
+  tokenPrecisionFrom: number,
+  amountTo: BigNumber,
+  tokenPrecisionTo: number
+): BigNumber {
+  return amountFrom.gt("0")
+    ? amountTo
+        .mul(BigNumber.from(10).pow(36 - tokenPrecisionTo)) // convert to standard 1e18 precision
+        .div(amountFrom.mul(BigNumber.from(10).pow(18 - tokenPrecisionFrom)))
+    : BigNumber.from("0");
+}
+
+export function shiftBNDecimals(bn: BigNumber, shiftAmount: number): BigNumber {
+  if (shiftAmount < 0) throw new Error("shiftAmount must be positive");
+  return bn.mul(BigNumber.from(10).pow(shiftAmount));
 }
 
 export function formatBNToShortString(

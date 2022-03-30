@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { GlobalActions } from "store/slice";
 import { CssVariables } from "styles/cssVariables/cssVariables";
+import { mobile } from "styles/media";
 import { Slippages } from "utils/slippage";
 
 export const SlippageSelect = () => {
@@ -24,62 +25,81 @@ export const SlippageSelect = () => {
   };
 
   return (
-    <Grid container alignItems="center" spacing={2}>
+    <StyledContainer container spacing={2}>
       <Grid item>
         <Text variant="body2">
           {t(translations.SwapPage.AdvanceOption.MaxSlippage())}:
         </Text>
       </Grid>
-      <Grid item>
-        <Grid container alignItems="center" spacing={1}>
-          <Grid item>
-            <SelectButton
-              isselected={
-                selectedSlippage === Slippages.One ? "true" : undefined
-              }
-              onClick={() => handleChangeSelectedSlippage(Slippages.One)}
-            >
-              1
-            </SelectButton>
-          </Grid>
-          <Grid item>
-            <PercentageText variant="body1">%</PercentageText>
-          </Grid>
-        </Grid>
-      </Grid>
 
       <Grid item>
-        <Grid container alignItems="center" spacing={1}>
-          <SelectButton
-            isselected={
-              selectedSlippage === Slippages.OneTenth ? "true" : undefined
-            }
-            onClick={() => handleChangeSelectedSlippage(Slippages.OneTenth)}
-          >
-            0.1
-          </SelectButton>
+        <StyledInputContainer container spacing={2}>
           <Grid item>
-            <PercentageText variant="body1">%</PercentageText>
-          </Grid>
-        </Grid>
-      </Grid>
+            <Grid container alignItems="center" spacing={1}>
+              <SelectButton
+                isselected={
+                  selectedSlippage === Slippages.One ? "true" : undefined
+                }
+                onClick={() => handleChangeSelectedSlippage(Slippages.One)}
+              >
+                1
+              </SelectButton>
 
-      <Grid item>
-        <Grid container alignItems="center" spacing={1}>
-          <Grid item>
-            <InputField
-              value={valueToShow}
-              onChange={handleSlippageInputChange}
-            />
+              <Grid item>
+                <PercentageText variant="body1">%</PercentageText>
+              </Grid>
+            </Grid>
           </Grid>
+
           <Grid item>
-            <PercentageText variant="body1">%</PercentageText>
+            <Grid container alignItems="center" spacing={1}>
+              <SelectButton
+                isselected={
+                  selectedSlippage === Slippages.OneTenth ? "true" : undefined
+                }
+                onClick={() => handleChangeSelectedSlippage(Slippages.OneTenth)}
+              >
+                0.1
+              </SelectButton>
+              <Grid item>
+                <PercentageText variant="body1">%</PercentageText>
+              </Grid>
+            </Grid>
           </Grid>
-        </Grid>
+
+          <Grid item>
+            <Grid container alignItems="center" spacing={1}>
+              <Grid item>
+                <InputField
+                  value={valueToShow}
+                  onChange={handleSlippageInputChange}
+                />
+              </Grid>
+              <Grid item>
+                <PercentageText variant="body1">%</PercentageText>
+              </Grid>
+            </Grid>
+          </Grid>
+        </StyledInputContainer>
       </Grid>
-    </Grid>
+    </StyledContainer>
   );
 };
+
+const StyledContainer = styled(Grid)({
+  flexDirection: "row",
+  alignItems: "center",
+
+  [mobile]: {
+    alignItems: "flex-start",
+    flexDirection: "column",
+  },
+});
+
+const StyledInputContainer = styled(Grid)({
+  flexDirection: "row",
+  alignItems: "center",
+});
 
 const PercentageText = styled(Typography)({
   color: CssVariables.primary,
