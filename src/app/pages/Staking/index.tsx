@@ -59,6 +59,6 @@ const Wrapper = styled(Max1040)({
   alignItems: "center",
   [mobile]: {
     padding: 0,
-    width: "100%"
+    width: "100%",
   },
 });

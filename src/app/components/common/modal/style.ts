@@ -1,4 +1,5 @@
 import { Dialog, styled } from "@mui/material";
+import { mobile } from "styles/media";
 import { CssVariables } from "../../../../styles/cssVariables/cssVariables";
 
 export const StyledDialog = styled(Dialog)({
@@ -15,6 +16,10 @@ export const Wrapper = styled("div")({
   borderRadius: "6px",
   padding: "18px 12px",
   cursor: "auto",
+
+  [mobile]: {
+    minWidth: "80vw",
+  },
 });
 export const ChildWrapper = styled("div")({
   width: "100%",

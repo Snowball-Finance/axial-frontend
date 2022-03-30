@@ -13,7 +13,8 @@ export const Playground = () => {
   const handleDepositIntoAM3DStablecoinsButtonClicked = () => {
     dispatch(
       RewardsActions.approveAndDeposit({
-        poolName: Pools.AXIAL_AM3D,
+        shouldDepositWrapped: false,
+        poolKey: Pools.AXIAL_AM3D,
         tokenAmounts: {
           [TokenSymbols.MIM]: floatToBN(0.1, tokens[TokenSymbols.MIM].decimals),
           [TokenSymbols.USDCe]: floatToBN(
@@ -29,7 +30,8 @@ export const Playground = () => {
   const handlewithMasterchefClicked = () => {
     dispatch(
       RewardsActions.approveAndDeposit({
-        poolName: Pools.AXIAL_AM3D,
+        shouldDepositWrapped: false,
+        poolKey: Pools.AXIAL_AM3D,
         masterchefDeposit: true,
         tokenAmounts: {
           [TokenSymbols.am3dUSD]: floatToBN(
@@ -43,7 +45,7 @@ export const Playground = () => {
   const handleWithdrawStableCoins = () => {
     dispatch(
       RewardsActions.approveAndWithdraw({
-        poolName: Pools.AXIAL_AM3D,
+        poolKey: Pools.AXIAL_AM3D,
         type: WithdrawType.ALL,
         lpTokenAmountToSpend:
           floatToBN(0.1, tokens[TokenSymbols.MIM].decimals) ||

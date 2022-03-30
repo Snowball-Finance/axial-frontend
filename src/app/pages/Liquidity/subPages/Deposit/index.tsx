@@ -1,26 +1,52 @@
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import { Grid, styled } from "@mui/material";
 
 import { AddLiquidity } from "./components/AddLiquidity";
 import { CurrencyReserve } from "../../components/CurrencyReserve";
+import { useParams } from "react-router-dom";
+import { getKeyFromPoolIndex } from "../../constants";
+import { pools } from "app/pools";
+import { useDispatch, useSelector } from "react-redux";
+import { LiquidityPageActions } from "../../slice";
+import { Pool } from "app/containers/Rewards/types";
+import { LiquidityPageSelectors } from "../../selectors";
+import { DepositConfirmationModal } from "./components/depositConfirmationModal";
+import { mobile } from "styles/media";
+
+type TParams = { poolIndex: string };
 
 export const Deposit: FC = () => {
-  return (
-    <PageWrapper>
-      <Grid container spacing={4}>
-        <Grid item>
-          <AddLiquidity />
-        </Grid>
+  const dispatch = useDispatch();
+  const { poolIndex } = useParams<TParams>();
+  const poolKey = getKeyFromPoolIndex(poolIndex) || "";
+  const pool = useSelector(LiquidityPageSelectors.selectedPool);
 
-        <Grid item>
-          <CurrencyReserve />
+  useEffect(() => {
+    if (poolKey) {
+      const pool = pools[poolKey] as Pool;
+      dispatch(LiquidityPageActions.setSelectedPool(pool));
+    }
+  }, [poolKey]);
+  return (
+    <>
+      <DepositConfirmationModal />
+      <PageWrapper>
+        <Grid container spacing={4}>
+          <Grid item>{pool && <AddLiquidity />}</Grid>
+          <Grid item>
+            <CurrencyReserve />
+          </Grid>
         </Grid>
-      </Grid>
-    </PageWrapper>
+      </PageWrapper>
+    </>
   );
 };
 
 const PageWrapper = styled("div")({
   width: 650,
   margin: "0 auto",
+
+  [mobile]: {
+    width: "100%",
+  },
 });

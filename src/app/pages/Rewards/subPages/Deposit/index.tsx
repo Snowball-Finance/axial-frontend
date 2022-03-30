@@ -1,7 +1,9 @@
 import React, { FC } from "react";
 import { Grid, styled } from "@mui/material";
+
 import { DepositWrapped } from "./components/DepositWrapped";
 import { CurrencyReserve } from "../../components/CurrencyReserve";
+import { mobile } from "styles/media";
 
 export const Deposit: FC = () => {
   return (
@@ -10,7 +12,6 @@ export const Deposit: FC = () => {
         <Grid item>
           <DepositWrapped />
         </Grid>
-
         <Grid item>
           <CurrencyReserve />
         </Grid>
@@ -22,4 +23,8 @@ export const Deposit: FC = () => {
 const PageWrapper = styled("div")({
   width: 650,
   margin: "0 auto",
+
+  [mobile]: {
+    width: "100%",
+  },
 });
