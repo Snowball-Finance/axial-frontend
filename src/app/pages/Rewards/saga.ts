@@ -17,6 +17,7 @@ import { RewardsPageActions } from "./slice";
 import { getPoolInfoByAddressAPI } from "./providers/getPoolInfoByAddress";
 import { RewardsActions } from "app/containers/Rewards/slice";
 import { parseUnits } from "ethers/lib/utils";
+import { TokenSymbols } from "app/containers/Swap/types";
 
 export function* poolInfoByAddress(action: { type: string; payload: string }) {
   const { payload } = action;
@@ -80,7 +81,7 @@ export function* withdraw() {
     tokenAmounts,
     poolKey: pool.key,
     lpTokenAmountToSpend: effectiveUserLPTokenBalance,
-    type: WithdrawType.ALL,
+    type: pool.lpToken.symbol as TokenSymbols,
     masterchefwithdraw: true,
   };
   yield put(RewardsActions.approveAndWithdraw(dataToSend));

@@ -92,6 +92,7 @@ export function* getTokenBalances() {
   });
   try {
     const balances = yield call(getMultiContractData, library, balanceCalls);
+    console.log(balances)
     const balancesToImplement = tokensArray.reduce(
       (acc, t) => ({
         ...acc,
