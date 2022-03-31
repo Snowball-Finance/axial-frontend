@@ -117,7 +117,7 @@ export const LiquidityPageSelectors = {
       (tokenAmounts, selectedToken, percentage, tokens) => {
         const tokensObject = calculateByPercentage({
           tokenAmounts,
-          selectedToken,
+          selectedToken: selectedToken ?? "combo",
           percentage,
           tokens,
         });

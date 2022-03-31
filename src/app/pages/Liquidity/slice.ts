@@ -104,8 +104,11 @@ const liquidityPageSlice = createSlice({
       state,
       action: PayloadAction<{ symbol: TokenSymbols; value: string }>
     ) {
-      state.withdrawPercentage = 0;
       state.selectedTokenToWithdraw = action.payload.symbol;
+      const amountsObj = { ...state.withdrawTokenAmounts };
+      if (Object.keys(amountsObj).length > 0) {
+        state.selectedTokenToWithdraw = undefined;
+      }
       const amounts = { ...state.withdrawTokenAmounts };
       const { symbol, value } = action.payload;
       if (!isNaN(parseFloat(value))) {
