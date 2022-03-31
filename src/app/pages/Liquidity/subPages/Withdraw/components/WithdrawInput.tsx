@@ -15,7 +15,6 @@ import { LiquidityPageActions } from "app/pages/Liquidity/slice";
 import { WithdrawButton } from "./withdrawButton";
 import { PercentageText } from "./percentageText";
 import { mobile } from "styles/media";
-import { formatBNToPercentString } from "app/containers/utils/contractUtils";
 import { BonusText } from "./bonusText";
 
 type TParams = { poolIndex: string };

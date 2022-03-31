@@ -382,7 +382,7 @@ export function* approveAndWithdraw(action: {
     const pools = yield select(RewardsDomains.pools);
     const library = yield select(Web3Domains.selectLibraryDomain);
     const account = yield select(Web3Domains.selectAccountDomain);
-console.log(action.payload)
+    console.log(action.payload);
     const {
       poolKey,
       tokenAmounts,
@@ -391,7 +391,7 @@ console.log(action.payload)
       lpTokenAmountToSpend,
     } = action.payload;
     const pool: Pool = pools[poolKey];
-console.log({pool})
+    console.log({ pool });
     const targetContract = new Contract(
       pool.address,
       pool.swapABI,
@@ -460,7 +460,7 @@ console.log({pool})
           deadline
         );
       } else {
-        console.log('else')
+        console.log("else");
         spendTransaction = yield call(
           targetContract.removeLiquidityOneToken,
           lpTokenAmountToSpend,
@@ -472,11 +472,15 @@ console.log({pool})
           ),
           deadline
         );
-        console.log(spendTransaction)
+        console.log(spendTransaction);
       }
       yield call(spendTransaction.wait);
     } else {
-      console.log({masterchefContract,masterChefId:pool.lpToken.masterchefId,amount:tokenAmounts[pool.lpToken.symbol]})
+      console.log({
+        masterchefContract,
+        masterChefId: pool.lpToken.masterchefId,
+        amount: tokenAmounts[pool.lpToken.symbol],
+      });
       yield call(
         masterchefContract.withdraw,
         pool.lpToken.masterchefId,

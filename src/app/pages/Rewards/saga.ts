@@ -8,7 +8,6 @@ import {
   ApproveAndDepositPayload,
   ApproveAndWithdrawPayload,
   Pool,
-  WithdrawType,
 } from "app/containers/Rewards/types";
 import { floatToBN } from "common/format";
 import { BigNumber, ethers } from "ethers";

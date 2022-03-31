@@ -47,10 +47,10 @@ const rewardsPageSlice = createSlice({
       state,
       action: PayloadAction<{ percent: number; balance: number }>
     ) {
-      const{balance,percent} = action.payload;
+      const { balance, percent } = action.payload;
       state.withdrawPercentage = percent;
       //calculate percentage of balance
-      const amount =divide(multiply(action.payload.percent,balance),100)
+      const amount = divide(multiply(action.payload.percent, balance), 100);
       state.withdrawAmount = amount.toString();
     },
     setWithdrawAmount(state, action: PayloadAction<string>) {
