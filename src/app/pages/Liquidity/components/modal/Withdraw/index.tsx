@@ -37,7 +37,7 @@ export const WithdrawModal: FC = () => {
   );
   const tokens = useSelector(globalSelectors.tokens);
   const withdrawTokens = useSelector(
-    LiquidityPageSelectors.withdrawTokenToShow()
+    LiquidityPageSelectors.withdrawTokenAmounts
   );
 
   const handleCancelClick = () => {

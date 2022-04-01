@@ -12,12 +12,20 @@ export interface LiquidityPageState {
   depositTokenAmounts: { [K in TokenSymbols]?: string };
   withdrawTokenAmounts: { [K in TokenSymbols]?: string };
   withdrawPercentage: number;
-  selectedTokenToWithdraw: "combo" | TokenSymbols | undefined;
+  selectedTokenToWithdraw: "combo" | TokenSymbols | "mixed";
   depositRaw: boolean;
   depositTransactionData: DepositTransactionData | undefined;
   withdrawReviewData: WithdrawReviewData | undefined;
 }
 
+export interface WithdrawTokenAmountChangePayload {
+  symbol: TokenSymbols;
+  value: string;
+}
+export interface SelectTokenToWithdrawPayload {
+  symbol: LiquidityPageState["selectedTokenToWithdraw"];
+  shouldEffectInputs?: boolean;
+}
 export interface PoolCardItemProps {
   poolKey: string;
 }
