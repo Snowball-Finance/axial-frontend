@@ -16,6 +16,7 @@ export interface LiquidityPageState {
   depositRaw: boolean;
   depositTransactionData: DepositTransactionData | undefined;
   withdrawReviewData: WithdrawReviewData | undefined;
+  withdrawBonus: BigNumber | undefined;
 }
 
 export interface WithdrawTokenAmountChangePayload {

@@ -14,6 +14,7 @@ import { PayloadAction } from "@reduxjs/toolkit";
 import { TokenSymbols } from "app/containers/Swap/types";
 import { ApproveAndWithdrawPayload, Pool } from "app/containers/Rewards/types";
 import { zeroString } from "./constants";
+import { BigNumber } from "ethers";
 
 // The initial state of the LiquidityPage container
 export const initialState: ContainerState = {
@@ -29,6 +30,7 @@ export const initialState: ContainerState = {
   depositRaw: false,
   depositTransactionData: undefined,
   withdrawReviewData: undefined,
+  withdrawBonus: undefined,
 };
 
 const liquidityPageSlice = createSlice({
@@ -118,6 +120,9 @@ const liquidityPageSlice = createSlice({
     },
     buildTransactionData() {},
     buildWithdrawReviewData() {},
+    setWithdrawBonus(state, action: PayloadAction<BigNumber | undefined>) {
+      state.withdrawBonus = action.payload;
+    },
   },
 });
 

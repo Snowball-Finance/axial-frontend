@@ -1,31 +1,17 @@
-import { RewardsSelectors } from "app/containers/Rewards/selectors";
-import { PoolData, UserShareData } from "app/containers/Rewards/types";
-import { calculatePriceImpact } from "app/containers/Swap/utils/priceImpact";
+import { formatBNToPercentString } from "app/containers/utils/contractUtils";
 import { LiquidityPageSelectors } from "app/pages/Liquidity/selectors";
 import { BigNumber } from "ethers";
 import { useSelector } from "react-redux";
+import { CssVariables } from "styles/cssVariables/cssVariables";
 
 export const BonusText = () => {
-  const pool = useSelector(LiquidityPageSelectors.selectedPool);
-  const pools = useSelector(RewardsSelectors.pools);
-  let poolData: PoolData | undefined = undefined;
-  let userShareData: UserShareData | undefined = undefined;
-  let tokenInputSum = BigNumber.from(0);
-  if (pool && pools[pool.key]) {
-    poolData = pools[pool.key]?.poolData;
-    userShareData = pools[pool.key]?.userShareData;
-    tokenInputSum =
-      userShareData?.masterchefBalance?.userInfo.amount ?? BigNumber.from("0");
-  }
-
-  let percentage = BigNumber.from(0);
-  if (poolData) {
-    percentage = calculatePriceImpact(
-      tokenInputSum,
-      tokenInputSum,
-      poolData.virtualPrice,
-      true
-    );
-  }
-  return <>{percentage.toString()}</>;
+  const bonus =
+    useSelector(LiquidityPageSelectors.withdrawBonus) || BigNumber.from(0);
+  const toShow = formatBNToPercentString(bonus, 18, 4);
+  let color = bonus.eq(0)
+    ? CssVariables.commonTextColor
+    : bonus.gt(0)
+    ? CssVariables.green
+    : CssVariables.red;
+  return <span style={{ color }}>{toShow}</span>;
 };

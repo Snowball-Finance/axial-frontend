@@ -7,12 +7,16 @@ import {
   ApproveAndDepositPayload,
   ApproveAndWithdrawPayload,
   Pool,
+  PoolData,
 } from "app/containers/Rewards/types";
 import { BNToFloat, floatToBN } from "common/format";
 import { LiquidityPageDomains, LiquidityPageSelectors } from "./selectors";
 import { LiquidityPageActions } from "./slice";
 import { SwapFlashLoanNoWithdrawFee } from "abi/ethers-contracts";
-import { getProviderOrSigner } from "app/containers/utils/contractUtils";
+import {
+  getContract,
+  getProviderOrSigner,
+} from "app/containers/utils/contractUtils";
 import { Web3Domains } from "app/containers/BlockChain/Web3/selectors";
 import { Token, TokenSymbols } from "app/containers/Swap/types";
 import {
@@ -28,6 +32,9 @@ import {
 } from "app/containers/Rewards/utils/deadline";
 import { zeroString } from "./constants";
 import { divide, multiply } from "precise-math";
+import { parseUnits } from "ethers/lib/utils";
+import { RewardsDomains } from "app/containers/Rewards/selectors";
+import { calculatePriceImpact } from "app/containers/Swap/utils/priceImpact";
 
 export function* buildTransactionData() {
   const depositTokenAmounts = yield select(
@@ -213,6 +220,7 @@ export function* setAmountForTokenToWithdraw(action: {
     );
   }
   yield put(LiquidityPageActions.setTokenAmountsToWithdraw(amounts));
+  yield call(calculateWithdrawBonus);
 }
 
 export function* setWithdrawPercentage(action: {
@@ -251,6 +259,7 @@ export function* setWithdrawPercentage(action: {
   }
 
   yield put(LiquidityPageActions.setTokenAmountsToWithdraw(amounts));
+  yield call(calculateWithdrawBonus);
 }
 
 export function* setSelectedTokenToWithdraw(action: {
@@ -317,7 +326,54 @@ export function* setSelectedTokenToWithdraw(action: {
       amounts[symbol] = zeroString;
     }
     yield put(LiquidityPageActions.setTokenAmountsToWithdraw(amounts));
+    yield call(calculateWithdrawBonus);
   }
+}
+
+function* calculateWithdrawBonus() {
+  console.log("call for calculation");
+  const tokens = yield select(GlobalDomains.tokens);
+  const amounts = yield select(LiquidityPageDomains.withdrawTokenAmounts);
+  const library = yield select(Web3Domains.selectNetworkLibraryDomain);
+  const account = yield select(Web3Domains.selectAccountDomain);
+  let pool: Pool = yield select(LiquidityPageDomains.pool);
+  const pools = yield select(RewardsDomains.pools);
+  pool = pools[pool.key];
+  if (!pool?.poolData) return;
+  const swapContract = getContract(
+    pool.address,
+    pool.swapABI,
+    library,
+    account ?? undefined
+  );
+  const tokenInputSum = parseUnits(
+    pool.poolTokens
+      .reduce((sum, { symbol }) => sum + (+amounts[symbol] || 0), 0)
+      .toString(),
+    18
+  );
+  let withdrawLPTokenAmount;
+  const poolData: PoolData = pool.poolData;
+  if (poolData.totalLocked.gt(0) && tokenInputSum.gt(0)) {
+    withdrawLPTokenAmount = yield call(
+      swapContract.calculateTokenAmount,
+      pool.poolTokens.map(({ symbol }) =>
+        floatToBN(amounts[symbol], tokens[symbol].decimals)
+      ),
+      false
+    );
+  } else {
+    // when pool is empty, estimate the lptokens by just summing the input instead of calling contract
+    withdrawLPTokenAmount = tokenInputSum;
+  }
+
+  const bonus = calculatePriceImpact(
+    withdrawLPTokenAmount,
+    tokenInputSum,
+    poolData.virtualPrice,
+    true
+  );
+  yield put(LiquidityPageActions.setWithdrawBonus(bonus));
 }
 
 export function* liquidityPageSaga() {
