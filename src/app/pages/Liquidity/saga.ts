@@ -331,7 +331,6 @@ export function* setSelectedTokenToWithdraw(action: {
 }
 
 function* calculateWithdrawBonus() {
-  console.log("call for calculation");
   const tokens = yield select(GlobalDomains.tokens);
   const amounts = yield select(LiquidityPageDomains.withdrawTokenAmounts);
   const library = yield select(Web3Domains.selectNetworkLibraryDomain);

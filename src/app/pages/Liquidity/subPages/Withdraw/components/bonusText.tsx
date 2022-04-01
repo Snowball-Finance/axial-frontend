@@ -1,17 +1,16 @@
-import { formatBNToPercentString } from "app/containers/utils/contractUtils";
 import { LiquidityPageSelectors } from "app/pages/Liquidity/selectors";
 import { BigNumber } from "ethers";
+import { translations } from "locales/i18n";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { CssVariables } from "styles/cssVariables/cssVariables";
 
 export const BonusText = () => {
+  const { t } = useTranslation();
   const bonus =
     useSelector(LiquidityPageSelectors.withdrawBonus) || BigNumber.from(0);
-  const toShow = formatBNToPercentString(bonus, 18, 4);
-  let color = bonus.eq(0)
-    ? CssVariables.commonTextColor
-    : bonus.gt(0)
-    ? CssVariables.green
-    : CssVariables.red;
-  return <span style={{ color }}>{toShow}</span>;
+  let text = t(translations.LiquidityPage.Bonus());
+  if (bonus.lt(0)) {
+    text = t(translations.LiquidityPage.PriceImpact());
+  }
+  return <>{text}</>;
 };
