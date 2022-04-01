@@ -31,7 +31,7 @@ import {
   formatDeadlineToNumber,
 } from "app/containers/Rewards/utils/deadline";
 import { zeroString } from "./constants";
-import { divide, multiply } from "precise-math";
+import { add, divide, multiply } from "precise-math";
 import { parseUnits } from "ethers/lib/utils";
 import { RewardsDomains } from "app/containers/Rewards/selectors";
 import { calculatePriceImpact } from "app/containers/Swap/utils/priceImpact";
@@ -184,8 +184,7 @@ export function* setAmountForTokenToWithdraw(action: {
 }) {
   // state.selectedTokenToWithdraw = action.payload.symbol;
   const amountsObj = yield select(LiquidityPageDomains.withdrawTokenAmounts);
-  const amounts = { ...amountsObj };
-
+  let amounts = { ...amountsObj };
   const { symbol, value } = action.payload;
   if (!isNaN(parseFloat(value))) {
     amounts[symbol] = value;
@@ -219,6 +218,18 @@ export function* setAmountForTokenToWithdraw(action: {
       LiquidityPageActions.setSelectedTokenToWithdraw({ symbol: "mixed" })
     );
   }
+  //all the inputs are filled
+  else {
+    const selectedToken = yield select(
+      LiquidityPageDomains.selectedTokenToWithdraw
+    );
+    if (selectedToken === "combo") {
+      yield put(
+        LiquidityPageActions.setSelectedTokenToWithdraw({ symbol: "mixed" })
+      );
+    }
+  }
+
   yield put(LiquidityPageActions.setTokenAmountsToWithdraw(amounts));
   yield call(calculateWithdrawBonus);
 }
@@ -230,7 +241,7 @@ export function* setWithdrawPercentage(action: {
   const percentage = action.payload;
   const amountsObj = yield select(LiquidityPageDomains.withdrawTokenAmounts);
   const tokens = yield select(GlobalDomains.tokens);
-  const amounts = { ...amountsObj };
+  let amounts = { ...amountsObj };
   const selectedTokenToWithdraw = yield select(
     LiquidityPageDomains.selectedTokenToWithdraw
   );
@@ -257,9 +268,41 @@ export function* setWithdrawPercentage(action: {
     const fraction = divide(multiply(tokenBalance, percentage), 100);
     amounts[symbol] = fraction.toString();
   }
+  if (selectedTokenToWithdraw === "combo") {
+    amounts = yield call(calculateAmountsIfItsCombo);
+  }
 
   yield put(LiquidityPageActions.setTokenAmountsToWithdraw(amounts));
   yield call(calculateWithdrawBonus);
+}
+
+function* calculateAmountsIfItsCombo() {
+  const amountsObj = yield select(LiquidityPageDomains.withdrawTokenAmounts);
+  const amounts = { ...amountsObj };
+  const tokens = yield select(GlobalDomains.tokens);
+  const percentage = yield select(LiquidityPageDomains.withdrawPercentage);
+
+  const tokenPrices = yield select(GlobalDomains.tokenPricesUSD);
+  let sumInUsd = 0;
+  for (let token in amounts) {
+    const price = tokenPrices[token] || 0;
+    const tokenBalance =
+      BNToFloat(
+        tokens[token].balance || BigNumber.from(0),
+        tokens[token].decimals
+      ) || 0;
+    sumInUsd = add(sumInUsd, multiply(price, tokenBalance));
+  }
+  const eachTokenShareInUsd = divide(sumInUsd, Object.keys(amounts).length);
+  const fractionOfEachTokenShare = divide(
+    multiply(eachTokenShareInUsd, percentage),
+    100
+  );
+  for (let token in amounts) {
+    const price = tokenPrices[token] || 0;
+    amounts[token] = multiply(fractionOfEachTokenShare, price).toString();
+  }
+  return amounts;
 }
 
 export function* setSelectedTokenToWithdraw(action: {
@@ -268,10 +311,11 @@ export function* setSelectedTokenToWithdraw(action: {
 }) {
   const { symbol, shouldEffectInputs } = action.payload;
   if (!shouldEffectInputs) return;
+
   const tokens = yield select(GlobalDomains.tokens);
   const percentage = yield select(LiquidityPageDomains.withdrawPercentage);
   const amountsObj = yield select(LiquidityPageDomains.withdrawTokenAmounts);
-  const amounts = { ...amountsObj };
+  let amounts = { ...amountsObj };
   const tokensWithNonZeroAmount = {};
   for (let token in amounts) {
     if (amounts[token] > 0) {
@@ -280,15 +324,7 @@ export function* setSelectedTokenToWithdraw(action: {
   }
   if (percentage) {
     if (symbol === "combo") {
-      for (let token in amounts) {
-        const tokenBalance =
-          BNToFloat(
-            tokens[token].balance || BigNumber.from(0),
-            tokens[token].decimals
-          ) || 0;
-        const fraction = divide(multiply(tokenBalance, percentage), 100);
-        amounts[token] = fraction.toString();
-      }
+      amounts = yield call(calculateAmountsIfItsCombo);
     } else if (symbol === "mixed") {
       for (let token in tokensWithNonZeroAmount) {
         const tokenBalance =
@@ -311,7 +347,6 @@ export function* setSelectedTokenToWithdraw(action: {
       }
       amounts[symbol] = fraction.toString();
     }
-    yield put(LiquidityPageActions.setTokenAmountsToWithdraw(amounts));
   } else {
     if (symbol === "combo") {
       for (let token in amounts) {
@@ -325,9 +360,9 @@ export function* setSelectedTokenToWithdraw(action: {
       }
       amounts[symbol] = zeroString;
     }
-    yield put(LiquidityPageActions.setTokenAmountsToWithdraw(amounts));
-    yield call(calculateWithdrawBonus);
   }
+  yield put(LiquidityPageActions.setTokenAmountsToWithdraw(amounts));
+  yield call(calculateWithdrawBonus);
 }
 
 function* calculateWithdrawBonus() {
