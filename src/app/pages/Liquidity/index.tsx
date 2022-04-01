@@ -11,6 +11,7 @@ import { useTranslation } from "react-i18next";
 import { translations } from "locales/i18n";
 import { LiquidityBody } from "./body";
 import { useLiquidityPageSlice } from "./slice";
+import { TokenInQueueToApprove } from "app/components/modals/tokensInQueueToApprove";
 
 export const LiquidityPage: FC = () => {
   useLiquidityPageSlice();
@@ -28,6 +29,7 @@ export const LiquidityPage: FC = () => {
       </Helmet>
 
       <LiquidityBody />
+      <TokenInQueueToApprove />
     </>
   );
 };

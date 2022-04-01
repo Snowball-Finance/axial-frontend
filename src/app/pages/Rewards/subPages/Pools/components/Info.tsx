@@ -113,7 +113,7 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
             </Grid>
             <Grid item>
               <PoolInfoSubTitleText variant="body2">
-                {item.value === "-" || item.value === "$0.0" ? (
+                {poolData === undefined ? (
                   <TextLoader width={50} />
                 ) : (
                   item.value

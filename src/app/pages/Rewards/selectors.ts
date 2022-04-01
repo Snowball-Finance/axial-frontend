@@ -31,6 +31,12 @@ export const RewardsPageDomains = {
     state.rewardsPage?.withdrawPercentage || initialState.withdrawPercentage,
   withdrawAmount: (state: RootState) =>
     state.rewardsPage?.withdrawAmount || initialState.withdrawAmount,
+  depositConfirmationOpen: (state: RootState) =>
+    state.rewardsPage?.depositConfirmationOpen ||
+    initialState.depositConfirmationOpen,
+  withdrawConfirmationOpen: (state: RootState) =>
+    state.rewardsPage?.withdrawConfirmationOpen ||
+    initialState.withdrawConfirmationOpen,
 };
 
 export const RewardsPageSelectors = {
@@ -118,5 +124,13 @@ export const RewardsPageSelectors = {
         return 0;
       }
     }
+  ),
+  depositConfirmationOpen: createSelector(
+    RewardsPageDomains.depositConfirmationOpen,
+    (depositConfirmationOpen) => depositConfirmationOpen
+  ),
+  withdrawConfirmationOpen: createSelector(
+    RewardsPageDomains.withdrawConfirmationOpen,
+    (withdrawConfirmationOpen) => withdrawConfirmationOpen
   ),
 };

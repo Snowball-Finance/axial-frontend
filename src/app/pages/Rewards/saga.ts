@@ -53,6 +53,7 @@ export function* deposit() {
       [token.symbol]: floatToBN(Number(value), token.decimals),
     },
   };
+  yield put(RewardsPageActions.setDepositConfirmationOpen(true));
   yield put(RewardsActions.approveAndDeposit(dataToSend));
 }
 
@@ -83,6 +84,7 @@ export function* withdraw() {
     type: WithdrawType.ALL,
     masterchefwithdraw: true,
   };
+  yield put(RewardsPageActions.setWithdrawConfirmationOpen(true));
   yield put(RewardsActions.approveAndWithdraw(dataToSend));
 }
 

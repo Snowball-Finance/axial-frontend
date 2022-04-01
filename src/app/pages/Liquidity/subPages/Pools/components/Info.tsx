@@ -81,7 +81,11 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
             </Grid>
             <Grid item>
               <PoolInfoSubTitleText variant="body2">
-                {item.value === "-" ? <TextLoader width={50} /> : item.value}
+                {poolData === undefined ? (
+                  <TextLoader width={50} />
+                ) : (
+                  item.value
+                )}
               </PoolInfoSubTitleText>
             </Grid>
           </Grid>

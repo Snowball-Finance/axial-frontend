@@ -21,6 +21,8 @@ export const initialState: ContainerState = {
   depositValue: zeroString,
   withdrawPercentage: 0,
   withdrawAmount: zeroString,
+  depositConfirmationOpen: false,
+  withdrawConfirmationOpen: false,
 };
 
 const rewardsPageSlice = createSlice({
@@ -58,6 +60,12 @@ const rewardsPageSlice = createSlice({
     setWithdrawAmount(state, action: PayloadAction<string>) {
       state.withdrawPercentage = 0;
       state.withdrawAmount = action.payload;
+    },
+    setDepositConfirmationOpen(state, action: PayloadAction<boolean>) {
+      state.depositConfirmationOpen = action.payload;
+    },
+    setWithdrawConfirmationOpen(state, action: PayloadAction<boolean>) {
+      state.withdrawConfirmationOpen = action.payload;
     },
   },
 });

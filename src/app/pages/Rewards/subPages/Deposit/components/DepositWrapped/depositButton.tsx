@@ -14,9 +14,11 @@ export const DepositButton = () => {
   const dispatch = useDispatch();
   const depositValue = useSelector(RewardsPageSelectors.depositValue);
   const loading = useSelector(RewardsSelectors.isDepositing);
+
   const handleDepositClick = () => {
     dispatch(RewardsPageActions.deposit());
   };
+
   return (
     <NeedsWalletConnection
       connected={

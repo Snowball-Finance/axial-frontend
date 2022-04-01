@@ -14,6 +14,7 @@ export const RewardsWithdrawButton = () => {
   const loading = useSelector(RewardsSelectors.isWithdrawing);
   const withdrawAmount = useSelector(RewardsPageSelectors.withdrawAmount);
   const disabled = isNaN(Number(withdrawAmount)) || Number(withdrawAmount) <= 0;
+
   const handleWithdrawClick = () => {
     dispatch(RewardsPageActions.withdraw());
   };
