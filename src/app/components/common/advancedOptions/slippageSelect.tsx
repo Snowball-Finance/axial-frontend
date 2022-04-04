@@ -1,6 +1,5 @@
-import { Grid, styled, Typography } from "@mui/material";
+import { Grid, styled, TextField, Typography } from "@mui/material";
 import { globalSelectors } from "app/appSelectors";
-import { SnowInput } from "app/components/base/SnowInput";
 import { translations } from "locales/i18n";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,7 +16,7 @@ export const SlippageSelect = () => {
   const valueToShow = customSlippage?.valueRaw || "";
 
   const handleSlippageInputChange = (e: string) => {
-    dispatch(GlobalActions.setCustomSlippage(e));
+    dispatch(GlobalActions.setCustomSlippage(e || "0"));
   };
 
   const handleChangeSelectedSlippage = (e: Slippages) => {
@@ -71,8 +70,11 @@ export const SlippageSelect = () => {
             <Grid container alignItems="center" spacing={1}>
               <Grid item>
                 <InputField
+                  isselected={
+                    selectedSlippage === Slippages.Custom ? "true" : undefined
+                  }
                   value={valueToShow}
-                  onChange={handleSlippageInputChange}
+                  onChange={(e) => handleSlippageInputChange(e.target.value)}
                 />
               </Grid>
               <Grid item>
@@ -106,19 +108,25 @@ const PercentageText = styled(Typography)({
   fontSize: "20px",
 });
 
-const InputField = styled(SnowInput)({
-  ".MuiInputBase-root": {
-    color: CssVariables.white,
-    fontSize: "16px",
-    width: 60,
-    height: 40,
-  },
+const InputField = styled(TextField)<{ isselected: "true" | undefined }>(
+  ({ isselected }) => ({
+    ".MuiInputBase-root": {
+      color: CssVariables.white,
+      fontSize: "16px",
+      width: 60,
+      height: 40,
+    },
 
-  ".MuiOutlinedInput-notchedOutline": {
-    border: `2px solid ${CssVariables.primary} !important`,
-    borderRadius: CssVariables.buttonBorderRadius,
-  },
-});
+    ".MuiOutlinedInput-notchedOutline": {
+      border: `2px solid ${CssVariables.primary} !important`,
+      borderRadius: CssVariables.buttonBorderRadius,
+    },
+    ...(isselected && {
+      backgroundColor: CssVariables.primary,
+      borderRadius: CssVariables.buttonBorderRadius,
+    }),
+  })
+);
 
 const SelectButton = styled("div")<{ isselected: string | undefined }>(
   ({ isselected }) => ({

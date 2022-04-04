@@ -5,17 +5,12 @@ import { LiquidityPageActions } from "app/pages/Liquidity/slice";
 import { useDispatch, useSelector } from "react-redux";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 
-let timeout;
-
 export const WithdrawSlider = () => {
   const dispatch = useDispatch();
   const account = useSelector(Web3Selectors.selectAccount);
   const sliderValue = useSelector(LiquidityPageSelectors.withdrawPercentage);
   const handleSliderChange = (e: number) => {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => {
-      dispatch(LiquidityPageActions.setWithdrawPercentage(e));
-    }, 10);
+    dispatch(LiquidityPageActions.setWithdrawPercentage(e));
   };
   return (
     <StyledSlider

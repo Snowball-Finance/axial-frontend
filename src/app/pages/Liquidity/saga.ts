@@ -1,4 +1,4 @@
-import { Contract } from "ethers";
+import { BigNumber, Contract } from "ethers";
 import { call, put, select, takeLatest } from "redux-saga/effects";
 
 import { GlobalDomains } from "app/appSelectors";
@@ -7,20 +7,34 @@ import {
   ApproveAndDepositPayload,
   ApproveAndWithdrawPayload,
   Pool,
+  PoolData,
 } from "app/containers/Rewards/types";
-import { floatToBN } from "common/format";
+import { BNToFloat, floatToBN } from "common/format";
 import { LiquidityPageDomains, LiquidityPageSelectors } from "./selectors";
 import { LiquidityPageActions } from "./slice";
 import { SwapFlashLoanNoWithdrawFee } from "abi/ethers-contracts";
-import { getProviderOrSigner } from "app/containers/utils/contractUtils";
+import {
+  getContract,
+  getProviderOrSigner,
+} from "app/containers/utils/contractUtils";
 import { Web3Domains } from "app/containers/BlockChain/Web3/selectors";
-import { Token } from "app/containers/Swap/types";
-import { FromTransactionData } from "./types";
+import { Token, TokenSymbols } from "app/containers/Swap/types";
+import {
+  FromTransactionData,
+  LiquidityPageState,
+  SelectTokenToWithdrawPayload,
+  WithdrawTokenAmountChangePayload,
+} from "./types";
 import { GenericGasResponse } from "app/providers/gasPrice";
 import {
   Deadlines,
   formatDeadlineToNumber,
 } from "app/containers/Rewards/utils/deadline";
+import { zeroString } from "./constants";
+import { add, divide, multiply } from "precise-math";
+import { parseUnits } from "ethers/lib/utils";
+import { RewardsDomains } from "app/containers/Rewards/selectors";
+import { calculatePriceImpact } from "app/containers/Swap/utils/priceImpact";
 
 export function* buildTransactionData() {
   const depositTokenAmounts = yield select(
@@ -93,7 +107,7 @@ export function* buildTransactionData() {
 
 export function* buildWithdrawReviewData() {
   const withdrawTokens = yield select(
-    LiquidityPageSelectors.withdrawTokenToShow()
+    LiquidityPageSelectors.withdrawTokenAmounts
   );
   const transactionDeadline = Deadlines.Twenty;
 
@@ -164,6 +178,238 @@ export function* withdraw(action: {
   // yield delay(0);
 }
 
+export function* setAmountForTokenToWithdraw(action: {
+  type: string;
+  payload: WithdrawTokenAmountChangePayload;
+}) {
+  // state.selectedTokenToWithdraw = action.payload.symbol;
+  const amountsObj = yield select(LiquidityPageDomains.withdrawTokenAmounts);
+  let amounts = { ...amountsObj };
+  const { symbol, value } = action.payload;
+  if (!isNaN(parseFloat(value))) {
+    amounts[symbol] = value;
+  } else {
+    amounts[symbol] = zeroString;
+  }
+
+  const numberOfTokens = Object.keys(amounts).length;
+  let tokensWithNonZeroAmount = {};
+  for (let token in amounts) {
+    if (amounts[token] > 0) {
+      tokensWithNonZeroAmount[token] = amounts[token];
+    }
+  }
+  const numberOfTokensWithNonZeroAmount = Object.keys(
+    tokensWithNonZeroAmount
+  ).length;
+
+  if (numberOfTokensWithNonZeroAmount === 0) {
+    yield put(
+      LiquidityPageActions.setSelectedTokenToWithdraw({ symbol: "combo" })
+    );
+  } else if (numberOfTokensWithNonZeroAmount === 1) {
+    yield put(
+      LiquidityPageActions.setSelectedTokenToWithdraw({
+        symbol: Object.keys(tokensWithNonZeroAmount)[0] as TokenSymbols,
+      })
+    );
+  } else if (numberOfTokensWithNonZeroAmount !== numberOfTokens) {
+    yield put(
+      LiquidityPageActions.setSelectedTokenToWithdraw({ symbol: "mixed" })
+    );
+  }
+  //all the inputs are filled
+  else {
+    const selectedToken = yield select(
+      LiquidityPageDomains.selectedTokenToWithdraw
+    );
+    if (selectedToken === "combo") {
+      yield put(
+        LiquidityPageActions.setSelectedTokenToWithdraw({ symbol: "mixed" })
+      );
+    }
+  }
+
+  yield put(LiquidityPageActions.setTokenAmountsToWithdraw(amounts));
+  yield call(calculateWithdrawBonus);
+}
+
+export function* setWithdrawPercentage(action: {
+  type: string;
+  payload: LiquidityPageState["withdrawPercentage"];
+}) {
+  const percentage = action.payload;
+  const amountsObj = yield select(LiquidityPageDomains.withdrawTokenAmounts);
+  const tokens = yield select(GlobalDomains.tokens);
+  let amounts = { ...amountsObj };
+  const selectedTokenToWithdraw = yield select(
+    LiquidityPageDomains.selectedTokenToWithdraw
+  );
+  const tokensWithNonZeroAmount = {};
+  for (let token in amounts) {
+    if (amounts[token] > 0) {
+      tokensWithNonZeroAmount[token] = amounts[token];
+    }
+  }
+
+  const toLoop =
+    selectedTokenToWithdraw === "combo"
+      ? amounts
+      : selectedTokenToWithdraw === "mixed"
+      ? tokensWithNonZeroAmount
+      : {
+          [selectedTokenToWithdraw]: amounts[selectedTokenToWithdraw],
+        };
+
+  for (let symbol in toLoop) {
+    const token: Token = tokens[symbol];
+    const tokenBalance =
+      BNToFloat(token.balance || BigNumber.from(0), token.decimals) || 0;
+    const fraction = divide(multiply(tokenBalance, percentage), 100);
+    amounts[symbol] = fraction.toString();
+  }
+  if (selectedTokenToWithdraw === "combo") {
+    amounts = yield call(calculateAmountsIfItsCombo);
+  }
+
+  yield put(LiquidityPageActions.setTokenAmountsToWithdraw(amounts));
+  yield call(calculateWithdrawBonus);
+}
+
+function* calculateAmountsIfItsCombo() {
+  const amountsObj = yield select(LiquidityPageDomains.withdrawTokenAmounts);
+  const amounts = { ...amountsObj };
+  const tokens = yield select(GlobalDomains.tokens);
+  const percentage = yield select(LiquidityPageDomains.withdrawPercentage);
+
+  const tokenPrices = yield select(GlobalDomains.tokenPricesUSD);
+  let sumInUsd = 0;
+  for (let token in amounts) {
+    const price = tokenPrices[token] || 0;
+    const tokenBalance =
+      BNToFloat(
+        tokens[token].balance || BigNumber.from(0),
+        tokens[token].decimals
+      ) || 0;
+    sumInUsd = add(sumInUsd, multiply(price, tokenBalance));
+  }
+  const eachTokenShareInUsd = divide(sumInUsd, Object.keys(amounts).length);
+  const fractionOfEachTokenShare = divide(
+    multiply(eachTokenShareInUsd, percentage),
+    100
+  );
+  for (let token in amounts) {
+    const price = tokenPrices[token] || 0;
+    amounts[token] = multiply(fractionOfEachTokenShare, price).toString();
+  }
+  return amounts;
+}
+
+export function* setSelectedTokenToWithdraw(action: {
+  type: string;
+  payload: SelectTokenToWithdrawPayload;
+}) {
+  const { symbol, shouldEffectInputs } = action.payload;
+  if (!shouldEffectInputs) return;
+
+  const tokens = yield select(GlobalDomains.tokens);
+  const percentage = yield select(LiquidityPageDomains.withdrawPercentage);
+  const amountsObj = yield select(LiquidityPageDomains.withdrawTokenAmounts);
+  let amounts = { ...amountsObj };
+  const tokensWithNonZeroAmount = {};
+  for (let token in amounts) {
+    if (amounts[token] > 0) {
+      tokensWithNonZeroAmount[token] = amounts[token];
+    }
+  }
+  if (percentage) {
+    if (symbol === "combo") {
+      amounts = yield call(calculateAmountsIfItsCombo);
+    } else if (symbol === "mixed") {
+      for (let token in tokensWithNonZeroAmount) {
+        const tokenBalance =
+          BNToFloat(
+            tokens[token].balance || BigNumber.from(0),
+            tokens[token].decimals
+          ) || 0;
+        const fraction = divide(multiply(tokenBalance, percentage), 100);
+        amounts[token] = fraction.toString();
+      }
+    } else {
+      const tokenBalance =
+        BNToFloat(
+          tokens[symbol].balance || BigNumber.from(0),
+          tokens[symbol].decimals
+        ) || 0;
+      const fraction = divide(multiply(tokenBalance, percentage), 100);
+      for (let token in amounts) {
+        amounts[token] = zeroString;
+      }
+      amounts[symbol] = fraction.toString();
+    }
+  } else {
+    if (symbol === "combo") {
+      for (let token in amounts) {
+        amounts[token] = zeroString;
+      }
+    } else {
+      for (let token in amounts) {
+        if (token !== symbol) {
+          amounts[token] = zeroString;
+        }
+      }
+      amounts[symbol] = zeroString;
+    }
+  }
+  yield put(LiquidityPageActions.setTokenAmountsToWithdraw(amounts));
+  yield call(calculateWithdrawBonus);
+}
+
+function* calculateWithdrawBonus() {
+  const tokens = yield select(GlobalDomains.tokens);
+  const amounts = yield select(LiquidityPageDomains.withdrawTokenAmounts);
+  const library = yield select(Web3Domains.selectNetworkLibraryDomain);
+  const account = yield select(Web3Domains.selectAccountDomain);
+  let pool: Pool = yield select(LiquidityPageDomains.pool);
+  const pools = yield select(RewardsDomains.pools);
+  pool = pools[pool.key];
+  if (!pool?.poolData) return;
+  const swapContract = getContract(
+    pool.address,
+    pool.swapABI,
+    library,
+    account ?? undefined
+  );
+  const tokenInputSum = parseUnits(
+    pool.poolTokens
+      .reduce((sum, { symbol }) => sum + (+amounts[symbol] || 0), 0)
+      .toString(),
+    18
+  );
+  let withdrawLPTokenAmount;
+  const poolData: PoolData = pool.poolData;
+  if (poolData.totalLocked.gt(0) && tokenInputSum.gt(0)) {
+    withdrawLPTokenAmount = yield call(
+      swapContract.calculateTokenAmount,
+      pool.poolTokens.map(({ symbol }) =>
+        floatToBN(amounts[symbol], tokens[symbol].decimals)
+      ),
+      false
+    );
+  } else {
+    // when pool is empty, estimate the lptokens by just summing the input instead of calling contract
+    withdrawLPTokenAmount = tokenInputSum;
+  }
+
+  const bonus = calculatePriceImpact(
+    withdrawLPTokenAmount,
+    tokenInputSum,
+    poolData.virtualPrice,
+    true
+  );
+  yield put(LiquidityPageActions.setWithdrawBonus(bonus));
+}
+
 export function* liquidityPageSaga() {
   yield takeLatest(
     LiquidityPageActions.buildTransactionData.type,
@@ -175,4 +421,16 @@ export function* liquidityPageSaga() {
   );
   yield takeLatest(LiquidityPageActions.deposit.type, deposit);
   yield takeLatest(LiquidityPageActions.withdraw.type, withdraw);
+  yield takeLatest(
+    LiquidityPageActions.setAmountForTokenToWithdraw.type,
+    setAmountForTokenToWithdraw
+  );
+  yield takeLatest(
+    LiquidityPageActions.setWithdrawPercentage.type,
+    setWithdrawPercentage
+  );
+  yield takeLatest(
+    LiquidityPageActions.setSelectedTokenToWithdraw.type,
+    setSelectedTokenToWithdraw
+  );
 }

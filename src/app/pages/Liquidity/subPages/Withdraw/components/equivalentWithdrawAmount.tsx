@@ -8,7 +8,7 @@ import { CssVariables } from "styles/cssVariables/cssVariables";
 
 export const EquivalentWithdrawAmount = ({ token }: { token: Token }) => {
   const value = useSelector(
-    LiquidityPageSelectors.withdrawTokenToShow(token.symbol)
+    LiquidityPageSelectors.withdrawAmount(token.symbol)
   );
   const tokenPriceInUsdt = useSelector(
     globalSelectors.tokenPriceInUsdt(token.symbol)

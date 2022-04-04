@@ -18,6 +18,8 @@
   },
   "LiquidityPage": {
     "Liquidity": "Liquidity",
+    "Bonus": "Bonus",
+    "PriceImpact": "Price Impact",
     "Description": "Liquidity Page",
     "CurrencyReserves": "Currency Reserves",
     "DepositWrapped":"Deposit Wrapped",

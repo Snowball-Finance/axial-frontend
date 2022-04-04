@@ -31,17 +31,19 @@ export const Selection: FC = memo(
     );
     const setSelectedTokenToWithdraw = (e: "combo" | TokenSymbols) => {
       dispatch(
-        LiquidityPageActions.setSelectedTokenToWithdraw(e as TokenSymbols)
+        LiquidityPageActions.setSelectedTokenToWithdraw({
+          symbol: e as TokenSymbols,
+          shouldEffectInputs: true,
+        })
       );
     };
-
     return (
       <Grid item>
         <StyledWithdrawOption>
-          <StyledRadioGroup row value={selectedToken}>
+          <StyledRadioGroup row>
             <FormControlLabel
               onClick={() => setSelectedTokenToWithdraw("combo")}
-              control={<SnowRadio value={"combo"} />}
+              control={<SnowRadio checked={selectedToken === "combo"} />}
               label="Combo"
             />
             {poolTokens.map((token: Token) => (
@@ -50,7 +52,7 @@ export const Selection: FC = memo(
                 onClick={() =>
                   setSelectedTokenToWithdraw(token.symbol as TokenSymbols)
                 }
-                control={<SnowRadio value={token.symbol} />}
+                control={<SnowRadio checked={selectedToken === token.symbol} />}
                 label={token.symbol}
               />
             ))}

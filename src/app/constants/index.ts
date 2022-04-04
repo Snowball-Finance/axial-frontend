@@ -538,15 +538,15 @@ export const BaseUrl = `https://base.snowball.io`;
 
 // maps a symbol string to a token object
 export type TokensMap = {
-  [symbol: string]: Token
-}
+  [symbol: string]: Token;
+};
 
 export const TOKENS_MAP = Object.keys(POOLS_MAP).reduce((acc, poolName) => {
-  const pool = POOLS_MAP[poolName as PoolName]
-  const newAcc = { ...acc }
+  const pool = POOLS_MAP[poolName as PoolName];
+  const newAcc = { ...acc };
   pool.poolTokens.forEach((token) => {
-    newAcc[token.symbol] = token
-  })
-  newAcc[pool.lpToken.symbol] = pool.lpToken
-  return newAcc
-}, {} as TokensMap)
+    newAcc[token.symbol] = token;
+  });
+  newAcc[pool.lpToken.symbol] = pool.lpToken;
+  return newAcc;
+}, {} as TokensMap);
