@@ -29,7 +29,8 @@ import { RisksPage } from "./pages/Risks/Loadable";
 import { LiquidityPage } from "./pages/Liquidity/Loadable";
 import { RewardsPage } from "./pages/Rewards/Loadable";
 import { Swap } from "./containers/Swap";
-import SWAP_ROUTER_ABI from "abi/swapRouter.json";
+import AGGREGATOR_ABI from "abi/axialAggregator.json";
+
 import { tokens } from "./tokens";
 import { Token, TokenSymbols } from "./containers/Swap/types";
 import { Rewards } from "./containers/Rewards";
@@ -105,7 +106,7 @@ export function App() {
       />
       <Rewards pools={pools} />
       <Swap
-        swapRouterABI={SWAP_ROUTER_ABI}
+        swapRouterABI={AGGREGATOR_ABI}
         swapRouterAddress={"0x05F2F176b491ec11555cbE45B99748F999E13933"}
         tokens={tokens as { [K in TokenSymbols]: Token }}
       />

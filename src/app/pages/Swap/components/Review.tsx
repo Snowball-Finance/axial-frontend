@@ -16,7 +16,7 @@ import { OutlinedButton } from "app/components/common/buttons/outlinedButton";
 import { formatBNToString } from "app/containers/utils/contractUtils";
 import { SwapSelectors } from "app/containers/Swap/selectors";
 import { Zero } from "app/containers/Rewards/constants";
-import { BestPath } from "app/pages/Swap/components/BestPath";
+import { BestPathIndicator } from "app/pages/Swap/components/BestPath";
 import { SwapPageSelectors } from "app/pages/Swap/selectors";
 import { SwapPageActions } from "app/pages/Swap/slice";
 import { SwapActions } from "app/containers/Swap/slice";
@@ -29,7 +29,8 @@ export const Review: FC = () => {
   const selectedFromToken = useSelector(SwapPageSelectors.selectedFromToken);
   const selectedToToken = useSelector(SwapPageSelectors.selectedToToken);
   const tokens = useSelector(globalSelectors.tokens);
-  const bestPath = useSelector(SwapSelectors.selectBestPath);
+  const optimalPath = useSelector(SwapSelectors.selectBestPath);
+  const bestPath = optimalPath?.bestPath;
   const isSwapping = useSelector(SwapSelectors.selectIsSwapping);
 
   const dispatch = useDispatch();
@@ -122,7 +123,7 @@ export const Review: FC = () => {
         </TokenContainer>
       </Grid>
 
-      <BestPath />
+      <BestPathIndicator />
 
       <Grid item xs={12}>
         <InfoContainer>

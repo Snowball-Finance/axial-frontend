@@ -16,8 +16,9 @@ import {
   formatBNToString,
 } from "app/containers/utils/contractUtils";
 import { Zero } from "app/containers/Rewards/constants";
+import { BestPath } from "app/containers/Swap/types";
 
-export const BestPath: FC = () => {
+export const BestPathIndicator: FC = () => {
   const { t } = useTranslation();
   const selectedToToken = useSelector(SwapPageSelectors.selectedToToken);
   const selectedFromToken = useSelector(SwapPageSelectors.selectedFromToken);
@@ -27,16 +28,17 @@ export const BestPath: FC = () => {
   const isGettingBestSwapPath = useSelector(
     SwapSelectors.selectIsGettingBestPath
   );
-  const bestPath = useSelector(SwapSelectors.selectBestPath);
+  const optimalPath = useSelector(SwapSelectors.selectBestPath) as BestPath;
+  const bestPath = optimalPath?.bestPath;
 
   const getBestPathWithName = () => {
     const bestPathNames: string[] = [];
-    if(bestPath?.path && tokens){
+    if (bestPath?.path && tokens) {
       bestPath.path.forEach((address: string) => {
-       const tokensList=Object.values(tokens)
-        const token=tokensList.find(token=>token.address===address)
-        if(token){
-          bestPathNames.push(token.symbol)
+        const tokensList = Object.values(tokens);
+        const token = tokensList.find((token) => token.address === address);
+        if (token) {
+          bestPathNames.push(token.symbol);
         }
       });
     }
