@@ -6,7 +6,6 @@ import { useTranslation } from "react-i18next";
 import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { SwapSelectors } from "app/containers/Swap/selectors";
-import { Token } from "app/containers/Swap/types";
 import { SwapPageSelectors } from "../selectors";
 import { globalSelectors } from "app/appSelectors";
 import { calculatePriceImpact } from "app/containers/Swap/utils/priceImpact";
