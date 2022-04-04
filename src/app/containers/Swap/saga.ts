@@ -32,7 +32,7 @@ export function* findBestPath(action: {
     const toTokenAddress = toToken.address;
     const library = yield select(Web3Domains.selectNetworkLibraryDomain);
     const account = yield select(Web3Domains.selectAccountDomain);
-    const maxSteps = 1
+    const maxSteps = 1;
     const swapContract = new Contract(
       swapRouterAddress,
       swapRouterABI,
@@ -58,7 +58,6 @@ export function* findBestPath(action: {
       BigNumber.from(225),
       { gasLimit: (Number(gasEstimate) + Number(additional)).toString() }
     );
-    console.log({ optimalPath })
     yield all([
       put(SwapActions.setBestPath(optimalPath)),
       put(SwapActions.setIsGettingBestPath(false)),
@@ -112,7 +111,11 @@ export function* swap() {
     );
     const swapData = {
       amountIn: amountToGive,
-      amountOut: subtractSlippage(amountToReceive, selectedSlippage, customSlippage),
+      amountOut: subtractSlippage(
+        amountToReceive,
+        selectedSlippage,
+        customSlippage
+      ),
       path: bestPath.path,
       adapters: bestPath.adapters,
     };
