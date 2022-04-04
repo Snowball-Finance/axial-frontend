@@ -56,7 +56,6 @@ export function* getTokenPricesUSD() {
             const element = tokenIds[key];
             if (element === responseGeckoId) {
               prices[key] = price;
-              break;
             }
           }
         }
