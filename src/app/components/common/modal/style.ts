@@ -27,7 +27,7 @@ export const Wrapper = styled("div")({
   minWidth: "600px",
   background: CssVariables.modalBackground,
   borderRadius: "20px",
-  padding: "18px 12px",
+  padding: "40px 35px",
   cursor: "auto",
   border: `4px solid ${CssVariables.cardBorder}`,
 

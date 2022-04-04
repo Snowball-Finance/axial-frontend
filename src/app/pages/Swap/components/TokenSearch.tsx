@@ -48,18 +48,16 @@ export const TokenSearch: FC<Props> = ({
             />
           </Grid>
           <Grid item>
-            <TokenIconTitle variant="body2">
-              {selectedValue.symbol}
-            </TokenIconTitle>
+            <TokenIconTitle variant="h2">{selectedValue.symbol}</TokenIconTitle>
           </Grid>
         </Grid>
       );
     }
 
     return (
-      <Text variant="body2" noWrap>
-        {t(translations.SwapPage.TokenSearch.Placeholder())}
-      </Text>
+      <ButtonText variant="h2" noWrap>
+        {t(translations.SwapPage.TokenSearch.ButtonPlaceholder())}
+      </ButtonText>
     );
   };
 
@@ -86,58 +84,60 @@ export const TokenSearch: FC<Props> = ({
             </SearchContainer>
 
             <Grid item xs={12}>
-              <TokensContainer>
-                {options?.map((item) => {
-                  return (
-                    <ListItemButton
-                      key={item.value}
-                      onClick={() => handleTokenSelection(item.value)}
-                    >
-                      <Grid
-                        container
-                        justifyContent="space-between"
-                        alignItems="center"
+              <CardWrapper>
+                <TokensContainer>
+                  {options?.map((item) => {
+                    return (
+                      <TokensListItemButton
+                        key={item.value}
+                        onClick={() => handleTokenSelection(item.value)}
                       >
-                        <TokenIconContainer item>
-                          <Grid
-                            container
-                            spacing={1}
-                            alignItems="center"
-                            justifyContent="center"
-                          >
-                            <Grid item>
-                              <TokenIcon
-                                src={item.icon}
-                                alt={`token-${item.value}`}
-                              />
-                            </Grid>
+                        <Grid
+                          container
+                          justifyContent="space-between"
+                          alignItems="center"
+                        >
+                          <TokenIconContainer item>
+                            <Grid
+                              container
+                              spacing={1}
+                              alignItems="center"
+                              justifyContent="flex-start"
+                            >
+                              <Grid item>
+                                <TokenIcon
+                                  src={item.icon}
+                                  alt={`token-${item.value}`}
+                                />
+                              </Grid>
 
-                            <Grid item>
-                              <TokenTitle variant="body2">
-                                {item.value}
-                              </TokenTitle>
+                              <Grid item>
+                                <TokenTitle variant="h2">
+                                  {item.value}
+                                </TokenTitle>
+                              </Grid>
                             </Grid>
+                          </TokenIconContainer>
+
+                          <Grid item xs zeroMinWidth>
+                            <TokenTitle variant="h2" noWrap align="right">
+                              {formatBNToString(
+                                item.balance || Zero,
+                                item.decimals
+                              )}
+                            </TokenTitle>
+
+                            <TokenSubTitle variant="body2" noWrap align="right">
+                              ≈$
+                              {formatBNToString(item.balanceUSD || Zero, 18, 2)}
+                            </TokenSubTitle>
                           </Grid>
-                        </TokenIconContainer>
-
-                        <Grid item xs zeroMinWidth>
-                          <TokenTitle variant="body1" noWrap align="right">
-                            {formatBNToString(
-                              item.balance || Zero,
-                              item.decimals
-                            )}
-                          </TokenTitle>
-
-                          <TokenSubTitle variant="body2" noWrap align="right">
-                            ≈$
-                            {formatBNToString(item.balanceUSD || Zero, 18, 2)}
-                          </TokenSubTitle>
                         </Grid>
-                      </Grid>
-                    </ListItemButton>
-                  );
-                })}
-              </TokensContainer>
+                      </TokensListItemButton>
+                    );
+                  })}
+                </TokensContainer>
+              </CardWrapper>
             </Grid>
           </ModalContainer>
         </SnowModal>
@@ -158,11 +158,8 @@ const ButtonContainer = styled("div")({
 });
 
 const ModalContainer = styled(Grid)({
-  padding: 20,
-
   [mobile]: {
     width: "100%",
-    padding: 5,
   },
 });
 
@@ -174,26 +171,44 @@ const SearchContainer = styled(Grid)({
   backgroundColor: CssVariables.swapInputbackground,
 });
 
-const TokensContainer = styled(List)({
+const CardWrapper = styled(List)({
   border: `4px solid ${CssVariables.cardBorder}`,
   borderRadius: 20,
   padding: 10,
   backgroundColor: CssVariables.swapInputbackground,
 });
 
-const TokenIconContainer = styled(Grid)({
-  border: `2px solid ${CssVariables.cardBorder}`,
-  borderRadius: CssVariables.buttonBorderRadius,
-  padding: 5,
-  minWidth: 150,
+const TokensContainer = styled(List)({
+  height: 400,
+  overflow: "auto",
 
-  [mobile]: {
-    minWidth: 100,
+  "&::-webkit-scrollbar": {
+    width: "4px",
+  },
+  "&::-webkit-scrollbar-track": {
+    backgroundColor: CssVariables.white,
+    borderRadius: 8,
+  },
+  "&::-webkit-scrollbar-thumb": {
+    backgroundColor: CssVariables.primary,
+    borderRadius: 8,
   },
 });
 
-const Text = styled(Typography)({
+const TokensListItemButton = styled(ListItemButton)({
+  "&:hover": {
+    backgroundColor: CssVariables.modalBackground,
+  },
+});
+const TokenIconContainer = styled(Grid)({
+  border: `2px solid ${CssVariables.cardBorder}`,
+  borderRadius: "20px",
+  padding: 10,
+});
+
+const ButtonText = styled(Typography)({
   color: CssVariables.white,
+  textTransform: "uppercase",
 });
 
 const TokenIconTitle = styled(Typography)({

@@ -65,6 +65,7 @@ const Title = styled("div")({
   fontSize: "30px",
   fontWeight: "bold",
   color: CssVariables.white,
+  textTransform: "uppercase",
 
   [mobile]: {
     fontSize: "20px",
