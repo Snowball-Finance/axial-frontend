@@ -132,8 +132,8 @@
       "MaxSlippage": "max slippage"
     },
     "TokenSearch": {
-      "SelectToken": "Select Token",
-      "Placeholder": "Please select token"
+      "SelectToken": "Search and select token",
+      "Placeholder": "Type token name here"
     },
     "BestPath": {
       "Rate": "Rate",

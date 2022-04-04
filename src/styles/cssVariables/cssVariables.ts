@@ -39,6 +39,8 @@ export enum CssVariables {
   radioWidth = "var(--radioWidth)",
   radioHeight = "var(--radioHeight)",
   navigationDrawerBackground = "var(--navigationDrawerBackground)",
+  modalBackground = "var(--modalBackground)",
+  modalOverlayBackground = "var(--modalOverlayBackground)",
 }
 
 export enum FontFamilies {

@@ -167,16 +167,18 @@ const ModalContainer = styled(Grid)({
 });
 
 const SearchContainer = styled(Grid)({
-  border: `2px solid ${CssVariables.cardBorder}`,
+  border: `4px solid ${CssVariables.cardBorder}`,
   borderRadius: CssVariables.buttonBorderRadius,
   marginTop: 20,
   marginBottom: 20,
+  backgroundColor: CssVariables.swapInputbackground,
 });
 
 const TokensContainer = styled(List)({
-  border: `2px solid ${CssVariables.cardBorder}`,
-  borderRadius: 10,
+  border: `4px solid ${CssVariables.cardBorder}`,
+  borderRadius: 20,
   padding: 10,
+  backgroundColor: CssVariables.swapInputbackground,
 });
 
 const TokenIconContainer = styled(Grid)({
