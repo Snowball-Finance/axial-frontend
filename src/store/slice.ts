@@ -17,6 +17,7 @@ export interface GlobalState {
   gasPrice: GenericGasResponse | undefined;
   tokens: { [K in TokenSymbols]?: Token } | undefined;
   infiniteApproval: boolean;
+  isAdvancedOptionsOpen: boolean;
   tokensInQueueToApprove: { [K in TokenSymbols]?: boolean };
   selectedSlippage: Slippages;
   customSlippage: NumberInputState | undefined;
@@ -29,8 +30,12 @@ export const initialState: GlobalState = {
   tokens: undefined,
   infiniteApproval: storage.read(LocalStorageKeys.INFINITE_APPROVAL) || false,
   tokensInQueueToApprove: {},
-  selectedSlippage: Slippages.OneTenth,
-  customSlippage: undefined,
+  selectedSlippage:
+    storage.read(LocalStorageKeys.SELECTED_SLIPPAGE) || Slippages.OneTenth,
+  customSlippage:
+    storage.read(LocalStorageKeys.ENTERED_CUSTOM_SLIPPAGE) || undefined,
+  isAdvancedOptionsOpen:
+    storage.read(LocalStorageKeys.IS_ADVANCED_OPTIONS_OPEN) || false,
 };
 
 const globalSlice = createSlice({
@@ -76,10 +81,18 @@ const globalSlice = createSlice({
     setSlippage(state, action: PayloadAction<Slippages>) {
       state.customSlippage = undefined;
       state.selectedSlippage = action.payload;
+      storage.write(LocalStorageKeys.SELECTED_SLIPPAGE, action.payload);
+    },
+    setISAdvancedOptionsOpen(state, action: PayloadAction<boolean>) {
+      state.isAdvancedOptionsOpen = action.payload;
+      storage.write(LocalStorageKeys.IS_ADVANCED_OPTIONS_OPEN, action.payload);
     },
     setCustomSlippage(state, action: PayloadAction<string>) {
       state.selectedSlippage = Slippages.Custom;
-      state.customSlippage = slippageCustomStateCreator(action.payload);
+      const newValue = slippageCustomStateCreator(action.payload);
+      state.customSlippage = newValue;
+      storage.write(LocalStorageKeys.ENTERED_CUSTOM_SLIPPAGE, newValue);
+      storage.write(LocalStorageKeys.SELECTED_SLIPPAGE, Slippages.Custom);
     },
   },
 });

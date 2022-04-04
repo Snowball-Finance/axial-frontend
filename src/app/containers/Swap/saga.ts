@@ -16,8 +16,6 @@ import { GlobalDomains } from "app/appSelectors";
 import { GlobalActions } from "store/slice";
 import { subtractSlippage } from "utils/slippage";
 
-// import { actions } from './slice';
-
 export function* findBestPath(action: {
   type: string;
   payload: FindBestPathPayload;
