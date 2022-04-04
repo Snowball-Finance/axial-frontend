@@ -31,13 +31,17 @@ export const BestPath: FC = () => {
   const bestPath = useSelector(SwapSelectors.selectBestPath);
 
   const getBestPathWithName = () => {
-    const bestPathNames: Token[] = [];
-    for (let key in tokens) {
-      if (bestPath?.path.includes(tokens[key].address)) {
-        bestPathNames.push(tokens[key].symbol);
-      }
+    const bestPathNames: string[] = [];
+    if(bestPath?.path && tokens){
+      bestPath.path.forEach((address: string) => {
+       const tokensList=Object.values(tokens)
+        const token=tokensList.find(token=>token.address===address)
+        if(token){
+          bestPathNames.push(token.symbol)
+        }
+      });
     }
-    return bestPathNames.reverse().join(" > ");
+    return bestPathNames.join(" > ");
   };
 
   const getPriceImpact = () => {
