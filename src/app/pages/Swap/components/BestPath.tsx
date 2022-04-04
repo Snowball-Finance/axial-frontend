@@ -37,7 +37,7 @@ export const BestPath: FC = () => {
         bestPathNames.push(tokens[key].symbol);
       }
     }
-    return bestPathNames.join(" > ");
+    return bestPathNames.reverse().join(" > ");
   };
 
   const getPriceImpact = () => {

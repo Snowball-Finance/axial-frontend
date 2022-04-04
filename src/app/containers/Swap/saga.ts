@@ -24,6 +24,7 @@ export function* findBestPath(action: {
   payload: FindBestPathPayload;
 }) {
   try {
+    yield put(SwapActions.setBestPath(undefined))
     yield put(SwapActions.setIsGettingBestPath(true));
     const swapRouterAddress = yield select(SwapDomains.swapRouterAddress);
     const swapRouterABI = yield select(SwapDomains.swapRouterABI);
