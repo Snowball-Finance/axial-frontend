@@ -33,7 +33,7 @@ export function* findBestPath(action: {
     const toTokenAddress = toToken.address;
     const library = yield select(Web3Domains.selectNetworkLibraryDomain);
     const account = yield select(Web3Domains.selectAccountDomain);
-    const maxSteps = 1;
+    const maxSteps = 4;
     const swapContract = new Contract(
       swapRouterAddress,
       swapRouterABI,
@@ -51,12 +51,11 @@ export function* findBestPath(action: {
     const additional = multiply(Number(gasEstimate.toString()), 0.2).toFixed(0);
 
     const optimalPath = yield call(
-      swapContract.findBestPathWithGas,
+      swapContract.findBestPath,
       amountToGive,
       fromTokenAddress,
       toTokenAddress,
       maxSteps,
-      BigNumber.from(225),
       { gasLimit: (Number(gasEstimate) + Number(additional)).toString() }
     );
     yield all([

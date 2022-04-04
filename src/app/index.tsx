@@ -106,7 +106,7 @@ export function App() {
       <Rewards pools={pools} />
       <Swap
         swapRouterABI={SWAP_ROUTER_ABI}
-        swapRouterAddress={"0xBeD9dfE835cd2bB6775f344Ee5E3431b2CbF31FB"}
+        swapRouterAddress={"0x05F2F176b491ec11555cbE45B99748F999E13933"}
         tokens={tokens as { [K in TokenSymbols]: Token }}
       />
       <Layout>
