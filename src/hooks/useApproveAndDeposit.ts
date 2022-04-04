@@ -107,6 +107,11 @@ export function useApproveAndDeposit(
     shouldDepositWrapped = false,
     masterchefDeposit = false,
   ): Promise<void> {
+    console.log({
+      state,
+      shouldDepositWrapped,
+      masterchefDeposit,
+    })
     try {
       if (!account) throw new Error("Wallet must be connected")
       const poolTokens = shouldDepositWrapped
@@ -114,7 +119,9 @@ export function useApproveAndDeposit(
         : masterchefDeposit
         ? [POOL.lpToken]
         : POOL.poolTokens
-
+console.log({
+  poolTokens
+})
       const masterchefContract = new ethers.Contract(
         AXIAL_MASTERCHEF_CONTRACT_ADDRESS[43114],
         MASTERCHEF_ABI,

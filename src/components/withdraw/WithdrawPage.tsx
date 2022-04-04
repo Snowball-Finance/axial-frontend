@@ -214,11 +214,6 @@ const WithdrawPage = (props: Props): ReactElement => {
             <Button
               kind="primary"
               size="full"
-              disabled={
-                noShare ||
-                !!formStateData.error ||
-                formStateData.lpTokenAmountToSpend.isZero()
-              }
               onClick={onSubmit}
             >
               {t("withdraw")}

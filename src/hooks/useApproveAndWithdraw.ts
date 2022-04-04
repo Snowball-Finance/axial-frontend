@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 import { useState, useEffect, useMemo } from "react"
 import {
   POOLS_MAP,
@@ -74,10 +76,11 @@ export function useApproveAndWithdraw(
     poolName,
     initialTransactionStatus,
   ])
-
   async function approveAndWithdraw(
     state: ApproveAndWithdrawStateArgument,
   ): Promise<void> {
+    console.log(state)
+    console.log(state.lpTokenAmountToSpend.toString())
     try {
       if (!account || !chainId) throw new Error("Wallet must be connected")
       const masterchefContract = new ethers.Contract(
@@ -85,6 +88,7 @@ export function useApproveAndWithdraw(
         MASTERCHEF_ABI,
         library?.getSigner(),
       )
+
       if (state.lpTokenAmountToSpend.isZero()) return
       if (lpTokenContract == null) return
       let gasPrice
@@ -189,6 +193,12 @@ export function useApproveAndWithdraw(
           withdraw: false,
           approve: { ...prevState.approve, [poolName]: true },
         }))
+        console.log(state.tokenFormState[POOL.lpToken.symbol])
+        console.log({
+          masterchefContract,
+          masterChefId:POOL.lpToken.masterchefId,
+amount:BigNumber.from(state.tokenFormState[POOL.lpToken.symbol].valueSafe)
+        })
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         await masterchefContract.withdraw(
           POOL.lpToken.masterchefId,

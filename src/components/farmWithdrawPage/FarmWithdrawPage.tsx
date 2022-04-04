@@ -169,11 +169,7 @@ const FarmWithdrawPage = (props: Props): ReactElement => {
             <Button
               kind="primary"
               size="full"
-              disabled={
-                noShare ||
-                !!formStateData.error ||
-                formStateData.lpTokenAmountToSpend.isZero()
-              }
+            
               onClick={handleWithdrawClick}
             >
               {t("withdraw")}

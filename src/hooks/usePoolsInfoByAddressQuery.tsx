@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { gql, useQuery, QueryResult, OperationVariables } from "@apollo/client"
 
 interface PoolsInfoByAddressVars {

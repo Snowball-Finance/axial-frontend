@@ -24,6 +24,7 @@ interface Props {
 }
 function Withdraw({ poolName }: Props): ReactElement {
   const [poolData, userShareData] = usePoolData(poolName)
+  console.log(userShareData)
   const [withdrawFormState, updateWithdrawFormState] = useWithdrawFormState(
     poolName,
   )
@@ -111,12 +112,13 @@ function Withdraw({ poolName }: Props): ReactElement {
 
   const tokensData = React.useMemo(
     () =>
-      POOL.poolTokens.map(({ name, symbol, icon }) => ({
+     {
+        return POOL.poolTokens.map(({ name, symbol, icon }) => ({
         name,
         symbol,
         icon,
         inputValue: withdrawFormState.tokenInputs[symbol].valueRaw,
-      })),
+      }))},
     [withdrawFormState, POOL.poolTokens],
   )
   const gasPrice = BigNumber.from(
