@@ -15,6 +15,7 @@ import { BestPath, ContainerState, FindBestPathPayload } from "./types";
 import { GenericGasResponse } from "app/providers/gasPrice";
 import { GlobalDomains } from "app/appSelectors";
 import { GlobalActions } from "store/slice";
+import { subtractSlippage } from "utils/slippage";
 
 // import { actions } from './slice';
 
@@ -31,30 +32,33 @@ export function* findBestPath(action: {
     const toTokenAddress = toToken.address;
     const library = yield select(Web3Domains.selectNetworkLibraryDomain);
     const account = yield select(Web3Domains.selectAccountDomain);
-
+    const maxSteps = 1
     const swapContract = new Contract(
       swapRouterAddress,
       swapRouterABI,
       getProviderOrSigner(library, account)
-    );
+    ) as SwapRouter;
     const gasEstimate = yield call(
       swapContract.estimateGas.findBestPathWithGas,
       amountToGive,
       fromTokenAddress,
       toTokenAddress,
-      1,
+      maxSteps,
       BigNumber.from(225)
     );
+
     const additional = multiply(Number(gasEstimate.toString()), 0.2).toFixed(0);
+
     const optimalPath = yield call(
       swapContract.findBestPathWithGas,
       amountToGive,
       fromTokenAddress,
       toTokenAddress,
-      1,
+      maxSteps,
       BigNumber.from(225),
       { gasLimit: (Number(gasEstimate) + Number(additional)).toString() }
     );
+    console.log({ optimalPath })
     yield all([
       put(SwapActions.setBestPath(optimalPath)),
       put(SwapActions.setIsGettingBestPath(false)),
@@ -68,6 +72,8 @@ export function* swap() {
   try {
     yield put(SwapActions.setIsSwapping(true));
     const gasPrice: GenericGasResponse = yield select(GlobalDomains.gasPrice);
+    const selectedSlippage = yield select(GlobalDomains.selectedSlippage);
+    const customSlippage = yield select(GlobalDomains.customSlippage);
     const library = yield select(Web3Domains.selectLibraryDomain);
     const account = yield select(Web3Domains.selectAccountDomain);
     const bestPath: BestPath = yield select(SwapDomains.bestPath);
@@ -106,7 +112,7 @@ export function* swap() {
     );
     const swapData = {
       amountIn: amountToGive,
-      amountOut: amountToReceive,
+      amountOut: subtractSlippage(amountToReceive, selectedSlippage, customSlippage),
       path: bestPath.path,
       adapters: bestPath.adapters,
     };
