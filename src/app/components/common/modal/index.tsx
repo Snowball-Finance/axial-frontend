@@ -1,9 +1,10 @@
 import React, { FC, forwardRef } from "react";
 import { SnowModalProps } from "./types";
 import { StyledDialog, Wrapper, ChildWrapper } from "./style";
-import { styled, Zoom, ZoomProps } from "@mui/material";
+import { styled, Typography, Zoom, ZoomProps } from "@mui/material";
 import Close from "@mui/icons-material/Close";
 import { CssVariables } from "styles/cssVariables/cssVariables";
+import { mobile } from "styles/media";
 
 const Transition = forwardRef<HTMLDivElement, ZoomProps>((props, ref) => {
   return <Zoom ref={props.ref} {...props} timeout={300} />;
@@ -24,7 +25,7 @@ export const SnowModal: FC<SnowModalProps> = ({
     >
       <Wrapper>
         <TopWrapper>
-          {title ? <Title>{title}</Title> : <div />}
+          {title ? <Title variant="h2">{title}</Title> : <div />}
           {onClose ? (
             <CloseWrapper onClick={() => onClose()}>
               <Close />
@@ -41,13 +42,30 @@ export const SnowModal: FC<SnowModalProps> = ({
 const TopWrapper = styled("div")({
   display: "flex",
   justifyContent: "space-between",
+  alignItems: "center",
 });
 
 const CloseWrapper = styled("div")({
   cursor: "pointer",
-});
-const Title = styled("div")({
-  fontSize: "20px",
-  fontWeight: "bold",
   color: CssVariables.white,
+  border: `2px solid ${CssVariables.white}`,
+  borderRadius: "50%",
+  width: 30,
+  height: 30,
+  justifyContent: "center",
+  alignItems: "center",
+  display: "flex",
+
+  [mobile]: {
+    width: 20,
+    height: 20,
+  },
+});
+const Title = styled(Typography)({
+  color: CssVariables.white,
+  textTransform: "uppercase",
+
+  [mobile]: {
+    fontSize: "20px",
+  },
 });
