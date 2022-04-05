@@ -66,6 +66,8 @@ export interface SwapState {
   bestPath: BestPath | undefined;
   isSwapping: boolean;
   selectedGasPrice: GasPrices;
+  isTokenApproved: boolean;
+  isApproving: boolean;
 }
 
 export interface FindBestPathPayload {

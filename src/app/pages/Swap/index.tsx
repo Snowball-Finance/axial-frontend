@@ -38,7 +38,6 @@ export const SwapPage: FC = () => {
       <StyledSwapCard>
         <StyledContainer
           container
-          direction="column"
           justifyContent="center"
           alignItems="center"
           spacing={2}

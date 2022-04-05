@@ -13,6 +13,8 @@ export const initialState: ContainerState = {
   isSwapping: false,
   tokens: {},
   selectedGasPrice: GasPrices.Standard,
+  isTokenApproved: false,
+  isApproving: false,
 };
 
 const swapSlice = createSlice({
@@ -41,7 +43,15 @@ const swapSlice = createSlice({
     setIsSwapping(state, action: PayloadAction<boolean>) {
       state.isSwapping = action.payload;
     },
+    setIsTokenApproved(state, action: PayloadAction<boolean>) {
+      state.isTokenApproved = action.payload;
+    },
+    setIsApproving(state, action: PayloadAction<boolean>) {
+      state.isApproving = action.payload;
+    },
     swap() {},
+    approve() {},
+    tokenApprovalStatus() {},
   },
 });
 

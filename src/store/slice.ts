@@ -20,6 +20,7 @@ export interface GlobalState {
   tokensInQueueToApprove: { [K in TokenSymbols]?: boolean };
   selectedSlippage: Slippages;
   customSlippage: NumberInputState | undefined;
+  transactionSuccessId: string | undefined;
 }
 // The initial state of the LoginPage container
 export const initialState: GlobalState = {
@@ -31,6 +32,7 @@ export const initialState: GlobalState = {
   tokensInQueueToApprove: {},
   selectedSlippage: Slippages.OneTenth,
   customSlippage: undefined,
+  transactionSuccessId: undefined,
 };
 
 const globalSlice = createSlice({
@@ -80,6 +82,9 @@ const globalSlice = createSlice({
     setCustomSlippage(state, action: PayloadAction<string>) {
       state.selectedSlippage = Slippages.Custom;
       state.customSlippage = slippageCustomStateCreator(action.payload);
+    },
+    setTransactionSuccessId(state, action: PayloadAction<string | undefined>) {
+      state.transactionSuccessId = action.payload;
     },
   },
 });

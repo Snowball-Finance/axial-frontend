@@ -115,9 +115,15 @@
     "Swap": "Swap",
     "Description": "Swap Page",
     "SwapButton": "Swap",
+    "ApproveButton": "Approve",
+    "Approval": "Approval",
     "ReviewSwap": {
       "Title": "Review Swap",
-      "InfoDescription": "Output is estimated. if the price changes by more than the max slippage your transaction will revert"
+      "Approving": "Approving",
+      "TransactionStatus": "Transaction Status",
+      "InfoDescription": "Output is estimated. if the price changes by more than the max slippage your transaction will revert",
+      "HighPriceImpact": "There is a high Price Impact on this transaction due either to the transaction's size or insufficient liquidity, which will result in a loss of funds. Please confirm that you understand before submitting your transaction.",
+      "Understand": "I understand"
     },
     "FromToken": {
       "From": "From",
@@ -140,7 +146,10 @@
     "BestPath": {
       "Rate": "Rate",
       "PriceImpact": "Price Impact",
-      "Path": "Path"
+      "Path": "Path",
+      "Gas": "Gas",
+      "TxnDeadline": "txn deadline",
+      "MaxSlippage": "max slippage"
     }
   },
   "RisksPage": {

@@ -18,15 +18,13 @@ import { Web3Selectors } from "app/containers/BlockChain/Web3/selectors";
 import { WalletToggle } from "app/components/common/walletToggle";
 import { SwapPageSelectors } from "../selectors";
 import { SwapPageActions } from "../slice";
-import { SnowModal } from "app/components/common/modal";
-import { Review } from "./Review";
+import { ReviewConfirmationModal } from "./ReviewConfirmationModal";
 
 export const Actions: FC = () => {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
   const account = useSelector(Web3Selectors.selectAccount);
-  const isSwapping = useSelector(SwapSelectors.selectIsSwapping);
   const selectedFromToken = useSelector(SwapPageSelectors.selectedFromToken);
   const selectedToToken = useSelector(SwapPageSelectors.selectedToToken);
   const selectedFromAmount = useSelector(SwapPageSelectors.selectedFromAmount);
@@ -35,7 +33,6 @@ export const Actions: FC = () => {
   const isGettingBestSwapPath = useSelector(
     SwapSelectors.selectIsGettingBestPath
   );
-  const isSwapModalOpen = useSelector(SwapPageSelectors.isModalOpen);
 
   useEffect(() => {
     if (
@@ -57,24 +54,17 @@ export const Actions: FC = () => {
   }, [selectedFromToken?.symbol, selectedToToken?.symbol, selectedFromAmount]);
 
   const handleOpen = () => {
-    dispatch(SwapPageActions.setSwapModalOpen(true));
-  };
-
-  const handleClose = () => {
-    dispatch(SwapPageActions.setSwapModalOpen(false));
+    dispatch(SwapPageActions.buildReviewSwap());
   };
 
   return (
     <>
-      <Grid item>
+      <Grid item xs={12}>
         {account ? (
           <ContainedButton
-            width={220}
             onClick={handleOpen}
-            loading={isSwapping}
-            disabled={
-              isSwapping || !bestPath || !!errorMessage || isGettingBestSwapPath
-            }
+            disabled={!bestPath || !!errorMessage || isGettingBestSwapPath}
+            fullWidth
           >
             {errorMessage
               ? errorMessage
@@ -85,15 +75,7 @@ export const Actions: FC = () => {
         )}
       </Grid>
 
-      {isSwapModalOpen && (
-        <SnowModal
-          isOpen={isSwapModalOpen}
-          onClose={handleClose}
-          title={`${t(translations.SwapPage.ReviewSwap.Title())}`}
-        >
-          <Review />
-        </SnowModal>
-      )}
+      <ReviewConfirmationModal />
     </>
   );
 };
