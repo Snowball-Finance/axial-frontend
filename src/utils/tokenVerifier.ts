@@ -100,23 +100,3 @@ export function* checkIfTokensAreVerified(tokens: TokensToVerifyPayload) {
   }
 }
 
-export interface ApproveInterface {
-  amount: BigNumber;
-  contract: Contract;
-  swapAddress: string;
-}
-
-export function* approve(data: ApproveInterface) {
-  const { amount, contract, swapAddress } = data;
-  try {
-    const approvalTransaction = yield call(
-      contract.approve,
-      swapAddress,
-      amount
-    );
-    yield call(approvalTransaction.wait);
-    return true;
-  } catch (error: any) {
-    throw new Error("Your transaction could not be completed");
-  }
-}
