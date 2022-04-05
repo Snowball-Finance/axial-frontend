@@ -8,7 +8,7 @@ import { BigNumber, Contract } from "ethers";
 import { call, put, select } from "redux-saga/effects";
 import { GlobalActions } from "store/slice";
 
-interface TokenToVerify {
+export interface TokenToVerify {
   token: Token;
   amount: BigNumber;
   swapAddress: string;
@@ -99,4 +99,3 @@ export function* checkIfTokensAreVerified(tokens: TokensToVerifyPayload) {
     return false;
   }
 }
-

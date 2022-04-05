@@ -112,10 +112,7 @@ const rewardsSlice = createSlice({
         ...action.payload,
       };
     },
-    approveAndDeposit(
-      state,
-      action: PayloadAction<ApproveAndDepositPayload>
-    ) {},
+    deposit(state, action: PayloadAction<ApproveAndDepositPayload>) {},
     setIsDepositing(state, action: PayloadAction<boolean>) {
       state.isDepositing = action.payload;
     },

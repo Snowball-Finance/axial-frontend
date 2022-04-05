@@ -32,6 +32,9 @@ export const WithdrawModal: FC = () => {
   const dispatch = useDispatch();
   const isWithdrawing = useSelector(RewardsSelectors.isWithdrawing);
   const selectedPool = useSelector(LiquidityPageSelectors.selectedPool);
+  const selectedToken = useSelector(
+    LiquidityPageSelectors.selectedTokenToWithdraw
+  );
   const withdrawReviewData = useSelector(
     LiquidityPageSelectors.withdrawReviewData
   );
@@ -59,12 +62,11 @@ export const WithdrawModal: FC = () => {
       let type: WithdrawType | TokenSymbols = WithdrawType.IMBALANCE;
       if (Object.keys(tokenAmounts).length === 1) {
         type = Object.keys(tokenAmounts)[0] as TokenSymbols;
-      } else if (
-        Object.keys(tokenAmounts).length !== selectedPool.poolTokens.length
-      ) {
+      } else if (selectedToken === "mixed") {
         type = WithdrawType.IMBALANCE;
+      } else if (selectedToken === "combo") {
+        type = WithdrawType.ALL;
       }
-
       const dataToSend: ApproveAndWithdrawPayload = {
         poolKey: selectedPool.key,
         type,

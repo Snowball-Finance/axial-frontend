@@ -16,7 +16,7 @@ export const Playground = () => {
   const pools = useSelector(RewardsSelectors.pools);
   const handleDepositIntoAM3DStablecoinsButtonClicked = () => {
     dispatch(
-      RewardsActions.approveAndDeposit({
+      RewardsActions.deposit({
         shouldDepositWrapped: false,
         poolKey: Pools.AXIAL_AM3D,
         tokenAmounts: {
@@ -33,7 +33,7 @@ export const Playground = () => {
 
   const handlewithMasterchefClicked = () => {
     dispatch(
-      RewardsActions.approveAndDeposit({
+      RewardsActions.deposit({
         shouldDepositWrapped: false,
         poolKey: Pools.AXIAL_AM3D,
         masterchefDeposit: true,
@@ -88,7 +88,6 @@ export const Playground = () => {
     }
   };
 
-  
   const handleApproveListOfTokens = () => {
     const pool = pools[Pools.AXIAL_AM3D];
     if (pool) {

@@ -53,7 +53,7 @@ export function* deposit() {
       [token.symbol]: floatToBN(Number(value), token.decimals),
     },
   };
-  yield put(RewardsActions.approveAndDeposit(dataToSend));
+  yield put(RewardsActions.deposit(dataToSend));
 }
 
 export function* withdraw() {

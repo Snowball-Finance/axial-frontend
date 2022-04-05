@@ -35,6 +35,10 @@ export const LiquidityPageDomains = {
     state.liquidityPage?.withdrawReviewData || initialState.withdrawReviewData,
   withdrawBonus: (state: RootState) =>
     state.liquidityPage?.withdrawBonus || initialState.withdrawBonus,
+  tokensAreApproved: (state: RootState) =>
+    state.liquidityPage?.tokensAreApproved,
+  isCheckingForApproval: (state: RootState) =>
+    state.liquidityPage?.isCheckingForApproval,
 };
 
 export const LiquidityPageSelectors = {
@@ -119,5 +123,13 @@ export const LiquidityPageSelectors = {
   withdrawBonus: createSelector(
     LiquidityPageDomains.withdrawBonus,
     (withdrawBonus) => withdrawBonus
+  ),
+  tokensAreApproved: createSelector(
+    LiquidityPageDomains.tokensAreApproved,
+    (tokensAreApproved) => tokensAreApproved
+  ),
+  isCheckingForApproval: createSelector(
+    LiquidityPageDomains.isCheckingForApproval,
+    (isCheckingForApproval) => isCheckingForApproval
   ),
 };

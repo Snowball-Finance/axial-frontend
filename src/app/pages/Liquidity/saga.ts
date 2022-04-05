@@ -35,6 +35,11 @@ import { add, divide, multiply } from "precise-math";
 import { parseUnits } from "ethers/lib/utils";
 import { RewardsDomains } from "app/containers/Rewards/selectors";
 import { calculatePriceImpact } from "app/containers/Swap/utils/priceImpact";
+import {
+  checkAndApproveTokensInList,
+  checkIfTokensAreVerified,
+  TokenToVerify,
+} from "utils/tokenVerifier";
 
 export function* buildTransactionData() {
   const depositTokenAmounts = yield select(
@@ -164,7 +169,7 @@ export function* deposit() {
     tokenAmounts: tmp,
     shouldDepositWrapped: pool.swapAddress === undefined ? false : !depositRaw,
   };
-  yield put(RewardsActions.approveAndDeposit(dataToSend));
+  yield put(RewardsActions.deposit(dataToSend));
   yield put(LiquidityPageActions.setDepositTransactionData(undefined));
 }
 
@@ -410,6 +415,43 @@ function* calculateWithdrawBonus() {
   yield put(LiquidityPageActions.setWithdrawBonus(bonus));
 }
 
+function* tokensToApproveForDeposit() {
+  let pool: Pool = yield select(LiquidityPageDomains.pool);
+  const tokens = yield select(GlobalDomains.tokens);
+  const amounts = yield select(LiquidityPageDomains.depositTokenAmounts);
+  const toApprove: TokenToVerify[] = Object.keys(amounts).map((symbol) => {
+    const token: Token = tokens[symbol];
+    return {
+      amount:
+        floatToBN(Number(amounts[symbol]), token.decimals) || BigNumber.from(0),
+      swapAddress: pool.swapAddress || pool.address,
+      token,
+    };
+  });
+  return toApprove;
+}
+
+export function* approveTokensForDeposit() {
+  const tokensToApprove: TokenToVerify[] = yield call(
+    tokensToApproveForDeposit
+  );
+  const areApproved = yield call(checkAndApproveTokensInList, {
+    tokensToVerify: tokensToApprove,
+  });
+  yield put(LiquidityPageActions.setTokensAreApproved(areApproved));
+}
+export function* checkIsAllTokensAreApprovedForDeposit() {
+  yield put(LiquidityPageActions.setIsCheckingForApproval(true));
+  const tokensToApprove: TokenToVerify[] = yield call(
+    tokensToApproveForDeposit
+  );
+  const areAllApproved = yield call(checkIfTokensAreVerified, {
+    tokensToVerify: tokensToApprove,
+  });
+  yield put(LiquidityPageActions.setTokensAreApproved(areAllApproved));
+  yield put(LiquidityPageActions.setIsCheckingForApproval(false));
+}
+
 export function* liquidityPageSaga() {
   yield takeLatest(
     LiquidityPageActions.buildTransactionData.type,
@@ -432,5 +474,13 @@ export function* liquidityPageSaga() {
   yield takeLatest(
     LiquidityPageActions.setSelectedTokenToWithdraw.type,
     setSelectedTokenToWithdraw
+  );
+  yield takeLatest(
+    LiquidityPageActions.approveTokensForDeposit.type,
+    approveTokensForDeposit
+  );
+  yield takeLatest(
+    LiquidityPageActions.checkIsAllTokensAreApprovedForDeposit.type,
+    checkIsAllTokensAreApprovedForDeposit
   );
 }
