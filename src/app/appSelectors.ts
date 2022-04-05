@@ -31,7 +31,7 @@ export const globalSelectors = {
     [GlobalDomains.tokenPricesUSD],
     (tokenPricesUSD) => tokenPricesUSD
   ),
-  tokenPriceInUsdt: (token: string) =>
+  tokenPriceInUSD: (token: string) =>
     createSelector(GlobalDomains.tokenPricesUSD, (prices) => {
       return prices[token] || 0;
     }),

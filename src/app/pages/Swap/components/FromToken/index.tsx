@@ -24,12 +24,10 @@ export const FromToken: FC = () => {
           <StyledCurrencyInput>
             <Grid container justifyContent="space-between" alignItems="center">
               <Input />
-
               <FromTokenSearch />
             </Grid>
           </StyledCurrencyInput>
         </Grid>
-
         <Balance />
       </Grid>
     </StyledContainerItem>
@@ -45,5 +43,5 @@ const StyledCurrencyInput = styled("div")({
   backgroundColor: CssVariables.swapInputbackground,
   border: `4px solid ${CssVariables.cardBorder}`,
   borderRadius: "20px",
-  padding: 10,
+  padding: "20px 20px",
 });
