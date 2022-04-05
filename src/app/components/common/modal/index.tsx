@@ -1,7 +1,7 @@
 import React, { FC, forwardRef } from "react";
 import { SnowModalProps } from "./types";
 import { StyledDialog, Wrapper, ChildWrapper } from "./style";
-import { styled, Zoom, ZoomProps } from "@mui/material";
+import { styled, Typography, Zoom, ZoomProps } from "@mui/material";
 import Close from "@mui/icons-material/Close";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { mobile } from "styles/media";
@@ -25,7 +25,7 @@ export const SnowModal: FC<SnowModalProps> = ({
     >
       <Wrapper>
         <TopWrapper>
-          {title ? <Title>{title}</Title> : <div />}
+          {title ? <Title variant="h2">{title}</Title> : <div />}
           {onClose ? (
             <CloseWrapper onClick={() => onClose()}>
               <Close />
@@ -61,9 +61,7 @@ const CloseWrapper = styled("div")({
     height: 20,
   },
 });
-const Title = styled("div")({
-  fontSize: "30px",
-  fontWeight: "bold",
+const Title = styled(Typography)({
   color: CssVariables.white,
   textTransform: "uppercase",
 

@@ -24,7 +24,8 @@ const Input = styled("input")({
   height: "45px",
   outline: "none",
   padding: "0px 12px",
-  color: CssVariables.white
+  color: CssVariables.white,
+  fontSize: "16px",
 });
 const EndIconWrapper = styled("div")({
   position: "absolute",
