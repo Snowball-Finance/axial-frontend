@@ -6,7 +6,6 @@ import { useTranslation } from "react-i18next";
 import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { SwapSelectors } from "app/containers/Swap/selectors";
-import { Token } from "app/containers/Swap/types";
 import { SwapPageSelectors } from "../selectors";
 import { globalSelectors } from "app/appSelectors";
 import { calculatePriceImpact } from "app/containers/Swap/utils/priceImpact";
@@ -17,8 +16,9 @@ import {
   formatBNToString,
 } from "app/containers/utils/contractUtils";
 import { Zero } from "app/containers/Rewards/constants";
+import { BestPath } from "app/containers/Swap/types";
 
-export const BestPath: FC = () => {
+export const BestPathIndicator: FC = () => {
   const { t } = useTranslation();
   const selectedToToken = useSelector(SwapPageSelectors.selectedToToken);
   const selectedFromToken = useSelector(SwapPageSelectors.selectedFromToken);
@@ -28,14 +28,19 @@ export const BestPath: FC = () => {
   const isGettingBestSwapPath = useSelector(
     SwapSelectors.selectIsGettingBestPath
   );
-  const bestPath = useSelector(SwapSelectors.selectBestPath);
+  const optimalPath = useSelector(SwapSelectors.selectBestPath) as BestPath;
+  const bestPath = optimalPath?.bestPath;
 
   const getBestPathWithName = () => {
-    const bestPathNames: Token[] = [];
-    for (let key in tokens) {
-      if (bestPath?.path.includes(tokens[key].address)) {
-        bestPathNames.push(tokens[key].symbol);
-      }
+    const bestPathNames: string[] = [];
+    if (bestPath?.path && tokens) {
+      bestPath.path.forEach((address: string) => {
+        const tokensList = Object.values(tokens);
+        const token = tokensList.find((token) => token.address === address);
+        if (token) {
+          bestPathNames.push(token.symbol);
+        }
+      });
     }
     return bestPathNames.join(" > ");
   };

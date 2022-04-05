@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, MouseEventHandler } from "react";
 import {
   styled,
   Grid,
@@ -21,15 +21,23 @@ import { SlippageSelect } from "./slippageSelect";
 export const AdvanceOption: FC = () => {
   const { t } = useTranslation();
   const infiniteApproval = useSelector(globalSelectors.infiniteApproval);
+  const isOpen = useSelector(globalSelectors.isAdvancedOptionsOpen);
   const dispatch = useDispatch();
 
   const handleInfiniteApproval = () => {
     dispatch(GlobalActions.setInfiniteApproval(!infiniteApproval));
   };
 
+  const handleOpenAdvancedOptionsToggle: MouseEventHandler<HTMLDivElement> =
+    () => {
+      console.log("click");
+      dispatch(GlobalActions.setISAdvancedOptionsOpen(!isOpen));
+    };
+
   return (
-    <StyledAccordion>
+    <StyledAccordion expanded={isOpen}>
       <StyledAccordionSummary
+        onClick={handleOpenAdvancedOptionsToggle}
         expandIcon={<ExpandMoreIcon color="primary" />}
         aria-controls="panel1a-content"
         id="panel1a-header"

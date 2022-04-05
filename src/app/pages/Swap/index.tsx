@@ -15,7 +15,7 @@ import { useSwapPageSlice } from "./slice";
 import { AdvanceOption } from "app/components/common/advancedOptions";
 import { FromToken } from "./components/FromToken";
 import { ToToken } from "./components/ToToken";
-import { BestPath } from "./components/BestPath";
+import { BestPathIndicator } from "./components/BestPath";
 import { ReverseSwap } from "./components/ReverseSwap";
 import { Actions } from "./components/Actions";
 import { mobile } from "styles/media";
@@ -49,7 +49,7 @@ export const SwapPage: FC = () => {
 
           <ToToken />
 
-          <BestPath />
+          <BestPathIndicator />
 
           <StyledAdvanceContainer item xs={12}>
             <AdvanceOption />

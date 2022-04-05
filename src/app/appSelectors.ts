@@ -17,6 +17,8 @@ export const GlobalDomains = {
     state.global?.selectedSlippage || initialState.selectedSlippage,
   customSlippage: (state: RootState) =>
     state.global?.customSlippage || initialState.customSlippage,
+  isAdvancedOptionsOpen: (state: RootState) =>
+    state.global?.isAdvancedOptionsOpen,
 };
 
 export const globalSelectors = {
@@ -29,7 +31,7 @@ export const globalSelectors = {
     [GlobalDomains.tokenPricesUSD],
     (tokenPricesUSD) => tokenPricesUSD
   ),
-  tokenPriceInUsdt: (token: string) =>
+  tokenPriceInUSD: (token: string) =>
     createSelector(GlobalDomains.tokenPricesUSD, (prices) => {
       return prices[token] || 0;
     }),
@@ -50,5 +52,9 @@ export const globalSelectors = {
   customSlippage: createSelector(
     [GlobalDomains.customSlippage],
     (customSlippage) => customSlippage
+  ),
+  isAdvancedOptionsOpen: createSelector(
+    [GlobalDomains.isAdvancedOptionsOpen],
+    (isAdvancedOptionsOpen) => isAdvancedOptionsOpen
   ),
 };
