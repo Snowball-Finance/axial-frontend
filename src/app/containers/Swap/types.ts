@@ -3,10 +3,13 @@ import { BigNumber } from "ethers";
 /* --- STATE --- */
 
 export interface BestPath {
-  adapters: string[];
-  amounts: BigNumber[];
-  gasEstimate: BigNumber;
-  path: string[];
+  bestPath: {
+    adapters: string[];
+    amounts: BigNumber[];
+    gasEstimate: BigNumber;
+    path: string[];
+  };
+  useInternalRouter: boolean;
 }
 
 export enum TokenSymbols {

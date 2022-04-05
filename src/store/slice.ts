@@ -7,6 +7,7 @@ import {
   slippageCustomStateCreator,
   Slippages,
 } from "utils/slippage";
+import { TokensToVerifyPayload } from "utils/tokenVerifier";
 import { useInjectReducer, useInjectSaga } from "./redux-injectors";
 import { globalSaga } from "./saga";
 import { LocalStorageKeys, storage } from "./storage";
@@ -17,6 +18,7 @@ export interface GlobalState {
   gasPrice: GenericGasResponse | undefined;
   tokens: { [K in TokenSymbols]?: Token } | undefined;
   infiniteApproval: boolean;
+  isAdvancedOptionsOpen: boolean;
   tokensInQueueToApprove: { [K in TokenSymbols]?: boolean };
   selectedSlippage: Slippages;
   customSlippage: NumberInputState | undefined;
@@ -30,8 +32,12 @@ export const initialState: GlobalState = {
   tokens: undefined,
   infiniteApproval: storage.read(LocalStorageKeys.INFINITE_APPROVAL) || false,
   tokensInQueueToApprove: {},
-  selectedSlippage: Slippages.OneTenth,
-  customSlippage: undefined,
+  selectedSlippage:
+    storage.read(LocalStorageKeys.SELECTED_SLIPPAGE) || Slippages.OneTenth,
+  customSlippage:
+    storage.read(LocalStorageKeys.ENTERED_CUSTOM_SLIPPAGE) || undefined,
+  isAdvancedOptionsOpen:
+    storage.read(LocalStorageKeys.IS_ADVANCED_OPTIONS_OPEN) || false,
   transactionSuccessId: undefined,
 };
 
@@ -78,14 +84,27 @@ const globalSlice = createSlice({
     setSlippage(state, action: PayloadAction<Slippages>) {
       state.customSlippage = undefined;
       state.selectedSlippage = action.payload;
+      storage.write(LocalStorageKeys.SELECTED_SLIPPAGE, action.payload);
+    },
+    setISAdvancedOptionsOpen(state, action: PayloadAction<boolean>) {
+      state.isAdvancedOptionsOpen = action.payload;
+      storage.write(LocalStorageKeys.IS_ADVANCED_OPTIONS_OPEN, action.payload);
     },
     setCustomSlippage(state, action: PayloadAction<string>) {
       state.selectedSlippage = Slippages.Custom;
-      state.customSlippage = slippageCustomStateCreator(action.payload);
+      const newValue = slippageCustomStateCreator(action.payload);
+      state.customSlippage = newValue;
+      storage.write(LocalStorageKeys.ENTERED_CUSTOM_SLIPPAGE, newValue);
+      storage.write(LocalStorageKeys.SELECTED_SLIPPAGE, Slippages.Custom);
     },
     setTransactionSuccessId(state, action: PayloadAction<string | undefined>) {
       state.transactionSuccessId = action.payload;
     },
+    checkIfListOfTokensAreApproved(
+      state,
+      action: PayloadAction<TokensToVerifyPayload>
+    ) {},
+    approveListOfTokens(state, action: PayloadAction<TokensToVerifyPayload>) {},
   },
 });
 

@@ -146,7 +146,8 @@ export const SwapPageSelectors = {
     (bestPath, toToken) => {
       if (toToken) {
         return formatBNToString(
-          bestPath?.amounts[bestPath?.amounts.length - 1] || Zero,
+          bestPath?.bestPath?.amounts[bestPath?.bestPath?.amounts.length - 1] ||
+            Zero,
           toToken?.decimals || 18
         );
       }

@@ -113,9 +113,19 @@ export function* reverseTokenChange() {
 
 export function* amountChange(action: { type: string; payload: string }) {
   const { payload } = action;
+  let value = payload;
+  if (value === "") {
+    value = "0";
+  }
+  if (value === ".") {
+    value = "0.";
+  }
 
+  if (isNaN(Number(value))) {
+    return;
+  }
   yield call(validation);
-  yield put(SwapPageActions.setFromAmount(payload));
+  yield put(SwapPageActions.setFromAmount(value));
 }
 
 export function* maxAmountSelection() {

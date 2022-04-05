@@ -11,7 +11,7 @@ export const EquivalentWithdrawAmount = ({ token }: { token: Token }) => {
     LiquidityPageSelectors.withdrawAmount(token.symbol)
   );
   const tokenPriceInUsdt = useSelector(
-    globalSelectors.tokenPriceInUsdt(token.symbol)
+    globalSelectors.tokenPriceInUSD(token.symbol)
   );
   const equivalentValue = multiply(Number(value || 0), tokenPriceInUsdt);
   let equivalentValueToShow = equivalentValue === 0 ? "$0" : `~ < $0.01`;

@@ -1,6 +1,5 @@
-import { Erc20 } from "abi/ethers-contracts";
-import { BigNumber, Contract } from "ethers";
-import { SwapRouter } from "abi/ethers-contracts/SwapRouter";
+import { AxialAggregator, Erc20 } from "abi/ethers-contracts";
+import { Contract, ethers } from "ethers";
 import { parseUnits } from "ethers/lib/utils";
 import { multiply } from "precise-math";
 import { toast } from "react-toastify";
@@ -18,12 +17,14 @@ import { GlobalActions } from "store/slice";
 import checkTokenApprovalStatus from "../utils/checkTokenApprovalStatus";
 
 // import { actions } from './slice';
+import { subtractSlippage } from "utils/slippage";
 
 export function* findBestPath(action: {
   type: string;
   payload: FindBestPathPayload;
 }) {
   try {
+    yield put(SwapActions.setBestPath(undefined));
     yield put(SwapActions.setIsGettingBestPath(true));
     const swapRouterAddress = yield select(SwapDomains.swapRouterAddress);
     const swapRouterABI = yield select(SwapDomains.swapRouterABI);
@@ -32,30 +33,37 @@ export function* findBestPath(action: {
     const toTokenAddress = toToken.address;
     const library = yield select(Web3Domains.selectNetworkLibraryDomain);
     const account = yield select(Web3Domains.selectAccountDomain);
-
+    const maxSteps = 4;
     const swapContract = new Contract(
       swapRouterAddress,
       swapRouterABI,
       getProviderOrSigner(library, account)
-    );
+    ) as AxialAggregator;
+
+    const findBestPathParams = {
+      amountIn: amountToGive,
+      tokenIn: fromTokenAddress,
+      tokenOut: toTokenAddress,
+      maxSteps,
+      gasPrice: ethers.utils.parseUnits("225", "gwei"),
+    };
+
     const gasEstimate = yield call(
-      swapContract.estimateGas.findBestPathWithGas,
-      amountToGive,
-      fromTokenAddress,
-      toTokenAddress,
-      1,
-      BigNumber.from(225)
+      swapContract.estimateGas.findBestPath,
+      findBestPathParams,
+      { gasLimit: 1e9 }
     );
+
     const additional = multiply(Number(gasEstimate.toString()), 0.2).toFixed(0);
+
     const optimalPath = yield call(
-      swapContract.findBestPathWithGas,
-      amountToGive,
-      fromTokenAddress,
-      toTokenAddress,
-      1,
-      BigNumber.from(225),
-      { gasLimit: (Number(gasEstimate) + Number(additional)).toString() }
+      swapContract.findBestPath,
+      findBestPathParams,
+      {
+        gasLimit: (Number(gasEstimate) + Number(additional)).toString(),
+      }
     );
+    console.log(optimalPath);
     yield all([
       put(SwapActions.setBestPath(optimalPath)),
       put(SwapActions.setIsGettingBestPath(false)),
@@ -68,32 +76,41 @@ export function* findBestPath(action: {
 export function* swap() {
   try {
     yield put(SwapActions.setIsSwapping(true));
+    const selectedSlippage = yield select(GlobalDomains.selectedSlippage);
+    const customSlippage = yield select(GlobalDomains.customSlippage);
     const library = yield select(Web3Domains.selectLibraryDomain);
     const account = yield select(Web3Domains.selectAccountDomain);
-    const bestPath: BestPath = yield select(SwapDomains.bestPath);
-
+    const optimalPath: BestPath = yield select(SwapDomains.bestPath);
+    const { bestPath, useInternalRouter } = optimalPath;
+    
     const swapRouterAddress = yield select(SwapDomains.swapRouterAddress);
     const swapRouterABI = yield select(SwapDomains.swapRouterABI);
-    const swapRouterContract: SwapRouter = new Contract(
+    const swapRouterContract = new Contract(
       swapRouterAddress,
       swapRouterABI,
       getProviderOrSigner(library, account)
-    ) as SwapRouter;
+    ) as AxialAggregator;
+    const toTokenAddress = bestPath.path[bestPath.path.length - 1];
 
     const amountToReceive = bestPath.amounts[bestPath.amounts.length - 1];
     const amountToGive = bestPath.amounts[0];
 
     const swapData = {
       amountIn: amountToGive,
-      amountOut: amountToReceive,
+      amountOut: subtractSlippage(
+        amountToReceive,
+        selectedSlippage,
+        customSlippage
+      ),
       path: bestPath.path,
       adapters: bestPath.adapters,
     };
     const swapTransaction = yield call(
-      swapRouterContract.swapNoSplit,
+      swapRouterContract.swap,
       swapData,
-      account,
-      SWAP_ROUTER_FEE
+      toTokenAddress,
+      SWAP_ROUTER_FEE,
+      useInternalRouter
     );
     const result = yield call(swapTransaction?.wait);
     if (result.status) {
@@ -115,7 +132,8 @@ export function* tokenApprovalStatus() {
   try {
     const library = yield select(Web3Domains.selectLibraryDomain);
     const account = yield select(Web3Domains.selectAccountDomain);
-    const bestPath: BestPath = yield select(SwapDomains.bestPath);
+    const optimalPath: BestPath = yield select(SwapDomains.bestPath);
+    const bestPath = optimalPath?.bestPath;
     const tokens: ContainerState["tokens"] = yield select(
       SwapDomains.swapTokens
     );
@@ -153,7 +171,8 @@ export function* approve() {
     const gasPrice: GenericGasResponse = yield select(GlobalDomains.gasPrice);
     const library = yield select(Web3Domains.selectLibraryDomain);
     const account = yield select(Web3Domains.selectAccountDomain);
-    const bestPath: BestPath = yield select(SwapDomains.bestPath);
+    const optimalPath: BestPath = yield select(SwapDomains.bestPath);
+    const bestPath = optimalPath?.bestPath;
     const tokens: ContainerState["tokens"] = yield select(
       SwapDomains.swapTokens
     );

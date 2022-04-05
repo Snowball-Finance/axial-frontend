@@ -14,6 +14,9 @@ interface Props {
   swapRouterABI: any;
   tokens: { [K in TokenSymbols]: Token };
 }
+if (!process.env.REACT_APP_SWAP_ROUTER_ADDRESS) {
+  throw new Error("REACT_APP_SWAP_ROUTER_ADDRESS is not set");
+}
 
 export const Swap: FC<Props> = ({
   swapRouterABI,
