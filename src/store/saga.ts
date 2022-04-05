@@ -122,7 +122,7 @@ export function* getTokenBalances() {
   }
 }
 
-export function* checkIfListOfTokensAreVerified(action: {
+export function* checkIfListOfTokensAreApproved(action: {
   type: string;
   payload: TokensToVerifyPayload;
 }) {
@@ -147,8 +147,8 @@ export function* globalSaga() {
   yield takeLatest(GlobalActions.getGasPrice.type, getGasPrice);
   yield takeLatest(GlobalActions.getTokenBalances.type, getTokenBalances);
   yield takeLatest(
-    GlobalActions.checkIfListOfTokensAreVerified.type,
-    checkIfListOfTokensAreVerified
+    GlobalActions.checkIfListOfTokensAreApproved.type,
+    checkIfListOfTokensAreApproved
   );
   yield takeLatest(GlobalActions.approveListOfTokens.type, approveListOfTokens);
 }

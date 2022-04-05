@@ -81,7 +81,7 @@ export const Playground = () => {
         }
       );
       dispatch(
-        GlobalActions.checkIfListOfTokensAreVerified({
+        GlobalActions.checkIfListOfTokensAreApproved({
           tokensToVerify: list,
         })
       );

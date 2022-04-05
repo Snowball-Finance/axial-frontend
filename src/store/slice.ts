@@ -82,7 +82,7 @@ const globalSlice = createSlice({
       state.selectedSlippage = Slippages.Custom;
       state.customSlippage = slippageCustomStateCreator(action.payload);
     },
-    checkIfListOfTokensAreVerified(
+    checkIfListOfTokensAreApproved(
       state,
       action: PayloadAction<TokensToVerifyPayload>
     ) {},
