@@ -17,7 +17,7 @@ export const StyledDialog = styled(Dialog)({
       borderRadius: 8,
     },
     "&::-webkit-scrollbar-thumb": {
-      backgroundColor: CssVariables.primary,
+      backgroundColor: CssVariables.actionColor,
       borderRadius: 8,
     },
   },
