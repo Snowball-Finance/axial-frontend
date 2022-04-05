@@ -12,7 +12,7 @@ export const WithdrawButton = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const withdrawTokens = useSelector(
-    LiquidityPageSelectors.withdrawTokenToShow()
+    LiquidityPageSelectors.withdrawTokenAmounts
   );
 
   const disabled = Object.values(withdrawTokens).every(

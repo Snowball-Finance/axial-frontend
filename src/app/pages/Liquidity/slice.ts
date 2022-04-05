@@ -1,7 +1,10 @@
 import {
   ContainerState,
   DepositTransactionData,
+  LiquidityPageState,
+  SelectTokenToWithdrawPayload,
   WithdrawReviewData,
+  WithdrawTokenAmountChangePayload,
 } from "./types";
 import { createSlice } from "store/toolkit";
 import { useInjectReducer, useInjectSaga } from "store/redux-injectors";
@@ -11,6 +14,7 @@ import { PayloadAction } from "@reduxjs/toolkit";
 import { TokenSymbols } from "app/containers/Swap/types";
 import { ApproveAndWithdrawPayload, Pool } from "app/containers/Rewards/types";
 import { zeroString } from "./constants";
+import { BigNumber } from "ethers";
 
 // The initial state of the LiquidityPage container
 export const initialState: ContainerState = {
@@ -26,6 +30,7 @@ export const initialState: ContainerState = {
   depositRaw: false,
   depositTransactionData: undefined,
   withdrawReviewData: undefined,
+  withdrawBonus: undefined,
 };
 
 const liquidityPageSlice = createSlice({
@@ -87,33 +92,19 @@ const liquidityPageSlice = createSlice({
     },
     setSelectedTokenToWithdraw(
       state,
-      action: PayloadAction<"combo" | TokenSymbols>
+      action: PayloadAction<SelectTokenToWithdrawPayload>
     ) {
-      const amounts = { ...state.withdrawTokenAmounts };
-      const tmp = {};
-      for (const key in amounts) {
-        if (Object.prototype.hasOwnProperty.call(amounts, key)) {
-          tmp[key] = zeroString;
-        }
-      }
-      state.withdrawTokenAmounts = tmp;
-      state.withdrawPercentage = 0;
-      state.selectedTokenToWithdraw = action.payload;
+      state.selectedTokenToWithdraw = action.payload.symbol;
     },
     setAmountForTokenToWithdraw(
       state,
-      action: PayloadAction<{ symbol: TokenSymbols; value: string }>
+      action: PayloadAction<WithdrawTokenAmountChangePayload>
+    ) {},
+    setTokenAmountsToWithdraw(
+      state,
+      action: PayloadAction<LiquidityPageState["withdrawTokenAmounts"]>
     ) {
-      state.withdrawPercentage = 0;
-      state.selectedTokenToWithdraw = action.payload.symbol;
-      const amounts = { ...state.withdrawTokenAmounts };
-      const { symbol, value } = action.payload;
-      if (!isNaN(parseFloat(value))) {
-        amounts[symbol] = value;
-      } else {
-        amounts[symbol] = zeroString;
-      }
-      state.withdrawTokenAmounts = amounts;
+      state.withdrawTokenAmounts = { ...action.payload };
     },
     setDepositTransactionData(
       state,
@@ -129,6 +120,9 @@ const liquidityPageSlice = createSlice({
     },
     buildTransactionData() {},
     buildWithdrawReviewData() {},
+    setWithdrawBonus(state, action: PayloadAction<BigNumber | undefined>) {
+      state.withdrawBonus = action.payload;
+    },
   },
 });
 

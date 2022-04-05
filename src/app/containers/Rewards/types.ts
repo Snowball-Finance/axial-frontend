@@ -93,7 +93,7 @@ export enum WithdrawType {
 export interface ApproveAndWithdrawPayload {
   poolKey: Pools;
   masterchefwithdraw?: boolean;
-  type: WithdrawType;
+  type: WithdrawType | TokenSymbols;
   lpTokenAmountToSpend: BigNumber;
   tokenAmounts: { [K in TokenSymbols]?: BigNumber };
 }

@@ -111,7 +111,9 @@ export const Review: FC = () => {
                   </TokenIconContainer>
 
                   <Grid item xs zeroMinWidth>
-                    <TokenTitle variant="h6" noWrap align="right">{token.value}</TokenTitle>
+                    <TokenTitle variant="h6" noWrap align="right">
+                      {token.value}
+                    </TokenTitle>
                   </Grid>
                 </Grid>
               </Grid>
@@ -156,8 +158,8 @@ const ReviewContainer = styled(Grid)({
   minHeight: 500,
 
   [mobile]: {
-    maxWidth: "80vw"
-  }
+    maxWidth: "80vw",
+  },
 });
 
 const TokenContainer = styled("div")({
@@ -170,7 +172,7 @@ const TokenContainer = styled("div")({
 
   [mobile]: {
     maxWidth: "100%",
-  }
+  },
 });
 
 const TokenIconContainer = styled(Grid)({
