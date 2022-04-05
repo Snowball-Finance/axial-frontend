@@ -23,10 +23,13 @@ export const Input: FC = () => {
           selectedToAmount
         )}
       </ToInputText>
-      <EquivalentInUSD
+     {isGettingBestSwapPath?
+      <ToTokenTextLoader width={100} height={24} />
+      :
+     <EquivalentInUSD
         amount={selectedToAmount}
         symbol={selectedToToken?.symbol}
-      />
+      />}
     </Wrapper>
   );
 };
