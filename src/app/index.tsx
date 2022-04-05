@@ -107,7 +107,7 @@ export function App() {
       <Rewards pools={pools} />
       <Swap
         swapRouterABI={AGGREGATOR_ABI}
-        swapRouterAddress={"0x05F2F176b491ec11555cbE45B99748F999E13933"}
+        swapRouterAddress={process.env.REACT_APP_SWAP_ROUTER_ADDRESS || ""}
         tokens={tokens as { [K in TokenSymbols]: Token }}
       />
       <Layout>
