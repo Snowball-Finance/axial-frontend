@@ -40,10 +40,11 @@ const Wrapper = styled(Grid)({
 const CurrencyInputField = styled(SnowInput)({
   ".MuiInputBase-root": {
     color: CssVariables.white,
-    fontSize: "20px",
-    input: {
-      padding: 0,
-    },
+    fontSize: "26px",
+  },
+
+  ".MuiOutlinedInput-input": {
+    padding: 0,
   },
 
   ".MuiOutlinedInput-notchedOutline": {

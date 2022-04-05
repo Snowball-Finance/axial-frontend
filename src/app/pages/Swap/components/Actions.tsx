@@ -28,7 +28,8 @@ export const Actions: FC = () => {
   const selectedFromToken = useSelector(SwapPageSelectors.selectedFromToken);
   const selectedToToken = useSelector(SwapPageSelectors.selectedToToken);
   const selectedFromAmount = useSelector(SwapPageSelectors.selectedFromAmount);
-  const bestPath = useSelector(SwapSelectors.selectBestPath);
+  const optimalPath = useSelector(SwapSelectors.selectBestPath);
+  const bestPath = optimalPath?.bestPath;
   const errorMessage = useSelector(SwapPageSelectors.errorMessage);
   const isGettingBestSwapPath = useSelector(
     SwapSelectors.selectIsGettingBestPath

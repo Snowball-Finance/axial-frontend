@@ -35,7 +35,8 @@ function* validation() {
 export function* buildReviewSwap() {
   const fromToken = yield select(SwapPageDomains.fromToken);
   const toToken = yield select(SwapPageDomains.toToken);
-  const bestPath = yield select(SwapDomains.bestPath);
+  const optimalPath = yield select(SwapDomains.bestPath);
+  const bestPath = optimalPath?.bestPath;
   const tokenPricesUSD = yield select(GlobalDomains.tokenPricesUSD);
 
   const toValueUSD = toToken?.symbol

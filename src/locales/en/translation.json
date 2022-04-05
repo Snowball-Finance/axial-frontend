@@ -123,21 +123,21 @@
       "TransactionStatus": "Transaction Status",
       "InfoDescription": "Output is estimated. if the price changes by more than the max slippage your transaction will revert",
       "HighPriceImpact": "There is a high Price Impact on this transaction due either to the transaction's size or insufficient liquidity, which will result in a loss of funds. Please confirm that you understand before submitting your transaction.",
-      "Understand": "I understand"
+      "Understand": "I confirm"
     },
     "FromToken": {
       "From": "From",
       "Max": "Max",
-      "WalletBalance": "wallet balance"
+      "WalletBalance": " Wallet balance"
     },
     "ToToken": {
       "To": "To",
-      "WalletBalance": "wallet balance"
+      "WalletBalance": " Wallet balance"
     },
     "AdvanceOption": {
-      "Title": "advance options",
-      "InfiniteApproval": "approve permanently",
-      "MaxSlippage": "max slippage"
+      "Title": "Advanced options",
+      "InfiniteApproval": "Infinite approval",
+      "MaxSlippage": "Max slippage:"
     },
     "TokenSearch": {
       "SelectToken": "Search token",
@@ -149,8 +149,12 @@
       "PriceImpact": "Price Impact",
       "Path": "Path",
       "Gas": "Gas",
-      "TxnDeadline": "txn deadline",
-      "MaxSlippage": "max slippage"
+      "TxnDeadline": "Txn Deadline",
+      "MaxSlippage": "Max Slippage"
+    },
+    "Transaction": {
+      "TransactionSubmited": "Transaction Submited",
+      "ViewOnSnowtrace": "View on the Snowtrace Explorer"
     }
   },
   "RisksPage": {

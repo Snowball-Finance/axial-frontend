@@ -27,9 +27,8 @@ export const ReviewConfirmationModal: FC = () => {
   const handleClose = () => {
     if (transactionSuccessId) {
       dispatch(GlobalActions.setTransactionSuccessId(undefined));
-    } else {
-      dispatch(SwapPageActions.setReviewSwapConfirmationData(undefined));
     }
+    dispatch(SwapPageActions.setReviewSwapConfirmationData(undefined));
   };
 
   const modalTitle = transactionSuccessId

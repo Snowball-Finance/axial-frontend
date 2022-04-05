@@ -23,7 +23,8 @@ export const PriceImpact: FC = () => {
   const isGettingBestSwapPath = useSelector(
     SwapSelectors.selectIsGettingBestPath
   );
-  const bestPath = useSelector(SwapSelectors.selectBestPath);
+  const optimalPath = useSelector(SwapSelectors.selectBestPath);
+  const bestPath = optimalPath?.bestPath;
 
   const getPriceImpact = () => {
     const tokenInputAmount = bestPath?.amounts[0] || Zero;
@@ -47,20 +48,32 @@ export const PriceImpact: FC = () => {
       : Zero;
 
     const priceImpact = calculatePriceImpact(fromValueUSD, toValueUSD);
-    return formatBNToPercentString(priceImpact, 18);
+    return priceImpact;
   };
+
+  const priceImpact = getPriceImpact();
+
+  const color = priceImpact.eq(0)
+    ? CssVariables.commonTextColor
+    : priceImpact.gt(0)
+    ? CssVariables.green
+    : CssVariables.red;
 
   return (
     <Grid container justifyContent="space-between">
       <Grid item>
-        <Text variant="body2">
+        <Text variant="body1">
           {t(translations.SwapPage.BestPath.PriceImpact())}
         </Text>
       </Grid>
       <Grid item>
-        <Text variant="body2">
-          {isGettingBestSwapPath ? <TextLoader width={50} /> : getPriceImpact()}
-        </Text>
+        <Typography variant="body2" color={color}>
+          {isGettingBestSwapPath ? (
+            <TextLoader width={50} />
+          ) : (
+            formatBNToPercentString(priceImpact, 18)
+          )}
+        </Typography>
       </Grid>
     </Grid>
   );

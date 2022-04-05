@@ -16,7 +16,8 @@ export const Route: FC = () => {
   const isGettingBestSwapPath = useSelector(
     SwapSelectors.selectIsGettingBestPath
   );
-  const bestPath = useSelector(SwapSelectors.selectBestPath);
+  const optimalPath = useSelector(SwapSelectors.selectBestPath);
+  const bestPath = optimalPath?.bestPath;
 
   const getBestPathWithName = () => {
     const bestPathNames: Token[] = [];
@@ -31,7 +32,7 @@ export const Route: FC = () => {
   return (
     <Grid container justifyContent="space-between">
       <Grid item>
-        <Text variant="body2">{t(translations.SwapPage.BestPath.Path())}</Text>
+        <Text variant="body1">{t(translations.SwapPage.BestPath.Path())}</Text>
       </Grid>
       <Grid item>
         <Text variant="body2">

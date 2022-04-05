@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 
 import { translations } from "locales/i18n";
 import { ContainedButton } from "app/components/common/buttons/containedButton";
-import { OutlinedButton } from "app/components/common/buttons/outlinedButton";
 import { SwapSelectors } from "app/containers/Swap/selectors";
 import { SwapActions } from "app/containers/Swap/slice";
 import { SwapPageSelectors } from "app/pages/Swap/selectors";
@@ -37,14 +36,14 @@ export const Actions: FC = () => {
   return (
     <Grid container spacing={1} justifyContent="center">
       <Grid item xs={6}>
-        <OutlinedButton
+        <ContainedButton
           onClick={handleApprove}
           loading={isApproving}
           disabled={isTokenApproved}
           fullWidth
         >
           {t(translations.SwapPage.ApproveButton())} {selectedFromToken?.symbol}
-        </OutlinedButton>
+        </ContainedButton>
       </Grid>
 
       <Grid item xs={6}>

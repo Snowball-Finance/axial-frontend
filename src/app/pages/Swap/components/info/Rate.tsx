@@ -20,7 +20,8 @@ export const Rate: FC = () => {
   const isGettingBestSwapPath = useSelector(
     SwapSelectors.selectIsGettingBestPath
   );
-  const bestPath = useSelector(SwapSelectors.selectBestPath);
+  const optimalPath = useSelector(SwapSelectors.selectBestPath);
+  const bestPath = optimalPath?.bestPath;
 
   const getExachangeRate = () => {
     const tokenInputAmount = bestPath?.amounts[0] || Zero;
@@ -39,7 +40,7 @@ export const Rate: FC = () => {
   return (
     <Grid container justifyContent="space-between">
       <Grid item>
-        <Text variant="body2">
+        <Text variant="body1">
           {t(translations.SwapPage.BestPath.Rate())} {selectedFromToken?.symbol}
           /{selectedToToken?.symbol}
         </Text>

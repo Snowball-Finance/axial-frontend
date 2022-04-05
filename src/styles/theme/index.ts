@@ -24,7 +24,7 @@ export const theme = createTheme({
       main: "#d20e42",
     },
     primary: {
-      main: "#60A88B",
+      main: "#d15e2c",
     },
     action: {
       disabledBackground: "#efefef",

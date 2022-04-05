@@ -23,20 +23,20 @@ export const Tokens: FC = () => {
                   container
                   spacing={1}
                   alignItems="center"
-                  justifyContent="center"
+                  justifyContent="flex-start"
                 >
                   <Grid item>
                     <TokenIcon src={token.icon} alt={`token-${token.symbol}`} />
                   </Grid>
 
                   <Grid item>
-                    <TokenTitle variant="body1">{token.symbol}</TokenTitle>
+                    <TokenTitle variant="h2">{token.symbol}</TokenTitle>
                   </Grid>
                 </Grid>
               </TokenIconContainer>
 
               <Grid item xs zeroMinWidth>
-                <TokenTitle variant="body1" noWrap align="right">
+                <TokenTitle variant="h2" noWrap align="right">
                   {token.value}
                 </TokenTitle>
 
@@ -54,13 +54,8 @@ export const Tokens: FC = () => {
 
 const TokenIconContainer = styled(Grid)({
   border: `2px solid ${CssVariables.cardBorder}`,
-  borderRadius: CssVariables.buttonBorderRadius,
-  padding: 5,
-  minWidth: 150,
-
-  [mobile]: {
-    minWidth: 100,
-  },
+  borderRadius: "20px",
+  padding: 10,
 });
 
 const TokenTitle = styled(Typography)({

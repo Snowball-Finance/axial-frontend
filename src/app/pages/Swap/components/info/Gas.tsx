@@ -15,7 +15,7 @@ export const Gas: FC = () => {
   return (
     <Grid container justifyContent="space-between">
       <Grid item>
-        <Text variant="body2">{t(translations.SwapPage.BestPath.Gas())}</Text>
+        <Text variant="body1">{t(translations.SwapPage.BestPath.Gas())}</Text>
       </Grid>
 
       <Grid item>

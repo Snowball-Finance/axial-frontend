@@ -1,12 +1,8 @@
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import { styled, Grid } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
-import { formatBNToString } from "app/containers/utils/contractUtils";
-import { Zero } from "app/containers/Rewards/constants";
 import { SwapPageSelectors } from "app/pages/Swap/selectors";
-import { SwapPageActions } from "app/pages/Swap/slice";
-import { globalSelectors } from "app/appSelectors";
 import { mobile } from "styles/media";
 import { Actions } from "./components/Actions";
 import { TokenInfo } from "./components/TokenInfo";
@@ -15,30 +11,9 @@ import { Tokens } from "./components/Tokens";
 import { HighPriceImpact } from "./components/HighPriceImpact";
 
 export const ReviewModal: FC = () => {
-  const selectedToToken = useSelector(SwapPageSelectors.selectedToToken);
-  const tokens = useSelector(globalSelectors.tokens);
   const reviewSwapConfirmationData = useSelector(
     SwapPageSelectors.reviewSwapConfirmationData
   );
-
-  const dispatch = useDispatch();
-
-  // Logic for closing the modal, when toToken balance got increase
-  useEffect(() => {
-    if (
-      selectedToToken &&
-      +formatBNToString(
-        tokens?.[selectedToToken.symbol]?.balance || Zero,
-        selectedToToken?.decimals || 18
-      ) >
-        +formatBNToString(
-          selectedToToken?.balance || Zero,
-          selectedToToken?.decimals || 18
-        )
-    ) {
-      dispatch(SwapPageActions.confirmSwap());
-    }
-  }, [tokens, selectedToToken]);
 
   return (
     <ReviewContainer container spacing={2}>
@@ -70,6 +45,7 @@ export const ReviewModal: FC = () => {
 const ReviewContainer = styled(Grid)({
   maxWidth: 600,
   minHeight: 500,
+  marginTop: 10,
 
   [mobile]: {
     maxWidth: "80vw",
