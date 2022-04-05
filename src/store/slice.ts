@@ -7,6 +7,7 @@ import {
   slippageCustomStateCreator,
   Slippages,
 } from "utils/slippage";
+import { TokensToVerifyPayload } from "utils/tokenVerifier";
 import { useInjectReducer, useInjectSaga } from "./redux-injectors";
 import { globalSaga } from "./saga";
 import { LocalStorageKeys, storage } from "./storage";
@@ -81,6 +82,11 @@ const globalSlice = createSlice({
       state.selectedSlippage = Slippages.Custom;
       state.customSlippage = slippageCustomStateCreator(action.payload);
     },
+    checkIfListOfTokensAreVerified(
+      state,
+      action: PayloadAction<TokensToVerifyPayload>
+    ) {},
+    approveListOfTokens(state, action: PayloadAction<TokensToVerifyPayload>) {},
   },
 });
 
