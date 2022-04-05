@@ -25,6 +25,7 @@ import { floatToBN } from "common/format";
 import { Slippage } from "../components/Slippage";
 import { Deadline } from "./components/Deadline";
 import { GasPrice } from "./components/GasPrice";
+import { TokenSymbols } from "app/containers/Swap/types";
 
 export const WithdrawModal: FC = () => {
   const { t } = useTranslation();
@@ -36,7 +37,7 @@ export const WithdrawModal: FC = () => {
   );
   const tokens = useSelector(globalSelectors.tokens);
   const withdrawTokens = useSelector(
-    LiquidityPageSelectors.withdrawTokenToShow()
+    LiquidityPageSelectors.withdrawTokenAmounts
   );
 
   const handleCancelClick = () => {
@@ -45,19 +46,30 @@ export const WithdrawModal: FC = () => {
 
   const handleWithdrawClick = () => {
     if (selectedPool && tokens) {
-      const tmpAmounts = {};
+      const tokenAmounts = {};
       for (let k in withdrawTokens) {
         const v = withdrawTokens[k];
-        const num = Number(v);
-        const toSend = floatToBN(num, tokens[k].decimals);
-        tmpAmounts[k] = toSend;
+        if (Number(v) > 0) {
+          const num = Number(v);
+          const toSend = floatToBN(num, tokens[k].decimals);
+          tokenAmounts[k] = toSend;
+        }
       }
-      //TODO: fix this data
+
+      let type: WithdrawType | TokenSymbols = WithdrawType.IMBALANCE;
+      if (Object.keys(tokenAmounts).length === 1) {
+        type = Object.keys(tokenAmounts)[0] as TokenSymbols;
+      } else if (
+        Object.keys(tokenAmounts).length !== selectedPool.poolTokens.length
+      ) {
+        type = WithdrawType.IMBALANCE;
+      }
+
       const dataToSend: ApproveAndWithdrawPayload = {
         poolKey: selectedPool.key,
-        type: WithdrawType.IMBALANCE,
+        type,
         lpTokenAmountToSpend: BigNumber.from(0),
-        tokenAmounts: tmpAmounts,
+        tokenAmounts,
       };
       dispatch(LiquidityPageActions.withdraw(dataToSend));
     }

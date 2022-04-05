@@ -1,6 +1,6 @@
 import { Slider, styled } from "@mui/material";
-import { globalSelectors } from "app/appSelectors";
 import { Web3Selectors } from "app/containers/BlockChain/Web3/selectors";
+import { RewardsSelectors } from "app/containers/Rewards/selectors";
 import { RewardsPageSelectors } from "app/pages/Rewards/selectors";
 import { RewardsPageActions } from "app/pages/Rewards/slice";
 import { BNToFloat } from "common/format";
@@ -11,12 +11,12 @@ export const RewardsWithdrawSlider = () => {
   const dispatch = useDispatch();
   const sliderValue = useSelector(RewardsPageSelectors.withdrawPercentage);
   const pool = useSelector(RewardsPageSelectors.selectedPool);
-  const tokens = useSelector(globalSelectors.tokens);
+  const tokens = useSelector(RewardsSelectors.masterChefBalances);
   const account = useSelector(Web3Selectors.selectAccount);
 
   const handleSliderChange = (e: number) => {
     if (tokens && pool) {
-      const balance = tokens[pool.lpToken.symbol].balance;
+      const balance = tokens[pool.lpToken.symbol].userInfo.amount;
 
       dispatch(
         RewardsPageActions.setWithdrawPercentage({

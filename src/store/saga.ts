@@ -32,7 +32,11 @@ interface CoinGeckoResponse {
 
 export function* getTokenPricesUSD() {
   const tokens = yield select(GlobalDomains.tokens);
-  const tokenIds = { ...otherTokens };
+  const allTokensCoinGeckoKeys: any = {};
+  Object.values(tokens).forEach((token: any) => {
+    allTokensCoinGeckoKeys[token.symbol] = token.geckoId;
+  });
+  const tokenIds = { ...otherTokens, ...allTokensCoinGeckoKeys };
   for (const key in tokens) {
     if (Object.prototype.hasOwnProperty.call(tokens, key)) {
       const element: Token = tokens[key];
@@ -48,6 +52,7 @@ export function* getTokenPricesUSD() {
       getTokenPricesAPI,
       Object.values(tokenIds)
     );
+    console.log(response);
     for (const responseGeckoId in response) {
       if (Object.prototype.hasOwnProperty.call(response, responseGeckoId)) {
         const price = response[responseGeckoId].usd;

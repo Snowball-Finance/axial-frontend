@@ -1,26 +1,28 @@
-html{
-  font-family:'IBM Plex Sans', Montserrat,Rubik,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
-background: #0a0124;
+html {
+  font-family: "IBM Plex Sans", Montserrat, Rubik, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", Arial, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol";
+  background: #0a0124;
 }
-.selectPaper{
+.selectPaper {
   background: var(--paperBackground) !important;
   color: var(--commonTextColor) !important;
   border-radius: var(--paperBorderRadius) !important;
   border: 2px solid var(--primary);
 }
-.selectPaper li{
+.selectPaper li {
   font-size: 16px !important;
-  font-family: 'IBM Plex Sans'!important;
+  font-family: "IBM Plex Sans" !important;
 }
 
-:root{
-  --white:white;
-  --black:black;
-  --primary: #60A88B;
-  --secondary:#EAAB50;
-  --actionColor:#D15E2C;
-  --warning:#ebd033;
-  --mainBackgroundColor:#31386B;
+:root {
+  --white: white;
+  --black: black;
+  --primary: #60a88b;
+  --secondary: #eaab50;
+  --actionColor: #d15e2c;
+  --warning: #ebd033;
+  --mainBackgroundColor: #31386b;
   --navigationTabBackground: #f5f5f5;
   --lightTint: #f7f7f7;
   --activeNAvigationTabBackground: #c8e6fe;
@@ -30,10 +32,10 @@ background: #0a0124;
   --dark: #363636;
   --commonTextColor: #f7f7f7;
   --grey: #8e8e8e;
-  --green: #60A88B;
+  --green: #60a88b;
   --mildGreen: rgba(40, 199, 111, 0.12);
-  --opaqueGreen:rgba(96, 168, 139, 0.5);
-  --red:#D12E38;
+  --opaqueGreen: rgba(96, 168, 139, 0.5);
+  --red: #d12e38;
   --mildRed: rgba(223, 95, 103, 0.12);
   --mildYellow: rgba(251, 139, 36, 0.2);
   --lightGrey: #e5e5e5;
@@ -43,17 +45,18 @@ background: #0a0124;
   --paperBorderRadius: 8px;
   --gridInputBorder: #dbdbdb;
   --ctaBlue: #28a2ff;
-  --paperBackground:#201F55;
-  --bodyTextColor:#E5E6E7;
-  --buttonBorderRadius:60px;
-  --primaryDisabled: #588A89;
-  --chipBackgroundColor:#3a2e6b;
-  --poolCardBackground: #00103B;
-  --cardBorder: #4D2F43;
-  --swapInputbackground: #06041D;
-  --paperBorderRadius:12px;
-  --swapInputbackground: #06041D;
+  --paperBackground: #201f55;
+  --bodyTextColor: #e5e6e7;
+  --buttonBorderRadius: 60px;
+  --primaryDisabled: #588a89;
+  --chipBackgroundColor: #3a2e6b;
+  --poolCardBackground: #00103b;
+  --cardBorder: #4d2f43;
+  --swapInputbackground: #06041d;
+  --paperBorderRadius: 12px;
   --navigationDrawerBackground: rgba(6, 4, 29, 0.9);
+  --modalBackground: rgba(0, 16, 59, 0.6);
+  --modalOverlayBackground: rgba(6, 4, 29, 0.7);
 
   /* Radio */
   --radioWidth: 24px;

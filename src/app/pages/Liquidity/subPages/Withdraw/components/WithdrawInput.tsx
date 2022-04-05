@@ -15,6 +15,8 @@ import { LiquidityPageActions } from "app/pages/Liquidity/slice";
 import { WithdrawButton } from "./withdrawButton";
 import { PercentageText } from "./percentageText";
 import { mobile } from "styles/media";
+import { BonusPercent } from "./bonusPercent";
+import { BonusText } from "./bonusText";
 
 type TParams = { poolIndex: string };
 
@@ -66,12 +68,14 @@ export const WithdrawInput: FC = () => {
           <Grid container justifyContent="space-between">
             <Grid item>
               <SubtitleText variant="body2">
-                {t(translations.LiquidityPage.Withdraw.Bonus())} (%):
+                <BonusText /> (%):
               </SubtitleText>
             </Grid>
 
             <Grid item>
-              <SubtitleText variant="body2">0%</SubtitleText>
+              <SubtitleText variant="body2">
+                <BonusPercent />
+              </SubtitleText>
             </Grid>
           </Grid>
         </Grid>
