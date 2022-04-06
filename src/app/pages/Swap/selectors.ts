@@ -25,8 +25,12 @@ export const SwapPageDomains = {
     state.swapPage?.toToken || initialState.toToken,
   searchValue: (state: RootState) =>
     state.swapPage?.searchValue || initialState.searchValue,
-  isSwapModalOpen: (state: RootState) =>
-    state.swapPage?.isSwapModalOpen || initialState.isSwapModalOpen,
+  reviewSwapConfirmationData: (state: RootState) =>
+    state.swapPage?.reviewSwapConfirmationData ||
+    initialState.reviewSwapConfirmationData,
+  hasConfirmedHighPriceImpact: (state: RootState) =>
+    state.swapPage?.hasConfirmedHighPriceImpact ||
+    initialState.hasConfirmedHighPriceImpact,
 };
 
 export const SwapPageSelectors = {
@@ -163,8 +167,12 @@ export const SwapPageSelectors = {
     SwapPageDomains.searchValue,
     (searchValue) => searchValue
   ),
-  isModalOpen: createSelector(
-    SwapPageDomains.isSwapModalOpen,
-    (isSwapModalOpen) => isSwapModalOpen
+  reviewSwapConfirmationData: createSelector(
+    SwapPageDomains.reviewSwapConfirmationData,
+    (reviewSwapConfirmationData) => reviewSwapConfirmationData
+  ),
+  hasConfirmedHighPriceImpact: createSelector(
+    SwapPageDomains.hasConfirmedHighPriceImpact,
+    (hasConfirmedHighPriceImpact) => hasConfirmedHighPriceImpact
   ),
 };

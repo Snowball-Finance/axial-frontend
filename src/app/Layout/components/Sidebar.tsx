@@ -85,7 +85,7 @@ const List = styled("ul")({
   minWidth: "355px",
   ".active": {
     h1: {
-      color: CssVariables.primary,
+      color: CssVariables.green,
     },
   },
 });

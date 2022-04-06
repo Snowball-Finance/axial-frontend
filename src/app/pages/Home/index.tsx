@@ -24,7 +24,8 @@ export const HomePage = () => {
     SwapSelectors.selectIsGettingBestPath
   );
   const isSwapping = useSelector(SwapSelectors.selectIsSwapping);
-  const bestPath = useSelector(SwapSelectors.selectBestPath);
+  const optimalPath = useSelector(SwapSelectors.selectBestPath);
+  const bestPath = optimalPath?.bestPath;
 
   // const handleGetBestSwapPathClick = () => {
   //   dispatch(

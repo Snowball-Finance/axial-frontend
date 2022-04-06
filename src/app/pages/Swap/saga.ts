@@ -4,11 +4,19 @@ import { BigNumber } from "ethers";
 import { GlobalDomains } from "app/appSelectors";
 import { BNToString } from "common/format";
 import { SwapPageActions } from "./slice";
-import { TokenChangePayload } from "./types";
+import { TokenChangePayload, TokensData } from "./types";
 import { SwapPageDomains } from "./selectors";
-import { formatBNToString } from "app/containers/utils/contractUtils";
+import {
+  calculatePrice,
+  formatBNToString,
+} from "app/containers/utils/contractUtils";
 import { Zero } from "app/containers/Rewards/constants";
 import { SwapActions } from "app/containers/Swap/slice";
+import { SwapDomains } from "app/containers/Swap/selectors";
+import {
+  calculatePriceImpact,
+  isHighPriceImpact,
+} from "app/containers/Swap/utils/priceImpact";
 
 function* validation() {
   const fromToken = yield select(SwapPageDomains.fromToken);
@@ -22,6 +30,62 @@ function* validation() {
   } else {
     yield put(SwapPageActions.setFromTokenError(""));
   }
+}
+
+export function* buildReviewSwap() {
+  const fromToken = yield select(SwapPageDomains.fromToken);
+  const toToken = yield select(SwapPageDomains.toToken);
+  const optimalPath = yield select(SwapDomains.bestPath);
+  const bestPath = optimalPath?.bestPath;
+  const tokenPricesUSD = yield select(GlobalDomains.tokenPricesUSD);
+
+  const toValueUSD = toToken?.symbol
+    ? calculatePrice(
+        bestPath?.amounts[bestPath?.amounts.length - 1],
+        tokenPricesUSD?.[toToken.symbol],
+        toToken.decimals
+      )
+    : Zero;
+
+  const fromValueUSD = fromToken?.symbol
+    ? calculatePrice(
+        bestPath?.amounts[0],
+        tokenPricesUSD?.[fromToken.symbol],
+        fromToken.decimals
+      )
+    : Zero;
+
+  const tokenInfo: TokensData[] = [
+    {
+      symbol: fromToken?.symbol,
+      icon: fromToken?.logo,
+      value: formatBNToString(
+        bestPath?.amounts[0] || Zero,
+        fromToken?.decimals || 18
+      ),
+      valueUSD: formatBNToString(fromValueUSD, 18),
+    },
+    {
+      symbol: toToken?.symbol,
+      icon: toToken?.logo,
+      value: formatBNToString(
+        bestPath?.amounts[bestPath?.amounts.length - 1] || Zero,
+        toToken?.decimals || 18
+      ),
+      valueUSD: formatBNToString(toValueUSD, 18),
+    },
+  ];
+
+  const priceImpact = calculatePriceImpact(fromValueUSD, toValueUSD);
+  const isHighPriceImpactTxn = isHighPriceImpact(priceImpact);
+
+  yield put(SwapActions.tokenApprovalStatus());
+  yield put(
+    SwapPageActions.setReviewSwapConfirmationData({
+      tokens: tokenInfo,
+      isHighPriceImpactTxn,
+    })
+  );
 }
 
 export function* tokenChange(action: {
@@ -81,7 +145,7 @@ export function* confirmSwap() {
   yield put(SwapPageActions.setFromToken(undefined));
   yield put(SwapPageActions.setToToken(undefined));
   yield put(SwapActions.setBestPath(undefined));
-  yield put(SwapPageActions.setSwapModalOpen(false));
+  yield put(SwapPageActions.setReviewSwapConfirmationData(undefined));
 }
 
 export function* swapPageSaga() {
@@ -90,4 +154,5 @@ export function* swapPageSaga() {
   yield takeLatest(SwapPageActions.amountChange.type, amountChange);
   yield takeLatest(SwapPageActions.maxAmountSelection.type, maxAmountSelection);
   yield takeLatest(SwapPageActions.confirmSwap.type, confirmSwap);
+  yield takeLatest(SwapPageActions.buildReviewSwap.type, buildReviewSwap);
 }

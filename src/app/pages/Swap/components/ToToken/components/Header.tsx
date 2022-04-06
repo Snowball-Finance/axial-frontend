@@ -10,7 +10,7 @@ export const Header: FC = () => {
 
   return (
     <Grid item>
-      <HeaderText variant="h5">
+      <HeaderText variant="h2">
         {t(translations.SwapPage.ToToken.To())}
       </HeaderText>
     </Grid>
@@ -19,4 +19,5 @@ export const Header: FC = () => {
 
 const HeaderText = styled(Typography)({
   color: CssVariables.white,
+  textTransform: "uppercase",
 });

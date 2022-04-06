@@ -18,7 +18,7 @@ html {
 :root {
   --white: white;
   --black: black;
-  --primary: #60a88b;
+  --primary: #d15e2c;
   --secondary: #eaab50;
   --actionColor: #d15e2c;
   --warning: #ebd033;
@@ -48,7 +48,7 @@ html {
   --paperBackground: #201f55;
   --bodyTextColor: #e5e6e7;
   --buttonBorderRadius: 60px;
-  --primaryDisabled: #588a89;
+  --primaryDisabled: rgba(209, 94, 44, 0.25);
   --chipBackgroundColor: #3a2e6b;
   --poolCardBackground: #00103b;
   --cardBorder: #4d2f43;

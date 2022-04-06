@@ -45,7 +45,7 @@ export const SlippageSelect = () => {
               </SelectButton>
 
               <Grid item>
-                <PercentageText variant="body1">%</PercentageText>
+                <PercentageText variant="body2">%</PercentageText>
               </Grid>
             </Grid>
           </Grid>
@@ -61,7 +61,7 @@ export const SlippageSelect = () => {
                 0.1
               </SelectButton>
               <Grid item>
-                <PercentageText variant="body1">%</PercentageText>
+                <PercentageText variant="body2">%</PercentageText>
               </Grid>
             </Grid>
           </Grid>
@@ -78,7 +78,7 @@ export const SlippageSelect = () => {
                 />
               </Grid>
               <Grid item>
-                <PercentageText variant="body1">%</PercentageText>
+                <PercentageText variant="body2">%</PercentageText>
               </Grid>
             </Grid>
           </Grid>
@@ -91,6 +91,7 @@ export const SlippageSelect = () => {
 const StyledContainer = styled(Grid)({
   flexDirection: "row",
   alignItems: "center",
+  justifyContent: "space-between",
 
   [mobile]: {
     alignItems: "flex-start",
@@ -104,7 +105,7 @@ const StyledInputContainer = styled(Grid)({
 });
 
 const PercentageText = styled(Typography)({
-  color: CssVariables.primary,
+  color: CssVariables.green,
   fontSize: "20px",
 });
 
@@ -118,11 +119,11 @@ const InputField = styled(TextField)<{ isselected: "true" | undefined }>(
     },
 
     ".MuiOutlinedInput-notchedOutline": {
-      border: `2px solid ${CssVariables.primary} !important`,
+      border: `2px solid ${CssVariables.green} !important`,
       borderRadius: CssVariables.buttonBorderRadius,
     },
     ...(isselected && {
-      backgroundColor: CssVariables.primary,
+      backgroundColor: CssVariables.green,
       borderRadius: CssVariables.buttonBorderRadius,
     }),
   })
@@ -138,10 +139,10 @@ const SelectButton = styled("div")<{ isselected: string | undefined }>(
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    border: `2px solid ${CssVariables.primary}`,
+    border: `2px solid ${CssVariables.green}`,
     borderRadius: CssVariables.buttonBorderRadius,
     backgroundColor: isselected
-      ? CssVariables.primary
+      ? CssVariables.green
       : CssVariables.swapInputbackground,
   })
 );

@@ -16,7 +16,7 @@ export const Input: FC = () => {
 
   return (
     <Wrapper item xs={6}>
-      <ToInputText variant="h6">
+      <ToInputText variant="h2">
         {isGettingBestSwapPath ? (
           <ToTokenTextLoader width={100} />
         ) : (
@@ -42,7 +42,6 @@ const Wrapper = styled(Grid)({
 
 const ToInputText = styled(Typography)({
   color: CssVariables.white,
-  fontSize: "20px",
 });
 
 const ToTokenTextLoader = styled(Skeleton)({

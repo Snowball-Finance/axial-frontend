@@ -15,6 +15,10 @@ export const SwapDomains = {
   bestPath: (state: RootState) => state.swap?.bestPath || initialState.bestPath,
   isSwapping: (state: RootState) =>
     state.swap?.isSwapping || initialState.isSwapping,
+  isApproving: (state: RootState) =>
+    state.swap?.isApproving || initialState.isApproving,
+  isTokenApproved: (state: RootState) =>
+    state.swap?.isTokenApproved || initialState.isTokenApproved,
 };
 
 export const SwapSelectors = {
@@ -42,5 +46,13 @@ export const SwapSelectors = {
   selectSwapTokens: createSelector(
     [SwapDomains.swapTokens],
     (tokens) => tokens
+  ),
+  selectIsApproving: createSelector(
+    [SwapDomains.isApproving],
+    (isApproving) => isApproving
+  ),
+  selectIsTokenApproved: createSelector(
+    [SwapDomains.isTokenApproved],
+    (isTokenApproved) => isTokenApproved
   ),
 };
