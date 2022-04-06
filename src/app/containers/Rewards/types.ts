@@ -90,12 +90,13 @@ export enum WithdrawType {
   ALL = "ALL",
   IMBALANCE = "IMBALANCE",
 }
+export type TokenAmounts = { [K in TokenSymbols]?: BigNumber };
 export interface ApproveAndWithdrawPayload {
   poolKey: Pools;
   masterchefwithdraw?: boolean;
   type: WithdrawType | TokenSymbols;
   lpTokenAmountToSpend: BigNumber;
-  tokenAmounts: { [K in TokenSymbols]?: BigNumber };
+  tokenAmounts: TokenAmounts;
 }
 
 export interface TokenShareType {

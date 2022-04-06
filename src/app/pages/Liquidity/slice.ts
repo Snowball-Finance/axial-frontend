@@ -10,12 +10,12 @@ import {
 import { createSlice } from "store/toolkit";
 import { useInjectReducer, useInjectSaga } from "store/redux-injectors";
 
-import { liquidityPageSaga } from "./saga";
 import { PayloadAction } from "@reduxjs/toolkit";
 import { TokenSymbols } from "app/containers/Swap/types";
-import { ApproveAndWithdrawPayload, Pool } from "app/containers/Rewards/types";
+import { Pool } from "app/containers/Rewards/types";
 import { zeroString } from "./constants";
 import { BigNumber } from "ethers";
+import { liquidityPageSaga } from "./saga";
 
 // The initial state of the LiquidityPage container
 export const initialState: ContainerState = {
@@ -90,7 +90,7 @@ const liquidityPageSlice = createSlice({
       state.depositRaw = action.payload;
     },
     deposit() {},
-    withdraw(state, action: PayloadAction<ApproveAndWithdrawPayload>) {},
+    withdraw(state, action: PayloadAction<void>) {},
     setWithdrawPercentage(state, action: PayloadAction<number>) {
       state.withdrawPercentage = action.payload;
     },
@@ -138,6 +138,8 @@ const liquidityPageSlice = createSlice({
     setIsCheckingForApproval(state, action: PayloadAction<boolean>) {
       state.isCheckingForApproval = action.payload;
     },
+    checkForWithdrawApproval(state, action: PayloadAction<void>) {},
+    requestWithdrawApproval(state, action: PayloadAction<void>) {},
   },
 });
 

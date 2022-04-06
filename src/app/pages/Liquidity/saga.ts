@@ -8,11 +8,15 @@ import {
   ApproveAndWithdrawPayload,
   Pool,
   PoolData,
+  WithdrawType,
 } from "app/containers/Rewards/types";
 import { BNToFloat, floatToBN } from "common/format";
 import { LiquidityPageDomains, LiquidityPageSelectors } from "./selectors";
 import { LiquidityPageActions } from "./slice";
-import { SwapFlashLoanNoWithdrawFee } from "abi/ethers-contracts";
+import {
+  LpTokenUnguarded,
+  SwapFlashLoanNoWithdrawFee,
+} from "abi/ethers-contracts";
 import {
   getContract,
   getProviderOrSigner,
@@ -33,7 +37,7 @@ import {
 } from "app/containers/Rewards/utils/deadline";
 import { zeroString } from "./constants";
 import { add, divide, multiply } from "precise-math";
-import { parseUnits } from "ethers/lib/utils";
+import { formatUnits, parseUnits } from "ethers/lib/utils";
 import { RewardsDomains } from "app/containers/Rewards/selectors";
 import { calculatePriceImpact } from "app/containers/Swap/utils/priceImpact";
 import {
@@ -41,6 +45,9 @@ import {
   checkIfTokensAreVerified,
   TokenToVerify,
 } from "utils/tokenVerifier";
+import LPTOKEN_UNGUARDED_ABI from "abi/lpTokenUnguarded.json";
+import { addSlippage } from "utils/slippage";
+import { withdrawType } from "./utils/withdrawType";
 
 export function* buildTransactionData() {
   const depositTokenAmounts = yield select(
@@ -174,13 +181,41 @@ export function* deposit() {
   yield put(LiquidityPageActions.setDepositTransactionData(undefined));
 }
 
-export function* withdraw(action: {
-  type: string;
-  payload: ApproveAndWithdrawPayload;
-}) {
-  const { payload } = action;
+export function* withdraw() {
+  const tokens = yield select(GlobalDomains.tokens);
+  const selectedPool: Pool = yield select(LiquidityPageDomains.pool);
+  const amountsObj = yield select(LiquidityPageDomains.withdrawTokenAmounts);
+  let withdrawTokens = { ...amountsObj };
+  const selectedToken = yield select(
+    LiquidityPageDomains.selectedTokenToWithdraw
+  );
+  const lpTokenAmountToSpend = yield call(calculateLpTokenToSpend);
+
+  if (selectedPool && tokens) {
+    const tokenAmounts = {};
+    for (let k in withdrawTokens) {
+      const v = withdrawTokens[k];
+      if (Number(v) > 0) {
+        const num = Number(v);
+        const toSend = floatToBN(num, tokens[k].decimals);
+        tokenAmounts[k] = toSend;
+      }
+    }
+
+    let type = withdrawType({
+      selectedToken,
+      tokenAmounts,
+    });
+    const dataToSend: ApproveAndWithdrawPayload = {
+      poolKey: selectedPool.key,
+      type,
+      lpTokenAmountToSpend,
+      tokenAmounts,
+    };
+    yield put(RewardsActions.approveAndWithdraw(dataToSend));
+  }
+
   // console.log(payload);
-  yield put(RewardsActions.approveAndWithdraw(payload));
   // yield delay(0);
 }
 
@@ -459,6 +494,76 @@ export function* checkIsAllTokensAreApprovedForDeposit() {
   yield put(LiquidityPageActions.setIsCheckingForApproval(false));
 }
 
+function* calculateLpTokenToSpend() {
+  const tokenAmounts = yield select(LiquidityPageDomains.withdrawTokenAmounts);
+  console.log(tokenAmounts);
+  return BigNumber.from(100);
+}
+
+function* checkForWithdrawApproval(requestForApprove?: boolean) {
+  yield put(LiquidityPageActions.setTokensAreApproved(false));
+  yield put(LiquidityPageActions.setIsCheckingForApproval(true));
+  const pools = yield select(RewardsDomains.pools);
+  const selectedPool = yield select(LiquidityPageDomains.pool);
+  const library = yield select(Web3Domains.selectLibraryDomain);
+  const pool = pools[selectedPool.key];
+  const account = yield select(Web3Domains.selectAccountDomain);
+  const tokenAmounts = yield select(LiquidityPageDomains.withdrawTokenAmounts);
+  const selectedToken = yield select(
+    LiquidityPageDomains.selectedTokenToWithdraw
+  );
+  const selectedSlippage = yield select(GlobalDomains.selectedSlippage);
+  const customSlippage = yield select(GlobalDomains.customSlippage);
+
+  const lpTokenAmountToSpend = yield call(calculateLpTokenToSpend);
+
+  const lpTokenContract = getContract(
+    pool.lpToken.address,
+    LPTOKEN_UNGUARDED_ABI,
+    library,
+    account ?? undefined
+  ) as LpTokenUnguarded;
+
+  const type = withdrawType({
+    selectedToken,
+    tokenAmounts,
+  });
+
+  try {
+    const allowanceAmount =
+      type === WithdrawType.IMBALANCE
+        ? addSlippage(lpTokenAmountToSpend, selectedSlippage, customSlippage)
+        : lpTokenAmountToSpend;
+    const areVerified = yield call(
+      requestForApprove === true
+        ? checkAndApproveTokensInList
+        : checkIfTokensAreVerified,
+      {
+        tokensToVerify: [
+          {
+            amount: allowanceAmount,
+            swapAddress: pool.swapAddress || pool.address,
+            token: pool.lpToken,
+            tokenContract: lpTokenContract,
+          },
+        ],
+      }
+    );
+    console.debug(
+      `lpTokenAmountToSpend: ${formatUnits(lpTokenAmountToSpend, 18)}`
+    );
+    yield put(LiquidityPageActions.setTokensAreApproved(areVerified));
+    yield put(LiquidityPageActions.setIsCheckingForApproval(false));
+  } catch (e) {
+    yield put(LiquidityPageActions.setTokensAreApproved(false));
+    yield put(LiquidityPageActions.setIsCheckingForApproval(false));
+  }
+}
+
+function* requestWithdrawApproval() {
+  yield call(checkForWithdrawApproval, true);
+}
+
 export function* liquidityPageSaga() {
   yield takeLatest(
     LiquidityPageActions.buildTransactionData.type,
@@ -489,5 +594,13 @@ export function* liquidityPageSaga() {
   yield takeLatest(
     LiquidityPageActions.checkIsAllTokensAreApprovedForDeposit.type,
     checkIsAllTokensAreApprovedForDeposit
+  );
+  yield takeLatest(
+    LiquidityPageActions.checkForWithdrawApproval.type,
+    checkForWithdrawApproval
+  );
+  yield takeLatest(
+    LiquidityPageActions.requestWithdrawApproval.type,
+    requestWithdrawApproval
   );
 }

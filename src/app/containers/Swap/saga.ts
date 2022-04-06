@@ -93,7 +93,6 @@ export function* swap() {
     ) as AxialAggregator;
     const infiniteApproval = yield select(GlobalDomains.infiniteApproval);
     const fromTokenAddress = bestPath.path[0];
-    const toTokenAddress = bestPath.path[bestPath.path.length - 1];
     const fromTokenABI = tokensList.find(
       (token) => token.address === fromTokenAddress
     )?.ABI;

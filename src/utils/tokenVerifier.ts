@@ -12,6 +12,7 @@ export interface TokenToVerify {
   token: Token;
   amount: BigNumber;
   swapAddress: string;
+  tokenContract?: Contract;
 }
 export interface TokensToVerifyPayload {
   tokensToVerify: TokenToVerify[];
@@ -35,11 +36,13 @@ export function* checkAndApproveTokensInList(tokens: TokensToVerifyPayload) {
 
   try {
     for (const element of tokensToVerify) {
-      const tokenContract = new Contract(
-        element.token.address,
-        element.token.ABI,
-        getProviderOrSigner(library, account)
-      );
+      const tokenContract =
+        element.tokenContract ||
+        new Contract(
+          element.token.address,
+          element.token.ABI,
+          getProviderOrSigner(library, account)
+        );
       yield call(
         checkAndApproveTokenForTrade,
         tokenContract as Erc20,
@@ -65,6 +68,7 @@ export function* checkAndApproveTokensInList(tokens: TokensToVerifyPayload) {
     return true;
   } catch (error) {
     console.log(error);
+    yield put(GlobalActions.emptyTokensInQueueForApproval());
     return false;
   }
 }
@@ -76,11 +80,13 @@ export function* checkIfTokensAreVerified(tokens: TokensToVerifyPayload) {
   let numberOfVerifiedTokens = 0;
   try {
     for (const element of tokensToVerify) {
-      const tokenContract = new Contract(
-        element.token.address,
-        element.token.ABI,
-        getProviderOrSigner(library, account)
-      );
+      const tokenContract =
+        element.tokenContract ||
+        new Contract(
+          element.token.address,
+          element.token.ABI,
+          getProviderOrSigner(library, account)
+        );
       const tokenName = yield call(tokenContract.name);
       const existingAllowance = yield call(
         tokenContract.allowance,

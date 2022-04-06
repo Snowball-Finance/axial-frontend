@@ -28,16 +28,13 @@ import {
 import LPTOKEN_UNGUARDED_ABI from "abi/lpTokenUnguarded.json";
 import { calculatePoolData } from "./utils/calculatePoolData";
 import { LpTokenUnguarded } from "abi/ethers-contracts/LpTokenUnguarded";
-import { GenericGasResponse } from "app/providers/gasPrice";
 import { Token, TokenSymbols } from "../Swap/types";
 import { AXIAL_MASTERCHEF_CONTRACT_ADDRESS } from "./constants";
 import MASTERCHEF_ABI from "abi/masterchef.json";
-import { parseUnits } from "@ethersproject/units";
 import checkAndApproveTokenForTrade from "../utils/checkAndApproveTokenForTrade";
 import { Erc20, SwapFlashLoanNoWithdrawFee } from "abi/ethers-contracts";
 import { addSlippage, subtractSlippage } from "../../../utils/slippage";
 import { Deadlines, formatDeadlineToNumber } from "./utils/deadline";
-import { formatUnits } from "ethers/lib/utils";
 import { GlobalActions } from "store/slice";
 import { toast } from "react-toastify";
 
@@ -340,7 +337,6 @@ export function* approveAndWithdraw(action: {
     const selectedSlippage = yield select(GlobalDomains.selectedSlippage);
     const customSlippage = yield select(GlobalDomains.customSlippage);
     const transactionDeadline = Deadlines.Twenty;
-    const infiniteApproval = yield select(GlobalDomains.infiniteApproval);
     const pools = yield select(RewardsDomains.pools);
     const library = yield select(Web3Domains.selectLibraryDomain);
     const account = yield select(Web3Domains.selectAccountDomain);
@@ -357,42 +353,13 @@ export function* approveAndWithdraw(action: {
       pool.swapABI,
       getProviderOrSigner(library, account)
     );
-    const gasPrices: GenericGasResponse = yield select(GlobalDomains.gasPrice);
-    const { gasFast } = gasPrices;
     const masterchefContract = new Contract(
       AXIAL_MASTERCHEF_CONTRACT_ADDRESS,
       MASTERCHEF_ABI,
       library?.getSigner()
     );
-    const lpTokenContract = getContract(
-      pool.lpToken.address,
-      LPTOKEN_UNGUARDED_ABI,
-      library,
-      account ?? undefined
-    ) as LpTokenUnguarded;
-    const gasPrice = parseUnits(String(gasFast) || "45", 9);
+
     if (!masterchefwithdraw) {
-      const allowanceAmount =
-        type === WithdrawType.IMBALANCE
-          ? addSlippage(lpTokenAmountToSpend, selectedSlippage, customSlippage)
-          : lpTokenAmountToSpend;
-      yield call(
-        checkAndApproveTokenForTrade,
-        lpTokenContract as LpTokenUnguarded,
-        pool.swapAddress || pool.address,
-        account,
-        allowanceAmount,
-        infiniteApproval,
-        gasPrice,
-        {
-          onTransactionError: () => {
-            throw new Error("Your transaction could not be completed");
-          },
-        }
-      );
-      console.debug(
-        `lpTokenAmountToSpend: ${formatUnits(lpTokenAmountToSpend, 18)}`
-      );
       const deadline = Math.round(
         new Date().getTime() / 1000 +
           60 * formatDeadlineToNumber(transactionDeadline)
