@@ -1,32 +1,19 @@
 import React, { FC } from "react";
 import { styled, Grid, Typography } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
-import { BigNumber } from "ethers";
+import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-
 import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { CardWrapper } from "app/components/wrappers/Card";
-import { OutlinedButton } from "app/components/common/buttons/outlinedButton";
-import { ContainedButton } from "app/components/common/buttons/containedButton";
-import { RewardsSelectors } from "app/containers/Rewards/selectors";
-import { globalSelectors } from "app/appSelectors";
-import {
-  ApproveAndWithdrawPayload,
-  WithdrawType,
-} from "app/containers/Rewards/types";
-import { LiquidityPageActions } from "../../../slice";
 import { LiquidityPageSelectors } from "../../../selectors";
 import { IconWithTitle } from "../components/IconWithTitle";
 import { Message } from "../components/Message";
 import { Rates } from "./components/Rates";
 import { Total } from "./components/Total";
-import { floatToBN } from "common/format";
 import { Slippage } from "../components/Slippage";
 import { Deadline } from "./components/Deadline";
 import { GasPrice } from "./components/GasPrice";
 import { WithdrawApproveButton } from "./components/approveButton";
-import { withdrawType } from "app/pages/Liquidity/utils/withdrawType";
 import { WithdrawButton } from "./components/withdrawButton";
 
 export const WithdrawModal: FC = () => {

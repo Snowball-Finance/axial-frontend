@@ -15,8 +15,7 @@ export const GlobalDomains = {
     state.global?.tokensInQueueToApprove || initialState.tokensInQueueToApprove,
   selectedSlippage: (state: RootState) =>
     state.global?.selectedSlippage || initialState.selectedSlippage,
-  customSlippage: (state: RootState) =>
-    state.global?.customSlippage || initialState.customSlippage,
+  customSlippage: (state: RootState) => state.global?.customSlippage,
   isAdvancedOptionsOpen: (state: RootState) =>
     state.global?.isAdvancedOptionsOpen,
 };

@@ -33,7 +33,9 @@ export const initialState: GlobalState = {
   selectedSlippage:
     storage.read(LocalStorageKeys.SELECTED_SLIPPAGE) || Slippages.OneTenth,
   customSlippage:
-    storage.read(LocalStorageKeys.ENTERED_CUSTOM_SLIPPAGE) || undefined,
+    storage.read(LocalStorageKeys.SELECTED_SLIPPAGE) !== Slippages.Custom
+      ? undefined
+      : storage.read(LocalStorageKeys.ENTERED_CUSTOM_SLIPPAGE) || undefined,
   isAdvancedOptionsOpen:
     storage.read(LocalStorageKeys.IS_ADVANCED_OPTIONS_OPEN) || false,
 };

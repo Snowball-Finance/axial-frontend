@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect } from "react";
+import React, { ReactElement } from "react";
 import { styled } from "@mui/material";
 import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";

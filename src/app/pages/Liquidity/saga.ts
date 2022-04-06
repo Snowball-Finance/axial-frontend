@@ -8,6 +8,7 @@ import {
   ApproveAndWithdrawPayload,
   Pool,
   PoolData,
+  UserShareData,
   WithdrawType,
 } from "app/containers/Rewards/types";
 import { BNToFloat, floatToBN } from "common/format";
@@ -495,9 +496,49 @@ export function* checkIsAllTokensAreApprovedForDeposit() {
 }
 
 function* calculateLpTokenToSpend() {
+  const tokens = yield select(GlobalDomains.tokens);
+  const pools = yield select(RewardsDomains.pools);
+  const selectedPool = yield select(LiquidityPageDomains.pool);
+  const pool: Pool = pools[selectedPool.key];
+  const percentage = yield select(LiquidityPageDomains.withdrawPercentage);
   const tokenAmounts = yield select(LiquidityPageDomains.withdrawTokenAmounts);
-  console.log(tokenAmounts);
-  return BigNumber.from(100);
+  const library = yield select(Web3Domains.selectLibraryDomain);
+  const account = yield select(Web3Domains.selectAccountDomain);
+  const selectedToken = yield select(
+    LiquidityPageDomains.selectedTokenToWithdraw
+  );
+  const userShareData = pool.userShareData as UserShareData;
+  const swapContract = getContract(
+    pool.swapAddress || pool.address,
+    pool.swapABI,
+    library,
+    account ?? undefined
+  );
+  const type = withdrawType({
+    selectedToken,
+    tokenAmounts,
+  });
+  let lpTokenToSpend = BigNumber.from(0);
+  if (type === WithdrawType.IMBALANCE) {
+    lpTokenToSpend = yield call(
+      swapContract.calculateTokenAmount,
+      pool.poolTokens.map(({ symbol }) => {
+        const BNAmount = floatToBN(
+          Number(tokenAmounts[symbol]),
+          tokens[symbol].decimals
+        );
+        return BNAmount;
+      }),
+      false
+    );
+  } else if (type === WithdrawType.ALL) {
+    lpTokenToSpend = userShareData.lpTokenBalance
+      .mul(parseUnits(percentage.toString(), 5)) // difference between numerator and denominator because we're going from 100 to 1.00
+      .div(10 ** 7);
+  }
+  console.log(lpTokenToSpend);
+
+  return lpTokenToSpend;
 }
 
 function* checkForWithdrawApproval(requestForApprove?: boolean) {
