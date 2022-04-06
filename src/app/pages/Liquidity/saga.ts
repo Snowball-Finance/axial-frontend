@@ -23,6 +23,7 @@ import {
   FromTransactionData,
   LiquidityPageState,
   SelectTokenToWithdrawPayload,
+  TypeOfTokensToWithdraw,
   WithdrawTokenAmountChangePayload,
 } from "./types";
 import { GenericGasResponse } from "app/providers/gasPrice";
@@ -210,7 +211,9 @@ export function* setAmountForTokenToWithdraw(action: {
 
   if (numberOfTokensWithNonZeroAmount === 0) {
     yield put(
-      LiquidityPageActions.setSelectedTokenToWithdraw({ symbol: "combo" })
+      LiquidityPageActions.setSelectedTokenToWithdraw({
+        symbol: TypeOfTokensToWithdraw.Combo,
+      })
     );
   } else if (numberOfTokensWithNonZeroAmount === 1) {
     yield put(
@@ -220,7 +223,9 @@ export function* setAmountForTokenToWithdraw(action: {
     );
   } else if (numberOfTokensWithNonZeroAmount !== numberOfTokens) {
     yield put(
-      LiquidityPageActions.setSelectedTokenToWithdraw({ symbol: "mixed" })
+      LiquidityPageActions.setSelectedTokenToWithdraw({
+        symbol: TypeOfTokensToWithdraw.Mixed,
+      })
     );
   }
   //all the inputs are filled
@@ -228,9 +233,11 @@ export function* setAmountForTokenToWithdraw(action: {
     const selectedToken = yield select(
       LiquidityPageDomains.selectedTokenToWithdraw
     );
-    if (selectedToken === "combo") {
+    if (selectedToken === TypeOfTokensToWithdraw.Combo) {
       yield put(
-        LiquidityPageActions.setSelectedTokenToWithdraw({ symbol: "mixed" })
+        LiquidityPageActions.setSelectedTokenToWithdraw({
+          symbol: TypeOfTokensToWithdraw.Mixed,
+        })
       );
     }
   }
@@ -258,9 +265,9 @@ export function* setWithdrawPercentage(action: {
   }
 
   const toLoop =
-    selectedTokenToWithdraw === "combo"
+    selectedTokenToWithdraw === TypeOfTokensToWithdraw.Combo
       ? amounts
-      : selectedTokenToWithdraw === "mixed"
+      : selectedTokenToWithdraw === TypeOfTokensToWithdraw.Mixed
       ? tokensWithNonZeroAmount
       : {
           [selectedTokenToWithdraw]: amounts[selectedTokenToWithdraw],
@@ -328,9 +335,9 @@ export function* setSelectedTokenToWithdraw(action: {
     }
   }
   if (percentage) {
-    if (symbol === "combo") {
+    if (symbol === TypeOfTokensToWithdraw.Combo) {
       amounts = yield call(calculateAmountsIfItsCombo);
-    } else if (symbol === "mixed") {
+    } else if (symbol === TypeOfTokensToWithdraw.Mixed) {
       for (let token in tokensWithNonZeroAmount) {
         const tokenBalance =
           BNToFloat(
@@ -353,7 +360,7 @@ export function* setSelectedTokenToWithdraw(action: {
       amounts[symbol] = fraction.toString();
     }
   } else {
-    if (symbol === "combo") {
+    if (symbol === TypeOfTokensToWithdraw.Combo) {
       for (let token in amounts) {
         amounts[token] = zeroString;
       }

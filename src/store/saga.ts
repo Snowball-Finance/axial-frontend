@@ -9,11 +9,6 @@ import { gasPriceAPI } from "app/providers/gasPrice";
 import { getTokenPricesAPI } from "app/providers/tokenPrice";
 import { toast } from "react-toastify";
 import { call, put, select, takeLatest } from "redux-saga/effects";
-import {
-  checkAndApproveTokensInList,
-  checkIfTokensAreVerified,
-  TokensToVerifyPayload,
-} from "utils/tokenVerifier";
 import { GlobalActions, GlobalState } from "./slice";
 
 const otherTokens = {
@@ -122,33 +117,8 @@ export function* getTokenBalances() {
   }
 }
 
-export function* checkIfListOfTokensAreApproved(action: {
-  type: string;
-  payload: TokensToVerifyPayload;
-}) {
-  const areAllApproved = yield call(checkIfTokensAreVerified, action.payload);
-  console.log({ areAllApproved });
-  return areAllApproved;
-}
-export function* approveListOfTokens(action: {
-  type: string;
-  payload: TokensToVerifyPayload;
-}) {
-  const areAllCheckedAndApproved = yield call(
-    checkAndApproveTokensInList,
-    action.payload
-  );
-  console.log({ areAllCheckedAndApproved });
-  return areAllCheckedAndApproved;
-}
-
 export function* globalSaga() {
   yield takeLatest(GlobalActions.getTokenPricesUSD.type, getTokenPricesUSD);
   yield takeLatest(GlobalActions.getGasPrice.type, getGasPrice);
   yield takeLatest(GlobalActions.getTokenBalances.type, getTokenBalances);
-  yield takeLatest(
-    GlobalActions.checkIfListOfTokensAreApproved.type,
-    checkIfListOfTokensAreApproved
-  );
-  yield takeLatest(GlobalActions.approveListOfTokens.type, approveListOfTokens);
 }

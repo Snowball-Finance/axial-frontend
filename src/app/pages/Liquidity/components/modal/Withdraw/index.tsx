@@ -26,6 +26,7 @@ import { Slippage } from "../components/Slippage";
 import { Deadline } from "./components/Deadline";
 import { GasPrice } from "./components/GasPrice";
 import { TokenSymbols } from "app/containers/Swap/types";
+import { TypeOfTokensToWithdraw } from "app/pages/Liquidity/types";
 
 export const WithdrawModal: FC = () => {
   const { t } = useTranslation();
@@ -62,9 +63,9 @@ export const WithdrawModal: FC = () => {
       let type: WithdrawType | TokenSymbols = WithdrawType.IMBALANCE;
       if (Object.keys(tokenAmounts).length === 1) {
         type = Object.keys(tokenAmounts)[0] as TokenSymbols;
-      } else if (selectedToken === "mixed") {
+      } else if (selectedToken === TypeOfTokensToWithdraw.Mixed) {
         type = WithdrawType.IMBALANCE;
-      } else if (selectedToken === "combo") {
+      } else if (selectedToken === TypeOfTokensToWithdraw.Combo) {
         type = WithdrawType.ALL;
       }
       const dataToSend: ApproveAndWithdrawPayload = {

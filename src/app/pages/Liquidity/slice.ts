@@ -3,6 +3,7 @@ import {
   DepositTransactionData,
   LiquidityPageState,
   SelectTokenToWithdrawPayload,
+  TypeOfTokensToWithdraw,
   WithdrawReviewData,
   WithdrawTokenAmountChangePayload,
 } from "./types";
@@ -26,7 +27,7 @@ export const initialState: ContainerState = {
   depositTokenAmounts: {},
   withdrawTokenAmounts: {},
   withdrawPercentage: 0,
-  selectedTokenToWithdraw: "combo",
+  selectedTokenToWithdraw: TypeOfTokensToWithdraw.Combo,
   depositRaw: false,
   depositTransactionData: undefined,
   withdrawReviewData: undefined,
