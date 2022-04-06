@@ -14,7 +14,7 @@ import { Zero } from "app/containers/Rewards/constants";
 
 export const LowerExchangeRate: FC = () => {
   const { t } = useTranslation();
-  
+
   const selectedToToken = useSelector(SwapPageSelectors.selectedToToken);
   const selectedFromToken = useSelector(SwapPageSelectors.selectedFromToken);
   const optimalPath = useSelector(SwapSelectors.selectBestPath);

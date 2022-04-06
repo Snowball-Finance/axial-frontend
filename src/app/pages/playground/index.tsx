@@ -88,7 +88,6 @@ export const Playground = () => {
     }
   };
 
-  
   const handleApproveListOfTokens = () => {
     const pool = pools[Pools.AXIAL_AM3D];
     if (pool) {
