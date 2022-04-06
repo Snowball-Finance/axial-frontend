@@ -517,7 +517,7 @@ export const POOLS_MAP: PoolsMap = {
     type: PoolTypes.USD,
     route: "aa3d",
   },
-  [USDC_AM3D_POOL_NAME]: {
+  /*[USDC_AM3D_POOL_NAME]: {
     name: USDC_AM3D_POOL_NAME,
     lpToken: USDC_AM3D_SWAP_TOKEN,
     poolTokens: USDC_AM3D_POOL_TOKENS,
@@ -528,7 +528,7 @@ export const POOLS_MAP: PoolsMap = {
     underlyingPoolTokens: USDC_AM3D_UNDERLYING_POOL_TOKENS,
     underlyingPool: AXIAL_AM3D_POOL_NAME,
     route: "usdc",
-  },
+  },*/
 }
 
 export function isMetaPool(poolName = ""): boolean {
