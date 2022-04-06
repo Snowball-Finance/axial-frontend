@@ -82,7 +82,7 @@ export function* swap() {
     const account = yield select(Web3Domains.selectAccountDomain);
     const optimalPath: BestPath = yield select(SwapDomains.bestPath);
     const { bestPath, useInternalRouter } = optimalPath;
-    
+
     const swapRouterAddress = yield select(SwapDomains.swapRouterAddress);
     const swapRouterABI = yield select(SwapDomains.swapRouterABI);
     const swapRouterContract = new Contract(
@@ -90,7 +90,6 @@ export function* swap() {
       swapRouterABI,
       getProviderOrSigner(library, account)
     ) as AxialAggregator;
-    const toTokenAddress = bestPath.path[bestPath.path.length - 1];
 
     const amountToReceive = bestPath.amounts[bestPath.amounts.length - 1];
     const amountToGive = bestPath.amounts[0];
@@ -108,7 +107,7 @@ export function* swap() {
     const swapTransaction = yield call(
       swapRouterContract.swap,
       swapData,
-      toTokenAddress,
+      account,
       SWAP_ROUTER_FEE,
       useInternalRouter
     );
