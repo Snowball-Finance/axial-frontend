@@ -117,6 +117,7 @@
     "SwapButton": "Swap",
     "ApproveButton": "Approve",
     "Approval": "Approval",
+    "LowerSwapRate": "Warning: Low Swap Rate!",
     "ReviewSwap": {
       "Title": "Review Swap",
       "Approving": "Approving",

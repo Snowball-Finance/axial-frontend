@@ -1,5 +1,6 @@
 import React, { FC } from "react";
-import { Grid, Typography, Box } from "@mui/material";
+import { Grid, Typography, Box, styled } from "@mui/material";
+import { keyframes } from "@mui/system";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 
@@ -18,7 +19,9 @@ export const Approving: FC = () => {
         <Grid container spacing={1}>
           <Grid container item xs={12} spacing={2} alignItems="center">
             <Grid item>
-              <ApprovalLoaderIcon />
+              <StyledAnimatedWrapper>
+                <ApprovalLoaderIcon />
+              </StyledAnimatedWrapper>
             </Grid>
 
             <Grid item>
@@ -43,3 +46,18 @@ export const Approving: FC = () => {
     </Box>
   );
 };
+
+const spin = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+`;
+
+const StyledAnimatedWrapper = styled("div")({
+  width: 24,
+  height: 24,
+  animation: `${spin} 1s linear infinite`,
+});
