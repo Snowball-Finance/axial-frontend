@@ -127,7 +127,7 @@ export function* swap() {
     const swapTransaction = yield call(
       swapRouterContract.swap,
       swapData,
-      toTokenAddress,
+      account,
       SWAP_ROUTER_FEE,
       useInternalRouter
     );

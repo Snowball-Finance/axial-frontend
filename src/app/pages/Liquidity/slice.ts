@@ -32,8 +32,9 @@ export const initialState: ContainerState = {
   depositTransactionData: undefined,
   withdrawReviewData: undefined,
   withdrawBonus: undefined,
-  tokensAreApproved: false,
+  tokensAreApprovedForDeposit: false,
   isCheckingForApproval: false,
+  tokensAreApprovedForWithdrawal: false,
 };
 
 const liquidityPageSlice = createSlice({
@@ -127,7 +128,7 @@ const liquidityPageSlice = createSlice({
       state.withdrawBonus = action.payload;
     },
     setTokensAreApproved(state, action: PayloadAction<boolean>) {
-      state.tokensAreApproved = action.payload;
+      state.tokensAreApprovedForDeposit = action.payload;
     },
     approveTokensForDeposit(state, action: PayloadAction<void>) {},
     checkIsAllTokensAreApprovedForDeposit(

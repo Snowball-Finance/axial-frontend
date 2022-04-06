@@ -36,7 +36,7 @@ export const LiquidityPageDomains = {
   withdrawBonus: (state: RootState) =>
     state.liquidityPage?.withdrawBonus || initialState.withdrawBonus,
   tokensAreApproved: (state: RootState) =>
-    state.liquidityPage?.tokensAreApproved,
+    state.liquidityPage?.tokensAreApprovedForDeposit,
   isCheckingForApproval: (state: RootState) =>
     state.liquidityPage?.isCheckingForApproval,
 };

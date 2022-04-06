@@ -344,7 +344,6 @@ export function* approveAndWithdraw(action: {
     const pools = yield select(RewardsDomains.pools);
     const library = yield select(Web3Domains.selectLibraryDomain);
     const account = yield select(Web3Domains.selectAccountDomain);
-    console.log(action.payload);
     const {
       poolKey,
       tokenAmounts,
@@ -353,7 +352,6 @@ export function* approveAndWithdraw(action: {
       lpTokenAmountToSpend,
     } = action.payload;
     const pool: Pool = pools[poolKey];
-    console.log({ pool });
     const targetContract = new Contract(
       pool.address,
       pool.swapABI,

@@ -22,7 +22,8 @@ export interface LiquidityPageState {
   depositTransactionData: DepositTransactionData | undefined;
   withdrawReviewData: WithdrawReviewData | undefined;
   withdrawBonus: BigNumber | undefined;
-  tokensAreApproved: boolean;
+  tokensAreApprovedForDeposit: boolean;
+  tokensAreApprovedForWithdrawal: boolean;
   isCheckingForApproval: boolean;
 }
 
