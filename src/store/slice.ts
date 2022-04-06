@@ -21,6 +21,7 @@ export interface GlobalState {
   tokensInQueueToApprove: { [K in TokenSymbols]?: boolean };
   selectedSlippage: Slippages;
   customSlippage: NumberInputState | undefined;
+  transactionSuccessId: string | undefined;
 }
 // The initial state of the LoginPage container
 export const initialState: GlobalState = {
@@ -38,6 +39,7 @@ export const initialState: GlobalState = {
       : storage.read(LocalStorageKeys.ENTERED_CUSTOM_SLIPPAGE) || undefined,
   isAdvancedOptionsOpen:
     storage.read(LocalStorageKeys.IS_ADVANCED_OPTIONS_OPEN) || false,
+  transactionSuccessId: undefined,
 };
 
 const globalSlice = createSlice({
@@ -96,6 +98,14 @@ const globalSlice = createSlice({
       storage.write(LocalStorageKeys.ENTERED_CUSTOM_SLIPPAGE, newValue);
       storage.write(LocalStorageKeys.SELECTED_SLIPPAGE, Slippages.Custom);
     },
+    setTransactionSuccessId(state, action: PayloadAction<string | undefined>) {
+      state.transactionSuccessId = action.payload;
+    },
+    checkIfListOfTokensAreApproved(
+      state,
+      action: PayloadAction<TokensToVerifyPayload>
+    ) {},
+    approveListOfTokens(state, action: PayloadAction<TokensToVerifyPayload>) {},
   },
 });
 

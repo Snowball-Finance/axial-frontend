@@ -12,7 +12,8 @@ export const initialState: ContainerState = {
   toToken: undefined,
   fromAmount: "",
   searchValue: "",
-  isSwapModalOpen: false,
+  reviewSwapConfirmationData: undefined,
+  hasConfirmedHighPriceImpact: false,
 };
 
 const swapPageSlice = createSlice({
@@ -34,14 +35,21 @@ const swapPageSlice = createSlice({
     setFromTokenError(state, action: PayloadAction<string>) {
       state.fromTokenError = action.payload;
     },
-    setSwapModalOpen(state, action: PayloadAction<boolean>) {
-      state.isSwapModalOpen = action.payload;
+    setReviewSwapConfirmationData(
+      state,
+      action: PayloadAction<any | undefined>
+    ) {
+      state.reviewSwapConfirmationData = action.payload;
+    },
+    setHasConfirmedHighPriceImpact(state, action: PayloadAction<boolean>) {
+      state.hasConfirmedHighPriceImpact = action.payload;
     },
     amountChange(state, action: PayloadAction<string>) {},
     tokenChange(state, action: PayloadAction<TokenChangePayload>) {},
     maxAmountSelection() {},
     reverseTokenChange() {},
     confirmSwap() {},
+    buildReviewSwap() {},
   },
 });
 

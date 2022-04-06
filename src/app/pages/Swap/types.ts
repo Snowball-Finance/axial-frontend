@@ -8,12 +8,20 @@ export interface SwapPageState {
   toToken: Token | undefined;
   fromAmount: string;
   searchValue: string;
-  isSwapModalOpen: boolean;
+  reviewSwapConfirmationData: any;
+  hasConfirmedHighPriceImpact: boolean;
 }
 
 export interface TokenChangePayload {
   isFromToken: boolean;
   tokenSymbol: string;
+}
+
+export interface TokensData {
+  symbol: string;
+  icon: string;
+  value: string;
+  valueUSD: string;
 }
 
 export interface TokenOption {

@@ -16,6 +16,8 @@ export const GlobalDomains = {
   selectedSlippage: (state: RootState) =>
     state.global?.selectedSlippage || initialState.selectedSlippage,
   customSlippage: (state: RootState) => state.global?.customSlippage,
+  transactionSuccessId: (state: RootState) =>
+    state.global?.transactionSuccessId || initialState.transactionSuccessId,
   isAdvancedOptionsOpen: (state: RootState) =>
     state.global?.isAdvancedOptionsOpen,
 };
@@ -51,6 +53,10 @@ export const globalSelectors = {
   customSlippage: createSelector(
     [GlobalDomains.customSlippage],
     (customSlippage) => customSlippage
+  ),
+  transactionSuccessId: createSelector(
+    [GlobalDomains.transactionSuccessId],
+    (transactionSuccessId) => transactionSuccessId
   ),
   isAdvancedOptionsOpen: createSelector(
     [GlobalDomains.isAdvancedOptionsOpen],

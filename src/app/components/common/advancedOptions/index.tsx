@@ -94,6 +94,6 @@ const Text = styled(Typography)({
 
 const CustomCheckbox = styled(Checkbox)({
   path: {
-    fill: CssVariables.primary,
+    fill: CssVariables.green,
   },
 });

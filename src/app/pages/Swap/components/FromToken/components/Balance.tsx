@@ -30,7 +30,7 @@ export const Balance: FC = () => {
     <Grid item>
       <Grid container justifyContent="flex-end">
         <Grid item>
-          <BalanceText>
+          <BalanceText variant="body2">
             {t(translations.SwapPage.FromToken.WalletBalance())}{" "}
             {getWalletBalance()}
           </BalanceText>

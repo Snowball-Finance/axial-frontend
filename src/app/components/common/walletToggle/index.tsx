@@ -34,6 +34,7 @@ export const WalletToggle: FC<WalletToggleProps> = ({ fullWidth }) => {
       height={40.5}
       loading={isConnecting}
       onClick={handleButtonClick}
+      fullWidth={fullWidth}
     >
       {account
         ? t(translations.Common.DisconnectFromWallet()) +

@@ -19,6 +19,7 @@ import { BestPathIndicator } from "./components/BestPath";
 import { ReverseSwap } from "./components/ReverseSwap";
 import { Actions } from "./components/Actions";
 import { mobile } from "styles/media";
+import { LowerExchangeRate } from "./components/LowerExchangeRate";
 
 export const SwapPage: FC = () => {
   useSwapPageSlice();
@@ -38,7 +39,6 @@ export const SwapPage: FC = () => {
       <StyledSwapCard>
         <StyledContainer
           container
-          direction="column"
           justifyContent="center"
           alignItems="center"
           spacing={2}
@@ -54,6 +54,8 @@ export const SwapPage: FC = () => {
           <StyledAdvanceContainer item xs={12}>
             <AdvanceOption />
           </StyledAdvanceContainer>
+
+          <LowerExchangeRate />
 
           <Actions />
         </StyledContainer>
