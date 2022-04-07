@@ -44,7 +44,7 @@ export const Playground = () => {
   };
   const handleWithdrawStableCoins = () => {
     dispatch(
-      RewardsActions.approveAndWithdraw({
+      RewardsActions.withdraw({
         poolKey: Pools.AXIAL_AM3D,
         type: WithdrawType.ALL,
         lpTokenAmountToSpend:

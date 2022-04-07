@@ -1,7 +1,7 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 import {
-  ApproveAndDepositPayload,
-  ApproveAndWithdrawPayload,
+  DepositPayload,
+  WithdrawPayload,
   ContainerState,
   SwapStatsReponse,
 } from "./types";
@@ -112,17 +112,14 @@ const rewardsSlice = createSlice({
         ...action.payload,
       };
     },
-    deposit(state, action: PayloadAction<ApproveAndDepositPayload>) {},
+    deposit(state, action: PayloadAction<DepositPayload>) {},
     setIsDepositing(state, action: PayloadAction<boolean>) {
       state.isDepositing = action.payload;
     },
     setIsWithdrawing(state, action: PayloadAction<boolean>) {
       state.isWithdrawing = action.payload;
     },
-    approveAndWithdraw(
-      state,
-      action: PayloadAction<ApproveAndWithdrawPayload>
-    ) {},
+    withdraw(state, action: PayloadAction<WithdrawPayload>) {},
   },
 });
 

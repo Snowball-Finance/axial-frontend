@@ -17,8 +17,8 @@ import { getVaultRewardAprNow } from "./providers/getVaultRewardsAPR";
 import { RewardsDomains } from "./selectors";
 import { RewardsActions } from "./slice";
 import {
-  ApproveAndDepositPayload,
-  ApproveAndWithdrawPayload,
+  DepositPayload,
+  WithdrawPayload,
   MasterchefResponse,
   Pool,
   Pools,
@@ -235,10 +235,7 @@ export function* resetTokensInQueueForApproval(tokenSymbols: TokenSymbols[]) {
   }
 }
 
-export function* deposit(action: {
-  type: string;
-  payload: ApproveAndDepositPayload;
-}) {
+export function* deposit(action: { type: string; payload: DepositPayload }) {
   const { poolKey, masterchefDeposit, tokenAmounts, shouldDepositWrapped } =
     action.payload;
   const pools = yield select(RewardsDomains.pools);
@@ -328,10 +325,7 @@ export function* deposit(action: {
   }
 }
 
-export function* approveAndWithdraw(action: {
-  type: string;
-  payload: ApproveAndWithdrawPayload;
-}) {
+export function* withdraw(action: { type: string; payload: WithdrawPayload }) {
   yield put(RewardsActions.setIsWithdrawing(true));
   try {
     const selectedSlippage = yield select(GlobalDomains.selectedSlippage);
@@ -433,5 +427,5 @@ export function* rewardsSaga() {
   yield takeLatest(RewardsActions.getMasterchefAPR.type, getMasterchefAPR);
   yield takeLatest(RewardsActions.getSwapStats.type, getSwapStats);
   yield takeLatest(RewardsActions.deposit.type, deposit);
-  yield takeLatest(RewardsActions.approveAndWithdraw.type, approveAndWithdraw);
+  yield takeLatest(RewardsActions.withdraw.type, withdraw);
 }

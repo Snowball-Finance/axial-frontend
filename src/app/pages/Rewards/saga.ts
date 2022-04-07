@@ -5,8 +5,8 @@ import { Web3Domains } from "app/containers/BlockChain/Web3/selectors";
 import { AXIAL_MASTERCHEF_CONTRACT_ADDRESS } from "app/containers/Rewards/constants";
 import masterchef from "abi/masterchef.json";
 import {
-  ApproveAndDepositPayload,
-  ApproveAndWithdrawPayload,
+  DepositPayload,
+  WithdrawPayload,
   Pool,
 } from "app/containers/Rewards/types";
 import { floatToBN } from "common/format";
@@ -45,7 +45,7 @@ export function* deposit() {
   const selectedPool: Pool = yield select(RewardsPageDomains.pool);
   const value = yield select(RewardsPageDomains.depositValue) || "0";
   const token = selectedPool.lpToken;
-  const dataToSend: ApproveAndDepositPayload = {
+  const dataToSend: DepositPayload = {
     poolKey: selectedPool.key,
     masterchefDeposit: true,
     shouldDepositWrapped: false,
@@ -76,14 +76,14 @@ export function* withdraw() {
         .div(10 ** 7) ?? BigNumber.from("0");
   }
 
-  const dataToSend: ApproveAndWithdrawPayload = {
+  const dataToSend: WithdrawPayload = {
     tokenAmounts,
     poolKey: pool.key,
     lpTokenAmountToSpend: effectiveUserLPTokenBalance,
     type: pool.lpToken.symbol as TokenSymbols,
     masterchefwithdraw: true,
   };
-  yield put(RewardsActions.approveAndWithdraw(dataToSend));
+  yield put(RewardsActions.withdraw(dataToSend));
 }
 
 export function* claim(action: { type: string; payload: Pool }) {
