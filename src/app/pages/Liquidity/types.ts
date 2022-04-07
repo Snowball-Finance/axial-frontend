@@ -53,7 +53,7 @@ export interface ActionButtonProps {
 
 interface FromTokens {
   symbol: string;
-  value: number;
+  value: string;
 }
 
 interface ToTokens {

@@ -19,6 +19,8 @@ import {
   SwapFlashLoanNoWithdrawFee,
 } from "abi/ethers-contracts";
 import {
+  commify,
+  formatBNToString,
   getContract,
   getProviderOrSigner,
 } from "app/containers/utils/contractUtils";
@@ -76,7 +78,9 @@ export function* buildTransactionData() {
         ...fromStateData?.tokens,
         {
           symbol: tokenKey,
-          value: parseFloat(depositTokenAmounts[tokenKey]),
+          value: commify(
+            formatBNToString(toSend ?? Zero, tokens[tokenKey].decimals)
+          ),
         },
       ];
       fromStateData.total =

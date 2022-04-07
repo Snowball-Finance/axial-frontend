@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { CardWrapper } from "app/components/wrappers/Card";
 import { LiquidityPageSelectors } from "app/pages/Liquidity/selectors";
-import { formatBNToString } from "app/containers/utils/contractUtils";
+import { commify, formatBNToString } from "app/containers/utils/contractUtils";
 import { Zero } from "app/containers/Rewards/constants";
 import { IconWithTitle } from "../../components/IconWithTitle";
 
@@ -28,7 +28,9 @@ export const Receiving: FC = () => {
 
         <Grid item xs zeroMinWidth>
           <Text variant="h2" noWrap align="right">
-            {formatBNToString(depositTransactionData?.to.value ?? Zero, 18)}
+            {commify(
+              formatBNToString(depositTransactionData?.to.value ?? Zero, 18)
+            )}
           </Text>
         </Grid>
       </Grid>
