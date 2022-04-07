@@ -18,7 +18,11 @@ export const EquivalentWithdrawAmount = ({ token }: { token: Token }) => {
   if (equivalentValue > 0.01) {
     equivalentValueToShow = `~ $${equivalentValue.toFixed(2)}`;
   }
-  return <AmountInUsdt>{equivalentValueToShow}</AmountInUsdt>;
+  return (
+    <AmountInUsdt variant="body2" align="right">
+      {equivalentValueToShow}
+    </AmountInUsdt>
+  );
 };
 
 const AmountInUsdt = styled(Typography)({

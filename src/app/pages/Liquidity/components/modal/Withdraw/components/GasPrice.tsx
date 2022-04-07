@@ -16,7 +16,7 @@ export const GasPrice: FC = () => {
   return (
     <Grid container justifyContent="space-between" alignItems="center">
       <Grid item>
-        <Text variant="body2">{t(translations.LiquidityPage.Modal.Gas())}</Text>
+        <Text variant="body1">{t(translations.LiquidityPage.Modal.Gas())}</Text>
       </Grid>
 
       <Grid item>

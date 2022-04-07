@@ -21,11 +21,11 @@ export const Total: FC = () => {
       spacing={{ xs: 2, xl: 0 }}
     >
       <Grid item>
-        <Text variant="h6">{t(translations.LiquidityPage.Modal.Total())}</Text>
+        <Text variant="h2">{t(translations.LiquidityPage.Modal.Total())}</Text>
       </Grid>
 
       <Grid item xs zeroMinWidth>
-        <Text variant="h6" noWrap align="right">
+        <Text variant="h2" noWrap align="right">
           {withdrawReviewData?.total}
         </Text>
       </Grid>
@@ -35,4 +35,5 @@ export const Total: FC = () => {
 
 const Text = styled(Typography)({
   color: CssVariables.white,
+  textTransform: "uppercase",
 });

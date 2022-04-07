@@ -23,13 +23,11 @@ export const Receiving: FC = () => {
         spacing={{ xs: 2, xl: 0 }}
       >
         <Grid item>
-          <Text variant="h6">
-            <IconWithTitle tokenSymbol={depositTransactionData?.to.symbol} />
-          </Text>
+          <IconWithTitle tokenSymbol={depositTransactionData?.to.symbol} />
         </Grid>
 
         <Grid item xs zeroMinWidth>
-          <Text variant="h6" noWrap align="right">
+          <Text variant="h2" noWrap align="right">
             {formatBNToString(depositTransactionData?.to.value ?? Zero, 18)}
           </Text>
         </Grid>

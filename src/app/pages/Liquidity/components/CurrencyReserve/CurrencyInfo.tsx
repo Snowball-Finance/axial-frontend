@@ -36,14 +36,14 @@ export const CurrencyInfo: FC = () => {
                     ></IconImage>
                   </Grid>
 
-                  <Grid item>
-                    <TokenText variant="h6">{infoItem.symbol}</TokenText>
+                  <Grid item alignSelf="center">
+                    <TokenText variant="body1">{infoItem.symbol}</TokenText>
                   </Grid>
                 </Grid>
               </Grid>
 
               <Grid item xs={3}>
-                <BalanceText variant="body2">{infoItem.percent}</BalanceText>
+                <BalanceText variant="body1">{infoItem.percent}</BalanceText>
               </Grid>
 
               <Grid item xs={5}>
@@ -86,6 +86,7 @@ const StyledInfo = styled("div")({
 
 const IconImage = styled("img")({
   width: "33px",
+  height: "33px",
 
   [mobile]: {
     width: "25px",

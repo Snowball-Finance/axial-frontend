@@ -41,13 +41,13 @@ export const Selection: FC = memo(
       <Grid item>
         <StyledWithdrawOption>
           <StyledRadioGroup row>
-            <FormControlLabel
+            <StyledFormControlLabel
               onClick={() => setSelectedTokenToWithdraw("combo")}
               control={<SnowRadio checked={selectedToken === "combo"} />}
               label="Combo"
             />
             {poolTokens.map((token: Token) => (
-              <FormControlLabel
+              <StyledFormControlLabel
                 key={token.address}
                 onClick={() =>
                   setSelectedTokenToWithdraw(token.symbol as TokenSymbols)
@@ -69,7 +69,7 @@ const StyledWithdrawOption = styled(FormControl)({
   backgroundColor: CssVariables.swapInputbackground,
   border: `4px solid ${CssVariables.cardBorder}`,
   borderRadius: "20px",
-  padding: "5px 20px",
+  padding: "26px 36px",
   color: CssVariables.white,
 });
 
@@ -78,4 +78,11 @@ const StyledRadioGroup = styled(RadioGroup)({
   display: "flex",
   justifyContent: "space-between",
   color: CssVariables.white,
+});
+
+const StyledFormControlLabel = styled(FormControlLabel)({
+  ".MuiTypography-root": {
+    fontSize: "16px",
+    fontWeight: 400,
+  },
 });

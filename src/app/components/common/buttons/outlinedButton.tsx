@@ -10,6 +10,7 @@ export const OutlinedButton: FC<SnowButtonProps> = (props) => {
 const StyledButton = styled(SnowButton)(({ theme }) => ({
   borderRadius: CssVariables.buttonBorderRadius,
   borderWidth: "2px",
+  backgroundColor: CssVariables.swapInputbackground,
   "&:hover": {
     borderWidth: "2px",
   },

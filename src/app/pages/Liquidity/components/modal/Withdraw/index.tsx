@@ -76,13 +76,7 @@ export const WithdrawModal: FC = () => {
   };
 
   return (
-    <Grid container direction="column" spacing={1}>
-      <Grid item>
-        <Text variant="h6">
-          {t(translations.LiquidityPage.Modal.ReviewWithdraw())}
-        </Text>
-      </Grid>
-
+    <StyledContainer container direction="column" spacing={2}>
       <Grid item>
         <CardWrapper>
           <Grid container direction="column" spacing={2}>
@@ -99,7 +93,7 @@ export const WithdrawModal: FC = () => {
                   </Grid>
 
                   <Grid item xs zeroMinWidth>
-                    <Text variant="h6" noWrap align="right">
+                    <Text variant="h2" noWrap align="right">
                       {item.value}
                     </Text>
                   </Grid>
@@ -142,24 +136,30 @@ export const WithdrawModal: FC = () => {
 
       <Grid item>
         <Grid container justifyContent="center" alignItems="center" spacing={2}>
-          <Grid item>
-            <OutlinedButton onClick={handleCancelClick}>
+          <Grid item xs={6}>
+            <OutlinedButton onClick={handleCancelClick} fullWidth>
               {t(translations.LiquidityPage.Buttons.Cancel())}
             </OutlinedButton>
           </Grid>
-          <Grid item>
+          <Grid item xs={6}>
             <ContainedButton
               loading={isWithdrawing}
               onClick={handleWithdrawClick}
+              fullWidth
             >
               {t(translations.LiquidityPage.Buttons.ConfirmWithdraw())}
             </ContainedButton>
           </Grid>
         </Grid>
       </Grid>
-    </Grid>
+    </StyledContainer>
   );
 };
+
+const StyledContainer = styled(Grid)({
+  marginTop: 20,
+  width: 600,
+});
 
 const Text = styled(Typography)({
   color: CssVariables.white,

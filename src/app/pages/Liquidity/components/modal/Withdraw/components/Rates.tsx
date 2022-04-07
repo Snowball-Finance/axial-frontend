@@ -18,7 +18,7 @@ export const Rates: FC = () => {
   return (
     <Grid container justifyContent="space-between">
       <Grid item>
-        <Text variant="body2">
+        <Text variant="body1">
           {t(translations.LiquidityPage.Modal.Rates())}
         </Text>
       </Grid>

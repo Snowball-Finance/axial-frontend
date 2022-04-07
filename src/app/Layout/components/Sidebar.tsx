@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect } from "react";
+import React, { ReactElement } from "react";
 import { styled } from "@mui/material";
 import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -8,29 +8,8 @@ import { CssVariables } from "styles/cssVariables/cssVariables";
 import SocialLinks from "./SocialLink";
 import { navigationRoutes } from "../constants";
 
-const clickPath = require("../../../assets/audio/click.mp3");
-let ableToPlay = false;
-const audio = new Audio(clickPath.default);
-const playClick = () => {
-  try {
-    audio.play();
-  } catch (e) {}
-};
-
 export default function Sidebar(): ReactElement {
   const { t } = useTranslation();
-  const handleMenuItemMouseOver = () => {
-    if (ableToPlay) {
-      playClick();
-    }
-  };
-  useEffect(() => {
-    document.addEventListener("click", () => {
-      ableToPlay = true;
-    });
-
-    return () => {};
-  }, []);
 
   return (
     <StyledSidebar>
@@ -40,10 +19,6 @@ export default function Sidebar(): ReactElement {
             <ListNavItem
               exact
               to={nav.to}
-              onMouseOver={handleMenuItemMouseOver}
-              activeStyle={{
-                color: CssVariables.primary,
-              }}
               isActive={(match, location) => {
                 let pathStrings = location.pathname.split("/");
 
@@ -76,8 +51,9 @@ const StyledSidebar = styled("div")({
   flexDirection: "column",
   justifyContent: "space-between",
   alignItems: "center",
-  height: "90vh",
+  height: "85vh",
   paddingLeft: "25%",
+  marginTop: 50,
 });
 
 const List = styled("ul")({
@@ -86,22 +62,21 @@ const List = styled("ul")({
   ".active": {
     h1: {
       color: CssVariables.green,
+      borderBottom: `2px solid`,
+      lineHeight: 1,
     },
   },
 });
 
 const ListItem = styled("li")({
   display: "block",
-  paddingTop: 15,
-  paddingBottom: 15,
+  paddingTop: 20,
+  paddingBottom: 20,
 });
 
 const ListNavItem = styled(NavLink)({
   textDecoration: "none",
   color: CssVariables.white,
-  fontWeight: "bold",
-  fontSize: "42px",
-  textTransform: "uppercase",
 });
 const TestWrapper = styled("div")`
   --letterSpacingOnHover: 4px;
@@ -110,6 +85,7 @@ const TestWrapper = styled("div")`
   height: 100%;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
+  display: flex;
   h1 {
     text-transform: uppercase;
     transform: translate(0px, 0px) skew(0deg, 0);
@@ -117,7 +93,7 @@ const TestWrapper = styled("div")`
     font-size: 42px;
     font-weight: 400;
     white-space: nowrap;
-    color: ${CssVariables.secondary};
+    color: ${CssVariables.white};
     letter-spacing: 0;
     z-index: 1;
     transition: all 0.175s linear;
@@ -126,31 +102,6 @@ const TestWrapper = styled("div")`
       letter-spacing: var(--letterSpacingOnHover);
     }
   }
-  /* h1::after, */
-  h1::before {
-    transition: all 0.1s linear;
-    backface-visibility: hidden;
-    content: attr(data-heading);
-    position: absolute;
-    letter-spacing: 0;
-  }
-  /* h1::after {
-    left: 0px;
-    top: 0px;
-    z-index: 2;
-    -webkit-text-stroke: 2px ${CssVariables.primary};
-    -webkit-text-fill-color: transparent;
-  } */
-  h1::before {
-    z-index: -1;
-    left: 0px;
-    top: 0px;
-    color: #f68722;
-  }
-  /* h1:hover::after {
-    left: -2px;
-    top: -2px;
-  } */
   h1:hover::before {
     left: 4px;
     top: 4px;

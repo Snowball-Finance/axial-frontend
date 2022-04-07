@@ -9,11 +9,9 @@ import { CssVariables } from "styles/cssVariables/cssVariables";
 import {
   formatBNToString,
   formatBNToPercentString,
-  formatBNToShortString,
 } from "app/containers/utils/contractUtils";
 import { getKeyFromPoolIndex } from "app/pages/Liquidity/constants";
 import { RewardsSelectors } from "app/containers/Rewards/selectors";
-import { pools } from "app/pools";
 import { Zero } from "app/containers/Rewards/constants";
 
 type TParams = { poolIndex: string };
@@ -23,9 +21,6 @@ export const MyShare: FC = () => {
   const { poolIndex } = useParams<TParams>();
   const poolKey = getKeyFromPoolIndex(poolIndex) || "";
   const userShareData = useSelector(RewardsSelectors.userShareData(poolKey));
-  const masterchefBalance = useSelector(RewardsSelectors.masterChefBalances);
-
-  const tokenKey = pools[poolKey].lpToken.symbol;
 
   if (!userShareData) {
     return null;
@@ -42,13 +37,13 @@ export const MyShare: FC = () => {
             spacing={1}
           >
             <Grid item>
-              <MyShareTitle variant="h5">
+              <MyShareTitle variant="h2">
                 {t(translations.LiquidityPage.MyShare.Title())}
               </MyShareTitle>
             </Grid>
 
             <Grid item>
-              <MyShareBalanceText variant="body2">
+              <MyShareBalanceText variant="body1">
                 {formatBNToPercentString(userShareData.share, 18)}{" "}
                 {t(translations.LiquidityPage.MyShare.OfPool())}
               </MyShareBalanceText>
@@ -93,11 +88,11 @@ export const MyShare: FC = () => {
             <Grid item>
               <BalanceText variant="body2">
                 $
-                {masterchefBalance &&
-                  formatBNToShortString(
-                    masterchefBalance[tokenKey]?.userInfo.amount || Zero,
-                    18
-                  )}
+                {formatBNToString(
+                  userShareData.underlyingTokensAmount || Zero,
+                  18,
+                  2
+                )}
               </BalanceText>
             </Grid>
           </Grid>
@@ -117,10 +112,11 @@ const StyledMyShare = styled("div")({
 
 const MyShareTitle = styled(Typography)({
   color: CssVariables.white,
+  textTransform: "uppercase",
 });
 
 const MyShareBalanceText = styled(Typography)({
-  color: CssVariables.primary,
+  color: CssVariables.green,
 });
 
 const BalanceLabelText = styled(Typography)({

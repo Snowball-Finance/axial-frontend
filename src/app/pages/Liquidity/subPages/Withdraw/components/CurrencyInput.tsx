@@ -28,8 +28,13 @@ export const CurrencyInput: FC = () => {
             justifyContent="space-between"
             alignItems="center"
           >
-            <Grid item>
-              <Grid container spacing={1}>
+            <TokenIconContainer item>
+              <Grid
+                container
+                spacing={1}
+                alignItems="center"
+                justifyContent="flex-start"
+              >
                 <Grid item>
                   <IconImage src={token.logo} alt="icon"></IconImage>
                 </Grid>
@@ -38,15 +43,15 @@ export const CurrencyInput: FC = () => {
                   <TokenText variant="h6">{token.symbol}</TokenText>
                 </Grid>
               </Grid>
-            </Grid>
+            </TokenIconContainer>
 
-            <Grid item>
+            <Grid item xs={6}>
               <Grid container spacing={1} alignItems="center">
-                <Grid item>
+                <Grid item xs={12}>
                   <WithdrawInput token={token} />
                 </Grid>
 
-                <Grid item>
+                <Grid item xs={12}>
                   <EquivalentWithdrawAmount token={token} />
                 </Grid>
               </Grid>
@@ -63,11 +68,18 @@ const StyledCurrencyInput = styled(Grid)({
   backgroundColor: CssVariables.swapInputbackground,
   border: `4px solid ${CssVariables.cardBorder}`,
   borderRadius: "20px",
-  padding: "5px 20px",
+  padding: "12px 36px",
+});
+
+const TokenIconContainer = styled(Grid)({
+  border: `2px solid ${CssVariables.cardBorder}`,
+  borderRadius: "20px",
+  padding: 10,
 });
 
 const IconImage = styled("img")({
-  width: "33px",
+  width: "32px",
+  height: "32px",
 });
 
 const TokenText = styled(Typography)({

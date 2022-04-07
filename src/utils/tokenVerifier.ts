@@ -99,4 +99,3 @@ export function* checkIfTokensAreVerified(tokens: TokensToVerifyPayload) {
     return false;
   }
 }
-

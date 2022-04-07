@@ -82,7 +82,7 @@ export function* swap() {
     const account = yield select(Web3Domains.selectAccountDomain);
     const optimalPath: BestPath = yield select(SwapDomains.bestPath);
     const { bestPath, useInternalRouter } = optimalPath;
-    
+
     const swapRouterAddress = yield select(SwapDomains.swapRouterAddress);
     const swapRouterABI = yield select(SwapDomains.swapRouterABI);
     const swapRouterContract = new Contract(

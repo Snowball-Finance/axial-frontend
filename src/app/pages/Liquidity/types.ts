@@ -61,7 +61,7 @@ export interface FromTransactionData {
 export interface DepositTransactionData {
   from: FromTransactionData;
   to: ToTokens;
-  share: boolean | undefined;
+  share: BigNumber | undefined;
 }
 
 export interface WithdrawReviewData {

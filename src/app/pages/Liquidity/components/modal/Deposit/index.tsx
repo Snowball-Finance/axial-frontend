@@ -38,13 +38,7 @@ export const DepositModal: FC = () => {
   };
 
   return (
-    <Grid container direction="column" spacing={1}>
-      <Grid item>
-        <Text variant="h6">
-          {t(translations.LiquidityPage.Modal.ReviewDeposit())}
-        </Text>
-      </Grid>
-
+    <StyledContainer container direction="column" spacing={2}>
       <Grid item>
         <CardWrapper>
           <Grid container direction="column" spacing={2}>
@@ -61,7 +55,7 @@ export const DepositModal: FC = () => {
                   </Grid>
 
                   <Grid item xs zeroMinWidth>
-                    <Text variant="h6" noWrap align="right">
+                    <Text variant="h2" noWrap align="right">
                       {item.value}
                     </Text>
                   </Grid>
@@ -77,7 +71,7 @@ export const DepositModal: FC = () => {
       </Grid>
 
       <Grid item>
-        <Text variant="h6">
+        <Text variant="h2">
           {t(translations.LiquidityPage.Modal.Receiving())}
         </Text>
       </Grid>
@@ -110,25 +104,33 @@ export const DepositModal: FC = () => {
 
       <Grid item>
         <Grid container justifyContent="center" alignItems="center" spacing={2}>
-          <Grid item>
-            <OutlinedButton onClick={handleCancelClick}>
-              {t(translations.LiquidityPage.Buttons.Cancel())}
+          <Grid item xs={6}>
+            <OutlinedButton onClick={handleCancelClick} fullWidth>
+              {t(translations.LiquidityPage.Buttons.ApproveTokens())}
             </OutlinedButton>
           </Grid>
-          <Grid item>
+
+          <Grid item xs={6}>
             <ContainedButton
               onClick={handleDepositClick}
               loading={isDepositing}
+              fullWidth
             >
               {t(translations.LiquidityPage.Buttons.ConfirmDeposit())}
             </ContainedButton>
           </Grid>
         </Grid>
       </Grid>
-    </Grid>
+    </StyledContainer>
   );
 };
 
+const StyledContainer = styled(Grid)({
+  marginTop: 24,
+  width: 600,
+});
+
 const Text = styled(Typography)({
   color: CssVariables.white,
+  textTransform: "uppercase",
 });

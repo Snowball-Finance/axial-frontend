@@ -72,7 +72,7 @@ export const Actions: FC = () => {
               : t(translations.SwapPage.SwapButton())}
           </ContainedButton>
         ) : (
-          <WalletToggle fullWidth/>
+          <WalletToggle fullWidth />
         )}
       </Grid>
 

@@ -1,6 +1,7 @@
 import { CircularProgress, styled } from "@mui/material";
 import Button, { ButtonProps } from "@mui/material/Button";
 import React, { FC } from "react";
+import { FontFamilies } from "styles/cssVariables/cssVariables";
 
 type CommonButtonProps = {
   loading?: boolean;
@@ -28,5 +29,7 @@ const StyledButton = styled(Button)<SnowButtonProps>(
     ...(height && { height }),
     ...(width && { width }),
     textTransform: "none",
+    fontSize: "18px",
+    fontFamily: FontFamilies.IBMPlexSans,
   })
 );
