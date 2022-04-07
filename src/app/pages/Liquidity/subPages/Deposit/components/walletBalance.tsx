@@ -1,27 +1,17 @@
 import { styled, Typography } from "@mui/material";
 import { Zero } from "app/containers/Rewards/constants";
-import { Token, TokenSymbols } from "app/containers/Swap/types";
-import { LiquidityPageActions } from "app/pages/Liquidity/slice";
+import { Token } from "app/containers/Swap/types";
 import { BNToString } from "common/format";
 import { translations } from "locales/i18n";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 
 export const WalletBalance = ({ token }: { token: Token }) => {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
   const amountString = BNToString(token.balance ?? Zero, token.decimals);
-  const handleAllInClick = () => {
-    dispatch(
-      LiquidityPageActions.setLiquidityDepositTokenAmount({
-        symbol: token.symbol as TokenSymbols,
-        value: amountString || "0",
-      })
-    );
-  };
+
   return (
-    <BalanceText variant="body2" onClick={handleAllInClick}>
+    <BalanceText variant="body2">
       {t(translations.LiquidityPage.WalletBalance())}: {amountString}
     </BalanceText>
   );
@@ -29,6 +19,4 @@ export const WalletBalance = ({ token }: { token: Token }) => {
 
 const BalanceText = styled(Typography)({
   color: CssVariables.white,
-  fontSize: "16px",
-  cursor: "pointer",
 });

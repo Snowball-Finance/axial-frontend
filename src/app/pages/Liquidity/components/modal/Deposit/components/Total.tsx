@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { LiquidityPageSelectors } from "app/pages/Liquidity/selectors";
+import { commify } from "app/containers/utils/contractUtils";
 
 export const Total: FC = () => {
   const { t } = useTranslation();
@@ -21,12 +22,13 @@ export const Total: FC = () => {
       spacing={{ xs: 2, xl: 0 }}
     >
       <Grid item>
-        <Text variant="h6">{t(translations.LiquidityPage.Modal.Total())}</Text>
+        <Text variant="h2">{t(translations.LiquidityPage.Modal.Total())}</Text>
       </Grid>
 
       <Grid item xs zeroMinWidth>
-        <Text variant="h6" noWrap align="right">
-          {depositTransactionData?.from.total}
+        <Text variant="h2" noWrap align="right">
+          {depositTransactionData &&
+            commify(depositTransactionData?.from.total.toString())}
         </Text>
       </Grid>
     </Grid>
@@ -35,4 +37,5 @@ export const Total: FC = () => {
 
 const Text = styled(Typography)({
   color: CssVariables.white,
+  textTransform: "uppercase",
 });

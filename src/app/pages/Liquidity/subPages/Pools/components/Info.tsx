@@ -47,13 +47,6 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
   const hasShare = !!userShareData?.usdBalance.gt("0");
   let info: InfoData[] = [];
 
-  if (hasShare) {
-    info.push({
-      title: t(translations.LiquidityPage.Info.Balance()),
-      value: `$${formattedData.userBalanceUSD}`,
-    });
-  }
-
   info = info.concat([
     {
       title: t(translations.LiquidityPage.Info.SwapAPR()),
@@ -69,11 +62,18 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
     },
   ]);
 
+  if (hasShare) {
+    info.push({
+      title: t(translations.LiquidityPage.Info.Balance()),
+      value: `$${formattedData.userBalanceUSD}`,
+    });
+  }
+
   return (
     <StyledContainer container spacing={{ xs: 2, xl: 4 }}>
       {info.map((item, index) => (
         <Grid item key={index}>
-          <Grid container spacing={1}>
+          <Grid container spacing={1} direction="column" alignItems="center">
             <Grid item>
               <PoolInfoTitleText variant="body1">
                 {item.title}

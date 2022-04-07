@@ -27,16 +27,16 @@ export const WithdrawButton = () => {
     <NeedsWalletConnection
       connected={
         <ContainedButton
-          width={220}
           height={42}
           disabled={disabled}
           loading={isWithdrawing}
           onClick={handleWithdrawClick}
+          fullWidth
         >
           {t(translations.LiquidityPage.ActionButtons.Withdraw())}
         </ContainedButton>
       }
-      disConnected={<WalletToggle />}
+      disConnected={<WalletToggle fullWidth />}
     />
   );
 };

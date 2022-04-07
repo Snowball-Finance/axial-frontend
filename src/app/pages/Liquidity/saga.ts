@@ -19,6 +19,8 @@ import {
   SwapFlashLoanNoWithdrawFee,
 } from "abi/ethers-contracts";
 import {
+  commify,
+  formatBNToString,
   getContract,
   getProviderOrSigner,
 } from "app/containers/utils/contractUtils";
@@ -41,6 +43,7 @@ import { divide, multiply } from "precise-math";
 import { parseUnits } from "ethers/lib/utils";
 import { RewardsDomains } from "app/containers/Rewards/selectors";
 import { calculatePriceImpact } from "app/containers/Swap/utils/priceImpact";
+import { Zero } from "app/containers/Rewards/constants";
 import {
   checkAndApproveTokensInList,
   checkIfTokensAreVerified,
@@ -56,7 +59,10 @@ export function* buildTransactionData() {
   );
   const depositRaw = yield select(LiquidityPageDomains.depositRaw);
   const tokens = yield select(GlobalDomains.tokens);
-  const pool: Pool = yield select(LiquidityPageDomains.pool);
+  let pool: Pool = yield select(LiquidityPageDomains.pool);
+  const pools = yield select(RewardsDomains.pools);
+  pool = pools[pool.key];
+
   const fromStateData: FromTransactionData = {
     tokens: [],
     total: 0,
@@ -72,7 +78,9 @@ export function* buildTransactionData() {
         ...fromStateData?.tokens,
         {
           symbol: tokenKey,
-          value: parseFloat(depositTokenAmounts[tokenKey]),
+          value: commify(
+            formatBNToString(toSend ?? Zero, tokens[tokenKey].decimals)
+          ),
         },
       ];
       fromStateData.total =
@@ -102,7 +110,25 @@ export function* buildTransactionData() {
       true
     );
 
-    const shareOfPool = pool.poolData?.totalLocked.gt(0);
+    const tokenInputSum = parseUnits(
+      pool.poolTokens
+        .reduce((sum, { symbol }) => sum + (+tokenAmounts[symbol] || 0), 0)
+        .toString(),
+      18
+    );
+    let estDepositLPTokenAmount = Zero;
+
+    if (pool.poolData?.totalLocked.gt(0) && tokenInputSum.gt(0)) {
+      estDepositLPTokenAmount = minToMint;
+    } else {
+      estDepositLPTokenAmount = tokenInputSum;
+    }
+
+    const shareOfPool = pool.poolData?.totalLocked.gt(0)
+      ? estDepositLPTokenAmount
+          .mul(BigNumber.from(10).pow(18))
+          .div(estDepositLPTokenAmount.add(pool.poolData?.totalLocked))
+      : BigNumber.from(10).pow(18);
 
     yield put(
       LiquidityPageActions.setDepositTransactionData({
@@ -143,7 +169,7 @@ export function* buildWithdrawReviewData() {
 
   try {
     const gasPrices: GenericGasResponse = yield select(GlobalDomains.gasPrice);
-    const { gasFast } = gasPrices;
+    const { gasStandard } = gasPrices;
     const deadline = formatDeadlineToNumber(transactionDeadline);
 
     yield put(
@@ -151,7 +177,7 @@ export function* buildWithdrawReviewData() {
         tokens: tokensData,
         total,
         deadline,
-        gasPrice: gasFast.toString(),
+        gasPrice: gasStandard.toString(),
       })
     );
   } catch (error) {

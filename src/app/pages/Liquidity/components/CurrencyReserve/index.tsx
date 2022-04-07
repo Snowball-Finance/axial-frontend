@@ -15,7 +15,7 @@ export const CurrencyReserve: FC = () => {
     <StyledCurrencyReserve>
       <Grid container direction="column" spacing={2}>
         <Grid item>
-          <HeaderText variant="h4">
+          <HeaderText variant="h2">
             {t(translations.LiquidityPage.CurrencyReserves())}
           </HeaderText>
         </Grid>
@@ -48,5 +48,5 @@ const StyledCurrencyReserve = styled("div")({
 
 const HeaderText = styled(Typography)({
   color: CssVariables.white,
-  fontSize: "26px",
+  textTransform: "uppercase",
 });

@@ -1,5 +1,4 @@
-import { styled } from "@mui/material";
-import { SnowInput } from "app/components/base/SnowInput";
+import { styled, Typography } from "@mui/material";
 import { LiquidityPageSelectors } from "app/pages/Liquidity/selectors";
 import { useSelector } from "react-redux";
 import { CssVariables } from "styles/cssVariables/cssVariables";
@@ -9,22 +8,12 @@ export const PercentageText = () => {
     LiquidityPageSelectors.withdrawPercentage
   );
   return (
-    <InputField value={selectedPercentage.toString()} onChange={() => {}} />
+    <Text variant="body2" align="right">
+      {selectedPercentage.toString()}
+    </Text>
   );
 };
 
-const InputField = styled(SnowInput)({
-  ".MuiInputBase-root": {
-    color: CssVariables.white,
-    fontSize: "16px",
-    height: 40,
-  },
-
-  ".MuiInputBase-input": {
-    textAlign: "right",
-  },
-
-  ".MuiOutlinedInput-notchedOutline": {
-    border: "none",
-  },
+const Text = styled(Typography)({
+  color: CssVariables.white,
 });

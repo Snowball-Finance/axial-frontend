@@ -12,13 +12,18 @@ export const IconWithTitle: FC<{ tokenSymbol?: string }> = ({
 
   return (
     <TokenIconContainer>
-      <Grid container spacing={1} alignItems="center" justifyContent="center">
+      <Grid
+        container
+        spacing={1}
+        alignItems="center"
+        justifyContent="flex-start"
+      >
         <Grid item>
           <TokenIcon src={token?.logo} alt={`token-${token?.address}`} />
         </Grid>
 
         <Grid item>
-          <TokenTitle variant="body2">{token?.symbol}</TokenTitle>
+          <TokenTitle variant="h2">{token?.symbol}</TokenTitle>
         </Grid>
       </Grid>
     </TokenIconContainer>
@@ -27,19 +32,15 @@ export const IconWithTitle: FC<{ tokenSymbol?: string }> = ({
 
 const TokenIconContainer = styled("div")({
   border: `2px solid ${CssVariables.cardBorder}`,
-  borderRadius: CssVariables.buttonBorderRadius,
-  padding: 5,
-  minWidth: 150,
-
-  [mobile]: {
-    minWidth: 100,
-  },
+  borderRadius: "20px",
+  padding: "6px 16px",
 });
 
 const TokenTitle = styled(Typography)({});
 
 const TokenIcon = styled("img")({
-  width: "33px",
+  width: "32px",
+  height: "32px",
 
   [mobile]: {
     width: "25px",

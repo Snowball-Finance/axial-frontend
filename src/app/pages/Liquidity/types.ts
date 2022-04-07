@@ -53,7 +53,7 @@ export interface ActionButtonProps {
 
 interface FromTokens {
   symbol: string;
-  value: number;
+  value: string;
 }
 
 interface ToTokens {
@@ -69,7 +69,7 @@ export interface FromTransactionData {
 export interface DepositTransactionData {
   from: FromTransactionData;
   to: ToTokens;
-  share: boolean | undefined;
+  share: BigNumber | undefined;
 }
 
 export interface WithdrawReviewData {

@@ -1,8 +1,6 @@
 import React, { FC } from "react";
 import { styled, Grid, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
-import { useTranslation } from "react-i18next";
-import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { CardWrapper } from "app/components/wrappers/Card";
 import { LiquidityPageSelectors } from "../../../selectors";
@@ -17,20 +15,13 @@ import { WithdrawApproveButton } from "./components/approveButton";
 import { WithdrawButton } from "./components/withdrawButton";
 
 export const WithdrawModal: FC = () => {
-  const { t } = useTranslation();
 
   const withdrawReviewData = useSelector(
     LiquidityPageSelectors.withdrawReviewData
   );
 
   return (
-    <Grid container direction="column" spacing={1}>
-      <Grid item>
-        <Text variant="h6">
-          {t(translations.LiquidityPage.Modal.ReviewWithdraw())}
-        </Text>
-      </Grid>
-
+    <StyledContainer container direction="column" spacing={2}>
       <Grid item>
         <CardWrapper>
           <Grid container direction="column" spacing={2}>
@@ -47,7 +38,7 @@ export const WithdrawModal: FC = () => {
                   </Grid>
 
                   <Grid item xs zeroMinWidth>
-                    <Text variant="h6" noWrap align="right">
+                    <Text variant="h2" noWrap align="right">
                       {item.value}
                     </Text>
                   </Grid>
@@ -98,9 +89,14 @@ export const WithdrawModal: FC = () => {
           </Grid>
         </Grid>
       </Grid>
-    </Grid>
+    </StyledContainer>
   );
 };
+
+const StyledContainer = styled(Grid)({
+  marginTop: 20,
+  width: 600,
+});
 
 const Text = styled(Typography)({
   color: CssVariables.white,

@@ -25,10 +25,10 @@ const BpIcon = styled("span")({
   borderRadius: "50%",
   width: CssVariables.radioWidth,
   height: CssVariables.radioHeight,
-  border: `2px solid ${CssVariables.primary}`,
+  border: `2px solid ${CssVariables.green}`,
   backgroundColor: "transparent",
   "input:hover ~ &": {
-    backgroundColor: CssVariables.primary,
+    backgroundColor: CssVariables.green,
   },
   "input:disabled ~ &": {
     boxShadow: "none",
@@ -42,7 +42,7 @@ const BpIcon = styled("span")({
 });
 
 const BpCheckedIcon = styled(BpIcon)({
-  backgroundColor: CssVariables.primary,
+  backgroundColor: CssVariables.green,
   "&:before": {
     display: "block",
     width: CssVariables.radioWidth,
@@ -50,6 +50,6 @@ const BpCheckedIcon = styled(BpIcon)({
     content: '""',
   },
   "input:hover ~ &": {
-    backgroundColor: CssVariables.primary,
+    backgroundColor: CssVariables.green,
   },
 });

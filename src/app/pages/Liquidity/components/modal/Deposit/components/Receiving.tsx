@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { CardWrapper } from "app/components/wrappers/Card";
 import { LiquidityPageSelectors } from "app/pages/Liquidity/selectors";
-import { formatBNToString } from "app/containers/utils/contractUtils";
+import { commify, formatBNToString } from "app/containers/utils/contractUtils";
 import { Zero } from "app/containers/Rewards/constants";
 import { IconWithTitle } from "../../components/IconWithTitle";
 
@@ -23,14 +23,14 @@ export const Receiving: FC = () => {
         spacing={{ xs: 2, xl: 0 }}
       >
         <Grid item>
-          <Text variant="h6">
-            <IconWithTitle tokenSymbol={depositTransactionData?.to.symbol} />
-          </Text>
+          <IconWithTitle tokenSymbol={depositTransactionData?.to.symbol} />
         </Grid>
 
         <Grid item xs zeroMinWidth>
-          <Text variant="h6" noWrap align="right">
-            {formatBNToString(depositTransactionData?.to.value ?? Zero, 18)}
+          <Text variant="h2" noWrap align="right">
+            {commify(
+              formatBNToString(depositTransactionData?.to.value ?? Zero, 18)
+            )}
           </Text>
         </Grid>
       </Grid>

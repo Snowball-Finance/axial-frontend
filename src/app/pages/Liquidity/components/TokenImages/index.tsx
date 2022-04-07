@@ -22,7 +22,9 @@ export const TokenImages: FC<TokenImageProps> = ({ poolKey }) => {
               <PoolTokenImage src={token.logo} alt={`token-${token.symbol}`} />
             </Grid>
             <Grid item>
-              <PoolInfoTitleText>{token.symbol}</PoolInfoTitleText>
+              <PoolInfoTitleText variant="body1">
+                {token.symbol}
+              </PoolInfoTitleText>
             </Grid>
           </Grid>
         </Grid>
@@ -41,8 +43,6 @@ const StyledContainer = styled(Grid)({
 
 const PoolInfoTitleText = styled(Typography)({
   color: CssVariables.white,
-  fontSize: "16px",
-  fontWeight: "bold",
 
   [mobile]: {
     fontSize: "14px",
@@ -50,9 +50,10 @@ const PoolInfoTitleText = styled(Typography)({
 });
 
 const PoolTokenImage = styled("img")({
-  width: "33px",
+  width: "22px",
+  height: "22px",
 
   [mobile]: {
-    width: "25px",
+    width: "22px",
   },
 });

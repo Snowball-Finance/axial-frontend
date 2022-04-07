@@ -50,7 +50,7 @@ html {
   --buttonBorderRadius: 60px;
   --primaryDisabled: rgba(209, 94, 44, 0.25);
   --chipBackgroundColor: #3a2e6b;
-  --poolCardBackground: #00103b;
+  --poolCardBackground: rgba(0, 16, 59, 0.6);
   --cardBorder: #4d2f43;
   --swapInputbackground: #06041d;
   --paperBorderRadius: 12px;
@@ -59,8 +59,8 @@ html {
   --modalOverlayBackground: rgba(6, 4, 29, 0.7);
 
   /* Radio */
-  --radioWidth: 24px;
-  --radioHeight: 24px;
+  --radioWidth: 18px;
+  --radioHeight: 18px;
 
   /* ag grid related styles */
   --ag-border-color: transparent;

@@ -36,26 +36,36 @@ export const WithdrawInput: FC = () => {
     <StyledWithdrawInput>
       <Grid container direction="column" spacing={2}>
         <Grid item>
-          <HeaderText variant="h4">
+          <HeaderText variant="h2">
             {t(translations.LiquidityPage.Withdraw.Title())}
           </HeaderText>
         </Grid>
 
         <Grid item>
-          <WithdrawSlider />
-        </Grid>
-
-        <Grid item>
-          <Grid container justifyContent="space-between" alignItems="center">
-            <Grid item xs={8}>
-              <SubtitleText variant="body2">
-                {t(translations.LiquidityPage.Withdraw.WithdrawlPercentage())}{" "}
-                (%):
-              </SubtitleText>
+          <Grid container>
+            <Grid item xs={12}>
+              <WithdrawSlider />
             </Grid>
 
-            <Grid item xs={4}>
-              <PercentageText />
+            <Grid item xs={12}>
+              <Grid
+                container
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                <Grid item>
+                  <SubtitleText variant="body2">
+                    {t(
+                      translations.LiquidityPage.Withdraw.WithdrawlPercentage()
+                    )}{" "}
+                    (%):
+                  </SubtitleText>
+                </Grid>
+
+                <Grid item>
+                  <PercentageText />
+                </Grid>
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
@@ -80,7 +90,7 @@ export const WithdrawInput: FC = () => {
           </Grid>
         </Grid>
 
-        <Grid item alignSelf="center">
+        <Grid item>
           <WithdrawButton />
         </Grid>
       </Grid>
@@ -104,7 +114,7 @@ const StyledWithdrawInput = styled("div")({
 
 const HeaderText = styled(Typography)({
   color: CssVariables.white,
-  fontSize: "26px",
+  textTransform: "uppercase",
 });
 
 const SubtitleText = styled(Typography)({

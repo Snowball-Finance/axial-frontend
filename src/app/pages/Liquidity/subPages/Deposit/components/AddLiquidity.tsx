@@ -19,7 +19,7 @@ export const AddLiquidity: FC = () => {
     <StyledAddLiquidity>
       <Grid container direction="column" spacing={2}>
         <Grid item>
-          <HeaderText variant="h4">
+          <HeaderText variant="h2">
             {t(translations.LiquidityPage.AddLiquidity.Title())}
           </HeaderText>
         </Grid>
@@ -30,7 +30,7 @@ export const AddLiquidity: FC = () => {
           <AdvanceOption />
         </Grid>
 
-        <Grid item alignSelf="center">
+        <Grid item>
           <DepositButton />
         </Grid>
       </Grid>
@@ -54,5 +54,5 @@ const StyledAddLiquidity = styled("div")({
 
 const HeaderText = styled(Typography)({
   color: CssVariables.white,
-  fontSize: "26px",
+  textTransform: "uppercase",
 });

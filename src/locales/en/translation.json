@@ -26,7 +26,7 @@
     "WalletBalance": "Wallet Balance",
     "Message": "Output is estimated. If the price changes by more than the max slippage your transaction will revert.",
     "Info": {
-      "Balance": "Balance",
+      "Balance": "Your TVL",
       "SwapAPR": "Swap APR",
       "TVL": "TVL",
       "24hVolume": "24h volume"
@@ -49,24 +49,25 @@
     },
     "Withdraw": {
       "Title": "Withdraw",
-      "WithdrawlPercentage": "Withdrawl Percentage",
+      "WithdrawlPercentage": "Withdraw percentage",
       "Bonus": "Bonus"
     },
     "Modal": {
       "ReviewDeposit": "Review Deposit",
       "Total": "Total",
       "Receiving": "Receiving",
-      "ShareOfPoll": "share of pool",
-      "MaxSlippage": "max slippage",
-      "Rates": "rates",
+      "ShareOfPoll": "Share of pool",
+      "MaxSlippage": "Max slippage",
+      "Rates": "Rates",
       "ReviewWithdraw": "Review Withdraw",
-      "Gas": "gas",
-      "TxnDeadline": "txn deadline"
+      "Gas": "Gas",
+      "TxnDeadline": "Txn deadline"
     },
     "Buttons": {
       "Cancel": "Cancel",
-      "ConfirmDeposit": "Confirm Deposit",
-      "ConfirmWithdraw": "Confirm Withdraw"
+      "ApproveTokens": "Approve Tokens",
+      "ConfirmDeposit": "Deposit",
+      "ConfirmWithdraw": "Withdraw"
     }
   },
   "RewardsPage": {

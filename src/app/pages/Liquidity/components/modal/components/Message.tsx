@@ -11,7 +11,7 @@ export const Message: FC = () => {
 
   return (
     <CardWrapper>
-      <Text variant="body2">{t(translations.LiquidityPage.Message())}</Text>
+      <Text variant="body1">{t(translations.LiquidityPage.Message())}</Text>
     </CardWrapper>
   );
 };

@@ -26,8 +26,12 @@ export const WithdrawInput = ({ token }: { token: Token }) => {
 const CurrencyInputField = styled(SnowInput)({
   ".MuiInputBase-root": {
     color: CssVariables.white,
-    fontSize: "16px",
-    width: 80,
+    fontSize: "26px",
+  },
+
+  ".MuiOutlinedInput-input": {
+    padding: 0,
+    textAlign: "right",
   },
 
   ".MuiOutlinedInput-notchedOutline": {

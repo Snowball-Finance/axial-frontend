@@ -9,6 +9,7 @@ import { LiquidityDepositInput } from "./input";
 import { Pool } from "app/containers/Rewards/types";
 import { WalletBalance } from "./walletBalance";
 import { EquivalentTokenPriceUSD } from "app/pages/Liquidity/subPages/Deposit/components/EquivalentTokenPriceUSD";
+import { Max } from "./Max";
 
 export const CurrencyInputs: FC = () => {
   const tokens = useSelector(globalSelectors.tokens) as Token[];
@@ -23,7 +24,7 @@ export const CurrencyInputs: FC = () => {
         <Grid item key={token.address}>
           <Grid container direction="column" spacing={1}>
             <Grid item alignSelf="end">
-              <WalletBalance token={tokens[token.symbol]} />
+              <Max token={tokens[token.symbol]} />
             </Grid>
 
             <Grid item>
@@ -32,32 +33,41 @@ export const CurrencyInputs: FC = () => {
                 justifyContent="space-between"
                 alignItems="center"
               >
-                <Grid item>
-                  <Grid container spacing={1}>
+                <TokenIconContainer item>
+                  <Grid
+                    container
+                    spacing={1}
+                    alignItems="center"
+                    justifyContent="flex-start"
+                  >
                     <Grid item>
                       <IconImage src={token.logo} alt="icon"></IconImage>
                     </Grid>
 
-                    <Grid item>
-                      <TokenText variant="h6">{token.symbol}</TokenText>
+                    <Grid item alignSelf="center">
+                      <TokenText variant="h2">{token.symbol}</TokenText>
                     </Grid>
                   </Grid>
-                </Grid>
+                </TokenIconContainer>
 
-                <Grid item>
-                  <Grid container spacing={1} alignItems="center">
-                    <Grid item>
+                <Grid item xs={6}>
+                  <Grid container>
+                    <Grid item xs={12}>
                       <LiquidityDepositInput
                         tokenSymbol={token.symbol as TokenSymbols}
                       />
                     </Grid>
 
-                    <Grid item>
+                    <Grid item xs={12}>
                       <EquivalentTokenPriceUSD token={token} />
                     </Grid>
                   </Grid>
                 </Grid>
               </StyledCurrencyInput>
+            </Grid>
+
+            <Grid item alignSelf="end">
+              <WalletBalance token={tokens[token.symbol]} />
             </Grid>
           </Grid>
         </Grid>
@@ -71,11 +81,18 @@ const StyledCurrencyInput = styled(Grid)({
   backgroundColor: CssVariables.swapInputbackground,
   border: `4px solid ${CssVariables.cardBorder}`,
   borderRadius: "20px",
-  padding: "5px 20px",
+  padding: "12px 36px",
+});
+
+const TokenIconContainer = styled(Grid)({
+  border: `2px solid ${CssVariables.cardBorder}`,
+  borderRadius: "20px",
+  padding: 10,
 });
 
 const IconImage = styled("img")({
-  width: "33px",
+  width: "32px",
+  height: "32px",
 });
 
 const TokenText = styled(Typography)({
