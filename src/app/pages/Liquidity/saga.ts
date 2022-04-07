@@ -217,20 +217,6 @@ export function* withdraw() {
         library,
         account ?? undefined
       );
-
-      const amounts = yield call(
-        swapContract.calculateRemoveLiquidity,
-        lpTokenAmountToSpend
-      );
-      console.log(amounts);
-      const inputs = selectedPool.poolTokens.reduce(
-        (acc, { symbol }, i) => ({
-          ...acc,
-          [symbol]: amounts[i],
-        }),
-        {}
-      );
-      console.log(inputs);
     }
 
     const dataToSend: WithdrawPayload = {
