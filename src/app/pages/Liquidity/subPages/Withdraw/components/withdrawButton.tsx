@@ -11,13 +11,17 @@ import { useDispatch, useSelector } from "react-redux";
 export const WithdrawButton = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const selectedPool = useSelector(LiquidityPageSelectors.selectedPool);
+  const userShareData = useSelector(
+    RewardsSelectors.userShareData(selectedPool?.key)
+  );
   const withdrawTokens = useSelector(
     LiquidityPageSelectors.withdrawTokenAmounts
   );
 
-  const disabled = Object.values(withdrawTokens).every(
-    (tokenAmount) => tokenAmount === "0"
-  );
+  const disabled =
+    Object.values(withdrawTokens).every((tokenAmount) => tokenAmount === "0") ||
+    !userShareData;
   const isWithdrawing = useSelector(RewardsSelectors.isWithdrawing);
 
   const handleWithdrawClick = () => {

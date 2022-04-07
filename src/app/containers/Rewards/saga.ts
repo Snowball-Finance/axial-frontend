@@ -381,7 +381,6 @@ export function* withdraw(action: { type: string; payload: WithdrawPayload }) {
           deadline
         );
       } else {
-        console.log("else");
         spendTransaction = yield call(
           targetContract.removeLiquidityOneToken,
           lpTokenAmountToSpend,
@@ -397,11 +396,6 @@ export function* withdraw(action: { type: string; payload: WithdrawPayload }) {
       }
       yield call(spendTransaction.wait);
     } else {
-      console.log({
-        masterchefContract,
-        masterChefId: pool.lpToken.masterchefId,
-        amount: tokenAmounts[pool.lpToken.symbol],
-      });
       yield call(
         masterchefContract.withdraw,
         pool.lpToken.masterchefId,
@@ -409,6 +403,8 @@ export function* withdraw(action: { type: string; payload: WithdrawPayload }) {
       );
     }
     yield put(RewardsActions.setIsWithdrawing(false));
+    toast.success("withdraw success");
+    yield put(GlobalActions.getTokenBalances());
   } catch (e: any) {
     console.log(e);
     if (e?.code === -32603) {
