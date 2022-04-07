@@ -15,6 +15,7 @@ import { getKeyFromPoolIndex } from "app/pages/Liquidity/constants";
 import { LiquidityPageSelectors } from "app/pages/Liquidity/selectors";
 import { Token, TokenSymbols } from "app/containers/Swap/types";
 import { LiquidityPageActions } from "app/pages/Liquidity/slice";
+import { TypeOfTokensToWithdraw } from "app/pages/Liquidity/types";
 
 type TParams = { poolIndex: string };
 
@@ -29,7 +30,9 @@ export const Selection: FC = memo(
     const selectedToken = useSelector(
       LiquidityPageSelectors.selectedTokenToWithdraw
     );
-    const setSelectedTokenToWithdraw = (e: "combo" | TokenSymbols) => {
+    const setSelectedTokenToWithdraw = (
+      e: TypeOfTokensToWithdraw.Combo | TokenSymbols
+    ) => {
       dispatch(
         LiquidityPageActions.setSelectedTokenToWithdraw({
           symbol: e as TokenSymbols,
@@ -41,9 +44,15 @@ export const Selection: FC = memo(
       <Grid item>
         <StyledWithdrawOption>
           <StyledRadioGroup row>
-            <StyledFormControlLabel
-              onClick={() => setSelectedTokenToWithdraw("combo")}
-              control={<SnowRadio checked={selectedToken === "combo"} />}
+            <FormControlLabel
+              onClick={() =>
+                setSelectedTokenToWithdraw(TypeOfTokensToWithdraw.Combo)
+              }
+              control={
+                <SnowRadio
+                  checked={selectedToken === TypeOfTokensToWithdraw.Combo}
+                />
+              }
               label="Combo"
             />
             {poolTokens.map((token: Token) => (

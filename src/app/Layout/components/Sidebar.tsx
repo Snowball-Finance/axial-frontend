@@ -2,7 +2,6 @@ import React, { ReactElement } from "react";
 import { styled } from "@mui/material";
 import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-
 import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import SocialLinks from "./SocialLink";
@@ -21,7 +20,6 @@ export default function Sidebar(): ReactElement {
               to={nav.to}
               isActive={(match, location) => {
                 let pathStrings = location.pathname.split("/");
-
                 if (match) {
                   return true;
                 } else if (pathStrings[1] === nav.name) {
@@ -40,7 +38,6 @@ export default function Sidebar(): ReactElement {
           </ListItem>
         ))}
       </List>
-
       <SocialLinks />
     </StyledSidebar>
   );

@@ -90,7 +90,6 @@ export function* swap() {
       swapRouterABI,
       getProviderOrSigner(library, account)
     ) as AxialAggregator;
-    const toTokenAddress = bestPath.path[bestPath.path.length - 1];
 
     const amountToReceive = bestPath.amounts[bestPath.amounts.length - 1];
     const amountToGive = bestPath.amounts[0];
@@ -108,7 +107,7 @@ export function* swap() {
     const swapTransaction = yield call(
       swapRouterContract.swap,
       swapData,
-      toTokenAddress,
+      account,
       SWAP_ROUTER_FEE,
       useInternalRouter
     );

@@ -9,14 +9,12 @@ export const GlobalDomains = {
   tokenPricesUSD: (state: RootState) => state?.global?.tokenPricesUSD || {},
   gasPrice: (state: RootState) => state?.global?.gasPrice || undefined,
   tokens: (state: RootState) => state?.global?.tokens || undefined,
-  infiniteApproval: (state: RootState) =>
-    state.global?.infiniteApproval || initialState.infiniteApproval,
+  infiniteApproval: (state: RootState) => state.global?.infiniteApproval,
   tokensInQueueToApprove: (state: RootState) =>
     state.global?.tokensInQueueToApprove || initialState.tokensInQueueToApprove,
   selectedSlippage: (state: RootState) =>
     state.global?.selectedSlippage || initialState.selectedSlippage,
-  customSlippage: (state: RootState) =>
-    state.global?.customSlippage || initialState.customSlippage,
+  customSlippage: (state: RootState) => state.global?.customSlippage,
   transactionSuccessId: (state: RootState) =>
     state.global?.transactionSuccessId || initialState.transactionSuccessId,
   isAdvancedOptionsOpen: (state: RootState) =>

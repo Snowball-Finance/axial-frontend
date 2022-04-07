@@ -1,6 +1,5 @@
 import { globalSelectors } from "app/appSelectors";
 import { ContainedButton } from "app/components/common/buttons/containedButton";
-import { RewardsSelectors } from "app/containers/Rewards/selectors";
 import { RewardsActions } from "app/containers/Rewards/slice";
 import { Pools, WithdrawType } from "app/containers/Rewards/types";
 import { TokenSymbols } from "app/containers/Swap/types";
@@ -8,15 +7,12 @@ import { tokens } from "app/tokens";
 import { floatToBN } from "common/format";
 import { BigNumber } from "ethers";
 import { useDispatch, useSelector } from "react-redux";
-import { GlobalActions } from "store/slice";
-import { TokensToVerifyPayload } from "utils/tokenVerifier";
 
 export const Playground = () => {
   const dispatch = useDispatch();
-  const pools = useSelector(RewardsSelectors.pools);
   const handleDepositIntoAM3DStablecoinsButtonClicked = () => {
     dispatch(
-      RewardsActions.approveAndDeposit({
+      RewardsActions.deposit({
         shouldDepositWrapped: false,
         poolKey: Pools.AXIAL_AM3D,
         tokenAmounts: {
@@ -33,7 +29,7 @@ export const Playground = () => {
 
   const handlewithMasterchefClicked = () => {
     dispatch(
-      RewardsActions.approveAndDeposit({
+      RewardsActions.deposit({
         shouldDepositWrapped: false,
         poolKey: Pools.AXIAL_AM3D,
         masterchefDeposit: true,
@@ -48,7 +44,7 @@ export const Playground = () => {
   };
   const handleWithdrawStableCoins = () => {
     dispatch(
-      RewardsActions.approveAndWithdraw({
+      RewardsActions.withdraw({
         poolKey: Pools.AXIAL_AM3D,
         type: WithdrawType.ALL,
         lpTokenAmountToSpend:
@@ -67,48 +63,6 @@ export const Playground = () => {
   };
   const tokensInQueue = useSelector(globalSelectors.tokensInQueueToApprove);
 
-  const handleCheckIfTokensAreVerified = () => {
-    const pool = pools[Pools.AXIAL_AM3D];
-    if (pool) {
-      const tokensToApprove = pool?.poolTokens;
-      const list: TokensToVerifyPayload["tokensToVerify"] = tokensToApprove.map(
-        (token) => {
-          return {
-            amount: BigNumber.from("12"),
-            swapAddress: pool?.swapAddress || pool?.address,
-            token: token,
-          };
-        }
-      );
-      dispatch(
-        GlobalActions.checkIfListOfTokensAreApproved({
-          tokensToVerify: list,
-        })
-      );
-    }
-  };
-
-  const handleApproveListOfTokens = () => {
-    const pool = pools[Pools.AXIAL_AM3D];
-    if (pool) {
-      const tokensToApprove = pool?.poolTokens;
-      const list: TokensToVerifyPayload["tokensToVerify"] = tokensToApprove.map(
-        (token) => {
-          return {
-            amount: BigNumber.from("12"),
-            swapAddress: pool?.swapAddress || pool?.address,
-            token: token,
-          };
-        }
-      );
-      dispatch(
-        GlobalActions.approveListOfTokens({
-          tokensToVerify: list,
-        })
-      );
-    }
-  };
-
   return (
     <>
       <ContainedButton onClick={handleDepositIntoAM3DStablecoinsButtonClicked}>
@@ -119,12 +73,6 @@ export const Playground = () => {
       </ContainedButton>
       <ContainedButton onClick={handleWithdrawStableCoins}>
         withdraw AM3D Stablecoins
-      </ContainedButton>
-      <ContainedButton onClick={handleCheckIfTokensAreVerified}>
-        check If TokensAre Verified
-      </ContainedButton>
-      <ContainedButton onClick={handleApproveListOfTokens}>
-        approve List Of Tokens
       </ContainedButton>
 
       <ul>

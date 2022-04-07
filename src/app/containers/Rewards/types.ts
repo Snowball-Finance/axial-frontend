@@ -79,7 +79,7 @@ export interface Pool {
   poolData?: PoolData;
   userShareData?: UserShareData;
 }
-export interface ApproveAndDepositPayload {
+export interface DepositPayload {
   poolKey: Pools;
   masterchefDeposit?: boolean;
   shouldDepositWrapped: boolean;
@@ -90,12 +90,13 @@ export enum WithdrawType {
   ALL = "ALL",
   IMBALANCE = "IMBALANCE",
 }
-export interface ApproveAndWithdrawPayload {
+export type TokenAmounts = { [K in TokenSymbols]?: BigNumber };
+export interface WithdrawPayload {
   poolKey: Pools;
   masterchefwithdraw?: boolean;
   type: WithdrawType | TokenSymbols;
   lpTokenAmountToSpend: BigNumber;
-  tokenAmounts: { [K in TokenSymbols]?: BigNumber };
+  tokenAmounts: TokenAmounts;
 }
 
 export interface TokenShareType {

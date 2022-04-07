@@ -1,15 +1,10 @@
 import React, { FC } from "react";
 import { styled, Grid, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-
+import { useSelector } from "react-redux";
 import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { CardWrapper } from "app/components/wrappers/Card";
-import { OutlinedButton } from "app/components/common/buttons/outlinedButton";
-import { ContainedButton } from "app/components/common/buttons/containedButton";
-import { RewardsSelectors } from "app/containers/Rewards/selectors";
-import { LiquidityPageActions } from "../../../slice";
 import { LiquidityPageSelectors } from "../../../selectors";
 import { IconWithTitle } from "../components/IconWithTitle";
 import { Message } from "../components/Message";
@@ -18,24 +13,15 @@ import { Rates } from "./components/Rates";
 import { Total } from "./components/Total";
 import { Receiving } from "./components/Receiving";
 import { Share } from "./components/Share";
+import { DepositApproveButton } from "./components/approveButton";
+import { ConfirmButton } from "./components/confirmButton";
 
 export const DepositModal: FC = () => {
   const { t } = useTranslation();
 
-  const isDepositing = useSelector(RewardsSelectors.isDepositing);
   const depositTransactionData = useSelector(
     LiquidityPageSelectors.depositTransactionData
   );
-
-  const dispatch = useDispatch();
-
-  const handleCancelClick = () => {
-    dispatch(LiquidityPageActions.setDepositTransactionData(undefined));
-  };
-
-  const handleDepositClick = () => {
-    dispatch(LiquidityPageActions.deposit());
-  };
 
   return (
     <StyledContainer container direction="column" spacing={2}>
@@ -104,20 +90,11 @@ export const DepositModal: FC = () => {
 
       <Grid item>
         <Grid container justifyContent="center" alignItems="center" spacing={2}>
-          <Grid item xs={6}>
-            <OutlinedButton onClick={handleCancelClick} fullWidth>
-              {t(translations.LiquidityPage.Buttons.ApproveTokens())}
-            </OutlinedButton>
+          <Grid item>
+            <DepositApproveButton />
           </Grid>
-
-          <Grid item xs={6}>
-            <ContainedButton
-              onClick={handleDepositClick}
-              loading={isDepositing}
-              fullWidth
-            >
-              {t(translations.LiquidityPage.Buttons.ConfirmDeposit())}
-            </ContainedButton>
+          <Grid item>
+            <ConfirmButton />
           </Grid>
         </Grid>
       </Grid>

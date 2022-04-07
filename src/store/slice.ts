@@ -35,7 +35,9 @@ export const initialState: GlobalState = {
   selectedSlippage:
     storage.read(LocalStorageKeys.SELECTED_SLIPPAGE) || Slippages.OneTenth,
   customSlippage:
-    storage.read(LocalStorageKeys.ENTERED_CUSTOM_SLIPPAGE) || undefined,
+    storage.read(LocalStorageKeys.SELECTED_SLIPPAGE) !== Slippages.Custom
+      ? undefined
+      : storage.read(LocalStorageKeys.ENTERED_CUSTOM_SLIPPAGE) || undefined,
   isAdvancedOptionsOpen:
     storage.read(LocalStorageKeys.IS_ADVANCED_OPTIONS_OPEN) || false,
   transactionSuccessId: undefined,
@@ -85,6 +87,7 @@ const globalSlice = createSlice({
       state.customSlippage = undefined;
       state.selectedSlippage = action.payload;
       storage.write(LocalStorageKeys.SELECTED_SLIPPAGE, action.payload);
+      storage.delete(LocalStorageKeys.ENTERED_CUSTOM_SLIPPAGE);
     },
     setISAdvancedOptionsOpen(state, action: PayloadAction<boolean>) {
       state.isAdvancedOptionsOpen = action.payload;
