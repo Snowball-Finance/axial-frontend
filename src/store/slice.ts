@@ -87,6 +87,7 @@ const globalSlice = createSlice({
       state.customSlippage = undefined;
       state.selectedSlippage = action.payload;
       storage.write(LocalStorageKeys.SELECTED_SLIPPAGE, action.payload);
+      storage.delete(LocalStorageKeys.ENTERED_CUSTOM_SLIPPAGE);
     },
     setISAdvancedOptionsOpen(state, action: PayloadAction<boolean>) {
       state.isAdvancedOptionsOpen = action.payload;
