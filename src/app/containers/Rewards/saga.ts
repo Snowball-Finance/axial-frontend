@@ -17,8 +17,8 @@ import { getVaultRewardAprNow } from "./providers/getVaultRewardsAPR";
 import { RewardsDomains } from "./selectors";
 import { RewardsActions } from "./slice";
 import {
-  ApproveAndDepositPayload,
-  ApproveAndWithdrawPayload,
+  DepositPayload,
+  WithdrawPayload,
   MasterchefResponse,
   Pool,
   Pools,
@@ -28,17 +28,13 @@ import {
 import LPTOKEN_UNGUARDED_ABI from "abi/lpTokenUnguarded.json";
 import { calculatePoolData } from "./utils/calculatePoolData";
 import { LpTokenUnguarded } from "abi/ethers-contracts/LpTokenUnguarded";
-import { GenericGasResponse } from "app/providers/gasPrice";
 import { Token, TokenSymbols } from "../Swap/types";
 import { AXIAL_MASTERCHEF_CONTRACT_ADDRESS } from "./constants";
 import MASTERCHEF_ABI from "abi/masterchef.json";
-import { parseUnits } from "@ethersproject/units";
 import checkAndApproveTokenForTrade from "../utils/checkAndApproveTokenForTrade";
 import { Erc20, SwapFlashLoanNoWithdrawFee } from "abi/ethers-contracts";
-import { IS_DEV } from "environment";
 import { addSlippage, subtractSlippage } from "../../../utils/slippage";
 import { Deadlines, formatDeadlineToNumber } from "./utils/deadline";
-import { formatUnits } from "ethers/lib/utils";
 import { GlobalActions } from "store/slice";
 import { toast } from "react-toastify";
 
@@ -239,10 +235,7 @@ export function* resetTokensInQueueForApproval(tokenSymbols: TokenSymbols[]) {
   }
 }
 
-export function* approveAndDeposit(action: {
-  type: string;
-  payload: ApproveAndDepositPayload;
-}) {
+export function* deposit(action: { type: string; payload: DepositPayload }) {
   const { poolKey, masterchefDeposit, tokenAmounts, shouldDepositWrapped } =
     action.payload;
   const pools = yield select(RewardsDomains.pools);
@@ -253,11 +246,6 @@ export function* approveAndDeposit(action: {
     : masterchefDeposit
     ? [pool.lpToken]
     : pool.poolTokens;
-  const tokenSymbols = poolTokens.map(
-    (token) => token.symbol
-  ) as TokenSymbols[];
-  yield put(GlobalActions.emptyTokensInQueueForApproval());
-  yield call(resetTokensInQueueForApproval, tokenSymbols);
 
   try {
     yield put(RewardsActions.setIsDepositing(true));
@@ -285,33 +273,6 @@ export function* approveAndDeposit(action: {
       library,
       account ?? undefined
     ) as LpTokenUnguarded;
-
-    const gasPrices: GenericGasResponse = yield select(GlobalDomains.gasPrice);
-    const { gasFast } = gasPrices;
-    const gasPrice = parseUnits(String(gasFast) || "45", 9);
-    if (IS_DEV) {
-      for (const token of poolTokens) {
-        yield call(approveSingleToken, {
-          token,
-          swapAddress: pool.swapAddress || pool.address,
-          gasPrice,
-          amount: tokenAmounts[token.symbol],
-        });
-      }
-    } else {
-      const callArray: any = [];
-      for (const token of poolTokens) {
-        callArray.push(
-          call(approveSingleToken, {
-            token,
-            swapAddress: pool.swapAddress || pool.address,
-            gasPrice,
-            amount: tokenAmounts[token.symbol],
-          })
-        );
-      }
-      yield all(callArray);
-    }
     if (!masterchefDeposit) {
       if (!lpTokenContract) return;
       const totalSupply = yield call(lpTokenContract.totalSupply);
@@ -329,7 +290,6 @@ export function* approveAndDeposit(action: {
       }
 
       minToMint = subtractSlippage(minToMint, selectedSlippage, customSlippage);
-
       const deadline = formatDeadlineToNumber(transactionDeadline);
       const txnAmounts = poolTokens.map(({ symbol }) => {
         const amount = tokenAmounts[symbol].toString();
@@ -361,28 +321,19 @@ export function* approveAndDeposit(action: {
       toast.error("balance is not enough for this transaction");
     }
     yield put(RewardsActions.setIsDepositing(false));
-    yield put(GlobalActions.emptyTokensInQueueForApproval());
-    // yield call(resetTokensInQueueForApproval, tokenSymbols);
   } finally {
-    yield put(GlobalActions.emptyTokensInQueueForApproval());
-    // yield call(resetTokensInQueueForApproval, tokenSymbols);
   }
 }
 
-export function* approveAndWithdraw(action: {
-  type: string;
-  payload: ApproveAndWithdrawPayload;
-}) {
+export function* withdraw(action: { type: string; payload: WithdrawPayload }) {
   yield put(RewardsActions.setIsWithdrawing(true));
   try {
     const selectedSlippage = yield select(GlobalDomains.selectedSlippage);
     const customSlippage = yield select(GlobalDomains.customSlippage);
     const transactionDeadline = Deadlines.Twenty;
-    const infiniteApproval = yield select(GlobalDomains.infiniteApproval);
     const pools = yield select(RewardsDomains.pools);
     const library = yield select(Web3Domains.selectLibraryDomain);
     const account = yield select(Web3Domains.selectAccountDomain);
-    console.log(action.payload);
     const {
       poolKey,
       tokenAmounts,
@@ -391,48 +342,18 @@ export function* approveAndWithdraw(action: {
       lpTokenAmountToSpend,
     } = action.payload;
     const pool: Pool = pools[poolKey];
-    console.log({ pool });
     const targetContract = new Contract(
       pool.address,
       pool.swapABI,
       getProviderOrSigner(library, account)
     );
-    const gasPrices: GenericGasResponse = yield select(GlobalDomains.gasPrice);
-    const { gasFast } = gasPrices;
     const masterchefContract = new Contract(
       AXIAL_MASTERCHEF_CONTRACT_ADDRESS,
       MASTERCHEF_ABI,
       library?.getSigner()
     );
-    const lpTokenContract = getContract(
-      pool.lpToken.address,
-      LPTOKEN_UNGUARDED_ABI,
-      library,
-      account ?? undefined
-    ) as LpTokenUnguarded;
-    const gasPrice = parseUnits(String(gasFast) || "45", 9);
+
     if (!masterchefwithdraw) {
-      const allowanceAmount =
-        type === WithdrawType.IMBALANCE
-          ? addSlippage(lpTokenAmountToSpend, selectedSlippage, customSlippage)
-          : lpTokenAmountToSpend;
-      yield call(
-        checkAndApproveTokenForTrade,
-        lpTokenContract as LpTokenUnguarded,
-        pool.swapAddress || pool.address,
-        account,
-        allowanceAmount,
-        infiniteApproval,
-        gasPrice,
-        {
-          onTransactionError: () => {
-            throw new Error("Your transaction could not be completed");
-          },
-        }
-      );
-      console.debug(
-        `lpTokenAmountToSpend: ${formatUnits(lpTokenAmountToSpend, 18)}`
-      );
       const deadline = Math.round(
         new Date().getTime() / 1000 +
           60 * formatDeadlineToNumber(transactionDeadline)
@@ -505,6 +426,6 @@ export function* rewardsSaga() {
   );
   yield takeLatest(RewardsActions.getMasterchefAPR.type, getMasterchefAPR);
   yield takeLatest(RewardsActions.getSwapStats.type, getSwapStats);
-  yield takeLatest(RewardsActions.approveAndDeposit.type, approveAndDeposit);
-  yield takeLatest(RewardsActions.approveAndWithdraw.type, approveAndWithdraw);
+  yield takeLatest(RewardsActions.deposit.type, deposit);
+  yield takeLatest(RewardsActions.withdraw.type, withdraw);
 }

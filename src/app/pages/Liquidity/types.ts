@@ -2,6 +2,11 @@ import { Pool, PoolData, UserShareData } from "app/containers/Rewards/types";
 import { Token, TokenSymbols } from "app/containers/Swap/types";
 import { BigNumber } from "ethers";
 
+export enum TypeOfTokensToWithdraw {
+  Combo = "combo",
+  Mixed = "mixed",
+}
+
 /* --- STATE --- */
 export interface LiquidityPageState {
   pools: Pool[] | undefined;
@@ -12,11 +17,14 @@ export interface LiquidityPageState {
   depositTokenAmounts: { [K in TokenSymbols]?: string };
   withdrawTokenAmounts: { [K in TokenSymbols]?: string };
   withdrawPercentage: number;
-  selectedTokenToWithdraw: "combo" | TokenSymbols | "mixed";
+  selectedTokenToWithdraw: TokenSymbols | TypeOfTokensToWithdraw;
   depositRaw: boolean;
   depositTransactionData: DepositTransactionData | undefined;
   withdrawReviewData: WithdrawReviewData | undefined;
   withdrawBonus: BigNumber | undefined;
+  tokensAreApprovedForDeposit: boolean;
+  tokensAreApprovedForWithdrawal: boolean;
+  isCheckingForApproval: boolean;
 }
 
 export interface WithdrawTokenAmountChangePayload {

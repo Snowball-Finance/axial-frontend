@@ -1,36 +1,14 @@
-import React, { ReactElement, useEffect } from "react";
+import React, { ReactElement } from "react";
 import { styled } from "@mui/material";
 import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-
 import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import SocialLinks from "./SocialLink";
 import { navigationRoutes } from "../constants";
 
-const clickPath = require("../../../assets/audio/click.mp3");
-let ableToPlay = false;
-const audio = new Audio(clickPath.default);
-const playClick = () => {
-  try {
-    audio.play();
-  } catch (e) {}
-};
-
 export default function Sidebar(): ReactElement {
   const { t } = useTranslation();
-  const handleMenuItemMouseOver = () => {
-    if (ableToPlay) {
-      playClick();
-    }
-  };
-  useEffect(() => {
-    document.addEventListener("click", () => {
-      ableToPlay = true;
-    });
-
-    return () => {};
-  }, []);
 
   return (
     <StyledSidebar>
@@ -40,13 +18,11 @@ export default function Sidebar(): ReactElement {
             <ListNavItem
               exact
               to={nav.to}
-              onMouseOver={handleMenuItemMouseOver}
               activeStyle={{
                 color: CssVariables.primary,
               }}
               isActive={(match, location) => {
                 let pathStrings = location.pathname.split("/");
-
                 if (match) {
                   return true;
                 } else if (pathStrings[1] === nav.name) {
@@ -65,7 +41,6 @@ export default function Sidebar(): ReactElement {
           </ListItem>
         ))}
       </List>
-
       <SocialLinks />
     </StyledSidebar>
   );

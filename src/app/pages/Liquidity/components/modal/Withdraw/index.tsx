@@ -1,79 +1,27 @@
 import React, { FC } from "react";
 import { styled, Grid, Typography } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
-import { BigNumber } from "ethers";
+import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-
 import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { CardWrapper } from "app/components/wrappers/Card";
-import { OutlinedButton } from "app/components/common/buttons/outlinedButton";
-import { ContainedButton } from "app/components/common/buttons/containedButton";
-import { RewardsSelectors } from "app/containers/Rewards/selectors";
-import { globalSelectors } from "app/appSelectors";
-import {
-  ApproveAndWithdrawPayload,
-  WithdrawType,
-} from "app/containers/Rewards/types";
-import { LiquidityPageActions } from "../../../slice";
 import { LiquidityPageSelectors } from "../../../selectors";
 import { IconWithTitle } from "../components/IconWithTitle";
 import { Message } from "../components/Message";
 import { Rates } from "./components/Rates";
 import { Total } from "./components/Total";
-import { floatToBN } from "common/format";
 import { Slippage } from "../components/Slippage";
 import { Deadline } from "./components/Deadline";
 import { GasPrice } from "./components/GasPrice";
-import { TokenSymbols } from "app/containers/Swap/types";
+import { WithdrawApproveButton } from "./components/approveButton";
+import { WithdrawButton } from "./components/withdrawButton";
 
 export const WithdrawModal: FC = () => {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
-  const isWithdrawing = useSelector(RewardsSelectors.isWithdrawing);
-  const selectedPool = useSelector(LiquidityPageSelectors.selectedPool);
+
   const withdrawReviewData = useSelector(
     LiquidityPageSelectors.withdrawReviewData
   );
-  const tokens = useSelector(globalSelectors.tokens);
-  const withdrawTokens = useSelector(
-    LiquidityPageSelectors.withdrawTokenAmounts
-  );
-
-  const handleCancelClick = () => {
-    dispatch(LiquidityPageActions.setWithdrawReviewData(undefined));
-  };
-
-  const handleWithdrawClick = () => {
-    if (selectedPool && tokens) {
-      const tokenAmounts = {};
-      for (let k in withdrawTokens) {
-        const v = withdrawTokens[k];
-        if (Number(v) > 0) {
-          const num = Number(v);
-          const toSend = floatToBN(num, tokens[k].decimals);
-          tokenAmounts[k] = toSend;
-        }
-      }
-
-      let type: WithdrawType | TokenSymbols = WithdrawType.IMBALANCE;
-      if (Object.keys(tokenAmounts).length === 1) {
-        type = Object.keys(tokenAmounts)[0] as TokenSymbols;
-      } else if (
-        Object.keys(tokenAmounts).length !== selectedPool.poolTokens.length
-      ) {
-        type = WithdrawType.IMBALANCE;
-      }
-
-      const dataToSend: ApproveAndWithdrawPayload = {
-        poolKey: selectedPool.key,
-        type,
-        lpTokenAmountToSpend: BigNumber.from(0),
-        tokenAmounts,
-      };
-      dispatch(LiquidityPageActions.withdraw(dataToSend));
-    }
-  };
 
   return (
     <Grid container direction="column" spacing={1}>
@@ -143,17 +91,10 @@ export const WithdrawModal: FC = () => {
       <Grid item>
         <Grid container justifyContent="center" alignItems="center" spacing={2}>
           <Grid item>
-            <OutlinedButton onClick={handleCancelClick}>
-              {t(translations.LiquidityPage.Buttons.Cancel())}
-            </OutlinedButton>
+            <WithdrawApproveButton />
           </Grid>
           <Grid item>
-            <ContainedButton
-              loading={isWithdrawing}
-              onClick={handleWithdrawClick}
-            >
-              {t(translations.LiquidityPage.Buttons.ConfirmWithdraw())}
-            </ContainedButton>
+            <WithdrawButton />
           </Grid>
         </Grid>
       </Grid>

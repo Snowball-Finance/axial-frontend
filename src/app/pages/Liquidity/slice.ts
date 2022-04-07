@@ -3,18 +3,19 @@ import {
   DepositTransactionData,
   LiquidityPageState,
   SelectTokenToWithdrawPayload,
+  TypeOfTokensToWithdraw,
   WithdrawReviewData,
   WithdrawTokenAmountChangePayload,
 } from "./types";
 import { createSlice } from "store/toolkit";
 import { useInjectReducer, useInjectSaga } from "store/redux-injectors";
 
-import { liquidityPageSaga } from "./saga";
 import { PayloadAction } from "@reduxjs/toolkit";
 import { TokenSymbols } from "app/containers/Swap/types";
-import { ApproveAndWithdrawPayload, Pool } from "app/containers/Rewards/types";
+import { Pool } from "app/containers/Rewards/types";
 import { zeroString } from "./constants";
 import { BigNumber } from "ethers";
+import { liquidityPageSaga } from "./saga";
 
 // The initial state of the LiquidityPage container
 export const initialState: ContainerState = {
@@ -26,11 +27,14 @@ export const initialState: ContainerState = {
   depositTokenAmounts: {},
   withdrawTokenAmounts: {},
   withdrawPercentage: 0,
-  selectedTokenToWithdraw: "combo",
+  selectedTokenToWithdraw: TypeOfTokensToWithdraw.Combo,
   depositRaw: false,
   depositTransactionData: undefined,
   withdrawReviewData: undefined,
   withdrawBonus: undefined,
+  tokensAreApprovedForDeposit: false,
+  isCheckingForApproval: false,
+  tokensAreApprovedForWithdrawal: false,
 };
 
 const liquidityPageSlice = createSlice({
@@ -86,7 +90,7 @@ const liquidityPageSlice = createSlice({
       state.depositRaw = action.payload;
     },
     deposit() {},
-    withdraw(state, action: PayloadAction<ApproveAndWithdrawPayload>) {},
+    withdraw(state, action: PayloadAction<void>) {},
     setWithdrawPercentage(state, action: PayloadAction<number>) {
       state.withdrawPercentage = action.payload;
     },
@@ -123,6 +127,19 @@ const liquidityPageSlice = createSlice({
     setWithdrawBonus(state, action: PayloadAction<BigNumber | undefined>) {
       state.withdrawBonus = action.payload;
     },
+    setTokensAreApproved(state, action: PayloadAction<boolean>) {
+      state.tokensAreApprovedForDeposit = action.payload;
+    },
+    approveTokensForDeposit(state, action: PayloadAction<void>) {},
+    checkIsAllTokensAreApprovedForDeposit(
+      state,
+      action: PayloadAction<void>
+    ) {},
+    setIsCheckingForApproval(state, action: PayloadAction<boolean>) {
+      state.isCheckingForApproval = action.payload;
+    },
+    checkForWithdrawApproval(state, action: PayloadAction<void>) {},
+    requestWithdrawApproval(state, action: PayloadAction<void>) {},
   },
 });
 
