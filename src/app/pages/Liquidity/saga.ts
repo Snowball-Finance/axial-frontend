@@ -207,18 +207,6 @@ export function* withdraw() {
       selectedToken,
       tokenAmounts,
     });
-
-    if (type === WithdrawType.ALL) {
-      const library = yield select(Web3Domains.selectLibraryDomain);
-      const account = yield select(Web3Domains.selectAccountDomain);
-      const swapContract = getContract(
-        selectedPool.address,
-        selectedPool.swapABI,
-        library,
-        account ?? undefined
-      );
-    }
-
     const dataToSend: WithdrawPayload = {
       poolKey: selectedPool.key,
       type,
@@ -228,9 +216,6 @@ export function* withdraw() {
 
     yield put(RewardsActions.withdraw(dataToSend));
   }
-
-  // console.log(payload);
-  // yield delay(0);
 }
 
 export function* setAmountForTokenToWithdraw(action: {
