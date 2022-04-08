@@ -2,7 +2,6 @@ import { RequestTypes, RequestParameters } from "./types";
 import { queryStringer } from "common/qs";
 import { MessageService, MessageNames } from "./message";
 import { toast } from "react-toastify";
-import { BaseUrl } from "app/constants";
 
 export class ApiService {
   private static instance: ApiService;
@@ -14,7 +13,7 @@ export class ApiService {
     return ApiService.instance;
   }
 
-  public baseUrl = BaseUrl;
+  public baseUrl = process.env.REACT_APP_BASE_URL;
   public token: string = "";
   public async fetchData(params: RequestParameters) {
     const url = params.isRawUrl ? params.url : this.baseUrl + params.url;

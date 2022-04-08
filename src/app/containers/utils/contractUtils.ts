@@ -2,10 +2,17 @@ import { JsonRpcSigner, Web3Provider } from "@ethersproject/providers";
 import { BigNumber, Contract, ContractInterface } from "ethers";
 import { AddressZero } from "@ethersproject/constants";
 import { getAddress } from "@ethersproject/address";
-import { PoolTypes } from "app/constants";
 import { formatUnits } from "@ethersproject/units";
 import { parseUnits } from "ethers/lib/utils";
 import { Zero } from "app/containers/Rewards/constants";
+
+export enum PoolTypes {
+  BTC,
+  ETH,
+  USD,
+  LP,
+  OTHER,
+}
 
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(value: string): string | false {

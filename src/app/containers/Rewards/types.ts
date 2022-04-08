@@ -160,4 +160,11 @@ export interface RewardsState {
   isWithdrawing: boolean;
 }
 
+export const TRANSACTION_TYPES = {
+  DEPOSIT: "DEPOSIT",
+  WITHDRAW: "WITHDRAW",
+  SWAP: "SWAP",
+  MIGRATE: "MIGRATE",
+};
+
 export type ContainerState = RewardsState;

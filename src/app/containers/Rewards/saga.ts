@@ -87,7 +87,6 @@ export function* getRewardPoolsData(action: {
 }
 
 export function* getMasterChefBalances() {
-  const chainId = yield select(Web3Domains.selectChainIDDomain);
   const account = yield select(Web3Domains.selectAccountDomain);
   const library = yield select(Web3Domains.selectLibraryDomain);
 
@@ -99,7 +98,7 @@ export function* getMasterChefBalances() {
     tokensList.forEach((token) => {
       if (token.isLPToken && token.masterchefId !== undefined) {
         masterchefBalancesCall.push(
-          getUserMasterchefInfo(account, token.masterchefId, chainId)
+          getUserMasterchefInfo(account, token.masterchefId)
         );
         tokenAddressList.push(token.address);
       }
