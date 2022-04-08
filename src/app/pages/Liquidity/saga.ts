@@ -526,29 +526,6 @@ function* calculateWithdrawBonusAndDetectErrors() {
   );
   yield put(LiquidityPageActions.setWithdrawBonus(bonus));
 
-  try {
-    const inputCalculatedLPTokenAmount = yield call(
-      swapContract.calculateTokenAmount,
-      pool.poolTokens.map(({ symbol }) => amounts[symbol]),
-      false
-    );
-    const effectiveUserLPTokenBalance = yield call(getEffectiveUserLpBalance);
-    if (inputCalculatedLPTokenAmount.gt(effectiveUserLPTokenBalance)) {
-      yield put(
-        LiquidityPageActions.setWithdrawError({
-          main: "Insufficient balance",
-        })
-      );
-      return;
-    }
-    yield put(LiquidityPageActions.setWithdrawError(undefined));
-  } catch (error) {
-    yield put(
-      LiquidityPageActions.setWithdrawError({
-        main: "Insufficient balance",
-      })
-    );
-  }
 }
 
 function* tokensToApproveForDeposit() {
