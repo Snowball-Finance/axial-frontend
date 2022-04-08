@@ -82,7 +82,6 @@ export function* getRewardPoolsData(action: {
     yield put(RewardsActions.setIsGettingPoolsData(false));
   } catch (error) {
     yield put(RewardsActions.setIsGettingPoolsData(false));
-
     console.log(error);
   }
 }
@@ -324,9 +323,7 @@ export function* deposit(action: { type: string; payload: DepositPayload }) {
     yield put(RewardsActions.getRewardPoolsData(pools));
   } catch (e: any) {
     console.log(e);
-    if (e.code === -32603) {
       toast.error("error while withdrawing");
-    }
     yield put(RewardsActions.setIsDepositing(false));
   } finally {
   }
