@@ -265,9 +265,16 @@ export function* withdraw() {
       type,
       lpTokenAmountToSpend,
       tokenAmounts,
+      onSuccess: onWithdrawSuccess,
     };
 
     yield put(RewardsActions.withdraw(dataToSend));
+  }
+}
+function* onWithdrawSuccess() {
+  const selectedPool = yield select(LiquidityPageDomains.pool);
+  if (selectedPool) {
+    yield put(LiquidityPageActions.setSelectedPool(selectedPool));
   }
 }
 

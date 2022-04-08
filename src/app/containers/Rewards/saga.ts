@@ -317,6 +317,7 @@ export function* deposit(action: { type: string; payload: DepositPayload }) {
     yield put(RewardsActions.setIsDepositing(false));
     toast.success("deposit successful");
     yield put(GlobalActions.getTokenBalances());
+    yield put(RewardsActions.getRewardPoolsData(pools));
   } catch (e: any) {
     console.log(e);
     if (e.code === -32603) {
@@ -342,6 +343,7 @@ export function* withdraw(action: { type: string; payload: WithdrawPayload }) {
       masterchefwithdraw,
       type,
       lpTokenAmountToSpend,
+      onSuccess,
     } = action.payload;
     const pool: Pool = pools[poolKey];
     const targetContract = new Contract(
@@ -363,7 +365,6 @@ export function* withdraw(action: { type: string; payload: WithdrawPayload }) {
       let spendTransaction;
 
       if (type === WithdrawType.ALL) {
-        console.log("withdraw All~~~~~~~~~~~~~~~~~~");
         spendTransaction = yield call(
           targetContract.removeLiquidity,
           lpTokenAmountToSpend,
@@ -377,8 +378,6 @@ export function* withdraw(action: { type: string; payload: WithdrawPayload }) {
           deadline
         );
       } else if (type === WithdrawType.IMBALANCE) {
-        console.log("withdraw Imbalance~~~~~~~~~~~~~~~~~~");
-
         spendTransaction = yield call(
           targetContract.removeLiquidityImbalance,
           pool.poolTokens.map(({ symbol }) => tokenAmounts[symbol]),
@@ -386,7 +385,6 @@ export function* withdraw(action: { type: string; payload: WithdrawPayload }) {
           deadline
         );
       } else {
-        console.log(`withdraw ${type} ~~~~~~~~~~~~~~~~~~`);
         spendTransaction = yield call(
           targetContract.removeLiquidityOneToken,
           lpTokenAmountToSpend,
@@ -410,6 +408,11 @@ export function* withdraw(action: { type: string; payload: WithdrawPayload }) {
     yield put(RewardsActions.setIsWithdrawing(false));
     toast.success("withdraw success");
     yield put(GlobalActions.getTokenBalances());
+    yield put(RewardsActions.getRewardPoolsData(pools));
+
+    if (onSuccess) {
+      yield call(onSuccess);
+    }
   } catch (e: any) {
     console.log(e);
     if (e?.data?.message) {

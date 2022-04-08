@@ -97,6 +97,8 @@ export interface WithdrawPayload {
   type: WithdrawType | TokenSymbols;
   lpTokenAmountToSpend: BigNumber;
   tokenAmounts: TokenAmounts;
+  //a yield call-able function
+  onSuccess?: any;
 }
 
 export interface TokenShareType {
