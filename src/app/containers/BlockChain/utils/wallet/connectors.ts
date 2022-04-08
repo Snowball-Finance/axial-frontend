@@ -5,7 +5,7 @@ import { WalletLinkConnector } from "@web3-react/walletlink-connector";
 const NODE_ADDRESS = process.env.REACT_APP_NODE_ADDRESS;
 export const rpcUrl = `${NODE_ADDRESS}/ext/bc/C/rpc`;
 const AVALANCHE_MAINNET_PARAMS = {
-  chainId: "0xa86a",
+  chainId: process.env.REACT_APP_CHAIN_ID_HEX,
   chainName: "Avalanche Mainnet C-Chain",
   nativeCurrency: {
     name: "Avalanche",
