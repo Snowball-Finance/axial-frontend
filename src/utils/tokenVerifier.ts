@@ -20,9 +20,13 @@ export interface TokensToVerifyPayload {
 export function* checkAndApproveTokensInList(tokens: TokensToVerifyPayload) {
   const { tokensToVerify } = tokens;
 
+  const approveArray = tokensToVerify.filter((item: TokenToVerify) =>
+    item.amount.gt(0)
+  );
+
   yield put(GlobalActions.emptyTokensInQueueForApproval());
 
-  for (const element of tokensToVerify) {
+  for (const element of approveArray) {
     yield put(
       GlobalActions.setApprovalForTokenInQueue({
         tokenSymbol: element.token.symbol as TokenSymbols,
@@ -35,7 +39,7 @@ export function* checkAndApproveTokensInList(tokens: TokensToVerifyPayload) {
   const infiniteApproval = yield select(GlobalDomains.infiniteApproval);
 
   try {
-    for (const element of tokensToVerify) {
+    for (const element of approveArray) {
       const tokenContract =
         element.tokenContract ||
         new Contract(
@@ -75,11 +79,15 @@ export function* checkAndApproveTokensInList(tokens: TokensToVerifyPayload) {
 
 export function* checkIfTokensAreVerified(tokens: TokensToVerifyPayload) {
   const { tokensToVerify } = tokens;
+  const approveArray = tokensToVerify.filter((item: TokenToVerify) =>
+    item.amount.gt(0)
+  );
+
   const library = yield select(Web3Domains.selectLibraryDomain);
   const account = yield select(Web3Domains.selectAccountDomain);
   let numberOfVerifiedTokens = 0;
   try {
-    for (const element of tokensToVerify) {
+    for (const element of approveArray) {
       const tokenContract =
         element.tokenContract ||
         new Contract(
@@ -100,7 +108,7 @@ export function* checkIfTokensAreVerified(tokens: TokensToVerifyPayload) {
         numberOfVerifiedTokens++;
       }
     }
-    return numberOfVerifiedTokens === tokensToVerify.length;
+    return numberOfVerifiedTokens === approveArray.length;
   } catch (error) {
     return false;
   }

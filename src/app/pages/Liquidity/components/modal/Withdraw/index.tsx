@@ -15,7 +15,6 @@ import { WithdrawApproveButton } from "./components/approveButton";
 import { WithdrawButton } from "./components/withdrawButton";
 
 export const WithdrawModal: FC = () => {
-
   const withdrawReviewData = useSelector(
     LiquidityPageSelectors.withdrawReviewData
   );

@@ -36,6 +36,8 @@ export const initialState: ContainerState = {
   isCheckingForApproval: false,
   tokensAreApprovedForWithdrawal: false,
   isApprovingTokens: false,
+  isCalculatingForWithdrawal: false,
+  withdrawError: undefined,
 };
 
 const liquidityPageSlice = createSlice({
@@ -43,7 +45,9 @@ const liquidityPageSlice = createSlice({
   initialState,
   reducers: {
     setSelectedPool(state, action: PayloadAction<Pool | undefined>) {
+      state.withdrawPercentage = 0;
       state.pool = action.payload;
+      state.withdrawError = undefined;
       if (action.payload) {
         const tmp = {};
         const tokens = action.payload.poolTokens;
@@ -95,6 +99,9 @@ const liquidityPageSlice = createSlice({
     setWithdrawPercentage(state, action: PayloadAction<number>) {
       state.withdrawPercentage = action.payload;
     },
+    resetPercentage(state) {
+      state.withdrawPercentage = 0;
+    },
     setSelectedTokenToWithdraw(
       state,
       action: PayloadAction<SelectTokenToWithdrawPayload>
@@ -143,6 +150,15 @@ const liquidityPageSlice = createSlice({
     requestWithdrawApproval(state, action: PayloadAction<void>) {},
     setIsApprovingTokens(state, action: PayloadAction<boolean>) {
       state.isApprovingTokens = action.payload;
+    },
+    setIsCalculatingForWithdrawal(state, action: PayloadAction<boolean>) {
+      state.isCalculatingForWithdrawal = action.payload;
+    },
+    setWithdrawError(
+      state,
+      action: PayloadAction<LiquidityPageState["withdrawError"]>
+    ) {
+      state.withdrawError = action.payload;
     },
   },
 });

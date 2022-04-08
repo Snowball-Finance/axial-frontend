@@ -215,15 +215,15 @@ export function* deposit() {
 export function* withdraw() {
   const tokens = yield select(GlobalDomains.tokens);
   const selectedPool: Pool = yield select(LiquidityPageDomains.pool);
+  const percentage = yield select(LiquidityPageDomains.withdrawPercentage);
   const amountsObj = yield select(LiquidityPageDomains.withdrawTokenAmounts);
   let withdrawTokens = { ...amountsObj };
   const selectedToken = yield select(
     LiquidityPageDomains.selectedTokenToWithdraw
   );
-  const lpTokenAmountToSpend = yield call(calculateLpTokenToSpend);
 
   if (selectedPool && tokens) {
-    const tokenAmounts = {};
+    let tokenAmounts = {};
     for (let k in withdrawTokens) {
       const v = withdrawTokens[k];
       if (Number(v) > 0) {
@@ -237,14 +237,48 @@ export function* withdraw() {
       selectedToken,
       tokenAmounts,
     });
+    let lpTokenAmountToSpend = yield call(calculateLpTokenToSpend);
+
+    if (type !== WithdrawType.ALL && type !== WithdrawType.IMBALANCE) {
+      const swapContract = yield call(getSwapContractForWithdraw);
+      if (percentage) {
+        const tokenIndex = selectedPool.poolTokens.findIndex(
+          ({ symbol }) => symbol === type
+        );
+        const effectiveUserLPTokenBalance = yield call(
+          getEffectiveUserLpBalance
+        );
+
+        const tokenAmount = yield call(
+          swapContract.calculateRemoveLiquidityOneToken,
+          effectiveUserLPTokenBalance,
+          tokenIndex
+        );
+        tokenAmounts = selectedPool.poolTokens.reduce(
+          (acc, { symbol }, i) => ({
+            ...acc,
+            [symbol]: i === tokenIndex ? tokenAmount : 0,
+          }),
+          {}
+        );
+      }
+    }
+
     const dataToSend: WithdrawPayload = {
       poolKey: selectedPool.key,
       type,
       lpTokenAmountToSpend,
       tokenAmounts,
+      onSuccess: onWithdrawSuccess,
     };
 
     yield put(RewardsActions.withdraw(dataToSend));
+  }
+}
+function* onWithdrawSuccess() {
+  const selectedPool = yield select(LiquidityPageDomains.pool);
+  if (selectedPool) {
+    yield put(LiquidityPageActions.setSelectedPool(selectedPool));
   }
 }
 
@@ -253,6 +287,7 @@ export function* setAmountForTokenToWithdraw(action: {
   payload: WithdrawTokenAmountChangePayload;
 }) {
   // state.selectedTokenToWithdraw = action.payload.symbol;
+  yield put(LiquidityPageActions.resetPercentage());
   const amountsObj = yield select(LiquidityPageDomains.withdrawTokenAmounts);
   let amounts = { ...amountsObj };
   const { symbol, value } = action.payload;
@@ -307,52 +342,28 @@ export function* setAmountForTokenToWithdraw(action: {
   }
 
   yield put(LiquidityPageActions.setTokenAmountsToWithdraw(amounts));
-  yield call(calculateWithdrawBonus);
+  yield call(calculateWithdrawBonusAndDetectErrors);
 }
 
 export function* setWithdrawPercentage(action: {
   type: string;
   payload: LiquidityPageState["withdrawPercentage"];
 }) {
-  const percentage = action.payload;
   const amountsObj = yield select(LiquidityPageDomains.withdrawTokenAmounts);
-  const tokens = yield select(GlobalDomains.tokens);
   let amounts = { ...amountsObj };
   const selectedTokenToWithdraw = yield select(
     LiquidityPageDomains.selectedTokenToWithdraw
   );
-  const tokensWithNonZeroAmount = {};
-  for (let token in amounts) {
-    if (amounts[token] > 0) {
-      tokensWithNonZeroAmount[token] = amounts[token];
-    }
-  }
 
   if (selectedTokenToWithdraw === TypeOfTokensToWithdraw.Combo) {
     amounts = yield call(calculateAmountsIfItsCombo);
   } else {
-    const toLoop =
-      selectedTokenToWithdraw === TypeOfTokensToWithdraw.Mixed
-        ? tokensWithNonZeroAmount
-        : {
-            [selectedTokenToWithdraw]: amounts[selectedTokenToWithdraw],
-          };
-
-    for (let symbol in toLoop) {
-      const token: Token = tokens[symbol];
-      const tokenBalance =
-        BNToFloat(token.balance || BigNumber.from(0), token.decimals) || 0;
-      const fraction = divide(multiply(tokenBalance, percentage), 100);
-      amounts[symbol] = fraction.toString();
-    }
+    amounts = yield call(calculateAmountsIfItsASingleToken);
   }
   yield put(LiquidityPageActions.setTokenAmountsToWithdraw(amounts));
-  yield call(calculateWithdrawBonus);
+  yield call(calculateWithdrawBonusAndDetectErrors);
 }
-
-function* calculateAmountsIfItsCombo() {
-  const tokens = yield select(GlobalDomains.tokens);
-  const percentage = yield select(LiquidityPageDomains.withdrawPercentage);
+function* getSwapContractForWithdraw() {
   const pools = yield select(RewardsDomains.pools);
   const selectedPool = yield select(LiquidityPageDomains.pool);
   const pool: Pool = pools[selectedPool.key];
@@ -364,12 +375,56 @@ function* calculateAmountsIfItsCombo() {
     library,
     account ?? undefined
   );
-  const userShareData = pool.userShareData as UserShareData;
+  return swapContract;
+}
 
+function* getEffectiveUserLpBalance() {
+  const pools = yield select(RewardsDomains.pools);
+  const selectedPool = yield select(LiquidityPageDomains.pool);
+  const pool: Pool = pools[selectedPool.key];
+  const userShareData = pool.userShareData as UserShareData;
+  const percentage = yield select(LiquidityPageDomains.withdrawPercentage);
   const effectiveUserLPTokenBalance = userShareData.lpTokenBalance
     .mul(parseUnits(percentage.toString(), 5)) // difference between numerator and denominator because we're going from 100 to 1.00
     .div(10 ** 7);
+  return effectiveUserLPTokenBalance;
+}
 
+function* calculateAmountsIfItsASingleToken() {
+  const pool = yield select(LiquidityPageDomains.pool);
+  const tokens = yield select(GlobalDomains.tokens);
+  const withdrawType = yield select(
+    LiquidityPageDomains.selectedTokenToWithdraw
+  );
+  const swapContract = yield call(getSwapContractForWithdraw);
+  const effectiveUserLPTokenBalance = yield call(getEffectiveUserLpBalance);
+  const tokenIndex = pool.poolTokens.findIndex(
+    ({ symbol }) => symbol === withdrawType
+  );
+  const tokenAmount = yield call(
+    swapContract.calculateRemoveLiquidityOneToken,
+    effectiveUserLPTokenBalance, // lp token to be burnt
+    tokenIndex
+  );
+  const tokenAmountString = (
+    BNToFloat(tokenAmount, tokens[withdrawType].decimals) || "0"
+  ).toString();
+  const poolTokens = pool.poolTokens;
+  const amounts = {};
+  for (const element of poolTokens) {
+    amounts[element.symbol] =
+      element.symbol === withdrawType ? tokenAmountString : "0";
+  }
+  return amounts;
+}
+
+function* calculateAmountsIfItsCombo() {
+  const tokens = yield select(GlobalDomains.tokens);
+  const pools = yield select(RewardsDomains.pools);
+  const selectedPool = yield select(LiquidityPageDomains.pool);
+  const pool: Pool = pools[selectedPool.key];
+  const swapContract = yield call(getSwapContractForWithdraw);
+  const effectiveUserLPTokenBalance = yield call(getEffectiveUserLpBalance);
   const tokenAmounts = yield call(
     swapContract.calculateRemoveLiquidity,
     effectiveUserLPTokenBalance
@@ -417,16 +472,7 @@ export function* setSelectedTokenToWithdraw(action: {
         amounts[token] = fraction.toString();
       }
     } else {
-      const tokenBalance =
-        BNToFloat(
-          tokens[symbol].balance || BigNumber.from(0),
-          tokens[symbol].decimals
-        ) || 0;
-      const fraction = divide(multiply(tokenBalance, percentage), 100);
-      for (let token in amounts) {
-        amounts[token] = zeroString;
-      }
-      amounts[symbol] = fraction.toString();
+      amounts = yield call(calculateAmountsIfItsASingleToken);
     }
   } else {
     if (symbol === TypeOfTokensToWithdraw.Combo) {
@@ -443,24 +489,18 @@ export function* setSelectedTokenToWithdraw(action: {
     }
   }
   yield put(LiquidityPageActions.setTokenAmountsToWithdraw(amounts));
-  yield call(calculateWithdrawBonus);
+  yield call(calculateWithdrawBonusAndDetectErrors);
 }
 
-function* calculateWithdrawBonus() {
+function* calculateWithdrawBonusAndDetectErrors() {
   const tokens = yield select(GlobalDomains.tokens);
   const amounts = yield select(LiquidityPageDomains.withdrawTokenAmounts);
-  const library = yield select(Web3Domains.selectNetworkLibraryDomain);
-  const account = yield select(Web3Domains.selectAccountDomain);
   let pool: Pool = yield select(LiquidityPageDomains.pool);
   const pools = yield select(RewardsDomains.pools);
   pool = pools[pool.key];
   if (!pool?.poolData) return;
-  const swapContract = getContract(
-    pool.address,
-    pool.swapABI,
-    library,
-    account ?? undefined
-  );
+  const swapContract = yield call(getSwapContractForWithdraw);
+
   const tokenInputSum = parseUnits(
     pool.poolTokens
       .reduce((sum, { symbol }) => sum + (+amounts[symbol] || 0), 0)
@@ -489,6 +529,30 @@ function* calculateWithdrawBonus() {
     true
   );
   yield put(LiquidityPageActions.setWithdrawBonus(bonus));
+
+  try {
+    const inputCalculatedLPTokenAmount = yield call(
+      swapContract.calculateTokenAmount,
+      pool.poolTokens.map(({ symbol }) => amounts[symbol]),
+      false
+    );
+    const effectiveUserLPTokenBalance = yield call(getEffectiveUserLpBalance);
+    if (inputCalculatedLPTokenAmount.gt(effectiveUserLPTokenBalance)) {
+      yield put(
+        LiquidityPageActions.setWithdrawError({
+          main: "Insufficient balance",
+        })
+      );
+      return;
+    }
+    yield put(LiquidityPageActions.setWithdrawError(undefined));
+  } catch (error) {
+    yield put(
+      LiquidityPageActions.setWithdrawError({
+        main: "Insufficient balance",
+      })
+    );
+  }
 }
 
 function* tokensToApproveForDeposit() {
@@ -504,7 +568,7 @@ function* tokensToApproveForDeposit() {
       token,
     };
   });
-  return toApprove.filter((item: TokenToVerify) => item.amount.gt(0));
+  return toApprove;
 }
 
 export function* approveTokensForDeposit() {
@@ -537,46 +601,52 @@ export function* checkIsAllTokensAreApprovedForDeposit() {
 
 function* calculateLpTokenToSpend() {
   const tokens = yield select(GlobalDomains.tokens);
-  const pools = yield select(RewardsDomains.pools);
   const selectedPool = yield select(LiquidityPageDomains.pool);
-  const pool: Pool = pools[selectedPool.key];
   const percentage = yield select(LiquidityPageDomains.withdrawPercentage);
   const tokenAmounts = yield select(LiquidityPageDomains.withdrawTokenAmounts);
-  const library = yield select(Web3Domains.selectLibraryDomain);
-  const account = yield select(Web3Domains.selectAccountDomain);
   const selectedToken = yield select(
     LiquidityPageDomains.selectedTokenToWithdraw
   );
-  const userShareData = pool.userShareData as UserShareData;
-  const swapContract = getContract(
-    pool.address,
-    pool.swapABI,
-    library,
-    account ?? undefined
-  );
+
   const type = withdrawType({
     selectedToken,
     tokenAmounts,
   });
   let lpTokenToSpend = BigNumber.from(0);
-  if (type === WithdrawType.IMBALANCE) {
-    lpTokenToSpend = yield call(
-      swapContract.calculateTokenAmount,
-      pool.poolTokens.map(({ symbol }) => {
-        const BNAmount = floatToBN(
-          Number(tokenAmounts[symbol]),
-          tokens[symbol].decimals
-        );
-        return BNAmount;
-      }),
-      false
-    );
-  } else if (type === WithdrawType.ALL) {
-    lpTokenToSpend = userShareData.lpTokenBalance
-      .mul(parseUnits(percentage.toString(), 5)) // difference between numerator and denominator because we're going from 100 to 1.00
-      .div(10 ** 7);
-  }
 
+  if (type !== WithdrawType.ALL) {
+    const swapContract = yield call(getSwapContractForWithdraw);
+    if (type === WithdrawType.IMBALANCE) {
+      const inputCalculatedLPTokenAmount = yield call(
+        swapContract.calculateTokenAmount,
+        selectedPool.poolTokens.map(({ symbol }) =>
+          floatToBN(tokenAmounts[symbol], tokens[symbol].decimals)
+        ),
+        false
+      );
+      lpTokenToSpend = inputCalculatedLPTokenAmount;
+    } else {
+      if (percentage) {
+        const effectiveUserLPTokenBalance = yield call(
+          getEffectiveUserLpBalance
+        );
+        lpTokenToSpend = effectiveUserLPTokenBalance;
+      } else {
+        const inputCalculatedLPTokenAmount = yield call(
+          swapContract.calculateTokenAmount,
+          selectedPool.poolTokens.map(({ symbol }) => {
+            const floated =
+              BNToFloat(tokenAmounts[symbol], tokens[symbol].decimals) || 0;
+            return floated.toString();
+          }),
+          false
+        );
+        lpTokenToSpend = inputCalculatedLPTokenAmount;
+      }
+    }
+  } else {
+    lpTokenToSpend = yield call(getEffectiveUserLpBalance);
+  }
   return lpTokenToSpend;
 }
 
