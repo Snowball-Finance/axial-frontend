@@ -533,7 +533,7 @@ function* tokensToApproveForDeposit() {
       token,
     };
   });
-  return toApprove.filter((item: TokenToVerify) => item.amount.gt(0));
+  return toApprove;
 }
 
 export function* approveTokensForDeposit() {
