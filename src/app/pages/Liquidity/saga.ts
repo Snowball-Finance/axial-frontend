@@ -374,14 +374,14 @@ function* getSwapContractForWithdraw() {
   return swapContract;
 }
 
-function* getEffectiveUserLpBalance() {
+function* getEffectiveUserLpBalance(percent?: number) {
   const pools = yield select(RewardsDomains.pools);
   const selectedPool = yield select(LiquidityPageDomains.pool);
   const pool: Pool = pools[selectedPool.key];
   const userShareData = pool.userShareData as UserShareData;
   const percentage = yield select(LiquidityPageDomains.withdrawPercentage);
   const effectiveUserLPTokenBalance = userShareData.lpTokenBalance
-    .mul(parseUnits(percentage.toString(), 5)) // difference between numerator and denominator because we're going from 100 to 1.00
+    .mul(parseUnits((percent || percentage).toString(), 5)) // difference between numerator and denominator because we're going from 100 to 1.00
     .div(10 ** 7);
   return effectiveUserLPTokenBalance;
 }
@@ -525,29 +525,44 @@ function* calculateWithdrawBonusAndDetectErrors() {
     true
   );
   yield put(LiquidityPageActions.setWithdrawBonus(bonus));
-
-  try {
-    const inputCalculatedLPTokenAmount = yield call(
-      swapContract.calculateTokenAmount,
-      pool.poolTokens.map(({ symbol }) => amounts[symbol]),
-      false
-    );
-    const effectiveUserLPTokenBalance = yield call(getEffectiveUserLpBalance);
-    if (inputCalculatedLPTokenAmount.gt(effectiveUserLPTokenBalance)) {
+  const selectedToken = yield select(
+    LiquidityPageDomains.selectedTokenToWithdraw
+  );
+  const type = withdrawType({
+    selectedToken,
+    tokenAmounts: amounts,
+  });
+  yield put(LiquidityPageActions.setWithdrawError(undefined));
+  if (type === WithdrawType.IMBALANCE) {
+    try {
+      const inputCalculatedLPTokenAmount = yield call(
+        swapContract.calculateTokenAmount,
+        pool.poolTokens.map(({ symbol }) =>
+          floatToBN(Number(amounts[symbol] || "0"), tokens[symbol].decimals)
+        ),
+        false
+      );
+      const effectiveUserLPTokenBalance = yield call(
+        getEffectiveUserLpBalance,
+        100
+      );
+      if (inputCalculatedLPTokenAmount.gt(effectiveUserLPTokenBalance)) {
+        yield put(
+          LiquidityPageActions.setWithdrawError({
+            main: "Insufficient balance",
+          })
+        );
+        return;
+      }
+      yield put(LiquidityPageActions.setWithdrawError(undefined));
+    } catch (error) {
+      console.log(error);
       yield put(
         LiquidityPageActions.setWithdrawError({
           main: "Insufficient balance",
         })
       );
-      return;
     }
-    yield put(LiquidityPageActions.setWithdrawError(undefined));
-  } catch (error) {
-    yield put(
-      LiquidityPageActions.setWithdrawError({
-        main: "Insufficient balance",
-      })
-    );
   }
 }
 
