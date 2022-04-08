@@ -11,6 +11,8 @@ export const RewardsDomains = {
   pools: (state: RootState) => state.rewards?.pools || initialState.pools,
   UserShareData: (poolKey: Pools) => (state: RootState) =>
     state?.rewards?.pools[poolKey]?.userShareData || undefined,
+  isGettingPoolsData: (state: RootState) =>
+    state.rewards?.isGettingPoolsData || initialState.isGettingPoolsData,
   isGettingMasterChefBalances: (state: RootState) =>
     state.rewards?.isGettingMasterChefBalances ||
     initialState.isGettingMasterChefBalances,
@@ -73,4 +75,8 @@ export const RewardsSelectors = {
     createSelector(RewardsDomains.pools, (pools) =>
       key ? pools[key]?.userShareData : undefined
     ),
+  isGettingPoolsData: createSelector(
+    RewardsDomains.isGettingPoolsData,
+    (isGettingPoolsData) => isGettingPoolsData
+  ),
 };

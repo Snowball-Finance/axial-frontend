@@ -152,6 +152,7 @@ export interface RewardsState {
   masterchefApr: MasterchefApr | undefined;
   isGettingMasterChefBalances: boolean;
   isGettingMasterchefApr: boolean;
+  isGettingPoolsData: boolean;
   isGettingSwapStats: boolean;
   masterChefBalances: { [key: string]: MasterchefResponse } | undefined;
   pools: { [K in Pools]?: Pool };

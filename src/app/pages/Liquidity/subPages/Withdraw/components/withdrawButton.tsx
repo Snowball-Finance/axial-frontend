@@ -2,6 +2,7 @@ import { ContainedButton } from "app/components/common/buttons/containedButton";
 import { NeedsWalletConnection } from "app/components/common/needsWalletConnection";
 import { WalletToggle } from "app/components/common/walletToggle";
 import { RewardsSelectors } from "app/containers/Rewards/selectors";
+import { UserShareData } from "app/containers/Rewards/types";
 import { LiquidityPageSelectors } from "app/pages/Liquidity/selectors";
 import { LiquidityPageActions } from "app/pages/Liquidity/slice";
 import { translations } from "locales/i18n";
@@ -12,16 +13,22 @@ export const WithdrawButton = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const selectedPool = useSelector(LiquidityPageSelectors.selectedPool);
-  const userShareData = useSelector(
+  const userShareData: UserShareData = useSelector(
     RewardsSelectors.userShareData(selectedPool?.key)
   );
   const withdrawTokens = useSelector(
     LiquidityPageSelectors.withdrawTokenAmounts
   );
-
+  let withdrawError = useSelector(LiquidityPageSelectors.withdrawError);
+  if (userShareData?.lpTokenBalance.eq(0)) {
+    withdrawError = {
+      main: "You don't have Balance on this pool",
+    };
+  }
   const disabled =
     Object.values(withdrawTokens).every((tokenAmount) => tokenAmount === "0") ||
-    !userShareData;
+    !userShareData ||
+    withdrawError !== undefined;
   const isWithdrawing = useSelector(RewardsSelectors.isWithdrawing);
 
   const handleWithdrawClick = () => {
@@ -37,7 +44,8 @@ export const WithdrawButton = () => {
           onClick={handleWithdrawClick}
           fullWidth
         >
-          {t(translations.LiquidityPage.ActionButtons.Withdraw())}
+          {withdrawError?.main ||
+            t(translations.LiquidityPage.ActionButtons.Withdraw())}
         </ContainedButton>
       }
       disConnected={<WalletToggle fullWidth />}

@@ -43,6 +43,7 @@ export function* getRewardPoolsData(action: {
   payload: RewardsState["pools"];
 }) {
   yield put(RewardsActions.setRewardPools(action.payload));
+  yield put(RewardsActions.setIsGettingPoolsData(true));
   const pools: RewardsState["pools"] = yield select(RewardsDomains.pools);
   const networkLibrary = yield select(Web3Domains.selectNetworkLibraryDomain);
   const account = yield select(Web3Domains.selectAccountDomain);
@@ -78,7 +79,10 @@ export function* getRewardPoolsData(action: {
       };
     });
     yield put(RewardsActions.setRewardPools(tmpPools));
+    yield put(RewardsActions.setIsGettingPoolsData(false));
   } catch (error) {
+    yield put(RewardsActions.setIsGettingPoolsData(false));
+
     console.log(error);
   }
 }

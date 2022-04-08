@@ -338,7 +338,7 @@ export function* setAmountForTokenToWithdraw(action: {
   }
 
   yield put(LiquidityPageActions.setTokenAmountsToWithdraw(amounts));
-  yield call(calculateWithdrawBonus);
+  yield call(calculateWithdrawBonusAndDetectErrors);
 }
 
 export function* setWithdrawPercentage(action: {
@@ -357,7 +357,7 @@ export function* setWithdrawPercentage(action: {
     amounts = yield call(calculateAmountsIfItsASingleToken);
   }
   yield put(LiquidityPageActions.setTokenAmountsToWithdraw(amounts));
-  yield call(calculateWithdrawBonus);
+  yield call(calculateWithdrawBonusAndDetectErrors);
 }
 function* getSwapContractForWithdraw() {
   const pools = yield select(RewardsDomains.pools);
@@ -485,10 +485,10 @@ export function* setSelectedTokenToWithdraw(action: {
     }
   }
   yield put(LiquidityPageActions.setTokenAmountsToWithdraw(amounts));
-  yield call(calculateWithdrawBonus);
+  yield call(calculateWithdrawBonusAndDetectErrors);
 }
 
-function* calculateWithdrawBonus() {
+function* calculateWithdrawBonusAndDetectErrors() {
   const tokens = yield select(GlobalDomains.tokens);
   const amounts = yield select(LiquidityPageDomains.withdrawTokenAmounts);
   let pool: Pool = yield select(LiquidityPageDomains.pool);
@@ -525,6 +525,30 @@ function* calculateWithdrawBonus() {
     true
   );
   yield put(LiquidityPageActions.setWithdrawBonus(bonus));
+
+  try {
+    const inputCalculatedLPTokenAmount = yield call(
+      swapContract.calculateTokenAmount,
+      pool.poolTokens.map(({ symbol }) => amounts[symbol]),
+      false
+    );
+    const effectiveUserLPTokenBalance = yield call(getEffectiveUserLpBalance);
+    if (inputCalculatedLPTokenAmount.gt(effectiveUserLPTokenBalance)) {
+      yield put(
+        LiquidityPageActions.setWithdrawError({
+          main: "Insufficient balance",
+        })
+      );
+      return;
+    }
+    yield put(LiquidityPageActions.setWithdrawError(undefined));
+  } catch (error) {
+    yield put(
+      LiquidityPageActions.setWithdrawError({
+        main: "Insufficient balance",
+      })
+    );
+  }
 }
 
 function* tokensToApproveForDeposit() {
