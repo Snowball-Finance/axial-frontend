@@ -19,6 +19,9 @@ export const GlobalDomains = {
     state.global?.transactionSuccessId || initialState.transactionSuccessId,
   isAdvancedOptionsOpen: (state: RootState) =>
     state.global?.isAdvancedOptionsOpen,
+  tokensInQueueToApproving: (state: RootState) =>
+    state.global?.tokensInQueueToApproving ||
+    initialState.tokensInQueueToApproving,
 };
 
 export const globalSelectors = {
@@ -60,5 +63,9 @@ export const globalSelectors = {
   isAdvancedOptionsOpen: createSelector(
     [GlobalDomains.isAdvancedOptionsOpen],
     (isAdvancedOptionsOpen) => isAdvancedOptionsOpen
+  ),
+  tokensInQueueToApproving: createSelector(
+    GlobalDomains.tokensInQueueToApproving,
+    (tokensInQueueToApproving) => tokensInQueueToApproving
   ),
 };

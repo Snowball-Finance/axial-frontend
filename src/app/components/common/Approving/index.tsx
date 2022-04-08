@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Grid, Typography, Box } from "@mui/material";
+import { Grid, Typography, Box, CircularProgress } from "@mui/material";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import {
@@ -14,13 +14,18 @@ import { globalSelectors } from "app/appSelectors";
 export const Approving: FC = () => {
   const { t } = useTranslation();
   const tokensInQueue = useSelector(globalSelectors.tokensInQueueToApprove);
+  const tokensInQueueToApproving = useSelector(
+    globalSelectors.tokensInQueueToApproving
+  );
   const tokensInQueueLength = Object.keys(tokensInQueue).length;
 
   let stepsCount =
     Object.keys(tokensInQueue).filter((key) => tokensInQueue[key]).length || 0;
 
   const renderIcon = (tokenSymbol) => {
-    if (tokensInQueue[tokenSymbol]) {
+    if (tokensInQueueToApproving[tokenSymbol]) {
+      return <CircularProgress color="primary" size={20} />;
+    } else if (tokensInQueue[tokenSymbol]) {
       return <CheckCircleOutlineOutlined color="primary" />;
     } else {
       return <CircleOutlined color="primary" />;

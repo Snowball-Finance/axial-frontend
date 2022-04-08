@@ -1,11 +1,9 @@
 import React, { FC } from "react";
-import { Grid, Typography, Box, styled } from "@mui/material";
-import { keyframes } from "@mui/system";
+import { Grid, Typography, Box, CircularProgress } from "@mui/material";
 import { useTranslation } from "react-i18next";
 
 import { translations } from "locales/i18n";
 import { CardWrapper } from "app/components/wrappers/Card";
-import ApprovalLoaderIcon from "assets/images/iconComponents/approvalLoader";
 
 export const Depositing: FC = () => {
   const { t } = useTranslation();
@@ -16,9 +14,7 @@ export const Depositing: FC = () => {
         <Grid container spacing={1}>
           <Grid container item xs={12} spacing={2} alignItems="center">
             <Grid item>
-              <StyledAnimatedWrapper>
-                <ApprovalLoaderIcon />
-              </StyledAnimatedWrapper>
+              <CircularProgress color="primary" size={24}/>
             </Grid>
 
             <Grid item>
@@ -42,18 +38,3 @@ export const Depositing: FC = () => {
     </Box>
   );
 };
-
-const spin = keyframes`
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-`;
-
-const StyledAnimatedWrapper = styled("div")({
-  width: 24,
-  height: 24,
-  animation: `${spin} 1s linear infinite`,
-});
