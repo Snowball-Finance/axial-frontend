@@ -88,7 +88,6 @@ export function* getTokenBalances() {
   const library = yield select(Web3Domains.selectLibraryDomain);
   const account = yield select(Web3Domains.selectAccountDomain);
   const tokens: GlobalState["tokens"] = yield select(GlobalDomains.tokens);
-
   const tokensArray = Object.values(tokens || {});
   const balanceCalls = tokensArray.map((token) => {
     return getUserBalance(account, token.address);

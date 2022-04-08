@@ -43,6 +43,7 @@ export function* getRewardPoolsData(action: {
   payload: RewardsState["pools"];
 }) {
   yield put(RewardsActions.setRewardPools(action.payload));
+  yield put(RewardsActions.setIsGettingPoolsData(true));
   const pools: RewardsState["pools"] = yield select(RewardsDomains.pools);
   const networkLibrary = yield select(Web3Domains.selectNetworkLibraryDomain);
   const account = yield select(Web3Domains.selectAccountDomain);
@@ -78,7 +79,9 @@ export function* getRewardPoolsData(action: {
       };
     });
     yield put(RewardsActions.setRewardPools(tmpPools));
+    yield put(RewardsActions.setIsGettingPoolsData(false));
   } catch (error) {
+    yield put(RewardsActions.setIsGettingPoolsData(false));
     console.log(error);
   }
 }
@@ -315,11 +318,12 @@ export function* deposit(action: { type: string; payload: DepositPayload }) {
       );
     }
     yield put(RewardsActions.setIsDepositing(false));
+    toast.success("deposit successful");
+    yield put(GlobalActions.getTokenBalances());
+    yield put(RewardsActions.getRewardPoolsData(pools));
   } catch (e: any) {
     console.log(e);
-    if (e.code === -32603) {
-      toast.error("balance is not enough for this transaction");
-    }
+      toast.error("error while withdrawing");
     yield put(RewardsActions.setIsDepositing(false));
   } finally {
   }
@@ -340,6 +344,7 @@ export function* withdraw(action: { type: string; payload: WithdrawPayload }) {
       masterchefwithdraw,
       type,
       lpTokenAmountToSpend,
+      onSuccess,
     } = action.payload;
     const pool: Pool = pools[poolKey];
     const targetContract = new Contract(
@@ -364,16 +369,16 @@ export function* withdraw(action: { type: string; payload: WithdrawPayload }) {
         spendTransaction = yield call(
           targetContract.removeLiquidity,
           lpTokenAmountToSpend,
-          pool.poolTokens.map(({ symbol }) =>
-            subtractSlippage(
-              BigNumber.from(tokenAmounts[symbol]),
+          pool.poolTokens.map(({ symbol }) => {
+            return subtractSlippage(
+              tokenAmounts[symbol],
               selectedSlippage,
               customSlippage
-            )
-          ),
+            );
+          }),
           deadline
         );
-      } else if (type === "IMBALANCE") {
+      } else if (type === WithdrawType.IMBALANCE) {
         spendTransaction = yield call(
           targetContract.removeLiquidityImbalance,
           pool.poolTokens.map(({ symbol }) => tokenAmounts[symbol]),
@@ -381,7 +386,6 @@ export function* withdraw(action: { type: string; payload: WithdrawPayload }) {
           deadline
         );
       } else {
-        console.log("else");
         spendTransaction = yield call(
           targetContract.removeLiquidityOneToken,
           lpTokenAmountToSpend,
@@ -393,15 +397,9 @@ export function* withdraw(action: { type: string; payload: WithdrawPayload }) {
           ),
           deadline
         );
-        console.log(spendTransaction);
       }
       yield call(spendTransaction.wait);
     } else {
-      console.log({
-        masterchefContract,
-        masterChefId: pool.lpToken.masterchefId,
-        amount: tokenAmounts[pool.lpToken.symbol],
-      });
       yield call(
         masterchefContract.withdraw,
         pool.lpToken.masterchefId,
@@ -409,10 +407,17 @@ export function* withdraw(action: { type: string; payload: WithdrawPayload }) {
       );
     }
     yield put(RewardsActions.setIsWithdrawing(false));
+    toast.success("withdraw success");
+    yield put(GlobalActions.getTokenBalances());
+    yield put(RewardsActions.getRewardPoolsData(pools));
+
+    if (onSuccess) {
+      yield call(onSuccess);
+    }
   } catch (e: any) {
     console.log(e);
-    if (e?.code === -32603) {
-      toast.error("balance is not enough for this transaction");
+    if (e?.data?.message) {
+      toast.error(e.data.message);
     }
     yield put(RewardsActions.setIsWithdrawing(false));
   }

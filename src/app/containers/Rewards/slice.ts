@@ -28,6 +28,7 @@ export const initialState: ContainerState = {
   masterchefApr: undefined,
   isDepositing: false,
   isWithdrawing: false,
+  isGettingPoolsData: false,
 };
 
 interface LastTransactionTimes {
@@ -120,6 +121,9 @@ const rewardsSlice = createSlice({
       state.isWithdrawing = action.payload;
     },
     withdraw(state, action: PayloadAction<WithdrawPayload>) {},
+    setIsGettingPoolsData(state, action: PayloadAction<boolean>) {
+      state.isGettingPoolsData = action.payload;
+    },
   },
 });
 

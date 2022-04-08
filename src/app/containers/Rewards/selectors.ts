@@ -2,12 +2,17 @@ import { createSelector } from "@reduxjs/toolkit";
 
 import { RootState } from "store/types";
 import { initialState } from "./slice";
+import { Pools } from "./types";
 
 export const RewardsDomains = {
   root: (state: RootState) => state.rewards,
   lastTransactionTimes: (state: RootState) =>
     state.rewards?.lastTransactionTimes || initialState.lastTransactionTimes,
   pools: (state: RootState) => state.rewards?.pools || initialState.pools,
+  UserShareData: (poolKey: Pools) => (state: RootState) =>
+    state?.rewards?.pools[poolKey]?.userShareData || undefined,
+  isGettingPoolsData: (state: RootState) =>
+    state.rewards?.isGettingPoolsData || initialState.isGettingPoolsData,
   isGettingMasterChefBalances: (state: RootState) =>
     state.rewards?.isGettingMasterChefBalances ||
     initialState.isGettingMasterChefBalances,
@@ -66,6 +71,12 @@ export const RewardsSelectors = {
   ),
   poolData: (key: string) =>
     createSelector(RewardsDomains.pools, (pools) => pools[key]?.poolData),
-  userShareData: (key: string) =>
-    createSelector(RewardsDomains.pools, (pools) => pools[key]?.userShareData),
+  userShareData: (key?: string) =>
+    createSelector(RewardsDomains.pools, (pools) =>
+      key ? pools[key]?.userShareData : undefined
+    ),
+  isGettingPoolsData: createSelector(
+    RewardsDomains.isGettingPoolsData,
+    (isGettingPoolsData) => isGettingPoolsData
+  ),
 };

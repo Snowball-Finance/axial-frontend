@@ -97,6 +97,8 @@ export interface WithdrawPayload {
   type: WithdrawType | TokenSymbols;
   lpTokenAmountToSpend: BigNumber;
   tokenAmounts: TokenAmounts;
+  //a yield call-able function
+  onSuccess?: any;
 }
 
 export interface TokenShareType {
@@ -150,6 +152,7 @@ export interface RewardsState {
   masterchefApr: MasterchefApr | undefined;
   isGettingMasterChefBalances: boolean;
   isGettingMasterchefApr: boolean;
+  isGettingPoolsData: boolean;
   isGettingSwapStats: boolean;
   masterChefBalances: { [key: string]: MasterchefResponse } | undefined;
   pools: { [K in Pools]?: Pool };
