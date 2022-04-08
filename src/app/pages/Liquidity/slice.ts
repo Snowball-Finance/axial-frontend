@@ -43,6 +43,7 @@ const liquidityPageSlice = createSlice({
   initialState,
   reducers: {
     setSelectedPool(state, action: PayloadAction<Pool | undefined>) {
+      state.withdrawPercentage = 0;
       state.pool = action.payload;
       if (action.payload) {
         const tmp = {};

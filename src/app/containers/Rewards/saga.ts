@@ -315,10 +315,12 @@ export function* deposit(action: { type: string; payload: DepositPayload }) {
       );
     }
     yield put(RewardsActions.setIsDepositing(false));
+    toast.success("deposit successful");
+    yield put(GlobalActions.getTokenBalances());
   } catch (e: any) {
     console.log(e);
     if (e.code === -32603) {
-      toast.error("balance is not enough for this transaction");
+      toast.error("error while withdrawing");
     }
     yield put(RewardsActions.setIsDepositing(false));
   } finally {
@@ -361,19 +363,22 @@ export function* withdraw(action: { type: string; payload: WithdrawPayload }) {
       let spendTransaction;
 
       if (type === WithdrawType.ALL) {
+        console.log("withdraw All~~~~~~~~~~~~~~~~~~");
         spendTransaction = yield call(
           targetContract.removeLiquidity,
           lpTokenAmountToSpend,
-          pool.poolTokens.map(({ symbol }) =>
-            subtractSlippage(
-              BigNumber.from(tokenAmounts[symbol]),
+          pool.poolTokens.map(({ symbol }) => {
+            return subtractSlippage(
+              tokenAmounts[symbol],
               selectedSlippage,
               customSlippage
-            )
-          ),
+            );
+          }),
           deadline
         );
       } else if (type === WithdrawType.IMBALANCE) {
+        console.log("withdraw Imbalance~~~~~~~~~~~~~~~~~~");
+
         spendTransaction = yield call(
           targetContract.removeLiquidityImbalance,
           pool.poolTokens.map(({ symbol }) => tokenAmounts[symbol]),
@@ -381,6 +386,7 @@ export function* withdraw(action: { type: string; payload: WithdrawPayload }) {
           deadline
         );
       } else {
+        console.log(`withdraw ${type} ~~~~~~~~~~~~~~~~~~`);
         spendTransaction = yield call(
           targetContract.removeLiquidityOneToken,
           lpTokenAmountToSpend,
@@ -406,8 +412,8 @@ export function* withdraw(action: { type: string; payload: WithdrawPayload }) {
     yield put(GlobalActions.getTokenBalances());
   } catch (e: any) {
     console.log(e);
-    if (e?.code === -32603) {
-      toast.error("balance is not enough for this transaction");
+    if (e?.data?.message) {
+      toast.error(e.data.message);
     }
     yield put(RewardsActions.setIsWithdrawing(false));
   }

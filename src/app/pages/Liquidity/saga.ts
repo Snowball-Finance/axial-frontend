@@ -217,7 +217,6 @@ export function* withdraw() {
   const selectedToken = yield select(
     LiquidityPageDomains.selectedTokenToWithdraw
   );
-  let lpTokenAmountToSpend = yield call(calculateLpTokenToSpend);
 
   if (selectedPool && tokens) {
     let tokenAmounts = {};
@@ -234,6 +233,7 @@ export function* withdraw() {
       selectedToken,
       tokenAmounts,
     });
+    let lpTokenAmountToSpend = yield call(calculateLpTokenToSpend);
 
     if (type !== WithdrawType.ALL && type !== WithdrawType.IMBALANCE) {
       const swapContract = yield call(getSwapContractForWithdraw);
@@ -602,8 +602,9 @@ function* calculateLpTokenToSpend() {
         lpTokenToSpend = inputCalculatedLPTokenAmount;
       }
     }
+  } else {
+    lpTokenToSpend = yield call(getEffectiveUserLpBalance);
   }
-
   return lpTokenToSpend;
 }
 
