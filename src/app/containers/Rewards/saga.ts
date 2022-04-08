@@ -373,7 +373,7 @@ export function* withdraw(action: { type: string; payload: WithdrawPayload }) {
           ),
           deadline
         );
-      } else if (type === "IMBALANCE") {
+      } else if (type === WithdrawType.IMBALANCE) {
         spendTransaction = yield call(
           targetContract.removeLiquidityImbalance,
           pool.poolTokens.map(({ symbol }) => tokenAmounts[symbol]),
@@ -392,7 +392,6 @@ export function* withdraw(action: { type: string; payload: WithdrawPayload }) {
           ),
           deadline
         );
-        console.log(spendTransaction);
       }
       yield call(spendTransaction.wait);
     } else {
