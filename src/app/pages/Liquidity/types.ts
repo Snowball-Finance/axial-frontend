@@ -25,6 +25,7 @@ export interface LiquidityPageState {
   tokensAreApprovedForDeposit: boolean;
   tokensAreApprovedForWithdrawal: boolean;
   isCheckingForApproval: boolean;
+  isApprovingTokens: boolean;
 }
 
 export interface WithdrawTokenAmountChangePayload {

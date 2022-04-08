@@ -29,8 +29,9 @@ export const DepositApproveButton = () => {
       loading={loading}
       disabled={areAllTokensApproved}
       onClick={handleApproveButtonClick}
+      fullWidth
     >
-      {t(translations.Common.Approve())}
+      {t(translations.LiquidityPage.Buttons.ApproveTokens())}
     </OutlinedButton>
   );
 };

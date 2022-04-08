@@ -39,6 +39,8 @@ export const LiquidityPageDomains = {
     state.liquidityPage?.tokensAreApprovedForDeposit,
   isCheckingForApproval: (state: RootState) =>
     state.liquidityPage?.isCheckingForApproval,
+  isApprovingTokens: (state: RootState) =>
+    state.liquidityPage?.isApprovingTokens || initialState.isApprovingTokens,
 };
 
 export const LiquidityPageSelectors = {
@@ -131,5 +133,9 @@ export const LiquidityPageSelectors = {
   isCheckingForApproval: createSelector(
     LiquidityPageDomains.isCheckingForApproval,
     (isCheckingForApproval) => isCheckingForApproval
+  ),
+  isApprovingTokens: createSelector(
+    LiquidityPageDomains.isApprovingTokens,
+    (isApprovingTokens) => isApprovingTokens
   ),
 };

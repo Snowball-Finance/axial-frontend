@@ -236,6 +236,7 @@ export function* resetTokensInQueueForApproval(tokenSymbols: TokenSymbols[]) {
 }
 
 export function* deposit(action: { type: string; payload: DepositPayload }) {
+  yield put(GlobalActions.setTransactionSuccessId(undefined));
   const { poolKey, masterchefDeposit, tokenAmounts, shouldDepositWrapped } =
     action.payload;
   const pools = yield select(RewardsDomains.pools);
@@ -306,7 +307,13 @@ export function* deposit(action: { type: string; payload: DepositPayload }) {
         minToMint,
         txnDeadline
       );
-      yield call(spendTransaction.wait);
+      const result = yield call(spendTransaction.wait);
+
+      if (result.status) {
+        yield put(
+          GlobalActions.setTransactionSuccessId(result.transactionHash)
+        );
+      }
     } else {
       yield call(
         masterchefContract.deposit,
@@ -314,14 +321,15 @@ export function* deposit(action: { type: string; payload: DepositPayload }) {
         tokenAmounts[pool.lpToken.symbol]
       );
     }
-    yield put(RewardsActions.setIsDepositing(false));
+    yield put(GlobalActions.getTokenBalances());
   } catch (e: any) {
     console.log(e);
     if (e.code === -32603) {
       toast.error("balance is not enough for this transaction");
     }
-    yield put(RewardsActions.setIsDepositing(false));
+    yield put(GlobalActions.setTransactionSuccessId(undefined));
   } finally {
+    yield put(RewardsActions.setIsDepositing(false));
   }
 }
 
