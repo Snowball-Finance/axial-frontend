@@ -58,10 +58,6 @@ export const GovernanceSelectors = {
     GovernanceDomains.selectGovernanceDomain,
     (governanceState) => governanceState
   ),
-  selectTotalGovernanceTokenSupply: createSelector(
-    GovernanceDomains.selectGovernanceDomain,
-    (blockChainState) => blockChainState.totalGovernanceTokenSupply
-  ),
   selectIsLoadingGovernanceTokenBalance: createSelector(
     GovernanceDomains.selectGovernanceDomain,
     (blockChainState) => blockChainState.isGettingGovernanceTokenBalance

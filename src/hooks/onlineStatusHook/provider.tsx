@@ -6,8 +6,6 @@ import React, {
   createContext,
 } from "react";
 
-
-
 const PING_RESOURCE = `${process.env.REACT_APP_BASE_URL}/check`;
 const TIMEOUT_TIME_MS = 4000;
 const onlinePollingInterval = 60 * 1000;

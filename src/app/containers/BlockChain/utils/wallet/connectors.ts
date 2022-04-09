@@ -16,10 +16,6 @@ const AVALANCHE_MAINNET_PARAMS = {
   blockExplorerUrls: [`${process.env.REACT_APP_EXPLORER_URL}/`],
 };
 
-export const NETWORK_CHAIN_ID: number = parseInt(
-  process.env.REACT_APP_CHAIN_ID ?? "43114"
-);
-
 const walletLink = new WalletLinkConnector({
   url: AVALANCHE_MAINNET_PARAMS.rpcUrls[0],
   appName: process.env.REACT_APP_APPNAME || "",
@@ -27,8 +23,12 @@ const walletLink = new WalletLinkConnector({
     "https://raw.githubusercontent.com/Snowball-Finance/app-v2/master/public/assets/images/logo.png",
 });
 
+const networkConnectorUrls = {
+  [Number(process.env.REACT_APP_CHAIN_ID || "0")]: rpcUrl,
+};
+console.log(networkConnectorUrls);
 export const network = new NetworkConnector({
-  urls: { [NETWORK_CHAIN_ID]: rpcUrl },
+  urls: networkConnectorUrls,
 });
 
 const injected = new InjectedConnector({

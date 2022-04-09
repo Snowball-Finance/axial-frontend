@@ -12,8 +12,8 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { mobile } from "styles/media";
-import { StakingPageActions } from "../../slice";
-import { DepositAndWithdrawTab } from "../../types";
+import { StakingPageActions } from "../../../../slice";
+import { DepositAndWithdrawTab } from "../../../../types";
 import { Info } from "./info";
 
 export const OverallInfoCard = () => {

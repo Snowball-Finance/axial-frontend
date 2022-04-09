@@ -1,5 +1,10 @@
 import { PayloadAction } from "@reduxjs/toolkit";
-import { ContainerState, CreateLockData, DistributorData } from "./types";
+import {
+  ContainerState,
+  StakeGovernanceTokenModel,
+  DistributorData,
+  StakeAccruingTokenModel,
+} from "./types";
 import { createSlice } from "store/toolkit";
 import { useInjectReducer, useInjectSaga } from "store/redux-injectors";
 
@@ -37,13 +42,20 @@ const stakingSlice = createSlice({
         state.otherDistributors = action.payload.otherDistributors;
       }
     },
-    createLock(state, action: PayloadAction<CreateLockData>) {},
-    setIsStaking(state, action: PayloadAction<boolean>) {
+    stakeGovernanceToken(
+      state,
+      action: PayloadAction<StakeGovernanceTokenModel>
+    ) {},
+    stakeAccruingToken(
+      state,
+      action: PayloadAction<StakeAccruingTokenModel>
+    ) {},
+    setIsStakingGovernanceToken(state, action: PayloadAction<boolean>) {
       state.isStaking = action.payload;
     },
     claim() {},
     withdraw() {},
-    setIsWithdrawing(state, action: PayloadAction<boolean>) {
+    setIsWithdrawingGovernanceToken(state, action: PayloadAction<boolean>) {
       state.isWithdrawing = action.payload;
     },
     setIsClaiming(state, action: PayloadAction<boolean>) {

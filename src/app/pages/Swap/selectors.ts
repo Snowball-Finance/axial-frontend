@@ -44,13 +44,11 @@ export const SwapPageSelectors = {
     SwapPageDomains.searchValue,
     (tokens, tokenPricesUSD, tokenChange, searchValue) => {
       const fromTokens: TokenOption[] = [];
-      const tokensArray=tokens?Object.values(tokens):[]
-      const visibleTokens = tokensArray.filter(
-        ({ isLPToken }) => !isLPToken
-      );
+      const tokensArray = tokens ? Object.values(tokens) : [];
+      const visibleTokens = tokensArray.filter(({ isLPToken }) => !isLPToken);
 
       visibleTokens.forEach(({ symbol, logo, decimals }) => {
-        const icon=logo||''
+        const icon = logo || "";
         if (tokenChange?.symbol !== symbol) {
           const tokenBalance = formatBNToString(
             tokens?.[symbol].balance || Zero,
@@ -93,13 +91,11 @@ export const SwapPageSelectors = {
     SwapPageDomains.searchValue,
     (tokens, tokenPricesUSD, fromToken, searchValue) => {
       const toTokens: TokenOption[] = [];
-      const tokensArray=tokens?Object.values(tokens):[]
-      const visibleTokens = tokensArray.filter(
-        ({ isLPToken }) => !isLPToken
-      );
+      const tokensArray = tokens ? Object.values(tokens) : [];
+      const visibleTokens = tokensArray.filter(({ isLPToken }) => !isLPToken);
 
       visibleTokens.forEach(({ symbol, logo, decimals }) => {
-        const icon=logo||''
+        const icon = logo || "";
         if (fromToken?.symbol !== symbol) {
           const tokenBalance = formatBNToString(
             tokens?.[symbol].balance || Zero,

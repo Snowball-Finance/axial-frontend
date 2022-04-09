@@ -4,10 +4,13 @@
 import { parseEther } from "ethers/lib/utils";
 import { all, call, put, select, takeLatest } from "redux-saga/effects";
 import { StakingActions } from "./slice";
-import { CreateLockData, DistributorData } from "./types";
-import { ethers } from "ethers";
+import {
+  StakeGovernanceTokenModel,
+  DistributorData,
+  StakeAccruingTokenModel,
+} from "./types";
+import { Contract, ethers } from "ethers";
 import { env } from "environment";
-import { getEpochSecondForDay } from "./helpers/date";
 import { BlockChainActions } from "../../slice";
 import { toast } from "react-toastify";
 import { EthersDomains } from "../../Ethers/selectors";
@@ -16,12 +19,16 @@ import { StakingDomains } from "./selectors";
 import { GovernanceDomains } from "../selectors";
 import { BlockChainDomains } from "../../selectors";
 import { GovernanceActions } from "../slice";
+import { SAxial, VeAxial } from "abi/ethers-contracts";
+import AccruingTokenABI from "abi/veAxial.json";
 
-export function* createLock(action: { type: string; payload: CreateLockData }) {
+export function* stakeGovernanceToken(action: {
+  type: string;
+  payload: StakeGovernanceTokenModel;
+}) {
   const { balance, date } = action.payload;
   const amount = parseEther(balance.toString());
-  const lockedDate = getEpochSecondForDay(new Date(date));
-  yield put(StakingActions.setIsStaking(true));
+  yield put(StakingActions.setIsStakingGovernanceToken(true));
   const library = yield select(Web3Domains.selectLibraryDomain);
   //|| is used because if .env is not set,we will fetch the error in early stages
   const mainTokenAddress = env.MAIN_TOKEN_ADDRESS || "";
@@ -39,13 +46,26 @@ export function* createLock(action: { type: string; payload: CreateLockData }) {
       const governanceTokenABI = yield select(
         GovernanceDomains.selectGovernanceTokenABIDomain
       );
-      const governanceTokenContract = new ethers.Contract(
+      const governanceTokenContract: SAxial = new Contract(
         governanceTokenAddress,
         governanceTokenABI,
         library.getSigner()
-      );
+      ) as SAxial;
 
       const approveGovernanceTokenContractHasAccessToMainTokenAssets =
+        // yield call(checkAndApproveTokensInList,{
+        //   tokensToVerify:[
+        //     {
+        //       token:{
+        //         symbol:env.GOVERNANCE_TOKEN_NAME
+        //       }as Token,
+        //       swapAddress:governanceTokenAddress,
+        //       tokenContract:mainTokenContract,
+        //       amount:ethers.constants.MaxUint256
+
+        //     }
+        //   ]
+        // })
         yield call(
           mainTokenContract.approve,
           governanceTokenAddress,
@@ -60,17 +80,19 @@ export function* createLock(action: { type: string; payload: CreateLockData }) {
         return;
       }
 
-      const gasLimit = yield call(
-        governanceTokenContract.estimateGas.create_lock,
-        amount,
-        lockedDate
-      );
-
+      const endDate = new Date(date);
+      var startDate = new Date();
+      var timeFromNow = (endDate.getTime() - startDate.getTime()) / 1000;
+      /**
+       *      _duration: BigNumberish,
+              _amount: BigNumberish,
+              _deferUnclaimed: boolean,
+       */
       const tokenLock = yield call(
-        governanceTokenContract.create_lock,
+        governanceTokenContract.stake,
+        timeFromNow,
         amount,
-        lockedDate,
-        { gasLimit }
+        false
       );
 
       const transactionResponse = yield call(tokenLock.wait, 1);
@@ -91,7 +113,7 @@ export function* createLock(action: { type: string; payload: CreateLockData }) {
       toast.error(error.data.message);
     }
   } finally {
-    yield put(StakingActions.setIsStaking(false));
+    yield put(StakingActions.setIsStakingGovernanceToken(false));
   }
 }
 
@@ -201,7 +223,7 @@ export function* getLockedGovernanceTokenInfo() {
 }
 
 export function* withdraw() {
-  yield put(StakingActions.setIsWithdrawing(true));
+  yield put(StakingActions.setIsWithdrawingGovernanceToken(true));
 
   try {
     const governanceTokenABI = yield select(
@@ -231,12 +253,41 @@ export function* withdraw() {
       toast.error(e.data.message);
     }
   } finally {
-    yield put(StakingActions.setIsWithdrawing(false));
+    yield put(StakingActions.setIsWithdrawingGovernanceToken(false));
+  }
+}
+
+export function* stakeAccruingToken(action: {
+  type: string;
+  payload: StakeAccruingTokenModel;
+}) {
+  try {
+    const library = yield select(Web3Domains.selectLibraryDomain);
+    const accruingTokenAddress =
+      process.env.REACT_APP_ACCRUING_TOKEN_ADDRESS || "";
+    const accruingTokenContract: VeAxial = new Contract(
+      accruingTokenAddress,
+      AccruingTokenABI,
+      library.getSigner()
+    ) as VeAxial;
+
+    const { amountToStake } = action.payload;
+    const transaction = yield call(accruingTokenContract.stake, amountToStake);
+    yield call(transaction.wait, 1);
+    if (transaction.status) {
+      toast.success("staking successful");
+    }
+  } catch (e) {
+    toast.error("error while staking");
   }
 }
 
 export function* stakingSaga() {
-  yield takeLatest(StakingActions.createLock.type, createLock);
+  yield takeLatest(
+    StakingActions.stakeGovernanceToken.type,
+    stakeGovernanceToken
+  );
+  yield takeLatest(StakingActions.stakeAccruingToken.type, stakeAccruingToken);
   yield takeLatest(StakingActions.claim.type, claim);
   yield takeLatest(
     StakingActions.getFeeDistributionInfo.type,

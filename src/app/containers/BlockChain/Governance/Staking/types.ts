@@ -26,10 +26,12 @@ export interface DistributorData {
   decimals: number;
 }
 
-export interface CreateLockData {
+export interface StakeGovernanceTokenModel {
   balance: string;
   date: string;
   duration: string;
 }
-
+export interface StakeAccruingTokenModel {
+  amountToStake: string;
+}
 export type ContainerState = StakingState;

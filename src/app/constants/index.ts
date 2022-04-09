@@ -1,4 +1,4 @@
-export const e=1
+export const e = 1;
 // import axialLogo from "assets/icons/logo_icon.svg"; // this needs a smaller icon logo(24)
 // import daiLogo from "assets/icons/dai.svg";
 // import fraxLogo from "assets/icons/frax.svg";

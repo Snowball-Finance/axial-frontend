@@ -19,7 +19,7 @@ import { GovernancePage } from "./pages/Governance/Loadable";
 // import { INFO_QUERY } from "services/apollo/queries/mainTokenInfo";
 import { PROPOSAL_QUERY } from "services/apollo/queries/proposalList";
 import SNOWBALL_ABI from "libs/abis/snowball.json";
-import GOVERNANCE_ABI from "libs/abis/vote-governance.json";
+import GOVERNANCE_ABI from "libs/abis/governance.json";
 import SNOWCONE_ABI from "libs/abis/snowcone.json";
 import FEE_DISTRIBUTOR_ABI from "libs/abis/fee-distributor.json";
 import { CONTRACTS } from "config";

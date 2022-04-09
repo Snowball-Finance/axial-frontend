@@ -31,7 +31,11 @@ export function* stake() {
   );
   duration = (Number(duration) / 25 + 1).toFixed(0);
   yield put(
-    StakingActions.createLock({ balance: enteredBalance, duration, date })
+    StakingActions.stakeGovernanceToken({
+      balance: enteredBalance,
+      duration,
+      date,
+    })
   );
 }
 

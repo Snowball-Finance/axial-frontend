@@ -21,8 +21,7 @@ import { Web3ReactContextInterface } from "@web3-react/core/dist/types";
 import Web3ReactManager from "./Web3ReactManager";
 const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName);
 
-export function useActiveWeb3React(): Web3ReactContextInterface<Web3Provider> & {
-} {
+export function useActiveWeb3React(): Web3ReactContextInterface<Web3Provider> & {} {
   const context = useWeb3React<Web3Provider>();
   const contextNetwork = useWeb3React<Web3Provider>(NetworkContextName);
   return context.active ? context : contextNetwork;

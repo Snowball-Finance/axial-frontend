@@ -13,6 +13,7 @@ import { parseProposalFromRawBlockchainResponse } from "./utils/proposalParser";
 import { Web3Domains } from "../Web3/selectors";
 import { GovernanceDomains } from "./selectors";
 import { GetProposalsAPI } from "app/containers/BlockChain/Governance/providers/proposals";
+import { Governance } from "abi/ethers-contracts";
 
 export function* getProposals(action: {
   type: string;
@@ -187,13 +188,13 @@ export function* getTotalGovernanceTokenSupply() {
   const governanceToken = yield select(
     GovernanceDomains.selectGovernanceTokenContractDomain
   );
-  try{
-    const contract = governanceToken;
+  try {
+    const contract: Governance = governanceToken;
     const response = yield call(totalSupplyProvider, { contract });
     yield put(GovernanceActions.setTotalGovernanceTokenSupply(response));
-  }catch(e){
-    toast.error('error while getting Governance token supply')
-    console.log(e)
+  } catch (e) {
+    toast.error("error while getting Governance token supply");
+    console.log(e);
   }
 }
 
@@ -270,7 +271,7 @@ export function* setGovernanceTokenContract(action: {
 }) {
   yield all([
     action.payload && put(GovernanceActions.getGovernanceTokenBalance()),
-    put(GovernanceActions.getTotalGovernanceTokenSupply()),
+    // put(GovernanceActions.getTotalGovernanceTokenSupply()),
   ]);
 }
 
@@ -279,10 +280,10 @@ export function* governanceSaga() {
     GovernanceActions.getGovernanceTokenBalance.type,
     getGovernanceTokenBalance
   );
-  yield takeLatest(
-    GovernanceActions.getTotalGovernanceTokenSupply.type,
-    getTotalGovernanceTokenSupply
-  );
+  // yield takeLatest(
+  //   GovernanceActions.getTotalGovernanceTokenSupply.type,
+  //   getTotalGovernanceTokenSupply
+  // );
   yield takeLatest(GovernanceActions.getProposals.type, getProposals);
   yield takeLatest(GovernanceActions.vote.type, vote);
   yield takeLatest(GovernanceActions.submitNewProposal.type, submitNewProposal);

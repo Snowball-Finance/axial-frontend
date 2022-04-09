@@ -49,7 +49,7 @@ const blockChainSlice = createSlice({
       state.mainTokenBalance = action.payload;
     },
     getPrices(state, action: PayloadAction<void>) {},
-    getTotalGovernanceTokenSupply(state, action: PayloadAction<void>) {},
+    // getTotalGovernanceTokenSupply(state, action: PayloadAction<void>) {},
     setPrices(state, action: PayloadAction<ContainerState["prices"]>) {
       state.prices = action.payload;
     },

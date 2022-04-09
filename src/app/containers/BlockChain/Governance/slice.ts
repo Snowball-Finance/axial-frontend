@@ -48,7 +48,7 @@ const governanceSlice = createSlice({
     setGovernanceTokenBalance(state, action: PayloadAction<BigNumber>) {
       state.governanceTokenBalance = action.payload;
     },
-    getTotalGovernanceTokenSupply(state, action: PayloadAction<void>) {},
+    // getTotalGovernanceTokenSupply(state, action: PayloadAction<void>) {},
     setIsGettingGovernanceTokenBalance(state, action: PayloadAction<boolean>) {
       state.isGettingGovernanceTokenBalance = action.payload;
     },
