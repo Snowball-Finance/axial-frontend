@@ -187,9 +187,14 @@ export function* getTotalGovernanceTokenSupply() {
   const governanceToken = yield select(
     GovernanceDomains.selectGovernanceTokenContractDomain
   );
-  const contract = governanceToken;
-  const response = yield call(totalSupplyProvider, { contract });
-  yield put(GovernanceActions.setTotalGovernanceTokenSupply(response));
+  try{
+    const contract = governanceToken;
+    const response = yield call(totalSupplyProvider, { contract });
+    yield put(GovernanceActions.setTotalGovernanceTokenSupply(response));
+  }catch(e){
+    toast.error('error while getting Governance token supply')
+    console.log(e)
+  }
 }
 
 export function* syncProposalsWithBlockchain() {

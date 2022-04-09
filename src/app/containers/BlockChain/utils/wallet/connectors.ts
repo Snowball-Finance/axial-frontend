@@ -13,7 +13,7 @@ const AVALANCHE_MAINNET_PARAMS = {
     decimals: 18,
   },
   rpcUrls: [`${NODE_ADDRESS}/ext/bc/C/rpc`],
-  blockExplorerUrls: ["https://snowtrace.io/"],
+  blockExplorerUrls: [`${process.env.REACT_APP_EXPLORER_URL}/`],
 };
 
 export const NETWORK_CHAIN_ID: number = parseInt(
