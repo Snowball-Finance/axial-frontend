@@ -239,6 +239,7 @@ export function* resetTokensInQueueForApproval(tokenSymbols: TokenSymbols[]) {
 }
 
 export function* deposit(action: { type: string; payload: DepositPayload }) {
+  yield put(GlobalActions.setTransactionSuccessId(undefined));
   const { poolKey, masterchefDeposit, tokenAmounts, shouldDepositWrapped } =
     action.payload;
   const pools = yield select(RewardsDomains.pools);
@@ -309,7 +310,13 @@ export function* deposit(action: { type: string; payload: DepositPayload }) {
         minToMint,
         txnDeadline
       );
-      yield call(spendTransaction.wait);
+      const result = yield call(spendTransaction.wait);
+
+      if (result.status) {
+        yield put(
+          GlobalActions.setTransactionSuccessId(result.transactionHash)
+        );
+      }
     } else {
       yield call(
         masterchefContract.deposit,
@@ -325,7 +332,6 @@ export function* deposit(action: { type: string; payload: DepositPayload }) {
     console.log(e);
     toast.error("error while withdrawing");
     yield put(RewardsActions.setIsDepositing(false));
-  } finally {
   }
 }
 

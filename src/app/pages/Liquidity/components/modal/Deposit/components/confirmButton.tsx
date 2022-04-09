@@ -23,6 +23,7 @@ export const ConfirmButton = () => {
       onClick={handleDepositClick}
       loading={isDepositing}
       disabled={!areAllTokensApproved}
+      fullWidth
     >
       {t(translations.LiquidityPage.Buttons.ConfirmDeposit())}
     </ContainedButton>

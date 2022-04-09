@@ -1,7 +1,6 @@
 import { ContainedButton } from "app/components/common/buttons/containedButton";
 import { NeedsWalletConnection } from "app/components/common/needsWalletConnection";
 import { WalletToggle } from "app/components/common/walletToggle";
-import { RewardsSelectors } from "app/containers/Rewards/selectors";
 import { LiquidityPageSelectors } from "app/pages/Liquidity/selectors";
 import { LiquidityPageActions } from "app/pages/Liquidity/slice";
 import { translations } from "locales/i18n";
@@ -17,7 +16,6 @@ export const DepositButton = () => {
   const disabled = Object.values(depositTokens).every(
     (tokenAmount) => tokenAmount === "0"
   );
-  const isDepositing = useSelector(RewardsSelectors.isDepositing);
   const handleDepositClick = () => {
     dispatch(LiquidityPageActions.buildTransactionData());
   };
@@ -27,7 +25,6 @@ export const DepositButton = () => {
         <ContainedButton
           height={42}
           disabled={disabled}
-          loading={isDepositing}
           onClick={handleDepositClick}
           fullWidth
         >
