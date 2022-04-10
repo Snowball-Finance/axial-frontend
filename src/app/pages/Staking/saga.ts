@@ -73,7 +73,7 @@ export function* stakeAllTheAxialBalancesIntoVeAxial() {
     );
   }
 }
-export function* modifySelectedDepositSliderValueBasedOnExistingLockTime(action: {
+export function* setRemainingDaysToUnblockAllGovernanceTokens(action: {
   type: string;
   payload: BigNumber;
 }) {
@@ -103,8 +103,8 @@ export function* stakingPageSaga() {
     stakeAccruingToken
   );
   yield takeLatest(
-    StakingPageActions.modifySelectedDepositSliderValueBasedOnExistingLockTime
+    StakingPageActions.setRemainingDaysToUnblockAllGovernanceTokens
       .type,
-    modifySelectedDepositSliderValueBasedOnExistingLockTime
+    setRemainingDaysToUnblockAllGovernanceTokens
   );
 }

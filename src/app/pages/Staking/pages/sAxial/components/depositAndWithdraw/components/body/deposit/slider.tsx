@@ -45,7 +45,7 @@ export const BalanceSlider = () => {
     const endTimeInfo = lockedGovernanceTokenInfo?.endBlockTime;
     if (endTimeInfo) {
       dispatch(
-        StakingPageActions.modifySelectedDepositSliderValueBasedOnExistingLockTime(
+        StakingPageActions.setRemainingDaysToUnblockAllGovernanceTokens(
           endTimeInfo
         )
       );

@@ -59,7 +59,7 @@ const stakingPageSlice = createSlice({
     ) {
       state.selectedDepositUnlockPeriod = action.payload;
     },
-    modifySelectedDepositSliderValueBasedOnExistingLockTime(
+    setRemainingDaysToUnblockAllGovernanceTokens(
       state,
       action: PayloadAction<BigNumber>
     ) {},
