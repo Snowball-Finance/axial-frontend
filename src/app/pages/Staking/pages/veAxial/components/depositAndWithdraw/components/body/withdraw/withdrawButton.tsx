@@ -9,7 +9,9 @@ export const WithdrawButton = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  const isWithdrawing = useSelector(StakingSelectors.selectIsWithdrawing);
+  const isWithdrawing = useSelector(
+    StakingSelectors.isWithdrawingAccruingToken
+  );
 
   const handleWithdrawButtonClick = () => {
     if (isWithdrawing) return;

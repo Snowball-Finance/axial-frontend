@@ -20,6 +20,7 @@ export const initialState: ContainerState = {
   isClaiming: false,
   isGettingFeeDistributionInfo: false,
   isWithdrawing: false,
+  isWithdrawingAccruingToken: false,
   endDateForGovernanceTokenLock: BigNumber.from(0),
   isGettingGovernanceTokenInfo: false,
   lockedGovernanceTokenAmount: BigNumber.from(0),
@@ -61,6 +62,9 @@ const stakingSlice = createSlice({
     withdrawAccruingToken() {},
     setIsWithdrawingGovernanceToken(state, action: PayloadAction<boolean>) {
       state.isWithdrawing = action.payload;
+    },
+    setIsWithdrawingAccruingToken(state, action: PayloadAction<boolean>) {
+      state.isWithdrawingAccruingToken = action.payload;
     },
     setIsClaiming(state, action: PayloadAction<boolean>) {
       state.isClaiming = action.payload;

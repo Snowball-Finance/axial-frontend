@@ -70,6 +70,10 @@ export const GovernanceSelectors = {
     GovernanceDomains.selectGovernanceDomain,
     (governanceState) => governanceState.accruingTokenBalance
   ),
+  mainTokenAmountStakedForAccruing: createSelector(
+    GovernanceDomains.selectGovernanceDomain,
+    (governanceState) => governanceState.totalMainTokenStakedForAccruingToken
+  ),
   totalAccruedToken: createSelector(
     GovernanceDomains.selectGovernanceDomain,
     (governanceState) => governanceState.totalAccruedToken

@@ -2,10 +2,14 @@ import { styled } from "@mui/material";
 import { Max1040 } from "app/components/wrappers/max1040";
 import { mobile } from "styles/media";
 import { DepositAndWithdraw } from "./components/depositAndWithdraw";
+import { VeAxialInfo } from "./components/depositAndWithdraw/components/infoCard";
 
 export const VeAxialPage = () => {
   return (
     <Wrapper>
+      <div>
+        <VeAxialInfo />
+      </div>
       <DepositAndWithdrawSection>
         <DepositAndWithdraw />
       </DepositAndWithdrawSection>

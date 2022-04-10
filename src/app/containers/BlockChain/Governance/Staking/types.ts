@@ -9,6 +9,7 @@ export interface StakingState {
   lockedGovernanceTokenAmount: BigNumber;
   endDateForGovernanceTokenLock: BigNumber;
   isWithdrawing: boolean;
+  isWithdrawingAccruingToken: boolean;
   isGettingGovernanceTokenInfo: boolean;
   claimableGovernanceToken: BigNumber | undefined;
   claimable: {

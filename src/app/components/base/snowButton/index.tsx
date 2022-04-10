@@ -26,7 +26,7 @@ export const SnowButton: FC<SnowButtonProps> = ({ ...props }) => {
 
 const StyledButton = styled(Button)<SnowButtonProps>(
   ({ height, width, theme }) => ({
-    ...(height && { height }),
+    ...(height ? { height } : { height: "42px" }),
     ...(width && { width }),
     textTransform: "none",
     fontSize: "18px",

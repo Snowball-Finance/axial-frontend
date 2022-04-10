@@ -26,11 +26,17 @@ export const StakingDomains = {
     state.staking?.endDateForGovernanceTokenLock ||
     initialState.endDateForGovernanceTokenLock,
   selectIsWithdrawingDomain: (state: RootState) => state.staking?.isWithdrawing,
+  isWithdrawingAccruingToken: (state: RootState) =>
+    state.staking?.isWithdrawingAccruingToken,
 };
 
 export const StakingSelectors = {
   selectIsWithdrawing: createSelector(
     StakingDomains.selectIsWithdrawingDomain,
+    (isWithdrawing) => isWithdrawing
+  ),
+  isWithdrawingAccruingToken: createSelector(
+    StakingDomains.isWithdrawingAccruingToken,
     (isWithdrawing) => isWithdrawing
   ),
   selectLockedGovernanceTokenAmount: createSelector(

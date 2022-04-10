@@ -305,6 +305,8 @@ export function* withdrawGovernanceToken() {
 
     if (transactionWithdraw.status) {
       yield call(getLatestGovernanceData);
+      yield put(StakingActions.setIsWithdrawingGovernanceToken(true));
+      toast.success(`withdrawed available ${env.GOVERNANCE_TOKEN_NAME}`);
     }
   } catch (e: any) {
     console.debug(e);
@@ -340,12 +342,10 @@ export function* getClaimableGovernanceToken() {
     if (e?.data?.message) {
       toast.error(e.data.message);
     }
-  } finally {
-    yield put(StakingActions.setIsWithdrawingGovernanceToken(false));
   }
 }
 export function* withdrawAccruingToken() {
-  yield put(StakingActions.setIsWithdrawingGovernanceToken(true));
+  yield put(StakingActions.setIsWithdrawingAccruingToken(true));
 
   try {
     const accruingTokenContract: VeAxial = yield call(getAccruingTokenContract);
@@ -358,15 +358,16 @@ export function* withdrawAccruingToken() {
     const transactionWithdraw = yield call(tokenWithdraw.wait, 1);
 
     if (transactionWithdraw.status) {
+      toast.success("withdrawed all veAxial amount");
       yield call(getLatestGovernanceData);
+      yield put(StakingActions.setIsWithdrawingAccruingToken(false));
     }
   } catch (e: any) {
     console.debug(e);
     if (e?.data?.message) {
       toast.error(e.data.message);
+      yield put(StakingActions.setIsWithdrawingAccruingToken(false));
     }
-  } finally {
-    yield put(StakingActions.setIsWithdrawingGovernanceToken(false));
   }
 }
 

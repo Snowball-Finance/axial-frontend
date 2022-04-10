@@ -207,15 +207,21 @@ export function* getAccruingTokenBalance(action: {
     GovernanceActions.setIsGettingGovernanceTokenBalance(!action.payload)
   );
   const account = yield select(Web3Domains.selectAccountDomain);
-  const accruingTokenContract = yield call(getAccruingTokenContract);
+  const accruingTokenContract: VeAxial = yield call(getAccruingTokenContract);
   try {
-    const [userAccrued, totalAccrued]: [BigNumber, BigNumber] = yield all([
+    const [userAccrued, totalAccrued, staked]: [
+      BigNumber,
+      BigNumber,
+      BigNumber
+    ] = yield all([
       call(accruingTokenContract.getAccrued, account),
-      call(accruingTokenContract.getTotalAccrued),
+      call(accruingTokenContract.getAccrued, account),
+      call(accruingTokenContract.getStaked, account),
     ]);
     yield all([
       put(GovernanceActions.setAccruingTokenBalance(userAccrued)),
       put(GovernanceActions.setTotalAccrued(totalAccrued)),
+      put(GovernanceActions.setMainTokenAmountStakedForAccruing(staked)),
     ]);
   } catch (error) {
     toast.error(`Error getting ${env.ACCRUING_TOKEN_NAME} balance`);

@@ -26,6 +26,7 @@ export const initialState: ContainerState = {
   isGettingGovernanceTokenBalance: false,
   totalGovernanceTokenSupply: BigNumber.from(0),
   totalAccruedToken: BigNumber.from(0),
+  totalMainTokenStakedForAccruingToken: BigNumber.from(0),
   newProposalFields: {
     title: "",
     description: "",
@@ -60,6 +61,12 @@ const governanceSlice = createSlice({
     },
     setAccruingTokenBalance(state, action: PayloadAction<BigNumber>) {
       state.accruingTokenBalance = action.payload;
+    },
+    setMainTokenAmountStakedForAccruing(
+      state,
+      action: PayloadAction<BigNumber>
+    ) {
+      state.totalMainTokenStakedForAccruingToken = action.payload;
     },
     setTotalAccrued(state, action: PayloadAction<BigNumber>) {
       state.totalAccruedToken = action.payload;
