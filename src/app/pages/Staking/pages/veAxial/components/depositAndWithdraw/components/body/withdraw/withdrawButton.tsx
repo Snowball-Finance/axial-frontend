@@ -13,7 +13,7 @@ export const WithdrawButton = () => {
 
   const handleWithdrawButtonClick = () => {
     if (isWithdrawing) return;
-    dispatch(StakingActions.withdrawGovernanceToken());
+    dispatch(StakingActions.withdrawAccruingToken());
   };
 
   return (

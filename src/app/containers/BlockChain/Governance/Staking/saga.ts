@@ -23,6 +23,8 @@ import { Axial, SAxial, VeAxial } from "abi/ethers-contracts";
 import AccruingTokenABI from "abi/veAxial.json";
 import { BNToFloat } from "common/format";
 import { getAccruingTokenContract, getGovernanceTokenContract } from "../saga";
+import { checkAndApproveTokensInList } from "utils/tokenVerifier";
+import { Token } from "app/containers/Swap/types";
 
 export function* getLatestGovernanceData() {
   yield all([
@@ -63,17 +65,19 @@ export function* stakeGovernanceToken(action: {
         library.getSigner()
       ) as SAxial;
 
-      const approveGovernanceTokenContractHasAccessToMainTokenAssets =
-        yield call(
-          mainTokenContract.approve,
-          governanceTokenAddress,
-          ethers.constants.MaxUint256
-        );
-      const transactionApproveResponse = yield call(
-        approveGovernanceTokenContractHasAccessToMainTokenAssets.wait,
-        1
-      );
-      if (!transactionApproveResponse.status) {
+      const hasApproval = yield call(checkAndApproveTokensInList, {
+        tokensToVerify: [
+          {
+            amount: amountToStake,
+            spenderAddress: governanceTokenAddress,
+            token: {
+              symbol: env.MAIN_TOKEN_NAME,
+            } as Token,
+            tokenContract: mainTokenContract,
+          },
+        ],
+      });
+      if (!hasApproval) {
         console.debug("transaction not approved");
         return;
       }
@@ -87,7 +91,7 @@ export function* stakeGovernanceToken(action: {
       const transactionResponse = yield call(tokenLock.wait, 1);
       if (transactionResponse.status) {
         const stringLock = BNToFloat(amountToStake)?.toString();
-        toast.success(`locked ${stringLock} ${env.GOVERNANCE_TOKEN_NAME}`);
+        toast.success(`locked ${stringLock} ${env.MAIN_TOKEN_NAME} `);
         yield call(getLatestGovernanceData);
       }
     } else {
@@ -129,18 +133,19 @@ export function* stakeAccruingToken(action: {
         AccruingTokenABI,
         library.getSigner()
       ) as VeAxial;
-
-      const approveGovernanceTokenContractHasAccessToMainTokenAssets =
-        yield call(
-          mainTokenContract.approve,
-          accruingTokenAddress,
-          ethers.constants.MaxUint256
-        );
-      const transactionApproveResponse = yield call(
-        approveGovernanceTokenContractHasAccessToMainTokenAssets.wait,
-        1
-      );
-      if (!transactionApproveResponse.status) {
+      const hasApproval = yield call(checkAndApproveTokensInList, {
+        tokensToVerify: [
+          {
+            amount: amountToStake,
+            spenderAddress: accruingTokenAddress,
+            token: {
+              symbol: env.MAIN_TOKEN_NAME,
+            } as Token,
+            tokenContract: mainTokenContract,
+          },
+        ],
+      });
+      if (!hasApproval) {
         console.debug("transaction not approved");
         return;
       }
@@ -149,7 +154,7 @@ export function* stakeAccruingToken(action: {
       const transactionResponse = yield call(tokenLock.wait, 1);
       if (transactionResponse.status) {
         const stringLock = BNToFloat(amountToStake)?.toString();
-        toast.success(`locked ${stringLock} ${env.GOVERNANCE_TOKEN_NAME}`);
+        toast.success(`deposited ${stringLock} ${env.MAIN_TOKEN_NAME}`);
         yield call(getLatestGovernanceData);
       }
     } else {
@@ -327,7 +332,6 @@ export function* stakingSaga() {
     StakingActions.stakeGovernanceToken.type,
     stakeGovernanceToken
   );
-  yield takeLatest(StakingActions.stakeAccruingToken.type, stakeAccruingToken);
   yield takeLatest(StakingActions.stakeAccruingToken.type, stakeAccruingToken);
   yield takeLatest(StakingActions.claim.type, claim);
   yield takeLatest(

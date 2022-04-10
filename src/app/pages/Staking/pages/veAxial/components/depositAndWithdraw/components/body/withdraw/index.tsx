@@ -12,12 +12,10 @@ import { WithdrawButton } from "./withdrawButton";
 
 export const Withdraw = () => {
   const { t } = useTranslation();
-  const governanceTokenName = env.GOVERNANCE_TOKEN_NAME;
-  const rawGovernanceTokenBalance = useSelector(
-    GovernanceSelectors.selectGovernanceTokenBalance
-  );
-  const governanceTokenBalance = BNToFloat(
-    rawGovernanceTokenBalance ?? BigNumber.from(0),
+  const tokenName = env.ACCRUING_TOKEN_NAME;
+  const rawTokenBalance = useSelector(GovernanceSelectors.accruingTokenBalance);
+  const tokenBalance = BNToFloat(
+    rawTokenBalance ?? BigNumber.from(0),
     18
   )?.toFixed(3);
   return (
@@ -27,8 +25,8 @@ export const Withdraw = () => {
         {t(
           translations.Staking.AvailableToWithdraw_AMOUNT_GOVERNANCETOKENNAME(),
           {
-            amount: governanceTokenBalance,
-            governanceTokenName,
+            amount: tokenBalance,
+            governanceTokenName: tokenName,
           }
         )}
       </Amount>

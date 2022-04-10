@@ -62,6 +62,7 @@ export interface GovernanceState {
   isGettingGovernanceTokenBalance: boolean;
   governanceTokenBalance: BigNumber | undefined;
   accruingTokenBalance: BigNumber | undefined;
+  totalAccruedToken: BigNumber | undefined;
   newProposalFields: {
     title: string;
     description: string;

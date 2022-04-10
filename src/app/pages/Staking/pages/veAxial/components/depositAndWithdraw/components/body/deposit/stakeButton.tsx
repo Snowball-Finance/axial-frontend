@@ -26,7 +26,7 @@ export const StakeButton = () => {
           id="stakeButton"
           onClick={handleStakeButtonClick}
         >
-          {t(translations.Staking.Lock())}
+          {t(translations.Staking.Deposit())}
         </ContainedButton>
       }
       disConnected={<WalletToggle />}
