@@ -14,7 +14,7 @@ export const StakeButton = () => {
 
   const handleStakeButtonClick = () => {
     if (isStaking) return;
-    dispatch(StakingPageActions.stakeGovernanceToken());
+    dispatch(StakingPageActions.stakeAccruingToken());
   };
 
   return (

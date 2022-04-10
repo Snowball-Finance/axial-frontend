@@ -18,9 +18,9 @@ import { GovernancePage } from "./pages/Governance/Loadable";
 // import GAUGE_PROXY_ABI from "libs/abis/gauge-proxy.json";
 // import { INFO_QUERY } from "services/apollo/queries/mainTokenInfo";
 import { PROPOSAL_QUERY } from "services/apollo/queries/proposalList";
-import SNOWBALL_ABI from "libs/abis/snowball.json";
-import GOVERNANCE_ABI from "libs/abis/governance.json";
-import SNOWCONE_ABI from "libs/abis/snowcone.json";
+import MainTokenABI from "abi/axial.json";
+import GOVERNANCE_ABI from "abi/governance.json";
+import GovernanceTokenABI from "abi/sAxial.json";
 import FEE_DISTRIBUTOR_ABI from "libs/abis/fee-distributor.json";
 import { CONTRACTS } from "config";
 import { StakingPage } from "./pages/Staking";
@@ -80,9 +80,9 @@ export function App() {
       </Helmet>
       <GlobalModals />
       <BlockChain
-        mainTokenABI={SNOWBALL_ABI}
+        mainTokenABI={MainTokenABI}
         governance={{
-          tokenABI: SNOWCONE_ABI,
+          tokenABI: GovernanceTokenABI,
           governanceABI: GOVERNANCE_ABI,
           proposalsQuery: PROPOSAL_QUERY,
           staking: {

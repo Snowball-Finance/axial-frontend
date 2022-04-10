@@ -19,26 +19,37 @@ import { StakingDomains } from "./selectors";
 import { GovernanceDomains } from "../selectors";
 import { BlockChainDomains } from "../../selectors";
 import { GovernanceActions } from "../slice";
-import { SAxial, VeAxial } from "abi/ethers-contracts";
+import { Axial, SAxial, VeAxial } from "abi/ethers-contracts";
 import AccruingTokenABI from "abi/veAxial.json";
+import { BNToFloat } from "common/format";
+import { getAccruingTokenContract, getGovernanceTokenContract } from "../saga";
+
+export function* getLatestGovernanceData() {
+  yield all([
+    put(BlockChainActions.getMainTokenBalance()),
+    put(GovernanceActions.getGovernanceTokenBalance()),
+    put(GovernanceActions.getAccruingTokenBalance()),
+    put(StakingActions.getLockedGovernanceTokenInfo()),
+  ]);
+}
 
 export function* stakeGovernanceToken(action: {
   type: string;
   payload: StakeGovernanceTokenModel;
 }) {
-  const { balance, date } = action.payload;
-  const amount = parseEther(balance.toString());
+  const { amount, duration } = action.payload;
+  const amountToStake = parseEther(amount.toString());
   yield put(StakingActions.setIsStakingGovernanceToken(true));
   const library = yield select(Web3Domains.selectLibraryDomain);
   //|| is used because if .env is not set,we will fetch the error in early stages
   const mainTokenAddress = env.MAIN_TOKEN_ADDRESS || "";
   const mainTokenABI = yield select(BlockChainDomains.selectMainTokenABIDomain);
   try {
-    const mainTokenContract = new ethers.Contract(
+    const mainTokenContract: Axial = new Contract(
       mainTokenAddress,
       mainTokenABI,
       library.getSigner()
-    );
+    ) as Axial;
     if (mainTokenContract) {
       //|| is used because if .env is not set,we will fetch the error in early stages
       const governanceTokenAddress =
@@ -53,19 +64,6 @@ export function* stakeGovernanceToken(action: {
       ) as SAxial;
 
       const approveGovernanceTokenContractHasAccessToMainTokenAssets =
-        // yield call(checkAndApproveTokensInList,{
-        //   tokensToVerify:[
-        //     {
-        //       token:{
-        //         symbol:env.GOVERNANCE_TOKEN_NAME
-        //       }as Token,
-        //       swapAddress:governanceTokenAddress,
-        //       tokenContract:mainTokenContract,
-        //       amount:ethers.constants.MaxUint256
-
-        //     }
-        //   ]
-        // })
         yield call(
           mainTokenContract.approve,
           governanceTokenAddress,
@@ -79,30 +77,80 @@ export function* stakeGovernanceToken(action: {
         console.debug("transaction not approved");
         return;
       }
-
-      const endDate = new Date(date);
-      var startDate = new Date();
-      var timeFromNow = (endDate.getTime() - startDate.getTime()) / 1000;
-      /**
-       *      _duration: BigNumberish,
-              _amount: BigNumberish,
-              _deferUnclaimed: boolean,
-       */
       const tokenLock = yield call(
         governanceTokenContract.stake,
-        timeFromNow,
-        amount,
+        duration,
+        amountToStake,
         false
       );
 
       const transactionResponse = yield call(tokenLock.wait, 1);
       if (transactionResponse.status) {
-        yield all([
-          put(BlockChainActions.getMainTokenBalance()),
-          put(BlockChainActions.getGovernanceTokenBalance()),
-          put(GovernanceActions.getGovernanceTokenBalance()),
-          put(StakingActions.getLockedGovernanceTokenInfo()),
-        ]);
+        const stringLock = BNToFloat(amountToStake)?.toString();
+        toast.success(`locked ${stringLock} ${env.GOVERNANCE_TOKEN_NAME}`);
+        yield call(getLatestGovernanceData);
+      }
+    } else {
+      toast("Main Token Contract is not set");
+    }
+  } catch (error: any) {
+    console.debug(error);
+    if (error?.data?.message) {
+      toast.error(error.data.message);
+    }
+  } finally {
+    yield put(StakingActions.setIsStakingGovernanceToken(false));
+  }
+}
+
+export function* stakeAccruingToken(action: {
+  type: string;
+  payload: StakeAccruingTokenModel;
+}) {
+  const { amountToStake: amount } = action.payload;
+  const amountToStake = parseEther(amount.toString());
+  yield put(StakingActions.setIsStakingGovernanceToken(true));
+  const library = yield select(Web3Domains.selectLibraryDomain);
+  //|| is used because if .env is not set,we will fetch the error in early stages
+  const mainTokenAddress = env.MAIN_TOKEN_ADDRESS || "";
+  const mainTokenABI = yield select(BlockChainDomains.selectMainTokenABIDomain);
+  try {
+    const mainTokenContract: Axial = new Contract(
+      mainTokenAddress,
+      mainTokenABI,
+      library.getSigner()
+    ) as Axial;
+    if (mainTokenContract) {
+      const library = yield select(Web3Domains.selectLibraryDomain);
+      const accruingTokenAddress =
+        process.env.REACT_APP_ACCRUING_TOKEN_ADDRESS || "";
+      const accruingTokenContract: VeAxial = new Contract(
+        accruingTokenAddress,
+        AccruingTokenABI,
+        library.getSigner()
+      ) as VeAxial;
+
+      const approveGovernanceTokenContractHasAccessToMainTokenAssets =
+        yield call(
+          mainTokenContract.approve,
+          accruingTokenAddress,
+          ethers.constants.MaxUint256
+        );
+      const transactionApproveResponse = yield call(
+        approveGovernanceTokenContractHasAccessToMainTokenAssets.wait,
+        1
+      );
+      if (!transactionApproveResponse.status) {
+        console.debug("transaction not approved");
+        return;
+      }
+      const tokenLock = yield call(accruingTokenContract.stake, amountToStake);
+
+      const transactionResponse = yield call(tokenLock.wait, 1);
+      if (transactionResponse.status) {
+        const stringLock = BNToFloat(amountToStake)?.toString();
+        toast.success(`locked ${stringLock} ${env.GOVERNANCE_TOKEN_NAME}`);
+        yield call(getLatestGovernanceData);
       }
     } else {
       toast("Main Token Contract is not set");
@@ -203,17 +251,15 @@ export function* getLockedGovernanceTokenInfo() {
     GovernanceDomains.selectGovernanceTokenABIDomain
   );
   const provider = yield select(EthersDomains.selectPrivateProviderDomain);
-  const governanceTokenContract = new ethers.Contract(
+  const governanceTokenContract: SAxial = new Contract(
     env.GOVERNANCE_TOKEN_CONTRACT_ADDRESS || "",
     governanceTokenABI,
     provider
-  );
+  ) as SAxial;
   const account = yield select(Web3Domains.selectAccountDomain);
   try {
     yield put(StakingActions.setIsGettingGovernanceTokenInfo(true));
-    const info = yield call(governanceTokenContract.locked, account, {
-      gasLimit: 1000000,
-    });
+    const info = yield call(governanceTokenContract.getLock, account);
     yield put(StakingActions.setGovernanceTokenInfo(info));
   } catch (error) {
     console.log(error);
@@ -222,30 +268,23 @@ export function* getLockedGovernanceTokenInfo() {
   }
 }
 
-export function* withdraw() {
+export function* withdrawGovernanceToken() {
   yield put(StakingActions.setIsWithdrawingGovernanceToken(true));
 
   try {
-    const governanceTokenABI = yield select(
-      GovernanceDomains.selectGovernanceTokenABIDomain
+    const governanceTokenContract: SAxial = yield call(
+      getGovernanceTokenContract
     );
-    const library = yield select(Web3Domains.selectLibraryDomain);
-    const snowconeContractWithdraw = new ethers.Contract(
-      env.GOVERNANCE_TOKEN_CONTRACT_ADDRESS || "",
-      governanceTokenABI,
-      library.getSigner()
+    const gasLimit = yield call(
+      governanceTokenContract.estimateGas.claimMyFunds
     );
-    const gasLimit = yield call(snowconeContractWithdraw.estimateGas.withdraw);
-    const tokenWithdraw = yield call(snowconeContractWithdraw.withdraw, {
+    const tokenWithdraw = yield call(governanceTokenContract.claimMyFunds, {
       gasLimit,
     });
     const transactionWithdraw = yield call(tokenWithdraw.wait, 1);
 
     if (transactionWithdraw.status) {
-      yield all([
-        put(BlockChainActions.getMainTokenBalance()),
-        put(BlockChainActions.getGovernanceTokenBalance()),
-      ]);
+      yield call(getLatestGovernanceData);
     }
   } catch (e: any) {
     console.debug(e);
@@ -257,28 +296,29 @@ export function* withdraw() {
   }
 }
 
-export function* stakeAccruingToken(action: {
-  type: string;
-  payload: StakeAccruingTokenModel;
-}) {
-  try {
-    const library = yield select(Web3Domains.selectLibraryDomain);
-    const accruingTokenAddress =
-      process.env.REACT_APP_ACCRUING_TOKEN_ADDRESS || "";
-    const accruingTokenContract: VeAxial = new Contract(
-      accruingTokenAddress,
-      AccruingTokenABI,
-      library.getSigner()
-    ) as VeAxial;
+export function* withdrawAccruingToken() {
+  yield put(StakingActions.setIsWithdrawingGovernanceToken(true));
 
-    const { amountToStake } = action.payload;
-    const transaction = yield call(accruingTokenContract.stake, amountToStake);
-    yield call(transaction.wait, 1);
-    if (transaction.status) {
-      toast.success("staking successful");
+  try {
+    const accruingTokenContract: VeAxial = yield call(getAccruingTokenContract);
+    const gasLimit = yield call(
+      accruingTokenContract.estimateGas.withdrawMyFunds
+    );
+    const tokenWithdraw = yield call(accruingTokenContract.withdrawMyFunds, {
+      gasLimit,
+    });
+    const transactionWithdraw = yield call(tokenWithdraw.wait, 1);
+
+    if (transactionWithdraw.status) {
+      yield call(getLatestGovernanceData);
     }
-  } catch (e) {
-    toast.error("error while staking");
+  } catch (e: any) {
+    console.debug(e);
+    if (e?.data?.message) {
+      toast.error(e.data.message);
+    }
+  } finally {
+    yield put(StakingActions.setIsWithdrawingGovernanceToken(false));
   }
 }
 
@@ -287,6 +327,7 @@ export function* stakingSaga() {
     StakingActions.stakeGovernanceToken.type,
     stakeGovernanceToken
   );
+  yield takeLatest(StakingActions.stakeAccruingToken.type, stakeAccruingToken);
   yield takeLatest(StakingActions.stakeAccruingToken.type, stakeAccruingToken);
   yield takeLatest(StakingActions.claim.type, claim);
   yield takeLatest(
@@ -297,5 +338,12 @@ export function* stakingSaga() {
     StakingActions.getLockedGovernanceTokenInfo.type,
     getLockedGovernanceTokenInfo
   );
-  yield takeLatest(StakingActions.withdraw.type, withdraw);
+  yield takeLatest(
+    StakingActions.withdrawGovernanceToken.type,
+    withdrawGovernanceToken
+  );
+  yield takeLatest(
+    StakingActions.withdrawAccruingToken.type,
+    withdrawAccruingToken
+  );
 }

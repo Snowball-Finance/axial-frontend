@@ -23,7 +23,7 @@ export function StakingPage(props: Props) {
       <Route exact path={`${StakingSubPages.sAxial}`}>
         <SAxialPage />
       </Route>
-      <Route path={`${StakingSubPages.sAxial}`}>
+      <Route path={`${StakingSubPages.veAxial}`}>
         <VeAxialPage />
       </Route>
     </Switch>

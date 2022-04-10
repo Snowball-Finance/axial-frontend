@@ -1,12 +1,12 @@
 import { all, call, put, select, takeLatest } from "redux-saga/effects";
 import { BlockChainActions } from "./slice";
-import { balanceProvider } from "./providers/balanceAPI";
 import { toast } from "react-toastify";
 import { BlockChainState } from "./types";
 import { geckoPrice } from "services/coinGecko";
 import { env } from "environment";
 import { Web3Domains } from "./Web3/selectors";
 import { BlockChainDomains } from "./selectors";
+import { Axial } from "abi/ethers-contracts";
 
 export function* getMainTokenBalance() {
   yield put(BlockChainActions.setIsGettingMainTokenBalance(true));
@@ -14,9 +14,9 @@ export function* getMainTokenBalance() {
   const { mainTokenContract } = yield select(
     BlockChainDomains.selectContractsDomain
   );
-  const contract = mainTokenContract;
+  const contract: Axial = mainTokenContract;
   try {
-    const response = yield call(balanceProvider, { contract, account });
+    const response = yield call(contract.balanceOf, account);
     yield put(BlockChainActions.setMainTokenBalance(response));
   } catch (error) {
     toast.error(`Error getting ${env.MAIN_TOKEN_NAME} balance`);

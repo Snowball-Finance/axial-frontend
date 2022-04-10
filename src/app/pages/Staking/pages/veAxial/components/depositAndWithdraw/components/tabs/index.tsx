@@ -9,7 +9,7 @@ import { mobile } from "styles/media";
 
 const tabs = (t: any): { title: string; value: DepositAndWithdrawTab }[] => [
   {
-    title: "lock",
+    title: "deposit",
     value: DepositAndWithdrawTab.Deposit,
   },
   {
@@ -22,11 +22,11 @@ export const StakingTabs = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const selectedTab: DepositAndWithdrawTab = useSelector(
-    StakingPageSelectors.selectSelectedWithdrawAndDepositTab
+    StakingPageSelectors.selectedVeAxialWithdrawAndDepositTab
   );
 
   const handleTabChange = (tab: DepositAndWithdrawTab) => {
-    dispatch(StakingPageActions.setSelectedDepositAndWithdrawTab(tab));
+    dispatch(StakingPageActions.setSelectedVeAxialDepositAndWithdrawTab(tab));
   };
 
   return (

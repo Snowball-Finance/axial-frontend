@@ -41,7 +41,7 @@ const blockChainSlice = createSlice({
         mainTokenContract: action.payload.mainTokenContract,
       };
     },
-    getGovernanceTokenBalance(state, action: PayloadAction<void>) {},
+
     setIsGettingMainTokenBalance(state, action: PayloadAction<boolean>) {
       state.isGettingSnobBalance = action.payload;
     },

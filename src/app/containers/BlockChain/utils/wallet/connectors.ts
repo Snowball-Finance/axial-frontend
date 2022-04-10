@@ -26,7 +26,6 @@ const walletLink = new WalletLinkConnector({
 const networkConnectorUrls = {
   [Number(process.env.REACT_APP_CHAIN_ID || "0")]: rpcUrl,
 };
-console.log(networkConnectorUrls);
 export const network = new NetworkConnector({
   urls: networkConnectorUrls,
 });

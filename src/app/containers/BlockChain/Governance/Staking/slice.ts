@@ -4,6 +4,7 @@ import {
   StakeGovernanceTokenModel,
   DistributorData,
   StakeAccruingTokenModel,
+  LockedInfo,
 } from "./types";
 import { createSlice } from "store/toolkit";
 import { useInjectReducer, useInjectSaga } from "store/redux-injectors";
@@ -18,9 +19,9 @@ export const initialState: ContainerState = {
   isClaiming: false,
   isGettingFeeDistributionInfo: false,
   isWithdrawing: false,
-  endDate: BigNumber.from(0),
+  endDateForGovernanceTokenLock: BigNumber.from(0),
   isGettingGovernanceTokenInfo: false,
-  lockedAmount: BigNumber.from(0),
+  lockedGovernanceTokenAmount: BigNumber.from(0),
   claimable: {
     userClaimable: BigNumber.from(0),
   },
@@ -54,7 +55,8 @@ const stakingSlice = createSlice({
       state.isStaking = action.payload;
     },
     claim() {},
-    withdraw() {},
+    withdrawGovernanceToken() {},
+    withdrawAccruingToken() {},
     setIsWithdrawingGovernanceToken(state, action: PayloadAction<boolean>) {
       state.isWithdrawing = action.payload;
     },
@@ -72,9 +74,9 @@ const stakingSlice = createSlice({
       state.claimable.otherClaimables = action.payload;
     },
     getLockedGovernanceTokenInfo(state, action: PayloadAction<void>) {},
-    setGovernanceTokenInfo(state, action: PayloadAction<any>) {
-      state.lockedAmount = action.payload.amount;
-      state.endDate = action.payload.end;
+    setGovernanceTokenInfo(state, action: PayloadAction<LockedInfo>) {
+      state.lockedGovernanceTokenAmount = action.payload.startingAmountLocked;
+      state.endDateForGovernanceTokenLock = action.payload.endBlockTime;
     },
     setIsGettingGovernanceTokenInfo(state, action: PayloadAction<boolean>) {
       state.isGettingGovernanceTokenInfo = action.payload;

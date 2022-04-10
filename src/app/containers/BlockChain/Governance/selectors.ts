@@ -60,18 +60,22 @@ export const GovernanceSelectors = {
   ),
   selectIsLoadingGovernanceTokenBalance: createSelector(
     GovernanceDomains.selectGovernanceDomain,
-    (blockChainState) => blockChainState.isGettingGovernanceTokenBalance
+    (governanceState) => governanceState.isGettingGovernanceTokenBalance
   ),
   selectGovernanceTokenBalance: createSelector(
     GovernanceDomains.selectGovernanceDomain,
-    (blockChainState) => blockChainState.governanceTokenBalance
+    (governanceState) => governanceState.governanceTokenBalance
+  ),
+  accruingTokenBalance: createSelector(
+    GovernanceDomains.selectGovernanceDomain,
+    (governanceState) => governanceState.accruingTokenBalance
   ),
   selectFloatedGovernanceTokenBalance: createSelector(
     GovernanceDomains.selectGovernanceDomain,
-    (blockChainState) => {
-      if (blockChainState.governanceTokenBalance) {
+    (governanceState) => {
+      if (governanceState.governanceTokenBalance) {
         const floated =
-          BNToFloat(blockChainState.governanceTokenBalance, 18)?.toFixed(3) ||
+          BNToFloat(governanceState.governanceTokenBalance, 18)?.toFixed(3) ||
           "0.000";
         return floated;
       }

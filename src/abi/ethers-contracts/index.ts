@@ -2,6 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export type { AlchemixStakingPools } from "./AlchemixStakingPools";
+export type { Axial } from "./Axial";
 export type { AxialAggregator } from "./AxialAggregator";
 export type { Bridge } from "./Bridge";
 export type { Erc20 } from "./Erc20";
@@ -28,6 +29,7 @@ export type { SynthetixNetworkToken } from "./SynthetixNetworkToken";
 export type { VeAxial } from "./VeAxial";
 
 export { AlchemixStakingPools__factory } from "./factories/AlchemixStakingPools__factory";
+export { Axial__factory } from "./factories/Axial__factory";
 export { AxialAggregator__factory } from "./factories/AxialAggregator__factory";
 export { Bridge__factory } from "./factories/Bridge__factory";
 export { Erc20__factory } from "./factories/Erc20__factory";

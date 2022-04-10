@@ -21,22 +21,50 @@ export function* stakeAllTheBalances() {
   }
 }
 
-export function* stake() {
+export function* stakeGovernanceToken() {
   const enteredBalance = yield select(
     StakingPageDomains.selectEnteredMainTokenToStakeDomain
   );
   const date = yield select(StakingPageDomains.selectSelectedEpochDomain);
-  let duration = yield select(
-    StakingPageDomains.selectSelectedDepositSliderValueDomain
-  );
-  duration = (Number(duration) / 25 + 1).toFixed(0);
+  const endDate = new Date(date);
+  let startDate = new Date();
+  let duration = ((endDate.getTime() - startDate.getTime()) / 1000)
+    .toFixed(0)
+    .toString();
   yield put(
     StakingActions.stakeGovernanceToken({
-      balance: enteredBalance,
+      amount: enteredBalance,
       duration,
-      date,
     })
   );
+}
+
+export function* stakeAccruingToken() {
+  const enteredBalance = yield select(
+    StakingPageDomains.selectEnteredMainTokenToStakeIntoVeAxialDomain
+  );
+
+  yield put(
+    StakingActions.stakeAccruingToken({
+      amountToStake: enteredBalance,
+    })
+  );
+}
+
+export function* stakeAllTheAxialBalancesIntoVeAxial() {
+  const mainTokenBalance = yield select(
+    BlockChainDomains.selectMainTokenBalanceDomain
+  );
+  if (mainTokenBalance) {
+    const stringMainTokenBalance = parseFloat(
+      BNToString(mainTokenBalance ?? BigNumber.from(0), 18) || "0"
+    ).toFixed(3);
+    yield put(
+      StakingPageActions.setEnteredMainTokenToStakeIntoVeAxial(
+        stringMainTokenBalance
+      )
+    );
+  }
 }
 
 export function* stakingPageSaga() {
@@ -44,5 +72,16 @@ export function* stakingPageSaga() {
     StakingPageActions.stakeAllTheBalances.type,
     stakeAllTheBalances
   );
-  yield takeLatest(StakingPageActions.stake.type, stake);
+  yield takeLatest(
+    StakingPageActions.stakeAllTheAxialBalancesIntoVeAxial.type,
+    stakeAllTheAxialBalancesIntoVeAxial
+  );
+  yield takeLatest(
+    StakingPageActions.stakeGovernanceToken.type,
+    stakeGovernanceToken
+  );
+  yield takeLatest(
+    StakingPageActions.stakeAccruingToken.type,
+    stakeAccruingToken
+  );
 }

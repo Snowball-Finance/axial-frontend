@@ -6,8 +6,8 @@ export interface StakingState {
   isClaiming: boolean;
   feeDistributorABI: any;
   isGettingFeeDistributionInfo: boolean;
-  lockedAmount: BigNumber;
-  endDate: BigNumber;
+  lockedGovernanceTokenAmount: BigNumber;
+  endDateForGovernanceTokenLock: BigNumber;
   isWithdrawing: boolean;
   isGettingGovernanceTokenInfo: boolean;
   claimable: {
@@ -26,9 +26,15 @@ export interface DistributorData {
   decimals: number;
 }
 
+export interface LockedInfo {
+  endBlockTime: BigNumber;
+  initialized: boolean;
+  startBlockTime: BigNumber;
+  startingAmountLocked: BigNumber;
+}
+
 export interface StakeGovernanceTokenModel {
-  balance: string;
-  date: string;
+  amount: string;
   duration: string;
 }
 export interface StakeAccruingTokenModel {

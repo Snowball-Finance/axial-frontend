@@ -17,9 +17,11 @@ export const StakingDomains = {
   selectOtherClaimablesDomain: (state: RootState) =>
     state.staking?.claimable?.otherClaimables,
   selectLockedAmountDomain: (state: RootState) =>
-    state.staking?.lockedAmount || initialState.lockedAmount,
+    state.staking?.lockedGovernanceTokenAmount ||
+    initialState.lockedGovernanceTokenAmount,
   selectEndDateDomain: (state: RootState) =>
-    state.staking?.endDate || initialState.endDate,
+    state.staking?.endDateForGovernanceTokenLock ||
+    initialState.endDateForGovernanceTokenLock,
   selectIsWithdrawingDomain: (state: RootState) => state.staking?.isWithdrawing,
 };
 

@@ -294,6 +294,7 @@
   "Staking": {
     "Staking": "Staking",
     "Deposit": "Deposit",
+    "Lock": "Lock",
     "Withdraw": "Withdraw",
     "Stake": "Stake",
     "Stake_MAINTOKENNAME": "Stake {{mainTokenName}}",

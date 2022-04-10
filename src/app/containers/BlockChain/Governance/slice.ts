@@ -21,6 +21,7 @@ export const initialState: ContainerState = {
   governanceABI: undefined,
   governanceTokenContract: undefined,
   governanceTokenBalance: undefined,
+  accruingTokenBalance: undefined,
   isGettingGovernanceTokenBalance: false,
   totalGovernanceTokenSupply: BigNumber.from(0),
   newProposalFields: {
@@ -42,11 +43,15 @@ const governanceSlice = createSlice({
   initialState,
   reducers: {
     getGovernanceTokenBalance(state, action: PayloadAction<void>) {},
+    getAccruingTokenBalance(state, action: PayloadAction<void>) {},
     setGovernanceABI(state, action: PayloadAction<any>) {
       state.governanceABI = action.payload;
     },
     setGovernanceTokenBalance(state, action: PayloadAction<BigNumber>) {
       state.governanceTokenBalance = action.payload;
+    },
+    setAccruingTokenBalance(state, action: PayloadAction<BigNumber>) {
+      state.accruingTokenBalance = action.payload;
     },
     // getTotalGovernanceTokenSupply(state, action: PayloadAction<void>) {},
     setIsGettingGovernanceTokenBalance(state, action: PayloadAction<boolean>) {

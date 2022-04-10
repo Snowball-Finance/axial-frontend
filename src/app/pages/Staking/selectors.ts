@@ -2,7 +2,7 @@ import { createSelector } from "@reduxjs/toolkit";
 
 import { RootState } from "store/types";
 import { initialState } from "./slice";
-import { estimateXSnobForDate } from "./utils/stakeDate";
+import { estimateGovernanceTokenForDate } from "./utils/stakeDate";
 
 export const StakingPageDomains = {
   selectDomain: (state: RootState) => state.stakingPage || initialState,
@@ -10,10 +10,16 @@ export const StakingPageDomains = {
   selectEnteredMainTokenToStakeDomain: (state: RootState) =>
     state.stakingPage?.enteredMainTokenToStake ||
     initialState.enteredMainTokenToStake,
+  selectEnteredMainTokenToStakeIntoVeAxialDomain: (state: RootState) =>
+    state.stakingPage?.enteredMainTokenToStakeInVeAxial ||
+    initialState.enteredMainTokenToStakeInVeAxial,
 
   selectSelectedWithdrawAndDepositTabDomain: (state: RootState) =>
     state.stakingPage?.selectedDepositAndWithdrawTab ||
     initialState.selectedDepositAndWithdrawTab,
+  selectedVeAxialWithdrawAndDepositTabDomain: (state: RootState) =>
+    state.stakingPage?.selectedVeAxialDepositAndWithdrawTab ||
+    initialState.selectedVeAxialDepositAndWithdrawTab,
 
   selectSelectedDepositUnlockPeriodDomain: (state: RootState) =>
     state.stakingPage?.selectedDepositUnlockPeriod ||
@@ -23,8 +29,7 @@ export const StakingPageDomains = {
     state.stakingPage?.selectedEpoch || initialState.selectedEpoch,
 
   selectSelectedDepositSliderValueDomain: (state: RootState) =>
-    state.stakingPage?.selectedDepositSliderValue ||
-    initialState.selectedDepositSliderValue,
+    state.stakingPage?.selectedDepositSliderValue,
 };
 
 export const StakingPageSelectors = {
@@ -36,8 +41,16 @@ export const StakingPageSelectors = {
     StakingPageDomains.selectSelectedWithdrawAndDepositTabDomain,
     (selectedDepositAndWithdrawTab) => selectedDepositAndWithdrawTab
   ),
+  selectedVeAxialWithdrawAndDepositTab: createSelector(
+    StakingPageDomains.selectedVeAxialWithdrawAndDepositTabDomain,
+    (selectedDepositAndWithdrawTab) => selectedDepositAndWithdrawTab
+  ),
   selectEnteredMainTokenToStake: createSelector(
     StakingPageDomains.selectEnteredMainTokenToStakeDomain,
+    (enteredMainTokenToStake) => enteredMainTokenToStake
+  ),
+  selectEnteredMainTokenToStakeIntoVeAxial: createSelector(
+    StakingPageDomains.selectEnteredMainTokenToStakeIntoVeAxialDomain,
     (enteredMainTokenToStake) => enteredMainTokenToStake
   ),
   selectStakingPage: createSelector(
@@ -59,7 +72,10 @@ export const StakingPageSelectors = {
     ],
     (amount, epoch) => {
       if (isNaN(Number(amount))) return;
-      const calculatedYouWillGet = estimateXSnobForDate(amount, epoch);
+      const calculatedYouWillGet = estimateGovernanceTokenForDate(
+        amount,
+        epoch
+      );
       return calculatedYouWillGet;
     }
   ),

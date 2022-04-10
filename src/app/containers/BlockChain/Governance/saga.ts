@@ -1,19 +1,17 @@
-import { ethers } from "ethers";
+import { BigNumber, Contract, ethers } from "ethers";
 import { toast } from "react-toastify";
 import { all, call, put, select, takeLatest } from "redux-saga/effects";
 import { GovernanceActions } from "./slice";
 import { ContainerState, Proposal } from "./types";
 import { BNToFloat } from "common/format";
-import {
-  balanceProvider,
-  totalSupplyProvider,
-} from "app/containers/BlockChain/providers/balanceAPI";
+import { totalSupplyProvider } from "app/containers/BlockChain/providers/balanceAPI";
 import { env } from "environment";
 import { parseProposalFromRawBlockchainResponse } from "./utils/proposalParser";
 import { Web3Domains } from "../Web3/selectors";
 import { GovernanceDomains } from "./selectors";
 import { GetProposalsAPI } from "app/containers/BlockChain/Governance/providers/proposals";
-import { Governance } from "abi/ethers-contracts";
+import { Governance, SAxial, VeAxial } from "abi/ethers-contracts";
+import AccruingTokenABI from "abi/veAxial.json";
 
 export function* getProposals(action: {
   type: string;
@@ -170,12 +168,22 @@ export function* getVotingReceipt(action: {
 export function* getGovernanceTokenBalance() {
   yield put(GovernanceActions.setIsGettingGovernanceTokenBalance(true));
   const account = yield select(Web3Domains.selectAccountDomain);
-  const governanceToken = yield select(
-    GovernanceDomains.selectGovernanceTokenContractDomain
+  const library = yield select(Web3Domains.selectLibraryDomain);
+  const governanceTokenAddress = env.GOVERNANCE_TOKEN_CONTRACT_ADDRESS || "";
+  const governanceTokenABI = yield select(
+    GovernanceDomains.selectGovernanceTokenABIDomain
   );
-  const contract = governanceToken;
+  const governanceTokenContract: SAxial = new Contract(
+    governanceTokenAddress,
+    governanceTokenABI,
+    library.getSigner()
+  ) as SAxial;
+
   try {
-    const response = yield call(balanceProvider, { contract, account });
+    const response: BigNumber = yield call(
+      governanceTokenContract.getBalance,
+      account
+    );
     yield put(GovernanceActions.setGovernanceTokenBalance(response));
   } catch (error) {
     toast.error(`Error getting ${env.GOVERNANCE_TOKEN_NAME} balance`);
@@ -184,6 +192,22 @@ export function* getGovernanceTokenBalance() {
   }
 }
 
+export function* getAccruingTokenBalance() {
+  yield put(GovernanceActions.setIsGettingGovernanceTokenBalance(true));
+  const account = yield select(Web3Domains.selectAccountDomain);
+  const accruingTokenContract = yield call(getAccruingTokenContract);
+  try {
+    const response: BigNumber = yield call(
+      accruingTokenContract.getAccrued,
+      account
+    );
+    yield put(GovernanceActions.setAccruingTokenBalance(response));
+  } catch (error) {
+    toast.error(`Error getting ${env.ACCRUING_TOKEN_NAME} balance`);
+  } finally {
+    yield put(GovernanceActions.setIsGettingGovernanceTokenBalance(false));
+  }
+}
 export function* getTotalGovernanceTokenSupply() {
   const governanceToken = yield select(
     GovernanceDomains.selectGovernanceTokenContractDomain
@@ -269,16 +293,46 @@ export function* setGovernanceTokenContract(action: {
   type: string;
   payload: ContainerState["governanceTokenContract"];
 }) {
-  yield all([
-    action.payload && put(GovernanceActions.getGovernanceTokenBalance()),
-    // put(GovernanceActions.getTotalGovernanceTokenSupply()),
-  ]);
+  if (action.payload) {
+    yield all([
+      put(GovernanceActions.getGovernanceTokenBalance()),
+      put(GovernanceActions.getAccruingTokenBalance()),
+    ]);
+  }
+}
+
+export function* getGovernanceTokenContract() {
+  const governanceTokenABI = yield select(
+    GovernanceDomains.selectGovernanceTokenABIDomain
+  );
+  const library = yield select(Web3Domains.selectNetworkLibraryDomain);
+  const governanceTokenContract: SAxial = new Contract(
+    env.GOVERNANCE_TOKEN_CONTRACT_ADDRESS || "",
+    governanceTokenABI,
+    library.getSigner()
+  ) as SAxial;
+  return governanceTokenContract;
+}
+export function* getAccruingTokenContract() {
+  const library = yield select(Web3Domains.selectLibraryDomain);
+  const accruingTokenAddress =
+    process.env.REACT_APP_ACCRUING_TOKEN_ADDRESS || "";
+  const accruingTokenContract: VeAxial = new Contract(
+    accruingTokenAddress,
+    AccruingTokenABI,
+    library.getSigner()
+  ) as VeAxial;
+  return accruingTokenContract;
 }
 
 export function* governanceSaga() {
   yield takeLatest(
     GovernanceActions.getGovernanceTokenBalance.type,
     getGovernanceTokenBalance
+  );
+  yield takeLatest(
+    GovernanceActions.getAccruingTokenBalance.type,
+    getAccruingTokenBalance
   );
   // yield takeLatest(
   //   GovernanceActions.getTotalGovernanceTokenSupply.type,
