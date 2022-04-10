@@ -19,12 +19,8 @@ export const StakingDomains = {
     state.staking?.claimable?.userClaimable,
   selectOtherClaimablesDomain: (state: RootState) =>
     state.staking?.claimable?.otherClaimables,
-  selectLockedAmountDomain: (state: RootState) =>
-    state.staking?.lockedGovernanceTokenAmount ||
-    initialState.lockedGovernanceTokenAmount,
-  selectEndDateDomain: (state: RootState) =>
-    state.staking?.endDateForGovernanceTokenLock ||
-    initialState.endDateForGovernanceTokenLock,
+  lockedGovernanceTokenInfo: (state: RootState) =>
+    state.staking?.lockedGovernanceTokenInfo,
   selectIsWithdrawingDomain: (state: RootState) => state.staking?.isWithdrawing,
   isWithdrawingAccruingToken: (state: RootState) =>
     state.staking?.isWithdrawingAccruingToken,
@@ -39,13 +35,9 @@ export const StakingSelectors = {
     StakingDomains.isWithdrawingAccruingToken,
     (isWithdrawing) => isWithdrawing
   ),
-  selectLockedGovernanceTokenAmount: createSelector(
-    StakingDomains.selectLockedAmountDomain,
-    (lockedAmount) => lockedAmount
-  ),
-  selectEndDate: createSelector(
-    StakingDomains.selectEndDateDomain,
-    (endDate) => endDate
+  lockedGovernanceTokenInfo: createSelector(
+    StakingDomains.lockedGovernanceTokenInfo,
+    (lockedGovernanceTokenInfo) => lockedGovernanceTokenInfo
   ),
   selectStaking: createSelector(
     StakingDomains.selectDomain,

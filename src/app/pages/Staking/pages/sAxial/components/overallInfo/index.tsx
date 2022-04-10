@@ -19,10 +19,14 @@ import { Info } from "./info";
 export const OverallInfoCard = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const rawLockedTokenAmount = useSelector(
-    StakingSelectors.selectLockedGovernanceTokenAmount
+  const lockedGovernanceTokenInfo = useSelector(
+    StakingSelectors.lockedGovernanceTokenInfo
   );
-  const lockedTokenAmount = BNToFloat(rawLockedTokenAmount, 18)?.toFixed(3);
+  const rawLockedTokenAmount = lockedGovernanceTokenInfo?.startingAmountLocked;
+  const lockedTokenAmount = BNToFloat(
+    rawLockedTokenAmount || BigNumber.from(0),
+    18
+  )?.toFixed(3);
   const rawClaimableAxial = useSelector(
     StakingSelectors.claimableGovernanceToken
   );
@@ -30,7 +34,6 @@ export const OverallInfoCard = () => {
     rawClaimableAxial ?? BigNumber.from(0),
     18
   )?.toFixed(3);
-  const earnedTokensAmount = "0.00";
   const rawGovernanceTokenBalance = useSelector(
     GovernanceSelectors.selectGovernanceTokenBalance
   );
@@ -77,10 +80,6 @@ export const OverallInfoCard = () => {
           </OutlinedButton>
         </LeftWrapper>
         <RightWrapper>
-          <Info
-            title={t(translations.Staking.TokensEarned())}
-            value={`${earnedTokensAmount} ${env.MAIN_TOKEN_NAME}`}
-          />
           <Info
             title={t(translations.Staking.MAIN_TOKEN_NAME_Unlocked(), {
               mainTokenName: env.MAIN_TOKEN_NAME,

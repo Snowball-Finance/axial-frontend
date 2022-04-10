@@ -6,7 +6,8 @@ import { estimateGovernanceTokenForDate } from "./utils/stakeDate";
 
 export const StakingPageDomains = {
   selectDomain: (state: RootState) => state.stakingPage || initialState,
-
+  daysToUnlockGovernanceToken: (state: RootState) =>
+    state.stakingPage?.daysToUnlockGovernanceTokens,
   selectEnteredMainTokenToStakeDomain: (state: RootState) =>
     state.stakingPage?.enteredMainTokenToStake ||
     initialState.enteredMainTokenToStake,
@@ -78,5 +79,9 @@ export const StakingPageSelectors = {
       );
       return calculatedYouWillGet;
     }
+  ),
+  daysToUnlockGovernanceTokens: createSelector(
+    StakingPageDomains.daysToUnlockGovernanceToken,
+    (daysToUnlockGovernanceTokens) => daysToUnlockGovernanceTokens
   ),
 };

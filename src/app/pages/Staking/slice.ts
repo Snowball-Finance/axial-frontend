@@ -9,6 +9,7 @@ import { useInjectReducer, useInjectSaga } from "store/redux-injectors";
 
 import { stakingPageSaga } from "./saga";
 import { addDaysToTodayAndGetOnlyDate } from "./utils/addDays";
+import { BigNumber } from "ethers";
 
 // The initial state of the StakingPage container
 export const initialState: ContainerState = {
@@ -19,6 +20,7 @@ export const initialState: ContainerState = {
   selectedDepositAndWithdrawTab: DepositAndWithdrawTab.Deposit,
   selectedVeAxialDepositAndWithdrawTab: DepositAndWithdrawTab.Deposit,
   selectedDepositUnlockPeriod: DepositUnlockPeriod.end,
+  daysToUnlockGovernanceTokens: 0,
 };
 
 const stakingPageSlice = createSlice({
@@ -56,6 +58,13 @@ const stakingPageSlice = createSlice({
       action: PayloadAction<DepositUnlockPeriod>
     ) {
       state.selectedDepositUnlockPeriod = action.payload;
+    },
+    modifySelectedDepositSliderValueBasedOnExistingLockTime(
+      state,
+      action: PayloadAction<BigNumber>
+    ) {},
+    setDaysToUnlockGovernanceTokens(state, action: PayloadAction<number>) {
+      state.daysToUnlockGovernanceTokens = action.payload;
     },
     setSelectedEpoch(state, action: PayloadAction<number>) {
       let selectedEpoch;

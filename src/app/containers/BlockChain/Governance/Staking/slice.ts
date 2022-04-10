@@ -21,10 +21,9 @@ export const initialState: ContainerState = {
   isGettingFeeDistributionInfo: false,
   isWithdrawing: false,
   isWithdrawingAccruingToken: false,
-  endDateForGovernanceTokenLock: BigNumber.from(0),
   isGettingGovernanceTokenInfo: false,
-  lockedGovernanceTokenAmount: BigNumber.from(0),
   claimableGovernanceToken: BigNumber.from(0),
+  lockedGovernanceTokenInfo: undefined,
   claimable: {
     userClaimable: BigNumber.from(0),
   },
@@ -84,8 +83,7 @@ const stakingSlice = createSlice({
       action: PayloadAction<skipLoading | undefined>
     ) {},
     setGovernanceTokenInfo(state, action: PayloadAction<LockedInfo>) {
-      state.lockedGovernanceTokenAmount = action.payload.startingAmountLocked;
-      state.endDateForGovernanceTokenLock = action.payload.endBlockTime;
+      state.lockedGovernanceTokenInfo = action.payload;
     },
     setIsGettingGovernanceTokenInfo(state, action: PayloadAction<boolean>) {
       state.isGettingGovernanceTokenInfo = action.payload;

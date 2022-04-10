@@ -2,10 +2,12 @@ import { StakingActions } from "app/containers/BlockChain/Governance/Staking/sli
 import { BlockChainDomains } from "app/containers/BlockChain/selectors";
 import { BNToString } from "common/format";
 import { BigNumber } from "ethers";
-import { put, select, takeLatest } from "redux-saga/effects";
+import { divide } from "precise-math";
+import { call, put, select, takeLatest } from "redux-saga/effects";
 import { StakingPageDomains } from "./selectors";
 
 import { StakingPageActions } from "./slice";
+import { dateDifferenceFromNowByHours } from "./utils/dateDifference";
 
 export function* stakeAllTheBalances() {
   const mainTokenBalance = yield select(
@@ -25,6 +27,9 @@ export function* stakeGovernanceToken() {
   const enteredBalance = yield select(
     StakingPageDomains.selectEnteredMainTokenToStakeDomain
   );
+  if (!enteredBalance || isNaN(Number(enteredBalance))) {
+    return;
+  }
   const date = yield select(StakingPageDomains.selectSelectedEpochDomain);
   const endDate = new Date(date);
   let startDate = new Date();
@@ -43,7 +48,9 @@ export function* stakeAccruingToken() {
   const enteredBalance = yield select(
     StakingPageDomains.selectEnteredMainTokenToStakeIntoVeAxialDomain
   );
-
+  if (!enteredBalance || isNaN(Number(enteredBalance))) {
+    return;
+  }
   yield put(
     StakingActions.stakeAccruingToken({
       amountToStake: enteredBalance,
@@ -66,6 +73,17 @@ export function* stakeAllTheAxialBalancesIntoVeAxial() {
     );
   }
 }
+export function* modifySelectedDepositSliderValueBasedOnExistingLockTime(action: {
+  type: string;
+  payload: BigNumber;
+}) {
+  const seconds = action.payload.toNumber();
+  const lockedHoursFromNow = yield call(dateDifferenceFromNowByHours, {
+    dateInSeconds: seconds,
+  });
+  const daysFromNow = Number(divide(lockedHoursFromNow, 24).toFixed(0));
+  yield put(StakingPageActions.setDaysToUnlockGovernanceTokens(daysFromNow));
+}
 
 export function* stakingPageSaga() {
   yield takeLatest(
@@ -83,5 +101,10 @@ export function* stakingPageSaga() {
   yield takeLatest(
     StakingPageActions.stakeAccruingToken.type,
     stakeAccruingToken
+  );
+  yield takeLatest(
+    StakingPageActions.modifySelectedDepositSliderValueBasedOnExistingLockTime
+      .type,
+    modifySelectedDepositSliderValueBasedOnExistingLockTime
   );
 }
