@@ -312,6 +312,7 @@
     "GOVERNANCETOKENNAME_Balance": "{{governanceTokenName}} Balance",
     "TokensEarned": "Tokens Earned",
     "DailyUnlocked": "Daily Unlocked",
+    "MAIN_TOKEN_NAME_Unlocked": "{{mainTokenName}} Unlocked",
     "HowItWorks": "How it works",
     "StakingBottomDescriptions_GOVERNANCETOKENNAME_MAINTOKENNAME":
     "Your {{governanceTokenName}} tokens will linearly decrease in amount and will be unlocked daily. Daily you can withdraw your {{mainTokenName}} tokens.",

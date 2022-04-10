@@ -11,6 +11,7 @@ import { useInjectReducer, useInjectSaga } from "store/redux-injectors";
 
 import { stakingSaga } from "./saga";
 import { BigNumber } from "ethers";
+import { skipLoading } from "app/types";
 
 // The initial state of the Staking container
 export const initialState: ContainerState = {
@@ -22,6 +23,7 @@ export const initialState: ContainerState = {
   endDateForGovernanceTokenLock: BigNumber.from(0),
   isGettingGovernanceTokenInfo: false,
   lockedGovernanceTokenAmount: BigNumber.from(0),
+  claimableGovernanceToken: BigNumber.from(0),
   claimable: {
     userClaimable: BigNumber.from(0),
   },
@@ -73,7 +75,10 @@ const stakingSlice = createSlice({
     setOtherClaimables(state, action: PayloadAction<any>) {
       state.claimable.otherClaimables = action.payload;
     },
-    getLockedGovernanceTokenInfo(state, action: PayloadAction<void>) {},
+    getLockedGovernanceTokenInfo(
+      state,
+      action: PayloadAction<skipLoading | undefined>
+    ) {},
     setGovernanceTokenInfo(state, action: PayloadAction<LockedInfo>) {
       state.lockedGovernanceTokenAmount = action.payload.startingAmountLocked;
       state.endDateForGovernanceTokenLock = action.payload.endBlockTime;
@@ -81,6 +86,12 @@ const stakingSlice = createSlice({
     setIsGettingGovernanceTokenInfo(state, action: PayloadAction<boolean>) {
       state.isGettingGovernanceTokenInfo = action.payload;
     },
+
+    getClaimableGovernanceToken() {},
+    setClaimableGovernanceToken(state, action: PayloadAction<BigNumber>) {
+      state.claimableGovernanceToken = action.payload;
+    },
+    activatePeriodicallyRefetchTheData() {},
   },
 });
 

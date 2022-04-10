@@ -23,9 +23,14 @@ export const OverallInfoCard = () => {
     StakingSelectors.selectLockedGovernanceTokenAmount
   );
   const lockedTokenAmount = BNToFloat(rawLockedTokenAmount, 18)?.toFixed(3);
-
+  const rawClaimableAxial = useSelector(
+    StakingSelectors.claimableGovernanceToken
+  );
+  const unlockedAxialAmount = BNToFloat(
+    rawClaimableAxial ?? BigNumber.from(0),
+    18
+  )?.toFixed(3);
   const earnedTokensAmount = "0.00";
-  const dailyUnlockedAmount = "0.00";
   const rawGovernanceTokenBalance = useSelector(
     GovernanceSelectors.selectGovernanceTokenBalance
   );
@@ -77,8 +82,10 @@ export const OverallInfoCard = () => {
             value={`${earnedTokensAmount} ${env.MAIN_TOKEN_NAME}`}
           />
           <Info
-            title={t(translations.Staking.DailyUnlocked())}
-            value={`${dailyUnlockedAmount} ${env.MAIN_TOKEN_NAME}`}
+            title={t(translations.Staking.MAIN_TOKEN_NAME_Unlocked(), {
+              mainTokenName: env.MAIN_TOKEN_NAME,
+            })}
+            value={`${unlockedAxialAmount}`}
           />
           <Filler />
           <ContainedButton onClick={handleStakeClick}>

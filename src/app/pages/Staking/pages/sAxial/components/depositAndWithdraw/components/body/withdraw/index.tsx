@@ -1,5 +1,5 @@
 import { styled } from "@mui/material";
-import { GovernanceSelectors } from "app/containers/BlockChain/Governance/selectors";
+import { StakingSelectors } from "app/containers/BlockChain/Governance/Staking/selectors";
 import { BNToFloat } from "common/format";
 import { env } from "environment";
 import { BigNumber } from "ethers";
@@ -12,12 +12,11 @@ import { WithdrawButton } from "./withdrawButton";
 
 export const Withdraw = () => {
   const { t } = useTranslation();
-  const governanceTokenName = env.GOVERNANCE_TOKEN_NAME;
-  const rawGovernanceTokenBalance = useSelector(
-    GovernanceSelectors.selectGovernanceTokenBalance
+  const rawClaimableAxial = useSelector(
+    StakingSelectors.claimableGovernanceToken
   );
-  const governanceTokenBalance = BNToFloat(
-    rawGovernanceTokenBalance ?? BigNumber.from(0),
+  const unlockedAxialAmount = BNToFloat(
+    rawClaimableAxial ?? BigNumber.from(0),
     18
   )?.toFixed(3);
   return (
@@ -27,8 +26,8 @@ export const Withdraw = () => {
         {t(
           translations.Staking.AvailableToWithdraw_AMOUNT_GOVERNANCETOKENNAME(),
           {
-            amount: governanceTokenBalance,
-            governanceTokenName,
+            amount: unlockedAxialAmount,
+            governanceTokenName: env.MAIN_TOKEN_NAME,
           }
         )}
       </Amount>

@@ -10,6 +10,7 @@ export interface StakingState {
   endDateForGovernanceTokenLock: BigNumber;
   isWithdrawing: boolean;
   isGettingGovernanceTokenInfo: boolean;
+  claimableGovernanceToken: BigNumber | undefined;
   claimable: {
     userClaimable: BigNumber;
     otherClaimables?: {

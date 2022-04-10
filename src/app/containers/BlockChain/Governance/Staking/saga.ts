@@ -2,7 +2,7 @@
 // import { actions } from './slice';
 
 import { parseEther } from "ethers/lib/utils";
-import { all, call, put, select, takeLatest } from "redux-saga/effects";
+import { all, call, delay, put, select, takeLatest } from "redux-saga/effects";
 import { StakingActions } from "./slice";
 import {
   StakeGovernanceTokenModel,
@@ -25,6 +25,7 @@ import { BNToFloat } from "common/format";
 import { getAccruingTokenContract, getGovernanceTokenContract } from "../saga";
 import { checkAndApproveTokensInList } from "utils/tokenVerifier";
 import { Token } from "app/containers/Swap/types";
+import { skipLoading } from "app/types";
 
 export function* getLatestGovernanceData() {
   yield all([
@@ -33,6 +34,17 @@ export function* getLatestGovernanceData() {
     put(GovernanceActions.getAccruingTokenBalance()),
     put(StakingActions.getLockedGovernanceTokenInfo()),
   ]);
+}
+
+export function* periodicallyRefetchTheData() {
+  yield all([
+    put(GovernanceActions.getGovernanceTokenBalance(true)),
+    put(GovernanceActions.getAccruingTokenBalance(true)),
+    put(StakingActions.getLockedGovernanceTokenInfo(true)),
+    put(StakingActions.getClaimableGovernanceToken()),
+  ]);
+  yield delay(5000);
+  yield call(periodicallyRefetchTheData);
 }
 
 export function* stakeGovernanceToken(action: {
@@ -251,7 +263,10 @@ export function* getFeeDistributionInfo() {
   }
 }
 
-export function* getLockedGovernanceTokenInfo() {
+export function* getLockedGovernanceTokenInfo(action: {
+  type: string;
+  payload: skipLoading;
+}) {
   const governanceTokenABI = yield select(
     GovernanceDomains.selectGovernanceTokenABIDomain
   );
@@ -263,7 +278,7 @@ export function* getLockedGovernanceTokenInfo() {
   ) as SAxial;
   const account = yield select(Web3Domains.selectAccountDomain);
   try {
-    yield put(StakingActions.setIsGettingGovernanceTokenInfo(true));
+    yield put(StakingActions.setIsGettingGovernanceTokenInfo(!action.payload));
     const info = yield call(governanceTokenContract.getLock, account);
     yield put(StakingActions.setGovernanceTokenInfo(info));
   } catch (error) {
@@ -301,6 +316,34 @@ export function* withdrawGovernanceToken() {
   }
 }
 
+export function* getClaimableGovernanceToken() {
+  const account = yield select(Web3Domains.selectAccountDomain);
+
+  try {
+    const governanceTokenContract: SAxial = yield call(
+      getGovernanceTokenContract
+    );
+    const gasLimit = yield call(
+      governanceTokenContract.estimateGas.getUnclaimed,
+      account
+    );
+    const claimable = yield call(
+      governanceTokenContract.getUnclaimed,
+      account,
+      {
+        gasLimit,
+      }
+    );
+    yield put(StakingActions.setClaimableGovernanceToken(claimable));
+  } catch (e: any) {
+    console.debug(e);
+    if (e?.data?.message) {
+      toast.error(e.data.message);
+    }
+  } finally {
+    yield put(StakingActions.setIsWithdrawingGovernanceToken(false));
+  }
+}
 export function* withdrawAccruingToken() {
   yield put(StakingActions.setIsWithdrawingGovernanceToken(true));
 
@@ -349,5 +392,14 @@ export function* stakingSaga() {
   yield takeLatest(
     StakingActions.withdrawAccruingToken.type,
     withdrawAccruingToken
+  );
+  yield takeLatest(
+    StakingActions.getClaimableGovernanceToken.type,
+    getClaimableGovernanceToken
+  );
+
+  yield takeLatest(
+    StakingActions.activatePeriodicallyRefetchTheData.type,
+    periodicallyRefetchTheData
   );
 }

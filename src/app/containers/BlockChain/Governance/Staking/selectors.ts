@@ -12,6 +12,9 @@ export const StakingDomains = {
     state.staking?.feeDistributorABI,
   selectOtherDistributorsDomain: (state: RootState) =>
     state.staking?.otherDistributors,
+  claimableGovernanceToken: (state: RootState) =>
+    state.staking?.claimableGovernanceToken ||
+    initialState.claimableGovernanceToken,
   selectUserClaimableDomain: (state: RootState) =>
     state.staking?.claimable?.userClaimable,
   selectOtherClaimablesDomain: (state: RootState) =>
@@ -53,6 +56,10 @@ export const StakingSelectors = {
   selectUserClaimable: createSelector(
     StakingDomains.selectUserClaimableDomain,
     (userClaimable) => userClaimable
+  ),
+  claimableGovernanceToken: createSelector(
+    StakingDomains.claimableGovernanceToken,
+    (claimableGovernanceToken) => claimableGovernanceToken
   ),
   selectOtherClaimables: createSelector(
     StakingDomains.selectOtherClaimablesDomain,

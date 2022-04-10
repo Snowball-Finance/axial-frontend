@@ -12,6 +12,8 @@ import { GovernanceDomains } from "./selectors";
 import { GetProposalsAPI } from "app/containers/BlockChain/Governance/providers/proposals";
 import { Governance, SAxial, VeAxial } from "abi/ethers-contracts";
 import AccruingTokenABI from "abi/veAxial.json";
+import { StakingActions } from "./Staking/slice";
+import { skipLoading } from "app/types";
 
 export function* getProposals(action: {
   type: string;
@@ -165,8 +167,13 @@ export function* getVotingReceipt(action: {
   }
 }
 
-export function* getGovernanceTokenBalance() {
-  yield put(GovernanceActions.setIsGettingGovernanceTokenBalance(true));
+export function* getGovernanceTokenBalance(action: {
+  type: string;
+  payload: skipLoading;
+}) {
+  yield put(
+    GovernanceActions.setIsGettingGovernanceTokenBalance(!action.payload)
+  );
   const account = yield select(Web3Domains.selectAccountDomain);
   const library = yield select(Web3Domains.selectLibraryDomain);
   const governanceTokenAddress = env.GOVERNANCE_TOKEN_CONTRACT_ADDRESS || "";
@@ -192,8 +199,13 @@ export function* getGovernanceTokenBalance() {
   }
 }
 
-export function* getAccruingTokenBalance() {
-  yield put(GovernanceActions.setIsGettingGovernanceTokenBalance(true));
+export function* getAccruingTokenBalance(action: {
+  type: string;
+  payload: skipLoading;
+}) {
+  yield put(
+    GovernanceActions.setIsGettingGovernanceTokenBalance(!action.payload)
+  );
   const account = yield select(Web3Domains.selectAccountDomain);
   const accruingTokenContract = yield call(getAccruingTokenContract);
   try {
@@ -300,6 +312,7 @@ export function* setGovernanceTokenContract(action: {
     yield all([
       put(GovernanceActions.getGovernanceTokenBalance()),
       put(GovernanceActions.getAccruingTokenBalance()),
+      put(StakingActions.activatePeriodicallyRefetchTheData()),
     ]);
   }
 }

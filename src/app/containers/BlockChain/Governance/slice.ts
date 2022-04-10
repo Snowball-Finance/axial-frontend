@@ -4,6 +4,7 @@ import { createSlice } from "store/toolkit";
 import { useInjectReducer, useInjectSaga } from "store/redux-injectors";
 import { governanceSaga } from "./saga";
 import { BigNumber } from "ethers";
+import { skipLoading } from "app/types";
 
 // The initial state of the Governance container
 export const initialState: ContainerState = {
@@ -43,8 +44,14 @@ const governanceSlice = createSlice({
   name: "governance",
   initialState,
   reducers: {
-    getGovernanceTokenBalance(state, action: PayloadAction<void>) {},
-    getAccruingTokenBalance(state, action: PayloadAction<void>) {},
+    getGovernanceTokenBalance(
+      state,
+      action: PayloadAction<skipLoading | undefined>
+    ) {},
+    getAccruingTokenBalance(
+      state,
+      action: PayloadAction<skipLoading | undefined>
+    ) {},
     setGovernanceABI(state, action: PayloadAction<any>) {
       state.governanceABI = action.payload;
     },
