@@ -32,7 +32,11 @@ import { Token, TokenSymbols } from "../Swap/types";
 import { AXIAL_MASTERCHEF_CONTRACT_ADDRESS } from "./constants";
 import MASTERCHEF_ABI from "abi/masterchef.json";
 import checkAndApproveTokenForTrade from "../utils/checkAndApproveTokenForTrade";
-import { Erc20, SwapFlashLoanNoWithdrawFee } from "abi/ethers-contracts";
+import {
+  Erc20,
+  Masterchef,
+  SwapFlashLoanNoWithdrawFee,
+} from "abi/ethers-contracts";
 import { addSlippage, subtractSlippage } from "../../../utils/slippage";
 import { Deadlines, formatDeadlineToNumber } from "./utils/deadline";
 import { GlobalActions } from "store/slice";
@@ -267,7 +271,7 @@ export function* deposit(action: { type: string; payload: DepositPayload }) {
       AXIAL_MASTERCHEF_CONTRACT_ADDRESS,
       MASTERCHEF_ABI,
       library?.getSigner()
-    );
+    ) as Masterchef;
 
     const lpTokenContract = getContract(
       pool.lpToken.address,
@@ -312,7 +316,7 @@ export function* deposit(action: { type: string; payload: DepositPayload }) {
     } else {
       yield call(
         masterchefContract.deposit,
-        pool.lpToken.masterchefId,
+        BigNumber.from(pool.lpToken.masterchefId),
         tokenAmounts[pool.lpToken.symbol]
       );
     }

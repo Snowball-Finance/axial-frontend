@@ -1,9 +1,7 @@
 import { styled, Slider, sliderClasses } from "@mui/material";
-import { StakingSelectors } from "app/containers/BlockChain/Governance/Staking/selectors";
 import { StakingPageSelectors } from "app/pages/Staking/selectors";
 import { StakingPageActions } from "app/pages/Staking/slice";
 import { translations } from "locales/i18n";
-import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { CssVariables } from "styles/cssVariables/cssVariables";

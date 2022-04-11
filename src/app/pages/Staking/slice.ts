@@ -9,7 +9,6 @@ import { useInjectReducer, useInjectSaga } from "store/redux-injectors";
 
 import { stakingPageSaga } from "./saga";
 import { addDaysToTodayAndGetOnlyDate } from "./utils/addDays";
-import { BigNumber } from "ethers";
 
 // The initial state of the StakingPage container
 export const initialState: ContainerState = {
