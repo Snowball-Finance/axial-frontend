@@ -9,9 +9,7 @@ import { CssVariables } from "styles/cssVariables/cssVariables";
 export const LockPeriod = () => {
   const { t } = useTranslation();
   let selectedEpoch = useSelector(StakingPageSelectors.selectSelectedEpoch);
-  const daysToUnlock = useSelector(
-    StakingPageSelectors.daysToUnlockGovernanceTokens
-  );
+  const daysToUnlock = useSelector(StakingPageSelectors.remainingDaysToShow);
   if (daysToUnlock !== 0 && daysToUnlock && selectedEpoch) {
     const dateWhenAddedDaysToUnlockToSelectedEpoch = addDays(
       selectedEpoch,

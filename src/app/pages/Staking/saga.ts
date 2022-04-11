@@ -73,17 +73,6 @@ export function* stakeAllTheAxialBalancesIntoVeAxial() {
     );
   }
 }
-export function* setRemainingDaysToUnblockAllGovernanceTokens(action: {
-  type: string;
-  payload: BigNumber;
-}) {
-  const seconds = action.payload.toNumber();
-  const lockedHoursFromNow = yield call(dateDifferenceFromNowByHours, {
-    dateInSeconds: seconds,
-  });
-  const daysFromNow = Number(divide(lockedHoursFromNow, 24).toFixed(0));
-  yield put(StakingPageActions.setDaysToUnlockGovernanceTokens(daysFromNow));
-}
 
 export function* stakingPageSaga() {
   yield takeLatest(
@@ -101,10 +90,5 @@ export function* stakingPageSaga() {
   yield takeLatest(
     StakingPageActions.stakeAccruingToken.type,
     stakeAccruingToken
-  );
-  yield takeLatest(
-    StakingPageActions.setRemainingDaysToUnblockAllGovernanceTokens
-      .type,
-    setRemainingDaysToUnblockAllGovernanceTokens
   );
 }

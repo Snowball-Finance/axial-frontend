@@ -38,20 +38,6 @@ export const BalanceSlider = () => {
   const value = useSelector(
     StakingPageSelectors.selectSelectedDepositSliderValue
   );
-  const lockedGovernanceTokenInfo = useSelector(
-    StakingSelectors.lockedGovernanceTokenInfo
-  );
-  useEffect(() => {
-    const endTimeInfo = lockedGovernanceTokenInfo?.endBlockTime;
-    if (endTimeInfo) {
-      dispatch(
-        StakingPageActions.setRemainingDaysToUnblockAllGovernanceTokens(
-          endTimeInfo
-        )
-      );
-    }
-    return () => {};
-  }, [lockedGovernanceTokenInfo]);
 
   const handleSliderChange = (v: number) => {
     dispatch(StakingPageActions.setSelectedEpoch(v));

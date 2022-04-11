@@ -1,7 +1,10 @@
 import { createSelector } from "@reduxjs/toolkit";
+import { StakingDomains } from "app/containers/BlockChain/Governance/Staking/selectors";
+import { divide } from "precise-math";
 
 import { RootState } from "store/types";
 import { initialState } from "./slice";
+import { dateDifferenceFromNowByHours } from "./utils/dateDifference";
 import { estimateGovernanceTokenForDate } from "./utils/stakeDate";
 
 export const StakingPageDomains = {
@@ -83,5 +86,17 @@ export const StakingPageSelectors = {
   daysToUnlockGovernanceTokens: createSelector(
     StakingPageDomains.daysToUnlockGovernanceToken,
     (daysToUnlockGovernanceTokens) => daysToUnlockGovernanceTokens
+  ),
+  remainingDaysToShow: createSelector(
+    StakingDomains.lockedGovernanceTokenInfo,
+    (lockedInfo) => {
+      if (!lockedInfo) return;
+      const seconds = lockedInfo.endBlockTime.toNumber();
+      const lockedHoursFromNow = dateDifferenceFromNowByHours({
+        dateInSeconds: seconds,
+      });
+      const daysFromNow = Number(divide(lockedHoursFromNow, 24).toFixed(0));
+      return daysFromNow;
+    }
   ),
 };

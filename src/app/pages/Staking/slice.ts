@@ -59,13 +59,7 @@ const stakingPageSlice = createSlice({
     ) {
       state.selectedDepositUnlockPeriod = action.payload;
     },
-    setRemainingDaysToUnblockAllGovernanceTokens(
-      state,
-      action: PayloadAction<BigNumber>
-    ) {},
-    setDaysToUnlockGovernanceTokens(state, action: PayloadAction<number>) {
-      state.daysToUnlockGovernanceTokens = action.payload;
-    },
+
     setSelectedEpoch(state, action: PayloadAction<number>) {
       let selectedEpoch;
       switch (action.payload / 25) {
