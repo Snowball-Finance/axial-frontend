@@ -326,7 +326,7 @@ export function* deposit(action: { type: string; payload: DepositPayload }) {
     yield put(RewardsActions.getRewardPoolsData(pools));
   } catch (e: any) {
     console.log(e);
-    toast.error("error while withdrawing");
+    toast.error("error while depositing");
     yield put(RewardsActions.setIsDepositing(false));
   } finally {
   }
