@@ -6,7 +6,6 @@ import { useTranslation } from "react-i18next";
 import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { SwapSelectors } from "app/containers/Swap/selectors";
-import { Token } from "app/containers/Swap/types";
 import { globalSelectors } from "app/appSelectors";
 
 export const Route: FC = () => {
@@ -20,10 +19,15 @@ export const Route: FC = () => {
   const bestPath = optimalPath?.bestPath;
 
   const getBestPathWithName = () => {
-    const bestPathNames: Token[] = [];
-    for (let key in tokens) {
-      if (bestPath?.path.includes(tokens[key].address)) {
-        bestPathNames.push(tokens[key].symbol);
+    const bestPathNames: string[] = [];
+    if (bestPath?.path && tokens) {
+      for (const address of bestPath.path) {
+        const token = Object.values(tokens).find(
+          (token) => token.address === address
+        );
+        if (token) {
+          bestPathNames.push(token.symbol);
+        }
       }
     }
     return bestPathNames.join(" > ");

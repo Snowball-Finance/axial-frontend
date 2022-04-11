@@ -42,7 +42,7 @@ export const initialState: GlobalState = {
   isAdvancedOptionsOpen:
     storage.read(LocalStorageKeys.IS_ADVANCED_OPTIONS_OPEN) || false,
   transactionSuccessId: undefined,
-  tokensInQueueToApproving: {}
+  tokensInQueueToApproving: {},
 };
 
 const globalSlice = createSlice({
