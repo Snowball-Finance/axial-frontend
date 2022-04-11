@@ -23,6 +23,7 @@ export const WithdrawButton = () => {
       loading={isWithdrawing}
       disabled={!areAllApproved || isCheckingForApproval}
       onClick={handleWithdrawClick}
+      fullWidth
     >
       {t(translations.LiquidityPage.Buttons.ConfirmWithdraw())}
     </ContainedButton>

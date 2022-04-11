@@ -337,6 +337,7 @@ export function* deposit(action: { type: string; payload: DepositPayload }) {
 
 export function* withdraw(action: { type: string; payload: WithdrawPayload }) {
   yield put(RewardsActions.setIsWithdrawing(true));
+  yield put(GlobalActions.setTransactionSuccessId(undefined));
   try {
     const selectedSlippage = yield select(GlobalDomains.selectedSlippage);
     const customSlippage = yield select(GlobalDomains.customSlippage);
@@ -406,7 +407,13 @@ export function* withdraw(action: { type: string; payload: WithdrawPayload }) {
           deadline
         );
       }
-      yield call(spendTransaction.wait);
+      const result = yield call(spendTransaction.wait);
+
+      if (result.status) {
+        yield put(
+          GlobalActions.setTransactionSuccessId(result.transactionHash)
+        );
+      }
     } else {
       yield call(
         masterchefContract.withdraw,
