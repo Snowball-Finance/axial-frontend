@@ -13,7 +13,7 @@ export const EquivalentInUsdt = () => {
     equivalentValueToShow = `~ $${value.toFixed(2)}`;
   }
 
-  return <InputText variant="body2">{equivalentValueToShow}</InputText>;
+  return <InputText variant="body2" align="right">{equivalentValueToShow}</InputText>;
 };
 
 const InputText = styled(Typography)({

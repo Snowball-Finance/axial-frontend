@@ -68,19 +68,6 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
     masterchefBalance && !!masterchefBalance[tokenKey]?.userInfo.amount.gt("0");
   let info: InfoData[] = [];
 
-  if (hasShare) {
-    info.push(
-      {
-        title: t(translations.RewardsPage.Info.Balance()),
-        value: `$${formattedData.userBalanceUSD}`,
-      },
-      {
-        title: t(translations.RewardsPage.Info.Claimable()),
-        value: `${formattedData.axialPending}`,
-      }
-    );
-  }
-
   if (pools[poolKey].poolType !== PoolTypes.LP) {
     info.push({
       title: t(translations.RewardsPage.Info.RewardsAPR()),
@@ -101,11 +88,24 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
     },
   ]);
 
+  if (hasShare) {
+    info.push(
+      {
+        title: t(translations.RewardsPage.Info.Balance()),
+        value: `$${formattedData.userBalanceUSD}`,
+      },
+      {
+        title: t(translations.RewardsPage.Info.Claimable()),
+        value: `${formattedData.axialPending}`,
+      }
+    );
+  }
+
   return (
     <StyledContainer container spacing={{ xs: 2, xl: 4 }}>
       {info.map((item, index) => (
         <Grid item key={index}>
-          <Grid container spacing={1}>
+          <Grid container spacing={1} direction="column">
             <Grid item>
               <PoolInfoTitleText variant="body1">
                 {item.title}
@@ -128,7 +128,6 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
 };
 
 const StyledContainer = styled(Grid)({
-  justifyContent: "space-between",
   alignItems: "center",
 
   [mobile]: {
@@ -138,13 +137,10 @@ const StyledContainer = styled(Grid)({
 
 const PoolInfoTitleText = styled(Typography)({
   color: CssVariables.white,
-  fontSize: "16px",
-  fontWeight: "bold",
 });
 
 const PoolInfoSubTitleText = styled(Typography)({
   color: CssVariables.white,
-  fontSize: "16px",
 });
 
 const TextLoader = styled(Skeleton)({

@@ -82,7 +82,7 @@
     },
     "Withdraw": {
       "Title": "Withdraw",
-      "WithdrawlPercentage": "Withdrawl percentage"
+      "WithdrawlPercentage": "Withdraw percentage"
     },
     "Info": {
       "Balance": "Balance",
@@ -103,7 +103,8 @@
       "Title": "My Share",
       "OfPool": "of pool",
       "USDBalance": "USD Balance",
-      "Total": "Total"
+      "Total": "Total",
+      "AxialRewards": "Axial Rewards"
     },
     "Modal": {
       "Deposit": "Deposit",

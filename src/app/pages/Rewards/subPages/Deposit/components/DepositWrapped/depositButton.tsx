@@ -30,13 +30,13 @@ export const DepositButton = () => {
             depositValue === zeroString ||
             (!isNaN(Number(depositValue)) && Number(depositValue) === 0)
           }
-          width={220}
           height={42}
+          fullWidth
         >
           {t(translations.RewardsPage.ActionButtons.Deposit())}
         </ContainedButton>
       }
-      disConnected={<WalletToggle />}
+      disConnected={<WalletToggle fullWidth/>}
     />
   );
 };

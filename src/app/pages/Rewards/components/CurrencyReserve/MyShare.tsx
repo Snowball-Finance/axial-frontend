@@ -16,6 +16,7 @@ import { RewardsPageSelectors } from "app/pages/Rewards/selectors";
 import { RewardsSelectors } from "app/containers/Rewards/selectors";
 import { pools } from "app/pools";
 import { Zero } from "app/containers/Rewards/constants";
+import { CardWrapper } from "app/components/wrappers/Card";
 
 type TParams = { poolIndex: string };
 
@@ -36,95 +37,111 @@ export const MyShare: FC = () => {
   }
 
   return (
-    <StyledMyShare>
-      <Grid container direction="column" spacing={2}>
+    <Grid container spacing={2}>
+      <Grid item container justifyContent="space-between" alignItems="center">
         <Grid item>
-          <Grid
-            container
-            justifyContent="space-between"
-            alignItems="center"
-            spacing={1}
-          >
-            <Grid item>
-              <MyShareTitle variant="h5">
-                {t(translations.RewardsPage.MyShare.Title())}
-              </MyShareTitle>
-            </Grid>
-
-            <Grid item>
-              <MyShareBalanceText variant="body2">
-                {formatBNToPercentString(userShareData.share, 18)}{" "}
-                {t(translations.RewardsPage.MyShare.OfPool())}
-              </MyShareBalanceText>
-            </Grid>
-          </Grid>
+          <MyShareTitle variant="h2">
+            {t(translations.RewardsPage.MyShare.Title())}
+          </MyShareTitle>
         </Grid>
 
         <Grid item>
-          <Grid
-            container
-            justifyContent="space-between"
-            alignItems="center"
-            spacing={1}
-          >
-            <Grid item>
-              <BalanceLabelText variant="body1">
-                {t(translations.RewardsPage.MyShare.USDBalance())}:
-              </BalanceLabelText>
-            </Grid>
-
-            <Grid item>
-              <BalanceText variant="body2">
-                ${formatBNToString(userShareData.usdBalance, 18, 2)}
-              </BalanceText>
-            </Grid>
-          </Grid>
-        </Grid>
-
-        <Grid item>
-          <Grid
-            container
-            justifyContent="space-between"
-            alignItems="center"
-            spacing={1}
-          >
-            <Grid item>
-              <BalanceLabelText variant="body1">
-                {t(translations.RewardsPage.MyShare.Total())}:
-              </BalanceLabelText>
-            </Grid>
-
-            <Grid item>
-              <BalanceText variant="body2">
-                $
-                {masterchefBalance &&
-                  formatBNToShortString(
-                    masterchefBalance[tokenKey]?.userInfo.amount || Zero,
-                    18
-                  )}
-              </BalanceText>
-            </Grid>
-          </Grid>
+          <MyShareBalanceText variant="body1">
+            {formatBNToPercentString(userShareData.share, 18)}{" "}
+            {t(translations.RewardsPage.MyShare.OfPool())}
+          </MyShareBalanceText>
         </Grid>
       </Grid>
-    </StyledMyShare>
+
+      <Grid item xs={12}>
+        <CardWrapper>
+          <Grid container direction="column" spacing={2}>
+            <Grid item>
+              <Grid
+                container
+                justifyContent="space-between"
+                alignItems="center"
+                spacing={1}
+              >
+                <Grid item>
+                  <BalanceLabelText variant="body1">
+                    {t(translations.RewardsPage.MyShare.USDBalance())}:
+                  </BalanceLabelText>
+                </Grid>
+
+                <Grid item>
+                  <BalanceText variant="body2">
+                    ${formatBNToString(userShareData.usdBalance, 18, 2)}
+                  </BalanceText>
+                </Grid>
+              </Grid>
+            </Grid>
+
+            <Grid item>
+              <Grid
+                container
+                justifyContent="space-between"
+                alignItems="center"
+                spacing={1}
+              >
+                <Grid item>
+                  <BalanceLabelText variant="body1">
+                    {t(translations.RewardsPage.MyShare.Total())}:
+                  </BalanceLabelText>
+                </Grid>
+
+                <Grid item>
+                  <BalanceText variant="body2">
+                    $
+                    {masterchefBalance &&
+                      formatBNToShortString(
+                        masterchefBalance[tokenKey]?.userInfo.amount || Zero,
+                        18
+                      )}
+                  </BalanceText>
+                </Grid>
+              </Grid>
+            </Grid>
+
+            <Grid item>
+              <Grid
+                container
+                justifyContent="space-between"
+                alignItems="center"
+                spacing={1}
+              >
+                <Grid item>
+                  <BalanceLabelText variant="body1">
+                    {t(translations.RewardsPage.MyShare.AxialRewards())}:
+                  </BalanceLabelText>
+                </Grid>
+
+                <Grid item>
+                  <BalanceText variant="body2">
+                    $
+                    {masterchefBalance &&
+                      formatBNToShortString(
+                        masterchefBalance[tokenKey]?.userInfo.amount || Zero,
+                        18
+                      )}
+                  </BalanceText>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+        </CardWrapper>
+      </Grid>
+    </Grid>
   );
 };
 
-const StyledMyShare = styled("div")({
-  width: "100%",
-  backgroundColor: CssVariables.swapInputbackground,
-  border: `4px solid ${CssVariables.cardBorder}`,
-  borderRadius: "20px",
-  padding: 20,
-});
-
 const MyShareTitle = styled(Typography)({
   color: CssVariables.white,
+  textTransform: "uppercase",
 });
 
 const MyShareBalanceText = styled(Typography)({
-  color: CssVariables.primary,
+  color: CssVariables.green,
 });
 
 const BalanceLabelText = styled(Typography)({

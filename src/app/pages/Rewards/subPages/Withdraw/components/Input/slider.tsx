@@ -40,7 +40,7 @@ export const RewardsWithdrawSlider = () => {
 };
 
 const WithdrawSlider = styled(Slider)({
-  color: CssVariables.primary,
+  color: CssVariables.green,
   height: 10,
 
   "& .MuiSlider-track": {
@@ -49,8 +49,8 @@ const WithdrawSlider = styled(Slider)({
   "& .MuiSlider-thumb": {
     height: 24,
     width: 24,
-    backgroundColor: CssVariables.primary,
-    border: `2px solid ${CssVariables.primary}`,
+    backgroundColor: CssVariables.green,
+    border: `2px solid ${CssVariables.green}`,
     "&:focus, &:hover, &.Mui-active, &.Mui-focusVisible": {
       boxShadow: "inherit",
     },
@@ -66,7 +66,7 @@ const WithdrawSlider = styled(Slider)({
     width: 32,
     height: 32,
     borderRadius: "50% 50% 50% 0",
-    backgroundColor: CssVariables.primary,
+    backgroundColor: CssVariables.green,
     transformOrigin: "bottom left",
     transform: "translate(50%, -100%) rotate(-45deg) scale(0)",
     "&:before": { display: "none" },
