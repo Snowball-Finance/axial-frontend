@@ -75,6 +75,7 @@ export const RewardsPageSelectors = {
     createSelector(RewardsDomains.pools, (pools) => {
       if (key === Pools.AXIAL_JLP) {
         return {
+          ...(pools[key]?.poolData || {}),
           tokens: axialJlpToken,
         };
       }
