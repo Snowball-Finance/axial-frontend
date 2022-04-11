@@ -69,8 +69,13 @@ export const RewardsSelectors = {
     RewardsDomains.isWithdrawing,
     (isWithdrawing) => isWithdrawing
   ),
-  poolData: (key: string) =>
-    createSelector(RewardsDomains.pools, (pools) => pools[key]?.poolData),
+  poolData: (key?: string) =>
+    createSelector(RewardsDomains.pools, (pools) => {
+      if (key && pools) {
+        return pools[key]?.poolData;
+      }
+      return undefined;
+    }),
   userShareData: (key?: string) =>
     createSelector(RewardsDomains.pools, (pools) =>
       key ? pools[key]?.userShareData : undefined
