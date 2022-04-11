@@ -322,7 +322,6 @@ export function* deposit(action: { type: string; payload: DepositPayload }) {
         txnDeadline
       );
       const result = yield call(spendTransaction.wait);
-
       if (result.status) {
         yield put(
           GlobalActions.setTransactionSuccessId(result.transactionHash)
@@ -341,7 +340,7 @@ export function* deposit(action: { type: string; payload: DepositPayload }) {
     yield put(RewardsActions.getRewardPoolsData(pools));
   } catch (e: any) {
     console.log(e);
-    toast.error("error while withdrawing");
+    toast.error("error while depositing");
     yield put(RewardsActions.setIsDepositing(false));
   }
 }
