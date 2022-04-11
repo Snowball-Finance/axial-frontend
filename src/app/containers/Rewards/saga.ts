@@ -26,7 +26,10 @@ import {
   WithdrawType,
 } from "./types";
 import LPTOKEN_UNGUARDED_ABI from "abi/lpTokenUnguarded.json";
-import { calculatePoolData } from "./utils/calculatePoolData";
+import {
+  calculatePoolData,
+  CalculatePoolDataProps,
+} from "./utils/calculatePoolData";
 import { LpTokenUnguarded } from "abi/ethers-contracts/LpTokenUnguarded";
 import { Token, TokenSymbols } from "../Swap/types";
 import { AXIAL_MASTERCHEF_CONTRACT_ADDRESS } from "./constants";
@@ -42,29 +45,37 @@ export function* getRewardPoolsData(action: {
   type: string;
   payload: RewardsState["pools"];
 }) {
-  yield put(RewardsActions.setRewardPools(action.payload));
-  yield put(RewardsActions.setIsGettingPoolsData(true));
+  const poolsToCheck: RewardsState["pools"] = yield select(
+    RewardsDomains.pools
+  );
+  const receivedPools = poolsToCheck && Object.keys(poolsToCheck).length > 0;
+  if (receivedPools) {
+    yield put(RewardsActions.setRewardPools(poolsToCheck));
+  } else {
+    yield put(RewardsActions.setRewardPools(action.payload));
+  }
   const pools: RewardsState["pools"] = yield select(RewardsDomains.pools);
+  yield put(RewardsActions.setIsGettingPoolsData(true));
   const networkLibrary = yield select(Web3Domains.selectNetworkLibraryDomain);
   const account = yield select(Web3Domains.selectAccountDomain);
   const chainId = yield select(Web3Domains.selectChainIDDomain);
   const tokenPricesUSD = yield select(GlobalDomains.tokenPricesUSD);
   const masterchefApr = yield select(RewardsDomains.masterchefApr);
-  const masterchefBalance = yield select(RewardsDomains.masterChefBalances);
+  const masterchefBalances = yield select(RewardsDomains.masterChefBalances);
   const swapStats = yield select(RewardsDomains.swapStats);
 
   try {
     const poolKeys: Pools[] = [];
     const arrayOfDataGetters = Object.values(pools).map((pool: any) => {
       poolKeys.push(pool.key);
-      const dataToPass = {
+      const dataToPass: CalculatePoolDataProps = {
         pool,
         account,
         chainId,
         library: networkLibrary,
         tokenPricesUSD,
         masterchefApr,
-        masterchefBalance,
+        masterchefBalances,
         swapStats,
       };
       return call(calculatePoolData, dataToPass);
