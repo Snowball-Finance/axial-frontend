@@ -293,6 +293,8 @@
   },
   "Staking": {
     "Staking": "Staking",
+    "StakingRootsaxialDescs":"Lock your AXIAL to vote on governance proposals and rewards distributions.",
+    "StakingRootveAxialDescs":"Stake your AXIAL to boost your yields",
     "Deposit": "Deposit",
     "Lock": "Lock",
     "Withdraw": "Withdraw",

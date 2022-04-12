@@ -1,6 +1,5 @@
 import { GovernanceSelectors } from "app/containers/BlockChain/Governance/selectors";
-import { BNToFloat } from "common/format";
-import { BigNumber } from "ethers";
+import { BNToFractionString } from "common/format";
 import { useSelector } from "react-redux";
 
 export const VeAxialInfo = () => {
@@ -8,8 +7,8 @@ export const VeAxialInfo = () => {
   const rawStaked = useSelector(
     GovernanceSelectors.mainTokenAmountStakedForAccruing
   );
-  const balance = BNToFloat(rawBalance ?? BigNumber.from(0), 18)?.toFixed(3);
-  const staked = BNToFloat(rawStaked ?? BigNumber.from(0), 18)?.toFixed(3);
+  const balance = BNToFractionString(rawBalance);
+  const staked = BNToFractionString(rawStaked);
   return (
     <>
       <p style={{ color: "white" }}>veAxial balance: {balance?.toString()}</p>

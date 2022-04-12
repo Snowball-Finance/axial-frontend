@@ -358,15 +358,15 @@ export function* withdrawAccruingToken() {
     const transactionWithdraw = yield call(tokenWithdraw.wait, 1);
 
     if (transactionWithdraw.status) {
-      toast.success("withdrawed all veAxial amount");
+      toast.success(`withdrawed all ${env.ACCRUING_TOKEN_NAME} amount`);
       yield call(getLatestGovernanceData);
       yield put(StakingActions.setIsWithdrawingAccruingToken(false));
     }
   } catch (e: any) {
+    yield put(StakingActions.setIsWithdrawingAccruingToken(false));
     console.debug(e);
     if (e?.data?.message) {
       toast.error(e.data.message);
-      yield put(StakingActions.setIsWithdrawingAccruingToken(false));
     }
   }
 }
