@@ -724,7 +724,9 @@ function* checkForWithdrawApproval(requestForApprove?: boolean) {
 }
 
 function* requestWithdrawApproval() {
+  yield put(LiquidityPageActions.setIsApprovingTokens(true));
   yield call(checkForWithdrawApproval, true);
+  yield put(LiquidityPageActions.setIsApprovingTokens(false));
 }
 
 export function* liquidityPageSaga() {

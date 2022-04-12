@@ -27,8 +27,9 @@ export const WithdrawApproveButton = () => {
       disabled={areAllApproved}
       loading={isChecking}
       onClick={handleApproveClick}
+      fullWidth
     >
-      {t(translations.Common.Approve())}
+      {t(translations.LiquidityPage.Buttons.ApproveTokens())}
     </OutlinedButton>
   );
 };

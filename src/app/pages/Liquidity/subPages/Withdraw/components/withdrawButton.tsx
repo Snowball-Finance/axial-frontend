@@ -29,7 +29,6 @@ export const WithdrawButton = () => {
     Object.values(withdrawTokens).every((tokenAmount) => tokenAmount === "0") ||
     !userShareData ||
     withdrawError !== undefined;
-  const isWithdrawing = useSelector(RewardsSelectors.isWithdrawing);
 
   const handleWithdrawClick = () => {
     dispatch(LiquidityPageActions.buildWithdrawReviewData());
@@ -40,7 +39,6 @@ export const WithdrawButton = () => {
         <ContainedButton
           height={42}
           disabled={disabled}
-          loading={isWithdrawing}
           onClick={handleWithdrawClick}
           fullWidth
         >
