@@ -311,6 +311,7 @@
     "TokensLocked": "Tokens Locked",
     "GOVERNANCETOKENNAME_Balance": "{{governanceTokenName}} Balance",
     "TokensEarned": "Tokens Earned",
+    "LockEnd": "Lock End",
     "DailyUnlocked": "Daily Unlocked",
     "MAIN_TOKEN_NAME_Unlocked": "{{mainTokenName}} Unlocked",
     "HowItWorks": "How it works",

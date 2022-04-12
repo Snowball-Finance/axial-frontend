@@ -19,7 +19,6 @@ export const initialState: ContainerState = {
   selectedDepositAndWithdrawTab: DepositAndWithdrawTab.Deposit,
   selectedVeAxialDepositAndWithdrawTab: DepositAndWithdrawTab.Deposit,
   selectedDepositUnlockPeriod: DepositUnlockPeriod.end,
-  daysToUnlockGovernanceTokens: 0,
 };
 
 const stakingPageSlice = createSlice({

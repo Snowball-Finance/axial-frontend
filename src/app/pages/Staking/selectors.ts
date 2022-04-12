@@ -9,8 +9,6 @@ import { estimateGovernanceTokenForDate } from "./utils/stakeDate";
 
 export const StakingPageDomains = {
   selectDomain: (state: RootState) => state.stakingPage || initialState,
-  daysToUnlockGovernanceToken: (state: RootState) =>
-    state.stakingPage?.daysToUnlockGovernanceTokens,
   selectEnteredMainTokenToStakeDomain: (state: RootState) =>
     state.stakingPage?.enteredMainTokenToStake ||
     initialState.enteredMainTokenToStake,
@@ -83,9 +81,16 @@ export const StakingPageSelectors = {
       return calculatedYouWillGet;
     }
   ),
-  daysToUnlockGovernanceTokens: createSelector(
-    StakingPageDomains.daysToUnlockGovernanceToken,
-    (daysToUnlockGovernanceTokens) => daysToUnlockGovernanceTokens
+  lockEndDate: createSelector(
+    StakingDomains.lockedGovernanceTokenInfo,
+    (lockedGovernanceTokenInfo) => {
+      if (!lockedGovernanceTokenInfo) return;
+      const { endBlockTime: endTimeInSeconds } = lockedGovernanceTokenInfo;
+      const endDateInLocalString = new Date(
+        endTimeInSeconds.toNumber() * 1000
+      ).toLocaleString();
+      return endDateInLocalString.split(",")[0];
+    }
   ),
   remainingDaysToShow: createSelector(
     StakingDomains.lockedGovernanceTokenInfo,

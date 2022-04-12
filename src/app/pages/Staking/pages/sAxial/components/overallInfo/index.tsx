@@ -1,57 +1,33 @@
 import { styled } from "@mui/material";
 import { SnowPaper } from "app/components/base/SnowPaper";
-import { ContainedButton } from "app/components/common/buttons/containedButton";
-import { OutlinedButton } from "app/components/common/buttons/outlinedButton";
 import { GovernanceSelectors } from "app/containers/BlockChain/Governance/selectors";
 import { StakingSelectors } from "app/containers/BlockChain/Governance/Staking/selectors";
-import { BNToFloat } from "common/format";
+import { StakingPageSelectors } from "app/pages/Staking/selectors";
+import { BNToFractionString } from "common/format";
 import { env } from "environment";
-import { BigNumber } from "ethers";
 import { translations } from "locales/i18n";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { mobile } from "styles/media";
-import { StakingPageActions } from "../../../../slice";
-import { DepositAndWithdrawTab } from "../../../../types";
 import { Info } from "./info";
 
 export const OverallInfoCard = () => {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
   const lockedGovernanceTokenInfo = useSelector(
     StakingSelectors.lockedGovernanceTokenInfo
   );
   const rawLockedTokenAmount = lockedGovernanceTokenInfo?.startingAmountLocked;
-  const lockedTokenAmount = BNToFloat(
-    rawLockedTokenAmount || BigNumber.from(0),
-    18
-  )?.toFixed(3);
+  const lockedTokenAmount = BNToFractionString(rawLockedTokenAmount);
   const rawClaimableAxial = useSelector(
     StakingSelectors.claimableGovernanceToken
   );
-  const unlockedAxialAmount = BNToFloat(
-    rawClaimableAxial ?? BigNumber.from(0),
-    18
-  )?.toFixed(3);
+  const unlockedAxialAmount = BNToFractionString(rawClaimableAxial);
   const rawGovernanceTokenBalance = useSelector(
     GovernanceSelectors.selectGovernanceTokenBalance
   );
-  const governanceTokenBalance = BNToFloat(
-    rawGovernanceTokenBalance ?? BigNumber.from(0),
-    18
-  )?.toFixed(3);
-
-  const handleStakeClick = () => {
-    dispatch(
-      StakingPageActions.setSelectedDepositAndWithdrawTab(
-        DepositAndWithdrawTab.Deposit
-      )
-    );
-    setTimeout(() => {
-      document.getElementById("stakeButton")?.scrollIntoView();
-    }, 0);
-  };
+  const lockEndDate = useSelector(StakingPageSelectors.lockEndDate);
+  const governanceTokenBalance = BNToFractionString(rawGovernanceTokenBalance);
 
   return (
     <Wrapper>
@@ -74,10 +50,6 @@ export const OverallInfoCard = () => {
             value={`${governanceTokenBalance} ${env.GOVERNANCE_TOKEN_NAME}`}
             // help={<>info</>}
           />
-          <Filler />
-          <OutlinedButton>
-            {t(translations.Staking.HowItWorks())}
-          </OutlinedButton>
         </LeftWrapper>
         <RightWrapper>
           <Info
@@ -86,12 +58,13 @@ export const OverallInfoCard = () => {
             })}
             value={`${unlockedAxialAmount}`}
           />
-          <Filler />
-          <ContainedButton onClick={handleStakeClick}>
-            {t(translations.Staking.Stake_MAINTOKENNAME(), {
-              mainTokenName: env.MAIN_TOKEN_NAME,
-            })}
-          </ContainedButton>
+          {lockEndDate && (
+            <Info
+              title={t(translations.Staking.LockEnd())}
+              value={`${lockEndDate}`}
+              // help={<>info</>}
+            />
+          )}
         </RightWrapper>
       </StyledSnowPaper>
       <Desc>
@@ -123,10 +96,6 @@ const Title = styled("h1")({
   margin: 0,
   color: CssVariables.commonTextColor,
   marginBottom: "20px",
-});
-
-const Filler = styled("div")({
-  flex: 1,
 });
 
 const LeftWrapper = styled("div")({

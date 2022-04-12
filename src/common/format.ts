@@ -62,3 +62,11 @@ export const BNToFloat = (bn: BigNumber, decimals = 18) => {
     console.error(error.message);
   }
 };
+
+export const BNToFractionString = (
+  bn = BigNumber.from(0),
+  fraction = 3,
+  decimals = 18
+) => {
+  return BNToFloat(bn, decimals)?.toFixed(fraction);
+};
