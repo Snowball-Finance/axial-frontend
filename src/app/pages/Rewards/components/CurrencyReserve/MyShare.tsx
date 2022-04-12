@@ -9,7 +9,7 @@ import { CssVariables } from "styles/cssVariables/cssVariables";
 import {
   formatBNToString,
   formatBNToPercentString,
-  formatBNToShortString,
+  commify,
 } from "app/containers/utils/contractUtils";
 import { getKeyFromPoolIndex } from "app/pages/Rewards/constants";
 import { RewardsPageSelectors } from "app/pages/Rewards/selectors";
@@ -71,7 +71,8 @@ export const MyShare: FC = () => {
 
                 <Grid item>
                   <BalanceText variant="body2">
-                    ${formatBNToString(userShareData.usdBalance, 18, 2)}
+                    $
+                    {commify(formatBNToString(userShareData.usdBalance, 18, 2))}
                   </BalanceText>
                 </Grid>
               </Grid>
@@ -94,9 +95,11 @@ export const MyShare: FC = () => {
                   <BalanceText variant="body2">
                     $
                     {masterchefBalance &&
-                      formatBNToShortString(
-                        masterchefBalance[tokenKey]?.userInfo.amount || Zero,
-                        18
+                      commify(
+                        formatBNToString(
+                          masterchefBalance[tokenKey]?.userInfo.amount || Zero,
+                          18
+                        )
                       )}
                   </BalanceText>
                 </Grid>
@@ -120,9 +123,12 @@ export const MyShare: FC = () => {
                   <BalanceText variant="body2">
                     $
                     {masterchefBalance &&
-                      formatBNToShortString(
-                        masterchefBalance[tokenKey]?.userInfo.amount || Zero,
-                        18
+                      commify(
+                        formatBNToString(
+                          masterchefBalance[tokenKey]?.pendingTokens
+                            ?.pendingAxial || Zero,
+                          18
+                        )
                       )}
                   </BalanceText>
                 </Grid>

@@ -7,7 +7,7 @@ import { CssVariables } from "styles/cssVariables/cssVariables";
 import { getKeyFromPoolIndex } from "app/pages/Rewards/constants";
 import { RewardsPageSelectors } from "app/pages/Rewards/selectors";
 import { WithdrawInput } from "./input";
-import { EquivalentInUsdt } from "./equivalentAmount";
+import { EquivalentInUsd } from "./equivalentAmount";
 import { CardWrapper } from "app/components/wrappers/Card";
 
 type TParams = { poolIndex: string };
@@ -45,7 +45,7 @@ export const CurrencyInput: FC = () => {
                   <WithdrawInput />
                 </Grid>
                 <Grid item xs zeroMinWidth alignSelf="right">
-                  <EquivalentInUsdt />
+                  <EquivalentInUsd />
                 </Grid>
               </Grid>
             </Grid>

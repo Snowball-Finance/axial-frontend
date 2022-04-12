@@ -10,6 +10,7 @@ import { getKeyFromPoolIndex } from "app/pages/Liquidity/constants";
 import { pools } from "app/pools";
 import { Pool } from "app/containers/Rewards/types";
 import { RewardsPageActions } from "../../slice";
+import { WithdrawConfirmationModal } from "./components/Input/withdrawConfirmationModal";
 
 type TParams = { poolIndex: string };
 
@@ -26,16 +27,19 @@ export const Withdraw: FC = () => {
   }, [poolKey]);
 
   return (
-    <PageWrapper>
-      <Grid container spacing={4}>
-        <Grid item xs={12}>
-          <WithdrawInput />
+    <>
+      <WithdrawConfirmationModal />
+      <PageWrapper>
+        <Grid container spacing={4}>
+          <Grid item xs={12}>
+            <WithdrawInput />
+          </Grid>
+          <Grid item xs={12}>
+            <CurrencyReserve />
+          </Grid>
         </Grid>
-        <Grid item xs={12}>
-          <CurrencyReserve />
-        </Grid>
-      </Grid>
-    </PageWrapper>
+      </PageWrapper>
+    </>
   );
 };
 

@@ -9,6 +9,7 @@ import { RewardsWithdrawSlider } from "./slider";
 import { Percentage } from "./percentageText";
 import { RewardsWithdrawButton } from "./withdrawButton";
 import { mobile } from "styles/media";
+import { AdvanceOption } from "app/components/common/advancedOptions";
 
 export const WithdrawInput: FC = () => {
   const { t } = useTranslation();
@@ -42,6 +43,10 @@ export const WithdrawInput: FC = () => {
 
         <Grid item>
           <CurrencyInput />
+        </Grid>
+
+        <Grid item>
+          <AdvanceOption />
         </Grid>
 
         <Grid item>

@@ -17,6 +17,7 @@ import { getPoolInfoByAddressAPI } from "./providers/getPoolInfoByAddress";
 import { RewardsActions } from "app/containers/Rewards/slice";
 import { parseUnits } from "ethers/lib/utils";
 import { TokenSymbols } from "app/containers/Swap/types";
+import { checkAndApproveTokensInList } from "utils/tokenVerifier";
 
 export function* poolInfoByAddress(action: { type: string; payload: string }) {
   const { payload } = action;
@@ -45,15 +46,30 @@ export function* deposit() {
   const selectedPool: Pool = yield select(RewardsPageDomains.pool);
   const value = yield select(RewardsPageDomains.depositValue) || "0";
   const token = selectedPool.lpToken;
+  const amountToSpend = floatToBN(Number(value), token.decimals);
   const dataToSend: DepositPayload = {
     poolKey: selectedPool.key,
     masterchefDeposit: true,
     shouldDepositWrapped: false,
     tokenAmounts: {
-      [token.symbol]: floatToBN(Number(value), token.decimals),
+      [token.symbol]: amountToSpend,
     },
   };
-  yield put(RewardsActions.deposit(dataToSend));
+  yield put(RewardsPageActions.setIsModalOpen(true));
+  const areAllApproved = yield call(checkAndApproveTokensInList, {
+    tokensToVerify: [
+      {
+        amount: amountToSpend || BigNumber.from(0),
+        swapAddress: AXIAL_MASTERCHEF_CONTRACT_ADDRESS,
+        token,
+      },
+    ],
+  });
+  if (areAllApproved) {
+    yield put(RewardsActions.deposit(dataToSend));
+  } else {
+    toast.error("you need to approve the token first");
+  }
 }
 
 export function* withdraw() {
@@ -83,6 +99,7 @@ export function* withdraw() {
     type: pool.lpToken.symbol as TokenSymbols,
     masterchefwithdraw: true,
   };
+  yield put(RewardsPageActions.setIsModalOpen(true));
   yield put(RewardsActions.withdraw(dataToSend));
 }
 

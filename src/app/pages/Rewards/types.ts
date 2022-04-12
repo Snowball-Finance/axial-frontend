@@ -13,6 +13,7 @@ export interface RewardsPageState {
   depositValue: string;
   withdrawPercentage: number;
   withdrawAmount: string;
+  isModalOpen: boolean;
 }
 
 export interface PoolCardItemProps {

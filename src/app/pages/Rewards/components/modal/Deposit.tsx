@@ -1,47 +1,82 @@
-import React, { FC } from "react";
-import { styled, Grid, Typography } from "@mui/material";
+import { FC } from "react";
+import { Grid, Typography, Box, CircularProgress } from "@mui/material";
+import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
+import {
+  CircleOutlined,
+  CheckCircleOutlineOutlined,
+} from "@mui/icons-material";
 
 import { translations } from "locales/i18n";
-import { CssVariables } from "styles/cssVariables/cssVariables";
 import { CardWrapper } from "app/components/wrappers/Card";
-import { IconWithTitle } from "./components/IconWithTitle";
-import { Steps } from "./components/Steps";
+import { globalSelectors } from "app/appSelectors";
+import { RewardsSelectors } from "app/containers/Rewards/selectors";
+import { RewardsPageSelectors } from "../../selectors";
+import { PoolData } from "app/containers/Rewards/types";
 
 export const DepositModal: FC = () => {
   const { t } = useTranslation();
+  const selectedPool = useSelector(RewardsPageSelectors.selectedPool);
+  const poolData: PoolData = useSelector(
+    RewardsSelectors.poolData(selectedPool?.key)
+  );
+  const tokensInQueueToApproving = useSelector(
+    globalSelectors.tokensInQueueToApproving
+  );
+  
+  const isDepositing = useSelector(RewardsSelectors.isDepositing);
+  const stepsCount = isDepositing ? 2 : 1;
+
+  const renderIcon = (tokenSymbol) => {
+    if (tokensInQueueToApproving[tokenSymbol]) {
+      return <CircularProgress color="primary" size={20} />;
+    } else {
+      return <CheckCircleOutlineOutlined color="primary" />;
+    }
+  };
+
+  const renderDepositIcon = () => {
+    if (isDepositing) {
+      return <CircularProgress color="primary" size={20} />;
+    } else {
+      return <CircleOutlined color="primary" />;
+    }
+  };
 
   return (
-    <Grid container direction="column" spacing={1}>
-      <Grid item>
-        <Text variant="h6">{t(translations.RewardsPage.Modal.Deposit())}</Text>
-      </Grid>
+    <Box mt={2}>
+      <CardWrapper>
+        <Grid container item xs={12} spacing={2} alignItems="center">
+          <Grid item>{renderIcon(poolData?.lpToken)}</Grid>
 
-      <Grid item>
-        <CardWrapper>
-          <Grid container justifyContent="space-between" alignItems="center">
-            <Grid item>
-              <Text variant="h6">
-                <IconWithTitle />
-              </Text>
-            </Grid>
-
-            <Grid item>
-              <Text variant="h6">1.054525</Text>
-            </Grid>
+          <Grid item>
+            <Typography variant="body2">
+              {t(translations.Common.Approval())} {poolData?.lpToken}
+            </Typography>
           </Grid>
-        </CardWrapper>
-      </Grid>
+        </Grid>
+        <Grid container item xs={12} spacing={2} alignItems="center">
+          <Grid item>{renderDepositIcon()}</Grid>
 
-      <Grid item>
-        <CardWrapper>
-          <Steps />
-        </CardWrapper>
-      </Grid>
-    </Grid>
+          <Grid item>
+            <Typography variant="body2">
+              {t(translations.Common.Depositing())}
+            </Typography>
+          </Grid>
+        </Grid>
+
+        <Grid container spacing={1}>
+          <Grid
+            container
+            item
+            xs={12}
+            alignItems="center"
+            justifyContent="center"
+          >
+            <Typography variant="body2">Steps {stepsCount}/2</Typography>
+          </Grid>
+        </Grid>
+      </CardWrapper>
+    </Box>
   );
 };
-
-const Text = styled(Typography)({
-  color: CssVariables.white,
-});

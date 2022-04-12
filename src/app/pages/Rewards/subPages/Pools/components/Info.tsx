@@ -129,6 +129,7 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
 
 const StyledContainer = styled(Grid)({
   alignItems: "center",
+  justifyContent: "flex-end",
 
   [mobile]: {
     flexDirection: "column",

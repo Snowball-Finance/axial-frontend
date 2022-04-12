@@ -14,7 +14,7 @@ export const EquivalentInUsd = () => {
     RewardsSelectors.poolData(selectedPool?.key)
   );
   const tokenPricesUSD = useSelector(globalSelectors.tokenPricesUSD);
-  const poolInputAmount = useSelector(RewardsPageSelectors.withdrawAmount);
+  const poolInputAmount = useSelector(RewardsPageSelectors.depositValue);
   const symbol = selectedPool?.key;
   let tokenUSDValue: number = 0;
 

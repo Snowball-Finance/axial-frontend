@@ -39,7 +39,7 @@ export const PoolCardItem: FC<PoolCardItemProps> = ({ poolKey }) => {
               </Grid>
             </Grid>
 
-            <Grid item>
+            <Grid item xs={4}>
               <Info poolKey={poolKey} />
             </Grid>
           </StyledPoolChildUpperContainer>

@@ -31,6 +31,8 @@ export const RewardsPageDomains = {
     state.rewardsPage?.withdrawPercentage || initialState.withdrawPercentage,
   withdrawAmount: (state: RootState) =>
     state.rewardsPage?.withdrawAmount || initialState.withdrawAmount,
+  isModalOpen: (state: RootState) =>
+    state.rewardsPage?.isModalOpen || initialState.isModalOpen,
 };
 
 export const RewardsPageSelectors = {
@@ -75,6 +77,7 @@ export const RewardsPageSelectors = {
     createSelector(RewardsDomains.pools, (pools) => {
       if (key === Pools.AXIAL_JLP) {
         return {
+          ...(pools[key]?.poolData || {}),
           tokens: axialJlpToken,
         };
       }
@@ -118,5 +121,9 @@ export const RewardsPageSelectors = {
         return 0;
       }
     }
+  ),
+  isModalOpen: createSelector(
+    RewardsPageDomains.isModalOpen,
+    (isModalOpen) => isModalOpen
   ),
 };

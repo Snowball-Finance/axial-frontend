@@ -12,11 +12,14 @@ import { RewardsPageSelectors } from "app/pages/Rewards/selectors";
 import { CompoundWithSnowball } from "./CompoundWithSnowball";
 import { mobile } from "styles/media";
 import { Max } from "./Max";
+import { globalSelectors } from "app/appSelectors";
+import { Token } from "app/containers/Swap/types";
 
 export const DepositWrapped: FC = () => {
   const { t } = useTranslation();
 
   const pool = useSelector(RewardsPageSelectors.selectedPool);
+  const tokens = useSelector(globalSelectors.tokens) as Token[];
 
   return (
     <StyledAddLiquidity>
@@ -27,14 +30,14 @@ export const DepositWrapped: FC = () => {
           </HeaderText>
         </Grid>
 
-        <Grid item alignSelf="end">{pool && <Max token={pool.lpToken} />}</Grid>
+        <Grid item alignSelf="end">{pool && <Max token={tokens[pool?.lpToken.symbol]} />}</Grid>
 
         <Grid item>
           <CurrencyInput />
         </Grid>
 
         <Grid item alignSelf="end">
-          {pool && <WalletBalance token={pool?.lpToken} />}
+          {pool && <WalletBalance token={tokens[pool?.lpToken.symbol]} />}
         </Grid>
 
         <Grid item>

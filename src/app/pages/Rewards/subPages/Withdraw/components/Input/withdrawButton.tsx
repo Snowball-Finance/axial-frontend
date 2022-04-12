@@ -2,6 +2,7 @@ import { ContainedButton } from "app/components/common/buttons/containedButton";
 import { NeedsWalletConnection } from "app/components/common/needsWalletConnection";
 import { WalletToggle } from "app/components/common/walletToggle";
 import { RewardsSelectors } from "app/containers/Rewards/selectors";
+import { UserShareData } from "app/containers/Rewards/types";
 import { RewardsPageSelectors } from "app/pages/Rewards/selectors";
 import { RewardsPageActions } from "app/pages/Rewards/slice";
 import { translations } from "locales/i18n";
@@ -11,9 +12,16 @@ import { useDispatch, useSelector } from "react-redux";
 export const RewardsWithdrawButton = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const selectedPool = useSelector(RewardsPageSelectors.selectedPool);
+  const userShareData: UserShareData = useSelector(
+    RewardsSelectors.userShareData(selectedPool?.key)
+  );
   const loading = useSelector(RewardsSelectors.isWithdrawing);
   const withdrawAmount = useSelector(RewardsPageSelectors.withdrawAmount);
-  const disabled = isNaN(Number(withdrawAmount)) || Number(withdrawAmount) <= 0;
+  const disabled =
+    isNaN(Number(withdrawAmount)) ||
+    Number(withdrawAmount) <= 0 ||
+    !userShareData;
   const handleWithdrawClick = () => {
     dispatch(RewardsPageActions.withdraw());
   };

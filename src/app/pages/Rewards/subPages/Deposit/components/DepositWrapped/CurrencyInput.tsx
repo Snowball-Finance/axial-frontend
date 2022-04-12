@@ -8,6 +8,7 @@ import { getKeyFromPoolIndex } from "app/pages/Rewards/constants";
 import { RewardsPageSelectors } from "app/pages/Rewards/selectors";
 import { RewardsDepositInput } from "./input";
 import { CardWrapper } from "app/components/wrappers/Card";
+import { EquivalentInUsd } from "./equivalentInUsd";
 
 type TParams = { poolIndex: string };
 
@@ -49,9 +50,7 @@ export const CurrencyInput: FC = () => {
                   <RewardsDepositInput />
                 </Grid>
                 <Grid item xs zeroMinWidth alignSelf="right">
-                  <InputText variant="body2" noWrap align="right">
-                    =$0.0
-                  </InputText>
+                  <EquivalentInUsd />
                 </Grid>
               </Grid>
             </Grid>
@@ -61,10 +60,6 @@ export const CurrencyInput: FC = () => {
     </CardWrapper>
   );
 };
-
-const InputText = styled(Typography)({
-  color: CssVariables.white,
-});
 
 const TokenIconContainer = styled(Grid)({
   border: `2px solid ${CssVariables.cardBorder}`,
