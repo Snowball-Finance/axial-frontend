@@ -9,7 +9,7 @@ import {
 import { StakingPageSelectors } from "app/pages/Staking/selectors";
 import { StakingPageActions } from "app/pages/Staking/slice";
 import { translations } from "locales/i18n";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { CssVariables } from "styles/cssVariables/cssVariables";
@@ -59,7 +59,7 @@ export const LockPeriodSlider = () => {
       } else if (daysToUnlock <= 363) {
         minimum = 75;
       } else if (daysToUnlock <= 2 * 363 + 1) {
-        minimum = 99;
+        minimum = 100;
       }
       dispatch(StakingPageActions.setSelectedEpoch(minimum));
       setMin(minimum);
@@ -82,7 +82,7 @@ export const LockPeriodSlider = () => {
     min === 0 ? 0 : min === 25 ? 1 : min === 50 ? 2 : min === 75 ? 3 : 4;
   return (
     <Wrapper>
-      {min !== 99 ? (
+      {min !== 100 ? (
         <StyledSlider
           width={width}
           min={min}
@@ -97,7 +97,7 @@ export const LockPeriodSlider = () => {
           you can only lock for 2 years
         </div>
       )}
-      {min !== 99 && (
+      {min !== 100 && (
         <DisabledWrapper>
           {Array(numberOfDisabledSliders)
             .fill(0)

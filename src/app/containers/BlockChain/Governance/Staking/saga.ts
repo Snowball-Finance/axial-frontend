@@ -112,9 +112,11 @@ export function* stakeGovernanceToken(action: {
       }
     } else {
       toast("Main Token Contract is not set");
+      yield put(StakingActions.setIsStakingGovernanceToken(false));
     }
   } catch (error: any) {
     console.debug(error);
+    yield put(StakingActions.setIsStakingGovernanceToken(false));
     if (error?.data?.message) {
       toast.error(error.data.message);
     }

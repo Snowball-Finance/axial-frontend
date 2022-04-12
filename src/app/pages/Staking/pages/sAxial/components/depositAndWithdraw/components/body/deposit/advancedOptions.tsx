@@ -1,6 +1,7 @@
 import { Checkbox, styled } from "@mui/material";
 import { StakingSelectors } from "app/containers/BlockChain/Governance/Staking/selectors";
 import { StakingActions } from "app/containers/BlockChain/Governance/Staking/slice";
+import { BNToFractionString } from "common/format";
 import { translations } from "locales/i18n";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,6 +14,11 @@ export const AdvancedOptions = () => {
   const keepUnclaimed = useSelector(
     StakingSelectors.selectKeepThaUnclaimedWhenExtendingLockPeriod
   );
+  const rawClaimableAxial = useSelector(
+    StakingSelectors.claimableGovernanceToken
+  );
+  const unlockedAxialAmount = BNToFractionString(rawClaimableAxial);
+  const showAdvanced = Number(unlockedAxialAmount || 0) > 0;
 
   const handleCheckboxChange = (_, checked: boolean) => {
     dispatch(
@@ -20,7 +26,7 @@ export const AdvancedOptions = () => {
     );
   };
 
-  return (
+  return showAdvanced ? (
     <Wrapper>
       <Title>{t(translations.Staking.AdvancedOptions())}</Title>
       <CheckboxWrapper>
@@ -31,6 +37,8 @@ export const AdvancedOptions = () => {
         <Label>don't claim the unclaimed tokens yet</Label>
       </CheckboxWrapper>
     </Wrapper>
+  ) : (
+    <></>
   );
 };
 

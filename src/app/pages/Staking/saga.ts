@@ -43,7 +43,6 @@ export function* stakeGovernanceToken() {
       previousNumberOfLockedDays * 24 * 60 * 60
     ).toString();
   }
-
   yield put(
     StakingActions.stakeGovernanceToken({
       amount: enteredBalance,
