@@ -2,6 +2,7 @@ import { StakingActions } from "app/containers/BlockChain/Governance/Staking/sli
 import { BlockChainDomains } from "app/containers/BlockChain/selectors";
 import { BNToString } from "common/format";
 import { BigNumber } from "ethers";
+import { subtract } from "precise-math";
 import { put, select, takeLatest } from "redux-saga/effects";
 import { StakingPageDomains } from "./selectors";
 
@@ -28,16 +29,25 @@ export function* stakeGovernanceToken() {
   if (!enteredBalance || isNaN(Number(enteredBalance))) {
     return;
   }
+  const previousNumberOfLockedDays: number = yield select(
+    StakingPageDomains.remainingDaysToUnlock
+  );
   const date = yield select(StakingPageDomains.selectSelectedEpochDomain);
   const endDate = new Date(date);
   let startDate = new Date();
-  let duration = ((endDate.getTime() - startDate.getTime()) / 1000)
-    .toFixed(0)
-    .toString();
+  let duration = ((endDate.getTime() - startDate.getTime()) / 1000).toFixed(0);
+  let finalDurationToAdd = duration;
+  if (previousNumberOfLockedDays) {
+    finalDurationToAdd = subtract(
+      Number(duration),
+      previousNumberOfLockedDays * 24 * 60 * 60
+    ).toString();
+  }
+
   yield put(
     StakingActions.stakeGovernanceToken({
       amount: enteredBalance,
-      duration,
+      duration: finalDurationToAdd,
     })
   );
 }

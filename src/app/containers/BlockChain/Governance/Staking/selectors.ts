@@ -24,6 +24,11 @@ export const StakingDomains = {
   selectIsWithdrawingDomain: (state: RootState) => state.staking?.isWithdrawing,
   isWithdrawingAccruingToken: (state: RootState) =>
     state.staking?.isWithdrawingAccruingToken,
+  keepThaUnclaimedWhenExtendingLockPeriod: (state: RootState) => {
+    return state.staking?.keepThaUnclaimedWhenExtendingLockPeriod === undefined
+      ? false
+      : state.staking?.keepThaUnclaimedWhenExtendingLockPeriod;
+  },
 };
 
 export const StakingSelectors = {
@@ -71,5 +76,10 @@ export const StakingSelectors = {
     (blockChainContracts, governanceTokenContract) => {
       return blockChainContracts.mainTokenContract && governanceTokenContract;
     }
+  ),
+  selectKeepThaUnclaimedWhenExtendingLockPeriod: createSelector(
+    StakingDomains.keepThaUnclaimedWhenExtendingLockPeriod,
+    (keepThaUnclaimedWhenExtendingLockPeriod) =>
+      keepThaUnclaimedWhenExtendingLockPeriod
   ),
 };

@@ -93,11 +93,15 @@ export function* stakeGovernanceToken(action: {
         console.debug("transaction not approved");
         return;
       }
+      const keepThaUnclaimedWhenExtendingLockPeriod = yield select(
+        StakingDomains.keepThaUnclaimedWhenExtendingLockPeriod
+      );
+
       const tokenLock = yield call(
         governanceTokenContract.stake,
         duration,
         amountToStake,
-        false
+        keepThaUnclaimedWhenExtendingLockPeriod
       );
 
       const transactionResponse = yield call(tokenLock.wait, 1);

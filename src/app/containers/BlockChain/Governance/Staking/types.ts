@@ -18,6 +18,7 @@ export interface StakingState {
     };
   };
   otherDistributors?: DistributorData[];
+  keepThaUnclaimedWhenExtendingLockPeriod: boolean;
 }
 
 export interface DistributorData {

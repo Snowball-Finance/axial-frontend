@@ -12,6 +12,7 @@ import { useInjectReducer, useInjectSaga } from "store/redux-injectors";
 import { stakingSaga } from "./saga";
 import { BigNumber } from "ethers";
 import { skipLoading } from "app/types";
+import { LocalStorageKeys, storage } from "store/storage";
 
 // The initial state of the Staking container
 export const initialState: ContainerState = {
@@ -24,6 +25,10 @@ export const initialState: ContainerState = {
   isGettingGovernanceTokenInfo: false,
   claimableGovernanceToken: BigNumber.from(0),
   lockedGovernanceTokenInfo: undefined,
+  keepThaUnclaimedWhenExtendingLockPeriod: storage.read(
+    LocalStorageKeys.KEEP_THE_UNCLAIMED_WHEN_EXTENDING_LOCK_PERIOD,
+    false
+  ),
   claimable: {
     userClaimable: BigNumber.from(0),
   },
@@ -94,6 +99,16 @@ const stakingSlice = createSlice({
       state.claimableGovernanceToken = action.payload;
     },
     activatePeriodicallyRefetchTheData() {},
+    setKeepTheUnclaimedWhenExtendingLockPeriod(
+      state,
+      action: PayloadAction<boolean>
+    ) {
+      storage.write(
+        LocalStorageKeys.KEEP_THE_UNCLAIMED_WHEN_EXTENDING_LOCK_PERIOD,
+        action.payload
+      );
+      state.keepThaUnclaimedWhenExtendingLockPeriod = action.payload;
+    },
   },
 });
 

@@ -5,10 +5,11 @@ import { CssVariables } from "styles/cssVariables/cssVariables";
 import { Balance } from "./balance";
 import { LockPeriod } from "./lockPeriod";
 import { MaxButton } from "./maxButton";
-import { BalanceSlider } from "./slider";
+import { LockPeriodSlider } from "./slider";
 import { StakeButton } from "./stakeButton";
 import { StakingAmount } from "./stakingAmount";
 import { mobile } from "styles/media";
+import { AdvancedOptions } from "./advancedOptions";
 
 export const Deposit = () => {
   const { t } = useTranslation();
@@ -23,8 +24,8 @@ export const Deposit = () => {
         <Balance />
       </BalanceAndAmountWrapper>
       <LockPeriod />
-      <BalanceSlider />
-      {/* <AdvancedOptions /> */}
+      <LockPeriodSlider />
+      <AdvancedOptions />
       <StakeButton />
       {/* <DepositYouWillGet /> */}
     </Wrapper>

@@ -15,7 +15,17 @@ export const StakingPageDomains = {
   selectEnteredMainTokenToStakeIntoVeAxialDomain: (state: RootState) =>
     state.stakingPage?.enteredMainTokenToStakeInVeAxial ||
     initialState.enteredMainTokenToStakeInVeAxial,
-
+  remainingDaysToUnlock: (state: RootState) => {
+    const stakingState = state.staking;
+    const lockedInfo = stakingState?.lockedGovernanceTokenInfo;
+    if (!lockedInfo) return 0;
+    const seconds = lockedInfo.endBlockTime.toNumber();
+    const lockedHoursFromNow = dateDifferenceFromNowByHours({
+      dateInSeconds: seconds,
+    });
+    const daysFromNow = Number(divide(lockedHoursFromNow, 24).toFixed(0));
+    return daysFromNow;
+  },
   selectSelectedWithdrawAndDepositTabDomain: (state: RootState) =>
     state.stakingPage?.selectedDepositAndWithdrawTab ||
     initialState.selectedDepositAndWithdrawTab,
@@ -93,15 +103,7 @@ export const StakingPageSelectors = {
     }
   ),
   remainingDaysToShow: createSelector(
-    StakingDomains.lockedGovernanceTokenInfo,
-    (lockedInfo) => {
-      if (!lockedInfo) return;
-      const seconds = lockedInfo.endBlockTime.toNumber();
-      const lockedHoursFromNow = dateDifferenceFromNowByHours({
-        dateInSeconds: seconds,
-      });
-      const daysFromNow = Number(divide(lockedHoursFromNow, 24).toFixed(0));
-      return daysFromNow;
-    }
+    StakingPageDomains.remainingDaysToUnlock,
+    (lockedDays) => lockedDays
   ),
 };
