@@ -14,8 +14,8 @@ import { addDaysToTodayAndGetOnlyDate } from "./utils/addDays";
 export const initialState: ContainerState = {
   enteredMainTokenToStake: "",
   enteredMainTokenToStakeInVeAxial: "",
-  selectedEpoch: addDaysToTodayAndGetOnlyDate(7),
-  selectedDepositSliderValue: 25,
+  selectedEpoch: addDaysToTodayAndGetOnlyDate(1),
+  selectedDepositSliderValue: 0,
   selectedDepositAndWithdrawTab: DepositAndWithdrawTab.Deposit,
   selectedVeAxialDepositAndWithdrawTab: DepositAndWithdrawTab.Deposit,
   selectedDepositUnlockPeriod: DepositUnlockPeriod.end,

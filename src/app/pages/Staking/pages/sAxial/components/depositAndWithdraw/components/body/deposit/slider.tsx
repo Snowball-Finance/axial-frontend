@@ -8,8 +8,9 @@ import {
 } from "@mui/material";
 import { StakingPageSelectors } from "app/pages/Staking/selectors";
 import { StakingPageActions } from "app/pages/Staking/slice";
+import { findEquivalentOfANumberFromARangeToANumberFromAnotherRange } from "app/pages/Staking/utils/dateToPercent";
 import { translations } from "locales/i18n";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { CssVariables } from "styles/cssVariables/cssVariables";
@@ -49,46 +50,24 @@ export const LockPeriodSlider = () => {
     dispatch(StakingPageActions.setSelectedEpoch(v));
   };
   const daysToUnlock = useSelector(StakingPageSelectors.remainingDaysToShow);
-  useEffect(() => {
-    let minimum = 0;
-    if (daysToUnlock !== 0) {
-      if (daysToUnlock <= 6) {
-        minimum = 25;
-      } else if (daysToUnlock <= 29) {
-        minimum = 50;
-      } else if (daysToUnlock <= 363) {
-        minimum = 75;
-      } else if (daysToUnlock <= 2 * 363 + 1) {
-        minimum = 100;
-      }
-      dispatch(StakingPageActions.setSelectedEpoch(minimum));
-      setMin(minimum);
-    }
+  const selectedEpoch = useSelector(StakingPageSelectors.selectSelectedEpoch);
+  if (selectedEpoch) {
+    console.log(
+      findEquivalentOfANumberFromARangeToANumberFromAnotherRange(
+        8,
+        [8, 30],
+        [26, 50]
+      )
+    );
+  }
 
-    return () => {};
-  }, [daysToUnlock]);
-
-  const width =
-    min === 0
-      ? "unset"
-      : min === 25
-      ? "315px"
-      : min === 50
-      ? "210px"
-      : min === 75
-      ? "105px"
-      : "105px";
-  const numberOfDisabledSliders =
-    min === 0 ? 0 : min === 25 ? 1 : min === 50 ? 2 : min === 75 ? 3 : 4;
   return (
     <Wrapper>
       {min !== 100 ? (
         <StyledSlider
-          width={width}
           min={min}
           max={100}
           value={value}
-          step={25}
           onChange={(_, v) => handleSliderChange(v as number)}
           marks={marks(t)}
         />
@@ -97,7 +76,7 @@ export const LockPeriodSlider = () => {
           you can only lock for 2 years
         </div>
       )}
-      {min !== 100 && (
+      {/* {min !== 100 && (
         <DisabledWrapper>
           {Array(numberOfDisabledSliders)
             .fill(0)
@@ -105,7 +84,7 @@ export const LockPeriodSlider = () => {
               return <DisabledSlider key={i} />;
             })}
         </DisabledWrapper>
-      )}
+      )} */}
     </Wrapper>
   );
 };
@@ -139,10 +118,7 @@ const Wrapper = styled(Box)({
   },
 });
 
-const StyledSlider = styled(Slider)<SliderProps & { width: string }>(
-  ({ width }) => ({
-    position: "absolute",
-    right: "0",
-    maxWidth: width,
-  })
-);
+const StyledSlider = styled(Slider)<SliderProps>({
+  position: "absolute",
+  right: "0",
+});

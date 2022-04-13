@@ -88,7 +88,18 @@ const stakingSlice = createSlice({
       action: PayloadAction<skipLoading | undefined>
     ) {},
     setGovernanceTokenInfo(state, action: PayloadAction<LockedInfo>) {
-      state.lockedGovernanceTokenInfo = action.payload;
+      const info: any = {};
+      const {
+        endBlockTime,
+        initialized,
+        startBlockTime,
+        startingAmountLocked,
+      } = action.payload;
+      info.endBlockTime = endBlockTime;
+      info.initialized = initialized;
+      info.startBlockTime = startBlockTime;
+      info.startingAmountLocked = startingAmountLocked;
+      state.lockedGovernanceTokenInfo = info;
     },
     setIsGettingGovernanceTokenInfo(state, action: PayloadAction<boolean>) {
       state.isGettingGovernanceTokenInfo = action.payload;
