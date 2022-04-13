@@ -8,9 +8,9 @@ import {
 } from "@mui/material";
 import { StakingPageSelectors } from "app/pages/Staking/selectors";
 import { StakingPageActions } from "app/pages/Staking/slice";
-import { findEquivalentOfANumberFromARangeToANumberFromAnotherRange } from "app/pages/Staking/utils/dateToPercent";
 import { translations } from "locales/i18n";
-import { useState } from "react";
+import { subtract } from "precise-math";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { CssVariables } from "styles/cssVariables/cssVariables";
@@ -40,7 +40,6 @@ const marks = (t: any): Mark[] => [
 ];
 
 export const LockPeriodSlider = () => {
-  const [min, setMin] = useState(0);
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const value = useSelector(
@@ -49,22 +48,13 @@ export const LockPeriodSlider = () => {
   const handleSliderChange = (v: number) => {
     dispatch(StakingPageActions.setSelectedEpoch(v));
   };
-  const daysToUnlock = useSelector(StakingPageSelectors.remainingDaysToShow);
-  const selectedEpoch = useSelector(StakingPageSelectors.selectSelectedEpoch);
-  if (selectedEpoch) {
-    console.log(
-      findEquivalentOfANumberFromARangeToANumberFromAnotherRange(
-        8,
-        [8, 30],
-        [26, 50]
-      )
-    );
-  }
+  let min = 14;
 
   return (
     <Wrapper>
       {min !== 100 ? (
         <StyledSlider
+          width={`${subtract(100, min)}%`}
           min={min}
           max={100}
           value={value}
@@ -76,31 +66,18 @@ export const LockPeriodSlider = () => {
           you can only lock for 2 years
         </div>
       )}
-      {/* {min !== 100 && (
-        <DisabledWrapper>
-          {Array(numberOfDisabledSliders)
-            .fill(0)
-            .map((_, i) => {
-              return <DisabledSlider key={i} />;
-            })}
-        </DisabledWrapper>
-      )} */}
+      {min !== 100 && <DisabledSlider width={`${min}%`} />}
     </Wrapper>
   );
 };
 
-const DisabledWrapper = styled("div")({
-  width: "330px",
-  display: "flex",
-  marginTop: "14px",
-});
-
-const DisabledSlider = styled("div")({
-  width: "calc(25% + 18px)",
+const DisabledSlider = styled("div")<{ width: string }>(({ width }) => ({
+  width,
   height: "2px",
   marginRight: "5px",
+  marginTop: "14px",
   backgroundColor: CssVariables.commonTextColor,
-});
+}));
 
 const Wrapper = styled(Box)({
   height: "50px",
@@ -118,7 +95,11 @@ const Wrapper = styled(Box)({
   },
 });
 
-const StyledSlider = styled(Slider)<SliderProps>({
-  position: "absolute",
-  right: "0",
-});
+const StyledSlider = styled(Slider)<SliderProps & { width: string }>(
+  ({ width }) => ({
+    position: "absolute",
+    right: "0",
+    width,
+    maxWidth: width,
+  })
+);
