@@ -56,6 +56,7 @@ export function* deposit() {
   yield put(RewardsActions.deposit(dataToSend));
 }
 
+
 export function* withdraw() {
   const pool: Pool = yield select(RewardsPageDomains.pool);
   const amount = yield select(RewardsPageDomains.withdrawAmount);
