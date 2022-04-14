@@ -55,7 +55,7 @@ export function* deposit() {
     tokensToVerify: [
       {
         amount: amountToSpend || BigNumber.from(0),
-        swapAddress: AXIAL_MASTERCHEF_CONTRACT_ADDRESS,
+        spenderAddress: AXIAL_MASTERCHEF_CONTRACT_ADDRESS,
         token,
       }
     ]
