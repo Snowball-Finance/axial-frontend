@@ -17,19 +17,15 @@ import { getPoolInfoByAddressAPI } from "./providers/getPoolInfoByAddress";
 import { RewardsActions } from "app/containers/Rewards/slice";
 import { parseUnits } from "ethers/lib/utils";
 import { TokenSymbols } from "app/containers/Swap/types";
-
 export function* poolInfoByAddress(action: { type: string; payload: string }) {
   const { payload } = action;
-
   yield put(RewardsPageActions.setCompoundWithSnowballLoading(true));
-
   try {
     const { data } = yield call(getPoolInfoByAddressAPI, payload);
     const compoundWithSnowballAPY =
       data?.PoolsInfoByAddress.gaugeInfo.snobYearlyAPR +
       data?.PoolsInfoByAddress.yearlyAPY +
       data?.PoolsInfoByAddress.yearlySwapFees;
-
     yield put(
       RewardsPageActions.setCompoundWithSnowballAPY(compoundWithSnowballAPY)
     );
@@ -40,7 +36,6 @@ export function* poolInfoByAddress(action: { type: string; payload: string }) {
     yield put(RewardsPageActions.setCompoundWithSnowballLoading(false));
   }
 }
-
 export function* deposit() {
   const selectedPool: Pool = yield select(RewardsPageDomains.pool);
   const value = yield select(RewardsPageDomains.depositValue) || "0";
@@ -55,7 +50,6 @@ export function* deposit() {
   };
   yield put(RewardsActions.deposit(dataToSend));
 }
-
 export function* withdraw() {
   const pool: Pool = yield select(RewardsPageDomains.pool);
   const amount = yield select(RewardsPageDomains.withdrawAmount);
