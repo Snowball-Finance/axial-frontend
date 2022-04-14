@@ -25,12 +25,19 @@ export function* checkAndApproveTokensInList(tokens: TokensToVerifyPayload) {
   );
 
   yield put(GlobalActions.emptyTokensInQueueForApproval());
+  yield put(GlobalActions.emptyTokensInQueueForApproving());
 
   for (const element of approveArray) {
     yield put(
       GlobalActions.setApprovalForTokenInQueue({
         tokenSymbol: element.token.symbol as TokenSymbols,
         approved: false,
+      })
+    );
+    yield put(
+      GlobalActions.setApprovingForTokenInQueue({
+        tokenSymbol: element.token.symbol as TokenSymbols,
+        approving: false,
       })
     );
   }
@@ -40,6 +47,12 @@ export function* checkAndApproveTokensInList(tokens: TokensToVerifyPayload) {
 
   try {
     for (const element of approveArray) {
+      yield put(
+        GlobalActions.setApprovingForTokenInQueue({
+          tokenSymbol: element.token.symbol as TokenSymbols,
+          approving: true,
+        })
+      );
       const tokenContract =
         element.tokenContract ||
         new Contract(
@@ -67,12 +80,20 @@ export function* checkAndApproveTokensInList(tokens: TokensToVerifyPayload) {
           approved: true,
         })
       );
+      yield put(
+        GlobalActions.setApprovingForTokenInQueue({
+          tokenSymbol: element.token.symbol as TokenSymbols,
+          approving: false,
+        })
+      );
     }
     yield put(GlobalActions.emptyTokensInQueueForApproval());
+    yield put(GlobalActions.emptyTokensInQueueForApproving());
     return true;
   } catch (error) {
     console.log(error);
     yield put(GlobalActions.emptyTokensInQueueForApproval());
+    yield put(GlobalActions.emptyTokensInQueueForApproving());
     return false;
   }
 }

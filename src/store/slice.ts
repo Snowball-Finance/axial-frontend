@@ -23,6 +23,7 @@ export interface GlobalState {
   selectedSlippage: Slippages;
   customSlippage: NumberInputState | undefined;
   transactionSuccessId: string | undefined;
+  tokensInQueueToApproving: { [K in TokenSymbols]?: boolean };
 }
 // The initial state of the LoginPage container
 export const initialState: GlobalState = {
@@ -41,6 +42,7 @@ export const initialState: GlobalState = {
   isAdvancedOptionsOpen:
     storage.read(LocalStorageKeys.IS_ADVANCED_OPTIONS_OPEN) || false,
   transactionSuccessId: undefined,
+  tokensInQueueToApproving: {},
 };
 
 const globalSlice = createSlice({
@@ -108,6 +110,20 @@ const globalSlice = createSlice({
       action: PayloadAction<TokensToVerifyPayload>
     ) {},
     approveListOfTokens(state, action: PayloadAction<TokensToVerifyPayload>) {},
+    setApprovingForTokenInQueue(
+      state,
+      action: PayloadAction<{
+        tokenSymbol: TokenSymbols;
+        approving: boolean;
+      }>
+    ) {
+      const tmp = { ...state.tokensInQueueToApproving };
+      tmp[action.payload.tokenSymbol] = action.payload.approving;
+      state.tokensInQueueToApproving = tmp;
+    },
+    emptyTokensInQueueForApproving(state, action: PayloadAction<void>) {
+      state.tokensInQueueToApproving = {};
+    },
   },
 });
 

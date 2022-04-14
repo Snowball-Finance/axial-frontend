@@ -8,6 +8,7 @@ import { getKeyFromPoolIndex } from "app/pages/Rewards/constants";
 import { RewardsPageSelectors } from "app/pages/Rewards/selectors";
 import { TokenImages } from "app/pages/Rewards/components/TokenImages";
 import { RewardsDepositInput } from "./input";
+import { EquivalentInUsd } from "./equivalentInUsd";
 
 type TParams = { poolIndex: string };
 
@@ -40,9 +41,7 @@ export const CurrencyInput: FC = () => {
             </Grid>
 
             <Grid item xs zeroMinWidth alignSelf="right">
-              <InputText variant="body2" noWrap align="right">
-                =$0.0
-              </InputText>
+              <EquivalentInUsd />
             </Grid>
           </Grid>
         </Grid>
@@ -62,8 +61,4 @@ const StyledAdvanceOption = styled("div")({
 const HeaderText = styled(Typography)({
   color: CssVariables.bodyTextColor,
   fontSize: "26px",
-});
-
-const InputText = styled(Typography)({
-  color: CssVariables.white,
 });

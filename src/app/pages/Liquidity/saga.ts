@@ -186,26 +186,30 @@ export function* buildWithdrawReviewData() {
 }
 
 export function* deposit() {
-  const depositTokenAmounts = yield select(
-    LiquidityPageDomains.depositTokenAmounts
-  );
-  const depositRaw = yield select(LiquidityPageDomains.depositRaw);
-  const tokens = yield select(GlobalDomains.tokens);
-  const pool: Pool = yield select(LiquidityPageDomains.pool);
-  const tmp = {};
-  for (let k in depositTokenAmounts) {
-    const v = depositTokenAmounts[k];
-    const num = Number(v);
-    const toSend = floatToBN(num, tokens[k].decimals);
-    tmp[k] = toSend;
+  try {
+    const depositTokenAmounts = yield select(
+      LiquidityPageDomains.depositTokenAmounts
+    );
+    const depositRaw = yield select(LiquidityPageDomains.depositRaw);
+    const tokens = yield select(GlobalDomains.tokens);
+    const pool: Pool = yield select(LiquidityPageDomains.pool);
+    const tmp = {};
+    for (let k in depositTokenAmounts) {
+      const v = depositTokenAmounts[k];
+      const num = Number(v);
+      const toSend = floatToBN(num, tokens[k].decimals);
+      tmp[k] = toSend;
+    }
+    const dataToSend: DepositPayload = {
+      poolKey: pool.key,
+      tokenAmounts: tmp,
+      shouldDepositWrapped:
+        pool.swapAddress === undefined ? false : !depositRaw,
+    };
+    yield put(RewardsActions.deposit(dataToSend));
+  } catch (error) {
+    console.log("error", error);
   }
-  const dataToSend: DepositPayload = {
-    poolKey: pool.key,
-    tokenAmounts: tmp,
-    shouldDepositWrapped: pool.swapAddress === undefined ? false : !depositRaw,
-  };
-  yield put(RewardsActions.deposit(dataToSend));
-  yield put(LiquidityPageActions.setDepositTransactionData(undefined));
 }
 
 export function* withdraw() {
@@ -583,13 +587,20 @@ function* tokensToApproveForDeposit() {
 }
 
 export function* approveTokensForDeposit() {
-  const tokensToApprove: TokenToVerify[] = yield call(
-    tokensToApproveForDeposit
-  );
-  const areApproved = yield call(checkAndApproveTokensInList, {
-    tokensToVerify: tokensToApprove,
-  });
-  yield put(LiquidityPageActions.setTokensAreApproved(areApproved));
+  yield put(LiquidityPageActions.setIsApprovingTokens(true));
+  try {
+    const tokensToApprove: TokenToVerify[] = yield call(
+      tokensToApproveForDeposit
+    );
+    const areApproved = yield call(checkAndApproveTokensInList, {
+      tokensToVerify: tokensToApprove,
+    });
+    yield put(LiquidityPageActions.setTokensAreApproved(areApproved));
+  } catch (error) {
+    console.log("error", error);
+  } finally {
+    yield put(LiquidityPageActions.setIsApprovingTokens(false));
+  }
 }
 export function* checkIsAllTokensAreApprovedForDeposit() {
   yield put(LiquidityPageActions.setIsCheckingForApproval(true));
@@ -713,7 +724,9 @@ function* checkForWithdrawApproval(requestForApprove?: boolean) {
 }
 
 function* requestWithdrawApproval() {
+  yield put(LiquidityPageActions.setIsApprovingTokens(true));
   yield call(checkForWithdrawApproval, true);
+  yield put(LiquidityPageActions.setIsApprovingTokens(false));
 }
 
 export function* liquidityPageSaga() {

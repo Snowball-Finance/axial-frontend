@@ -19,7 +19,7 @@ import { extraRewardTokens } from "app/tokens";
 import { parseUnits } from "ethers/lib/utils";
 import { GlobalState } from "store/slice";
 
-interface Props {
+export interface CalculatePoolDataProps {
   pool: Pool;
   tokenPricesUSD: GlobalState["tokenPricesUSD"];
   library: any;
@@ -30,7 +30,7 @@ interface Props {
   account: string;
   swapStats?: RewardsState["swapStats"];
 }
-export const calculatePoolData = async (props: Props) => {
+export const calculatePoolData = async (props: CalculatePoolDataProps) => {
   const {
     pool,
     tokenPricesUSD,
@@ -58,7 +58,6 @@ export const calculatePoolData = async (props: Props) => {
       if (POOL.poolType !== PoolTypes.LP) {
         return;
       }
-
       let masterchefPool;
       if (masterchefApr && masterchefBalances) {
         masterchefPool = masterchefApr[POOL.address];
@@ -76,9 +75,7 @@ export const calculatePoolData = async (props: Props) => {
         lpTokenContract.balanceOf(AXIAL_MASTERCHEF_CONTRACT_ADDRESS),
       ]);
       const poolApr = masterchefPool.apr ?? 0;
-
       let DEXLockedBN = BigNumber.from(0);
-
       if (masterchefPool.tokenPoolPrice > 0 && totalLpTokenBalance.gt("0x0")) {
         const totalLocked =
           masterchefPool.tokenPoolPrice * (+totalLpTokenBalance / 1e18);
@@ -145,7 +142,6 @@ export const calculatePoolData = async (props: Props) => {
             masterchefBalance: userMasterchefBalances,
           }
         : null;
-
       return { poolData, userShareData };
     } else {
       return;

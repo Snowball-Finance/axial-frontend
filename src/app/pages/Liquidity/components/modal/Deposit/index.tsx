@@ -90,10 +90,10 @@ export const DepositModal: FC = () => {
 
       <Grid item>
         <Grid container justifyContent="center" alignItems="center" spacing={2}>
-          <Grid item>
+          <Grid item xs={6}>
             <DepositApproveButton />
           </Grid>
-          <Grid item>
+          <Grid item xs={6}>
             <ConfirmButton />
           </Grid>
         </Grid>
