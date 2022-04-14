@@ -20,6 +20,9 @@ export const StakingPageDomains = {
     const lockedInfo = stakingState?.lockedGovernanceTokenInfo;
     if (!lockedInfo) return 0;
     const seconds = lockedInfo.endBlockTime.toNumber();
+    if (seconds === 0) {
+      return 0;
+    }
     const lockedHoursFromNow = dateDifferenceFromNowByHours({
       dateInSeconds: seconds,
     });

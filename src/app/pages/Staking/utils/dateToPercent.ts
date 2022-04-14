@@ -1,6 +1,9 @@
 import { add, divide, multiply, subtract } from "precise-math";
 
 export const convertPercentToDaysFromNow = (percent: number) => {
+  if (percent <= 1) {
+    return 1;
+  }
   if (percent <= 25) {
     return findEquivalentOfANumberFromARangeToANumberFromAnotherRange(
       percent,
@@ -27,7 +30,7 @@ export const convertPercentToDaysFromNow = (percent: number) => {
     );
   }
 };
-export const convertDaysFromNowTPercentage = (numberOfDaysFromNow: number) => {
+export const convertDaysFromNowToPercentage = (numberOfDaysFromNow: number) => {
   if (numberOfDaysFromNow <= 1) {
     return 0;
   }

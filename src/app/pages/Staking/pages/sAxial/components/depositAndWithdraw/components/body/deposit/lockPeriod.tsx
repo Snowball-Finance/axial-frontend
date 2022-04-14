@@ -1,15 +1,27 @@
 import { styled } from "@mui/material";
+import { SnowDatePicker } from "app/components/base/snowDatePicker";
 import { StakingPageSelectors } from "app/pages/Staking/selectors";
+import { StakingPageActions } from "app/pages/Staking/slice";
+import { addDaysToTodayAndGetOnlyDate } from "app/pages/Staking/utils/addDays";
+import { convertPercentToDaysFromNow } from "app/pages/Staking/utils/dateToPercent";
 import { translations } from "locales/i18n";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 
 export const LockPeriod = () => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   let selectedEpoch = useSelector(StakingPageSelectors.selectSelectedEpoch);
   const daysToUnlock = useSelector(StakingPageSelectors.remainingDaysToShow);
-
+  const minimumDate = addDaysToTodayAndGetOnlyDate(daysToUnlock || 0);
+  const maximumDaysFromNow = convertPercentToDaysFromNow(100);
+  const maximumDate = addDaysToTodayAndGetOnlyDate(maximumDaysFromNow);
+  const handleDateChange = (date: Date) => {
+    if (date) {
+      dispatch(StakingPageActions.setSelectedDateInStakingGovernance(date));
+    }
+  };
   return (
     <Wrapper>
       <Title>{t(translations.Staking.LockPeriod())}</Title>
@@ -22,7 +34,12 @@ export const LockPeriod = () => {
         <></>
       )}
       <InputWrapper>
-        {selectedEpoch?.toLocaleString().split(",")[0]}
+        <SnowDatePicker
+          minDate={minimumDate}
+          maxDate={maximumDate}
+          value={selectedEpoch}
+          onChange={handleDateChange}
+        />
       </InputWrapper>
     </Wrapper>
   );
@@ -50,5 +67,4 @@ const InputWrapper = styled("div")({
   border: `4px solid ${CssVariables.cardBorder}`,
   minHeight: "46px",
   textAlign: "end",
-  fontSize: "26px",
 });

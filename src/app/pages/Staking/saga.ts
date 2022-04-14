@@ -3,6 +3,7 @@ import { BlockChainDomains } from "app/containers/BlockChain/selectors";
 import { BNToString } from "common/format";
 import { BigNumber } from "ethers";
 import { subtract } from "precise-math";
+import { toast } from "react-toastify";
 import { put, select, takeLatest } from "redux-saga/effects";
 import { StakingPageDomains } from "./selectors";
 
@@ -27,6 +28,7 @@ export function* stakeGovernanceToken() {
     StakingPageDomains.selectEnteredMainTokenToStakeDomain
   );
   if (!enteredBalance || isNaN(Number(enteredBalance))) {
+    toast.warn("please enter a valid amount");
     return;
   }
   const previousNumberOfLockedDays: number = yield select(
@@ -42,6 +44,9 @@ export function* stakeGovernanceToken() {
       Number(duration),
       previousNumberOfLockedDays * 24 * 60 * 60
     ).toString();
+  }
+  if (Number(finalDurationToAdd) < 0) {
+    finalDurationToAdd = "0";
   }
   yield put(
     StakingActions.stakeGovernanceToken({

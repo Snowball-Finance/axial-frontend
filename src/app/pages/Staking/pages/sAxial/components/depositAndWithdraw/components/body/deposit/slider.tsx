@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import { StakingPageSelectors } from "app/pages/Staking/selectors";
 import { StakingPageActions } from "app/pages/Staking/slice";
+import { convertDaysFromNowToPercentage } from "app/pages/Staking/utils/dateToPercent";
 import { translations } from "locales/i18n";
 import { subtract } from "precise-math";
 import { useEffect, useState } from "react";
@@ -40,15 +41,25 @@ const marks = (t: any): Mark[] => [
 ];
 
 export const LockPeriodSlider = () => {
+  const [min, setMin] = useState(0);
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const value = useSelector(
     StakingPageSelectors.selectSelectedDepositSliderValue
   );
+  const remainingDaysToShow = useSelector(
+    StakingPageSelectors.remainingDaysToShow
+  );
   const handleSliderChange = (v: number) => {
-    dispatch(StakingPageActions.setSelectedEpoch(v));
+    dispatch(StakingPageActions.setSelectedSliderValue(v));
   };
-  let min = 14;
+
+  useEffect(() => {
+    const minimum = convertDaysFromNowToPercentage(remainingDaysToShow || 0);
+    setMin(minimum);
+    dispatch(StakingPageActions.setSelectedSliderValue(minimum));
+    return () => {};
+  }, [remainingDaysToShow]);
 
   return (
     <Wrapper>

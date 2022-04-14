@@ -10,7 +10,7 @@ import {
   Pool,
 } from "app/containers/Rewards/types";
 import { floatToBN } from "common/format";
-import { BigNumber, ethers } from "ethers";
+import { BigNumber, Contract } from "ethers";
 import { RewardsPageDomains } from "./selectors";
 import { RewardsPageActions } from "./slice";
 import { getPoolInfoByAddressAPI } from "./providers/getPoolInfoByAddress";
@@ -89,7 +89,7 @@ export function* withdraw() {
 export function* claim(action: { type: string; payload: Pool }) {
   const pool = action.payload;
   const library = yield select(Web3Domains.selectLibraryDomain);
-  const materchefContract = new ethers.Contract(
+  const materchefContract = new Contract(
     AXIAL_MASTERCHEF_CONTRACT_ADDRESS,
     masterchef,
     library?.getSigner()

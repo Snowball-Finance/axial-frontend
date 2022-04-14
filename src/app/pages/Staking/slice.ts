@@ -8,7 +8,14 @@ import { createSlice } from "store/toolkit";
 import { useInjectReducer, useInjectSaga } from "store/redux-injectors";
 
 import { stakingPageSaga } from "./saga";
-import { addDaysToTodayAndGetOnlyDate } from "./utils/addDays";
+import {
+  addDaysToTodayAndGetOnlyDate,
+  numberOfDaysUntilDate,
+} from "./utils/addDays";
+import {
+  convertDaysFromNowToPercentage,
+  convertPercentToDaysFromNow,
+} from "./utils/dateToPercent";
 
 // The initial state of the StakingPage container
 export const initialState: ContainerState = {
@@ -57,28 +64,20 @@ const stakingPageSlice = createSlice({
     ) {
       state.selectedDepositUnlockPeriod = action.payload;
     },
-
-    setSelectedEpoch(state, action: PayloadAction<number>) {
-      let selectedEpoch;
-      switch (action.payload / 25) {
-        case 1:
-          selectedEpoch = addDaysToTodayAndGetOnlyDate(7);
-          break;
-        case 2:
-          selectedEpoch = addDaysToTodayAndGetOnlyDate(30);
-          break;
-        case 3:
-          selectedEpoch = addDaysToTodayAndGetOnlyDate(364);
-          break;
-        case 4:
-          selectedEpoch = addDaysToTodayAndGetOnlyDate(364 * 2);
-          break;
-        default:
-          selectedEpoch = addDaysToTodayAndGetOnlyDate(1);
-          break;
-      }
+    setSelectedDateInStakingGovernance(state, action: PayloadAction<Date>) {
+      const numberOfDaysFromNow = numberOfDaysUntilDate(action.payload);
+      const newPercent = convertDaysFromNowToPercentage(numberOfDaysFromNow);
+      state.selectedEpoch = action.payload;
+      state.selectedDepositSliderValue = newPercent;
+    },
+    setSelectedSliderValue(state, action: PayloadAction<number>) {
+      const daysFromNowFromPercentage = convertPercentToDaysFromNow(
+        action.payload
+      );
       state.selectedDepositSliderValue = action.payload;
-      state.selectedEpoch = selectedEpoch;
+      state.selectedEpoch = addDaysToTodayAndGetOnlyDate(
+        daysFromNowFromPercentage
+      );
     },
   },
 });
