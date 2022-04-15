@@ -2,7 +2,7 @@ import React, { FC, useEffect } from "react";
 import { Grid, styled } from "@mui/material";
 
 import { DepositWrapped } from "./components/DepositWrapped";
-import { CurrencyReserve } from "../../components/CurrencyReserve";
+import { CurrencyInfo } from "../../components/Currencyinfo";
 import { mobile } from "styles/media";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -35,7 +35,7 @@ export const Deposit: FC = () => {
             <DepositWrapped />
           </Grid>
           <Grid item>
-            <CurrencyReserve />
+            <CurrencyInfo />
           </Grid>
         </Grid>
       </PageWrapper>

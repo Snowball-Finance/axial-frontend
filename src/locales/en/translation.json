@@ -94,7 +94,8 @@
     "ActionButtons" : {
       "Deposit": "Deposit",
       "Withdraw": "Withdraw",
-      "Claim": "Claim"
+      "Claim": "Claim",
+      "ClaimRewards": "Claim Rewards"
     },
     "CurrencyReserve": {
       "Title": "Currency Reserves"
@@ -106,11 +107,15 @@
       "Total": "Total",
       "AxialRewards": "Axial Rewards"
     },
+    "ClaimRewards": {
+      "Title": "Rewards"
+    },
     "Modal": {
       "Deposit": "Deposit",
       "Approval": "Approval",
       "Steps": "Steps",
-      "Withdraw": "Withdraw"
+      "Withdraw": "Withdraw",
+      "ClaimableTokens": "Claimable Tokens"
     }
   },
   "SwapPage": {

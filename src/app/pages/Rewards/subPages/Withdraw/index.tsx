@@ -1,7 +1,7 @@
 import React, { FC, useEffect } from "react";
 import { Grid, styled } from "@mui/material";
 
-import { CurrencyReserve } from "../../components/CurrencyReserve";
+import { CurrencyInfo } from "../../components/Currencyinfo";
 import { WithdrawInput } from "./components/Input";
 import { mobile } from "styles/media";
 import { useDispatch } from "react-redux";
@@ -35,7 +35,7 @@ export const Withdraw: FC = () => {
             <WithdrawInput />
           </Grid>
           <Grid item xs={12}>
-            <CurrencyReserve />
+            <CurrencyInfo />
           </Grid>
         </Grid>
       </PageWrapper>
