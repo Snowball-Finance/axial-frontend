@@ -28,13 +28,13 @@ export const VoteButtons: FC<{ proposal: Proposal }> = ({ proposal }) => {
   const disabled = receipt?.hasVoted || isGettingReceipt || false;
   const handleForClick = () => {
     if (library) {
-      dispatch(GovernanceActions.vote({ proposal, voteFor: true }));
+      dispatch(GovernanceActions.vote({ proposal, voteFor: 0 }));
     }
   };
 
   const handleAgainstClick = () => {
     if (library) {
-      dispatch(GovernanceActions.vote({ proposal, voteFor: false }));
+      dispatch(GovernanceActions.vote({ proposal, voteFor: 1 }));
     }
   };
 

@@ -6,7 +6,7 @@ import { RootState } from "store/types";
 import { EthersDomains } from "../Ethers/selectors";
 import { Web3Domains } from "../Web3/selectors";
 import { initialState } from "./slice";
-import { ContainerState, ProposalFilters, ProposalStates } from "./types";
+import { ContainerState, ProposalFilters, ProposalState } from "./types";
 
 export const GovernanceDomains = {
   selectGovernanceDomain: (state: RootState) =>
@@ -146,7 +146,7 @@ export const GovernanceSelectors = {
     (proposals, filters) => {
       let list = [...proposals];
       if (filters === ProposalFilters.Active) {
-        list = list.filter((p) => p.state === ProposalStates.active);
+        list = list.filter((p) => p.state === ProposalState.Active);
       }
       return list;
     }

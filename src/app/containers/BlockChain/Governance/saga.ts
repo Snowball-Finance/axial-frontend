@@ -2,7 +2,7 @@ import { BigNumber, Contract, ethers } from "ethers";
 import { toast } from "react-toastify";
 import { all, call, put, select, takeLatest } from "redux-saga/effects";
 import { GovernanceActions } from "./slice";
-import { ContainerState, Proposal } from "./types";
+import { ContainerState, Proposal, Receipt } from "./types";
 import { BNToFloat } from "common/format";
 import { totalSupplyProvider } from "app/containers/BlockChain/providers/balanceAPI";
 import { env } from "environment";
@@ -14,6 +14,7 @@ import { Governance, SAxial, VeAxial } from "abi/ethers-contracts";
 import AccruingTokenABI from "abi/veAxial.json";
 import { StakingActions } from "./Staking/slice";
 import { skipLoading } from "app/types";
+import { getProviderOrSigner } from "app/containers/utils/contractUtils";
 
 export function* getProposals(action: {
   type: string;
@@ -36,32 +37,48 @@ export function* getProposals(action: {
   }
 }
 
-export function* vote(action: {
-  type: string;
-  payload: { proposal: Proposal; voteFor: boolean };
-}) {
-  const library = yield select(Web3Domains.selectLibraryDomain);
+export function* getProposalId(proposal: Proposal) {
+  const proposer = proposal.proposer;
+  const governanceContract = yield call(getGovernanceContract);
+  const proposalId: BigNumber = yield call(
+    governanceContract.lastProposalByAddress,
+    proposer
+  );
+  return proposalId;
+}
+
+export function* getGovernanceContract() {
+  const account = yield select(Web3Domains.selectAccountDomain);
+  const library = yield select(Web3Domains.selectNetworkLibraryDomain);
   const GOVERNANCE_ABI = yield select(
     GovernanceDomains.selectGovernanceABIDomain
   );
+  const governanceContract = new ethers.Contract(
+    //|| '' is added because the error of not existing env var is handled in index file of this module
+    env.VOTING_CONTRACT_ADDRESS || "",
+    GOVERNANCE_ABI,
+    getProviderOrSigner(library, account)
+  ) as Governance;
+
+  return governanceContract;
+}
+
+export function* vote(action: {
+  type: string;
+  payload: { proposal: Proposal; voteFor: number };
+}) {
   const { proposal, voteFor } = action.payload;
   try {
-    const votingContract = new ethers.Contract(
-      //|| '' is added because the error of not existing env var is handled in index file of this module
-      env.VOTING_CONTRACT_ADDRESS || "",
-      GOVERNANCE_ABI,
-      library.getSigner()
-    );
+    const votingContract: Governance = yield call(getGovernanceContract);
     if (voteFor) {
       yield put(GovernanceActions.setIsVotingFor(true));
     } else {
       yield put(GovernanceActions.setIsVotingAgainst(true));
     }
-    const proposalVote = yield call(
-      votingContract.vote,
-      proposal.offset,
-      voteFor
-    );
+
+    const proposalId: BigNumber = yield call(getProposalId, proposal);
+
+    const proposalVote = yield call(votingContract.vote, proposalId, voteFor);
     const transactionVote = yield call(proposalVote.wait, 1);
     if (transactionVote.status) {
       toast.success(
@@ -83,33 +100,30 @@ export function* vote(action: {
 
 export function* submitNewProposal() {
   yield put(GovernanceActions.setIsSubmittingNewProposal(true));
-  const proposalFields: ContainerState["newProposalFields"] = yield select(
-    GovernanceDomains.selectNewProposalFieldsDomain
-  );
-  const { title, votingPeriod, discussion } = proposalFields;
-  const metadataURI = discussion;
+  // const proposalFields: ContainerState["newProposalFields"] = yield select(
+  //   GovernanceDomains.selectNewProposalFieldsDomain
+  // );
+  // const { title, votingPeriod, discussion } = proposalFields;
+  // const metadataURI = discussion;
   try {
-    const library = yield select(Web3Domains.selectLibraryDomain);
-    const GOVERNANCE_ABI = yield select(
-      GovernanceDomains.selectGovernanceABIDomain
-    );
-    const voteContractAddress = env.VOTING_CONTRACT_ADDRESS;
-    const governanceContract = new ethers.Contract(
-      //using ||'' because we made sure env.VOTING_CONTRACT_ADDRESS exists in the index of module,and want to ignore the ts error
-      voteContractAddress || "",
-      GOVERNANCE_ABI,
-      library.getSigner()
-    );
-    const account = yield select(Web3Domains.selectAccountDomain);
-    yield call(
-      governanceContract.propose,
-      title,
-      metadataURI,
-      Number(votingPeriod) * (3600 * 24),
-      account,
-      0,
-      0x00
-    );
+    // const library = yield select(Web3Domains.selectLibraryDomain);
+    // const GOVERNANCE_ABI = yield select(
+    //   GovernanceDomains.selectGovernanceABIDomain
+    // );
+    // const voteContractAddress = env.VOTING_CONTRACT_ADDRESS;
+    // const governanceContract: Governance = yield call(getGovernanceContract);
+    // const account = yield select(Web3Domains.selectAccountDomain);
+    // let metaData: Governance.ProposalStruct;
+    // let executionContexts: Governance.ProposalExecutionContextListStruct;
+    // yield call(
+    //   governanceContract.propose,
+    //   title,
+    //   metadataURI,
+    //   Number(votingPeriod) * (3600 * 24),
+    //   account,
+    //   0,
+    //   0x00
+    // );
   } catch (error: any) {
     const message = error?.data?.message;
     if (message) {
@@ -133,31 +147,18 @@ export function* getVotingReceipt(action: {
   const { proposal } = action.payload;
   yield put(GovernanceActions.setIsGettingReceipt(true));
   try {
-    const proposalIdValue = ethers.utils.parseUnits(
-      proposal.offset.toString(),
-      0
-    );
-    const library = yield select(Web3Domains.selectLibraryDomain);
-    const GOVERNANCE_ABI = yield select(
-      GovernanceDomains.selectGovernanceABIDomain
-    );
-    const voteContractAddress = env.VOTING_CONTRACT_ADDRESS;
-    const governanceContract = new ethers.Contract(
-      //using ||'' because we made sure env.VOTING_CONTRACT_ADDRESS exists in the index of module,and want to ignore the ts error
-      voteContractAddress || "",
-      GOVERNANCE_ABI,
-      library.getSigner()
-    );
+    const proposalId = yield call(getProposalId, proposal);
+    const governanceContract: Governance = yield call(getGovernanceContract);
     const account = yield select(Web3Domains.selectAccountDomain);
-    const receipt = yield governanceContract.getReceipt(
-      proposalIdValue,
+    const receipt: Receipt = yield governanceContract.getReceipt(
+      proposalId,
       account
     );
     const votes = BNToFloat(receipt[2], 18);
     const rec = {
       hasVoted: receipt[0] || false,
       support: receipt[1] || false,
-      votes,
+      votes: votes || BigNumber.from(0),
     };
     yield put(GovernanceActions.setVotingReceipt(rec));
   } catch (error) {

@@ -43,7 +43,7 @@ export function* deposit() {
   const selectedPool: Pool = yield select(RewardsPageDomains.pool);
   const value = yield select(RewardsPageDomains.depositValue) || "0";
   const token = selectedPool.lpToken;
-  const amountToSpend = floatToBN(Number(value), token.decimals)
+  const amountToSpend = floatToBN(Number(value), token.decimals);
   const dataToSend: DepositPayload = {
     poolKey: selectedPool.key,
     masterchefDeposit: true,
@@ -59,14 +59,13 @@ export function* deposit() {
         amount: amountToSpend || BigNumber.from(0),
         spenderAddress: AXIAL_MASTERCHEF_CONTRACT_ADDRESS,
         token,
-      }
-    ]
+      },
+    ],
   });
   yield put(RewardsActions.setIsDepositing(false));
   if (areAllApproved) {
     yield put(RewardsActions.deposit(dataToSend));
-  }
-  else {
+  } else {
     toast.error("you need to approve the token first");
   }
 }

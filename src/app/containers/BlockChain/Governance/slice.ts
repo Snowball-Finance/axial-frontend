@@ -138,7 +138,7 @@ const governanceSlice = createSlice({
     },
     vote(
       state,
-      action: PayloadAction<{ proposal: Proposal; voteFor: boolean }>
+      action: PayloadAction<{ proposal: Proposal; voteFor: number }>
     ) {},
     setIsSubmittingNewProposal(state, action: PayloadAction<boolean>) {
       state.isSubmittingNewProposal = action.payload;
