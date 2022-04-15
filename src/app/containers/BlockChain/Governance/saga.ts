@@ -27,6 +27,7 @@ export function* getProposals(action: {
   try {
     const response = yield call(GetProposalsAPI, query);
     const proposals: Proposal[] = response.data.ProposalList.proposals;
+    //TODO get id and status of proposals
     yield put(GovernanceActions.setProposals(proposals));
   } catch (error) {
     toast.error("error while getting proposals");
