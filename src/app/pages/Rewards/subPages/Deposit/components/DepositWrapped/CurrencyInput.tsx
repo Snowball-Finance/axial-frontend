@@ -22,7 +22,7 @@ export const CurrencyInput: FC = () => {
       <Grid container direction="column" spacing={2}>
         <Grid item>
           <Grid container justifyContent="space-between" alignItems="center">
-            <TokenIconContainer item>
+            <TokenIconContainer item xs zeroMinWidth>
               <Grid
                 container
                 spacing={1}
@@ -36,8 +36,8 @@ export const CurrencyInput: FC = () => {
                   ></IconImage>
                 </Grid>
 
-                <Grid item alignSelf="center">
-                  <TokenText variant="h2">
+                <Grid item alignSelf="center" xs zeroMinWidth>
+                  <TokenText variant="h2" noWrap>
                     {rewardsPool?.lpToken?.symbol}
                   </TokenText>
                 </Grid>

@@ -203,6 +203,8 @@
     "Depositing": "Depositing",
     "Withdrawing": "Withdrawing",
     "DepositingTokens": "Depositing tokens",
+    "WithdrawingTokens": "Withdrawing tokens",
+    "InsufficientBalance": "Insufficient Balance",
     "Search": "Search",
     "Filter": "Filter",
     "Cancel": "Cancel",

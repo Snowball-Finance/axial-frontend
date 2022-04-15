@@ -28,7 +28,7 @@ export const WithdrawModal: FC = () => {
 
           <Grid item>
             <Typography variant="body2">
-              {t(translations.Common.Withdrawing())}
+              {t(translations.Common.WithdrawingTokens())}
             </Typography>
           </Grid>
         </Grid>

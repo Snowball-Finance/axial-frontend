@@ -30,7 +30,9 @@ export const DepositWrapped: FC = () => {
           </HeaderText>
         </Grid>
 
-        <Grid item alignSelf="end">{pool && <Max token={tokens[pool?.lpToken.symbol]} />}</Grid>
+        <Grid item alignSelf="end">
+          {pool && <Max token={tokens[pool?.lpToken.symbol]} />}
+        </Grid>
 
         <Grid item>
           <CurrencyInput />

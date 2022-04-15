@@ -28,10 +28,14 @@ export const RewardsWithdrawSlider = () => {
   };
   return (
     <WithdrawSlider
+      disabled={
+        !account ||
+        !tokens ||
+        (pool && tokens[pool.lpToken.symbol].userInfo.amount.eq(0))
+      }
       onChange={(e, v) => {
         handleSliderChange(v as number);
       }}
-      disabled={!account}
       value={sliderValue}
       aria-label="Default"
       valueLabelDisplay="auto"

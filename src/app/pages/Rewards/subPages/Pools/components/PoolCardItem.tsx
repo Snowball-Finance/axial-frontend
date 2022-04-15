@@ -23,39 +23,39 @@ export const PoolCardItem: FC<PoolCardItemProps> = ({ poolKey }) => {
   return (
     <StyledPoolCard>
       <StyledPoolContainer container>
-        <Grid item>
-          <StyledPoolChildUpperContainer container>
-            <Grid item>
-              <Grid container spacing={2} direction="column">
-                <Grid item>
-                  <PoolHeaderText variant="h2">
-                    {rewardsPool.name}
-                  </PoolHeaderText>
-                </Grid>
+        <StyledPoolChildUpperContainer item container>
+          <Grid item>
+            <Grid container spacing={2} direction="column">
+              <Grid item>
+                <PoolHeaderText variant="h2">{rewardsPool.name}</PoolHeaderText>
+              </Grid>
 
-                <Grid item>
-                  <TokenImages poolKey={poolKey} />
-                </Grid>
+              <Grid item>
+                <TokenImages poolKey={poolKey} />
               </Grid>
             </Grid>
+          </Grid>
 
-            <Grid item xs={4}>
-              <Info poolKey={poolKey} />
-            </Grid>
-          </StyledPoolChildUpperContainer>
-        </Grid>
-
-        <Grid item>
-          <StyledPoolChildLowerContainer container>
+          {rewardsPool?.poolData?.isPaused && (
             <Grid item>
-              <RewardsTokens />
+              <Tag variant="h2">Paused</Tag>
             </Grid>
+          )}
 
-            <Grid item>
-              <ActionButtons poolKey={poolKey} />
-            </Grid>
-          </StyledPoolChildLowerContainer>
-        </Grid>
+          <Grid item xs={4}>
+            <Info poolKey={poolKey} />
+          </Grid>
+        </StyledPoolChildUpperContainer>
+
+        <StyledPoolChildLowerContainer item container>
+          <Grid item>
+            <RewardsTokens />
+          </Grid>
+
+          <Grid item>
+            <ActionButtons poolKey={poolKey} />
+          </Grid>
+        </StyledPoolChildLowerContainer>
       </StyledPoolContainer>
     </StyledPoolCard>
   );
@@ -106,5 +106,10 @@ const StyledPoolChildLowerContainer = styled(Grid)({
 
 const PoolHeaderText = styled(Typography)({
   color: CssVariables.white,
+  textTransform: "uppercase",
+});
+
+const Tag = styled(Typography)({
+  color: CssVariables.error,
   textTransform: "uppercase",
 });

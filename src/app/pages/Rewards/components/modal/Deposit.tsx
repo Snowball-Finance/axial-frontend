@@ -23,7 +23,7 @@ export const DepositModal: FC = () => {
   const tokensInQueueToApproving = useSelector(
     globalSelectors.tokensInQueueToApproving
   );
-  
+
   const isDepositing = useSelector(RewardsSelectors.isDepositing);
   const stepsCount = isDepositing ? 2 : 1;
 
@@ -60,7 +60,7 @@ export const DepositModal: FC = () => {
 
           <Grid item>
             <Typography variant="body2">
-              {t(translations.Common.Depositing())}
+              {t(translations.Common.DepositingTokens())}
             </Typography>
           </Grid>
         </Grid>

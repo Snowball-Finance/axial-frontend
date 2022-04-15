@@ -339,6 +339,7 @@ export function* deposit(action: { type: string; payload: DepositPayload }) {
         yield put(
           GlobalActions.setTransactionSuccessId(result.transactionHash)
         );
+        yield put(RewardsActions.getMasterChefBalances());
       }
     }
     yield put(RewardsActions.setIsDepositing(false));
@@ -444,6 +445,7 @@ export function* withdraw(action: { type: string; payload: WithdrawPayload }) {
         yield put(
           GlobalActions.setTransactionSuccessId(result.transactionHash)
         );
+        yield put(RewardsActions.getMasterChefBalances());
       }
     }
     yield put(RewardsActions.setIsWithdrawing(false));
