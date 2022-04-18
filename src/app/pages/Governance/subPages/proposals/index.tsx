@@ -18,7 +18,7 @@ export const Proposals: FC = () => {
         <VotePower />
       </Header>
       <TopWrapper />
-      <ProposalsList />
+      {/* <ProposalsList /> */}
     </StyledMax1040>
   );
 };
