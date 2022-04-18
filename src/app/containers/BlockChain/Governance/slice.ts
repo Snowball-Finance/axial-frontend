@@ -31,7 +31,7 @@ export const initialState: ContainerState = {
     description: "",
     discussion: "",
     document: "",
-    votingPeriod: "3",
+    votingPeriod: process.env.REACT_APP_MINIMUM_VOTING_PERIOD || "3",
     error: {
       title: "",
       description: "",
@@ -114,6 +114,14 @@ const governanceSlice = createSlice({
     },
     setSelectedProposal(state, action: PayloadAction<Proposal>) {
       state.selectedProposal = action.payload;
+    },
+    resetNewProposalFields(state, action: PayloadAction<void>) {
+      state.newProposalFields = {
+        ...initialState.newProposalFields,
+        error: {
+          ...initialState.newProposalFields.error,
+        },
+      };
     },
     setNewProposalFields(
       state,

@@ -10,9 +10,6 @@ import { initialState } from "./slice";
 import { SelectablePoolProvider } from "./types";
 
 export const GovernancePageDomains = {
-  isNewProposalFormOpen: (state: RootState) =>
-    state.governancePage?.isNewProposalFormOpen ||
-    initialState.isNewProposalFormOpen,
   GovernancePage: (state: RootState) => state.governancePage || initialState,
   isVoteAllocationSelectionOpen: (state: RootState) =>
     state.governancePage?.isVoteAllocationSelectionOpen ||
@@ -34,10 +31,7 @@ export const GovernancePageSelectors = {
     GovernancePageDomains.GovernancePage,
     (governancePageState) => governancePageState
   ),
-  isNewProposalFormOpen: createSelector(
-    GovernancePageDomains.isNewProposalFormOpen,
-    (isNewProposalFormOpen) => isNewProposalFormOpen
-  ),
+
   isVotingForFarms: createSelector(
     GovernancePageDomains.isVotingForFarms,
     (isVotingForFarms) => isVotingForFarms

@@ -1,8 +1,9 @@
 import { Box, styled } from "@mui/material";
 import { ContainedButton } from "app/components/common/buttons/containedButton";
 import { GovernanceSelectors } from "app/containers/BlockChain/Governance/selectors";
-import { GovernancePageActions } from "app/pages/Governance/slice";
+import { GovernanceSubPages } from "app/pages/Governance/routes";
 import AddInCircleIcon from "assets/images/iconComponents/addInCircle";
+import { push } from "connected-react-router";
 import { translations } from "locales/i18n";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,7 +16,7 @@ export const NewProposalButton = () => {
   );
 
   const handleClick = () => {
-    dispatch(GovernancePageActions.setIsNewProposalFormOpen(true));
+    dispatch(push(GovernanceSubPages.newProposal));
   };
 
   const { t } = useTranslation();

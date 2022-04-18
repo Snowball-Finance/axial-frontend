@@ -15,7 +15,6 @@ import AccruingTokenABI from "abi/veAxial.json";
 import { StakingActions } from "./Staking/slice";
 import { skipLoading } from "app/types";
 import { getProviderOrSigner } from "app/containers/utils/contractUtils";
-import { GovernancePageActions } from "app/pages/Governance/slice";
 
 export function* getProposals(action: {
   type: string;
@@ -102,30 +101,30 @@ export function* vote(action: {
 
 export function* submitNewProposal() {
   yield put(GovernanceActions.setIsSubmittingNewProposal(true));
-  // const proposalFields: ContainerState["newProposalFields"] = yield select(
-  //   GovernanceDomains.selectNewProposalFieldsDomain
-  // );
-  // const { title, votingPeriod, discussion } = proposalFields;
-  // const metadataURI = discussion;
+  const proposalFields: ContainerState["newProposalFields"] = yield select(
+    GovernanceDomains.selectNewProposalFieldsDomain
+  );
+  const { title, votingPeriod, discussion } = proposalFields;
+  const metadataURI = discussion;
+  console.log({
+    title,
+    votingPeriod,
+    metadataURI,
+    discussion,
+  });
   try {
-    // const library = yield select(Web3Domains.selectLibraryDomain);
-    // const GOVERNANCE_ABI = yield select(
-    //   GovernanceDomains.selectGovernanceABIDomain
-    // );
-    // const voteContractAddress = env.VOTING_CONTRACT_ADDRESS;
-    // const governanceContract: Governance = yield call(getGovernanceContract);
-    // const account = yield select(Web3Domains.selectAccountDomain);
-    // let metaData: Governance.ProposalStruct;
-    // let executionContexts: Governance.ProposalExecutionContextListStruct;
-    // yield call(
-    //   governanceContract.propose,
-    //   title,
-    //   metadataURI,
-    //   Number(votingPeriod) * (3600 * 24),
-    //   account,
-    //   0,
-    //   0x00
-    // );
+    //     const governanceContract:Governance= yield call(getGovernanceContract);
+    //     // const metaData:Governance.ProposalStruct={
+    //     //   title,
+    //     //   votingPeriod,
+    //     //   proposer: yield select(Web3Domains.selectAccountDomain),
+    //     // }
+    // const transaction=yield call(governanceContract.propose,)
+    // const transactionStatus=yield call(transaction.wait,1)
+    // if(transactionStatus.status){
+    //   toast.success("Proposal submitted successfully")
+    //   yield put(GovernanceActions.resetNewProposalFields())
+    // }
   } catch (error: any) {
     const message = error?.data?.message;
     if (message) {
@@ -136,8 +135,7 @@ export function* submitNewProposal() {
   } finally {
     yield all([
       put(GovernanceActions.setIsSubmittingNewProposal(false)),
-      put(GovernanceActions.setSyncedProposalsWithBlockchain(false)),
-      put(GovernancePageActions.setIsNewProposalFormOpen(false)),
+      // put(GovernanceActions.setSyncedProposalsWithBlockchain(false)),
     ]);
   }
 }
