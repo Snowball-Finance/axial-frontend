@@ -32,7 +32,6 @@ export interface GovernanceState {
   selectedProposal: Proposal | undefined;
   isVotingFor: boolean;
   isVotingAgainst: boolean;
-  isNewProposalFormOpen: boolean;
   isSubmittingNewProposal: boolean;
   iseGettingReceipt: boolean;
   receipt?: Receipt;

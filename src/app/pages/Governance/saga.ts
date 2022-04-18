@@ -7,14 +7,16 @@ import { PoolsAndGaugesActions } from "app/containers/PoolsAndGauges/slice";
 import { IS_DEV } from "environment";
 import { toast } from "react-toastify";
 import { call, put, select, takeLatest } from "redux-saga/effects";
-import { selectSelectedVoteAllocationPairsDomain } from "./selectors";
+import { GovernancePageSelectors } from "./selectors";
 import { GovernancePageActions } from "./slice";
 import { isPositiveNumber } from "./utils/isPositiveNumber";
 
 export function* voteForFarms() {
   yield put(GovernancePageActions.setIsVotingForFarms(true));
   try {
-    const selectedPairs = yield select(selectSelectedVoteAllocationPairsDomain);
+    const selectedPairs = yield select(
+      GovernancePageSelectors.selectedVoteAllocationPair
+    );
     const gaugeProxyVoteContract = yield select(selectGaugeContractDomain);
     const library = yield select(Web3Domains.selectLibraryDomain);
     //make them weight proportional if they are not

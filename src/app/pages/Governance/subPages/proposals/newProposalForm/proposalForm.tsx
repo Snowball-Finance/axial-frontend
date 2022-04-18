@@ -7,7 +7,7 @@ import { DescriptionInput } from "./inputs/description";
 import { TitleInput } from "./inputs/title";
 import { NewProposalSubmitButton } from "./submitButton";
 
-export const LeftSection = () => {
+export const ProposalForm = () => {
   const { t } = useTranslation();
   return (
     <Wrapper>

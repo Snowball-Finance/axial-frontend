@@ -15,6 +15,7 @@ import AccruingTokenABI from "abi/veAxial.json";
 import { StakingActions } from "./Staking/slice";
 import { skipLoading } from "app/types";
 import { getProviderOrSigner } from "app/containers/utils/contractUtils";
+import { GovernancePageActions } from "app/pages/Governance/slice";
 
 export function* getProposals(action: {
   type: string;
@@ -136,7 +137,7 @@ export function* submitNewProposal() {
     yield all([
       put(GovernanceActions.setIsSubmittingNewProposal(false)),
       put(GovernanceActions.setSyncedProposalsWithBlockchain(false)),
-      put(GovernanceActions.setIsNewProposalFormOpen(false)),
+      put(GovernancePageActions.setIsNewProposalFormOpen(false)),
     ]);
   }
 }

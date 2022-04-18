@@ -17,6 +17,7 @@ export const initialState: ContainerState = {
   pairSearchInput: "",
   selectedPoolProviders: [],
   isVotingForFarms: false,
+  isNewProposalFormOpen: true,
 };
 
 const governancePageSlice = createSlice({
@@ -72,6 +73,9 @@ const governancePageSlice = createSlice({
     voteForFarms: (state, action: PayloadAction<void>) => {},
     setIsVotingForFarms: (state, action: PayloadAction<boolean>) => {
       state.isVotingForFarms = action.payload;
+    },
+    setIsNewProposalFormOpen(state, action: PayloadAction<boolean>) {
+      state.isNewProposalFormOpen = action.payload;
     },
   },
 });

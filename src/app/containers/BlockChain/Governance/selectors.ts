@@ -27,9 +27,7 @@ export const GovernanceDomains = {
     state.governance?.isVotingFor || initialState.isVotingFor,
   selectIsVotingAgainstDomain: (state: RootState) =>
     state.governance?.isVotingAgainst || initialState.isVotingAgainst,
-  selectIsNewProposalFormOpenDomain: (state: RootState) =>
-    state.governance?.isNewProposalFormOpen ||
-    initialState.isNewProposalFormOpen,
+
   selectSyncedProposalsWithBlockchainDomain: (state: RootState) =>
     state.governance?.syncedProposalsWithBlockchain || false,
   selectNewProposalFieldsDomain: (state: RootState) =>
@@ -126,10 +124,7 @@ export const GovernanceSelectors = {
     GovernanceDomains.selectIsVotingAgainstDomain,
     (isVotingAgainst) => isVotingAgainst
   ),
-  selectIsNewProposalFormOpen: createSelector(
-    GovernanceDomains.selectIsNewProposalFormOpenDomain,
-    (isNewProposalFormOpen) => isNewProposalFormOpen
-  ),
+
   selectIsLoadingProposals: createSelector(
     GovernanceDomains.selectIsLoadingProposalsDomain,
     (isLoading) => isLoading

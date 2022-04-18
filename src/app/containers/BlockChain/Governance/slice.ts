@@ -14,7 +14,6 @@ export const initialState: ContainerState = {
   proposals: [],
   isVotingAgainst: false,
   isVotingFor: false,
-  isNewProposalFormOpen: false,
   isSubmittingNewProposal: false,
   selectedProposal: undefined,
   iseGettingReceipt: false,
@@ -109,9 +108,7 @@ const governanceSlice = createSlice({
     setIsVotingAgainst(state, action: PayloadAction<boolean>) {
       state.isVotingAgainst = action.payload;
     },
-    setIsNewProposalFormOpen(state, action: PayloadAction<boolean>) {
-      state.isNewProposalFormOpen = action.payload;
-    },
+
     setProposalFilter(state, action: PayloadAction<ProposalFilters>) {
       state.selectedProposalFilter = action.payload;
     },

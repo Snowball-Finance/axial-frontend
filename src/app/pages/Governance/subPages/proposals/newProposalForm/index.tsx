@@ -1,7 +1,8 @@
 import { styled } from "@mui/material";
 import Zoom from "@mui/material/Zoom";
-import { GovernanceSelectors } from "app/containers/BlockChain/Governance/selectors";
-import { GovernanceActions } from "app/containers/BlockChain/Governance/slice";
+import { VotePower } from "app/pages/Governance/components/votePower";
+import { GovernancePageSelectors } from "app/pages/Governance/selectors";
+import { GovernancePageActions } from "app/pages/Governance/slice";
 import CrossIcon from "assets/images/iconComponents/cross";
 import { translations } from "locales/i18n";
 import { useRef } from "react";
@@ -9,17 +10,17 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { mobile } from "styles/media";
-import { LeftSection } from "./left";
-import { RightSection } from "./right";
+import { ProposalForm } from "./proposalForm";
+import { ProposalInfo } from "./proposalInfo";
 
 export const NewProposalForm = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const isOpen = useSelector(GovernanceSelectors.selectIsNewProposalFormOpen);
+  const isOpen = useSelector(GovernancePageSelectors.isNewProposalFormOpen);
   const ref = useRef<any>(null);
 
   const handleCloseClick = () => {
-    dispatch(GovernanceActions.setIsNewProposalFormOpen(false));
+    dispatch(GovernancePageActions.setIsNewProposalFormOpen(false));
   };
 
   return (
@@ -31,8 +32,9 @@ export const NewProposalForm = () => {
           </CloseWrapper>
           <Title>{t(translations.GovernancePage.NewProposal())}</Title>
           <ProposalBodyWrapper>
-            <LeftSection />
-            <RightSection />
+            <VotePower />
+            <ProposalInfo />
+            <ProposalForm />
           </ProposalBodyWrapper>
         </ContentWrapper>
       </Zoom>
@@ -52,6 +54,7 @@ const ProposalBodyWrapper = styled("div")({
   width: "100%",
   display: "flex",
   gap: "16px",
+  flexDirection: "column",
   [mobile]: {
     flexDirection: "column-reverse",
   },

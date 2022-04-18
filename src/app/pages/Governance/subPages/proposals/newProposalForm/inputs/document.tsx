@@ -21,7 +21,7 @@ export const DocumentInput = () => {
       onChange={({ target }) => handleInputChange(target.value)}
       value={document}
       fullWidth
-      placeholder="https://docs.google.com/..."
+      placeholder="Proposal document URL"
     />
   );
 };

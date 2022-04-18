@@ -20,7 +20,7 @@ export const DiscussionInput = () => {
       fullWidth
       onChange={({ target }) => handleInputChange(target.value)}
       value={discussion}
-      placeholder="https://discord.com/channels/..."
+      placeholder="Discord proposal discussion URL"
     />
   );
 };

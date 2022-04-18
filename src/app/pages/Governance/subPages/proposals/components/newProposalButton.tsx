@@ -1,7 +1,7 @@
 import { Box, styled } from "@mui/material";
 import { ContainedButton } from "app/components/common/buttons/containedButton";
 import { GovernanceSelectors } from "app/containers/BlockChain/Governance/selectors";
-import { GovernanceActions } from "app/containers/BlockChain/Governance/slice";
+import { GovernancePageActions } from "app/pages/Governance/slice";
 import AddInCircleIcon from "assets/images/iconComponents/addInCircle";
 import { translations } from "locales/i18n";
 import { useTranslation } from "react-i18next";
@@ -15,7 +15,7 @@ export const NewProposalButton = () => {
   );
 
   const handleClick = () => {
-    dispatch(GovernanceActions.setIsNewProposalFormOpen(true));
+    dispatch(GovernancePageActions.setIsNewProposalFormOpen(true));
   };
 
   const { t } = useTranslation();
