@@ -10,7 +10,7 @@ import {
   Pool,
 } from "app/containers/Rewards/types";
 import { floatToBN } from "common/format";
-import { BigNumber, ethers } from "ethers";
+import { BigNumber, Contract } from "ethers";
 import { RewardsPageDomains } from "./selectors";
 import { RewardsPageActions } from "./slice";
 import { getPoolInfoByAddressAPI } from "./providers/getPoolInfoByAddress";
@@ -21,16 +21,13 @@ import { checkAndApproveTokensInList } from "utils/tokenVerifier";
 
 export function* poolInfoByAddress(action: { type: string; payload: string }) {
   const { payload } = action;
-
   yield put(RewardsPageActions.setCompoundWithSnowballLoading(true));
-
   try {
     const { data } = yield call(getPoolInfoByAddressAPI, payload);
     const compoundWithSnowballAPY =
       data?.PoolsInfoByAddress.gaugeInfo.snobYearlyAPR +
       data?.PoolsInfoByAddress.yearlyAPY +
       data?.PoolsInfoByAddress.yearlySwapFees;
-
     yield put(
       RewardsPageActions.setCompoundWithSnowballAPY(compoundWithSnowballAPY)
     );
@@ -46,7 +43,7 @@ export function* deposit() {
   const selectedPool: Pool = yield select(RewardsPageDomains.pool);
   const value = yield select(RewardsPageDomains.depositValue) || "0";
   const token = selectedPool.lpToken;
-  const amountToSpend = floatToBN(Number(value), token.decimals)
+  const amountToSpend = floatToBN(Number(value), token.decimals);
   const dataToSend: DepositPayload = {
     poolKey: selectedPool.key,
     masterchefDeposit: true,
@@ -60,19 +57,17 @@ export function* deposit() {
     tokensToVerify: [
       {
         amount: amountToSpend || BigNumber.from(0),
-        swapAddress: AXIAL_MASTERCHEF_CONTRACT_ADDRESS,
+        spenderAddress: AXIAL_MASTERCHEF_CONTRACT_ADDRESS,
         token,
-      }
-    ]
+      },
+    ],
   });
   yield put(RewardsActions.setIsDepositing(false));
   if (areAllApproved) {
     yield put(RewardsActions.deposit(dataToSend));
-  }
-  else {
+  } else {
     toast.error("you need to approve the token first");
   }
-
 }
 
 export function* withdraw() {
@@ -108,7 +103,7 @@ export function* withdraw() {
 export function* claim(action: { type: string; payload: Pool }) {
   const pool = action.payload;
   const library = yield select(Web3Domains.selectLibraryDomain);
-  const materchefContract = new ethers.Contract(
+  const materchefContract = new Contract(
     AXIAL_MASTERCHEF_CONTRACT_ADDRESS,
     masterchef,
     library?.getSigner()

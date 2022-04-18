@@ -6,10 +6,11 @@ export interface StakingState {
   isClaiming: boolean;
   feeDistributorABI: any;
   isGettingFeeDistributionInfo: boolean;
-  lockedAmount: BigNumber;
-  endDate: BigNumber;
   isWithdrawing: boolean;
+  isWithdrawingAccruingToken: boolean;
   isGettingGovernanceTokenInfo: boolean;
+  claimableGovernanceToken: BigNumber | undefined;
+  lockedGovernanceTokenInfo: LockedInfo | undefined;
   claimable: {
     userClaimable: BigNumber;
     otherClaimables?: {
@@ -17,6 +18,7 @@ export interface StakingState {
     };
   };
   otherDistributors?: DistributorData[];
+  keepThaUnclaimedWhenExtendingLockPeriod: boolean;
 }
 
 export interface DistributorData {
@@ -26,10 +28,18 @@ export interface DistributorData {
   decimals: number;
 }
 
-export interface CreateLockData {
-  balance: string;
-  date: string;
-  duration: string;
+export interface LockedInfo {
+  endBlockTime: BigNumber;
+  initialized: boolean;
+  startBlockTime: BigNumber;
+  startingAmountLocked: BigNumber;
 }
 
+export interface StakeGovernanceTokenModel {
+  amount: string;
+  duration: string;
+}
+export interface StakeAccruingTokenModel {
+  amountToStake: string;
+}
 export type ContainerState = StakingState;

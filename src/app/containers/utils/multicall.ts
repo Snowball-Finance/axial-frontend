@@ -1,13 +1,8 @@
 import ERC_20 from "abi/erc20.json";
 import LP_TOKEN_UNGUARDED from "abi/lpTokenUnguarded.json";
 import MASTERCHEF from "abi/masterchef.json";
-import { AXIAL_MASTERCHEF_CONTRACT_ADDRESS } from "app/constants";
-import { ChainId } from "app/constants";
 import { Multicall } from "ethereum-multicall";
 import { ethers } from "ethers";
-
-//we need to disable all unsafe protections for any types
-//because all returns from this lib are generic
 
 interface ReturnValues {
   [index: string]: any;
@@ -117,11 +112,10 @@ function getUserBalance(account: string, tokenAddress: string): ContractCall {
 
 function getUserMasterchefInfo(
   account: string,
-  masterchefId: number,
-  chainId: ChainId
+  masterchefId: number
 ): ContractCall {
   const contractCall = new ContractCall(
-    AXIAL_MASTERCHEF_CONTRACT_ADDRESS[chainId],
+    process.env.AXIAL_MASTERCHEF_CONTRACT_ADDRESS || "",
     MASTERCHEF,
     masterchefId.toString()
   );

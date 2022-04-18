@@ -3,7 +3,7 @@ import { SnowPaper, SnowPaperInterface } from "app/components/base/SnowPaper";
 import { InfoButton } from "app/components/common/buttons/infoButton";
 import {
   Proposal,
-  ProposalStates,
+  ProposalState,
 } from "app/containers/BlockChain/Governance/types";
 import { push } from "connected-react-router";
 import { translations } from "locales/i18n";
@@ -38,7 +38,7 @@ export const ProposalListItem: FC<ProposalListItemProps> = ({
   return (
     <Wrapper {...(short && { marginBottom: "0 !important" })}>
       <StyledSnowPaper
-        active={proposal.state === ProposalStates.active ? "true" : ""}
+        active={proposal.state === ProposalState.Active ? "true" : ""}
         short={short ? "true" : ""}
       >
         <IndexNameAndStatusWrapper
@@ -58,9 +58,9 @@ export const ProposalListItem: FC<ProposalListItemProps> = ({
               <TitleAndValue
                 title={t(translations.GovernancePage.Status())}
                 value={
-                  proposal.state === ProposalStates.vetoed
-                    ? ProposalStates.passed
-                    : proposal.state
+                  proposal.state === ProposalState.PendingExecution
+                    ? ProposalState.ReadyForExecution.toString()
+                    : proposal.state.toString()
                 }
               />
               <TitleAndValue
@@ -76,7 +76,7 @@ export const ProposalListItem: FC<ProposalListItemProps> = ({
               />
               <TitleAndValue
                 title={t(translations.GovernancePage.Date())}
-                value={new Date(proposal.startDate).toLocaleString()}
+                value={new Date(Number(proposal.startTime)).toLocaleString()}
               />
             </DataWrapper>
             <VotesBarWrapper>

@@ -10,7 +10,6 @@ import {
   shiftBNDecimals,
 } from "app/containers/utils/contractUtils";
 import { Zero } from "app/containers/Rewards/constants";
-import { TOKENS_MAP } from "app/constants";
 import { SwapDomains } from "app/containers/Swap/selectors";
 
 export const SwapPageDomains = {
@@ -45,11 +44,11 @@ export const SwapPageSelectors = {
     SwapPageDomains.searchValue,
     (tokens, tokenPricesUSD, tokenChange, searchValue) => {
       const fromTokens: TokenOption[] = [];
-      const visibleTokens = Object.values(TOKENS_MAP).filter(
-        ({ isLPToken }) => !isLPToken
-      );
+      const tokensArray = tokens ? Object.values(tokens) : [];
+      const visibleTokens = tokensArray.filter(({ isLPToken }) => !isLPToken);
 
-      visibleTokens.forEach(({ symbol, icon, decimals }) => {
+      visibleTokens.forEach(({ symbol, logo, decimals }) => {
+        const icon = logo || "";
         if (tokenChange?.symbol !== symbol) {
           const tokenBalance = formatBNToString(
             tokens?.[symbol].balance || Zero,
@@ -92,11 +91,11 @@ export const SwapPageSelectors = {
     SwapPageDomains.searchValue,
     (tokens, tokenPricesUSD, fromToken, searchValue) => {
       const toTokens: TokenOption[] = [];
-      const visibleTokens = Object.values(TOKENS_MAP).filter(
-        ({ isLPToken }) => !isLPToken
-      );
+      const tokensArray = tokens ? Object.values(tokens) : [];
+      const visibleTokens = tokensArray.filter(({ isLPToken }) => !isLPToken);
 
-      visibleTokens.forEach(({ symbol, icon, decimals }) => {
+      visibleTokens.forEach(({ symbol, logo, decimals }) => {
+        const icon = logo || "";
         if (fromToken?.symbol !== symbol) {
           const tokenBalance = formatBNToString(
             tokens?.[symbol].balance || Zero,

@@ -5,7 +5,7 @@ import { WalletLinkConnector } from "@web3-react/walletlink-connector";
 const NODE_ADDRESS = process.env.REACT_APP_NODE_ADDRESS;
 export const rpcUrl = `${NODE_ADDRESS}/ext/bc/C/rpc`;
 const AVALANCHE_MAINNET_PARAMS = {
-  chainId: "0xa86a",
+  chainId: process.env.REACT_APP_CHAIN_ID_HEX,
   chainName: "Avalanche Mainnet C-Chain",
   nativeCurrency: {
     name: "Avalanche",
@@ -13,12 +13,8 @@ const AVALANCHE_MAINNET_PARAMS = {
     decimals: 18,
   },
   rpcUrls: [`${NODE_ADDRESS}/ext/bc/C/rpc`],
-  blockExplorerUrls: ["https://snowtrace.io/"],
+  blockExplorerUrls: [`${process.env.REACT_APP_EXPLORER_URL}/`],
 };
-
-export const NETWORK_CHAIN_ID: number = parseInt(
-  process.env.REACT_APP_CHAIN_ID ?? "43114"
-);
 
 const walletLink = new WalletLinkConnector({
   url: AVALANCHE_MAINNET_PARAMS.rpcUrls[0],
@@ -27,8 +23,11 @@ const walletLink = new WalletLinkConnector({
     "https://raw.githubusercontent.com/Snowball-Finance/app-v2/master/public/assets/images/logo.png",
 });
 
+const networkConnectorUrls = {
+  [Number(process.env.REACT_APP_CHAIN_ID || "0")]: rpcUrl,
+};
 export const network = new NetworkConnector({
-  urls: { [NETWORK_CHAIN_ID]: rpcUrl },
+  urls: networkConnectorUrls,
 });
 
 const injected = new InjectedConnector({

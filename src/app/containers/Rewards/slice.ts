@@ -4,12 +4,12 @@ import {
   WithdrawPayload,
   ContainerState,
   SwapStatsReponse,
+  TRANSACTION_TYPES,
 } from "./types";
 import { createSlice } from "store/toolkit";
 import { useInjectReducer, useInjectSaga } from "store/redux-injectors";
 
 import { rewardsSaga } from "./saga";
-import { TRANSACTION_TYPES } from "app/constants";
 
 // The initial state of the Rewards container
 export const initialState: ContainerState = {

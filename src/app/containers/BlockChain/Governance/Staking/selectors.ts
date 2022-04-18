@@ -12,15 +12,23 @@ export const StakingDomains = {
     state.staking?.feeDistributorABI,
   selectOtherDistributorsDomain: (state: RootState) =>
     state.staking?.otherDistributors,
+  claimableGovernanceToken: (state: RootState) =>
+    state.staking?.claimableGovernanceToken ||
+    initialState.claimableGovernanceToken,
   selectUserClaimableDomain: (state: RootState) =>
     state.staking?.claimable?.userClaimable,
   selectOtherClaimablesDomain: (state: RootState) =>
     state.staking?.claimable?.otherClaimables,
-  selectLockedAmountDomain: (state: RootState) =>
-    state.staking?.lockedAmount || initialState.lockedAmount,
-  selectEndDateDomain: (state: RootState) =>
-    state.staking?.endDate || initialState.endDate,
+  lockedGovernanceTokenInfo: (state: RootState) =>
+    state.staking?.lockedGovernanceTokenInfo,
   selectIsWithdrawingDomain: (state: RootState) => state.staking?.isWithdrawing,
+  isWithdrawingAccruingToken: (state: RootState) =>
+    state.staking?.isWithdrawingAccruingToken,
+  keepThaUnclaimedWhenExtendingLockPeriod: (state: RootState) => {
+    return state.staking?.keepThaUnclaimedWhenExtendingLockPeriod === undefined
+      ? false
+      : state.staking?.keepThaUnclaimedWhenExtendingLockPeriod;
+  },
 };
 
 export const StakingSelectors = {
@@ -28,13 +36,13 @@ export const StakingSelectors = {
     StakingDomains.selectIsWithdrawingDomain,
     (isWithdrawing) => isWithdrawing
   ),
-  selectLockedGovernanceTokenAmount: createSelector(
-    StakingDomains.selectLockedAmountDomain,
-    (lockedAmount) => lockedAmount
+  isWithdrawingAccruingToken: createSelector(
+    StakingDomains.isWithdrawingAccruingToken,
+    (isWithdrawing) => isWithdrawing
   ),
-  selectEndDate: createSelector(
-    StakingDomains.selectEndDateDomain,
-    (endDate) => endDate
+  lockedGovernanceTokenInfo: createSelector(
+    StakingDomains.lockedGovernanceTokenInfo,
+    (lockedGovernanceTokenInfo) => lockedGovernanceTokenInfo
   ),
   selectStaking: createSelector(
     StakingDomains.selectDomain,
@@ -52,6 +60,10 @@ export const StakingSelectors = {
     StakingDomains.selectUserClaimableDomain,
     (userClaimable) => userClaimable
   ),
+  claimableGovernanceToken: createSelector(
+    StakingDomains.claimableGovernanceToken,
+    (claimableGovernanceToken) => claimableGovernanceToken
+  ),
   selectOtherClaimables: createSelector(
     StakingDomains.selectOtherClaimablesDomain,
     (otherClaimables) => otherClaimables
@@ -64,5 +76,10 @@ export const StakingSelectors = {
     (blockChainContracts, governanceTokenContract) => {
       return blockChainContracts.mainTokenContract && governanceTokenContract;
     }
+  ),
+  selectKeepThaUnclaimedWhenExtendingLockPeriod: createSelector(
+    StakingDomains.keepThaUnclaimedWhenExtendingLockPeriod,
+    (keepThaUnclaimedWhenExtendingLockPeriod) =>
+      keepThaUnclaimedWhenExtendingLockPeriod
   ),
 };

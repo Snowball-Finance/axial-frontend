@@ -11,7 +11,7 @@ import { GlobalActions } from "store/slice";
 export interface TokenToVerify {
   token: Token;
   amount: BigNumber;
-  swapAddress: string;
+  spenderAddress: string;
   tokenContract?: Contract;
 }
 export interface TokensToVerifyPayload {
@@ -63,7 +63,7 @@ export function* checkAndApproveTokensInList(tokens: TokensToVerifyPayload) {
       yield call(
         checkAndApproveTokenForTrade,
         tokenContract as Erc20,
-        element.swapAddress,
+        element.spenderAddress,
         account,
         element.amount,
         infiniteApproval,
@@ -120,7 +120,7 @@ export function* checkIfTokensAreVerified(tokens: TokensToVerifyPayload) {
       const existingAllowance = yield call(
         tokenContract.allowance,
         account,
-        element.swapAddress
+        element.spenderAddress
       );
       console.debug(
         `Existing ${tokenName} Allowance: ${existingAllowance.toString()}`

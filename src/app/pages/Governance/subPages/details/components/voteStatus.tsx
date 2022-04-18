@@ -5,7 +5,7 @@ import { GovernanceSelectors } from "app/containers/BlockChain/Governance/select
 import { GovernanceActions } from "app/containers/BlockChain/Governance/slice";
 import {
   Proposal,
-  ProposalStates,
+  ProposalState,
 } from "app/containers/BlockChain/Governance/types";
 import { Web3Selectors } from "app/containers/BlockChain/Web3/selectors";
 import DangerIcon from "assets/images/iconComponents/dangerIcon";
@@ -48,13 +48,13 @@ export const VoteStatus: FC<Props> = ({ proposal }) => {
       forAgainst: isFor
         ? t(translations.GovernancePage.For())
         : t(translations.GovernancePage.Against()),
-      amount: formatNumber(receipt?.votes || 0, 2),
+      amount: formatNumber(Number(receipt?.votes) || 0, 2),
       name: env.GOVERNANCE_TOKEN_NAME,
     }
   );
   const message = hasVoted
     ? longMessage
-    : proposal.state === ProposalStates.active
+    : proposal.state === ProposalState.Active
     ? t(translations.GovernancePage.YouHaventVotedOnThisProposalYet())
     : t(translations.GovernancePage.YouDidntVoteOnThisProposal());
 
@@ -73,10 +73,10 @@ export const VoteStatus: FC<Props> = ({ proposal }) => {
   ) : (
     <ThumbsDownIcon color={CssVariables.white} />
   );
-  const isActive = proposal.state === ProposalStates.active;
+  const isActive = proposal.state === ProposalState.Active;
 
   const handleSwitchClick = () => {
-    dispatch(GovernanceActions.vote({ proposal, voteFor: !isFor }));
+    dispatch(GovernanceActions.vote({ proposal, voteFor: isFor ? 0 : 1 }));
   };
 
   return (

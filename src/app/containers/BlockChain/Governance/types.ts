@@ -1,15 +1,8 @@
 import { BigNumber, Contract } from "ethers";
+import { Governance } from "abi/ethers-contracts/Governance";
 
 /* --- STATE --- */
-export enum ProposalStates {
-  active = "Active",
-  new = "New",
-  defeated = "Defeated",
-  readyForExecution = "Ready For Execution",
-  executed = "Executed",
-  vetoed = "Vetoed",
-  passed = "Passed",
-}
+
 export enum ProposalFilters {
   All = "all",
   Active = "Active",
@@ -17,31 +10,20 @@ export enum ProposalFilters {
   Defeated = "Defeated",
 }
 
-interface ProposalMetadata {
-  description: string;
-  discussion: string;
-  document: string;
+export enum ProposalState {
+  Active,
+  Defeated,
+  PendingExecution,
+  ReadyForExecution,
+  Executed,
+  Expired,
 }
-export interface Proposal {
-  againstVotes: number;
-  details: any;
-  duration: number;
-  endDate: string;
-  forVotes: number;
+
+export type Proposal = Governance.ProposalStruct & {
+  state: ProposalState;
   index: number;
-  metadata: ProposalMetadata;
-  offset: number;
-  origin: string;
-  proposer: string;
-  startDate: string;
-  state: ProposalStates;
-  title: string;
-}
-export interface Receipt {
-  hasVoted: boolean;
-  support: boolean;
-  votes: number | undefined;
-}
+};
+export type Receipt = Governance.ReceiptStruct;
 export interface GovernanceState {
   selectedProposalFilter: ProposalFilters;
   isLoadingProposals: boolean;
@@ -61,6 +43,9 @@ export interface GovernanceState {
   totalGovernanceTokenSupply: BigNumber;
   isGettingGovernanceTokenBalance: boolean;
   governanceTokenBalance: BigNumber | undefined;
+  accruingTokenBalance: BigNumber | undefined;
+  totalAccruedToken: BigNumber | undefined;
+  totalMainTokenStakedForAccruingToken: BigNumber | undefined;
   newProposalFields: {
     title: string;
     description: string;

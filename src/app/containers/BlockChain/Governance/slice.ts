@@ -4,6 +4,7 @@ import { createSlice } from "store/toolkit";
 import { useInjectReducer, useInjectSaga } from "store/redux-injectors";
 import { governanceSaga } from "./saga";
 import { BigNumber } from "ethers";
+import { skipLoading } from "app/types";
 
 // The initial state of the Governance container
 export const initialState: ContainerState = {
@@ -21,8 +22,11 @@ export const initialState: ContainerState = {
   governanceABI: undefined,
   governanceTokenContract: undefined,
   governanceTokenBalance: undefined,
+  accruingTokenBalance: undefined,
   isGettingGovernanceTokenBalance: false,
   totalGovernanceTokenSupply: BigNumber.from(0),
+  totalAccruedToken: BigNumber.from(0),
+  totalMainTokenStakedForAccruingToken: BigNumber.from(0),
   newProposalFields: {
     title: "",
     description: "",
@@ -41,14 +45,33 @@ const governanceSlice = createSlice({
   name: "governance",
   initialState,
   reducers: {
-    getGovernanceTokenBalance(state, action: PayloadAction<void>) {},
+    getGovernanceTokenBalance(
+      state,
+      action: PayloadAction<skipLoading | undefined>
+    ) {},
+    getAccruingTokenBalance(
+      state,
+      action: PayloadAction<skipLoading | undefined>
+    ) {},
     setGovernanceABI(state, action: PayloadAction<any>) {
       state.governanceABI = action.payload;
     },
     setGovernanceTokenBalance(state, action: PayloadAction<BigNumber>) {
       state.governanceTokenBalance = action.payload;
     },
-    getTotalGovernanceTokenSupply(state, action: PayloadAction<void>) {},
+    setAccruingTokenBalance(state, action: PayloadAction<BigNumber>) {
+      state.accruingTokenBalance = action.payload;
+    },
+    setMainTokenAmountStakedForAccruing(
+      state,
+      action: PayloadAction<BigNumber>
+    ) {
+      state.totalMainTokenStakedForAccruingToken = action.payload;
+    },
+    setTotalAccrued(state, action: PayloadAction<BigNumber>) {
+      state.totalAccruedToken = action.payload;
+    },
+    // getTotalGovernanceTokenSupply(state, action: PayloadAction<void>) {},
     setIsGettingGovernanceTokenBalance(state, action: PayloadAction<boolean>) {
       state.isGettingGovernanceTokenBalance = action.payload;
     },
@@ -115,7 +138,7 @@ const governanceSlice = createSlice({
     },
     vote(
       state,
-      action: PayloadAction<{ proposal: Proposal; voteFor: boolean }>
+      action: PayloadAction<{ proposal: Proposal; voteFor: number }>
     ) {},
     setIsSubmittingNewProposal(state, action: PayloadAction<boolean>) {
       state.isSubmittingNewProposal = action.payload;

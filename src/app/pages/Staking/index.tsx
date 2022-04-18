@@ -4,61 +4,28 @@
  *
  */
 import { useStakingPageSlice } from "./slice";
-import { styled } from "@mui/material";
-import { DepositAndWithdraw } from "./components/depositAndWithdraw";
-import { OverallInfoCard } from "./components/overallInfo";
-import { Max1040 } from "app/components/wrappers/max1040";
-import { mobile } from "styles/media";
+import { Route, Switch } from "react-router-dom";
+import { AppPages } from "app/types";
+import { StakingRoot } from "./pages/root";
+import { StakingSubPages } from "./routes";
+import { SAxialPage } from "./pages/sAxial";
+import { VeAxialPage } from "./pages/veAxial";
 
 interface Props {}
 export function StakingPage(props: Props) {
   useStakingPageSlice();
 
   return (
-    <Wrapper>
-      <InfoSection>
-        <OverallInfoCard />
-      </InfoSection>
-      <Spacer />
-      <DepositAndWithdrawSection>
-        <DepositAndWithdraw />
-      </DepositAndWithdrawSection>
-    </Wrapper>
+    <Switch>
+      <Route exact path={AppPages.StakingPage}>
+        <StakingRoot />
+      </Route>
+      <Route exact path={`${StakingSubPages.sAxial}`}>
+        <SAxialPage />
+      </Route>
+      <Route path={`${StakingSubPages.veAxial}`}>
+        <VeAxialPage />
+      </Route>
+    </Switch>
   );
 }
-
-const Spacer = styled("div")({
-  height: "128px",
-  [mobile]: {
-    height: "32px",
-  },
-});
-
-const DepositAndWithdrawSection = styled("div")({
-  alignItems: "center",
-  display: "flex",
-  justifyContent: "space-between",
-  [mobile]: {
-    flexDirection: "column-reverse",
-  },
-});
-
-const InfoSection = styled("div")({
-  alignItems: "center",
-  display: "flex",
-  justifyContent: "space-between",
-  [mobile]: {
-    flexDirection: "column",
-  },
-});
-
-const Wrapper = styled(Max1040)({
-  margin: "auto",
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  [mobile]: {
-    padding: 0,
-    width: "100%",
-  },
-});

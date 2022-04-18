@@ -9,8 +9,10 @@ export enum DepositUnlockPeriod {
 }
 export interface StakingPageState {
   enteredMainTokenToStake: string;
+  enteredMainTokenToStakeInVeAxial: string;
   selectedEpoch: Date | undefined;
   selectedDepositAndWithdrawTab: DepositAndWithdrawTab;
+  selectedVeAxialDepositAndWithdrawTab: DepositAndWithdrawTab;
   selectedDepositUnlockPeriod: DepositUnlockPeriod;
   selectedDepositSliderValue: number;
 }

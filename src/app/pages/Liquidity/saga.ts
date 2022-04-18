@@ -579,7 +579,7 @@ function* tokensToApproveForDeposit() {
     return {
       amount:
         floatToBN(Number(amounts[symbol]), token.decimals) || BigNumber.from(0),
-      swapAddress: pool.swapAddress || pool.address,
+      spenderAddress: pool.swapAddress || pool.address,
       token,
     };
   });
@@ -707,7 +707,7 @@ function* checkForWithdrawApproval(requestForApprove?: boolean) {
         tokensToVerify: [
           {
             amount: allowanceAmount,
-            swapAddress: pool.swapAddress || pool.address,
+            spenderAddress: pool.swapAddress || pool.address,
             token: pool.lpToken,
             tokenContract: lpTokenContract,
           },

@@ -20,5 +20,6 @@ export enum NavigationRouteName {
   GOVERNANCE = "governance",
   RISK = "risk",
 }
+export type skipLoading = true;
 export type PrivateProvider = ethers.providers.StaticJsonRpcProvider;
 export type Contract = ethers.Contract;

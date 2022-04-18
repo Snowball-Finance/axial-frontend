@@ -58,7 +58,7 @@ export const TransactionSuccess: FC = () => {
               <Anchor
                 target="_blank"
                 rel="noreferrer"
-                href={`https://snowtrace.io/tx/${transactionSuccessId}`}
+                href={`${process.env.REACT_APP_EXPLORER_URL}/tx/${transactionSuccessId}`}
               >
                 <Grid
                   container

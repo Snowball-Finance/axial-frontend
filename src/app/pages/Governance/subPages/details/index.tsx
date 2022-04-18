@@ -2,7 +2,7 @@ import { Box, styled } from "@mui/material";
 import { SnowPaper } from "app/components/base/SnowPaper";
 import { Max1040 } from "app/components/wrappers/max1040";
 import { GovernanceSelectors } from "app/containers/BlockChain/Governance/selectors";
-import { ProposalStates } from "app/containers/BlockChain/Governance/types";
+import { ProposalState } from "app/containers/BlockChain/Governance/types";
 import { translations } from "locales/i18n";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -11,7 +11,6 @@ import { mobile } from "styles/media";
 import { VotePower } from "../../components/votePower";
 import { GovernanceSubPages } from "../../routes";
 import { ProposalListItem } from "../proposals/components/listItem";
-import { AdditionalData } from "./components/additionalData";
 import { TopBackButton } from "./components/topBackButton";
 import { VoteButtons } from "./components/voteButtons";
 import { VoteStatus } from "./components/voteStatus";
@@ -34,7 +33,7 @@ export const ProposalDetails = () => {
 
   const { state } = proposal;
 
-  const isActive = state === ProposalStates.active;
+  const isActive = state === ProposalState.Active;
 
   return (
     <Wrapper>
@@ -57,26 +56,26 @@ export const ProposalDetails = () => {
           <Box mb="16px" />
         </>
       )}
-      <AdditionalData
+      {/* <AdditionalData
         discordLink={proposal?.metadata?.discussion}
         documentLink={proposal?.metadata?.document}
         startTime={proposal.startDate}
         endTime={proposal.endDate}
-      />
+      /> */}
       <Box mb="16px" />
 
       <ContentWrapper>
         <Left>
           <Descriptions>
             <Title>{t(translations.Common.Description())}</Title>
-            <div
+            {/* <div
               dangerouslySetInnerHTML={{
                 __html: proposal?.metadata?.description.replace(
                   /•/g,
                   "<br /><br />"
                 ),
               }}
-            ></div>
+            ></div> */}
           </Descriptions>
         </Left>
       </ContentWrapper>

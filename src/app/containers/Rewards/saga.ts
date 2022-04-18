@@ -35,7 +35,11 @@ import { Token, TokenSymbols } from "../Swap/types";
 import { AXIAL_MASTERCHEF_CONTRACT_ADDRESS } from "./constants";
 import MASTERCHEF_ABI from "abi/masterchef.json";
 import checkAndApproveTokenForTrade from "../utils/checkAndApproveTokenForTrade";
-import { Erc20, SwapFlashLoanNoWithdrawFee } from "abi/ethers-contracts";
+import {
+  Erc20,
+  Masterchef,
+  SwapFlashLoanNoWithdrawFee,
+} from "abi/ethers-contracts";
 import { addSlippage, subtractSlippage } from "../../../utils/slippage";
 import { Deadlines, formatDeadlineToNumber } from "./utils/deadline";
 import { GlobalActions } from "store/slice";
@@ -98,7 +102,6 @@ export function* getRewardPoolsData(action: {
 }
 
 export function* getMasterChefBalances() {
-  const chainId = yield select(Web3Domains.selectChainIDDomain);
   const account = yield select(Web3Domains.selectAccountDomain);
   const library = yield select(Web3Domains.selectLibraryDomain);
 
@@ -110,7 +113,7 @@ export function* getMasterChefBalances() {
     tokensList.forEach((token) => {
       if (token.isLPToken && token.masterchefId !== undefined) {
         masterchefBalancesCall.push(
-          getUserMasterchefInfo(account, token.masterchefId, chainId)
+          getUserMasterchefInfo(account, token.masterchefId)
         );
         tokenAddressList.push(token.address);
       }
@@ -280,7 +283,7 @@ export function* deposit(action: { type: string; payload: DepositPayload }) {
       AXIAL_MASTERCHEF_CONTRACT_ADDRESS,
       MASTERCHEF_ABI,
       library?.getSigner()
-    );
+    ) as Masterchef;
 
     const lpTokenContract = getContract(
       pool.lpToken.address,
@@ -330,7 +333,7 @@ export function* deposit(action: { type: string; payload: DepositPayload }) {
     } else {
       yield call(
         masterchefContract.deposit,
-        pool.lpToken.masterchefId,
+        BigNumber.from(pool.lpToken.masterchefId),
         tokenAmounts[pool.lpToken.symbol]
       );
     }

@@ -2,7 +2,8 @@ import { Proposal } from "app/containers/BlockChain/Governance/types";
 import { formatNumber } from "common/format";
 
 export const forAndAgainst = ({ proposal }: { proposal: Proposal }) => {
-  const { forVotes, againstVotes } = proposal;
+  const forVotes = Number(proposal.votes[0]);
+  const againstVotes = Number(proposal.votes[1]);
   const sumOfVotes = forVotes + againstVotes;
   const forPercent = (forVotes / sumOfVotes) * 100;
   const againstPercent = (againstVotes / sumOfVotes) * 100;

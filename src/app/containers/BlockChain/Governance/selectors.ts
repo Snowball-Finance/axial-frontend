@@ -6,7 +6,7 @@ import { RootState } from "store/types";
 import { EthersDomains } from "../Ethers/selectors";
 import { Web3Domains } from "../Web3/selectors";
 import { initialState } from "./slice";
-import { ContainerState, ProposalFilters, ProposalStates } from "./types";
+import { ContainerState, ProposalFilters, ProposalState } from "./types";
 
 export const GovernanceDomains = {
   selectGovernanceDomain: (state: RootState) =>
@@ -58,24 +58,32 @@ export const GovernanceSelectors = {
     GovernanceDomains.selectGovernanceDomain,
     (governanceState) => governanceState
   ),
-  selectTotalGovernanceTokenSupply: createSelector(
-    GovernanceDomains.selectGovernanceDomain,
-    (blockChainState) => blockChainState.totalGovernanceTokenSupply
-  ),
   selectIsLoadingGovernanceTokenBalance: createSelector(
     GovernanceDomains.selectGovernanceDomain,
-    (blockChainState) => blockChainState.isGettingGovernanceTokenBalance
+    (governanceState) => governanceState.isGettingGovernanceTokenBalance
   ),
   selectGovernanceTokenBalance: createSelector(
     GovernanceDomains.selectGovernanceDomain,
-    (blockChainState) => blockChainState.governanceTokenBalance
+    (governanceState) => governanceState.governanceTokenBalance
+  ),
+  accruingTokenBalance: createSelector(
+    GovernanceDomains.selectGovernanceDomain,
+    (governanceState) => governanceState.accruingTokenBalance
+  ),
+  mainTokenAmountStakedForAccruing: createSelector(
+    GovernanceDomains.selectGovernanceDomain,
+    (governanceState) => governanceState.totalMainTokenStakedForAccruingToken
+  ),
+  totalAccruedToken: createSelector(
+    GovernanceDomains.selectGovernanceDomain,
+    (governanceState) => governanceState.totalAccruedToken
   ),
   selectFloatedGovernanceTokenBalance: createSelector(
     GovernanceDomains.selectGovernanceDomain,
-    (blockChainState) => {
-      if (blockChainState.governanceTokenBalance) {
+    (governanceState) => {
+      if (governanceState.governanceTokenBalance) {
         const floated =
-          BNToFloat(blockChainState.governanceTokenBalance, 18)?.toFixed(3) ||
+          BNToFloat(governanceState.governanceTokenBalance, 18)?.toFixed(3) ||
           "0.000";
         return floated;
       }
@@ -138,7 +146,7 @@ export const GovernanceSelectors = {
     (proposals, filters) => {
       let list = [...proposals];
       if (filters === ProposalFilters.Active) {
-        list = list.filter((p) => p.state === ProposalStates.active);
+        list = list.filter((p) => p.state === ProposalState.Active);
       }
       return list;
     }

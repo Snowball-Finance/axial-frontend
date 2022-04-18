@@ -2,6 +2,8 @@ import { StakingActions } from "app/containers/BlockChain/Governance/Staking/sli
 import { BlockChainDomains } from "app/containers/BlockChain/selectors";
 import { BNToString } from "common/format";
 import { BigNumber } from "ethers";
+import { subtract } from "precise-math";
+import { toast } from "react-toastify";
 import { put, select, takeLatest } from "redux-saga/effects";
 import { StakingPageDomains } from "./selectors";
 
@@ -21,18 +23,67 @@ export function* stakeAllTheBalances() {
   }
 }
 
-export function* stake() {
+export function* stakeGovernanceToken() {
   const enteredBalance = yield select(
     StakingPageDomains.selectEnteredMainTokenToStakeDomain
   );
+  if (!enteredBalance || isNaN(Number(enteredBalance))) {
+    toast.warn("please enter a valid amount");
+    return;
+  }
+  const previousNumberOfLockedDays: number = yield select(
+    StakingPageDomains.remainingDaysToUnlock
+  );
   const date = yield select(StakingPageDomains.selectSelectedEpochDomain);
-  let duration = yield select(
-    StakingPageDomains.selectSelectedDepositSliderValueDomain
-  );
-  duration = (Number(duration) / 25 + 1).toFixed(0);
+  const endDate = new Date(date);
+  let startDate = new Date();
+  let duration = ((endDate.getTime() - startDate.getTime()) / 1000).toFixed(0);
+  let finalDurationToAdd = duration;
+  if (previousNumberOfLockedDays) {
+    finalDurationToAdd = subtract(
+      Number(duration),
+      previousNumberOfLockedDays * 24 * 60 * 60
+    ).toString();
+  }
+  if (Number(finalDurationToAdd) < 0) {
+    finalDurationToAdd = "0";
+  }
   yield put(
-    StakingActions.createLock({ balance: enteredBalance, duration, date })
+    StakingActions.stakeGovernanceToken({
+      amount: enteredBalance,
+      duration: finalDurationToAdd,
+    })
   );
+}
+
+export function* stakeAccruingToken() {
+  const enteredBalance = yield select(
+    StakingPageDomains.selectEnteredMainTokenToStakeIntoVeAxialDomain
+  );
+  if (!enteredBalance || isNaN(Number(enteredBalance))) {
+    return;
+  }
+  yield put(
+    StakingActions.stakeAccruingToken({
+      amountToStake: enteredBalance,
+    })
+  );
+}
+
+export function* stakeAllTheAxialBalancesIntoVeAxial() {
+  const mainTokenBalance = yield select(
+    BlockChainDomains.selectMainTokenBalanceDomain
+  );
+  if (mainTokenBalance) {
+    const stringMainTokenBalance = parseFloat(
+      BNToString(mainTokenBalance ?? BigNumber.from(0), 18) || "0"
+    ).toFixed(3);
+    yield put(
+      StakingPageActions.setEnteredMainTokenToStakeIntoVeAxial(
+        stringMainTokenBalance
+      )
+    );
+  }
 }
 
 export function* stakingPageSaga() {
@@ -40,5 +91,16 @@ export function* stakingPageSaga() {
     StakingPageActions.stakeAllTheBalances.type,
     stakeAllTheBalances
   );
-  yield takeLatest(StakingPageActions.stake.type, stake);
+  yield takeLatest(
+    StakingPageActions.stakeAllTheAxialBalancesIntoVeAxial.type,
+    stakeAllTheAxialBalancesIntoVeAxial
+  );
+  yield takeLatest(
+    StakingPageActions.stakeGovernanceToken.type,
+    stakeGovernanceToken
+  );
+  yield takeLatest(
+    StakingPageActions.stakeAccruingToken.type,
+    stakeAccruingToken
+  );
 }

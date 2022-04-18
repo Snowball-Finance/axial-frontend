@@ -9,6 +9,11 @@ import masterchefABI from "abi/masterchef.json";
 import swap from "abi/swapFlashLoanNoWithdrawFee.json";
 import erc20 from "abi/erc20.json";
 import simplerewarder from "abi/simplerewarder.json";
+import {
+  Masterchef,
+  SwapFlashLoanNoWithdrawFee,
+  Erc20,
+} from "abi/ethers-contracts";
 
 export async function getAVAXPrice(): Promise<number> {
   const query = JSON.stringify({
@@ -85,17 +90,17 @@ export async function getVaultRewardAprNow(): Promise<MasterchefApr> {
         AXIAL_MASTERCHEF_CONTRACT_ADDRESS,
         masterchefABI,
         provider
-      );
+      ) as Masterchef;
       const swapTokenContract = new ethers.Contract(
         pool.address,
         swap,
         provider
-      );
+      ) as SwapFlashLoanNoWithdrawFee;
       const tokenContract = new ethers.Contract(
         pool.lpToken.address,
         erc20,
         provider
-      );
+      ) as Erc20;
       const balanceToken = (await tokenContract.balanceOf(
         AXIAL_MASTERCHEF_CONTRACT_ADDRESS
       )) as BigNumber;
@@ -116,10 +121,10 @@ export async function getVaultRewardAprNow(): Promise<MasterchefApr> {
 
       const [totalAllocPoint, poolInfo, axialPerSecondRes] = await Promise.all([
         masterchefContract.totalAllocPoint(),
-        masterchefContract.poolInfo(pool.lpToken.masterchefId),
+        masterchefContract.poolInfo(BigNumber.from(pool.lpToken.masterchefId)),
         masterchefContract.axialPerSec(),
       ]);
-
+      //@ts-ignore
       const axialPerSecond: number = axialPerSecondRes / 1e18;
 
       let poolFraction = 0;

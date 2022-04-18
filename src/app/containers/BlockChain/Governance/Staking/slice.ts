@@ -1,10 +1,18 @@
 import { PayloadAction } from "@reduxjs/toolkit";
-import { ContainerState, CreateLockData, DistributorData } from "./types";
+import {
+  ContainerState,
+  StakeGovernanceTokenModel,
+  DistributorData,
+  StakeAccruingTokenModel,
+  LockedInfo,
+} from "./types";
 import { createSlice } from "store/toolkit";
 import { useInjectReducer, useInjectSaga } from "store/redux-injectors";
 
 import { stakingSaga } from "./saga";
 import { BigNumber } from "ethers";
+import { skipLoading } from "app/types";
+import { LocalStorageKeys, storage } from "store/storage";
 
 // The initial state of the Staking container
 export const initialState: ContainerState = {
@@ -13,9 +21,14 @@ export const initialState: ContainerState = {
   isClaiming: false,
   isGettingFeeDistributionInfo: false,
   isWithdrawing: false,
-  endDate: BigNumber.from(0),
+  isWithdrawingAccruingToken: false,
   isGettingGovernanceTokenInfo: false,
-  lockedAmount: BigNumber.from(0),
+  claimableGovernanceToken: BigNumber.from(0),
+  lockedGovernanceTokenInfo: undefined,
+  keepThaUnclaimedWhenExtendingLockPeriod: storage.read(
+    LocalStorageKeys.KEEP_THE_UNCLAIMED_WHEN_EXTENDING_LOCK_PERIOD,
+    false
+  ),
   claimable: {
     userClaimable: BigNumber.from(0),
   },
@@ -37,14 +50,25 @@ const stakingSlice = createSlice({
         state.otherDistributors = action.payload.otherDistributors;
       }
     },
-    createLock(state, action: PayloadAction<CreateLockData>) {},
-    setIsStaking(state, action: PayloadAction<boolean>) {
+    stakeGovernanceToken(
+      state,
+      action: PayloadAction<StakeGovernanceTokenModel>
+    ) {},
+    stakeAccruingToken(
+      state,
+      action: PayloadAction<StakeAccruingTokenModel>
+    ) {},
+    setIsStakingGovernanceToken(state, action: PayloadAction<boolean>) {
       state.isStaking = action.payload;
     },
     claim() {},
-    withdraw() {},
-    setIsWithdrawing(state, action: PayloadAction<boolean>) {
+    withdrawGovernanceToken() {},
+    withdrawAccruingToken() {},
+    setIsWithdrawingGovernanceToken(state, action: PayloadAction<boolean>) {
       state.isWithdrawing = action.payload;
+    },
+    setIsWithdrawingAccruingToken(state, action: PayloadAction<boolean>) {
+      state.isWithdrawingAccruingToken = action.payload;
     },
     setIsClaiming(state, action: PayloadAction<boolean>) {
       state.isClaiming = action.payload;
@@ -59,13 +83,42 @@ const stakingSlice = createSlice({
     setOtherClaimables(state, action: PayloadAction<any>) {
       state.claimable.otherClaimables = action.payload;
     },
-    getLockedGovernanceTokenInfo(state, action: PayloadAction<void>) {},
-    setGovernanceTokenInfo(state, action: PayloadAction<any>) {
-      state.lockedAmount = action.payload.amount;
-      state.endDate = action.payload.end;
+    getLockedGovernanceTokenInfo(
+      state,
+      action: PayloadAction<skipLoading | undefined>
+    ) {},
+    setGovernanceTokenInfo(state, action: PayloadAction<LockedInfo>) {
+      const info: any = {};
+      const {
+        endBlockTime,
+        initialized,
+        startBlockTime,
+        startingAmountLocked,
+      } = action.payload;
+      info.endBlockTime = endBlockTime;
+      info.initialized = initialized;
+      info.startBlockTime = startBlockTime;
+      info.startingAmountLocked = startingAmountLocked;
+      state.lockedGovernanceTokenInfo = info;
     },
     setIsGettingGovernanceTokenInfo(state, action: PayloadAction<boolean>) {
       state.isGettingGovernanceTokenInfo = action.payload;
+    },
+
+    getClaimableGovernanceToken() {},
+    setClaimableGovernanceToken(state, action: PayloadAction<BigNumber>) {
+      state.claimableGovernanceToken = action.payload;
+    },
+    activatePeriodicallyRefetchTheData() {},
+    setKeepTheUnclaimedWhenExtendingLockPeriod(
+      state,
+      action: PayloadAction<boolean>
+    ) {
+      storage.write(
+        LocalStorageKeys.KEEP_THE_UNCLAIMED_WHEN_EXTENDING_LOCK_PERIOD,
+        action.payload
+      );
+      state.keepThaUnclaimedWhenExtendingLockPeriod = action.payload;
     },
   },
 });
