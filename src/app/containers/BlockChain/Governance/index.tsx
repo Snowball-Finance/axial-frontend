@@ -8,13 +8,11 @@ import { DistributorData } from "./Staking/types";
 
 export const Governance = ({
   tokenABI,
-  proposalsQuery,
   governanceABI,
   staking,
 }: {
   tokenABI: any;
   governanceABI: any;
-  proposalsQuery: string;
   staking?: {
     feeDistributorABI: any;
     otherDistributors?: DistributorData[];
@@ -64,7 +62,7 @@ export const Governance = ({
   useEffect(() => {
     dispatch(GovernanceActions.setGovernanceABI(governanceABI));
     dispatch(GovernanceActions.setGovernanceTokenABI(tokenABI));
-    dispatch(GovernanceActions.getProposals({ query: proposalsQuery }));
+    dispatch(GovernanceActions.getProposals({}));
     return () => {};
   }, []);
 

@@ -85,7 +85,7 @@ const governanceSlice = createSlice({
     },
     getProposals(
       state,
-      action: PayloadAction<{ silent?: boolean; query: string }>
+      action: PayloadAction<{ silent?: boolean }>
     ) {},
     getVotingReceipt(state, action: PayloadAction<{ proposal: Proposal }>) {
       state.receipt = undefined;

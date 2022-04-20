@@ -17,7 +17,6 @@ interface BlockChainProps {
   mainTokenABI: any;
   governance?: {
     tokenABI: any;
-    proposalsQuery: string;
     governanceABI: any;
     staking?: {
       feeDistributorABI: any;
@@ -73,7 +72,6 @@ export const BlockChain: FC<BlockChainProps> = ({
       <Ethers />
       {governance && (
         <Governance
-          proposalsQuery={governance.proposalsQuery}
           tokenABI={governance.tokenABI}
           governanceABI={governance.governanceABI}
           staking={{

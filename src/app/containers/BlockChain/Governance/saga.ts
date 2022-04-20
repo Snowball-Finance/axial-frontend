@@ -18,14 +18,14 @@ import { getProviderOrSigner } from "app/containers/utils/contractUtils";
 
 export function* getProposals(action: {
   type: string;
-  payload: { silent?: boolean; query: string };
+  payload: { silent?: boolean};
 }) {
-  const { silent, query } = action.payload;
+  const { silent } = action.payload;
   if (!silent) {
     yield put(GovernanceActions.setIsLoadingProposals(true));
   }
   try {
-    const response = yield call(GetProposalsAPI, query);
+    const response = yield call(GetProposalsAPI);
     const proposals: Proposal[] = response.data.ProposalList.proposals;
     //TODO get id and status of proposals
     yield put(GovernanceActions.setProposals(proposals));
