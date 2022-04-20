@@ -331,11 +331,19 @@ export function* deposit(action: { type: string; payload: DepositPayload }) {
         );
       }
     } else {
-      yield call(
+      const spendTransaction = yield call(
         masterchefContract.deposit,
         BigNumber.from(pool.lpToken.masterchefId),
         tokenAmounts[pool.lpToken.symbol]
       );
+      const result = yield call(spendTransaction.wait);
+
+      if (result.status) {
+        yield put(
+          GlobalActions.setTransactionSuccessId(result.transactionHash)
+        );
+        yield put(RewardsActions.getMasterChefBalances());
+      }
     }
     yield put(RewardsActions.setIsDepositing(false));
     toast.success("deposit successful");
@@ -349,6 +357,7 @@ export function* deposit(action: { type: string; payload: DepositPayload }) {
 }
 
 export function* withdraw(action: { type: string; payload: WithdrawPayload }) {
+  yield put(GlobalActions.setTransactionSuccessId(undefined));
   yield put(RewardsActions.setIsWithdrawing(true));
   yield put(GlobalActions.setTransactionSuccessId(undefined));
   try {
@@ -428,11 +437,19 @@ export function* withdraw(action: { type: string; payload: WithdrawPayload }) {
         );
       }
     } else {
-      yield call(
+      const spendTransaction = yield call(
         masterchefContract.withdraw,
         pool.lpToken.masterchefId,
         tokenAmounts[pool.lpToken.symbol]
       );
+      const result = yield call(spendTransaction.wait);
+
+      if (result.status) {
+        yield put(
+          GlobalActions.setTransactionSuccessId(result.transactionHash)
+        );
+        yield put(RewardsActions.getMasterChefBalances());
+      }
     }
     yield put(RewardsActions.setIsWithdrawing(false));
     toast.success("withdraw success");

@@ -52,7 +52,7 @@ export function* deposit() {
       [token.symbol]: amountToSpend,
     },
   };
-  yield put(RewardsActions.setIsDepositing(true));
+  yield put(RewardsPageActions.setIsModalOpen(true));
   const areAllApproved = yield call(checkAndApproveTokensInList, {
     tokensToVerify: [
       {
@@ -62,7 +62,6 @@ export function* deposit() {
       },
     ],
   });
-  yield put(RewardsActions.setIsDepositing(false));
   if (areAllApproved) {
     yield put(RewardsActions.deposit(dataToSend));
   } else {
@@ -97,6 +96,7 @@ export function* withdraw() {
     type: pool.lpToken.symbol as TokenSymbols,
     masterchefwithdraw: true,
   };
+  yield put(RewardsPageActions.setIsModalOpen(true));
   yield put(RewardsActions.withdraw(dataToSend));
 }
 

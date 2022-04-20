@@ -11,27 +11,35 @@ import { WalletBalance } from "./walletBalance";
 import { RewardsPageSelectors } from "app/pages/Rewards/selectors";
 import { CompoundWithSnowball } from "./CompoundWithSnowball";
 import { mobile } from "styles/media";
+import { Max } from "./Max";
+import { globalSelectors } from "app/appSelectors";
+import { Token } from "app/containers/Swap/types";
 
 export const DepositWrapped: FC = () => {
   const { t } = useTranslation();
 
   const pool = useSelector(RewardsPageSelectors.selectedPool);
+  const tokens = useSelector(globalSelectors.tokens) as Token[];
 
   return (
     <StyledAddLiquidity>
       <Grid container direction="column" spacing={2}>
         <Grid item>
-          <HeaderText variant="h4">
+          <HeaderText variant="h2">
             {t(translations.RewardsPage.Deposit.Title())}
           </HeaderText>
         </Grid>
 
         <Grid item alignSelf="end">
-          {pool && <WalletBalance token={pool?.lpToken} />}
+          {pool && <Max token={tokens[pool?.lpToken.symbol]} />}
         </Grid>
 
         <Grid item>
           <CurrencyInput />
+        </Grid>
+
+        <Grid item alignSelf="end">
+          {pool && <WalletBalance token={tokens[pool?.lpToken.symbol]} />}
         </Grid>
 
         <Grid item>
@@ -39,18 +47,18 @@ export const DepositWrapped: FC = () => {
         </Grid>
 
         <Grid item>
-          <Grid container spacing={2} direction="column" alignItems="center">
-            <Grid item>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
               <DepositButton />
             </Grid>
 
-            <Grid item>
-              <OrText variant="body2">
+            <Grid item xs={12}>
+              <OrText variant="body2" align="center">
                 {t(translations.RewardsPage.Deposit.Or())}
               </OrText>
             </Grid>
 
-            <Grid item>
+            <Grid item xs={12}>
               <CompoundWithSnowball />
             </Grid>
           </Grid>
@@ -76,7 +84,7 @@ const StyledAddLiquidity = styled("div")({
 
 const HeaderText = styled(Typography)({
   color: CssVariables.white,
-  fontSize: "26px",
+  textTransform: "uppercase",
 });
 
 const OrText = styled(Typography)({

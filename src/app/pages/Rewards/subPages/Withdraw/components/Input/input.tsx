@@ -18,13 +18,13 @@ export const WithdrawInput = () => {
 const CurrencyInputField = styled(SnowInput)({
   ".MuiInputBase-root": {
     color: CssVariables.white,
-    fontSize: "16px",
-    width: 80,
   },
 
   ".MuiInputBase-input": {
     textAlign: "end",
     padding: 0,
+    fontSize: "26px",
+    align: "end",
   },
 
   ".MuiOutlinedInput-notchedOutline": {

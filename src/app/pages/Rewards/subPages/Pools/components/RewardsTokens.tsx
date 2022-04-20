@@ -6,11 +6,15 @@ import axialIcon from "assets/icons/logo_icon.svg";
 import avaxIcon from "assets/icons/AVAX.png";
 import { mobile } from "styles/media";
 
-export const JLPToken: FC = () => {
+export const RewardsTokens: FC = () => {
   return (
-    <Grid container spacing={2} alignItems="center">
-      <Grid item>
-        <Grid container spacing={1} alignItems="center">
+    <Grid container spacing={1}>
+      <Grid item xs={12}>
+        <PoolInfoTitleText variant="body1">Rewards</PoolInfoTitleText>
+      </Grid>
+
+      <Grid item container>
+        <Grid item container spacing={1} alignItems="center" xs={6}>
           <Grid item>
             <PoolTokenImage src={axialIcon} alt={`token-AXIAL`} />
           </Grid>
@@ -18,10 +22,8 @@ export const JLPToken: FC = () => {
             <PoolInfoTitleText variant="body1">AXIAL</PoolInfoTitleText>
           </Grid>
         </Grid>
-      </Grid>
 
-      <Grid item>
-        <Grid container spacing={1} alignItems="center">
+        <Grid item container spacing={1} alignItems="center" xs={6}>
           <Grid item>
             <PoolTokenImage src={avaxIcon} alt={`token-AVAX`} />
           </Grid>

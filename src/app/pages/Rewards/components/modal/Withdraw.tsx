@@ -1,47 +1,50 @@
-import React, { FC } from "react";
-import { styled, Grid, Typography } from "@mui/material";
+import { FC } from "react";
+import { Grid, Typography, Box, CircularProgress } from "@mui/material";
+import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
+import { CircleOutlined } from "@mui/icons-material";
 
 import { translations } from "locales/i18n";
-import { CssVariables } from "styles/cssVariables/cssVariables";
 import { CardWrapper } from "app/components/wrappers/Card";
-import { IconWithTitle } from "./components/IconWithTitle";
-import { Steps } from "./components/Steps";
+import { RewardsSelectors } from "app/containers/Rewards/selectors";
 
 export const WithdrawModal: FC = () => {
   const { t } = useTranslation();
+  const isWithdrawing = useSelector(RewardsSelectors.isWithdrawing);
+
+  const renderWithdrawIcon = () => {
+    if (isWithdrawing) {
+      return <CircularProgress color="primary" size={20} />;
+    } else {
+      return <CircleOutlined color="primary" />;
+    }
+  };
 
   return (
-    <Grid container direction="column" spacing={1}>
-      <Grid item>
-        <Text variant="h6">{t(translations.RewardsPage.Modal.Withdraw())}</Text>
-      </Grid>
+    <Box mt={2}>
+      <CardWrapper>
+        <Grid container item xs={12} spacing={2} alignItems="center">
+          <Grid item>{renderWithdrawIcon()}</Grid>
 
-      <Grid item>
-        <CardWrapper>
-          <Grid container justifyContent="space-between" alignItems="center">
-            <Grid item>
-              <Text variant="h6">
-                <IconWithTitle />
-              </Text>
-            </Grid>
-
-            <Grid item>
-              <Text variant="h6">1.054525</Text>
-            </Grid>
+          <Grid item>
+            <Typography variant="body2">
+              {t(translations.Common.WithdrawingTokens())}
+            </Typography>
           </Grid>
-        </CardWrapper>
-      </Grid>
+        </Grid>
 
-      <Grid item>
-        <CardWrapper>
-          <Steps />
-        </CardWrapper>
-      </Grid>
-    </Grid>
+        <Grid container spacing={1}>
+          <Grid
+            container
+            item
+            xs={12}
+            alignItems="center"
+            justifyContent="center"
+          >
+            <Typography variant="body2">Steps 1/1</Typography>
+          </Grid>
+        </Grid>
+      </CardWrapper>
+    </Box>
   );
 };
-
-const Text = styled(Typography)({
-  color: CssVariables.white,
-});

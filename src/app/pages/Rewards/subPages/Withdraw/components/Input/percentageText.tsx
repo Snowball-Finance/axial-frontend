@@ -12,5 +12,4 @@ export const Percentage = () => {
 
 const PercentageText = styled(Typography)({
   color: CssVariables.white,
-  fontSize: "16px",
 });

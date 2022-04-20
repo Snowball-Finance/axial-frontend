@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { LocalStorageKeys, storage } from "../../../../store/storage";
 import { ContainedButton } from "../buttons/containedButton";
+import { OutlinedButton } from "../buttons/outlinedButton";
 
 interface WalletToggleProps {
   fullWidth?: boolean;
@@ -28,7 +29,18 @@ export const WalletToggle: FC<WalletToggleProps> = ({ fullWidth }) => {
     dispatch(Web3Actions.connectToWallet({ walletName }));
   };
 
-  return (
+  return account ? (
+    <OutlinedButton
+      height={40.5}
+      loading={isConnecting}
+      onClick={handleButtonClick}
+      fullWidth={fullWidth}
+    >
+      {account.substring(0, 5) +
+        "..." +
+        account.substring(account.length, account.length - 4)}
+    </OutlinedButton>
+  ) : (
     <ContainedButton
       color="primary"
       height={40.5}
@@ -36,11 +48,7 @@ export const WalletToggle: FC<WalletToggleProps> = ({ fullWidth }) => {
       onClick={handleButtonClick}
       fullWidth={fullWidth}
     >
-      {account
-        ? t(translations.Common.DisconnectFromWallet()) +
-          ":" +
-          account.substring(0, 5)
-        : t(translations.Common.ConnectToWallet())}
+      {t(translations.Common.ConnectToWallet())}
     </ContainedButton>
   );
 };

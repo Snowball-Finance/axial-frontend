@@ -21,6 +21,8 @@ export const initialState: ContainerState = {
   depositValue: zeroString,
   withdrawPercentage: 0,
   withdrawAmount: zeroString,
+  isModalOpen: false,
+  isClaimModalOpen: false,
 };
 
 const rewardsPageSlice = createSlice({
@@ -56,6 +58,12 @@ const rewardsPageSlice = createSlice({
     setWithdrawAmount(state, action: PayloadAction<string>) {
       state.withdrawPercentage = 0;
       state.withdrawAmount = action.payload;
+    },
+    setIsModalOpen(state, action: PayloadAction<boolean>) {
+      state.isModalOpen = action.payload;
+    },
+    setIsClaimModalOpen(state, action: PayloadAction<boolean>) {
+      state.isClaimModalOpen = action.payload;
     },
   },
 });

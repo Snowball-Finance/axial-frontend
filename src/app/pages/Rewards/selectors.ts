@@ -31,6 +31,10 @@ export const RewardsPageDomains = {
     state.rewardsPage?.withdrawPercentage || initialState.withdrawPercentage,
   withdrawAmount: (state: RootState) =>
     state.rewardsPage?.withdrawAmount || initialState.withdrawAmount,
+  isModalOpen: (state: RootState) =>
+    state.rewardsPage?.isModalOpen || initialState.isModalOpen,
+  isClaimModalOpen: (state: RootState) =>
+    state.rewardsPage?.isClaimModalOpen || initialState.isClaimModalOpen,
 };
 
 export const RewardsPageSelectors = {
@@ -119,5 +123,13 @@ export const RewardsPageSelectors = {
         return 0;
       }
     }
+  ),
+  isModalOpen: createSelector(
+    RewardsPageDomains.isModalOpen,
+    (isModalOpen) => isModalOpen
+  ),
+  isClaimModalOpen: createSelector(
+    RewardsPageDomains.isClaimModalOpen,
+    (isClaimModalOpen) => isClaimModalOpen
   ),
 };

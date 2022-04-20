@@ -16,11 +16,13 @@ import { RewardsPageActions } from "app/pages/Rewards/slice";
 import { Pool } from "app/containers/Rewards/types";
 import { Web3Selectors } from "app/containers/BlockChain/Web3/selectors";
 import { mobile } from "styles/media";
+import { RewardsPageSelectors } from "app/pages/Rewards/selectors";
 
 export const ActionButtons: FC<ActionButtonProps> = ({ poolKey }) => {
   const { t } = useTranslation();
   const masterchefBalance = useSelector(RewardsSelectors.masterChefBalances);
   const account = useSelector(Web3Selectors.selectAccount);
+  const poolData = useSelector(RewardsPageSelectors.rewardsPoolData(poolKey));
   const dispatch = useDispatch();
 
   const tokenKey = pools[poolKey].lpToken.symbol;
@@ -45,6 +47,7 @@ export const ActionButtons: FC<ActionButtonProps> = ({ poolKey }) => {
         <ContainedButton
           width={120}
           onClick={() => handleNavigateToDeposit(poolKey)}
+          disabled={poolData?.isPaused}
         >
           {t(translations.RewardsPage.ActionButtons.Deposit())}
         </ContainedButton>
