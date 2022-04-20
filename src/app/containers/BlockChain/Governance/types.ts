@@ -45,17 +45,6 @@ export interface GovernanceState {
   accruingTokenBalance: BigNumber | undefined;
   totalAccruedToken: BigNumber | undefined;
   totalMainTokenStakedForAccruingToken: BigNumber | undefined;
-  newProposalFields: {
-    title: string;
-    description: string;
-    discussion: string;
-    document: string;
-    votingPeriod: string;
-    error: {
-      title: string;
-      description: string;
-      votingPeriod: string;
-    };
-  };
+
 }
 export type ContainerState = GovernanceState;

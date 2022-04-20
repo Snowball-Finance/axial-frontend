@@ -15,6 +15,7 @@ import AccruingTokenABI from "abi/veAxial.json";
 import { StakingActions } from "./Staking/slice";
 import { skipLoading } from "app/types";
 import { getProviderOrSigner } from "app/containers/utils/contractUtils";
+import { GovernancePageState } from "app/pages/Governance/types";
 
 export function* getProposals(action: {
   type: string;
@@ -22,18 +23,18 @@ export function* getProposals(action: {
 }) {
   const { silent } = action.payload;
   if (!silent) {
-    yield put(GovernanceActions.setIsLoadingProposals(true));
+    yield put(GovernanceActions.setIsGettingProposals(true));
   }
   try {
     const response = yield call(GetProposalsAPI);
-    const proposals: Proposal[] = response.data.ProposalList.proposals;
+    const proposals: Proposal[] = []//response.data.ProposalList.proposals;
     //TODO get id and status of proposals
     yield put(GovernanceActions.setProposals(proposals));
   } catch (error) {
     toast.error("error while getting proposals");
   } finally {
     if (!silent) {
-      yield put(GovernanceActions.setIsLoadingProposals(true));
+      yield put(GovernanceActions.setIsGettingProposals(true));
     }
   }
 }
@@ -99,11 +100,9 @@ export function* vote(action: {
   }
 }
 
-export function* submitNewProposal() {
+export function* submitNewProposal(action:{type:string,payload:GovernancePageState['newProposalFields']}) {
   yield put(GovernanceActions.setIsSubmittingNewProposal(true));
-  const proposalFields: ContainerState["newProposalFields"] = yield select(
-    GovernanceDomains.selectNewProposalFieldsDomain
-  );
+  const proposalFields=action.payload
   const { title, votingPeriod, discussion } = proposalFields;
   const metadataURI = discussion;
   console.log({

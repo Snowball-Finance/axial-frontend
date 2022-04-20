@@ -5,17 +5,18 @@ import { GovernanceSelectors } from "app/containers/BlockChain/Governance/select
 import { GovernanceActions } from "app/containers/BlockChain/Governance/slice";
 import { ContainedButton } from "app/components/common/buttons/containedButton";
 import { translations } from "locales/i18n";
+import { GovernancePageSelectors } from "../../selectors";
 
 export const NewProposalSubmitButton = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const fields = useSelector(GovernanceSelectors.selectNewProposalFields);
+  const fields = useSelector(GovernancePageSelectors.selectNewProposalFields);
   const isLoading = useSelector(
     GovernanceSelectors.selectIsSubmittingNewProposal
   );
 
   const handleSubmitButton = () => {
-    dispatch(GovernanceActions.submitNewProposal());
+    dispatch(GovernanceActions.submitNewProposal(fields));
   };
 
   const { title, votingPeriod, description } = fields;

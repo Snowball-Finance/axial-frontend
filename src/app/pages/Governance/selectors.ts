@@ -7,7 +7,7 @@ import { GaugeItem } from "app/containers/PoolsAndGauges/types";
 
 import { RootState } from "store/types";
 import { initialState } from "./slice";
-import { SelectablePoolProvider } from "./types";
+import { ContainerState, SelectablePoolProvider } from "./types";
 
 export const GovernancePageDomains = {
   GovernancePage: (state: RootState) => state.governancePage || initialState,
@@ -24,6 +24,11 @@ export const GovernancePageDomains = {
     ],
   isVotingForFarms: (state: RootState) =>
     state.governancePage?.isVotingForFarms || initialState.isVotingForFarms,
+    newProposalFields: (state: RootState) =>
+    state.governancePage?.newProposalFields || {
+      ...initialState.newProposalFields,
+      error: { ...initialState.newProposalFields.error },
+    },
 };
 
 export const GovernancePageSelectors = {
@@ -31,7 +36,15 @@ export const GovernancePageSelectors = {
     GovernancePageDomains.GovernancePage,
     (governancePageState) => governancePageState
   ),
-
+  selectNewProposalFields: createSelector(
+    GovernancePageDomains.newProposalFields,
+    (fields) => fields
+  ),
+  selectNewProposalField: (field: keyof ContainerState["newProposalFields"]) =>
+    createSelector(
+      GovernancePageDomains.newProposalFields,
+      (fields) => fields[field]
+    ),
   isVotingForFarms: createSelector(
     GovernancePageDomains.isVotingForFarms,
     (isVotingForFarms) => isVotingForFarms

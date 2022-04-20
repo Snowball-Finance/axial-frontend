@@ -5,6 +5,7 @@ import { useInjectReducer, useInjectSaga } from "store/redux-injectors";
 import { governanceSaga } from "./saga";
 import { BigNumber } from "ethers";
 import { skipLoading } from "app/types";
+import { GovernancePageState } from "app/pages/Governance/types";
 
 // The initial state of the Governance container
 export const initialState: ContainerState = {
@@ -26,18 +27,7 @@ export const initialState: ContainerState = {
   totalGovernanceTokenSupply: BigNumber.from(0),
   totalAccruedToken: BigNumber.from(0),
   totalMainTokenStakedForAccruingToken: BigNumber.from(0),
-  newProposalFields: {
-    title: "",
-    description: "",
-    discussion: "",
-    document: "",
-    votingPeriod: process.env.REACT_APP_MINIMUM_VOTING_PERIOD || "3",
-    error: {
-      title: "",
-      description: "",
-      votingPeriod: "",
-    },
-  },
+
 };
 
 const governanceSlice = createSlice({
@@ -96,7 +86,7 @@ const governanceSlice = createSlice({
     setIsGettingReceipt(state, action: PayloadAction<boolean>) {
       state.iseGettingReceipt = action.payload;
     },
-    setIsLoadingProposals(state, action: PayloadAction<boolean>) {
+    setIsGettingProposals(state, action: PayloadAction<boolean>) {
       state.isLoadingProposals = action.payload;
     },
     setProposals(state, action: PayloadAction<Proposal[]>) {
@@ -115,32 +105,6 @@ const governanceSlice = createSlice({
     setSelectedProposal(state, action: PayloadAction<Proposal>) {
       state.selectedProposal = action.payload;
     },
-    resetNewProposalFields(state, action: PayloadAction<void>) {
-      state.newProposalFields = {
-        ...initialState.newProposalFields,
-        error: {
-          ...initialState.newProposalFields.error,
-        },
-      };
-    },
-    setNewProposalFields(
-      state,
-      action: PayloadAction<{
-        key: keyof ContainerState["newProposalFields"];
-        value;
-      }>
-    ) {
-      state.newProposalFields[action.payload.key] = action.payload.value;
-    },
-    setNewProposalError(
-      state,
-      action: PayloadAction<{
-        key: keyof ContainerState["newProposalFields"]["error"];
-        value: string;
-      }>
-    ) {
-      state.newProposalFields.error[action.payload.key] = action.payload.value;
-    },
     vote(
       state,
       action: PayloadAction<{ proposal: Proposal; voteFor: number }>
@@ -148,7 +112,7 @@ const governanceSlice = createSlice({
     setIsSubmittingNewProposal(state, action: PayloadAction<boolean>) {
       state.isSubmittingNewProposal = action.payload;
     },
-    submitNewProposal(state, action: PayloadAction<void>) {},
+    submitNewProposal(state, action: PayloadAction<GovernancePageState['newProposalFields']>) {},
     setSyncedProposalsWithBlockchain(state, action: PayloadAction<boolean>) {
       state.syncedProposalsWithBlockchain = action.payload;
     },

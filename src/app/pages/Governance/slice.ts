@@ -17,6 +17,18 @@ export const initialState: ContainerState = {
   pairSearchInput: "",
   selectedPoolProviders: [],
   isVotingForFarms: false,
+  newProposalFields: {
+    title: "",
+    description: "",
+    discussion: "",
+    document: "",
+    votingPeriod: process.env.REACT_APP_MINIMUM_VOTING_PERIOD || "3",
+    error: {
+      title: "",
+      description: "",
+      votingPeriod: "",
+    },
+  },
 };
 
 const governancePageSlice = createSlice({
@@ -72,6 +84,32 @@ const governancePageSlice = createSlice({
     voteForFarms: (state, action: PayloadAction<void>) => {},
     setIsVotingForFarms: (state, action: PayloadAction<boolean>) => {
       state.isVotingForFarms = action.payload;
+    },
+    resetNewProposalFields(state, action: PayloadAction<void>) {
+      state.newProposalFields = {
+        ...initialState.newProposalFields,
+        error: {
+          ...initialState.newProposalFields.error,
+        },
+      };
+    },
+    setNewProposalFields(
+      state,
+      action: PayloadAction<{
+        key: keyof ContainerState["newProposalFields"];
+        value;
+      }>
+    ) {
+      state.newProposalFields[action.payload.key] = action.payload.value;
+    },
+    setNewProposalError(
+      state,
+      action: PayloadAction<{
+        key: keyof ContainerState["newProposalFields"]["error"];
+        value: string;
+      }>
+    ) {
+      state.newProposalFields.error[action.payload.key] = action.payload.value;
     },
   },
 });

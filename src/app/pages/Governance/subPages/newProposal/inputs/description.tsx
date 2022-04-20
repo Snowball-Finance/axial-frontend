@@ -1,18 +1,18 @@
+import React from "react";
 import { TextField } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import React from "react";
-import { GovernanceSelectors } from "app/containers/BlockChain/Governance/selectors";
-import { GovernanceActions } from "app/containers/BlockChain/Governance/slice";
+import { GovernancePageSelectors } from "app/pages/Governance/selectors";
+import { GovernancePageActions } from "app/pages/Governance/slice";
 
 export const DescriptionInput = () => {
   const fieldName = "description";
   const dispatch = useDispatch();
   const description = useSelector(
-    GovernanceSelectors.selectNewProposalField(fieldName)
+    GovernancePageSelectors.selectNewProposalField(fieldName)
   );
 
   const handleInputChange = (value: string) => {
-    dispatch(GovernanceActions.setNewProposalFields({ key: fieldName, value }));
+    dispatch(GovernancePageActions.setNewProposalFields({ key: fieldName, value }));
   };
 
   return (

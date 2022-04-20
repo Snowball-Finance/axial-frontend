@@ -14,6 +14,18 @@ export interface GovernancePageState {
   pairSearchInput: string;
   selectedPoolProviders: string[];
   isVotingForFarms: boolean;
+  newProposalFields: {
+    title: string;
+    description: string;
+    discussion: string;
+    document: string;
+    votingPeriod: string;
+    error: {
+      title: string;
+      description: string;
+      votingPeriod: string;
+    };
+  };
 }
 
 export type ContainerState = GovernancePageState;

@@ -6,7 +6,7 @@ import { RootState } from "store/types";
 import { EthersDomains } from "../Ethers/selectors";
 import { Web3Domains } from "../Web3/selectors";
 import { initialState } from "./slice";
-import { ContainerState, ProposalFilters, ProposalState } from "./types";
+import { ProposalFilters, ProposalState } from "./types";
 
 export const GovernanceDomains = {
   selectGovernanceDomain: (state: RootState) =>
@@ -30,11 +30,7 @@ export const GovernanceDomains = {
 
   selectSyncedProposalsWithBlockchainDomain: (state: RootState) =>
     state.governance?.syncedProposalsWithBlockchain || false,
-  selectNewProposalFieldsDomain: (state: RootState) =>
-    state.governance?.newProposalFields || {
-      ...initialState.newProposalFields,
-      error: { ...initialState.newProposalFields.error },
-    },
+
   selectIsLoadingReceiptDomain: (state: RootState) =>
     state.governance?.iseGettingReceipt || initialState.iseGettingReceipt,
   selectReceiptDomain: (state: RootState) =>
@@ -107,15 +103,7 @@ export const GovernanceSelectors = {
     GovernanceDomains.selectProposalsDomain,
     (proposals) => proposals
   ),
-  selectNewProposalFields: createSelector(
-    GovernanceDomains.selectNewProposalFieldsDomain,
-    (fields) => fields
-  ),
-  selectNewProposalField: (field: keyof ContainerState["newProposalFields"]) =>
-    createSelector(
-      GovernanceDomains.selectNewProposalFieldsDomain,
-      (fields) => fields[field]
-    ),
+
   selectIsVotingFor: createSelector(
     GovernanceDomains.selectIsVotingForDomain,
     (isVotingFor) => isVotingFor
