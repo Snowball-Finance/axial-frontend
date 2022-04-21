@@ -104,7 +104,6 @@ export function* getRewardPoolsData(action: {
 export function* getMasterChefBalances() {
   const account = yield select(Web3Domains.selectAccountDomain);
   const library = yield select(Web3Domains.selectLibraryDomain);
-
   try {
     yield put(RewardsActions.setIsGettingMasterChefBalances(true));
     const tokensList = Object.values(tokens).filter((token) => token.isLPToken);
@@ -124,7 +123,6 @@ export function* getMasterChefBalances() {
       masterchefBalancesCall,
       tokenAddressList
     );
-
     const _info: MasterchefResponse = {
       userInfo: {
         amount: BigNumber.from("0"),

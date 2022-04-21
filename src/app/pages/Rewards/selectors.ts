@@ -85,8 +85,13 @@ export const RewardsPageSelectors = {
       }
       return pools[key]?.poolData;
     }),
-  rewardsUserShareData: (key: string) =>
-    createSelector(RewardsDomains.pools, (pools) => pools[key]?.userShareData),
+  rewardsUserShareData: (key?: string) =>
+    createSelector(RewardsDomains.pools, (pools) =>{
+      if(key && pools[key]){
+        return pools[key].userShareData;
+      }
+      return undefined;
+    }),
   compoundWithSnowballLoading: createSelector(
     RewardsPageDomains.isCompoundWithSnowballLoading,
     (isLoading) => isLoading
