@@ -17,6 +17,13 @@ export const initialState: ContainerState = {
   pairSearchInput: "",
   selectedPoolProviders: [],
   isVotingForFarms: false,
+  submittedExecutionContexts: [],
+  currentExecutionContext: {
+    description: "",
+    contractAddress: "",
+    avaxValue: "",
+    data: "",
+  },
   newProposalFields: {
     title: "",
     description: "",
@@ -81,7 +88,7 @@ const governancePageSlice = createSlice({
       const tmp = fitGaugeWeightsProportionally(selectedPairs);
       state.selectedPairs = tmp;
     },
-    voteForFarms: (state, action: PayloadAction<void>) => {},
+    voteForFarms: (state, action: PayloadAction<void>) => { },
     setIsVotingForFarms: (state, action: PayloadAction<boolean>) => {
       state.isVotingForFarms = action.payload;
     },
@@ -111,6 +118,44 @@ const governancePageSlice = createSlice({
     ) {
       state.newProposalFields.error[action.payload.key] = action.payload.value;
     },
+    setCurrentExecutionContextField(
+      state,
+      action: PayloadAction<{
+        key: keyof ContainerState["currentExecutionContext"];
+        value;
+      }>
+    ) {
+      state.currentExecutionContext[action.payload.key] = action.payload.value;
+    },
+    addToSubmittedExecutionContexts(
+      state,
+      action: PayloadAction<ContainerState["currentExecutionContext"]>
+    ) {
+      state.submittedExecutionContexts.push(action.payload);
+    },
+    removeFromSubmittedExecutionContexts(
+      state,
+      action: PayloadAction<{ index: number }>
+    ) {
+      const { submittedExecutionContexts } = state;
+      const tmpSubmittedExecutionContexts = [...submittedExecutionContexts];
+      const { payload } = action;
+      const { index } = payload
+      tmpSubmittedExecutionContexts.splice(index, 1);
+      state.submittedExecutionContexts = tmpSubmittedExecutionContexts;
+    },
+    setSubmittedExecutionContextForEditing(
+      state,
+      action: PayloadAction<{ index: number }>
+    ) {
+      const { submittedExecutionContexts } = state;
+      const tmpSubmittedExecutionContexts = [...submittedExecutionContexts];
+      const { payload } = action;
+      const { index } = payload
+      state.currentExecutionContext = tmpSubmittedExecutionContexts[index];
+      tmpSubmittedExecutionContexts.splice(index, 1);
+      state.submittedExecutionContexts = tmpSubmittedExecutionContexts;
+    }
   },
 });
 

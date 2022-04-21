@@ -29,6 +29,12 @@ export const GovernancePageDomains = {
       ...initialState.newProposalFields,
       error: { ...initialState.newProposalFields.error },
     },
+    currentExecutionContext: (state: RootState) =>
+    state.governancePage?.currentExecutionContext || {
+      ...initialState.currentExecutionContext,
+    },
+    submittedExecutionContexts: (state: RootState) =>
+    state.governancePage?.submittedExecutionContexts || [],
 };
 
 export const GovernancePageSelectors = {
@@ -119,4 +125,23 @@ export const GovernancePageSelectors = {
     GovernancePageDomains.isVoteAllocationSelectionOpen,
     (isOpen) => isOpen
   ),
+  currentExecutionContext: createSelector(
+    GovernancePageDomains.currentExecutionContext,
+    (currentExecutionContext) => currentExecutionContext
+  ),
+  submittedExecutionContexts: createSelector(
+    GovernancePageDomains.submittedExecutionContexts,
+    (submittedExecutionContexts) => submittedExecutionContexts
+  ),
+  canSubmitNewExecutionContext: createSelector(
+    GovernancePageDomains.currentExecutionContext,
+    (currentExecutionContext)=>{
+      return  (
+        currentExecutionContext.description &&
+         currentExecutionContext.contractAddress &&
+         currentExecutionContext.data
+         
+         )
+    }
+  )
 };

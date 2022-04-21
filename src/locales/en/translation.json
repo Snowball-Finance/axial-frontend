@@ -226,7 +226,8 @@
   "GovernancePage": {
     "Status": "Status",
     "Date": "Date",
-    
+    "Execution": "Execution",
+    "ExecutionList":"Execution List",
     "ProposalNotFound": "Proposal Not Found",
     "VotingPeriodShouldBeBetween": "Voting period should be between {{min}} and {{max}} {{unit}}",
     "ActiveProposals": "Active Proposals",
