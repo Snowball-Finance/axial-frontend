@@ -196,6 +196,7 @@
   "Common": {
     "NoConnectedWallet": "No Connected Wallet",
     "Balance": "Balance",
+    "WalletBalance": "Wallet Balance",
     "GoBackTo": "Go Back To {{name}}",
     "SwitchToAvalanche": "Switch To Avalanche",
     "DownloadMetamask": "Download Metamask",
@@ -306,8 +307,9 @@
   },
   "Staking": {
     "Staking": "Staking",
-    "StakingRootsaxialDescs":"Lock your AXIAL to vote on governance proposals and rewards distributions.",
-    "StakingRootveAxialDescs":"Stake your AXIAL to boost your yields",
+    "StakingDesc": "Stake your AXIAL to boost your yields, OR vote.",
+    "StakingRootsaxialDescs":"LOCK AXIAL, VOTE WITH sAXIAL",
+    "StakingRootveAxialDescs":"STAKE WITH AXIAL, BOOST WITH veAXIAL",
     "Deposit": "Deposit",
     "Lock": "Lock",
     "Withdraw": "Withdraw",
@@ -320,7 +322,7 @@
     "AvailableToWithdraw_AMOUNT_GOVERNANCETOKENNAME": "Available to withdraw: {{amount}} {{governanceTokenName}}",
     "UnlockTokensDaily": "Unlock Tokens Daily",
     "UnlockTokensAtTheEndOfTheLockingPeriod": "Unlock Tokens At The End Of The Locking Period",
-    "YouWillGet_AMOUNT_TOKEN": "You will get {{amount}} {{token}}",
+    "YouWillGet_AMOUNT_TOKEN": "YOU WILL GET: {{amount}} {{token}}",
     "StakeMyTokens": "Stake My Tokens",
     "WithdrawMyTokens": "Withdraw My Tokens",
     "TokensLocked": "Tokens Locked",
@@ -330,6 +332,8 @@
     "DailyUnlocked": "Daily Unlocked",
     "MAIN_TOKEN_NAME_Unlocked": "{{mainTokenName}} Unlocked",
     "HowItWorks": "How it works",
+    "LockAxialDescription":"Lock your AXIAL to vote on governance proposals and earn tokens.",
+    "StakeAxialDescription":"Stake your AXIAL to boost your yields",
     "StakingBottomDescriptions_GOVERNANCETOKENNAME_MAINTOKENNAME":
     "Your {{governanceTokenName}} tokens will linearly decrease in amount and will be unlocked daily. Daily you can withdraw your {{mainTokenName}} tokens.",
     "WithdrawBottomDescriptions_GOVERNANCETOKENNAME_MAINTOKENNAME":"Your {{governanceTokenName}} tokens will linearly decrease in amount and will be unlocked daily. Daily you can withdraw your {{mainTokenName}} tokens.",
@@ -343,6 +347,17 @@
       "oneMonth": "1 Month",
       "oneYear": "1 Year",
       "twoYears": "2 Years"
-    }
+    },
+    "Info": {
+      "sAXIAL": "sAXIAL",
+      "AXIALUnlocked": "AXIAL Unlocked",
+      "LockEnd": "Lock End",
+      "veAXIAL": "veAXIAL",
+      "AXIALStaked": "AXIAL Staked",
+      "veAXIALearned": "veAXIAL EARNED"
+    },
+    "NothingToWithdraw": "Nothing to withdraw",
+    "AvailableToWithdraw": "Available to withdraw",
+    "WithdrawWarning_ACCRUINGTOKENNAME_MAINTOKENNAME": "WARNING: By withdrawing {{mainTokenName}} tokens, you will lose all of your accrued {{accruingTokenName}}."
   }
 }

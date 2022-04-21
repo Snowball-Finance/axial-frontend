@@ -6,7 +6,7 @@ import {
 } from "@mui/x-date-pickers";
 import { FC } from "react";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { BaseInputStyles } from "styles/baseInputStyles";
+// import { BaseInputStyles } from "styles/baseInputStyles";
 import { CssVariables, FontFamilies } from "styles/cssVariables/cssVariables";
 
 interface Props
@@ -31,7 +31,9 @@ export const SnowDatePicker: FC<Props> = ({ value, onChange, ...rest }) => {
 };
 const StyledTextField = styled(TextField)(({ theme }) => ({
   "& .MuiInputBase-input": {
-    ...BaseInputStyles({ theme }),
+    // ...BaseInputStyles({ theme }),
+    textAlign: "right",
+    paddingLeft: 20,
   },
   input: {
     fontSize: "26px !important",

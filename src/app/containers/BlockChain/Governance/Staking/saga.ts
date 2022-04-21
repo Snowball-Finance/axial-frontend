@@ -26,6 +26,7 @@ import { getAccruingTokenContract, getGovernanceTokenContract } from "../saga";
 import { checkAndApproveTokensInList } from "utils/tokenVerifier";
 import { Token } from "app/containers/Swap/types";
 import { skipLoading } from "app/types";
+import { GlobalActions } from "store/slice";
 
 export function* getLatestGovernanceData() {
   yield all([
@@ -53,7 +54,7 @@ export function* stakeGovernanceToken(action: {
 }) {
   const { amount, duration } = action.payload;
   const amountToStake = parseEther(amount.toString());
-  yield put(StakingActions.setIsStakingGovernanceToken(true));
+  yield put(GlobalActions.setTransactionSuccessId(undefined));
   const library = yield select(Web3Domains.selectLibraryDomain);
   //|| is used because if .env is not set,we will fetch the error in early stages
   const mainTokenAddress = env.MAIN_TOKEN_ADDRESS || "";
@@ -93,6 +94,7 @@ export function* stakeGovernanceToken(action: {
         console.debug("transaction not approved");
         return;
       }
+      yield put(StakingActions.setIsStakingGovernanceToken(true));
       const keepThaUnclaimedWhenExtendingLockPeriod = yield select(
         StakingDomains.keepThaUnclaimedWhenExtendingLockPeriod
       );
@@ -108,6 +110,11 @@ export function* stakeGovernanceToken(action: {
       if (transactionResponse.status) {
         const stringLock = BNToFloat(amountToStake)?.toString();
         toast.success(`locked ${stringLock} ${env.MAIN_TOKEN_NAME} `);
+        yield put(
+          GlobalActions.setTransactionSuccessId(
+            transactionResponse.transactionHash
+          )
+        );
         yield call(getLatestGovernanceData);
       }
     } else {
@@ -131,7 +138,7 @@ export function* stakeAccruingToken(action: {
 }) {
   const { amountToStake: amount } = action.payload;
   const amountToStake = parseEther(amount.toString());
-  yield put(StakingActions.setIsStakingGovernanceToken(true));
+  yield put(GlobalActions.setTransactionSuccessId(undefined));
   const library = yield select(Web3Domains.selectLibraryDomain);
   //|| is used because if .env is not set,we will fetch the error in early stages
   const mainTokenAddress = env.MAIN_TOKEN_ADDRESS || "";
@@ -167,12 +174,18 @@ export function* stakeAccruingToken(action: {
         console.debug("transaction not approved");
         return;
       }
+      yield put(StakingActions.setIsStakingGovernanceToken(true));
       const tokenLock = yield call(accruingTokenContract.stake, amountToStake);
 
       const transactionResponse = yield call(tokenLock.wait, 1);
       if (transactionResponse.status) {
         const stringLock = BNToFloat(amountToStake)?.toString();
         toast.success(`deposited ${stringLock} ${env.MAIN_TOKEN_NAME}`);
+        yield put(
+          GlobalActions.setTransactionSuccessId(
+            transactionResponse.transactionHash
+          )
+        );
         yield call(getLatestGovernanceData);
       }
     } else {
@@ -295,6 +308,7 @@ export function* getLockedGovernanceTokenInfo(action: {
 }
 
 export function* withdrawGovernanceToken() {
+  yield put(GlobalActions.setTransactionSuccessId(undefined));
   yield put(StakingActions.setIsWithdrawingGovernanceToken(true));
 
   try {
@@ -312,6 +326,11 @@ export function* withdrawGovernanceToken() {
     if (transactionWithdraw.status) {
       yield call(getLatestGovernanceData);
       yield put(StakingActions.setIsWithdrawingGovernanceToken(true));
+      yield put(
+        GlobalActions.setTransactionSuccessId(
+          transactionWithdraw.transactionHash
+        )
+      );
       toast.success(`withdrawed available ${env.GOVERNANCE_TOKEN_NAME}`);
     }
   } catch (e: any) {
@@ -351,6 +370,7 @@ export function* getClaimableGovernanceToken() {
   }
 }
 export function* withdrawAccruingToken() {
+  yield put(GlobalActions.setTransactionSuccessId(undefined));
   yield put(StakingActions.setIsWithdrawingAccruingToken(true));
 
   try {
@@ -367,6 +387,11 @@ export function* withdrawAccruingToken() {
       toast.success(`withdrawed all ${env.ACCRUING_TOKEN_NAME} amount`);
       yield call(getLatestGovernanceData);
       yield put(StakingActions.setIsWithdrawingAccruingToken(false));
+      yield put(
+        GlobalActions.setTransactionSuccessId(
+          transactionWithdraw.transactionHash
+        )
+      );
     }
   } catch (e: any) {
     yield put(StakingActions.setIsWithdrawingAccruingToken(false));

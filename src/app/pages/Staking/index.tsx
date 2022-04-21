@@ -6,10 +6,10 @@
 import { useStakingPageSlice } from "./slice";
 import { Route, Switch } from "react-router-dom";
 import { AppPages } from "app/types";
-import { StakingRoot } from "./pages/root";
 import { StakingSubPages } from "./routes";
-import { SAxialPage } from "./pages/sAxial";
-import { VeAxialPage } from "./pages/veAxial";
+import { StakingRoot } from "./subPages/Root";
+import { SAxialPage } from "./subPages/SAxial";
+import { VeAxialPage } from "./subPages/VeAxial";
 
 interface Props {}
 export function StakingPage(props: Props) {

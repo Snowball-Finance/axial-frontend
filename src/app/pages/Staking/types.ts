@@ -15,6 +15,7 @@ export interface StakingPageState {
   selectedVeAxialDepositAndWithdrawTab: DepositAndWithdrawTab;
   selectedDepositUnlockPeriod: DepositUnlockPeriod;
   selectedDepositSliderValue: number;
+  isModalOpen: boolean;
 }
 
 export type ContainerState = StakingPageState;
