@@ -115,7 +115,6 @@ function getUserMasterchefInfo(
   account: string,
   masterchefId: number
 ): ContractCall {
-
   const contractCall = new ContractCall(
     AXIAL_MASTERCHEF_CONTRACT_ADDRESS || "",
     MASTERCHEF,

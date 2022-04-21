@@ -18,8 +18,10 @@ interface Props {
 }
 
 export const Rewards: FC<Props> = ({ pools }) => {
-  if(!process.env.REACT_APP_AXIAL_MASTERCHEF_CONTRACT_ADDRESS){
-    throw Error('REACT_APP_AXIAL_MASTERCHEF_CONTRACT_ADDRESS should be set in .env')
+  if (!process.env.REACT_APP_AXIAL_MASTERCHEF_CONTRACT_ADDRESS) {
+    throw Error(
+      "REACT_APP_AXIAL_MASTERCHEF_CONTRACT_ADDRESS should be set in .env"
+    );
   }
   useRewardsSlice();
 

@@ -45,6 +45,33 @@ import { Deadlines, formatDeadlineToNumber } from "./utils/deadline";
 import { GlobalActions } from "store/slice";
 import { toast } from "react-toastify";
 
+export function* getRewardPoolData(payload: {
+  pool: Pool;
+  useMasterchef: boolean;
+}) {
+  const { pool, useMasterchef } = payload;
+  const networkLibrary = yield select(Web3Domains.selectNetworkLibraryDomain);
+  const account = yield select(Web3Domains.selectAccountDomain);
+  const chainId = yield select(Web3Domains.selectChainIDDomain);
+  const tokenPricesUSD = yield select(GlobalDomains.tokenPricesUSD);
+  const masterchefApr = yield select(RewardsDomains.masterchefApr);
+  const masterchefBalances = yield select(RewardsDomains.masterChefBalances);
+  const swapStats = yield select(RewardsDomains.swapStats);
+  const dataToPass: CalculatePoolDataProps = {
+    pool,
+    account,
+    chainId,
+    library: networkLibrary,
+    useMasterchef,
+    tokenPricesUSD,
+    masterchefApr,
+    masterchefBalances,
+    swapStats,
+  };
+  const result = yield call(calculatePoolData, dataToPass);
+  return result;
+}
+
 export function* getRewardPoolsData(action: {
   type: string;
   payload: RewardsState["pools"];
