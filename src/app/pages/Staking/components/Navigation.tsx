@@ -3,7 +3,9 @@ import { styled, Grid, Typography, Divider } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { push } from "connected-react-router";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import { useTranslation } from "react-i18next";
 
+import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { AppPages } from "app/types";
 
@@ -12,6 +14,7 @@ interface Props {
 }
 
 export const Navigation: FC<Props> = ({ routeName }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const goToAxialRoot = () => {
@@ -26,7 +29,7 @@ export const Navigation: FC<Props> = ({ routeName }) => {
 
       <Grid item>
         <ActiveText variant="h2" onClick={goToAxialRoot}>
-          PROPOSALS
+          {t(translations.Staking.Staking())}
         </ActiveText>
       </Grid>
 
