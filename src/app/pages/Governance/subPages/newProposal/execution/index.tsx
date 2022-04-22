@@ -4,7 +4,10 @@ import { ContainedButton } from "app/components/common/buttons/containedButton";
 import { SectionTitle } from "app/pages/Governance/components/title";
 import { GovernancePageSelectors } from "app/pages/Governance/selectors";
 import { GovernancePageActions } from "app/pages/Governance/slice";
-import { ExecutionContext, GovernancePageState } from "app/pages/Governance/types";
+import {
+  ExecutionContext,
+  GovernancePageState,
+} from "app/pages/Governance/types";
 import { env } from "environment";
 import { translations } from "locales/i18n";
 import { useTranslation } from "react-i18next";
@@ -37,26 +40,29 @@ export const Execution = () => {
     );
   };
 
-  const handleAdd2Examples=()=>{
-    const t1='0xa9059cbb000000000000000000000000c99ee029ebaeaf473ef69aef6633489d9ae533850000000000000000000000000000000000000000000000000000000000000001'
-    const t2='0xa9059cbb000000000000000000000000c99ee029ebaeaf473ef69aef6633489d9ae533850000000000000000000000000000000000000000000000000000000000000004'
-    const examples:ExecutionContext[]=[
+  const handleAdd2Examples = () => {
+    const t1 =
+      "0xa9059cbb000000000000000000000000c99ee029ebaeaf473ef69aef6633489d9ae533850000000000000000000000000000000000000000000000000000000000000001";
+    const t2 =
+      "0xa9059cbb000000000000000000000000c99ee029ebaeaf473ef69aef6633489d9ae533850000000000000000000000000000000000000000000000000000000000000004";
+    const examples: ExecutionContext[] = [
       {
-        avaxValue:'0',
-        contractAddress:env.MAIN_TOKEN_ADDRESS||'',
-        data:t1,
-        description:'send some money to  0xC99Ee029ebaeaf473eF69Aef6633489d9aE53385'
+        avaxValue: "0",
+        contractAddress: env.MAIN_TOKEN_ADDRESS || "",
+        data: t1,
+        description:
+          "send some money to  0xC99Ee029ebaeaf473eF69Aef6633489d9aE53385",
       },
       {
-        avaxValue:'0',
-        contractAddress:env.MAIN_TOKEN_ADDRESS||'',
-        data:t2,
-        description:'send more money to  0xC99Ee029ebaeaf473eF69Aef6633489d9aE53385'
-      }
-    ]
-    dispatch(GovernancePageActions.setExecutionContextArray(examples))
-
-  }
+        avaxValue: "0",
+        contractAddress: env.MAIN_TOKEN_ADDRESS || "",
+        data: t2,
+        description:
+          "send more money to  0xC99Ee029ebaeaf473eF69Aef6633489d9aE53385",
+      },
+    ];
+    dispatch(GovernancePageActions.setExecutionContextArray(examples));
+  };
 
   return (
     <>

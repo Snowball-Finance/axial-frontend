@@ -109,26 +109,26 @@ export function* vote(action: {
 
 export function* saveToIPFS(data: any) {
   let metadataURI;
-  const url = process.env.REACT_APP_IPFS_API_URL
+  const url = process.env.REACT_APP_IPFS_API_URL;
   try {
     const res = yield call(axios.request, {
       method: "POST",
       url,
       data: JSON.stringify(data),
       headers: {
-        'Content-Type': "application/json",
-      }
+        "Content-Type": "application/json",
+      },
     });
     if (res.status == 201 && res.headers["ipfs-hash"]) {
-      console.log("Proposal metadata hash: ", res.headers["ipfs-hash"])
-      metadataURI = url + res.headers["ipfs-hash"]
+      console.log("Proposal metadata hash: ", res.headers["ipfs-hash"]);
+      metadataURI = url + res.headers["ipfs-hash"];
     } else {
-      throw Error("Unexpected IPFS error")
+      throw Error("Unexpected IPFS error");
     }
   } catch (error) {
     console.log(error);
   }
-  return metadataURI
+  return metadataURI;
 }
 
 export function* submitNewProposal(action: {
@@ -167,10 +167,10 @@ export function* submitNewProposal(action: {
       document,
       executionLabels: labels,
     };
-    const ipfsUrl = yield call(saveToIPFS, metaData)
-    metaData.ipfs = ipfsUrl
+    const ipfsUrl = yield call(saveToIPFS, metaData);
+    metaData.ipfs = ipfsUrl;
     if (!ipfsUrl) {
-      throw Error('error while saving new proposal data')
+      throw Error("error while saving new proposal data");
     }
     const stringifiedMetadata = JSON.stringify(metaData);
     const votingPeriodInSeconds = Number(votingPeriod) * 60 * 60 * 24;
@@ -179,7 +179,7 @@ export function* submitNewProposal(action: {
       title,
       stringifiedMetadata,
       votingPeriodInSeconds,
-      labels.length>=0
+      labels.length >= 0
     );
     let parsedExecutionContext;
     try {
@@ -327,7 +327,7 @@ export function* getTotalGovernanceTokenSupply() {
 
 export function* syncProposalsWithBlockchain() {
   try {
-    const governanceContract = yield call(getGovernanceContract)
+    const governanceContract = yield call(getGovernanceContract);
     const numberOfProposalsOnBlockChain = yield call(
       governanceContract.proposalCount
     );

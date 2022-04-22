@@ -31,6 +31,7 @@ export const Governance = ({
     GOVERNANCE_TOKEN_LOGO_ADDRESS:
       process.env.REACT_APP_GOVERNANCE_TOKEN_LOGO_ADDRESS,
     VOTING_CONTRACT_ADDRESS: process.env.REACT_APP_VOTING_CONTRACT_ADDRESS,
+    IPFS_API_URL: process.env.REACT_APP_IPFS_API_URL,
   };
 
   for (let key in variables) {
