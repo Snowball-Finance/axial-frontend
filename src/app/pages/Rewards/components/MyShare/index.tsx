@@ -18,9 +18,6 @@ export const MyShare: FC = () => {
   const userShareData = useSelector(
     RewardsPageSelectors.userShareDataUsingMasterchef
   );
-  if (!userShareData) {
-    return <></>;
-  }
 
   return (
     <Grid container spacing={2}>
@@ -33,7 +30,7 @@ export const MyShare: FC = () => {
 
         <Grid item>
           <MyShareBalanceText variant="body1">
-            {formatBNToPercentString(userShareData.share, 18)}{" "}
+            {formatBNToPercentString(userShareData?.share || Zero, 18)}{" "}
             {t(translations.RewardsPage.MyShare.OfPool())}
           </MyShareBalanceText>
         </Grid>
@@ -58,7 +55,9 @@ export const MyShare: FC = () => {
                 <Grid item>
                   <BalanceText variant="body2">
                     $
-                    {commify(formatBNToString(userShareData.usdBalance, 18, 2))}
+                    {commify(
+                      formatBNToString(userShareData?.usdBalance || Zero, 18, 2)
+                    )}
                   </BalanceText>
                 </Grid>
               </Grid>
@@ -83,7 +82,7 @@ export const MyShare: FC = () => {
                     {userShareData &&
                       commify(
                         formatBNToString(
-                          userShareData.masterchefBalance?.userInfo.amount ||
+                          userShareData?.masterchefBalance?.userInfo.amount ||
                             Zero,
                           18
                         )
@@ -112,7 +111,7 @@ export const MyShare: FC = () => {
                     {userShareData &&
                       commify(
                         formatBNToString(
-                          userShareData.masterchefBalance?.pendingTokens
+                          userShareData?.masterchefBalance?.pendingTokens
                             ?.pendingAxial || Zero,
                           18
                         )
