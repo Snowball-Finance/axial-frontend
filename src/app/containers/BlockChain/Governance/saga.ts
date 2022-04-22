@@ -22,6 +22,7 @@ import { skipLoading } from "app/types";
 import { getProviderOrSigner } from "app/containers/utils/contractUtils";
 import { ExecutionContext } from "app/pages/Governance/types";
 import { GovernancePageActions } from "app/pages/Governance/slice";
+import axios from "axios";
 
 export function* getProposals(action: {
   type: string;
@@ -106,6 +107,30 @@ export function* vote(action: {
   }
 }
 
+export function* saveToIPFS(data: any) {
+  let metadataURI;
+  const url = process.env.REACT_APP_IPFS_API_URL
+  try {
+    const res = yield call(axios.request, {
+      method: "POST",
+      url,
+      data: JSON.stringify(data),
+      headers: {
+        'Content-Type': "application/json",
+      }
+    });
+    if (res.status == 201 && res.headers["ipfs-hash"]) {
+      console.log("Proposal metadata hash: ", res.headers["ipfs-hash"])
+      metadataURI = url + res.headers["ipfs-hash"]
+    } else {
+      throw Error("Unexpected IPFS error")
+    }
+  } catch (error) {
+    console.log(error);
+  }
+  return metadataURI
+}
+
 export function* submitNewProposal(action: {
   type: string;
   payload: SubmitNewProposalPayload;
@@ -119,7 +144,6 @@ export function* submitNewProposal(action: {
   const targets: string[] = [];
   const values: number[] = [];
   const data: string[] = [];
-
   if (action.payload.executionContexts) {
     executionContexts = action.payload.executionContexts;
   }
@@ -133,14 +157,21 @@ export function* submitNewProposal(action: {
       values.push(Number(element.avaxValue));
     }
   });
+
   try {
     const governanceContract: Governance = yield call(getGovernanceContract);
-    const metaData = {
+    const metaData: any = {
       title,
       description,
       discussion,
       document,
+      executionLabels: labels,
     };
+    const ipfsUrl = yield call(saveToIPFS, metaData)
+    metaData.ipfs = ipfsUrl
+    if (!ipfsUrl) {
+      throw Error('error while saving new proposal data')
+    }
     const stringifiedMetadata = JSON.stringify(metaData);
     const votingPeriodInSeconds = Number(votingPeriod) * 60 * 60 * 24;
     const parsedMetaData = yield call(
@@ -148,7 +179,7 @@ export function* submitNewProposal(action: {
       title,
       stringifiedMetadata,
       votingPeriodInSeconds,
-      false
+      labels.length>=0
     );
     let parsedExecutionContext;
     try {
@@ -296,17 +327,7 @@ export function* getTotalGovernanceTokenSupply() {
 
 export function* syncProposalsWithBlockchain() {
   try {
-    const library = yield select(Web3Domains.selectLibraryDomain);
-    const GOVERNANCE_ABI = yield select(
-      GovernanceDomains.selectGovernanceABIDomain
-    );
-    const voteContractAddress = env.VOTING_CONTRACT_ADDRESS;
-    const governanceContract = new ethers.Contract(
-      //using ||'' because we made sure env.VOTING_CONTRACT_ADDRESS exists in the index of module,and want to ignore the ts error
-      voteContractAddress || "",
-      GOVERNANCE_ABI,
-      library.getSigner()
-    );
+    const governanceContract = yield call(getGovernanceContract)
     const numberOfProposalsOnBlockChain = yield call(
       governanceContract.proposalCount
     );

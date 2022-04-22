@@ -63,6 +63,7 @@ export const Governance = ({
     dispatch(GovernanceActions.setGovernanceABI(governanceABI));
     dispatch(GovernanceActions.setGovernanceTokenABI(tokenABI));
     dispatch(GovernanceActions.getProposals({}));
+    dispatch(GovernanceActions.getProposals({}));
     return () => {};
   }, []);
 

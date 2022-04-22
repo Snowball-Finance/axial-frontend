@@ -140,6 +140,12 @@ const governancePageSlice = createSlice({
         ...initialState.currentExecutionContext,
       };
     },
+    setExecutionContextArray(
+      state,
+      action: PayloadAction<ContainerState["submittedExecutionContexts"]>
+    ) {
+      state.submittedExecutionContexts = action.payload;
+    },
     removeFromSubmittedExecutionContexts(
       state,
       action: PayloadAction<{ index: number }>

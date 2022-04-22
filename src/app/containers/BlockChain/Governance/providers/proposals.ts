@@ -1,3 +1,4 @@
+import axios from "axios";
 import { env } from "environment";
 
 export const GetProposalsAPI = async () => {
