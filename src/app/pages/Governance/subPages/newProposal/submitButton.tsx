@@ -6,6 +6,7 @@ import { GovernanceActions } from "app/containers/BlockChain/Governance/slice";
 import { ContainedButton } from "app/components/common/buttons/containedButton";
 import { translations } from "locales/i18n";
 import { GovernancePageSelectors } from "../../selectors";
+import { GovernancePageActions } from "../../slice";
 
 export const NewProposalSubmitButton = () => {
   const { t } = useTranslation();
@@ -16,7 +17,7 @@ export const NewProposalSubmitButton = () => {
   );
 
   const handleSubmitButton = () => {
-    dispatch(GovernanceActions.submitNewProposal());
+    dispatch(GovernancePageActions.submitNewProposal());
   };
 
   const { title, votingPeriod, description } = fields;

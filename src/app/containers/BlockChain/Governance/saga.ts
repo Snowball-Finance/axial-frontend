@@ -20,10 +20,7 @@ import AccruingTokenABI from "abi/veAxial.json";
 import { StakingActions } from "./Staking/slice";
 import { skipLoading } from "app/types";
 import { getProviderOrSigner } from "app/containers/utils/contractUtils";
-import {
-  ExecutionContext,
-  GovernancePageState,
-} from "app/pages/Governance/types";
+import { ExecutionContext } from "app/pages/Governance/types";
 import { GovernancePageActions } from "app/pages/Governance/slice";
 
 export function* getProposals(action: {
@@ -120,7 +117,7 @@ export function* submitNewProposal(action: {
   let executionContexts: ExecutionContext[] = [];
   const labels: string[] = [];
   const targets: string[] = [];
-  const values: string[] = [];
+  const values: number[] = [];
   const data: string[] = [];
 
   if (action.payload.executionContexts) {
@@ -129,32 +126,44 @@ export function* submitNewProposal(action: {
   executionContexts.forEach((element) => {
     labels.push(element.description);
     targets.push(element.contractAddress);
-    values.push(element.avaxValue);
     data.push(element.data);
+    if (isNaN(Number(element.avaxValue))) {
+      values.push(0);
+    } else {
+      values.push(Number(element.avaxValue));
+    }
   });
   try {
     const governanceContract: Governance = yield call(getGovernanceContract);
     const metaData = {
       title,
       description,
+      discussion,
       document,
     };
     const stringifiedMetadata = JSON.stringify(metaData);
+    const votingPeriodInSeconds = Number(votingPeriod) * 60 * 60 * 24;
     const parsedMetaData = yield call(
       governanceContract.constructProposalMetadata,
       title,
       stringifiedMetadata,
-      Number(votingPeriod),
+      votingPeriodInSeconds,
       false
     );
-    const parsedExecutionContext = yield call(
-      governanceContract.constructProposalExecutionContexts,
-      labels,
-      targets,
-      values,
-      data
-    );
-
+    let parsedExecutionContext;
+    try {
+      parsedExecutionContext = yield call(
+        governanceContract.constructProposalExecutionContexts,
+        labels,
+        targets,
+        values,
+        data
+      );
+    } catch (error) {
+      console.log(error);
+      toast.error("error while parsing execution contexts");
+      return;
+    }
     const transaction = yield call(
       governanceContract.propose,
       parsedMetaData,
@@ -166,6 +175,7 @@ export function* submitNewProposal(action: {
       yield put(GovernancePageActions.resetNewProposalFields());
     }
   } catch (error: any) {
+    console.log(error);
     const message = error?.data?.message;
     if (message) {
       toast.error(

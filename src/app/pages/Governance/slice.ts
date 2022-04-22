@@ -163,6 +163,7 @@ const governancePageSlice = createSlice({
       tmpSubmittedExecutionContexts.splice(index, 1);
       state.submittedExecutionContexts = tmpSubmittedExecutionContexts;
     },
+    submitNewProposal: (state, action: PayloadAction<void>) => {},
   },
 });
 

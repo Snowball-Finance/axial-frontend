@@ -40,7 +40,7 @@ export const ExecutionList = () => {
       {submittedExecutionContexts.map(
         ({ description, contractAddress, avaxValue, data }, index) => {
           return (
-            <StyledCard>
+            <StyledCard key={index}>
               <div>{description}</div>
               <div>{contractAddress}</div>
               <div>{avaxValue}</div>
