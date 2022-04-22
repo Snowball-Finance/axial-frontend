@@ -5,7 +5,7 @@ export interface SelectablePoolProvider extends PoolProvider {
   gauges: GaugeItem[];
 }
 
-export interface ExecutionContext{
+export interface ExecutionContext {
   description: string;
   contractAddress: string;
   avaxValue: string;

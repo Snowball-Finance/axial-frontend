@@ -12,7 +12,9 @@ export const DescriptionInput = () => {
   );
 
   const handleInputChange = (value: string) => {
-    dispatch(GovernancePageActions.setNewProposalFields({ key: fieldName, value }));
+    dispatch(
+      GovernancePageActions.setNewProposalFields({ key: fieldName, value })
+    );
   };
 
   return (

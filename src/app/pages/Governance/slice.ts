@@ -88,11 +88,15 @@ const governancePageSlice = createSlice({
       const tmp = fitGaugeWeightsProportionally(selectedPairs);
       state.selectedPairs = tmp;
     },
-    voteForFarms: (state, action: PayloadAction<void>) => { },
+    voteForFarms: (state, action: PayloadAction<void>) => {},
     setIsVotingForFarms: (state, action: PayloadAction<boolean>) => {
       state.isVotingForFarms = action.payload;
     },
     resetNewProposalFields(state, action: PayloadAction<void>) {
+      state.currentExecutionContext = {
+        ...initialState.currentExecutionContext,
+      };
+      state.submittedExecutionContexts = [];
       state.newProposalFields = {
         ...initialState.newProposalFields,
         error: {
@@ -132,6 +136,9 @@ const governancePageSlice = createSlice({
       action: PayloadAction<ContainerState["currentExecutionContext"]>
     ) {
       state.submittedExecutionContexts.push(action.payload);
+      state.currentExecutionContext = {
+        ...initialState.currentExecutionContext,
+      };
     },
     removeFromSubmittedExecutionContexts(
       state,
@@ -140,7 +147,7 @@ const governancePageSlice = createSlice({
       const { submittedExecutionContexts } = state;
       const tmpSubmittedExecutionContexts = [...submittedExecutionContexts];
       const { payload } = action;
-      const { index } = payload
+      const { index } = payload;
       tmpSubmittedExecutionContexts.splice(index, 1);
       state.submittedExecutionContexts = tmpSubmittedExecutionContexts;
     },
@@ -151,11 +158,11 @@ const governancePageSlice = createSlice({
       const { submittedExecutionContexts } = state;
       const tmpSubmittedExecutionContexts = [...submittedExecutionContexts];
       const { payload } = action;
-      const { index } = payload
+      const { index } = payload;
       state.currentExecutionContext = tmpSubmittedExecutionContexts[index];
       tmpSubmittedExecutionContexts.splice(index, 1);
       state.submittedExecutionContexts = tmpSubmittedExecutionContexts;
-    }
+    },
   },
 });
 

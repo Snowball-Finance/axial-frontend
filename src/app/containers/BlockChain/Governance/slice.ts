@@ -1,5 +1,11 @@
 import { PayloadAction } from "@reduxjs/toolkit";
-import { ContainerState, Proposal, ProposalFilters, Receipt } from "./types";
+import {
+  ContainerState,
+  Proposal,
+  ProposalFilters,
+  Receipt,
+  SubmitNewProposalPayload,
+} from "./types";
 import { createSlice } from "store/toolkit";
 import { useInjectReducer, useInjectSaga } from "store/redux-injectors";
 import { governanceSaga } from "./saga";
@@ -27,7 +33,6 @@ export const initialState: ContainerState = {
   totalGovernanceTokenSupply: BigNumber.from(0),
   totalAccruedToken: BigNumber.from(0),
   totalMainTokenStakedForAccruingToken: BigNumber.from(0),
-
 };
 
 const governanceSlice = createSlice({
@@ -73,10 +78,7 @@ const governanceSlice = createSlice({
     setGovernanceTokenContract(state, action: PayloadAction<any>) {
       state.governanceTokenContract = action.payload;
     },
-    getProposals(
-      state,
-      action: PayloadAction<{ silent?: boolean }>
-    ) {},
+    getProposals(state, action: PayloadAction<{ silent?: boolean }>) {},
     getVotingReceipt(state, action: PayloadAction<{ proposal: Proposal }>) {
       state.receipt = undefined;
     },
@@ -112,7 +114,10 @@ const governanceSlice = createSlice({
     setIsSubmittingNewProposal(state, action: PayloadAction<boolean>) {
       state.isSubmittingNewProposal = action.payload;
     },
-    submitNewProposal(state, action: PayloadAction<GovernancePageState['newProposalFields']>) {},
+    submitNewProposal(
+      state,
+      action: PayloadAction<SubmitNewProposalPayload>
+    ) {},
     setSyncedProposalsWithBlockchain(state, action: PayloadAction<boolean>) {
       state.syncedProposalsWithBlockchain = action.payload;
     },

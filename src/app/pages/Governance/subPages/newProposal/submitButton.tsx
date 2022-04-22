@@ -16,7 +16,7 @@ export const NewProposalSubmitButton = () => {
   );
 
   const handleSubmitButton = () => {
-    dispatch(GovernanceActions.submitNewProposal(fields));
+    dispatch(GovernanceActions.submitNewProposal());
   };
 
   const { title, votingPeriod, description } = fields;

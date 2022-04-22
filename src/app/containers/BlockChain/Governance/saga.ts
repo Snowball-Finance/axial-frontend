@@ -2,7 +2,12 @@ import { BigNumber, Contract, ethers } from "ethers";
 import { toast } from "react-toastify";
 import { all, call, put, select, takeLatest } from "redux-saga/effects";
 import { GovernanceActions } from "./slice";
-import { ContainerState, Proposal, Receipt } from "./types";
+import {
+  ContainerState,
+  Proposal,
+  Receipt,
+  SubmitNewProposalPayload,
+} from "./types";
 import { BNToFloat } from "common/format";
 import { totalSupplyProvider } from "app/containers/BlockChain/providers/balanceAPI";
 import { env } from "environment";
@@ -15,11 +20,15 @@ import AccruingTokenABI from "abi/veAxial.json";
 import { StakingActions } from "./Staking/slice";
 import { skipLoading } from "app/types";
 import { getProviderOrSigner } from "app/containers/utils/contractUtils";
-import { GovernancePageState } from "app/pages/Governance/types";
+import {
+  ExecutionContext,
+  GovernancePageState,
+} from "app/pages/Governance/types";
+import { GovernancePageActions } from "app/pages/Governance/slice";
 
 export function* getProposals(action: {
   type: string;
-  payload: { silent?: boolean};
+  payload: { silent?: boolean };
 }) {
   const { silent } = action.payload;
   if (!silent) {
@@ -27,7 +36,7 @@ export function* getProposals(action: {
   }
   try {
     const response = yield call(GetProposalsAPI);
-    const proposals: Proposal[] = []//response.data.ProposalList.proposals;
+    const proposals: Proposal[] = []; //response.data.ProposalList.proposals;
     //TODO get id and status of proposals
     yield put(GovernanceActions.setProposals(proposals));
   } catch (error) {
@@ -100,30 +109,62 @@ export function* vote(action: {
   }
 }
 
-export function* submitNewProposal(action:{type:string,payload:GovernancePageState['newProposalFields']}) {
+export function* submitNewProposal(action: {
+  type: string;
+  payload: SubmitNewProposalPayload;
+}) {
   yield put(GovernanceActions.setIsSubmittingNewProposal(true));
-  const proposalFields=action.payload
-  const { title, votingPeriod, discussion } = proposalFields;
-  const metadataURI = discussion;
-  console.log({
-    title,
-    votingPeriod,
-    metadataURI,
-    discussion,
+  const proposalFields = action.payload.newProposalFields;
+  const { title, votingPeriod, discussion, description, document } =
+    proposalFields;
+  let executionContexts: ExecutionContext[] = [];
+  const labels: string[] = [];
+  const targets: string[] = [];
+  const values: string[] = [];
+  const data: string[] = [];
+
+  if (action.payload.executionContexts) {
+    executionContexts = action.payload.executionContexts;
+  }
+  executionContexts.forEach((element) => {
+    labels.push(element.description);
+    targets.push(element.contractAddress);
+    values.push(element.avaxValue);
+    data.push(element.data);
   });
   try {
-    //     const governanceContract:Governance= yield call(getGovernanceContract);
-    //     // const metaData:Governance.ProposalStruct={
-    //     //   title,
-    //     //   votingPeriod,
-    //     //   proposer: yield select(Web3Domains.selectAccountDomain),
-    //     // }
-    // const transaction=yield call(governanceContract.propose,)
-    // const transactionStatus=yield call(transaction.wait,1)
-    // if(transactionStatus.status){
-    //   toast.success("Proposal submitted successfully")
-    //   yield put(GovernanceActions.resetNewProposalFields())
-    // }
+    const governanceContract: Governance = yield call(getGovernanceContract);
+    const metaData = {
+      title,
+      description,
+      document,
+    };
+    const stringifiedMetadata = JSON.stringify(metaData);
+    const parsedMetaData = yield call(
+      governanceContract.constructProposalMetadata,
+      title,
+      stringifiedMetadata,
+      Number(votingPeriod),
+      false
+    );
+    const parsedExecutionContext = yield call(
+      governanceContract.constructProposalExecutionContexts,
+      labels,
+      targets,
+      values,
+      data
+    );
+
+    const transaction = yield call(
+      governanceContract.propose,
+      parsedMetaData,
+      parsedExecutionContext
+    );
+    const transactionStatus = yield call(transaction.wait, 1);
+    if (transactionStatus.status) {
+      toast.success("Proposal submitted successfully");
+      yield put(GovernancePageActions.resetNewProposalFields());
+    }
   } catch (error: any) {
     const message = error?.data?.message;
     if (message) {

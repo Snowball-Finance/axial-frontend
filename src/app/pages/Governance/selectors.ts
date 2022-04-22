@@ -24,16 +24,16 @@ export const GovernancePageDomains = {
     ],
   isVotingForFarms: (state: RootState) =>
     state.governancePage?.isVotingForFarms || initialState.isVotingForFarms,
-    newProposalFields: (state: RootState) =>
+  newProposalFields: (state: RootState) =>
     state.governancePage?.newProposalFields || {
       ...initialState.newProposalFields,
       error: { ...initialState.newProposalFields.error },
     },
-    currentExecutionContext: (state: RootState) =>
+  currentExecutionContext: (state: RootState) =>
     state.governancePage?.currentExecutionContext || {
       ...initialState.currentExecutionContext,
     },
-    submittedExecutionContexts: (state: RootState) =>
+  submittedExecutionContexts: (state: RootState) =>
     state.governancePage?.submittedExecutionContexts || [],
 };
 
@@ -135,13 +135,12 @@ export const GovernancePageSelectors = {
   ),
   canSubmitNewExecutionContext: createSelector(
     GovernancePageDomains.currentExecutionContext,
-    (currentExecutionContext)=>{
-      return  (
+    (currentExecutionContext) => {
+      return (
         currentExecutionContext.description &&
-         currentExecutionContext.contractAddress &&
-         currentExecutionContext.data
-         
-         )
+        currentExecutionContext.contractAddress &&
+        currentExecutionContext.data
+      );
     }
-  )
+  ),
 };

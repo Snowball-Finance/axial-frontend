@@ -3,8 +3,10 @@ import { Max1040 } from "app/components/wrappers/max1040";
 import { VotePower } from "app/pages/Governance/components/votePower";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { mobile } from "styles/media";
+import { Execution } from "./execution";
 import { ProposalForm } from "./proposalForm";
 import { ProposalInfo } from "./proposalInfo";
+import { NewProposalSubmitButton } from "./submitButton";
 
 export const NewProposalForm = () => {
   return (
@@ -14,6 +16,10 @@ export const NewProposalForm = () => {
           <VotePower />
           <ProposalInfo />
           <ProposalForm />
+          <Execution />
+          <SubmitWrapper>
+            <NewProposalSubmitButton />
+          </SubmitWrapper>
         </ProposalBodyWrapper>
       </ContentWrapper>
     </Wrapper>
@@ -45,3 +51,8 @@ const Wrapper = styled("div")(() => ({
   zIndex: 2,
   width: "100%",
 }));
+
+const SubmitWrapper = styled("div")({
+  display: "flex",
+  alignSelf: "end",
+});

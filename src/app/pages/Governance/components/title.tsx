@@ -4,6 +4,6 @@ import { CssVariables } from "styles/cssVariables/cssVariables";
 export const SectionTitle = styled("p")({
   fontSize: "20px",
   color: CssVariables.commonTextColor,
-  textTransform: 'uppercase',
+  textTransform: "uppercase",
   margin: "0",
 });
