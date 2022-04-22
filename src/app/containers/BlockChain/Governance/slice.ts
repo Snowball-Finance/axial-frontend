@@ -11,7 +11,6 @@ import { useInjectReducer, useInjectSaga } from "store/redux-injectors";
 import { governanceSaga } from "./saga";
 import { BigNumber } from "ethers";
 import { skipLoading } from "app/types";
-import { GovernancePageState } from "app/pages/Governance/types";
 
 // The initial state of the Governance container
 export const initialState: ContainerState = {

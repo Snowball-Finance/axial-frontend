@@ -34,6 +34,7 @@ export function* getProposals(action: {
   }
   try {
     const response = yield call(GetProposalsAPI);
+    console.log({proposals:response})
     const proposals: Proposal[] = []; //response.data.ProposalList.proposals;
     //TODO get id and status of proposals
     yield put(GovernanceActions.setProposals(proposals));
@@ -119,7 +120,7 @@ export function* saveToIPFS(data: any) {
         "Content-Type": "application/json",
       },
     });
-    if (res.status == 201 && res.headers["ipfs-hash"]) {
+    if (res.status === 201 && res.headers["ipfs-hash"]) {
       console.log("Proposal metadata hash: ", res.headers["ipfs-hash"]);
       metadataURI = url + res.headers["ipfs-hash"];
     } else {

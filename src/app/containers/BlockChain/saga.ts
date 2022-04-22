@@ -7,7 +7,6 @@ import { env } from "environment";
 import { Web3Domains } from "./Web3/selectors";
 import { BlockChainDomains } from "./selectors";
 import { Axial } from "abi/ethers-contracts";
-import { ethers } from "ethers";
 
 export function* getMainTokenBalance() {
   yield put(BlockChainActions.setIsGettingMainTokenBalance(true));
