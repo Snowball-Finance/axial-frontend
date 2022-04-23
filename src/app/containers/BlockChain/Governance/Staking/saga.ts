@@ -1,6 +1,3 @@
-// import { take, call, put, select, takeLatest } from 'redux-saga/effects';
-// import { actions } from './slice';
-
 import { parseEther } from "ethers/lib/utils";
 import { all, call, delay, put, select, takeLatest } from "redux-saga/effects";
 import { StakingActions } from "./slice";
