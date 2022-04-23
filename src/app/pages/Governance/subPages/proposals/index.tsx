@@ -3,6 +3,8 @@ import { styled } from "@mui/material";
 import { Max1040 } from "app/components/wrappers/max1040";
 import { VotePower } from "../../components/votePower";
 import { TopWrapper } from "./components/topWrapper";
+import { ProposalsList } from "./components/list";
+import { NewProposalForm } from "../newProposal";
 import { mobile } from "styles/media";
 import { useStakingPageSlice } from "app/pages/Staking/slice";
 
@@ -11,11 +13,12 @@ export const Proposals: FC = () => {
 
   return (
     <StyledMax1040 m="auto" mt={2}>
+      <NewProposalForm />
       <Header>
         <VotePower />
       </Header>
       <TopWrapper />
-      {/* <ProposalsList /> */}
+      <ProposalsList />
     </StyledMax1040>
   );
 };
