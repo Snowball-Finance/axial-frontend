@@ -9,12 +9,13 @@ import tusdLogo from "assets/icons/tusd.svg";
 import usdcLogo from "assets/icons/usdc.svg";
 import usdtLogo from "assets/icons/usdt.svg";
 import avaiLogo from "assets/icons/avai.svg";
+import { tokenAddress } from "utils/tokenAddresses";
 
 //symbol should be identical to key of token
 export const tokens: { [K in TokenSymbols]: Token } = {
   "USDT.e": {
     ABI: ERC20_ABI,
-    address: "0xc7198437980c041c805A1EDcbA50c1Ce5db95118",
+    address: tokenAddress(TokenSymbols.USDTe),
     symbol: "USDT.e",
     name: "Tether",
     geckoId: "tether",
@@ -25,7 +26,7 @@ export const tokens: { [K in TokenSymbols]: Token } = {
     isLPToken: false,
   },
   usdcAM3DUSD: {
-    address: "0xA57E0D32Aa27D3b1D5AFf6a8A786C6A4DADb818F",
+    address: tokenAddress(TokenSymbols.usdcAM3DUSD),
     ABI: ERC20_ABI,
     decimals: 18,
     symbol: "usdcAM3DUSD",
@@ -37,7 +38,7 @@ export const tokens: { [K in TokenSymbols]: Token } = {
     isLPToken: true,
   },
   ac4dUSD: {
-    address: "0x4da067E13974A4d32D342d86fBBbE4fb0f95f382",
+    address: tokenAddress(TokenSymbols.ac4dUSD),
     ABI: ERC20_ABI,
     decimals: 18,
     symbol: "ac4dUSD",
@@ -49,7 +50,7 @@ export const tokens: { [K in TokenSymbols]: Token } = {
     isLPToken: true,
   },
   aa3dUSD: {
-    address: "0xaD556e7dc377d9089C6564f9E8d275f5EE4da22d",
+    address: tokenAddress(TokenSymbols.aa3dUSD),
     ABI: ERC20_ABI,
     decimals: 18,
     symbol: "aa3dUSD",
@@ -60,9 +61,8 @@ export const tokens: { [K in TokenSymbols]: Token } = {
     isSynthetic: false,
     isLPToken: true,
   },
-
   am3dUSD: {
-    address: "0xc161E4B11FaF62584EFCD2100cCB461A2DdE64D1",
+    address: tokenAddress(TokenSymbols.am3dUSD),
     ABI: ERC20_ABI,
     decimals: 18,
     symbol: "am3dUSD",
@@ -75,7 +75,7 @@ export const tokens: { [K in TokenSymbols]: Token } = {
   },
   as4dUSD: {
     ABI: ERC20_ABI,
-    address: "0x3A7387f8BA3ebFFa4A0ECcB1733e940CE2275D3f",
+    address: tokenAddress(TokenSymbols.as4dUSD),
     decimals: 18,
     symbol: "as4dUSD",
     name: "AS4D DAI.e/USDC.e/USDT.e/TUSD",
@@ -87,7 +87,7 @@ export const tokens: { [K in TokenSymbols]: Token } = {
   },
   JLP: {
     ABI: ERC20_ABI,
-    address: "0x5305A6c4DA88391F4A9045bF2ED57F4BF0cF4f62",
+    address: tokenAddress(TokenSymbols.JLP),
     decimals: 18,
     symbol: "JLP",
     name: "JLP",
@@ -99,7 +99,7 @@ export const tokens: { [K in TokenSymbols]: Token } = {
   },
   FRAX: {
     ABI: ERC20_ABI,
-    address: "0xD24C2Ad096400B6FBcd2ad8B24E7acBc21A1da64",
+    address: tokenAddress(TokenSymbols.FRAX),
     decimals: 18,
     symbol: "FRAX",
     name: "Frax",
@@ -111,7 +111,7 @@ export const tokens: { [K in TokenSymbols]: Token } = {
   },
   FXS: {
     ABI: ERC20_ABI,
-    address: "0x214DB107654fF987AD859F34125307783fC8e387",
+    address: tokenAddress(TokenSymbols.FXS),
     decimals: 18,
     symbol: "FXS",
     name: "Frax Share",
@@ -123,7 +123,7 @@ export const tokens: { [K in TokenSymbols]: Token } = {
   },
   "DAI.e": {
     ABI: ERC20_ABI,
-    address: "0xd586E7F844cEa2F87f50152665BCbc2C279D8d70",
+    address: tokenAddress(TokenSymbols.DAI),
     decimals: 18,
     symbol: "DAI.e",
     logo: daiLogo,
@@ -135,7 +135,7 @@ export const tokens: { [K in TokenSymbols]: Token } = {
   },
   AVAI: {
     ABI: ERC20_ABI,
-    address: "0x346A59146b9b4a77100D369a3d18E8007A9F46a6",
+    address: tokenAddress(TokenSymbols.AVAI),
     decimals: 18,
     symbol: "AVAI",
     logo: avaiLogo,
@@ -147,7 +147,7 @@ export const tokens: { [K in TokenSymbols]: Token } = {
   },
   TSD: {
     ABI: ERC20_ABI,
-    address: "0x4fbf0429599460D327BD5F55625E30E4fC066095",
+    address: tokenAddress(TokenSymbols.TSD),
     decimals: 18,
     symbol: "TSD",
     name: "Teddy Dollar",
@@ -159,7 +159,7 @@ export const tokens: { [K in TokenSymbols]: Token } = {
   },
   USDC: {
     ABI: ERC20_ABI,
-    address: "0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E",
+    address: tokenAddress(TokenSymbols.USDC),
     decimals: 6,
     symbol: "USDC",
     name: "Native USDC",
@@ -171,7 +171,7 @@ export const tokens: { [K in TokenSymbols]: Token } = {
   },
   MIM: {
     ABI: ERC20_ABI,
-    address: "0x130966628846BFd36ff31a822705796e8cb8C18D",
+    address: tokenAddress(TokenSymbols.MIM),
     decimals: 18,
     symbol: "MIM",
     name: "Magic Internet Money",
@@ -183,7 +183,7 @@ export const tokens: { [K in TokenSymbols]: Token } = {
   },
   TEDDY: {
     ABI: ERC20_ABI,
-    address: "0x094bd7B2D99711A1486FB94d4395801C6d0fdDcC",
+    address: tokenAddress(TokenSymbols.TEDDY),
     decimals: 18,
     symbol: "TEDDY",
     name: "Teddy",
@@ -195,7 +195,7 @@ export const tokens: { [K in TokenSymbols]: Token } = {
   },
   WAVAX: {
     ABI: ERC20_ABI,
-    address: "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7",
+    address: tokenAddress(TokenSymbols.WAVAX),
     decimals: 18,
     symbol: "WAVAX",
     name: "Wrapped AVAX",
@@ -207,7 +207,7 @@ export const tokens: { [K in TokenSymbols]: Token } = {
   },
   TUSD: {
     ABI: ERC20_ABI,
-    address: "0x1C20E891Bab6b1727d14Da358FAe2984Ed9B59EB",
+    address: tokenAddress(TokenSymbols.TUSD),
     decimals: 18,
     symbol: "TUSD",
     name: "TUSD",
@@ -219,7 +219,7 @@ export const tokens: { [K in TokenSymbols]: Token } = {
   },
   "USDC.e": {
     ABI: ERC20_ABI,
-    address: "0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664",
+    address: tokenAddress(TokenSymbols.USDCe),
     decimals: 6,
     symbol: "USDC.e",
     name: "USDC.e",
@@ -231,7 +231,7 @@ export const tokens: { [K in TokenSymbols]: Token } = {
   },
   ORCA: {
     ABI: ERC20_ABI,
-    address: "0x8B1d98A91F853218ddbb066F20b8c63E782e2430",
+    address: tokenAddress(TokenSymbols.ORCA),
     decimals: 18,
     symbol: "ORCA",
     name: "Orca DAO",
