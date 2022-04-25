@@ -359,6 +359,9 @@
       "sAXIAL": "sAXIAL",
       "AXIALUnlocked": "AXIAL Unlocked",
       "LockEnd": "Lock End",
+      "TotalStaked": "Total Staked",
+      "WalletStaked": "Wallet Staked",
+      "AverageStaked": "Average Staked",
       "veAXIAL": "veAXIAL",
       "AXIALStaked": "AXIAL Staked",
       "veAXIALearned": "veAXIAL EARNED"

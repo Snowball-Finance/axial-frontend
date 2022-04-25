@@ -8,6 +8,8 @@ import { CssVariables } from "styles/cssVariables/cssVariables";
 import { StakingSelectors } from "app/containers/BlockChain/Governance/Staking/selectors";
 import { BNToFractionString } from "common/format";
 import { StakingPageSelectors } from "app/pages/Staking/selectors";
+import { commify } from "app/containers/utils/contractUtils";
+import { zeroString } from "app/pages/Liquidity/constants";
 
 export const Info: FC = () => {
   const { t } = useTranslation();
@@ -19,6 +21,9 @@ export const Info: FC = () => {
     StakingSelectors.claimableGovernanceToken
   );
   const lockEndDate = useSelector(StakingPageSelectors.lockEndDate);
+  const sAxialDataFromAPI = useSelector(
+    StakingSelectors.selectSAxialDataFromAPI
+  );
 
   return (
     <StyledPoolCard>
@@ -28,14 +33,14 @@ export const Info: FC = () => {
         alignItems="center"
         spacing={2}
       >
-        <Grid item>
+        <Grid item xs={4}>
           <Text variant="h5">{t(translations.Staking.Info.sAXIAL())}</Text>
           <Text variant="body2">
             {BNToFractionString(rawLockedTokenAmount) || "0"}
           </Text>
         </Grid>
 
-        <Grid item>
+        <Grid item xs={4}>
           <Title variant="h5">
             {t(translations.Staking.Info.AXIALUnlocked())}
           </Title>
@@ -44,9 +49,36 @@ export const Info: FC = () => {
           </Text>
         </Grid>
 
-        <Grid item>
+        <Grid item xs={4}>
           <Title variant="h5">{t(translations.Staking.Info.LockEnd())}</Title>
           <Text variant="body2">{lockEndDate || "-"}</Text>
+        </Grid>
+
+        <Grid item xs={4}>
+          <Title variant="h5">
+            {t(translations.Staking.Info.TotalStaked())}
+          </Title>
+          <Text variant="body2">
+            {commify(sAxialDataFromAPI?.totalStaked ?? zeroString) || "-"}
+          </Text>
+        </Grid>
+
+        <Grid item xs={4}>
+          <Title variant="h5">
+            {t(translations.Staking.Info.WalletStaked())}
+          </Title>
+          <Text variant="body2">{sAxialDataFromAPI?.walletStaked || "-"}</Text>
+        </Grid>
+
+        <Grid item xs={4}>
+          <Title variant="h5">
+            {t(translations.Staking.Info.AverageStaked())}
+          </Title>
+          <Text variant="body2">
+            {commify(
+              sAxialDataFromAPI?.averageStaked.toString() ?? zeroString
+            ) || "-"}
+          </Text>
         </Grid>
       </Grid>
     </StyledPoolCard>

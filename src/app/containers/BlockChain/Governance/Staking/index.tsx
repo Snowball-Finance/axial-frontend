@@ -39,6 +39,7 @@ export function Staking({ feeDistributorABI, otherDistributors }: Props) {
         otherDistributors,
       })
     );
+    dispatch(StakingActions.getSAxialDataFromAPI());
     return () => {};
   }, []);
 
