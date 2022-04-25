@@ -10,6 +10,7 @@ import { Pool } from "app/containers/Rewards/types";
 import { WalletBalance } from "./walletBalance";
 import { EquivalentTokenPriceUSD } from "app/pages/Liquidity/subPages/Deposit/components/EquivalentTokenPriceUSD";
 import { Max } from "./Max";
+import { InsufficientBalance } from "./InsufficientBalance";
 
 export const CurrencyInputs: FC = () => {
   const tokens = useSelector(globalSelectors.tokens) as Token[];
@@ -68,6 +69,10 @@ export const CurrencyInputs: FC = () => {
 
             <Grid item alignSelf="end">
               <WalletBalance token={tokens[token.symbol]} />
+            </Grid>
+
+            <Grid item alignSelf="end">
+              <InsufficientBalance token={tokens[token.symbol]} />
             </Grid>
           </Grid>
         </Grid>

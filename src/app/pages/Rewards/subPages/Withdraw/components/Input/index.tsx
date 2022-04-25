@@ -9,6 +9,7 @@ import { RewardsWithdrawSlider } from "./slider";
 import { Percentage } from "./percentageText";
 import { RewardsWithdrawButton } from "./withdrawButton";
 import { mobile } from "styles/media";
+import { AdvanceOption } from "app/components/common/advancedOptions";
 
 export const WithdrawInput: FC = () => {
   const { t } = useTranslation();
@@ -17,7 +18,7 @@ export const WithdrawInput: FC = () => {
     <StyledAddLiquidity>
       <Grid container direction="column" spacing={2}>
         <Grid item>
-          <HeaderText variant="h4">
+          <HeaderText variant="h2">
             {t(translations.RewardsPage.Withdraw.Title())}
           </HeaderText>
         </Grid>
@@ -44,7 +45,11 @@ export const WithdrawInput: FC = () => {
           <CurrencyInput />
         </Grid>
 
-        <Grid item alignSelf="center">
+        <Grid item>
+          <AdvanceOption />
+        </Grid>
+
+        <Grid item>
           <RewardsWithdrawButton />
         </Grid>
       </Grid>
@@ -68,10 +73,9 @@ const StyledAddLiquidity = styled("div")({
 
 const HeaderText = styled(Typography)({
   color: CssVariables.white,
-  fontSize: "26px",
+  textTransform: "uppercase",
 });
 
 const PercentageText = styled(Typography)({
   color: CssVariables.white,
-  fontSize: "16px",
 });

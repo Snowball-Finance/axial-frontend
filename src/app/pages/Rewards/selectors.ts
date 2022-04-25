@@ -19,6 +19,9 @@ export const RewardsPageDomains = {
     state.rewardsPage?.poolData || initialState.poolData,
   userShareData: (state: RootState) =>
     state.rewardsPage?.userShareData || initialState.userShareData,
+  userShareDataUsingMasterChef: (state: RootState) =>
+    state.rewardsPage?.userShareDataUsingMasterchef ||
+    initialState.userShareDataUsingMasterchef,
   isCompoundWithSnowballLoading: (state: RootState) =>
     state.rewardsPage?.isCompoundWithSnowballLoading ||
     initialState.isCompoundWithSnowballLoading,
@@ -31,6 +34,10 @@ export const RewardsPageDomains = {
     state.rewardsPage?.withdrawPercentage || initialState.withdrawPercentage,
   withdrawAmount: (state: RootState) =>
     state.rewardsPage?.withdrawAmount || initialState.withdrawAmount,
+  isModalOpen: (state: RootState) =>
+    state.rewardsPage?.isModalOpen || initialState.isModalOpen,
+  isClaimModalOpen: (state: RootState) =>
+    state.rewardsPage?.isClaimModalOpen || initialState.isClaimModalOpen,
 };
 
 export const RewardsPageSelectors = {
@@ -81,8 +88,13 @@ export const RewardsPageSelectors = {
       }
       return pools[key]?.poolData;
     }),
-  rewardsUserShareData: (key: string) =>
-    createSelector(RewardsDomains.pools, (pools) => pools[key]?.userShareData),
+  rewardsUserShareData: (key?: string) =>
+    createSelector(RewardsDomains.pools, (pools) => {
+      if (key && pools[key]) {
+        return pools[key].userShareData;
+      }
+      return undefined;
+    }),
   compoundWithSnowballLoading: createSelector(
     RewardsPageDomains.isCompoundWithSnowballLoading,
     (isLoading) => isLoading
@@ -119,5 +131,17 @@ export const RewardsPageSelectors = {
         return 0;
       }
     }
+  ),
+  isModalOpen: createSelector(
+    RewardsPageDomains.isModalOpen,
+    (isModalOpen) => isModalOpen
+  ),
+  isClaimModalOpen: createSelector(
+    RewardsPageDomains.isClaimModalOpen,
+    (isClaimModalOpen) => isClaimModalOpen
+  ),
+  userShareDataUsingMasterchef: createSelector(
+    RewardsPageDomains.userShareDataUsingMasterChef,
+    (userShareDataUsingMasterchef) => userShareDataUsingMasterchef
   ),
 };

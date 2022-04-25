@@ -11,8 +11,8 @@ import { PoolDataProps } from "app/pages/Rewards/types";
 import { PoolTypes } from "app/containers/Rewards/types";
 import { Zero } from "app/containers/Rewards/constants";
 import { formatBNToShortString } from "app/containers/utils/contractUtils";
-import { RewardsSelectors } from "app/containers/Rewards/selectors";
 import { mobile } from "styles/media";
+import { RewardsSelectors } from "app/containers/Rewards/selectors";
 
 interface InfoData {
   title: string;
@@ -22,15 +22,16 @@ interface InfoData {
 export const Info: FC<PoolDataProps> = ({ poolKey }) => {
   const { t } = useTranslation();
   const poolData = useSelector(RewardsPageSelectors.rewardsPoolData(poolKey));
-  const masterchefBalance = useSelector(RewardsSelectors.masterChefBalances);
-
-  const tokenKey = pools[poolKey].lpToken.symbol;
+  const userShareData = useSelector(
+    RewardsPageSelectors.rewardsUserShareData(poolKey)
+  );
+  const isGettingPoolsData = useSelector(RewardsSelectors.isGettingPoolsData);
 
   const formattedData = {
     TVL: formatBNToShortString(poolData?.totalLocked || Zero, 18),
-    axialPending: masterchefBalance
+    axialPending: userShareData
       ? formatBNToShortString(
-          masterchefBalance[tokenKey]?.pendingTokens.pendingAxial || Zero,
+          userShareData?.masterchefBalance?.pendingTokens.pendingAxial || Zero,
           18
         )
       : "",
@@ -56,30 +57,18 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
       : poolData?.rapr === 0
       ? "0%"
       : "-",
-    userBalanceUSD: masterchefBalance
+    userBalanceUSD: userShareData
       ? formatBNToShortString(
-          masterchefBalance[tokenKey]?.userInfo.amount || Zero,
+          userShareData?.masterchefBalance?.userInfo.amount || Zero,
           18
         )
-      : "",
+      : "-",
   };
 
   const hasShare =
-    masterchefBalance && !!masterchefBalance[tokenKey]?.userInfo.amount.gt("0");
+    userShareData &&
+    !!userShareData?.masterchefBalance?.userInfo.amount.gt("0");
   let info: InfoData[] = [];
-
-  if (hasShare) {
-    info.push(
-      {
-        title: t(translations.RewardsPage.Info.Balance()),
-        value: `$${formattedData.userBalanceUSD}`,
-      },
-      {
-        title: t(translations.RewardsPage.Info.Claimable()),
-        value: `${formattedData.axialPending}`,
-      }
-    );
-  }
 
   if (pools[poolKey].poolType !== PoolTypes.LP) {
     info.push({
@@ -101,11 +90,24 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
     },
   ]);
 
+  if (hasShare) {
+    info.push(
+      {
+        title: t(translations.RewardsPage.Info.Balance()),
+        value: `$${formattedData.userBalanceUSD}`,
+      },
+      {
+        title: t(translations.RewardsPage.Info.Claimable()),
+        value: `${formattedData.axialPending}`,
+      }
+    );
+  }
+
   return (
     <StyledContainer container spacing={{ xs: 2, xl: 4 }}>
       {info.map((item, index) => (
         <Grid item key={index}>
-          <Grid container spacing={1}>
+          <Grid container spacing={1} direction="column">
             <Grid item>
               <PoolInfoTitleText variant="body1">
                 {item.title}
@@ -113,11 +115,7 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
             </Grid>
             <Grid item>
               <PoolInfoSubTitleText variant="body2">
-                {item.value === "-" || item.value === "$0.0" ? (
-                  <TextLoader width={50} />
-                ) : (
-                  item.value
-                )}
+                {isGettingPoolsData ? <TextLoader width={50} /> : item.value}
               </PoolInfoSubTitleText>
             </Grid>
           </Grid>
@@ -128,8 +126,8 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
 };
 
 const StyledContainer = styled(Grid)({
-  justifyContent: "space-between",
   alignItems: "center",
+  justifyContent: "flex-end",
 
   [mobile]: {
     flexDirection: "column",
@@ -138,13 +136,10 @@ const StyledContainer = styled(Grid)({
 
 const PoolInfoTitleText = styled(Typography)({
   color: CssVariables.white,
-  fontSize: "16px",
-  fontWeight: "bold",
 });
 
 const PoolInfoSubTitleText = styled(Typography)({
   color: CssVariables.white,
-  fontSize: "16px",
 });
 
 const TextLoader = styled(Skeleton)({

@@ -1,5 +1,5 @@
 import React, { FC, useEffect } from "react";
-import { styled, Skeleton, Grid } from "@mui/material";
+import { styled, Skeleton, Grid, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
@@ -12,7 +12,7 @@ import {
   POOLS_INFO_MAP,
 } from "app/pages/Rewards/constants";
 import { RewardsPageSelectors } from "app/pages/Rewards/selectors";
-import { CssVariables } from "styles/cssVariables/cssVariables";
+import { CssVariables, FontFamilies } from "styles/cssVariables/cssVariables";
 import { mobile } from "styles/media";
 
 type TParams = { poolIndex: string };
@@ -44,21 +44,29 @@ export const CompoundWithSnowball: FC = () => {
       rel="noreferrer"
       href={`https://app.snowball.network/compound-and-earn?pool=${poolPairName}`}
     >
-      <Button disabled={!poolAddress}>
+      <Button disabled={!poolAddress} fullWidth>
         <Grid container spacing={1} alignItems="center" justifyContent="center">
           <Grid item>
-            {t(translations.RewardsPage.Deposit.CompoundWithSnowball())}
+            <Text variant="body1">
+              {t(translations.RewardsPage.Deposit.CompoundWithSnowball())}
+            </Text>
           </Grid>
           <Grid item>
-            {loading ? (
-              <TextLoader width={20} />
-            ) : poolAddress ? (
-              `${parseFloat(compoundWithSnowballAPY).toFixed(2)}%`
-            ) : (
-              "0.00%"
-            )}
+            <Text variant="body1">
+              {loading ? (
+                <TextLoader width={20} />
+              ) : poolAddress ? (
+                `${parseFloat(compoundWithSnowballAPY).toFixed(2)}%`
+              ) : (
+                "0.00%"
+              )}
+            </Text>
           </Grid>
-          <Grid item>{t(translations.RewardsPage.Deposit.APY())}</Grid>
+          <Grid item>
+            <Text variant="body1">
+              {t(translations.RewardsPage.Deposit.APY())}
+            </Text>
+          </Grid>
         </Grid>
       </Button>
     </Anchor>
@@ -68,15 +76,19 @@ export const CompoundWithSnowball: FC = () => {
 const Anchor = styled("a")({
   textDecoration: "none",
   textAlign: "center",
+  fontFamily: FontFamilies.IBMPlexSans,
+  width: "100%",
 });
 
 const TextLoader = styled(Skeleton)({
   backgroundColor: CssVariables.primary,
 });
 
-const Button = styled(OutlinedButton)({
-  width: 420,
+const Text = styled(Typography)({
+  color: CssVariables.primary,
+});
 
+const Button = styled(OutlinedButton)({
   [mobile]: {
     width: "100%",
   },

@@ -11,6 +11,7 @@ import { useTranslation } from "react-i18next";
 import { translations } from "locales/i18n";
 import { RewardsBody } from "./body";
 import { useRewardsPageSlice } from "./slice";
+import { DataDistributor } from "./dataDistributor";
 
 export const RewardsPage: FC = () => {
   useRewardsPageSlice();
@@ -26,7 +27,7 @@ export const RewardsPage: FC = () => {
           content={`${t(translations.RewardsPage.Description())}`}
         />
       </Helmet>
-
+      <DataDistributor />
       <RewardsBody />
     </>
   );

@@ -6,7 +6,7 @@ import { useInjectReducer, useInjectSaga } from "store/redux-injectors";
 
 import { rewardsPageSaga } from "./saga";
 import { zeroString } from "../Liquidity/constants";
-import { Pool } from "app/containers/Rewards/types";
+import { Pool, UserShareData } from "app/containers/Rewards/types";
 import { divide, multiply } from "precise-math";
 
 // The initial state of the RewardsPage container
@@ -16,11 +16,15 @@ export const initialState: ContainerState = {
   poolTokens: undefined,
   poolData: undefined,
   userShareData: undefined,
+  userShareDataUsingMasterchef: undefined,
+  isGettingUserDataUsingMasterchef: false,
   isCompoundWithSnowballLoading: false,
   compoundWithSnowballAPY: "0.00",
   depositValue: zeroString,
   withdrawPercentage: 0,
   withdrawAmount: zeroString,
+  isModalOpen: false,
+  isClaimModalOpen: false,
 };
 
 const rewardsPageSlice = createSlice({
@@ -56,6 +60,19 @@ const rewardsPageSlice = createSlice({
     setWithdrawAmount(state, action: PayloadAction<string>) {
       state.withdrawPercentage = 0;
       state.withdrawAmount = action.payload;
+    },
+    setIsModalOpen(state, action: PayloadAction<boolean>) {
+      state.isModalOpen = action.payload;
+    },
+    setIsClaimModalOpen(state, action: PayloadAction<boolean>) {
+      state.isClaimModalOpen = action.payload;
+    },
+    getPoolDataUsingMasterchef() {},
+    setUserShareDataUsingMasterchef(
+      state,
+      action: PayloadAction<UserShareData>
+    ) {
+      state.userShareDataUsingMasterchef = action.payload;
     },
   },
 });

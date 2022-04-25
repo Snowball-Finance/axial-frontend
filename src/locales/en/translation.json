@@ -82,10 +82,10 @@
     },
     "Withdraw": {
       "Title": "Withdraw",
-      "WithdrawlPercentage": "Withdrawl percentage"
+      "WithdrawlPercentage": "Withdraw percentage"
     },
     "Info": {
-      "Balance": "Balance",
+      "Balance": "Your TVL",
       "Claimable": "Claimable",
       "RewardsAPR": "Rewards APR",
       "TotalAPR": "Total APR",
@@ -94,7 +94,8 @@
     "ActionButtons" : {
       "Deposit": "Deposit",
       "Withdraw": "Withdraw",
-      "Claim": "Claim"
+      "Claim": "Claim",
+      "ClaimRewards": "Claim Rewards"
     },
     "CurrencyReserve": {
       "Title": "Currency Reserves"
@@ -103,13 +104,18 @@
       "Title": "My Share",
       "OfPool": "of pool",
       "USDBalance": "USD Balance",
-      "Total": "Total"
+      "Total": "Total",
+      "AxialRewards": "Axial Rewards"
+    },
+    "ClaimRewards": {
+      "Title": "Rewards"
     },
     "Modal": {
       "Deposit": "Deposit",
       "Approval": "Approval",
       "Steps": "Steps",
-      "Withdraw": "Withdraw"
+      "Withdraw": "Withdraw",
+      "ClaimableTokens": "Claimable Tokens"
     }
   },
   "SwapPage": {
@@ -200,7 +206,10 @@
     "Approval": "Approval",
     "Approving": "Approving",
     "Depositing": "Depositing",
+    "Withdrawing": "Withdrawing",
     "DepositingTokens": "Depositing tokens",
+    "WithdrawingTokens": "Withdrawing tokens",
+    "InsufficientBalance": "Insufficient Balance",
     "Search": "Search",
     "Filter": "Filter",
     "Cancel": "Cancel",

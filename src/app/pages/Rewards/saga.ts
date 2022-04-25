@@ -18,6 +18,7 @@ import { RewardsActions } from "app/containers/Rewards/slice";
 import { parseUnits } from "ethers/lib/utils";
 import { TokenSymbols } from "app/containers/Swap/types";
 import { checkAndApproveTokensInList } from "utils/tokenVerifier";
+import { getRewardPoolData } from "app/containers/Rewards/saga";
 
 export function* poolInfoByAddress(action: { type: string; payload: string }) {
   const { payload } = action;
@@ -52,7 +53,7 @@ export function* deposit() {
       [token.symbol]: amountToSpend,
     },
   };
-  yield put(RewardsActions.setIsDepositing(true));
+  yield put(RewardsPageActions.setIsModalOpen(true));
   const areAllApproved = yield call(checkAndApproveTokensInList, {
     tokensToVerify: [
       {
@@ -62,7 +63,6 @@ export function* deposit() {
       },
     ],
   });
-  yield put(RewardsActions.setIsDepositing(false));
   if (areAllApproved) {
     yield put(RewardsActions.deposit(dataToSend));
   } else {
@@ -97,6 +97,7 @@ export function* withdraw() {
     type: pool.lpToken.symbol as TokenSymbols,
     masterchefwithdraw: true,
   };
+  yield put(RewardsPageActions.setIsModalOpen(true));
   yield put(RewardsActions.withdraw(dataToSend));
 }
 
@@ -115,12 +116,29 @@ export function* claim(action: { type: string; payload: Pool }) {
   }
 }
 
+export function* getPoolDataUsingMasterchef() {
+  const pool: Pool = yield select(RewardsPageDomains.pool);
+  if (pool) {
+    const poolData = yield call(getRewardPoolData, {
+      pool,
+      useMasterchef: true,
+    });
+    yield put(
+      RewardsPageActions.setUserShareDataUsingMasterchef(poolData.userShareData)
+    );
+  }
+}
+
 export function* rewardsPageSaga() {
   yield takeLatest(
     RewardsPageActions.poolInfoByAddress.type,
     poolInfoByAddress
   );
   yield takeLatest(RewardsPageActions.deposit.type, deposit);
+  yield takeLatest(
+    RewardsPageActions.getPoolDataUsingMasterchef.type,
+    getPoolDataUsingMasterchef
+  );
   yield takeLatest(RewardsPageActions.withdraw.type, withdraw);
   yield takeLatest(RewardsPageActions.claim.type, claim);
 }

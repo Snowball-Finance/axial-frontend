@@ -8,11 +8,15 @@ export interface RewardsPageState {
   poolTokens: Token[] | undefined;
   poolData: PoolData | undefined;
   userShareData: UserShareData | undefined;
+  userShareDataUsingMasterchef: UserShareData | undefined;
+  isGettingUserDataUsingMasterchef: boolean;
   isCompoundWithSnowballLoading: boolean;
   compoundWithSnowballAPY: string;
   depositValue: string;
   withdrawPercentage: number;
   withdrawAmount: string;
+  isModalOpen: boolean;
+  isClaimModalOpen: boolean;
 }
 
 export interface PoolCardItemProps {

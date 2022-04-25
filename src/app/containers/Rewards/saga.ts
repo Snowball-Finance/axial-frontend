@@ -45,6 +45,33 @@ import { Deadlines, formatDeadlineToNumber } from "./utils/deadline";
 import { GlobalActions } from "store/slice";
 import { toast } from "react-toastify";
 
+export function* getRewardPoolData(payload: {
+  pool: Pool;
+  useMasterchef: boolean;
+}) {
+  const { pool, useMasterchef } = payload;
+  const networkLibrary = yield select(Web3Domains.selectNetworkLibraryDomain);
+  const account = yield select(Web3Domains.selectAccountDomain);
+  const chainId = yield select(Web3Domains.selectChainIDDomain);
+  const tokenPricesUSD = yield select(GlobalDomains.tokenPricesUSD);
+  const masterchefApr = yield select(RewardsDomains.masterchefApr);
+  const masterchefBalances = yield select(RewardsDomains.masterChefBalances);
+  const swapStats = yield select(RewardsDomains.swapStats);
+  const dataToPass: CalculatePoolDataProps = {
+    pool,
+    account,
+    chainId,
+    library: networkLibrary,
+    useMasterchef,
+    tokenPricesUSD,
+    masterchefApr,
+    masterchefBalances,
+    swapStats,
+  };
+  const result = yield call(calculatePoolData, dataToPass);
+  return result;
+}
+
 export function* getRewardPoolsData(action: {
   type: string;
   payload: RewardsState["pools"];
@@ -104,10 +131,10 @@ export function* getRewardPoolsData(action: {
 export function* getMasterChefBalances() {
   const account = yield select(Web3Domains.selectAccountDomain);
   const library = yield select(Web3Domains.selectLibraryDomain);
-
   try {
     yield put(RewardsActions.setIsGettingMasterChefBalances(true));
-    const tokensList = Object.values(tokens).filter((token) => token.isLPToken);
+    const list = Object.values(tokens).filter(token=>token.isLPToken);
+    const tokensList=list.sort((a,b)=>(a.masterchefId||0)-(b.masterchefId||0));
     const masterchefBalancesCall: ContractCall[] = [];
     const tokenAddressList: string[] = [];
     tokensList.forEach((token) => {
@@ -124,7 +151,6 @@ export function* getMasterChefBalances() {
       masterchefBalancesCall,
       tokenAddressList
     );
-
     const _info: MasterchefResponse = {
       userInfo: {
         amount: BigNumber.from("0"),
@@ -331,11 +357,19 @@ export function* deposit(action: { type: string; payload: DepositPayload }) {
         );
       }
     } else {
-      yield call(
+      const spendTransaction = yield call(
         masterchefContract.deposit,
         BigNumber.from(pool.lpToken.masterchefId),
         tokenAmounts[pool.lpToken.symbol]
       );
+      const result = yield call(spendTransaction.wait);
+
+      if (result.status) {
+        yield put(
+          GlobalActions.setTransactionSuccessId(result.transactionHash)
+        );
+        yield put(RewardsActions.getMasterChefBalances());
+      }
     }
     yield put(RewardsActions.setIsDepositing(false));
     toast.success("deposit successful");
@@ -349,6 +383,7 @@ export function* deposit(action: { type: string; payload: DepositPayload }) {
 }
 
 export function* withdraw(action: { type: string; payload: WithdrawPayload }) {
+  yield put(GlobalActions.setTransactionSuccessId(undefined));
   yield put(RewardsActions.setIsWithdrawing(true));
   yield put(GlobalActions.setTransactionSuccessId(undefined));
   try {
@@ -428,11 +463,19 @@ export function* withdraw(action: { type: string; payload: WithdrawPayload }) {
         );
       }
     } else {
-      yield call(
+      const spendTransaction = yield call(
         masterchefContract.withdraw,
         pool.lpToken.masterchefId,
         tokenAmounts[pool.lpToken.symbol]
       );
+      const result = yield call(spendTransaction.wait);
+
+      if (result.status) {
+        yield put(
+          GlobalActions.setTransactionSuccessId(result.transactionHash)
+        );
+        yield put(RewardsActions.getMasterChefBalances());
+      }
     }
     yield put(RewardsActions.setIsWithdrawing(false));
     toast.success("withdraw success");

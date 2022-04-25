@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { Grid, styled } from "@mui/material";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { push } from "connected-react-router";
 import { useTranslation } from "react-i18next";
 
@@ -11,10 +11,13 @@ import { AppPages } from "app/types";
 import { ActionButtonProps } from "app/pages/Liquidity/types";
 import { getPoolIndexFromKey } from "app/pages/Liquidity/constants";
 import { mobile } from "styles/media";
+import { LiquidityPageSelectors } from "app/pages/Liquidity/selectors";
 
 export const ActionButtons: FC<ActionButtonProps> = ({ poolKey }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+
+  const pool = useSelector(LiquidityPageSelectors.liquidityPool(poolKey));
 
   const handleNavigateToDeposit = (poolKey: string) => {
     const poolIndex = getPoolIndexFromKey(poolKey);
@@ -32,6 +35,7 @@ export const ActionButtons: FC<ActionButtonProps> = ({ poolKey }) => {
         <ContainedButton
           width={120}
           onClick={() => handleNavigateToDeposit(poolKey)}
+          disabled={pool?.poolData?.isPaused}
         >
           {t(translations.LiquidityPage.ActionButtons.Deposit())}
         </ContainedButton>
