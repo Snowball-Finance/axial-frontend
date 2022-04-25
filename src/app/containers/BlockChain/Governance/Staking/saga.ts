@@ -24,6 +24,7 @@ import { checkAndApproveTokensInList } from "utils/tokenVerifier";
 import { Token } from "app/containers/Swap/types";
 import { skipLoading } from "app/types";
 import { GlobalActions } from "store/slice";
+import { GetSAxialDataAPI } from "./providers/sAxialData";
 
 export function* getLatestGovernanceData() {
   yield all([
@@ -284,9 +285,7 @@ export function* getLockedGovernanceTokenInfo(action: {
   type: string;
   payload: skipLoading;
 }) {
-  const governanceTokenABI = yield select(
-    GovernanceDomains.governanceTokenABI
-  );
+  const governanceTokenABI = yield select(GovernanceDomains.governanceTokenABI);
   const provider = yield select(EthersDomains.selectPrivateProviderDomain);
   const governanceTokenContract: SAxial = new Contract(
     env.GOVERNANCE_TOKEN_CONTRACT_ADDRESS || "",
@@ -367,6 +366,7 @@ export function* getClaimableGovernanceToken() {
     }
   }
 }
+
 export function* withdrawAccruingToken() {
   yield put(GlobalActions.setTransactionSuccessId(undefined));
   yield put(StakingActions.setIsWithdrawingAccruingToken(true));
@@ -393,6 +393,27 @@ export function* withdrawAccruingToken() {
     }
   } catch (e: any) {
     yield put(StakingActions.setIsWithdrawingAccruingToken(false));
+    console.debug(e);
+    if (e?.data?.message) {
+      toast.error(e.data.message);
+    }
+  }
+}
+
+export function* getSAxialDataFromAPI() {
+  try {
+    const data = yield call(GetSAxialDataAPI);
+    const { last_axial_staked: totalStaked, last_total_wallets: walletStaked } =
+      data;
+    const averageStaked = +totalStaked / +walletStaked;
+    yield put(
+      StakingActions.setSAxialDataFromAPI({
+        totalStaked,
+        walletStaked,
+        averageStaked,
+      })
+    );
+  } catch (e: any) {
     console.debug(e);
     if (e?.data?.message) {
       toast.error(e.data.message);
@@ -431,5 +452,9 @@ export function* stakingSaga() {
   yield takeLatest(
     StakingActions.activatePeriodicallyRefetchTheData.type,
     periodicallyRefetchTheData
+  );
+  yield takeLatest(
+    StakingActions.getSAxialDataFromAPI.type,
+    getSAxialDataFromAPI
   );
 }

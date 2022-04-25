@@ -29,6 +29,8 @@ export const StakingDomains = {
       ? false
       : state.staking?.keepThaUnclaimedWhenExtendingLockPeriod;
   },
+  sAxialDataFromAPI: (state: RootState) =>
+    state.staking?.sAxialDataFromAPI || initialState.sAxialDataFromAPI,
 };
 
 export const StakingSelectors = {
@@ -81,5 +83,9 @@ export const StakingSelectors = {
     StakingDomains.keepThaUnclaimedWhenExtendingLockPeriod,
     (keepThaUnclaimedWhenExtendingLockPeriod) =>
       keepThaUnclaimedWhenExtendingLockPeriod
+  ),
+  selectSAxialDataFromAPI: createSelector(
+    StakingDomains.sAxialDataFromAPI,
+    (sAxialDataFromAPI) => sAxialDataFromAPI
   ),
 };
