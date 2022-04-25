@@ -85,7 +85,7 @@
       "WithdrawlPercentage": "Withdraw percentage"
     },
     "Info": {
-      "Balance": "Balance",
+      "Balance": "Your TVL",
       "Claimable": "Claimable",
       "RewardsAPR": "Rewards APR",
       "TotalAPR": "Total APR",
