@@ -12,6 +12,7 @@ import { PoolTypes } from "app/containers/Rewards/types";
 import { Zero } from "app/containers/Rewards/constants";
 import { formatBNToShortString } from "app/containers/utils/contractUtils";
 import { mobile } from "styles/media";
+import { RewardsSelectors } from "app/containers/Rewards/selectors";
 
 interface InfoData {
   title: string;
@@ -24,6 +25,7 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
   const userShareData = useSelector(
     RewardsPageSelectors.rewardsUserShareData(poolKey)
   );
+  const isGettingPoolsData = useSelector(RewardsSelectors.isGettingPoolsData);
 
   const formattedData = {
     TVL: formatBNToShortString(poolData?.totalLocked || Zero, 18),
@@ -60,7 +62,7 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
           userShareData?.masterchefBalance?.userInfo.amount || Zero,
           18
         )
-      : "",
+      : "-",
   };
 
   const hasShare =
@@ -113,11 +115,7 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
             </Grid>
             <Grid item>
               <PoolInfoSubTitleText variant="body2">
-                {item.value === "-" || item.value === "$0.0" ? (
-                  <TextLoader width={50} />
-                ) : (
-                  item.value
-                )}
+                {isGettingPoolsData ? <TextLoader width={50} /> : item.value}
               </PoolInfoSubTitleText>
             </Grid>
           </Grid>
