@@ -24,7 +24,7 @@ export const OverallInfoCard = () => {
   );
   const unlockedAxialAmount = BNToFractionString(rawClaimableAxial);
   const rawGovernanceTokenBalance = useSelector(
-    GovernanceSelectors.selectGovernanceTokenBalance
+    GovernanceSelectors.governanceTokenBalance
   );
   const lockEndDate = useSelector(StakingPageSelectors.lockEndDate);
   const governanceTokenBalance = BNToFractionString(rawGovernanceTokenBalance);

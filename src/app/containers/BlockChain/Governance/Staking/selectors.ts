@@ -71,7 +71,7 @@ export const StakingSelectors = {
   selectReadyForStaking: createSelector(
     [
       BlockChainDomains.selectContractsDomain,
-      GovernanceDomains.selectGovernanceTokenContractDomain,
+      GovernanceDomains.governanceTokenContract,
     ],
     (blockChainContracts, governanceTokenContract) => {
       return blockChainContracts.mainTokenContract && governanceTokenContract;

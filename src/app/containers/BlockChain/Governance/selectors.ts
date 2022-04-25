@@ -6,80 +6,74 @@ import { RootState } from "store/types";
 import { EthersDomains } from "../Ethers/selectors";
 import { Web3Domains } from "../Web3/selectors";
 import { initialState } from "./slice";
-import { ContainerState, ProposalFilters, ProposalState } from "./types";
+import { ProposalFilters, ProposalState } from "./types";
 
 export const GovernanceDomains = {
-  selectGovernanceDomain: (state: RootState) =>
+  governance: (state: RootState) =>
     state.governance || initialState,
-  selectSelectedProposalFilterDomain: (state: RootState) =>
+  selectedProposalFilter: (state: RootState) =>
     state.governance?.selectedProposalFilter ||
     initialState.selectedProposalFilter,
-  selectProposalsDomain: (state: RootState) =>
+  proposals: (state: RootState) =>
     state.governance?.proposals || [],
-  selectSelectedProposalDomain: (state: RootState) =>
+  selectedProposal: (state: RootState) =>
     state.governance?.selectedProposal || initialState.selectedProposal,
-  selectIsLoadingProposalsDomain: (state: RootState) =>
+  isLoadingProposals: (state: RootState) =>
     state.governance?.isLoadingProposals || initialState.isLoadingProposals,
-  selectIsSubmittingNewProposalsDomain: (state: RootState) =>
+  isSubmittingNewProposals: (state: RootState) =>
     state.governance?.isSubmittingNewProposal ||
     initialState.isSubmittingNewProposal,
-  selectIsVotingForDomain: (state: RootState) =>
+  selectIsVotingFor: (state: RootState) =>
     state.governance?.isVotingFor || initialState.isVotingFor,
-  selectIsVotingAgainstDomain: (state: RootState) =>
+  isVotingAgainst: (state: RootState) =>
     state.governance?.isVotingAgainst || initialState.isVotingAgainst,
-  selectIsNewProposalFormOpenDomain: (state: RootState) =>
-    state.governance?.isNewProposalFormOpen ||
-    initialState.isNewProposalFormOpen,
-  selectSyncedProposalsWithBlockchainDomain: (state: RootState) =>
+
+  syncedProposalsWithBlockchain: (state: RootState) =>
     state.governance?.syncedProposalsWithBlockchain || false,
-  selectNewProposalFieldsDomain: (state: RootState) =>
-    state.governance?.newProposalFields || {
-      ...initialState.newProposalFields,
-      error: { ...initialState.newProposalFields.error },
-    },
-  selectIsLoadingReceiptDomain: (state: RootState) =>
+
+  isLoadingReceipt: (state: RootState) =>
     state.governance?.iseGettingReceipt || initialState.iseGettingReceipt,
-  selectReceiptDomain: (state: RootState) =>
+  receipt: (state: RootState) =>
     state.governance?.receipt || { ...initialState.receipt },
-  selectGovernanceTokenABIDomain: (state: RootState) =>
+  governanceTokenABI: (state: RootState) =>
     state.governance?.governanceTokenABI || undefined,
-  selectGovernanceTokenContractDomain: (state: RootState) =>
+  governanceTokenContract: (state: RootState) =>
     state.governance?.governanceTokenContract || undefined,
-  selectGovernanceABIDomain: (state: RootState) =>
+  governanceABI: (state: RootState) =>
     state.governance?.governanceABI || undefined,
 };
 
 export const GovernanceSelectors = {
-  selectSyncedProposalsWithBlockChain: createSelector(
-    GovernanceDomains.selectSyncedProposalsWithBlockchainDomain,
+  syncedProposalsWithBlockChain: createSelector(
+    GovernanceDomains.syncedProposalsWithBlockchain,
     (syncedProposalsWithBlockchain) => syncedProposalsWithBlockchain
   ),
-  selectGovernance: createSelector(
-    GovernanceDomains.selectGovernanceDomain,
+  governance: createSelector(
+    GovernanceDomains.governance,
     (governanceState) => governanceState
   ),
-  selectIsLoadingGovernanceTokenBalance: createSelector(
-    GovernanceDomains.selectGovernanceDomain,
+  isLoadingGovernanceTokenBalance: createSelector(
+    GovernanceDomains.governance,
     (governanceState) => governanceState.isGettingGovernanceTokenBalance
   ),
-  selectGovernanceTokenBalance: createSelector(
-    GovernanceDomains.selectGovernanceDomain,
+  governanceTokenBalance: createSelector(
+    GovernanceDomains.governance,
     (governanceState) => governanceState.governanceTokenBalance
   ),
   accruingTokenBalance: createSelector(
-    GovernanceDomains.selectGovernanceDomain,
+    GovernanceDomains.governance,
     (governanceState) => governanceState.accruingTokenBalance
   ),
   mainTokenAmountStakedForAccruing: createSelector(
-    GovernanceDomains.selectGovernanceDomain,
+    GovernanceDomains.governance,
     (governanceState) => governanceState.totalMainTokenStakedForAccruingToken
   ),
   totalAccruedToken: createSelector(
-    GovernanceDomains.selectGovernanceDomain,
+    GovernanceDomains.governance,
     (governanceState) => governanceState.totalAccruedToken
   ),
-  selectFloatedGovernanceTokenBalance: createSelector(
-    GovernanceDomains.selectGovernanceDomain,
+  floatedGovernanceTokenBalance: createSelector(
+    GovernanceDomains.governance,
     (governanceState) => {
       if (governanceState.governanceTokenBalance) {
         const floated =
@@ -89,59 +83,48 @@ export const GovernanceSelectors = {
       }
     }
   ),
-  selectIsLoadingReceipt: createSelector(
-    GovernanceDomains.selectIsLoadingReceiptDomain,
+  isLoadingReceipt: createSelector(
+    GovernanceDomains.isLoadingReceipt,
     (isLoadingReceipt) => isLoadingReceipt
   ),
-  selectReceipt: createSelector(
-    GovernanceDomains.selectReceiptDomain,
+  receipt: createSelector(
+    GovernanceDomains.receipt,
     (receipt) => receipt
   ),
-  selectSelectedProposalFilter: createSelector(
-    GovernanceDomains.selectSelectedProposalFilterDomain,
+  selectedProposalFilter: createSelector(
+    GovernanceDomains.selectedProposalFilter,
     (filter) => filter
   ),
-  selectSelectedProposal: createSelector(
-    GovernanceDomains.selectSelectedProposalDomain,
+  selectedProposal: createSelector(
+    GovernanceDomains.selectedProposal,
     (proposal) => proposal
   ),
-  selectProposals: createSelector(
-    GovernanceDomains.selectProposalsDomain,
+  proposals: createSelector(
+    GovernanceDomains.proposals,
     (proposals) => proposals
   ),
-  selectNewProposalFields: createSelector(
-    GovernanceDomains.selectNewProposalFieldsDomain,
-    (fields) => fields
-  ),
-  selectNewProposalField: (field: keyof ContainerState["newProposalFields"]) =>
-    createSelector(
-      GovernanceDomains.selectNewProposalFieldsDomain,
-      (fields) => fields[field]
-    ),
-  selectIsVotingFor: createSelector(
-    GovernanceDomains.selectIsVotingForDomain,
+
+  isVotingFor: createSelector(
+    GovernanceDomains.selectIsVotingFor,
     (isVotingFor) => isVotingFor
   ),
-  selectIsVotingAgainst: createSelector(
-    GovernanceDomains.selectIsVotingAgainstDomain,
+  isVotingAgainst: createSelector(
+    GovernanceDomains.isVotingAgainst,
     (isVotingAgainst) => isVotingAgainst
   ),
-  selectIsNewProposalFormOpen: createSelector(
-    GovernanceDomains.selectIsNewProposalFormOpenDomain,
-    (isNewProposalFormOpen) => isNewProposalFormOpen
-  ),
-  selectIsLoadingProposals: createSelector(
-    GovernanceDomains.selectIsLoadingProposalsDomain,
+
+  isLoadingProposals: createSelector(
+    GovernanceDomains.isLoadingProposals,
     (isLoading) => isLoading
   ),
-  selectIsSubmittingNewProposal: createSelector(
-    GovernanceDomains.selectIsSubmittingNewProposalsDomain,
+  isSubmittingNewProposal: createSelector(
+    GovernanceDomains.isSubmittingNewProposals,
     (isLoading) => isLoading
   ),
-  selectFilteredProposalsProposals: createSelector(
+  filteredProposals: createSelector(
     [
-      GovernanceDomains.selectProposalsDomain,
-      GovernanceDomains.selectSelectedProposalFilterDomain,
+      GovernanceDomains.proposals,
+      GovernanceDomains.selectedProposalFilter,
     ],
     (proposals, filters) => {
       let list = [...proposals];
@@ -151,8 +134,8 @@ export const GovernanceSelectors = {
       return list;
     }
   ),
-  selectCanAddNewProposal: createSelector(
-    [GovernanceDomains.selectGovernanceDomain, Web3Domains.selectAccountDomain],
+  canAddNewProposal: createSelector(
+    [GovernanceDomains.governance, Web3Domains.selectAccountDomain],
     (governance, account) => {
       if (governance.governanceTokenBalance) {
         const floatedBalance = BNToFloat(
@@ -169,11 +152,11 @@ export const GovernanceSelectors = {
       return false;
     }
   ),
-  selectGovernanceTokenContract: createSelector(
+  governanceTokenContract: createSelector(
     [
       EthersDomains.selectPrivateProviderDomain,
       Web3Domains.selectLibraryDomain,
-      GovernanceDomains.selectGovernanceTokenABIDomain,
+      GovernanceDomains.governanceTokenABI,
     ],
     (provider, library, governanceTokenABI) => {
       if (provider && library && governanceTokenABI) {

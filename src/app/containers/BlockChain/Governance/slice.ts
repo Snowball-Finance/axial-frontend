@@ -1,5 +1,11 @@
 import { PayloadAction } from "@reduxjs/toolkit";
-import { ContainerState, Proposal, ProposalFilters, Receipt } from "./types";
+import {
+  ContainerState,
+  Proposal,
+  ProposalFilters,
+  Receipt,
+  SubmitNewProposalPayload,
+} from "./types";
 import { createSlice } from "store/toolkit";
 import { useInjectReducer, useInjectSaga } from "store/redux-injectors";
 import { governanceSaga } from "./saga";
@@ -14,7 +20,6 @@ export const initialState: ContainerState = {
   proposals: [],
   isVotingAgainst: false,
   isVotingFor: false,
-  isNewProposalFormOpen: false,
   isSubmittingNewProposal: false,
   selectedProposal: undefined,
   iseGettingReceipt: false,
@@ -27,18 +32,6 @@ export const initialState: ContainerState = {
   totalGovernanceTokenSupply: BigNumber.from(0),
   totalAccruedToken: BigNumber.from(0),
   totalMainTokenStakedForAccruingToken: BigNumber.from(0),
-  newProposalFields: {
-    title: "",
-    description: "",
-    discussion: "",
-    document: "",
-    votingPeriod: "3",
-    error: {
-      title: "",
-      description: "",
-      votingPeriod: "",
-    },
-  },
 };
 
 const governanceSlice = createSlice({
@@ -84,10 +77,7 @@ const governanceSlice = createSlice({
     setGovernanceTokenContract(state, action: PayloadAction<any>) {
       state.governanceTokenContract = action.payload;
     },
-    getProposals(
-      state,
-      action: PayloadAction<{ silent?: boolean; query: string }>
-    ) {},
+    getProposals(state, action: PayloadAction<{ silent?: boolean }>) {},
     getVotingReceipt(state, action: PayloadAction<{ proposal: Proposal }>) {
       state.receipt = undefined;
     },
@@ -97,7 +87,7 @@ const governanceSlice = createSlice({
     setIsGettingReceipt(state, action: PayloadAction<boolean>) {
       state.iseGettingReceipt = action.payload;
     },
-    setIsLoadingProposals(state, action: PayloadAction<boolean>) {
+    setIsGettingProposals(state, action: PayloadAction<boolean>) {
       state.isLoadingProposals = action.payload;
     },
     setProposals(state, action: PayloadAction<Proposal[]>) {
@@ -109,32 +99,12 @@ const governanceSlice = createSlice({
     setIsVotingAgainst(state, action: PayloadAction<boolean>) {
       state.isVotingAgainst = action.payload;
     },
-    setIsNewProposalFormOpen(state, action: PayloadAction<boolean>) {
-      state.isNewProposalFormOpen = action.payload;
-    },
+
     setProposalFilter(state, action: PayloadAction<ProposalFilters>) {
       state.selectedProposalFilter = action.payload;
     },
     setSelectedProposal(state, action: PayloadAction<Proposal>) {
       state.selectedProposal = action.payload;
-    },
-    setNewProposalFields(
-      state,
-      action: PayloadAction<{
-        key: keyof ContainerState["newProposalFields"];
-        value;
-      }>
-    ) {
-      state.newProposalFields[action.payload.key] = action.payload.value;
-    },
-    setNewProposalError(
-      state,
-      action: PayloadAction<{
-        key: keyof ContainerState["newProposalFields"]["error"];
-        value: string;
-      }>
-    ) {
-      state.newProposalFields.error[action.payload.key] = action.payload.value;
     },
     vote(
       state,
@@ -143,7 +113,10 @@ const governanceSlice = createSlice({
     setIsSubmittingNewProposal(state, action: PayloadAction<boolean>) {
       state.isSubmittingNewProposal = action.payload;
     },
-    submitNewProposal(state, action: PayloadAction<void>) {},
+    submitNewProposal(
+      state,
+      action: PayloadAction<SubmitNewProposalPayload>
+    ) {},
     setSyncedProposalsWithBlockchain(state, action: PayloadAction<boolean>) {
       state.syncedProposalsWithBlockchain = action.payload;
     },

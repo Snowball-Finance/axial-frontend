@@ -1,6 +1,3 @@
-// import { take, call, put, select, takeLatest } from 'redux-saga/effects';
-// import { actions } from './slice';
-
 import { parseEther } from "ethers/lib/utils";
 import { all, call, delay, put, select, takeLatest } from "redux-saga/effects";
 import { StakingActions } from "./slice";
@@ -70,7 +67,7 @@ export function* stakeGovernanceToken(action: {
       const governanceTokenAddress =
         env.GOVERNANCE_TOKEN_CONTRACT_ADDRESS || "";
       const governanceTokenABI = yield select(
-        GovernanceDomains.selectGovernanceTokenABIDomain
+        GovernanceDomains.governanceTokenABI
       );
       const governanceTokenContract: SAxial = new Contract(
         governanceTokenAddress,
@@ -275,7 +272,7 @@ export function* getLockedGovernanceTokenInfo(action: {
   payload: skipLoading;
 }) {
   const governanceTokenABI = yield select(
-    GovernanceDomains.selectGovernanceTokenABIDomain
+    GovernanceDomains.governanceTokenABI
   );
   const provider = yield select(EthersDomains.selectPrivateProviderDomain);
   const governanceTokenContract: SAxial = new Contract(

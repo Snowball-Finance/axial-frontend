@@ -17,6 +17,25 @@ export const initialState: ContainerState = {
   pairSearchInput: "",
   selectedPoolProviders: [],
   isVotingForFarms: false,
+  submittedExecutionContexts: [],
+  currentExecutionContext: {
+    description: "",
+    contractAddress: "",
+    avaxValue: "",
+    data: "",
+  },
+  newProposalFields: {
+    title: "",
+    description: "",
+    discussion: "",
+    document: "",
+    votingPeriod: process.env.REACT_APP_MINIMUM_VOTING_PERIOD || "3",
+    error: {
+      title: "",
+      description: "",
+      votingPeriod: "",
+    },
+  },
 };
 
 const governancePageSlice = createSlice({
@@ -73,6 +92,84 @@ const governancePageSlice = createSlice({
     setIsVotingForFarms: (state, action: PayloadAction<boolean>) => {
       state.isVotingForFarms = action.payload;
     },
+    resetNewProposalFields(state, action: PayloadAction<void>) {
+      state.currentExecutionContext = {
+        ...initialState.currentExecutionContext,
+      };
+      state.submittedExecutionContexts = [];
+      state.newProposalFields = {
+        ...initialState.newProposalFields,
+        error: {
+          ...initialState.newProposalFields.error,
+        },
+      };
+    },
+    setNewProposalFields(
+      state,
+      action: PayloadAction<{
+        key: keyof ContainerState["newProposalFields"];
+        value;
+      }>
+    ) {
+      state.newProposalFields[action.payload.key] = action.payload.value;
+    },
+    setNewProposalError(
+      state,
+      action: PayloadAction<{
+        key: keyof ContainerState["newProposalFields"]["error"];
+        value: string;
+      }>
+    ) {
+      state.newProposalFields.error[action.payload.key] = action.payload.value;
+    },
+    setCurrentExecutionContextField(
+      state,
+      action: PayloadAction<{
+        key: keyof ContainerState["currentExecutionContext"];
+        value;
+      }>
+    ) {
+      state.currentExecutionContext[action.payload.key] = action.payload.value;
+    },
+    addToSubmittedExecutionContexts(
+      state,
+      action: PayloadAction<ContainerState["currentExecutionContext"]>
+    ) {
+      state.submittedExecutionContexts.push(action.payload);
+      state.currentExecutionContext = {
+        ...initialState.currentExecutionContext,
+      };
+    },
+    setExecutionContextArray(
+      state,
+      action: PayloadAction<ContainerState["submittedExecutionContexts"]>
+    ) {
+      state.submittedExecutionContexts = action.payload;
+    },
+    removeFromSubmittedExecutionContexts(
+      state,
+      action: PayloadAction<{ index: number }>
+    ) {
+      const { submittedExecutionContexts } = state;
+      const tmpSubmittedExecutionContexts = [...submittedExecutionContexts];
+      const { payload } = action;
+      const { index } = payload;
+      tmpSubmittedExecutionContexts.splice(index, 1);
+      state.submittedExecutionContexts = tmpSubmittedExecutionContexts;
+    },
+    setSubmittedExecutionContextForEditing(
+      state,
+      action: PayloadAction<{ index: number }>
+    ) {
+      const { submittedExecutionContexts } = state;
+      const tmpSubmittedExecutionContexts = [...submittedExecutionContexts];
+      const { payload } = action;
+      const { index } = payload;
+      state.currentExecutionContext = tmpSubmittedExecutionContexts[index];
+      tmpSubmittedExecutionContexts.splice(index, 1);
+      state.submittedExecutionContexts = tmpSubmittedExecutionContexts;
+    },
+    submitNewProposal: (state, action: PayloadAction<void>) => {},
   },
 });
 
