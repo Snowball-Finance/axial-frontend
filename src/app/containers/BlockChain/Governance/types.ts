@@ -1,5 +1,9 @@
 import { BigNumber, Contract } from "ethers";
 import { Governance } from "abi/ethers-contracts/Governance";
+import {
+  ExecutionContext,
+  GovernancePageState,
+} from "app/pages/Governance/types";
 
 /* --- STATE --- */
 
@@ -19,6 +23,11 @@ export enum ProposalState {
   Expired,
 }
 
+export interface SubmitNewProposalPayload {
+  executionContexts: ExecutionContext[];
+  newProposalFields: GovernancePageState["newProposalFields"];
+}
+
 export type Proposal = Governance.ProposalStruct & {
   state: ProposalState;
   index: number;
@@ -32,7 +41,6 @@ export interface GovernanceState {
   selectedProposal: Proposal | undefined;
   isVotingFor: boolean;
   isVotingAgainst: boolean;
-  isNewProposalFormOpen: boolean;
   isSubmittingNewProposal: boolean;
   iseGettingReceipt: boolean;
   receipt?: Receipt;
@@ -46,17 +54,5 @@ export interface GovernanceState {
   accruingTokenBalance: BigNumber | undefined;
   totalAccruedToken: BigNumber | undefined;
   totalMainTokenStakedForAccruingToken: BigNumber | undefined;
-  newProposalFields: {
-    title: string;
-    description: string;
-    discussion: string;
-    document: string;
-    votingPeriod: string;
-    error: {
-      title: string;
-      description: string;
-      votingPeriod: string;
-    };
-  };
 }
 export type ContainerState = GovernanceState;

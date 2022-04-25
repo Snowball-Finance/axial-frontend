@@ -12,7 +12,7 @@ import { GovernanceSelectors } from "app/containers/BlockChain/Governance/select
 
 export const VotePower: FC = () => {
   const governanceTokenBalance = useSelector(
-    GovernanceSelectors.selectFloatedGovernanceTokenBalance
+    GovernanceSelectors.floatedGovernanceTokenBalance
   );
   const account = useSelector(Web3Selectors.selectAccount);
   const { t } = useTranslation();

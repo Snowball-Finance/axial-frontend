@@ -22,7 +22,7 @@
     "@web3-react/walletlink-connector": "^6.2.5",
     "ag-grid-community": "26.2.0",
     "ag-grid-react": "26.2.0",
-    "axios": "0.25.0",
+    "axios": "0.26.1",
     "classnames": "2.3.1",
     "coingecko-api": "1.0.10",
     "connected-react-router": "6.9.2",

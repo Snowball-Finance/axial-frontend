@@ -5,13 +5,12 @@ import { useTranslation } from "react-i18next";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { DescriptionInput } from "./inputs/description";
 import { TitleInput } from "./inputs/title";
-import { NewProposalSubmitButton } from "./submitButton";
 
-export const LeftSection = () => {
+export const ProposalForm = () => {
   const { t } = useTranslation();
   return (
     <Wrapper>
-      <LeftSnowPaper>
+      <StyledSnowWrapper>
         <InputTitle>
           {t(translations.GovernancePage.Titleofnewproposal())}
           <span> *</span>
@@ -26,10 +25,7 @@ export const LeftSection = () => {
           <span>* </span>
           {t(translations.GovernancePage.Requiredfields())}
         </BottomDescription>
-        <SubmitWrapper>
-          <NewProposalSubmitButton />
-        </SubmitWrapper>
-      </LeftSnowPaper>
+      </StyledSnowWrapper>
     </Wrapper>
   );
 };
@@ -45,7 +41,7 @@ const Wrapper = styled(Column)({
   },
 });
 
-const LeftSnowPaper = styled(SnowPaper)({
+const StyledSnowWrapper = styled(SnowPaper)({
   padding: "20px",
   display: "flex",
   flexDirection: "column",
@@ -61,11 +57,6 @@ const BottomDescription = styled("p")({
   span: {
     color: CssVariables.red,
   },
-});
-
-const SubmitWrapper = styled("div")({
-  display: "flex",
-  alignSelf: "end",
 });
 
 const InputTitle = styled("p")({

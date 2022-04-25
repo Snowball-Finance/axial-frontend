@@ -8,13 +8,11 @@ import { DistributorData } from "./Staking/types";
 
 export const Governance = ({
   tokenABI,
-  proposalsQuery,
   governanceABI,
   staking,
 }: {
   tokenABI: any;
   governanceABI: any;
-  proposalsQuery: string;
   staking?: {
     feeDistributorABI: any;
     otherDistributors?: DistributorData[];
@@ -33,6 +31,7 @@ export const Governance = ({
     GOVERNANCE_TOKEN_LOGO_ADDRESS:
       process.env.REACT_APP_GOVERNANCE_TOKEN_LOGO_ADDRESS,
     VOTING_CONTRACT_ADDRESS: process.env.REACT_APP_VOTING_CONTRACT_ADDRESS,
+    IPFS_API_URL: process.env.REACT_APP_IPFS_API_URL,
   };
 
   for (let key in variables) {
@@ -46,12 +45,12 @@ export const Governance = ({
   useGovernanceSlice();
   const dispatch = useDispatch();
   const governanceTokenContract = useSelector(
-    GovernanceSelectors.selectGovernanceTokenContract
+    GovernanceSelectors.governanceTokenContract
   );
   const library = useSelector(Web3Selectors.selectLibrary);
-  const proposals = useSelector(GovernanceSelectors.selectProposals);
+  const proposals = useSelector(GovernanceSelectors.proposals);
   const syncedProposalsWithBlockChain = useSelector(
-    GovernanceSelectors.selectSyncedProposalsWithBlockChain
+    GovernanceSelectors.syncedProposalsWithBlockChain
   );
   useEffect(() => {
     if (governanceTokenContract !== undefined) {
@@ -64,7 +63,8 @@ export const Governance = ({
   useEffect(() => {
     dispatch(GovernanceActions.setGovernanceABI(governanceABI));
     dispatch(GovernanceActions.setGovernanceTokenABI(tokenABI));
-    dispatch(GovernanceActions.getProposals({ query: proposalsQuery }));
+    dispatch(GovernanceActions.getProposals({}));
+    dispatch(GovernanceActions.getProposals({}));
     return () => {};
   }, []);
 
