@@ -33,7 +33,7 @@ export const ProposalFilterSelect = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const selectedFilter = useSelector(
-    GovernanceSelectors.selectSelectedProposalFilter
+    GovernanceSelectors.selectedProposalFilter
   );
   const handleFilterChange = (v: ProposalFilters) => {
     dispatch(GovernanceActions.setProposalFilter(v));

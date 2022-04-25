@@ -24,6 +24,12 @@ export const PoolCardItem: FC<PoolCardItemProps> = ({ poolKey }) => {
               <PoolHeaderText variant="h2">{liquidityPool.name}</PoolHeaderText>
             </Grid>
 
+            {liquidityPool?.poolData?.isPaused && (
+              <Grid item>
+                <Tag variant="h2">Paused</Tag>
+              </Grid>
+            )}
+
             <Grid item>
               <Info poolKey={poolKey} />
             </Grid>
@@ -79,5 +85,10 @@ const StyledPoolChildContainer = styled(Grid)({
 
 const PoolHeaderText = styled(Typography)({
   color: CssVariables.white,
+  textTransform: "uppercase",
+});
+
+const Tag = styled(Typography)({
+  color: CssVariables.error,
   textTransform: "uppercase",
 });

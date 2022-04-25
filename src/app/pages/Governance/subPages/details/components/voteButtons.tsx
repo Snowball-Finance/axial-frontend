@@ -16,13 +16,13 @@ export const VoteButtons: FC<{ proposal: Proposal }> = ({ proposal }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const library = useSelector(Web3Selectors.selectLibrary);
-  const isLoadingFor = useSelector(GovernanceSelectors.selectIsVotingFor);
+  const isLoadingFor = useSelector(GovernanceSelectors.isVotingFor);
   const isLoadingAgainst = useSelector(
-    GovernanceSelectors.selectIsVotingAgainst
+    GovernanceSelectors.isVotingAgainst
   );
-  const receipt = useSelector(GovernanceSelectors.selectReceipt);
+  const receipt = useSelector(GovernanceSelectors.receipt);
   const isGettingReceipt = useSelector(
-    GovernanceSelectors.selectIsLoadingReceipt
+    GovernanceSelectors.isLoadingReceipt
   );
 
   const disabled = receipt?.hasVoted || isGettingReceipt || false;

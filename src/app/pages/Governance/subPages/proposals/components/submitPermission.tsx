@@ -11,7 +11,7 @@ import { mobile } from "styles/media";
 
 export const SubmitPermission = () => {
   const governanceTokenBalance = useSelector(
-    GovernanceSelectors.selectFloatedGovernanceTokenBalance
+    GovernanceSelectors.floatedGovernanceTokenBalance
   );
   const account = useSelector(Web3Selectors.selectAccount);
   const minimum = Number(env.MINIMUM_TOKEN_FOR_VOTING);

@@ -4,6 +4,7 @@ import { GovernanceSubPages } from "./routes";
 import { AppPages } from "app/types";
 import { styled } from "@mui/material";
 import { ProposalDetails } from "./subPages/details";
+import { NewProposalForm } from "./subPages/newProposal";
 
 export const GovernanceBody = () => {
   return (
@@ -11,6 +12,9 @@ export const GovernanceBody = () => {
       <Switch>
         <Route exact path={AppPages.GovernancePage}>
           <Proposals />
+        </Route>
+        <Route exact path={GovernanceSubPages.newProposal}>
+          <NewProposalForm />
         </Route>
         <Route exact path={`${GovernanceSubPages.proposals}`}>
           <Proposals />
