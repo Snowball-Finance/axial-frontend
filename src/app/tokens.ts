@@ -13,10 +13,10 @@ import { tokenAddress } from "utils/tokenAddresses";
 
 //symbol should be identical to key of token
 export const tokens: { [K in TokenSymbols]: Token } = {
-  "USDT.e": {
+  [TokenSymbols.USDTe]: {
     ABI: ERC20_ABI,
     address: tokenAddress(TokenSymbols.USDTe),
-    symbol: "USDT.e",
+    symbol: TokenSymbols.USDTe,
     name: "Tether",
     geckoId: "tether",
     logo: usdtLogo,
@@ -25,11 +25,11 @@ export const tokens: { [K in TokenSymbols]: Token } = {
     isSynthetic: false,
     isLPToken: false,
   },
-  usdcAM3DUSD: {
+  [TokenSymbols.usdcAM3DUSD]: {
     address: tokenAddress(TokenSymbols.usdcAM3DUSD),
     ABI: ERC20_ABI,
     decimals: 18,
-    symbol: "usdcAM3DUSD",
+    symbol: TokenSymbols.usdcAM3DUSD,
     name: "Axial USDC/AM3D",
     logo: axialLogo,
     geckoId: "usdcam3dusd",
@@ -37,11 +37,11 @@ export const tokens: { [K in TokenSymbols]: Token } = {
     isSynthetic: false,
     isLPToken: true,
   },
-  ac4dUSD: {
+  [TokenSymbols.ac4dUSD]: {
     address: tokenAddress(TokenSymbols.ac4dUSD),
     ABI: ERC20_ABI,
     decimals: 18,
-    symbol: "ac4dUSD",
+    symbol: TokenSymbols.ac4dUSD,
     name: "AC4D TSD/MIM/FRAX/DAI.e",
     logo: axialLogo,
     geckoId: "ac4dusd",
@@ -49,7 +49,7 @@ export const tokens: { [K in TokenSymbols]: Token } = {
     isSynthetic: false,
     isLPToken: true,
   },
-  aa3dUSD: {
+  [TokenSymbols.aa3dUSD]: {
     address: tokenAddress(TokenSymbols.aa3dUSD),
     ABI: ERC20_ABI,
     decimals: 18,
@@ -61,11 +61,11 @@ export const tokens: { [K in TokenSymbols]: Token } = {
     isSynthetic: false,
     isLPToken: true,
   },
-  am3dUSD: {
+  [TokenSymbols.am3dUSD]: {
     address: tokenAddress(TokenSymbols.am3dUSD),
     ABI: ERC20_ABI,
     decimals: 18,
-    symbol: "am3dUSD",
+    symbol: TokenSymbols.am3dUSD,
     name: "AM3D MIM/USDC.e/DAI.e",
     logo: axialLogo,
     geckoId: "am3dusd",
@@ -73,11 +73,11 @@ export const tokens: { [K in TokenSymbols]: Token } = {
     isSynthetic: false,
     isLPToken: true,
   },
-  as4dUSD: {
+  [TokenSymbols.as4dUSD]: {
     ABI: ERC20_ABI,
     address: tokenAddress(TokenSymbols.as4dUSD),
     decimals: 18,
-    symbol: "as4dUSD",
+    symbol: TokenSymbols.as4dUSD,
     name: "AS4D DAI.e/USDC.e/USDT.e/TUSD",
     geckoId: "as4dusd",
     masterchefId: 0,
@@ -85,11 +85,11 @@ export const tokens: { [K in TokenSymbols]: Token } = {
     isLPToken: true,
     logo: axialLogo,
   },
-  JLP: {
+  [TokenSymbols.JLP]: {
     ABI: ERC20_ABI,
     address: tokenAddress(TokenSymbols.JLP),
     decimals: 18,
-    symbol: "JLP",
+    symbol: TokenSymbols.JLP,
     name: "JLP",
     geckoId: "jlpavaxaxial",
     logo: axialLogo,
@@ -97,11 +97,11 @@ export const tokens: { [K in TokenSymbols]: Token } = {
     isSynthetic: false,
     isLPToken: true,
   },
-  FRAX: {
+  [TokenSymbols.FRAX]: {
     ABI: ERC20_ABI,
     address: tokenAddress(TokenSymbols.FRAX),
     decimals: 18,
-    symbol: "FRAX",
+    symbol: TokenSymbols.FRAX,
     name: "Frax",
     logo: fraxLogo,
     geckoId: "frax",
@@ -109,11 +109,11 @@ export const tokens: { [K in TokenSymbols]: Token } = {
     isSynthetic: false,
     isLPToken: false,
   },
-  FXS: {
+  [TokenSymbols.FXS]: {
     ABI: ERC20_ABI,
     address: tokenAddress(TokenSymbols.FXS),
     decimals: 18,
-    symbol: "FXS",
+    symbol: TokenSymbols.FXS,
     name: "Frax Share",
     logo: axialLogo,
     geckoId: "frax-share",
@@ -121,11 +121,11 @@ export const tokens: { [K in TokenSymbols]: Token } = {
     isSynthetic: false,
     masterchefId: 0,
   },
-  "DAI.e": {
+  [TokenSymbols.DAI]: {
     ABI: ERC20_ABI,
     address: tokenAddress(TokenSymbols.DAI),
     decimals: 18,
-    symbol: "DAI.e",
+    symbol: TokenSymbols.DAI,
     logo: daiLogo,
     geckoId: "dai",
     name: "Dai",
@@ -133,11 +133,11 @@ export const tokens: { [K in TokenSymbols]: Token } = {
     isSynthetic: false,
     isLPToken: false,
   },
-  AVAI: {
+  [TokenSymbols.AVAI]: {
     ABI: ERC20_ABI,
     address: tokenAddress(TokenSymbols.AVAI),
     decimals: 18,
-    symbol: "AVAI",
+    symbol:TokenSymbols.AVAI,
     logo: avaiLogo,
     geckoId: "orca-avai",
     name: "Orca AVAI",
@@ -145,11 +145,11 @@ export const tokens: { [K in TokenSymbols]: Token } = {
     isSynthetic: false,
     isLPToken: false,
   },
-  TSD: {
+  [TokenSymbols.TSD]: {
     ABI: ERC20_ABI,
     address: tokenAddress(TokenSymbols.TSD),
     decimals: 18,
-    symbol: "TSD",
+    symbol: TokenSymbols.TSD,
     name: "Teddy Dollar",
     logo: tsdLogo,
     geckoId: "teddy-dollar",
@@ -157,11 +157,11 @@ export const tokens: { [K in TokenSymbols]: Token } = {
     isSynthetic: false,
     isLPToken: false,
   },
-  USDC: {
+  [TokenSymbols.USDC]: {
     ABI: ERC20_ABI,
     address: tokenAddress(TokenSymbols.USDC),
     decimals: 6,
-    symbol: "USDC",
+    symbol: TokenSymbols.USDC,
     name: "Native USDC",
     logo: usdcLogo,
     geckoId: "usd-coin",
@@ -169,11 +169,11 @@ export const tokens: { [K in TokenSymbols]: Token } = {
     isSynthetic: false,
     isLPToken: false,
   },
-  MIM: {
+  [TokenSymbols.MIM]: {
     ABI: ERC20_ABI,
     address: tokenAddress(TokenSymbols.MIM),
     decimals: 18,
-    symbol: "MIM",
+    symbol: TokenSymbols.MIM,
     name: "Magic Internet Money",
     logo: mimLogo,
     geckoId: "magic-internet-money",
@@ -181,11 +181,11 @@ export const tokens: { [K in TokenSymbols]: Token } = {
     isSynthetic: false,
     isLPToken: false,
   },
-  TEDDY: {
+  [TokenSymbols.TEDDY]: {
     ABI: ERC20_ABI,
     address: tokenAddress(TokenSymbols.TEDDY),
     decimals: 18,
-    symbol: "TEDDY",
+    symbol: TokenSymbols.TEDDY,
     name: "Teddy",
     logo: axialLogo,
     geckoId: "teddy",
@@ -193,11 +193,11 @@ export const tokens: { [K in TokenSymbols]: Token } = {
     isSynthetic: false,
     masterchefId: 0,
   },
-  WAVAX: {
+  [TokenSymbols.WAVAX]: {
     ABI: ERC20_ABI,
     address: tokenAddress(TokenSymbols.WAVAX),
     decimals: 18,
-    symbol: "WAVAX",
+    symbol: TokenSymbols.WAVAX,
     name: "Wrapped AVAX",
     logo: axialLogo,
     geckoId: "avalanche-2",
@@ -205,11 +205,11 @@ export const tokens: { [K in TokenSymbols]: Token } = {
     isSynthetic: false,
     masterchefId: 0,
   },
-  TUSD: {
+  [TokenSymbols.TUSD]: {
     ABI: ERC20_ABI,
     address: tokenAddress(TokenSymbols.TUSD),
     decimals: 18,
-    symbol: "TUSD",
+    symbol: TokenSymbols.TUSD,
     name: "TUSD",
     logo: tusdLogo,
     geckoId: "true-usd",
@@ -217,11 +217,11 @@ export const tokens: { [K in TokenSymbols]: Token } = {
     isSynthetic: false,
     isLPToken: false,
   },
-  "USDC.e": {
+  [TokenSymbols.USDCe]: {
     ABI: ERC20_ABI,
     address: tokenAddress(TokenSymbols.USDCe),
     decimals: 6,
-    symbol: "USDC.e",
+    symbol: TokenSymbols.USDCe,
     name: "USDC.e",
     logo: usdcLogo,
     geckoId: "usd-coin",
@@ -229,11 +229,11 @@ export const tokens: { [K in TokenSymbols]: Token } = {
     isSynthetic: false,
     masterchefId: 0,
   },
-  ORCA: {
+  [TokenSymbols.ORCA]: {
     ABI: ERC20_ABI,
     address: tokenAddress(TokenSymbols.ORCA),
     decimals: 18,
-    symbol: "ORCA",
+    symbol: TokenSymbols.ORCA,
     name: "Orca DAO",
     logo: axialLogo,
     geckoId: "orcadao",
