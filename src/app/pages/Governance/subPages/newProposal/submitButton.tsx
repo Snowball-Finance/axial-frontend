@@ -12,7 +12,7 @@ export const NewProposalSubmitButton = () => {
   const dispatch = useDispatch();
   const fields = useSelector(GovernancePageSelectors.selectNewProposalFields);
   const isLoading = useSelector(
-    GovernanceSelectors.selectIsSubmittingNewProposal
+    GovernanceSelectors.isSubmittingNewProposal
   );
 
   const handleSubmitButton = () => {

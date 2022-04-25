@@ -45,12 +45,12 @@ export const Governance = ({
   useGovernanceSlice();
   const dispatch = useDispatch();
   const governanceTokenContract = useSelector(
-    GovernanceSelectors.selectGovernanceTokenContract
+    GovernanceSelectors.governanceTokenContract
   );
   const library = useSelector(Web3Selectors.selectLibrary);
-  const proposals = useSelector(GovernanceSelectors.selectProposals);
+  const proposals = useSelector(GovernanceSelectors.proposals);
   const syncedProposalsWithBlockChain = useSelector(
-    GovernanceSelectors.selectSyncedProposalsWithBlockChain
+    GovernanceSelectors.syncedProposalsWithBlockChain
   );
   useEffect(() => {
     if (governanceTokenContract !== undefined) {

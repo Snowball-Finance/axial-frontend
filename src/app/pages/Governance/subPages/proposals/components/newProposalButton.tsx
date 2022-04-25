@@ -12,7 +12,7 @@ import { CssVariables } from "styles/cssVariables/cssVariables";
 export const NewProposalButton = () => {
   const dispatch = useDispatch();
   const canAddNewProposal = useSelector(
-    GovernanceSelectors.selectCanAddNewProposal
+    GovernanceSelectors.canAddNewProposal
   );
 
   const handleClick = () => {

@@ -61,7 +61,7 @@ export function* getGovernanceContract() {
   const account = yield select(Web3Domains.selectAccountDomain);
   const library = yield select(Web3Domains.selectNetworkLibraryDomain);
   const GOVERNANCE_ABI = yield select(
-    GovernanceDomains.selectGovernanceABIDomain
+    GovernanceDomains.governanceABI
   );
   const governanceContract = new ethers.Contract(
     //|| '' is added because the error of not existing env var is handled in index file of this module
@@ -261,7 +261,7 @@ export function* getGovernanceTokenBalance(action: {
   const library = yield select(Web3Domains.selectLibraryDomain);
   const governanceTokenAddress = env.GOVERNANCE_TOKEN_CONTRACT_ADDRESS || "";
   const governanceTokenABI = yield select(
-    GovernanceDomains.selectGovernanceTokenABIDomain
+    GovernanceDomains.governanceTokenABI
   );
   const governanceTokenContract: SAxial = new Contract(
     governanceTokenAddress,
@@ -314,7 +314,7 @@ export function* getAccruingTokenBalance(action: {
 }
 export function* getTotalGovernanceTokenSupply() {
   const governanceToken = yield select(
-    GovernanceDomains.selectGovernanceTokenContractDomain
+    GovernanceDomains.governanceTokenContract
   );
   try {
     const contract: Governance = governanceToken;
@@ -333,7 +333,7 @@ export function* syncProposalsWithBlockchain() {
       governanceContract.proposalCount
     );
     const num = Number(numberOfProposalsOnBlockChain.toString());
-    const proposals = yield select(GovernanceDomains.selectProposalsDomain);
+    const proposals = yield select(GovernanceDomains.proposals);
     let proposalsInstance = [...proposals];
     let offsetEnv: string | number | undefined = env.PROPOSALS_OFFSET_NUMBER;
     if (!offsetEnv) {
@@ -398,7 +398,7 @@ export function* setGovernanceTokenContract(action: {
 
 export function* getGovernanceTokenContract() {
   const governanceTokenABI = yield select(
-    GovernanceDomains.selectGovernanceTokenABIDomain
+    GovernanceDomains.governanceTokenABI
   );
   const library = yield select(Web3Domains.selectNetworkLibraryDomain);
   const governanceTokenContract: SAxial = new Contract(
