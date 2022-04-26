@@ -12,10 +12,18 @@ const StyledButton = styled(SnowButton)(({ theme }) => ({
   borderWidth: "2px",
   backgroundColor: CssVariables.swapInputbackground,
   "&:hover": {
-    borderWidth: "2px",
+    backgroundColor: CssVariables.secondaryHover,
+    color: CssVariables.secondaryHoverStroke,
+    border: `2px solid ${CssVariables.secondaryHoverStroke}`
   },
   "&.Mui-disabled": {
-    border: `2px solid ${CssVariables.primaryDisabled}`,
-    color: CssVariables.primaryDisabled,
+    border: `2px solid ${CssVariables.secondaryDisabledStroke}`,
+    color: CssVariables.secondaryDisabledStroke,
+    backgroundColor: CssVariables.secondaryDisabled,
   },
+  "&:active": {
+    border: `2px solid ${CssVariables.secondaryPressedStroke}`,
+    color: CssVariables.secondaryPressedStroke,
+    backgroundColor: CssVariables.secondaryPressed,
+  }
 }));
