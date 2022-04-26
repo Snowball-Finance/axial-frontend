@@ -10,7 +10,7 @@ export const ProposalsList = () => {
   return (
     <Wrapper>
       {proposals.map((proposal) => (
-        <ProposalListItem key={proposal.index} proposal={proposal} />
+        <ProposalListItem key={proposal.governance_id} proposal={proposal} />
       ))}
     </Wrapper>
   );

@@ -32,7 +32,7 @@ export const ProposalListItem: FC<ProposalListItemProps> = ({
   const { forVotes, againstVotes } = forAndAgainst({ proposal });
 
   const handleDetailsClick = () => {
-    dispatch(push(`${GovernanceSubPages.proposals}/${proposal.index}`));
+    dispatch(push(`${GovernanceSubPages.proposals}/${proposal.governance_id}`));
   };
 
   return (
@@ -48,21 +48,21 @@ export const ProposalListItem: FC<ProposalListItemProps> = ({
           <div>
             <DarkText size={18}>
               {t(translations.GovernancePage.ProposalNumber(), {
-                number: proposal.index,
+                number: proposal.governance_id,
               })}
             </DarkText>
             <DarkText size={26}>{proposal.title}</DarkText>
           </div>
           <BottomWrapper>
             <DataWrapper>
-              <TitleAndValue
+              {proposal.state!==undefined && <TitleAndValue
                 title={t(translations.GovernancePage.Status())}
                 value={
                   proposal.state === ProposalState.PendingExecution
                     ? ProposalState.ReadyForExecution.toString()
                     : proposal.state.toString()
                 }
-              />
+              />}
               <TitleAndValue
                 title={t(translations.GovernancePage.Proposedby())}
                 value={
@@ -76,10 +76,10 @@ export const ProposalListItem: FC<ProposalListItemProps> = ({
               />
               <TitleAndValue
                 title={t(translations.GovernancePage.Date())}
-                value={new Date(Number(proposal.startTime)).toLocaleString()}
+                value={new Date(proposal.start_date).toLocaleString()}
               />
             </DataWrapper>
-            <VotesBarWrapper>
+            {/* <VotesBarWrapper>
               <VoteProgressBar
                 title={`${t(translations.GovernancePage.Votes_FOR_AGAINST(), {
                   type: t(translations.GovernancePage.For()),
@@ -94,7 +94,7 @@ export const ProposalListItem: FC<ProposalListItemProps> = ({
                 percent={againstVotes.percent}
                 type={VoteProgressBarType.against}
               />
-            </VotesBarWrapper>
+            </VotesBarWrapper> */}
           </BottomWrapper>
         </IndexNameAndStatusWrapper>
         <DividerOnMobile />

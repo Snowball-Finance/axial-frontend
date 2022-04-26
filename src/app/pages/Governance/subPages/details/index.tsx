@@ -17,15 +17,13 @@ import { VoteStatus } from "./components/voteStatus";
 
 export const ProposalDetails = () => {
   const { t } = useTranslation();
-  const index = Number(
-    window.location.pathname.split(GovernanceSubPages.proposals + "/")[1]
-  );
+  const index = window.location.pathname.split(GovernanceSubPages.proposals + "/")[1]
 
   const proposals = useSelector(GovernanceSelectors.proposals);
   if (proposals.length === 0) {
     return <>Loading</>;
   }
-  const proposal = proposals.find((item) => item.index === index);
+  const proposal = proposals.find((item) => item.governance_id === index);
 
   if (proposal === undefined) {
     return <>proposal not found</>;

@@ -30,7 +30,7 @@ export const Governance = ({
       process.env.REACT_APP_GOVERNANCE_TOKEN_CONTRACT_ADDRESS,
     GOVERNANCE_TOKEN_LOGO_ADDRESS:
       process.env.REACT_APP_GOVERNANCE_TOKEN_LOGO_ADDRESS,
-    VOTING_CONTRACT_ADDRESS: process.env.REACT_APP_VOTING_CONTRACT_ADDRESS,
+    GOVERNANCE_CONTRACT_ADDRESS: process.env.REACT_APP_GOVERNANCE_CONTRACT_ADDRESS,
     IPFS_API_URL: process.env.REACT_APP_IPFS_API_URL,
   };
 
@@ -63,7 +63,6 @@ export const Governance = ({
   useEffect(() => {
     dispatch(GovernanceActions.setGovernanceABI(governanceABI));
     dispatch(GovernanceActions.setGovernanceTokenABI(tokenABI));
-    dispatch(GovernanceActions.getProposals({}));
     dispatch(GovernanceActions.getProposals({}));
     return () => {};
   }, []);

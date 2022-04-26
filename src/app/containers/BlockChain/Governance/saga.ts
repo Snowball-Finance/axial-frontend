@@ -34,9 +34,17 @@ export function* getProposals(action: {
   }
   try {
     const response = yield call(GetProposalsAPI);
-    console.log({ proposals: response });
-    const proposals: Proposal[] = []; //response.data.ProposalList.proposals;
-    //TODO get id and status of proposals
+    const proposals: Proposal[] = response; //response.data.ProposalList.proposals;
+    const governanceContract:Governance=yield call(getGovernanceContract);
+    const numberOfProposalsOnBlockchain=yield call(governanceContract.proposalCount)
+    const callArray:any[]=[]
+for(let i=0;i<Number(numberOfProposalsOnBlockchain);i++){
+  callArray.push(call(governanceContract.proposals,i))
+}
+    // const tProposal=yield call(governanceContract.proposals,2)
+    // console.log({tProposal})
+    // const proposalsFromBlockChain=yield all(callArray)
+    // console.log({proposalsFromBlockChain})
     yield put(GovernanceActions.setProposals(proposals));
   } catch (error) {
     toast.error("error while getting proposals");
@@ -65,7 +73,7 @@ export function* getGovernanceContract() {
   );
   const governanceContract = new ethers.Contract(
     //|| '' is added because the error of not existing env var is handled in index file of this module
-    env.VOTING_CONTRACT_ADDRESS || "",
+    env.GOVERNANCE_CONTRACT_ADDRESS || "",
     GOVERNANCE_ABI,
     getProviderOrSigner(library, account)
   ) as Governance;
