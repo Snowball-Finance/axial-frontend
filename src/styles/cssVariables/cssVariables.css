@@ -19,7 +19,19 @@ html {
   --white: white;
   --black: black;
   --primary: #d15e2c;
+  --primaryHover: #e9e2e2;
+  --primaryHoverStroke: #d15e2c;
+  --primaryDisabled: rgba(209, 94, 44, 0.25);
+  --primaryDisabledStroke: rgba(233, 227, 227, 0.85);
+  --primaryPressed: rgba(209, 94, 44, 0.5);
+  --primaryPressedStroke: rgba(255, 255, 255, 0.85);
   --secondary: #eaab50;
+  --secondaryHover: #d15e2c;
+  --secondaryHoverStroke: #06041D;
+  --secondaryDisabled: rgba(6, 4, 29, 0.85);
+  --secondaryDisabledStroke: rgba(209, 94, 44, 0.45);
+  --secondaryPressed: rgba(6, 4, 29, 0.85);
+  --secondaryPressedStroke: rgba(209, 94, 44, 0.65);
   --actionColor: #d15e2c;
   --warning: #ebd033;
   --mainBackgroundColor: #31386b;
@@ -48,7 +60,6 @@ html {
   --paperBackground: #201f55;
   --bodyTextColor: #e5e6e7;
   --buttonBorderRadius: 60px;
-  --primaryDisabled: rgba(209, 94, 44, 0.25);
   --chipBackgroundColor: #3a2e6b;
   --poolCardBackground: rgba(0, 16, 59, 0.6);
   --cardBorder: #4d2f43;
