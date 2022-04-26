@@ -25,13 +25,13 @@ interface Props {
 export const VoteStatus: FC<Props> = ({ proposal }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const isLoading = useSelector(GovernanceSelectors.selectIsLoadingReceipt);
-  const receipt = useSelector(GovernanceSelectors.selectReceipt);
+  const isLoading = useSelector(GovernanceSelectors.isLoadingReceipt);
+  const receipt = useSelector(GovernanceSelectors.receipt);
   const isFor = receipt?.support || false;
   const hasVoted = receipt?.hasVoted || false;
-  const isVotingFor = useSelector(GovernanceSelectors.selectIsVotingFor);
+  const isVotingFor = useSelector(GovernanceSelectors.isVotingFor);
   const isVotingAgainst = useSelector(
-    GovernanceSelectors.selectIsVotingAgainst
+    GovernanceSelectors.isVotingAgainst
   );
   const library = useSelector(Web3Selectors.selectLibrary);
 

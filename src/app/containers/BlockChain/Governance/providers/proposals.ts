@@ -1,10 +1,9 @@
-import { env, IS_DEV } from "environment";
+import { env } from "environment";
 
-export const GetProposalsAPI = async (query: string) => {
-  const response = await fetch(
-    (IS_DEV ? env.DEVAPIADDR : env.APIADDR) + "?query=" + query,
-    { method: "GET" }
-  );
+export const GetProposalsAPI = async () => {
+  const response = await fetch(`${env.BASE_URL}axialproposals`, {
+    method: "GET",
+  });
   const res = await response.json();
   return res;
 };

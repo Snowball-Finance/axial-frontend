@@ -21,7 +21,7 @@ export const ProposalDetails = () => {
     window.location.pathname.split(GovernanceSubPages.proposals + "/")[1]
   );
 
-  const proposals = useSelector(GovernanceSelectors.selectProposals);
+  const proposals = useSelector(GovernanceSelectors.proposals);
   if (proposals.length === 0) {
     return <>Loading</>;
   }

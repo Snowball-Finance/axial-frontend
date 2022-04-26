@@ -23,7 +23,7 @@ export function Staking({ feeDistributorABI, otherDistributors }: Props) {
   const dispatch = useDispatch();
   const account = useSelector(Web3Selectors.selectAccount);
   const governanceTokenContract = useSelector(
-    GovernanceSelectors.selectGovernanceTokenContract
+    GovernanceSelectors.governanceTokenContract
   );
 
   if (!env.FEE_DISTRIBUTOR_CONTRACT_ADDRESS) {

@@ -1,9 +1,7 @@
 import React, { FC } from "react";
 import { styled, Grid, Typography } from "@mui/material";
-import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-
 import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import {
@@ -11,30 +9,15 @@ import {
   formatBNToPercentString,
   commify,
 } from "app/containers/utils/contractUtils";
-import { getKeyFromPoolIndex } from "app/pages/Rewards/constants";
 import { RewardsPageSelectors } from "app/pages/Rewards/selectors";
-import { RewardsSelectors } from "app/containers/Rewards/selectors";
-import { pools } from "app/pools";
 import { Zero } from "app/containers/Rewards/constants";
 import { CardWrapper } from "app/components/wrappers/Card";
 
-type TParams = { poolIndex: string };
-
 export const MyShare: FC = () => {
   const { t } = useTranslation();
-
-  const { poolIndex } = useParams<TParams>();
-  const poolKey = getKeyFromPoolIndex(poolIndex) || "";
   const userShareData = useSelector(
-    RewardsPageSelectors.rewardsUserShareData(poolKey)
+    RewardsPageSelectors.userShareDataUsingMasterchef
   );
-  const masterchefBalance = useSelector(RewardsSelectors.masterChefBalances);
-
-  const tokenKey = pools[poolKey].lpToken.symbol;
-
-  if (!userShareData) {
-    return null;
-  }
 
   return (
     <Grid container spacing={2}>
@@ -47,7 +30,7 @@ export const MyShare: FC = () => {
 
         <Grid item>
           <MyShareBalanceText variant="body1">
-            {formatBNToPercentString(userShareData.share, 18)}{" "}
+            {formatBNToPercentString(userShareData?.share || Zero, 18)}{" "}
             {t(translations.RewardsPage.MyShare.OfPool())}
           </MyShareBalanceText>
         </Grid>
@@ -72,7 +55,9 @@ export const MyShare: FC = () => {
                 <Grid item>
                   <BalanceText variant="body2">
                     $
-                    {commify(formatBNToString(userShareData.usdBalance, 18, 2))}
+                    {commify(
+                      formatBNToString(userShareData?.usdBalance || Zero, 18, 2)
+                    )}
                   </BalanceText>
                 </Grid>
               </Grid>
@@ -94,10 +79,11 @@ export const MyShare: FC = () => {
                 <Grid item>
                   <BalanceText variant="body2">
                     $
-                    {masterchefBalance &&
+                    {userShareData &&
                       commify(
                         formatBNToString(
-                          masterchefBalance[tokenKey]?.userInfo.amount || Zero,
+                          userShareData?.masterchefBalance?.userInfo.amount ||
+                            Zero,
                           18
                         )
                       )}
@@ -122,10 +108,10 @@ export const MyShare: FC = () => {
                 <Grid item>
                   <BalanceText variant="body2">
                     $
-                    {masterchefBalance &&
+                    {userShareData &&
                       commify(
                         formatBNToString(
-                          masterchefBalance[tokenKey]?.pendingTokens
+                          userShareData?.masterchefBalance?.pendingTokens
                             ?.pendingAxial || Zero,
                           18
                         )

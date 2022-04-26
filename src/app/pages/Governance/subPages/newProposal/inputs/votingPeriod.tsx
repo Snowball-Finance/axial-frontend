@@ -1,23 +1,25 @@
+import React from "react";
 import { InputAdornment, TextField } from "@mui/material";
 import { env } from "environment";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import React from "react";
 import { isInvalidPeriod } from "./utils/period";
-import { GovernanceSelectors } from "app/containers/BlockChain/Governance/selectors";
-import { GovernanceActions } from "app/containers/BlockChain/Governance/slice";
 import { translations } from "locales/i18n";
+import { GovernancePageSelectors } from "app/pages/Governance/selectors";
+import { GovernancePageActions } from "app/pages/Governance/slice";
 
 export const VotingPeriodInput = () => {
   const fieldName = "votingPeriod";
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const votingPeriod = useSelector(
-    GovernanceSelectors.selectNewProposalField(fieldName)
+    GovernancePageSelectors.selectNewProposalField(fieldName)
   );
 
   const handleInputChange = (value: string) => {
-    dispatch(GovernanceActions.setNewProposalFields({ key: fieldName, value }));
+    dispatch(
+      GovernancePageActions.setNewProposalFields({ key: fieldName, value })
+    );
   };
 
   return (

@@ -23,11 +23,12 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
   const { t } = useTranslation();
   const poolData = useSelector(RewardsSelectors.poolData(poolKey));
   const userShareData = useSelector(RewardsSelectors.userShareData(poolKey));
+  const isGettingPoolsData = useSelector(RewardsSelectors.isGettingPoolsData);
 
   const formattedData = {
     reserve: poolData?.reserve
       ? formatBNToShortString(poolData?.reserve, 18)
-      : "",
+      : "-",
     apr: poolData?.apr
       ? `${Number(poolData?.apr).toFixed(2)}%`
       : poolData?.apr === 0
@@ -81,7 +82,7 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
             </Grid>
             <Grid item>
               <PoolInfoSubTitleText variant="body2">
-                {item.value === "-" ? <TextLoader width={50} /> : item.value}
+                {isGettingPoolsData ? <TextLoader width={50} /> : item.value}
               </PoolInfoSubTitleText>
             </Grid>
           </Grid>

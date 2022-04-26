@@ -1,20 +1,23 @@
 // import { take, call, put, select, takeLatest } from 'redux-saga/effects';
 // import { actions } from './slice';
 
+import { GovernanceActions } from "app/containers/BlockChain/Governance/slice";
 import { Web3Domains } from "app/containers/BlockChain/Web3/selectors";
 import { selectGaugeContractDomain } from "app/containers/PoolsAndGauges/selectors";
 import { PoolsAndGaugesActions } from "app/containers/PoolsAndGauges/slice";
 import { IS_DEV } from "environment";
 import { toast } from "react-toastify";
 import { call, put, select, takeLatest } from "redux-saga/effects";
-import { selectSelectedVoteAllocationPairsDomain } from "./selectors";
+import { GovernancePageDomains, GovernancePageSelectors } from "./selectors";
 import { GovernancePageActions } from "./slice";
 import { isPositiveNumber } from "./utils/isPositiveNumber";
 
 export function* voteForFarms() {
   yield put(GovernancePageActions.setIsVotingForFarms(true));
   try {
-    const selectedPairs = yield select(selectSelectedVoteAllocationPairsDomain);
+    const selectedPairs = yield select(
+      GovernancePageSelectors.selectedVoteAllocationPair
+    );
     const gaugeProxyVoteContract = yield select(selectGaugeContractDomain);
     const library = yield select(Web3Domains.selectLibraryDomain);
     //make them weight proportional if they are not
@@ -80,7 +83,25 @@ export function* voteForFarms() {
     yield put(GovernancePageActions.setIsVotingForFarms(false));
   }
 }
+export function* submitNewProposal() {
+  const newProposalFields = yield select(
+    GovernancePageDomains.newProposalFields
+  );
+  const executionContexts = yield select(
+    GovernancePageDomains.submittedExecutionContexts
+  );
+  yield put(
+    GovernanceActions.submitNewProposal({
+      executionContexts,
+      newProposalFields,
+    })
+  );
+}
 
 export function* governancePageSaga() {
   yield takeLatest(GovernancePageActions.voteForFarms.type, voteForFarms);
+  yield takeLatest(
+    GovernancePageActions.submitNewProposal.type,
+    submitNewProposal
+  );
 }

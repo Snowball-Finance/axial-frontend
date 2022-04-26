@@ -2,7 +2,12 @@ import { BigNumber, Contract, ethers } from "ethers";
 import { toast } from "react-toastify";
 import { all, call, put, select, takeLatest } from "redux-saga/effects";
 import { GovernanceActions } from "./slice";
-import { ContainerState, Proposal, Receipt } from "./types";
+import {
+  ContainerState,
+  Proposal,
+  Receipt,
+  SubmitNewProposalPayload,
+} from "./types";
 import { BNToFloat } from "common/format";
 import { totalSupplyProvider } from "app/containers/BlockChain/providers/balanceAPI";
 import { env } from "environment";
@@ -15,25 +20,29 @@ import AccruingTokenABI from "abi/veAxial.json";
 import { StakingActions } from "./Staking/slice";
 import { skipLoading } from "app/types";
 import { getProviderOrSigner } from "app/containers/utils/contractUtils";
+import { ExecutionContext } from "app/pages/Governance/types";
+import { GovernancePageActions } from "app/pages/Governance/slice";
+import axios from "axios";
 
 export function* getProposals(action: {
   type: string;
-  payload: { silent?: boolean; query: string };
+  payload: { silent?: boolean };
 }) {
-  const { silent, query } = action.payload;
+  const { silent } = action.payload;
   if (!silent) {
-    yield put(GovernanceActions.setIsLoadingProposals(true));
+    yield put(GovernanceActions.setIsGettingProposals(true));
   }
   try {
-    const response = yield call(GetProposalsAPI, query);
-    const proposals: Proposal[] = response.data.ProposalList.proposals;
+    const response = yield call(GetProposalsAPI);
+    console.log({ proposals: response });
+    const proposals: Proposal[] = []; //response.data.ProposalList.proposals;
     //TODO get id and status of proposals
     yield put(GovernanceActions.setProposals(proposals));
   } catch (error) {
     toast.error("error while getting proposals");
   } finally {
     if (!silent) {
-      yield put(GovernanceActions.setIsLoadingProposals(true));
+      yield put(GovernanceActions.setIsGettingProposals(true));
     }
   }
 }
@@ -52,7 +61,7 @@ export function* getGovernanceContract() {
   const account = yield select(Web3Domains.selectAccountDomain);
   const library = yield select(Web3Domains.selectNetworkLibraryDomain);
   const GOVERNANCE_ABI = yield select(
-    GovernanceDomains.selectGovernanceABIDomain
+    GovernanceDomains.governanceABI
   );
   const governanceContract = new ethers.Contract(
     //|| '' is added because the error of not existing env var is handled in index file of this module
@@ -99,33 +108,106 @@ export function* vote(action: {
   }
 }
 
-export function* submitNewProposal() {
-  yield put(GovernanceActions.setIsSubmittingNewProposal(true));
-  // const proposalFields: ContainerState["newProposalFields"] = yield select(
-  //   GovernanceDomains.selectNewProposalFieldsDomain
-  // );
-  // const { title, votingPeriod, discussion } = proposalFields;
-  // const metadataURI = discussion;
+export function* saveToIPFS(data: any) {
+  let metadataURI;
+  const url = process.env.REACT_APP_IPFS_API_URL;
   try {
-    // const library = yield select(Web3Domains.selectLibraryDomain);
-    // const GOVERNANCE_ABI = yield select(
-    //   GovernanceDomains.selectGovernanceABIDomain
-    // );
-    // const voteContractAddress = env.VOTING_CONTRACT_ADDRESS;
-    // const governanceContract: Governance = yield call(getGovernanceContract);
-    // const account = yield select(Web3Domains.selectAccountDomain);
-    // let metaData: Governance.ProposalStruct;
-    // let executionContexts: Governance.ProposalExecutionContextListStruct;
-    // yield call(
-    //   governanceContract.propose,
-    //   title,
-    //   metadataURI,
-    //   Number(votingPeriod) * (3600 * 24),
-    //   account,
-    //   0,
-    //   0x00
-    // );
+    const res = yield call(axios.request, {
+      method: "POST",
+      url,
+      data: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (res.status === 201 && res.headers["ipfs-hash"]) {
+      console.log("Proposal metadata hash: ", res.headers["ipfs-hash"]);
+      metadataURI = url + res.headers["ipfs-hash"];
+    } else {
+      throw Error("Unexpected IPFS error");
+    }
+  } catch (error) {
+    console.log(error);
+  }
+  return metadataURI;
+}
+
+export function* submitNewProposal(action: {
+  type: string;
+  payload: SubmitNewProposalPayload;
+}) {
+  yield put(GovernanceActions.setIsSubmittingNewProposal(true));
+  const proposalFields = action.payload.newProposalFields;
+  const { title, votingPeriod, discussion, description, document } =
+    proposalFields;
+  let executionContexts: ExecutionContext[] = [];
+  const labels: string[] = [];
+  const targets: string[] = [];
+  const values: number[] = [];
+  const data: string[] = [];
+  if (action.payload.executionContexts) {
+    executionContexts = action.payload.executionContexts;
+  }
+  executionContexts.forEach((element) => {
+    labels.push(element.description);
+    targets.push(element.contractAddress);
+    data.push(element.data);
+    if (isNaN(Number(element.avaxValue))) {
+      values.push(0);
+    } else {
+      values.push(Number(element.avaxValue));
+    }
+  });
+
+  try {
+    const governanceContract: Governance = yield call(getGovernanceContract);
+    const metaData: any = {
+      title,
+      description,
+      discussion,
+      document,
+      executionLabels: labels,
+    };
+    const ipfsUrl = yield call(saveToIPFS, metaData);
+    metaData.ipfs = ipfsUrl;
+    if (!ipfsUrl) {
+      throw Error("error while saving new proposal data");
+    }
+    const stringifiedMetadata = JSON.stringify(metaData);
+    const votingPeriodInSeconds = Number(votingPeriod) * 60 * 60 * 24;
+    const parsedMetaData = yield call(
+      governanceContract.constructProposalMetadata,
+      title,
+      stringifiedMetadata,
+      votingPeriodInSeconds,
+      labels.length >= 0
+    );
+    let parsedExecutionContext;
+    try {
+      parsedExecutionContext = yield call(
+        governanceContract.constructProposalExecutionContexts,
+        labels,
+        targets,
+        values,
+        data
+      );
+    } catch (error) {
+      console.log(error);
+      toast.error("error while parsing execution contexts");
+      return;
+    }
+    const transaction = yield call(
+      governanceContract.propose,
+      parsedMetaData,
+      parsedExecutionContext
+    );
+    const transactionStatus = yield call(transaction.wait, 1);
+    if (transactionStatus.status) {
+      toast.success("Proposal submitted successfully");
+      yield put(GovernancePageActions.resetNewProposalFields());
+    }
   } catch (error: any) {
+    console.log(error);
     const message = error?.data?.message;
     if (message) {
       toast.error(
@@ -135,8 +217,7 @@ export function* submitNewProposal() {
   } finally {
     yield all([
       put(GovernanceActions.setIsSubmittingNewProposal(false)),
-      put(GovernanceActions.setSyncedProposalsWithBlockchain(false)),
-      put(GovernanceActions.setIsNewProposalFormOpen(false)),
+      // put(GovernanceActions.setSyncedProposalsWithBlockchain(false)),
     ]);
   }
 }
@@ -180,7 +261,7 @@ export function* getGovernanceTokenBalance(action: {
   const library = yield select(Web3Domains.selectLibraryDomain);
   const governanceTokenAddress = env.GOVERNANCE_TOKEN_CONTRACT_ADDRESS || "";
   const governanceTokenABI = yield select(
-    GovernanceDomains.selectGovernanceTokenABIDomain
+    GovernanceDomains.governanceTokenABI
   );
   const governanceTokenContract: SAxial = new Contract(
     governanceTokenAddress,
@@ -233,7 +314,7 @@ export function* getAccruingTokenBalance(action: {
 }
 export function* getTotalGovernanceTokenSupply() {
   const governanceToken = yield select(
-    GovernanceDomains.selectGovernanceTokenContractDomain
+    GovernanceDomains.governanceTokenContract
   );
   try {
     const contract: Governance = governanceToken;
@@ -247,22 +328,12 @@ export function* getTotalGovernanceTokenSupply() {
 
 export function* syncProposalsWithBlockchain() {
   try {
-    const library = yield select(Web3Domains.selectLibraryDomain);
-    const GOVERNANCE_ABI = yield select(
-      GovernanceDomains.selectGovernanceABIDomain
-    );
-    const voteContractAddress = env.VOTING_CONTRACT_ADDRESS;
-    const governanceContract = new ethers.Contract(
-      //using ||'' because we made sure env.VOTING_CONTRACT_ADDRESS exists in the index of module,and want to ignore the ts error
-      voteContractAddress || "",
-      GOVERNANCE_ABI,
-      library.getSigner()
-    );
+    const governanceContract = yield call(getGovernanceContract);
     const numberOfProposalsOnBlockChain = yield call(
       governanceContract.proposalCount
     );
     const num = Number(numberOfProposalsOnBlockChain.toString());
-    const proposals = yield select(GovernanceDomains.selectProposalsDomain);
+    const proposals = yield select(GovernanceDomains.proposals);
     let proposalsInstance = [...proposals];
     let offsetEnv: string | number | undefined = env.PROPOSALS_OFFSET_NUMBER;
     if (!offsetEnv) {
@@ -327,7 +398,7 @@ export function* setGovernanceTokenContract(action: {
 
 export function* getGovernanceTokenContract() {
   const governanceTokenABI = yield select(
-    GovernanceDomains.selectGovernanceTokenABIDomain
+    GovernanceDomains.governanceTokenABI
   );
   const library = yield select(Web3Domains.selectNetworkLibraryDomain);
   const governanceTokenContract: SAxial = new Contract(

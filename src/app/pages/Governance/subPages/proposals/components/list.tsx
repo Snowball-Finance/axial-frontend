@@ -5,7 +5,7 @@ import { ProposalListItem } from "./listItem";
 
 export const ProposalsList = () => {
   const proposals = useSelector(
-    GovernanceSelectors.selectFilteredProposalsProposals
+    GovernanceSelectors.filteredProposals
   );
   return (
     <Wrapper>
