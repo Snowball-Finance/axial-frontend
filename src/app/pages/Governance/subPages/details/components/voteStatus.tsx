@@ -30,9 +30,7 @@ export const VoteStatus: FC<Props> = ({ proposal }) => {
   const isFor = receipt?.support || false;
   const hasVoted = receipt?.hasVoted || false;
   const isVotingFor = useSelector(GovernanceSelectors.isVotingFor);
-  const isVotingAgainst = useSelector(
-    GovernanceSelectors.isVotingAgainst
-  );
+
   const library = useSelector(Web3Selectors.selectLibrary);
 
   useEffect(() => {
@@ -54,7 +52,7 @@ export const VoteStatus: FC<Props> = ({ proposal }) => {
   );
   const message = hasVoted
     ? longMessage
-    : proposal.state === ProposalState.Active
+    : proposal.proposal_state === ProposalState.Active
     ? t(translations.GovernancePage.YouHaventVotedOnThisProposalYet())
     : t(translations.GovernancePage.YouDidntVoteOnThisProposal());
 
@@ -73,7 +71,7 @@ export const VoteStatus: FC<Props> = ({ proposal }) => {
   ) : (
     <ThumbsDownIcon color={CssVariables.white} />
   );
-  const isActive = proposal.state === ProposalState.Active;
+  const isActive = proposal.proposal_state === ProposalState.Active;
 
   const handleSwitchClick = () => {
     dispatch(GovernanceActions.vote({ proposal, voteFor: isFor ? 0 : 1 }));
@@ -82,7 +80,7 @@ export const VoteStatus: FC<Props> = ({ proposal }) => {
   return (
     <>
       <StyledSnowPaper {...{ color, bg }}>
-        {isLoading || isVotingFor || isVotingAgainst ? (
+        {(isLoading || isVotingFor!==-1) ? (
           <StyledSkeleton variant="text" animation="wave" />
         ) : (
           <>
@@ -95,7 +93,7 @@ export const VoteStatus: FC<Props> = ({ proposal }) => {
       </StyledSnowPaper>
       {isActive && hasVoted && (
         <StyledContainedButton
-          loading={isVotingFor || isVotingAgainst}
+          loading={isVotingFor!==-1}
           onClick={handleSwitchClick}
         >
           {t(translations.GovernancePage.SwitchVote())}

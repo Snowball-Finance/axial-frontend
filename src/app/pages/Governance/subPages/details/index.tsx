@@ -2,7 +2,7 @@ import { Box, styled } from "@mui/material";
 import { SnowPaper } from "app/components/base/SnowPaper";
 import { Max1040 } from "app/components/wrappers/max1040";
 import { GovernanceSelectors } from "app/containers/BlockChain/Governance/selectors";
-import { ProposalState } from "app/containers/BlockChain/Governance/types";
+import { Proposal, ProposalState } from "app/containers/BlockChain/Governance/types";
 import { translations } from "locales/i18n";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -11,8 +11,10 @@ import { mobile } from "styles/media";
 import { VotePower } from "../../components/votePower";
 import { GovernanceSubPages } from "../../routes";
 import { ProposalListItem } from "../proposals/components/listItem";
+import { AdditionalData } from "./components/additionalData";
 import { TopBackButton } from "./components/topBackButton";
 import { VoteButtons } from "./components/voteButtons";
+import { VoteOptions } from "./components/voteOptions";
 import { VoteStatus } from "./components/voteStatus";
 
 export const ProposalDetails = () => {
@@ -23,15 +25,18 @@ export const ProposalDetails = () => {
   if (proposals.length === 0) {
     return <>Loading</>;
   }
-  const proposal = proposals.find((item) => item.governance_id === index);
-
+  const proposal:Proposal|undefined = proposals.find((item) => item.governance_id === index);
+let isForAgainstType=true;
   if (proposal === undefined) {
     return <>proposal not found</>;
   }
+if(proposal?.execution_contexts.length>1){
+  isForAgainstType=false;
+}
 
-  const { state } = proposal;
+  const { proposal_state } = proposal;
 
-  const isActive = state === ProposalState.Active;
+  const isActive = proposal_state === ProposalState.Active;
 
   return (
     <Wrapper>
@@ -50,16 +55,23 @@ export const ProposalDetails = () => {
         <>
           <VotePower />
           <Box mb="16px" />
+          {
+          isForAgainstType &&
           <VoteButtons proposal={proposal} />
+          }
+          {
+          !isForAgainstType &&
+          <VoteOptions />
+          }
           <Box mb="16px" />
         </>
       )}
-      {/* <AdditionalData
-        discordLink={proposal?.metadata?.discussion}
-        documentLink={proposal?.metadata?.document}
-        startTime={proposal.startDate}
-        endTime={proposal.endDate}
-      /> */}
+      <AdditionalData
+        discordLink={proposal?.discussion||''}
+        documentLink={proposal?.document||''}
+        startTime={proposal?.start_date||''}
+        endTime={proposal?.end_date||''}
+      />
       <Box mb="16px" />
 
       <ContentWrapper>

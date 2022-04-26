@@ -13,9 +13,7 @@ import { useDispatch } from "react-redux";
 import { CssVariables, FontFamilies } from "styles/cssVariables/cssVariables";
 import { mobile } from "styles/media";
 import { GovernanceSubPages } from "../../../routes";
-import { forAndAgainst } from "../../../utils/votes";
 import { TitleAndValue } from "./titleAndValue";
-import { VoteProgressBar, VoteProgressBarType } from "./voteProgressBar";
 
 interface ProposalListItemProps {
   proposal: Proposal;
@@ -29,8 +27,6 @@ export const ProposalListItem: FC<ProposalListItemProps> = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  const { forVotes, againstVotes } = forAndAgainst({ proposal });
-
   const handleDetailsClick = () => {
     dispatch(push(`${GovernanceSubPages.proposals}/${proposal.governance_id}`));
   };
@@ -38,7 +34,7 @@ export const ProposalListItem: FC<ProposalListItemProps> = ({
   return (
     <Wrapper {...(short && { marginBottom: "0 !important" })}>
       <StyledSnowPaper
-        active={proposal.state === ProposalState.Active ? "true" : ""}
+        active={proposal.proposal_state === ProposalState.Active ? "true" : ""}
         short={short ? "true" : ""}
       >
         <IndexNameAndStatusWrapper
@@ -55,12 +51,12 @@ export const ProposalListItem: FC<ProposalListItemProps> = ({
           </div>
           <BottomWrapper>
             <DataWrapper>
-              {proposal.state!==undefined && <TitleAndValue
+              {proposal.proposal_state!==undefined && <TitleAndValue
                 title={t(translations.GovernancePage.Status())}
                 value={
-                  proposal.state === ProposalState.PendingExecution
+                  proposal.proposal_state === ProposalState.PendingExecution
                     ? ProposalState.ReadyForExecution.toString()
-                    : proposal.state.toString()
+                    : proposal.proposal_state.toString()
                 }
               />}
               <TitleAndValue
@@ -137,19 +133,7 @@ const DetailButtonWrapper = styled("div")({
   },
 });
 
-const VotesBarWrapper = styled("div")({
-  minWidth: "320px",
-  display: "flex",
-  flexDirection: "column",
-  gap: "24px",
-  flex: 1,
-  padding: "0 32px",
-  [mobile]: {
-    marginBottom: "16px",
-    padding: 0,
-    gap: "6px",
-  },
-});
+
 
 const IndexNameAndStatusWrapper = styled(Box)({
   display: "flex",
