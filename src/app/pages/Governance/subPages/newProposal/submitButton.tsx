@@ -11,9 +11,7 @@ export const NewProposalSubmitButton = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const fields = useSelector(GovernancePageSelectors.selectNewProposalFields);
-  const isLoading = useSelector(
-    GovernanceSelectors.isSubmittingNewProposal
-  );
+  const isLoading = useSelector(GovernanceSelectors.isSubmittingNewProposal);
 
   const handleSubmitButton = () => {
     dispatch(GovernancePageActions.submitNewProposal());

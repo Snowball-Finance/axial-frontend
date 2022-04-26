@@ -4,9 +4,7 @@ import { useSelector } from "react-redux";
 import { ProposalListItem } from "./listItem";
 
 export const ProposalsList = () => {
-  const proposals = useSelector(
-    GovernanceSelectors.filteredProposals
-  );
+  const proposals = useSelector(GovernanceSelectors.filteredProposals);
   return (
     <Wrapper>
       {proposals.map((proposal) => (

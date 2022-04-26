@@ -9,13 +9,11 @@ import { initialState } from "./slice";
 import { Proposal, ProposalFilters, ProposalState } from "./types";
 
 export const GovernanceDomains = {
-  governance: (state: RootState) =>
-    state.governance || initialState,
+  governance: (state: RootState) => state.governance || initialState,
   selectedProposalFilter: (state: RootState) =>
     state.governance?.selectedProposalFilter ||
     initialState.selectedProposalFilter,
-  proposals: (state: RootState) =>
-    state.governance?.proposals || [],
+  proposals: (state: RootState) => state.governance?.proposals || [],
   selectedProposal: (state: RootState) =>
     state.governance?.selectedProposal || initialState.selectedProposal,
   isLoadingProposals: (state: RootState) =>
@@ -85,10 +83,7 @@ export const GovernanceSelectors = {
     GovernanceDomains.isLoadingReceipt,
     (isLoadingReceipt) => isLoadingReceipt
   ),
-  receipt: createSelector(
-    GovernanceDomains.receipt,
-    (receipt) => receipt
-  ),
+  receipt: createSelector(GovernanceDomains.receipt, (receipt) => receipt),
   selectedProposalFilter: createSelector(
     GovernanceDomains.selectedProposalFilter,
     (filter) => filter
@@ -101,15 +96,14 @@ export const GovernanceSelectors = {
     GovernanceDomains.proposals,
     (proposals) => proposals
   ),
-  proposalById:(id:string)=> createSelector(
-    GovernanceDomains.proposals,
-    (proposals) => proposals.find((proposal)=>proposal.id===id)
-  ),
+  proposalById: (id: string) =>
+    createSelector(GovernanceDomains.proposals, (proposals) =>
+      proposals.find((proposal) => proposal.id === id)
+    ),
   isVotingFor: createSelector(
     GovernanceDomains.selectIsVotingFor,
     (isVotingFor) => isVotingFor
   ),
-
 
   isLoadingProposals: createSelector(
     GovernanceDomains.isLoadingProposals,
@@ -120,27 +114,24 @@ export const GovernanceSelectors = {
     (isLoading) => isLoading
   ),
   filteredProposals: createSelector(
-    [
-      GovernanceDomains.proposals,
-      GovernanceDomains.selectedProposalFilter,
-    ],
+    [GovernanceDomains.proposals, GovernanceDomains.selectedProposalFilter],
     (proposals, filter) => {
       let list = [...proposals];
-    if(filter !== ProposalFilters.All) {
-      //@ts-ignore
-      list = list.filter((p) => p.proposal_state === filter);
-    }
-      
-      const active:Proposal[]=[]
-      const rest:Proposal[]=[]
+      if (filter !== ProposalFilters.All) {
+        //@ts-ignore
+        list = list.filter((p) => p.proposal_state === filter);
+      }
+
+      const active: Proposal[] = [];
+      const rest: Proposal[] = [];
       list.forEach((p) => {
         if (p.proposal_state === ProposalState.Active) {
-          active.push(p)
+          active.push(p);
         } else {
-          rest.push(p)
+          rest.push(p);
         }
-      })
-      return [...active,...rest]
+      });
+      return [...active, ...rest];
     }
   ),
   canAddNewProposal: createSelector(

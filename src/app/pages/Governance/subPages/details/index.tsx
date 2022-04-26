@@ -2,7 +2,10 @@ import { Box, styled } from "@mui/material";
 import { SnowPaper } from "app/components/base/SnowPaper";
 import { Max1040 } from "app/components/wrappers/max1040";
 import { GovernanceSelectors } from "app/containers/BlockChain/Governance/selectors";
-import { Proposal, ProposalState } from "app/containers/BlockChain/Governance/types";
+import {
+  Proposal,
+  ProposalState,
+} from "app/containers/BlockChain/Governance/types";
 import { translations } from "locales/i18n";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -19,20 +22,24 @@ import { VoteStatus } from "./components/voteStatus";
 
 export const ProposalDetails = () => {
   const { t } = useTranslation();
-  const index = window.location.pathname.split(GovernanceSubPages.proposals + "/")[1]
+  const index = window.location.pathname.split(
+    GovernanceSubPages.proposals + "/"
+  )[1];
 
   const proposals = useSelector(GovernanceSelectors.proposals);
   if (proposals.length === 0) {
     return <>Loading</>;
   }
-  const proposal:Proposal|undefined = proposals.find((item) => item.governance_id === index);
-let isForAgainstType=true;
+  const proposal: Proposal | undefined = proposals.find(
+    (item) => item.governance_id === index
+  );
+  let isForAgainstType = true;
   if (proposal === undefined) {
     return <>proposal not found</>;
   }
-if(proposal?.execution_contexts.length>1){
-  isForAgainstType=false;
-}
+  if (proposal?.execution_contexts.length > 1) {
+    isForAgainstType = false;
+  }
 
   const { proposal_state } = proposal;
 
@@ -55,22 +62,16 @@ if(proposal?.execution_contexts.length>1){
         <>
           <VotePower />
           <Box mb="16px" />
-          {
-          isForAgainstType &&
-          <VoteButtons proposal={proposal} />
-          }
-          {
-          !isForAgainstType &&
-          <VoteOptions />
-          }
+          {isForAgainstType && <VoteButtons proposal={proposal} />}
+          {!isForAgainstType && <VoteOptions />}
           <Box mb="16px" />
         </>
       )}
       <AdditionalData
-        discordLink={proposal?.discussion||''}
-        documentLink={proposal?.document||''}
-        startTime={proposal?.start_date||''}
-        endTime={proposal?.end_date||''}
+        discordLink={proposal?.discussion || ""}
+        documentLink={proposal?.document || ""}
+        startTime={proposal?.start_date || ""}
+        endTime={proposal?.end_date || ""}
       />
       <Box mb="16px" />
 

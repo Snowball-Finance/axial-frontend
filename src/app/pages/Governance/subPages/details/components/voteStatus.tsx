@@ -80,7 +80,7 @@ export const VoteStatus: FC<Props> = ({ proposal }) => {
   return (
     <>
       <StyledSnowPaper {...{ color, bg }}>
-        {(isLoading || isVotingFor!==-1) ? (
+        {isLoading || isVotingFor !== -1 ? (
           <StyledSkeleton variant="text" animation="wave" />
         ) : (
           <>
@@ -93,7 +93,7 @@ export const VoteStatus: FC<Props> = ({ proposal }) => {
       </StyledSnowPaper>
       {isActive && hasVoted && (
         <StyledContainedButton
-          loading={isVotingFor!==-1}
+          loading={isVotingFor !== -1}
           onClick={handleSwitchClick}
         >
           {t(translations.GovernancePage.SwitchVote())}

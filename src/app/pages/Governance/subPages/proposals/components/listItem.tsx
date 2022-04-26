@@ -51,14 +51,16 @@ export const ProposalListItem: FC<ProposalListItemProps> = ({
           </div>
           <BottomWrapper>
             <DataWrapper>
-              {proposal.proposal_state!==undefined && <TitleAndValue
-                title={t(translations.GovernancePage.Status())}
-                value={
-                  proposal.proposal_state === ProposalState.PendingExecution
-                    ? ProposalState.ReadyForExecution.toString()
-                    : proposal.proposal_state.toString()
-                }
-              />}
+              {proposal.proposal_state !== undefined && (
+                <TitleAndValue
+                  title={t(translations.GovernancePage.Status())}
+                  value={
+                    proposal.proposal_state === ProposalState.PendingExecution
+                      ? ProposalState.ReadyForExecution.toString()
+                      : proposal.proposal_state.toString()
+                  }
+                />
+              )}
               <TitleAndValue
                 title={t(translations.GovernancePage.Proposedby())}
                 value={
@@ -132,8 +134,6 @@ const DetailButtonWrapper = styled("div")({
     },
   },
 });
-
-
 
 const IndexNameAndStatusWrapper = styled(Box)({
   display: "flex",

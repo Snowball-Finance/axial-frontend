@@ -271,9 +271,7 @@ export function* getLockedGovernanceTokenInfo(action: {
   type: string;
   payload: skipLoading;
 }) {
-  const governanceTokenABI = yield select(
-    GovernanceDomains.governanceTokenABI
-  );
+  const governanceTokenABI = yield select(GovernanceDomains.governanceTokenABI);
   const provider = yield select(EthersDomains.selectPrivateProviderDomain);
   const governanceTokenContract: SAxial = new Contract(
     env.GOVERNANCE_TOKEN_CONTRACT_ADDRESS || "",
