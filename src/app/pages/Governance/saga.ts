@@ -14,7 +14,6 @@ import { GovernancePageDomains, GovernancePageSelectors } from "./selectors";
 import { GovernancePageActions } from "./slice";
 import { isPositiveNumber } from "./utils/isPositiveNumber";
 
-
 export function* getGaugeProxyContract() {
   const library = yield select(Web3Domains.selectNetworkLibraryDomain);
   const GAUGE_PROXY_ABI = yield select(selectGaugeProxyABIDomain);
@@ -27,7 +26,6 @@ export function* getGaugeProxyContract() {
 
   return gaugeProxyContract;
 }
-
 
 export function* voteForFarms() {
   yield put(GovernancePageActions.setIsVotingForFarms(true));

@@ -326,14 +326,18 @@ export function* syncProposalsWithBlockchain() {
     );
     const proposalsCallArray: any[] = [];
     const statesCallArray: any[] = [];
+    const votesCallArray: any = [];
     for (let i = 0; i < Number(numberOfProposalsOnBlockchain); i++) {
       proposalsCallArray.push(call(governanceContract.proposals, i));
       statesCallArray.push(call(governanceContract.state, i));
+      votesCallArray.push(call(governanceContract.getProposalVotes, i));
     }
-    const [proposalsFromBlockChain, statesFromBlockChain] = yield all([
-      all(proposalsCallArray),
-      all(statesCallArray),
-    ]);
+    const [proposalsFromBlockChain, statesFromBlockChain, votesFromBlockChain] =
+      yield all([
+        all(proposalsCallArray),
+        all(statesCallArray),
+        all(votesCallArray),
+      ]);
     const updatedProposals: Proposal[] = [];
     for (let i = 0; i < proposalsFromBlockChain.length; i++) {
       const item: Governance.ProposalStruct = proposalsFromBlockChain[i];
@@ -370,7 +374,7 @@ export function* syncProposalsWithBlockchain() {
         id: i.toString(),
         blockChainData: item,
         proposer: item.proposer,
-        votes: item.votes?.map((item) => Number(item).toString()) || [],
+        votes: votesFromBlockChain.map((item) => Number(item).toString()) || [],
         title: item.title,
         description: metaData?.description || metaData,
         document: metaData?.document || "",
