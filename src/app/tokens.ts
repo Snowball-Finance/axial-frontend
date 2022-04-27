@@ -137,7 +137,7 @@ export const tokens: { [K in TokenSymbols]: Token } = {
     ABI: ERC20_ABI,
     address: tokenAddress(TokenSymbols.AVAI),
     decimals: 18,
-    symbol:TokenSymbols.AVAI,
+    symbol: TokenSymbols.AVAI,
     logo: avaiLogo,
     geckoId: "orca-avai",
     name: "Orca AVAI",

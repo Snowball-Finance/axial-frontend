@@ -17,13 +17,8 @@ export const VoteButtons: FC<{ proposal: Proposal }> = ({ proposal }) => {
   const dispatch = useDispatch();
   const library = useSelector(Web3Selectors.selectLibrary);
   const isLoadingFor = useSelector(GovernanceSelectors.isVotingFor);
-  const isLoadingAgainst = useSelector(
-    GovernanceSelectors.isVotingAgainst
-  );
   const receipt = useSelector(GovernanceSelectors.receipt);
-  const isGettingReceipt = useSelector(
-    GovernanceSelectors.isLoadingReceipt
-  );
+  const isGettingReceipt = useSelector(GovernanceSelectors.isLoadingReceipt);
 
   const disabled = receipt?.hasVoted || isGettingReceipt || false;
   const handleForClick = () => {
@@ -42,7 +37,7 @@ export const VoteButtons: FC<{ proposal: Proposal }> = ({ proposal }) => {
     <ButtonsWrapper>
       <ForButton
         disabled={disabled}
-        loading={isLoadingFor}
+        loading={isLoadingFor === 0}
         onClick={handleForClick}
       >
         <Box mr="8px">
@@ -52,7 +47,7 @@ export const VoteButtons: FC<{ proposal: Proposal }> = ({ proposal }) => {
       </ForButton>
       <AgainstButton
         disabled={disabled}
-        loading={isLoadingAgainst}
+        loading={isLoadingFor === 1}
         onClick={handleAgainstClick}
       >
         <Box mr="8px">
