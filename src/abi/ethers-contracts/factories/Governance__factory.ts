@@ -510,6 +510,25 @@ const _abi = [
     inputs: [
       {
         internalType: "uint256",
+        name: "proposalId",
+        type: "uint256",
+      },
+    ],
+    name: "getProposalVotes",
+    outputs: [
+      {
+        internalType: "uint256[]",
+        name: "",
+        type: "uint256[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
         name: "_proposalId",
         type: "uint256",
       },
