@@ -37,6 +37,7 @@ export function* getProposals(action: {
   try {
     const response = yield call(GetProposalsAPI);
     const proposals: Proposal[] = response; //response.data.ProposalList.proposals;
+    console.log({proposals})
     yield put(GovernanceActions.setProposals(proposals));
   } catch (error) {
     console.log(error);
@@ -61,7 +62,7 @@ export function* getProposalId(proposal: Proposal) {
 
 export function* getGovernanceContract() {
   const library = yield select(Web3Domains.selectNetworkLibraryDomain);
-  const account=yield select(Web3Domains.selectAccountDomain);
+  const account=yield select(Web3Domains.selectAccountDomain)
   const GOVERNANCE_ABI = yield select(GovernanceDomains.governanceABI);
   const governanceContract = new ethers.Contract(
     //|| '' is added because the error of not existing env var is handled in index file of this module
@@ -69,7 +70,6 @@ export function* getGovernanceContract() {
     GOVERNANCE_ABI,
     getProviderOrSigner(library,account)
   ) as Governance;
-
   return governanceContract;
 }
 
@@ -321,11 +321,13 @@ export function* getTotalGovernanceTokenSupply() {
 }
 
 export function* syncProposalsWithBlockchain() {
+  console.log('syncing')
   try {
     const governanceContract: Governance = yield call(getGovernanceContract);
     const numberOfProposalsOnBlockchain = yield call(
       governanceContract.proposalCount
     );
+    console.log({numberOfProposalsOnBlockchain})
     const proposalsCallArray: any[] = [];
     const statesCallArray: any[] = [];
     const votesCallArray: any = [];
@@ -340,8 +342,8 @@ export function* syncProposalsWithBlockchain() {
         all(statesCallArray),
         all(votesCallArray),
       ]);
-      console.log(votesFromBlockChain)
-    const updatedProposals: Proposal[] = [];
+console.log(proposalsFromBlockChain)
+      const updatedProposals: Proposal[] = [];
     for (let i = 0; i < proposalsFromBlockChain.length; i++) {
       const item: Governance.ProposalStruct = proposalsFromBlockChain[i];
       let metaData;

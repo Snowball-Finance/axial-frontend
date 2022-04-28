@@ -48,7 +48,7 @@ export const Governance = ({
   const governanceTokenContract = useSelector(
     GovernanceSelectors.governanceTokenContract
   );
-  const library = useSelector(Web3Selectors.selectLibrary);
+  const networkLibrary = useSelector(Web3Selectors.selectNetworkLibrary);
   const proposals = useSelector(GovernanceSelectors.proposals);
   const syncedProposalsWithBlockChain = useSelector(
     GovernanceSelectors.syncedProposalsWithBlockChain
@@ -62,22 +62,23 @@ export const Governance = ({
   }, [governanceTokenContract]);
 
   useEffect(() => {
-    dispatch(GovernanceActions.setGovernanceABI(governanceABI));
-    dispatch(GovernanceActions.setGovernanceTokenABI(tokenABI));
-    dispatch(GovernanceActions.getProposals({}));
+    if(networkLibrary){
+      dispatch(GovernanceActions.setGovernanceABI(governanceABI));
+      dispatch(GovernanceActions.setGovernanceTokenABI(tokenABI));
+      dispatch(GovernanceActions.getProposals({}));
+    }
     return () => {};
-  }, []);
+  }, [networkLibrary]);
 
   useEffect(() => {
     if (
-      library &&
+      networkLibrary &&
       proposals &&
-      proposals.length &&
       syncedProposalsWithBlockChain === false
     ) {
       dispatch(GovernanceActions.syncProposalsWithBlockchain());
     }
-  }, [library, proposals, syncedProposalsWithBlockChain]);
+  }, [networkLibrary, proposals, syncedProposalsWithBlockChain]);
 
   return (
     <>

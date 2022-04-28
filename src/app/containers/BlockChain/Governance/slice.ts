@@ -17,7 +17,7 @@ export const initialState: ContainerState = {
   selectedProposalFilter: ProposalFilters.All,
   isLoadingProposals: false,
   syncedProposalsWithBlockchain: false,
-  proposals: [],
+  proposals:undefined,
   isVotingAgainst: false,
   isVotingFor: -1,
   isSubmittingNewProposal: false,
