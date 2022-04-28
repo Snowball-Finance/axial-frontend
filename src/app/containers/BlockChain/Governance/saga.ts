@@ -24,6 +24,7 @@ import { ExecutionContext } from "app/pages/Governance/types";
 import { GovernancePageActions } from "app/pages/Governance/slice";
 import axios from "axios";
 import { add } from "precise-math";
+import { getProviderOrSigner } from "app/containers/utils/contractUtils";
 
 export function* getProposals(action: {
   type: string;
@@ -60,12 +61,13 @@ export function* getProposalId(proposal: Proposal) {
 
 export function* getGovernanceContract() {
   const library = yield select(Web3Domains.selectNetworkLibraryDomain);
+  const account=yield select(Web3Domains.selectAccountDomain);
   const GOVERNANCE_ABI = yield select(GovernanceDomains.governanceABI);
   const governanceContract = new ethers.Contract(
     //|| '' is added because the error of not existing env var is handled in index file of this module
     env.GOVERNANCE_CONTRACT_ADDRESS || "",
     GOVERNANCE_ABI,
-    library
+    getProviderOrSigner(library,account)
   ) as Governance;
 
   return governanceContract;
@@ -326,14 +328,19 @@ export function* syncProposalsWithBlockchain() {
     );
     const proposalsCallArray: any[] = [];
     const statesCallArray: any[] = [];
+    const votesCallArray: any = [];
     for (let i = 0; i < Number(numberOfProposalsOnBlockchain); i++) {
       proposalsCallArray.push(call(governanceContract.proposals, i));
       statesCallArray.push(call(governanceContract.state, i));
+      votesCallArray.push(call(governanceContract.getProposalVotes, i));
     }
-    const [proposalsFromBlockChain, statesFromBlockChain] = yield all([
-      all(proposalsCallArray),
-      all(statesCallArray),
-    ]);
+    const [proposalsFromBlockChain, statesFromBlockChain, votesFromBlockChain] =
+      yield all([
+        all(proposalsCallArray),
+        all(statesCallArray),
+        all(votesCallArray),
+      ]);
+      console.log(votesFromBlockChain)
     const updatedProposals: Proposal[] = [];
     for (let i = 0; i < proposalsFromBlockChain.length; i++) {
       const item: Governance.ProposalStruct = proposalsFromBlockChain[i];
@@ -370,7 +377,7 @@ export function* syncProposalsWithBlockchain() {
         id: i.toString(),
         blockChainData: item,
         proposer: item.proposer,
-        votes: item.votes?.map((item) => Number(item).toString()) || [],
+        votes: votesFromBlockChain.map((item) => Number(item).toString()) || [],
         title: item.title,
         description: metaData?.description || metaData,
         document: metaData?.document || "",
