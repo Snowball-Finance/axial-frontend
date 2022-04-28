@@ -24,6 +24,7 @@ import { ExecutionContext } from "app/pages/Governance/types";
 import { GovernancePageActions } from "app/pages/Governance/slice";
 import axios from "axios";
 import { add } from "precise-math";
+import { getProviderOrSigner } from "app/containers/utils/contractUtils";
 
 export function* getProposals(action: {
   type: string;
@@ -60,12 +61,13 @@ export function* getProposalId(proposal: Proposal) {
 
 export function* getGovernanceContract() {
   const library = yield select(Web3Domains.selectNetworkLibraryDomain);
+  const account=yield select(Web3Domains.selectAccountDomain);
   const GOVERNANCE_ABI = yield select(GovernanceDomains.governanceABI);
   const governanceContract = new ethers.Contract(
     //|| '' is added because the error of not existing env var is handled in index file of this module
     env.GOVERNANCE_CONTRACT_ADDRESS || "",
     GOVERNANCE_ABI,
-    library
+    getProviderOrSigner(library,account)
   ) as Governance;
 
   return governanceContract;
@@ -338,6 +340,7 @@ export function* syncProposalsWithBlockchain() {
         all(statesCallArray),
         all(votesCallArray),
       ]);
+      console.log(votesFromBlockChain)
     const updatedProposals: Proposal[] = [];
     for (let i = 0; i < proposalsFromBlockChain.length; i++) {
       const item: Governance.ProposalStruct = proposalsFromBlockChain[i];
