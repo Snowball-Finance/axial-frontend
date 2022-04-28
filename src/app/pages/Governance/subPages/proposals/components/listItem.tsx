@@ -13,9 +13,7 @@ import { useDispatch } from "react-redux";
 import { CssVariables, FontFamilies } from "styles/cssVariables/cssVariables";
 import { mobile } from "styles/media";
 import { GovernanceSubPages } from "../../../routes";
-import { forAndAgainst } from "../../../utils/votes";
 import { TitleAndValue } from "./titleAndValue";
-import { VoteProgressBar, VoteProgressBarType } from "./voteProgressBar";
 
 interface ProposalListItemProps {
   proposal: Proposal;
@@ -29,16 +27,14 @@ export const ProposalListItem: FC<ProposalListItemProps> = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  const { forVotes, againstVotes } = forAndAgainst({ proposal });
-
   const handleDetailsClick = () => {
-    dispatch(push(`${GovernanceSubPages.proposals}/${proposal.index}`));
+    dispatch(push(`${GovernanceSubPages.proposals}/${proposal.governance_id}`));
   };
 
   return (
     <Wrapper {...(short && { marginBottom: "0 !important" })}>
       <StyledSnowPaper
-        active={proposal.state === ProposalState.Active ? "true" : ""}
+        active={proposal.proposal_state === ProposalState.Active ? "true" : ""}
         short={short ? "true" : ""}
       >
         <IndexNameAndStatusWrapper
@@ -48,21 +44,23 @@ export const ProposalListItem: FC<ProposalListItemProps> = ({
           <div>
             <DarkText size={18}>
               {t(translations.GovernancePage.ProposalNumber(), {
-                number: proposal.index,
+                number: proposal.governance_id,
               })}
             </DarkText>
             <DarkText size={26}>{proposal.title}</DarkText>
           </div>
           <BottomWrapper>
             <DataWrapper>
-              <TitleAndValue
-                title={t(translations.GovernancePage.Status())}
-                value={
-                  proposal.state === ProposalState.PendingExecution
-                    ? ProposalState.ReadyForExecution.toString()
-                    : proposal.state.toString()
-                }
-              />
+              {proposal.proposal_state !== undefined && (
+                <TitleAndValue
+                  title={t(translations.GovernancePage.Status())}
+                  value={
+                    proposal.proposal_state === ProposalState.PendingExecution
+                      ? ProposalState.ReadyForExecution.toString()
+                      : proposal.proposal_state.toString()
+                  }
+                />
+              )}
               <TitleAndValue
                 title={t(translations.GovernancePage.Proposedby())}
                 value={
@@ -76,10 +74,10 @@ export const ProposalListItem: FC<ProposalListItemProps> = ({
               />
               <TitleAndValue
                 title={t(translations.GovernancePage.Date())}
-                value={new Date(Number(proposal.startTime)).toLocaleString()}
+                value={new Date(proposal.start_date).toLocaleString()}
               />
             </DataWrapper>
-            <VotesBarWrapper>
+            {/* <VotesBarWrapper>
               <VoteProgressBar
                 title={`${t(translations.GovernancePage.Votes_FOR_AGAINST(), {
                   type: t(translations.GovernancePage.For()),
@@ -94,7 +92,7 @@ export const ProposalListItem: FC<ProposalListItemProps> = ({
                 percent={againstVotes.percent}
                 type={VoteProgressBarType.against}
               />
-            </VotesBarWrapper>
+            </VotesBarWrapper> */}
           </BottomWrapper>
         </IndexNameAndStatusWrapper>
         <DividerOnMobile />
@@ -134,20 +132,6 @@ const DetailButtonWrapper = styled("div")({
       width: "100%",
       height: "36px",
     },
-  },
-});
-
-const VotesBarWrapper = styled("div")({
-  minWidth: "320px",
-  display: "flex",
-  flexDirection: "column",
-  gap: "24px",
-  flex: 1,
-  padding: "0 32px",
-  [mobile]: {
-    marginBottom: "16px",
-    padding: 0,
-    gap: "6px",
   },
 });
 

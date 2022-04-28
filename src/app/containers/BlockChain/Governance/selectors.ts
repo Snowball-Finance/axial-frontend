@@ -6,16 +6,14 @@ import { RootState } from "store/types";
 import { EthersDomains } from "../Ethers/selectors";
 import { Web3Domains } from "../Web3/selectors";
 import { initialState } from "./slice";
-import { ProposalFilters, ProposalState } from "./types";
+import { Proposal, ProposalFilters, ProposalState } from "./types";
 
 export const GovernanceDomains = {
-  governance: (state: RootState) =>
-    state.governance || initialState,
+  governance: (state: RootState) => state.governance || initialState,
   selectedProposalFilter: (state: RootState) =>
     state.governance?.selectedProposalFilter ||
     initialState.selectedProposalFilter,
-  proposals: (state: RootState) =>
-    state.governance?.proposals || [],
+  proposals: (state: RootState) => state.governance?.proposals || [],
   selectedProposal: (state: RootState) =>
     state.governance?.selectedProposal || initialState.selectedProposal,
   isLoadingProposals: (state: RootState) =>
@@ -25,8 +23,6 @@ export const GovernanceDomains = {
     initialState.isSubmittingNewProposal,
   selectIsVotingFor: (state: RootState) =>
     state.governance?.isVotingFor || initialState.isVotingFor,
-  isVotingAgainst: (state: RootState) =>
-    state.governance?.isVotingAgainst || initialState.isVotingAgainst,
 
   syncedProposalsWithBlockchain: (state: RootState) =>
     state.governance?.syncedProposalsWithBlockchain || false,
@@ -87,10 +83,7 @@ export const GovernanceSelectors = {
     GovernanceDomains.isLoadingReceipt,
     (isLoadingReceipt) => isLoadingReceipt
   ),
-  receipt: createSelector(
-    GovernanceDomains.receipt,
-    (receipt) => receipt
-  ),
+  receipt: createSelector(GovernanceDomains.receipt, (receipt) => receipt),
   selectedProposalFilter: createSelector(
     GovernanceDomains.selectedProposalFilter,
     (filter) => filter
@@ -103,14 +96,13 @@ export const GovernanceSelectors = {
     GovernanceDomains.proposals,
     (proposals) => proposals
   ),
-
+  proposalById: (id: string) =>
+    createSelector(GovernanceDomains.proposals, (proposals) =>
+      proposals.find((proposal) => proposal.id === id)
+    ),
   isVotingFor: createSelector(
     GovernanceDomains.selectIsVotingFor,
     (isVotingFor) => isVotingFor
-  ),
-  isVotingAgainst: createSelector(
-    GovernanceDomains.isVotingAgainst,
-    (isVotingAgainst) => isVotingAgainst
   ),
 
   isLoadingProposals: createSelector(
@@ -122,16 +114,24 @@ export const GovernanceSelectors = {
     (isLoading) => isLoading
   ),
   filteredProposals: createSelector(
-    [
-      GovernanceDomains.proposals,
-      GovernanceDomains.selectedProposalFilter,
-    ],
-    (proposals, filters) => {
+    [GovernanceDomains.proposals, GovernanceDomains.selectedProposalFilter],
+    (proposals, filter) => {
       let list = [...proposals];
-      if (filters === ProposalFilters.Active) {
-        list = list.filter((p) => p.state === ProposalState.Active);
+      if (filter !== ProposalFilters.All) {
+        //@ts-ignore
+        list = list.filter((p) => p.proposal_state === filter);
       }
-      return list;
+
+      const active: Proposal[] = [];
+      const rest: Proposal[] = [];
+      list.forEach((p) => {
+        if (p.proposal_state === ProposalState.Active) {
+          active.push(p);
+        } else {
+          rest.push(p);
+        }
+      });
+      return [...active, ...rest];
     }
   ),
   canAddNewProposal: createSelector(

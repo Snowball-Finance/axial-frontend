@@ -19,7 +19,7 @@ export const initialState: ContainerState = {
   syncedProposalsWithBlockchain: false,
   proposals: [],
   isVotingAgainst: false,
-  isVotingFor: false,
+  isVotingFor: -1,
   isSubmittingNewProposal: false,
   selectedProposal: undefined,
   iseGettingReceipt: false,
@@ -93,7 +93,7 @@ const governanceSlice = createSlice({
     setProposals(state, action: PayloadAction<Proposal[]>) {
       state.proposals = action.payload;
     },
-    setIsVotingFor(state, action: PayloadAction<boolean>) {
+    setIsVotingFor(state, action: PayloadAction<number>) {
       state.isVotingFor = action.payload;
     },
     setIsVotingAgainst(state, action: PayloadAction<boolean>) {
