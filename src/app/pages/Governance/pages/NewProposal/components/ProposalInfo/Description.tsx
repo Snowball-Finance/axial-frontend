@@ -1,15 +1,17 @@
 import { FC } from "react";
-import { Grid, styled, TextField, Typography } from "@mui/material";
+import { Grid, styled, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-// import { useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
-// import { translations } from "locales/i18n";
-import { CssVariables, FontFamilies } from "styles/cssVariables/cssVariables";
+import { translations } from "locales/i18n";
+import { CssVariables } from "styles/cssVariables/cssVariables";
 import { GovernancePageSelectors } from "app/pages/Governance/selectors";
 import { GovernancePageActions } from "app/pages/Governance/slice";
+import { InputField } from "../InputField";
 
 export const Description: FC = () => {
-  //   const { t } = useTranslation();
+  const { t } = useTranslation();
+
   const fieldName = "description";
   const dispatch = useDispatch();
   const description = useSelector(
@@ -25,7 +27,9 @@ export const Description: FC = () => {
   return (
     <Grid container direction="column">
       <Grid item>
-        <Text variant="h2">Description</Text>
+        <Text variant="h2">
+          {t(translations.GovernancePage.Descriptionofnewproposal())}
+        </Text>
       </Grid>
 
       <Grid item>
@@ -37,6 +41,7 @@ export const Description: FC = () => {
           rows={15}
           onChange={({ target }) => handleInputChange(target.value)}
           value={description}
+          placeholder="New proposal description"
         />
       </Grid>
     </Grid>
@@ -46,15 +51,4 @@ export const Description: FC = () => {
 const Text = styled(Typography)({
   color: CssVariables.white,
   textTransform: "uppercase",
-});
-
-const InputField = styled(TextField)({
-  ".MuiInputBase-root": {
-    color: CssVariables.white,
-    fontSize: "16px",
-    fontFamily: FontFamilies.IBMPlexSans,
-    backgroundColor: CssVariables.swapInputbackground,
-    border: `4px solid ${CssVariables.cardBorder}`,
-    borderRadius: "20px",
-  },
 });

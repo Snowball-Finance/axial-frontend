@@ -7,7 +7,19 @@ import DiscordChatIcon from "assets/images/iconComponents/discordChat";
 import DocumentIcon from "assets/images/iconComponents/document";
 import ExternalLinkIcon from "assets/images/iconComponents/externalLink";
 
-export const DocLinksAndInfo: FC = () => {
+interface Props {
+  discordLink: string;
+  documentLink: string;
+  startTime: string;
+  endTime: string;
+}
+
+export const DocLinksAndInfo: FC<Props> = ({
+  discordLink,
+  documentLink,
+  startTime,
+  endTime,
+}) => {
   return (
     <StyledPoolCard>
       <Grid container>
@@ -35,7 +47,7 @@ export const DocLinksAndInfo: FC = () => {
           </Grid>
 
           <Grid item>
-            <Text variant="body2">Dec 20, 2022 - 4:30 pm</Text>
+            <Text variant="body2">{startTime}</Text>
           </Grid>
         </Grid>
 
@@ -63,7 +75,7 @@ export const DocLinksAndInfo: FC = () => {
           </Grid>
 
           <Grid item>
-            <Text variant="body2">Dec 28, 2022 - 4:30 pm</Text>
+            <Text variant="body2">{endTime}</Text>
           </Grid>
         </Grid>
       </Grid>

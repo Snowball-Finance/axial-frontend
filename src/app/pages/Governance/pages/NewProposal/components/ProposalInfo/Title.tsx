@@ -1,15 +1,17 @@
 import { FC } from "react";
-import { Grid, styled, TextField, Typography } from "@mui/material";
+import { Grid, styled, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-// import { useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
-// import { translations } from "locales/i18n";
-import { CssVariables, FontFamilies } from "styles/cssVariables/cssVariables";
+import { translations } from "locales/i18n";
+import { CssVariables } from "styles/cssVariables/cssVariables";
 import { GovernancePageSelectors } from "app/pages/Governance/selectors";
 import { GovernancePageActions } from "app/pages/Governance/slice";
+import { InputField } from "../InputField";
 
 export const Title: FC = () => {
-  //   const { t } = useTranslation();
+  const { t } = useTranslation();
+
   const fieldName = "title";
   const dispatch = useDispatch();
   const title = useSelector(
@@ -25,7 +27,9 @@ export const Title: FC = () => {
   return (
     <Grid container direction="column">
       <Grid item>
-        <Text variant="h2">Title of Proposal</Text>
+        <Text variant="h2">
+          {t(translations.GovernancePage.Titleofnewproposal())}
+        </Text>
       </Grid>
 
       <Grid item>
@@ -36,6 +40,7 @@ export const Title: FC = () => {
           size="small"
           margin="dense"
           value={title}
+          placeholder="Title of new proposal"
         />
       </Grid>
     </Grid>
@@ -45,15 +50,4 @@ export const Title: FC = () => {
 const Text = styled(Typography)({
   color: CssVariables.white,
   textTransform: "uppercase",
-});
-
-const InputField = styled(TextField)({
-  ".MuiInputBase-root": {
-    color: CssVariables.white,
-    fontSize: "16px",
-    fontFamily: FontFamilies.IBMPlexSans,
-    backgroundColor: CssVariables.swapInputbackground,
-    border: `4px solid ${CssVariables.cardBorder}`,
-    borderRadius: "20px",
-  },
 });

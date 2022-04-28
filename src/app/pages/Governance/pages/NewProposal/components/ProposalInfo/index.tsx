@@ -6,6 +6,8 @@ import { Title } from "./Title";
 import { Description } from "./Description";
 import { Execution } from "../Execution";
 import { ExecutionList } from "../ExecutionList";
+import { SubmitButton } from "../SubmitButton";
+import { Message } from "../Message";
 
 export const ProposalInfo: FC = () => {
   return (
@@ -25,6 +27,18 @@ export const ProposalInfo: FC = () => {
 
         <Grid item>
           <Execution />
+        </Grid>
+
+        <Grid item>
+          <Grid container spacing={2} alignItems="center">
+            <Grid item>
+              <SubmitButton />
+            </Grid>
+
+            <Grid item>
+              <Message />
+            </Grid>
+          </Grid>
         </Grid>
       </Grid>
     </PrimaryCardWrapper>

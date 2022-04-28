@@ -1,16 +1,21 @@
 import { FC } from "react";
-import { Grid, styled, TextField, Typography } from "@mui/material";
+import { Grid, styled, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import AddIcon from "@mui/icons-material/Add";
+import { useTranslation } from "react-i18next";
 
-import { CssVariables, FontFamilies } from "styles/cssVariables/cssVariables";
+import { translations } from "locales/i18n";
+import { CssVariables } from "styles/cssVariables/cssVariables";
 import { CardWrapper } from "app/components/wrappers/Card";
 import { GovernancePageSelectors } from "app/pages/Governance/selectors";
 import { GovernancePageActions } from "app/pages/Governance/slice";
 import { GovernancePageState } from "app/pages/Governance/types";
 import { OutlinedButton } from "app/components/common/buttons/outlinedButton";
+import { InputField } from "../InputField";
 
 export const Execution: FC = () => {
+  const { t } = useTranslation();
+
   const dispatch = useDispatch();
   const canSubmitNewExecutionContext = useSelector(
     GovernancePageSelectors.canSubmitNewExecutionContext
@@ -38,7 +43,7 @@ export const Execution: FC = () => {
   return (
     <Grid container spacing={2} direction="column">
       <Grid item>
-        <Text variant="h2">Execution</Text>
+        <Text variant="h2">{t(translations.GovernancePage.Execution())}</Text>
       </Grid>
 
       <Grid item>
@@ -46,7 +51,9 @@ export const Execution: FC = () => {
           <Grid container spacing={2}>
             <Grid item container spacing={1} xs={12}>
               <Grid item xs={12}>
-                <Title variant="body1">Description</Title>
+                <Title variant="body1">
+                  {t(translations.GovernancePage.Description())}
+                </Title>
               </Grid>
               <Grid item xs={12}>
                 <InputField
@@ -65,7 +72,9 @@ export const Execution: FC = () => {
 
             <Grid item container spacing={1} xs={12}>
               <Grid item xs={12}>
-                <Title variant="body1">Contract Addresses</Title>
+                <Title variant="body1">
+                  {t(translations.GovernancePage.ContractAddress())}
+                </Title>
               </Grid>
               <Grid item xs={12}>
                 <InputField
@@ -84,7 +93,9 @@ export const Execution: FC = () => {
 
             <Grid item container spacing={1} xs={12}>
               <Grid item xs={12}>
-                <Title variant="body1">AVAX values</Title>
+                <Title variant="body1">
+                  {t(translations.GovernancePage.AVAXValue())}
+                </Title>
               </Grid>
               <Grid item xs={12}>
                 <InputField
@@ -103,7 +114,9 @@ export const Execution: FC = () => {
 
             <Grid item container spacing={1} xs={12}>
               <Grid item xs={12}>
-                <Title variant="body1">Data</Title>
+                <Title variant="body1">
+                  {t(translations.GovernancePage.Data())}
+                </Title>
               </Grid>
               <Grid item xs={12}>
                 <InputField
@@ -129,7 +142,7 @@ export const Execution: FC = () => {
                   onClick={handleAddExecutionClick}
                   disabled={!canSubmitNewExecutionContext}
                 >
-                  Add Execution
+                  {t(translations.GovernancePage.AddExecution())}
                 </OutlinedButton>
               </Grid>
             </Grid>
@@ -147,15 +160,4 @@ const Text = styled(Typography)({
 
 const Title = styled(Typography)({
   color: CssVariables.white,
-});
-
-const InputField = styled(TextField)({
-  ".MuiInputBase-root": {
-    color: CssVariables.white,
-    fontSize: "16px",
-    fontFamily: FontFamilies.IBMPlexSans,
-    backgroundColor: CssVariables.swapInputbackground,
-    border: `4px solid ${CssVariables.cardBorder}`,
-    borderRadius: "20px",
-  },
 });

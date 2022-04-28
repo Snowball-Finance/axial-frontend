@@ -1,9 +1,11 @@
 import { FC } from "react";
 import { Grid, styled, Typography } from "@mui/material";
 import { useDispatch } from "react-redux";
-import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import { useTranslation } from "react-i18next";
 
+import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { OutlinedButton } from "app/components/common/buttons/outlinedButton";
 import { GovernancePageActions } from "app/pages/Governance/slice";
@@ -23,6 +25,8 @@ export const ExecutionListItem: FC<Props> = ({
   data,
   index,
 }) => {
+  const { t } = useTranslation();
+
   const dispatch = useDispatch();
 
   const handleEditClick = (index: number) => {
@@ -45,7 +49,9 @@ export const ExecutionListItem: FC<Props> = ({
     <Grid container spacing={2}>
       <Grid item container justifyContent="space-between" xs={12}>
         <Grid item xs={6}>
-          <Text variant="body1">Description</Text>
+          <Text variant="body1">
+            {t(translations.GovernancePage.Description())}
+          </Text>
         </Grid>
 
         <Grid item xs={6}>
@@ -57,7 +63,9 @@ export const ExecutionListItem: FC<Props> = ({
 
       <Grid item container justifyContent="space-between" xs={12}>
         <Grid item xs={6}>
-          <Text variant="body1">Contract Address</Text>
+          <Text variant="body1">
+            {t(translations.GovernancePage.ContractAddress())}
+          </Text>
         </Grid>
 
         <Grid item xs={6}>
@@ -69,7 +77,9 @@ export const ExecutionListItem: FC<Props> = ({
 
       <Grid item container justifyContent="space-between" xs={12}>
         <Grid item xs={6}>
-          <Text variant="body1">AVAX Value</Text>
+          <Text variant="body1">
+            {t(translations.GovernancePage.AVAXValue())}
+          </Text>
         </Grid>
 
         <Grid item xs={6}>
@@ -81,7 +91,7 @@ export const ExecutionListItem: FC<Props> = ({
 
       <Grid item container justifyContent="space-between" xs={12}>
         <Grid item xs={6}>
-          <Text variant="body1">Data</Text>
+          <Text variant="body1">{t(translations.GovernancePage.Data())}</Text>
         </Grid>
 
         <Grid item xs={6}>
@@ -97,7 +107,7 @@ export const ExecutionListItem: FC<Props> = ({
             startIcon={<EditOutlinedIcon />}
             onClick={() => handleEditClick(index)}
           >
-            Edit
+            {t(translations.GovernancePage.Edit())}
           </OutlinedButton>
         </Grid>
 
@@ -106,7 +116,7 @@ export const ExecutionListItem: FC<Props> = ({
             startIcon={<DeleteOutlinedIcon />}
             onClick={() => handleDeleteClick(index)}
           >
-            Delete
+            {t(translations.GovernancePage.Delete())}
           </OutlinedButton>
         </Grid>
       </Grid>

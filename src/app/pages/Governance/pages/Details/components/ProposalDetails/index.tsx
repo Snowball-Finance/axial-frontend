@@ -1,32 +1,43 @@
 import { FC } from "react";
 import { Grid, styled, Typography } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
+import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { Info } from "./Info";
 import { VoteStatus } from "./VoteStatus";
+import { Proposal } from "app/containers/BlockChain/Governance/types";
 
-export const ProposalDetails: FC = () => {
+interface Props {
+  proposal: Proposal;
+}
+
+export const ProposalDetails: FC<Props> = ({ proposal }) => {
+  const { t } = useTranslation();
+
   return (
     <StyledPoolCard>
       <Grid container spacing={1}>
         <Grid item xs={12}>
-          <Text variant="body1">Proposal #3</Text>
+          <Text variant="body1">
+            {t(translations.GovernancePage.ProposalNumber(), {
+              number: proposal.governance_id,
+            })}
+          </Text>
         </Grid>
 
         <Grid item xs={10}>
-          <Title variant="h2">
-            Execute xSNOB Proposal Requirement Reduction to 50k
-          </Title>
+          <Title variant="h2">{proposal.title}</Title>
         </Grid>
 
         <Grid item xs={8}>
           <Grid container spacing={2}>
             <Grid item xs={6}>
-              <Info />
+              <Info proposal={proposal} />
             </Grid>
 
             <Grid item xs={6}>
-              <VoteStatus />
+              <VoteStatus proposal={proposal} />
             </Grid>
           </Grid>
         </Grid>

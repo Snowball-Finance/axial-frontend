@@ -1,17 +1,19 @@
 import { FC } from "react";
-import { Grid, styled, TextField, Typography } from "@mui/material";
+import { Grid, styled, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-// import { useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
-// import { translations } from "locales/i18n";
-import { CssVariables, FontFamilies } from "styles/cssVariables/cssVariables";
+import { translations } from "locales/i18n";
+import { CssVariables } from "styles/cssVariables/cssVariables";
 import DocumentIcon from "assets/images/iconComponents/document";
 import ExternalLinkIcon from "assets/images/iconComponents/externalLink";
 import { GovernancePageSelectors } from "app/pages/Governance/selectors";
 import { GovernancePageActions } from "app/pages/Governance/slice";
+import { InputField } from "../InputField";
 
 export const ProposalDocument: FC = () => {
-  //   const { t } = useTranslation();
+  const { t } = useTranslation();
+
   const fieldName = "document";
   const dispatch = useDispatch();
   const document = useSelector(
@@ -33,7 +35,9 @@ export const ProposalDocument: FC = () => {
           </Grid>
 
           <Grid item>
-            <Text variant="body1">Proposal document</Text>
+            <Text variant="body1">
+              {t(translations.GovernancePage.ProsConsDocumentURL())}
+            </Text>
           </Grid>
 
           <Grid item>
@@ -58,15 +62,4 @@ export const ProposalDocument: FC = () => {
 
 const Text = styled(Typography)({
   color: CssVariables.white,
-});
-
-const InputField = styled(TextField)({
-  ".MuiInputBase-root": {
-    color: CssVariables.white,
-    fontSize: "16px",
-    fontFamily: FontFamilies.IBMPlexSans,
-    backgroundColor: CssVariables.swapInputbackground,
-    border: `4px solid ${CssVariables.cardBorder}`,
-    borderRadius: "20px",
-  },
 });

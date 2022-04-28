@@ -1,16 +1,34 @@
 import { FC } from "react";
 import { Grid, styled, Typography } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
+import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
+import { PrimaryCardWrapper } from "app/components/wrappers/PrimaryCard";
 import { Info } from "./Info";
-import { Actions } from "./Actions";
+import { DetailsButton } from "./DetailsButton";
+import { Proposal } from "app/containers/BlockChain/Governance/types";
 
-export const ProposalListItem: FC = () => {
+interface ProposalListItemProps {
+  proposal: Proposal;
+  short?: boolean;
+}
+
+export const ProposalListItem: FC<ProposalListItemProps> = ({
+  proposal,
+  short,
+}) => {
+  const { t } = useTranslation();
+
   return (
-    <StyledPoolCard>
+    <PrimaryCardWrapper>
       <Grid container direction="column" spacing={1}>
         <Grid item>
-          <Text variant="body1">Proposal #3</Text>
+          <Text variant="body1">
+            {t(translations.GovernancePage.ProposalNumber(), {
+              number: proposal.governance_id,
+            })}
+          </Text>
         </Grid>
 
         <Grid item>
@@ -18,32 +36,23 @@ export const ProposalListItem: FC = () => {
             <Grid item xs={8}>
               <Grid container spacing={2}>
                 <Grid item>
-                  <Title variant="h2">
-                    Execute xSNOB Proposal Requirement Reduction to 50k
-                  </Title>
+                  <Title variant="h2">{proposal.title}</Title>
                 </Grid>
                 <Grid item>
-                  <Info />
+                  <Info proposal={proposal} />
                 </Grid>
               </Grid>
             </Grid>
 
             <Grid item>
-              <Actions />
+              <DetailsButton proposal={proposal} />
             </Grid>
           </Grid>
         </Grid>
       </Grid>
-    </StyledPoolCard>
+    </PrimaryCardWrapper>
   );
 };
-
-const StyledPoolCard = styled("div")({
-  backgroundColor: CssVariables.poolCardBackground,
-  border: `4px solid ${CssVariables.cardBorder}`,
-  borderRadius: "20px",
-  padding: "20px",
-});
 
 const Title = styled(Typography)({
   color: CssVariables.white,

@@ -1,5 +1,6 @@
 import { FC } from "react";
 import { styled } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 
 import { translations } from "locales/i18n";
@@ -7,6 +8,8 @@ import { SnowSelect } from "app/components/base/SnowSelect";
 import { SnowSelectInterface } from "app/components/base/SnowSelect/types";
 import { ProposalFilters } from "app/containers/BlockChain/Governance/types";
 import { CssVariables } from "styles/cssVariables/cssVariables";
+import { GovernanceSelectors } from "app/containers/BlockChain/Governance/selectors";
+import { GovernanceActions } from "app/containers/BlockChain/Governance/slice";
 
 const selectOptions = ({ t }): SnowSelectInterface["options"] => [
   {
@@ -30,13 +33,21 @@ const selectOptions = ({ t }): SnowSelectInterface["options"] => [
 export const Filter: FC = () => {
   const { t } = useTranslation();
 
+  const dispatch = useDispatch();
+  const selectedFilter = useSelector(
+    GovernanceSelectors.selectedProposalFilter
+  );
+  const handleFilterChange = (v: ProposalFilters) => {
+    dispatch(GovernanceActions.setProposalFilter(v));
+  };
+
   return (
     <StyledSelect
       //@ts-ignore ignored because we know it's ok to pass the value as Proposal filter enum
-      onChange={() => {}}
+      onChange={handleFilterChange}
       options={selectOptions({ t })}
       isFilter
-      selectedValue={ProposalFilters.All}
+      selectedValue={selectedFilter}
     />
   );
 };

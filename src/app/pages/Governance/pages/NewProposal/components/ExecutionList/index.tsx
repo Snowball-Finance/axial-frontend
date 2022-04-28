@@ -1,13 +1,17 @@
 import { FC } from "react";
 import { Grid, styled, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
+import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { CardWrapper } from "app/components/wrappers/Card";
 import { GovernancePageSelectors } from "app/pages/Governance/selectors";
 import { ExecutionListItem } from "./ExecutionListItem";
 
 export const ExecutionList: FC = () => {
+  const { t } = useTranslation();
+
   const submittedExecutionContexts = useSelector(
     GovernancePageSelectors.submittedExecutionContexts
   );
@@ -19,7 +23,9 @@ export const ExecutionList: FC = () => {
   return (
     <Grid container spacing={2} direction="column">
       <Grid item>
-        <Text variant="h2">Execution List</Text>
+        <Text variant="h2">
+          {t(translations.GovernancePage.ExecutionList())}
+        </Text>
       </Grid>
 
       <Grid item>

@@ -4,8 +4,15 @@ import { useTranslation } from "react-i18next";
 
 import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
+import {
+  Proposal,
+  ProposalState,
+} from "app/containers/BlockChain/Governance/types";
+interface Props {
+  proposal: Proposal;
+}
 
-export const Info: FC = () => {
+export const Info: FC<Props> = ({ proposal }) => {
   const { t } = useTranslation();
 
   return (
@@ -16,7 +23,13 @@ export const Info: FC = () => {
         </Grid>
 
         <Grid item>
-          <Text variant="body2">Active</Text>
+          {proposal.proposal_state !== undefined && (
+            <Text variant="body2">
+              {proposal.proposal_state === ProposalState.PendingExecution
+                ? ProposalState.ReadyForExecution.toString()
+                : proposal.proposal_state.toString()}
+            </Text>
+          )}
         </Grid>
       </Grid>
 
@@ -28,7 +41,14 @@ export const Info: FC = () => {
         </Grid>
 
         <Grid item>
-          <Text variant="body2">0x8f24..b56A</Text>
+          <Text variant="body2">
+            {proposal.proposer.substring(0, 6) +
+              "..." +
+              proposal.proposer.substring(
+                proposal.proposer.length - 4,
+                proposal.proposer.length
+              )}
+          </Text>
         </Grid>
       </Grid>
 
@@ -38,7 +58,9 @@ export const Info: FC = () => {
         </Grid>
 
         <Grid item>
-          <Text variant="body2">Feb 23, 2022</Text>
+          <Text variant="body2">
+            {new Date(proposal.start_date).toLocaleString()}
+          </Text>
         </Grid>
       </Grid>
     </Grid>

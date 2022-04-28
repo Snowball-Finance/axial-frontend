@@ -2,7 +2,7 @@ import { FC } from "react";
 import { Grid, styled } from "@mui/material";
 
 import { Max1040 } from "app/components/wrappers/max1040";
-import { VotingPowerInfo } from "./components/VotingPowerInfo";
+import { VotingPowerInfo } from "../../components/VotingPowerInfo";
 import { Filter } from "./components/Filter";
 import { Message } from "./components/Message";
 import { ProposalsList } from "./components/ProposalsList";

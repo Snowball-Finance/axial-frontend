@@ -1,22 +1,17 @@
 import { FC } from "react";
-import {
-  Grid,
-  InputAdornment,
-  styled,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Grid, InputAdornment, styled, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 
 import { translations } from "locales/i18n";
-import { CssVariables, FontFamilies } from "styles/cssVariables/cssVariables";
+import { CssVariables } from "styles/cssVariables/cssVariables";
 import ClockIcon from "assets/images/iconComponents/clock";
 import ExternalLinkIcon from "assets/images/iconComponents/externalLink";
 import { GovernancePageSelectors } from "app/pages/Governance/selectors";
 import { GovernancePageActions } from "app/pages/Governance/slice";
 import { env } from "environment";
 import { isInvalidPeriod } from "../../utils/period";
+import { InputField } from "../InputField";
 
 export const Period: FC = () => {
   const { t } = useTranslation();
@@ -42,7 +37,9 @@ export const Period: FC = () => {
           </Grid>
 
           <Grid item>
-            <Text variant="body1">Voting Period</Text>
+            <Text variant="body1">
+              {t(translations.GovernancePage.VotingPeriod())}
+            </Text>
           </Grid>
 
           <Grid item>
@@ -93,20 +90,4 @@ export const Period: FC = () => {
 
 const Text = styled(Typography)({
   color: CssVariables.white,
-});
-
-const InputField = styled(TextField)({
-  ".MuiInputBase-root": {
-    color: CssVariables.white,
-    fontSize: "16px",
-    fontFamily: FontFamilies.IBMPlexSans,
-    backgroundColor: CssVariables.swapInputbackground,
-    border: `4px solid ${CssVariables.cardBorder}`,
-    borderRadius: "20px",
-  },
-  ".MuiInputAdornment-root": {
-    p: {
-      color: CssVariables.white,
-    },
-  },
 });

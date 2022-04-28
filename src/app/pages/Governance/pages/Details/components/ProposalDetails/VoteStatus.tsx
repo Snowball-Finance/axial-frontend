@@ -4,8 +4,13 @@ import { useTranslation } from "react-i18next";
 
 import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
+import { Proposal } from "app/containers/BlockChain/Governance/types";
 
-export const VoteStatus: FC = () => {
+interface Props {
+  proposal: Proposal;
+}
+
+export const VoteStatus: FC<Props> = ({ proposal }) => {
   const { t } = useTranslation();
 
   return (
