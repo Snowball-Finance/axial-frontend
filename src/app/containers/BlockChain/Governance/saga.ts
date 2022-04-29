@@ -37,7 +37,6 @@ export function* getProposals(action: {
   try {
     const response = yield call(GetProposalsAPI);
     const proposals: Proposal[] = response; //response.data.ProposalList.proposals;
-    console.log({ proposals });
     yield put(GovernanceActions.setProposals(proposals));
   } catch (error) {
     console.log(error);
@@ -71,6 +70,21 @@ export function* getGovernanceContract() {
     getProviderOrSigner(library, account)
   ) as Governance;
   return governanceContract;
+}
+
+export function* execute(action: { type: string, payload: { proposalId: string } }) {
+  try {
+    const governanceContract: Governance = yield call(getGovernanceContract);
+    const executionTransaction = yield call(governanceContract.execute, action.payload.proposalId);
+    const response = yield call(executionTransaction.wait);
+    if (response.status) {
+      toast.success("Proposal executed successfully");
+      yield put(GovernanceActions.setSyncedProposalsWithBlockchain(false))
+    }
+  } catch (error) {
+    console.log(error)
+    toast.warn('error while executing proposal');
+  }
 }
 
 export function* vote(action: {
