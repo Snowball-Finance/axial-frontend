@@ -62,7 +62,7 @@ export const Governance = ({
   }, [governanceTokenContract]);
 
   useEffect(() => {
-    if(networkLibrary){
+    if (networkLibrary) {
       dispatch(GovernanceActions.setGovernanceABI(governanceABI));
       dispatch(GovernanceActions.setGovernanceTokenABI(tokenABI));
       dispatch(GovernanceActions.getProposals({}));

@@ -71,7 +71,7 @@ export type Receipt = Governance.ReceiptStruct;
 export interface GovernanceState {
   selectedProposalFilter: ProposalFilters;
   isLoadingProposals: boolean;
-  proposals: Proposal[]|undefined;
+  proposals: Proposal[] | undefined;
   syncedProposalsWithBlockchain: boolean;
   selectedProposal: Proposal | undefined;
   isVotingFor: number;
