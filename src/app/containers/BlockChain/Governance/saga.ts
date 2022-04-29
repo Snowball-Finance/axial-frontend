@@ -72,18 +72,24 @@ export function* getGovernanceContract() {
   return governanceContract;
 }
 
-export function* execute(action: { type: string, payload: { proposalId: string } }) {
+export function* execute(action: {
+  type: string;
+  payload: { proposalId: string };
+}) {
   try {
     const governanceContract: Governance = yield call(getGovernanceContract);
-    const executionTransaction = yield call(governanceContract.execute, action.payload.proposalId);
+    const executionTransaction = yield call(
+      governanceContract.execute,
+      action.payload.proposalId
+    );
     const response = yield call(executionTransaction.wait);
     if (response.status) {
       toast.success("Proposal executed successfully");
-      yield put(GovernanceActions.setSyncedProposalsWithBlockchain(false))
+      yield put(GovernanceActions.setSyncedProposalsWithBlockchain(false));
     }
   } catch (error) {
-    console.log(error)
-    toast.warn('error while executing proposal');
+    console.log(error);
+    toast.warn("error while executing proposal");
   }
 }
 
@@ -416,11 +422,16 @@ export function* syncProposalsWithBlockchain() {
       const endTime = new Date(
         add(Number(item.votingPeriod), Number(item.startTime)) * 1000
       );
+      const votes =
+        votesFromBlockChain[i].map((item: BigNumber) => {
+          const voteNumber = BNToFloat(item);
+          return voteNumber?.toString() || 0;
+        }) || [];
       const proposal: Proposal = {
         id: i.toString(),
         blockChainData: item,
         proposer: item.proposer,
-        votes: votesFromBlockChain.map((item) => Number(item).toString()) || [],
+        votes,
         title: item.title,
         description: metadata?.description || metadata,
         document: metadata?.document || "",
