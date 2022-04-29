@@ -128,6 +128,22 @@ export function* saveToIPFS(data: any) {
   return metadataURI;
 }
 
+export function* getFormIpfs(link: string) {
+  let metadata;
+  try {
+    metadata = yield call(axios.request, {
+      method: "GET",
+      url: link,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  } catch (error) {
+    return metadata;
+  }
+  return metadata.data;
+}
+
 export function* submitNewProposal(action: {
   type: string;
   payload: SubmitNewProposalPayload;
@@ -164,17 +180,16 @@ export function* submitNewProposal(action: {
       document,
       executionLabels: labels,
     };
-    const ipfsUrl = yield call(saveToIPFS, metaData);
-    metaData.ipfs = ipfsUrl;
-    if (!ipfsUrl) {
-      throw Error("error while saving new proposal data");
+    const metaDataToSave: any = {};
+    const ipfsUrlForMetadata = yield call(saveToIPFS, metaData);
+    if (ipfsUrlForMetadata) {
+      metaDataToSave.ipfs = ipfsUrlForMetadata;
     }
-    const stringifiedMetadata = JSON.stringify(metaData);
     const votingPeriodInSeconds = Number(votingPeriod) * 60 * 60 * 24;
     const parsedMetaData = yield call(
       governanceContract.constructProposalMetadata,
       title,
-      stringifiedMetadata,
+      JSON.stringify(metaDataToSave),
       votingPeriodInSeconds,
       labels.length >= 0
     );
@@ -334,21 +349,37 @@ export function* syncProposalsWithBlockchain() {
       statesCallArray.push(call(governanceContract.state, i));
       votesCallArray.push(call(governanceContract.getProposalVotes, i));
     }
-    const [proposalsFromBlockChain, statesFromBlockChain, votesFromBlockChain] =
-      yield all([
-        all(proposalsCallArray),
-        all(statesCallArray),
-        all(votesCallArray),
-      ]);
+    const [
+      proposalsFromBlockChain,
+      statesFromBlockChain,
+      votesFromBlockChain,
+    ]: [Governance.ProposalStruct[], any, any] = yield all([
+      all(proposalsCallArray),
+      all(statesCallArray),
+      all(votesCallArray),
+    ]);
+
+    const metadataCallArray: any[] = [];
+    for (let i = 0; i < proposalsFromBlockChain.length; i++) {
+      const proposal = proposalsFromBlockChain[i];
+      let jsonMetadata;
+      if (proposal.metadata) {
+        jsonMetadata = JSON.parse(proposal.metadata);
+        if (!jsonMetadata.ipfs) {
+          jsonMetadata.ipfs = "invalid";
+        }
+      } else {
+        jsonMetadata = { ipfs: "invalid" };
+      }
+      metadataCallArray.push(call(getFormIpfs, jsonMetadata.ipfs));
+    }
+    const metaDataFromBlockchain = yield all(metadataCallArray);
+
     const updatedProposals: Proposal[] = [];
     for (let i = 0; i < proposalsFromBlockChain.length; i++) {
       const item: Governance.ProposalStruct = proposalsFromBlockChain[i];
-      let metaData;
-      try {
-        metaData = JSON.parse(item.metadata);
-      } catch (error) {
-        metaData = item.metadata;
-      }
+      const metadata = metaDataFromBlockchain[i];
+
       const executionContexts: ProposalExecContext[] =
         item.executionContexts.contexts?.map((item) => ({
           data: JSON.stringify(item.data),
@@ -378,9 +409,9 @@ export function* syncProposalsWithBlockchain() {
         proposer: item.proposer,
         votes: votesFromBlockChain.map((item) => Number(item).toString()) || [],
         title: item.title,
-        description: metaData?.description || metaData,
-        document: metaData?.document || "",
-        discussion: metaData?.discussion || "",
+        description: metadata?.description || metadata,
+        document: metadata?.document || "",
+        discussion: metadata?.discussion || "",
         proposal_state: state,
         start_date: startTime.toLocaleDateString(),
         end_date: endTime.toLocaleDateString(),
