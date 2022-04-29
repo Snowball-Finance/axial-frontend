@@ -96,11 +96,9 @@ export function* vote(action: {
   } catch (error) {
     toast.error("error while voting");
   } finally {
-    if (voteFor) {
-      yield put(GovernanceActions.setIsVotingFor(-1));
-    } else {
-      yield put(GovernanceActions.setIsVotingAgainst(false));
-    }
+    yield put(GovernanceActions.setIsVotingFor(-1));
+    yield put(GovernanceActions.setIsVotingAgainst(false));
+    yield put(GovernanceActions.getGovernanceTokenBalance());
   }
 }
 
@@ -216,6 +214,7 @@ export function* submitNewProposal(action: {
     if (transactionStatus.status) {
       toast.success("Proposal submitted successfully");
       yield put(GovernancePageActions.resetNewProposalFields());
+      yield put(GovernanceActions.getGovernanceTokenBalance());
     }
   } catch (error: any) {
     console.log(error);
