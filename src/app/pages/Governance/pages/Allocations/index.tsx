@@ -4,11 +4,16 @@ import { Grid, styled } from "@mui/material";
 import { Max1040 } from "app/components/wrappers/max1040";
 import { VoteForPair } from "./components/VoteForPair";
 import { RewardAllocation } from "./components/RewardAllocation";
+import { NavigationHead } from "../../components/Navigation/NavigationHead";
 
 export const Allocations: FC = () => {
   return (
     <StyledMax1040>
       <Grid container direction="column" spacing={4}>
+        <Grid item>
+          <NavigationHead />
+        </Grid>
+
         <Grid item>
           <VoteForPair />
         </Grid>

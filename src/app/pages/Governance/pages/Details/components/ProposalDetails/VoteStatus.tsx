@@ -16,7 +16,9 @@ export const VoteStatus: FC<Props> = ({ proposal }) => {
   return (
     <Grid container>
       <Grid item>
-        <TextUnderline variant="body1">Vote Status</TextUnderline>
+        <TextUnderline variant="body1">
+          {t(translations.GovernancePage.VoteStatus())}
+        </TextUnderline>
       </Grid>
 
       <Grid item container justifyContent="space-between" alignItems="center">

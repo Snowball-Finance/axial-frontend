@@ -35,6 +35,8 @@ export const GovernancePageDomains = {
     },
   submittedExecutionContexts: (state: RootState) =>
     state.governancePage?.submittedExecutionContexts || [],
+  isModalOpen: (state: RootState) =>
+    state.governancePage?.isModalOpen || initialState.isModalOpen,
 };
 
 export const GovernancePageSelectors = {
@@ -142,5 +144,9 @@ export const GovernancePageSelectors = {
         currentExecutionContext.data
       );
     }
+  ),
+  selectIsModalOpen: createSelector(
+    GovernancePageDomains.isModalOpen,
+    (isModalOpen) => isModalOpen
   ),
 };

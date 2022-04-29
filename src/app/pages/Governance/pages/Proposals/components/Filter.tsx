@@ -7,7 +7,7 @@ import { translations } from "locales/i18n";
 import { SnowSelect } from "app/components/base/SnowSelect";
 import { SnowSelectInterface } from "app/components/base/SnowSelect/types";
 import { ProposalFilters } from "app/containers/BlockChain/Governance/types";
-import { CssVariables } from "styles/cssVariables/cssVariables";
+import { CssVariables, FontFamilies } from "styles/cssVariables/cssVariables";
 import { GovernanceSelectors } from "app/containers/BlockChain/Governance/selectors";
 import { GovernanceActions } from "app/containers/BlockChain/Governance/slice";
 
@@ -61,5 +61,10 @@ const StyledSelect = styled(SnowSelect)({
   "&.MuiOutlinedInput-root": {
     backgroundColor: CssVariables.poolCardBackground,
     border: `4px solid ${CssVariables.cardBorder}`,
+  },
+
+  ".MuiSelect-select": {
+    fontSize: "16px",
+    fontFamily: FontFamilies.IBMPlexSans,
   },
 });

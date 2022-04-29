@@ -36,6 +36,7 @@ export const initialState: ContainerState = {
       votingPeriod: "",
     },
   },
+  isModalOpen: false,
 };
 
 const governancePageSlice = createSlice({
@@ -170,6 +171,9 @@ const governancePageSlice = createSlice({
       state.submittedExecutionContexts = tmpSubmittedExecutionContexts;
     },
     submitNewProposal: (state, action: PayloadAction<void>) => {},
+    setIsModalOpen: (state, action: PayloadAction<boolean>) => {
+      state.isModalOpen = action.payload;
+    },
   },
 });
 

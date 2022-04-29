@@ -1,6 +1,8 @@
 import { FC } from "react";
 import { Grid, styled, Typography } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
+import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import ClockIcon from "assets/images/iconComponents/clock";
 import DiscordChatIcon from "assets/images/iconComponents/discordChat";
@@ -20,20 +22,26 @@ export const DocLinksAndInfo: FC<Props> = ({
   startTime,
   endTime,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <StyledPoolCard>
       <Grid container>
         <Grid item container spacing={1} alignItems="center" xs={6}>
           <Grid item>
-            <DiscordChatIcon />
+            <DiscordChatIcon color={CssVariables.commonTextColor} />
           </Grid>
 
           <Grid item>
-            <Text variant="body1">Discord proposal</Text>
+            <Text variant="body1">
+              {t(translations.GovernancePage.DiscussionURL())}
+            </Text>
           </Grid>
 
           <Grid item>
-            <ExternalLinkIcon color={CssVariables.commonTextColor} />
+            <Anchor target="_blank" rel="noreferrer" href={discordLink}>
+              <ExternalLinkIcon color={CssVariables.primary} />
+            </Anchor>
           </Grid>
         </Grid>
 
@@ -43,7 +51,9 @@ export const DocLinksAndInfo: FC<Props> = ({
           </Grid>
 
           <Grid item>
-            <Text variant="body1">Started voted at</Text>
+            <Text variant="body1">
+              {t(translations.GovernancePage.StartedVotedAt())}
+            </Text>
           </Grid>
 
           <Grid item>
@@ -57,11 +67,15 @@ export const DocLinksAndInfo: FC<Props> = ({
           </Grid>
 
           <Grid item>
-            <Text variant="body1">Proposal document</Text>
+            <Text variant="body1">
+              {t(translations.GovernancePage.ProsConsDocumentURL())}
+            </Text>
           </Grid>
 
           <Grid item>
-            <ExternalLinkIcon color={CssVariables.commonTextColor} />
+            <Anchor target="_blank" rel="noreferrer" href={documentLink}>
+              <ExternalLinkIcon color={CssVariables.primary} />
+            </Anchor>
           </Grid>
         </Grid>
 
@@ -71,7 +85,9 @@ export const DocLinksAndInfo: FC<Props> = ({
           </Grid>
 
           <Grid item>
-            <Text variant="body1">Ended voted at</Text>
+            <Text variant="body1">
+              {t(translations.GovernancePage.EndedVotedAt())}
+            </Text>
           </Grid>
 
           <Grid item>
@@ -92,4 +108,9 @@ const StyledPoolCard = styled("div")({
 
 const Text = styled(Typography)({
   color: CssVariables.white,
+});
+
+const Anchor = styled("a")({
+  textDecoration: "none",
+  textAlign: "center",
 });

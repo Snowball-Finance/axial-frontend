@@ -2,7 +2,9 @@ import { FC } from "react";
 import { Grid, styled } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
+import { translations } from "locales/i18n";
 import { Max1040 } from "app/components/wrappers/max1040";
 import { VotingPowerInfo } from "../../components/VotingPowerInfo";
 import { DocLinksAndInfo } from "./components/DocLinksAndInfo";
@@ -10,21 +12,21 @@ import { ProposalDescription } from "./components/ProposalDescription";
 import { ProposalDetails } from "./components/ProposalDetails";
 import { VoteOptions } from "./components/VoteOptions";
 import { GovernanceSelectors } from "app/containers/BlockChain/Governance/selectors";
-import {
-  Proposal,
-  // ProposalState,
-} from "app/containers/BlockChain/Governance/types";
+import { Proposal } from "app/containers/BlockChain/Governance/types";
+import { DetailNavigationHead } from "../../components/Navigation/DetailsNavigationHead";
+import { VotingConfirmationModal } from "./components/VotingConfirmationModal";
 
 type TParams = { proposalIndex: string };
 
 export const Details: FC = () => {
+  const { t } = useTranslation();
+
   const { proposalIndex } = useParams<TParams>();
   const proposals = useSelector(GovernanceSelectors.proposals);
 
   const proposal: Proposal | undefined = proposals.find(
     (item) => item.governance_id === proposalIndex
   );
-  // let isForAgainstType = true;
 
   if (proposals.length === 0) {
     return <>Loading</>;
@@ -34,42 +36,47 @@ export const Details: FC = () => {
     return <>proposal not found</>;
   }
 
-  // if (proposal?.execution_contexts.length > 1) {
-  //   isForAgainstType = false;
-  // }
-
-  // const { proposal_state } = proposal;
-  // const isActive = proposal_state === ProposalState.Active;
-
   return (
-    <StyledMax1040>
-      <Grid container direction="column" spacing={4}>
-        <Grid item>
-          <ProposalDetails proposal={proposal} />
-        </Grid>
+    <>
+      <VotingConfirmationModal />
 
-        <Grid item>
-          <VotingPowerInfo />
-        </Grid>
+      <StyledMax1040>
+        <Grid container direction="column" spacing={4}>
+          <Grid item>
+            <DetailNavigationHead
+              routeName={t(translations.GovernancePage.ProposalNumber(), {
+                number: proposal.governance_id,
+              })}
+            />
+          </Grid>
 
-        <Grid item>
-          <VoteOptions />
-        </Grid>
+          <Grid item>
+            <ProposalDetails proposal={proposal} />
+          </Grid>
 
-        <Grid item>
-          <DocLinksAndInfo
-            discordLink={proposal?.discussion || ""}
-            documentLink={proposal?.document || ""}
-            startTime={proposal?.start_date || ""}
-            endTime={proposal?.end_date || ""}
-          />
-        </Grid>
+          <Grid item>
+            <VotingPowerInfo />
+          </Grid>
 
-        <Grid item>
-          <ProposalDescription description={""} />
+          <Grid item>
+            <VoteOptions proposal={proposal} />
+          </Grid>
+
+          <Grid item>
+            <DocLinksAndInfo
+              discordLink={proposal?.discussion || ""}
+              documentLink={proposal?.document || ""}
+              startTime={proposal?.start_date || ""}
+              endTime={proposal?.end_date || ""}
+            />
+          </Grid>
+
+          <Grid item>
+            <ProposalDescription description={proposal?.description} />
+          </Grid>
         </Grid>
-      </Grid>
-    </StyledMax1040>
+      </StyledMax1040>
+    </>
   );
 };
 

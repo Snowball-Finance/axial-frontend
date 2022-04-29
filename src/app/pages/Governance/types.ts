@@ -35,6 +35,7 @@ export interface GovernancePageState {
       votingPeriod: string;
     };
   };
+  isModalOpen: boolean;
 }
 
 export type ContainerState = GovernancePageState;

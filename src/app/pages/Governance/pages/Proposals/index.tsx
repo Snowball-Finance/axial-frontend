@@ -7,14 +7,14 @@ import { Filter } from "./components/Filter";
 import { Message } from "./components/Message";
 import { ProposalsList } from "./components/ProposalsList";
 import { NewProposalButton } from "./components/NewProposalButton";
-import { Navigation } from "./components/Navigation";
+import { NavigationHead } from "../../components/Navigation/NavigationHead";
 
 export const Proposals: FC = () => {
   return (
     <StyledMax1040>
-      <Grid container spacing={2} direction="column">
+      <Grid container spacing={4} direction="column">
         <Grid item>
-          <Navigation />
+          <NavigationHead />
         </Grid>
 
         <Grid item>

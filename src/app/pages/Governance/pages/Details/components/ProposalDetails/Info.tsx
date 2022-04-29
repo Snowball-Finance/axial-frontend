@@ -19,7 +19,9 @@ export const Info: FC<Props> = ({ proposal }) => {
   return (
     <Grid container>
       <Grid item>
-        <TextUnderline variant="body1">Proposal information</TextUnderline>
+        <TextUnderline variant="body1">
+          {t(translations.GovernancePage.ProposalInformation())}
+        </TextUnderline>
       </Grid>
 
       <Grid item container justifyContent="space-between" alignItems="center">
@@ -28,15 +30,13 @@ export const Info: FC<Props> = ({ proposal }) => {
         </Grid>
 
         <Grid item>
-          <Text variant="body2">
-            {proposal.proposal_state !== undefined && (
-              <Text variant="body2">
-                {proposal.proposal_state === ProposalState.PendingExecution
-                  ? ProposalState.ReadyForExecution.toString()
-                  : proposal.proposal_state.toString()}
-              </Text>
-            )}
-          </Text>
+          {proposal.proposal_state !== undefined && (
+            <Text variant="body2">
+              {proposal.proposal_state === ProposalState.PendingExecution
+                ? ProposalState.ReadyForExecution.toString()
+                : proposal.proposal_state.toString()}
+            </Text>
+          )}
         </Grid>
       </Grid>
 

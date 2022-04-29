@@ -11,13 +11,9 @@ import { Proposal } from "app/containers/BlockChain/Governance/types";
 
 interface ProposalListItemProps {
   proposal: Proposal;
-  short?: boolean;
 }
 
-export const ProposalListItem: FC<ProposalListItemProps> = ({
-  proposal,
-  short,
-}) => {
+export const ProposalListItem: FC<ProposalListItemProps> = ({ proposal }) => {
   const { t } = useTranslation();
 
   return (
@@ -32,16 +28,13 @@ export const ProposalListItem: FC<ProposalListItemProps> = ({
         </Grid>
 
         <Grid item>
+          <Title variant="h2">{proposal.title}</Title>
+        </Grid>
+
+        <Grid item>
           <Grid container alignItems="flex-end" justifyContent="space-between">
-            <Grid item xs={8}>
-              <Grid container spacing={2}>
-                <Grid item>
-                  <Title variant="h2">{proposal.title}</Title>
-                </Grid>
-                <Grid item>
-                  <Info proposal={proposal} />
-                </Grid>
-              </Grid>
+            <Grid item>
+              <Info proposal={proposal} />
             </Grid>
 
             <Grid item>
