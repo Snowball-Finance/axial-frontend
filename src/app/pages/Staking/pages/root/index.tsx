@@ -106,7 +106,10 @@ export const StakingRoot = () => {
         <InfoActionsWrapper>
           <InfosWrapper>
             <Info title="sAXIAL" value={lockedTokenAmount || "0.000"} />
-            <Info title="AXIAL Unlocked" value={unlockedAxialAmount || "0.000"} />
+            <Info
+              title="AXIAL Unlocked"
+              value={unlockedAxialAmount || "0.000"}
+            />
             {lockEndDate && <Info title="Lock End" value={lockEndDate} />}
           </InfosWrapper>
           <ContainedButton onClick={goToSAxial}>Lock</ContainedButton>
@@ -119,10 +122,9 @@ export const StakingRoot = () => {
             </ContainedButton>
           )}
         </InfoActionsWrapper>
-        
       </StyledSnowPaper>
       <StyledSnowPaper>
-      <TitleWrapper>
+        <TitleWrapper>
           <IconWrapper>
             <StyledIcon src={veAxialIcon} />
             <TokenTitle>veAXIAL</TokenTitle>
@@ -148,7 +150,6 @@ export const StakingRoot = () => {
             </ContainedButton>
           )}
         </InfoActionsWrapper>
-        
       </StyledSnowPaper>
     </Wrapper>
   );
@@ -158,13 +159,13 @@ const InfoActionsWrapper = styled("div")({
   display: "flex",
   flexDirection: "row",
   justifyContent: "space-between",
-  alignItems: "center"
+  alignItems: "center",
 });
 
 const InfosWrapper = styled("div")({
   display: "flex",
   flexDirection: "row",
-  gap: "24px"
+  gap: "24px",
 });
 
 const TokenTitle = styled("span")({
@@ -179,7 +180,7 @@ const TitleWrapper = styled("div")({
   order: "0",
   alignSelf: "stretch",
   flexGrow: "0",
-  gap: "24px"
+  gap: "24px",
 });
 
 const Desc = styled("span")({
