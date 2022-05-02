@@ -8,6 +8,7 @@ import {
   Proposal,
   ProposalState,
 } from "app/containers/BlockChain/Governance/types";
+import { dateFormat } from "app/pages/Governance/utils/date";
 interface Props {
   proposal: Proposal;
 }
@@ -58,9 +59,7 @@ export const Info: FC<Props> = ({ proposal }) => {
         </Grid>
 
         <Grid item>
-          <Text variant="body2">
-            {new Date(proposal.start_date).toLocaleString()}
-          </Text>
+          <Text variant="body2">{dateFormat(proposal.start_date)}</Text>
         </Grid>
       </Grid>
     </Grid>

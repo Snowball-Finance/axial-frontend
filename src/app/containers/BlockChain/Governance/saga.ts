@@ -10,7 +10,6 @@ import {
   Receipt,
   SubmitNewProposalPayload,
 } from "./types";
-import { BNToFloat } from "common/format";
 import { totalSupplyProvider } from "app/containers/BlockChain/providers/balanceAPI";
 import { env } from "environment";
 import { Web3Domains } from "../Web3/selectors";
@@ -237,11 +236,10 @@ export function* getVotingReceipt(action: {
       proposalId,
       account
     );
-    const votes = BNToFloat(receipt[2], 18);
     const rec = {
       hasVoted: receipt[0] || false,
-      support: receipt[1] || false,
-      votes: votes || BigNumber.from(0),
+      support: Number(receipt[1]),
+      votes: Number(receipt[2]),
     };
     yield put(GovernanceActions.setVotingReceipt(rec));
   } catch (error) {

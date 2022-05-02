@@ -1,17 +1,17 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
 import { Grid } from "@mui/material";
 
 import { OutlinedButton } from "app/components/common/buttons/outlinedButton";
 import { GovernanceSelectors } from "app/containers/BlockChain/Governance/selectors";
 import { GovernanceActions } from "app/containers/BlockChain/Governance/slice";
-
-type TParams = { proposalIndex: string };
+import { ContainedButton } from "app/components/common/buttons/containedButton";
+import { GovernancePageSelectors } from "app/pages/Governance/selectors";
 
 export const ExecutionContext = () => {
-  const { proposalIndex } = useParams<TParams>();
+  const receipt = useSelector(GovernanceSelectors.receipt);
+  const proposal = useSelector(GovernancePageSelectors.selectedProposal);
+  const supportingOption = receipt?.support;
 
-  const proposal = useSelector(GovernanceSelectors.proposalById(proposalIndex));
   const dispatch = useDispatch();
 
   const handleVoteClick = (index: number) => {
@@ -34,9 +34,15 @@ export const ExecutionContext = () => {
       {proposal.execution_contexts.map((context, index) => {
         return (
           <Grid item key={index}>
-            <OutlinedButton fullWidth onClick={() => handleVoteClick(index)}>
-              {context.label}
-            </OutlinedButton>
+            {supportingOption === index ? (
+              <ContainedButton fullWidth onClick={() => handleVoteClick(index)}>
+                {context.label}
+              </ContainedButton>
+            ) : (
+              <OutlinedButton fullWidth onClick={() => handleVoteClick(index)}>
+                {context.label}
+              </OutlinedButton>
+            )}
           </Grid>
         );
       })}

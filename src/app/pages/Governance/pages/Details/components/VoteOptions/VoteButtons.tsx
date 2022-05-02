@@ -9,34 +9,31 @@ import { ContainedButton } from "app/components/common/buttons/containedButton";
 import { Web3Selectors } from "app/containers/BlockChain/Web3/selectors";
 import { GovernanceSelectors } from "app/containers/BlockChain/Governance/selectors";
 import { GovernanceActions } from "app/containers/BlockChain/Governance/slice";
-import { Proposal } from "app/containers/BlockChain/Governance/types";
 import { GovernancePageActions } from "app/pages/Governance/slice";
+import { GovernancePageSelectors } from "app/pages/Governance/selectors";
 
-interface Props {
-  proposal: Proposal;
-}
-
-export const VoteButtons: FC<Props> = ({ proposal }) => {
+export const VoteButtons: FC = () => {
   const { t } = useTranslation();
 
   const library = useSelector(Web3Selectors.selectLibrary);
   const isLoadingFor = useSelector(GovernanceSelectors.isVotingFor);
   const receipt = useSelector(GovernanceSelectors.receipt);
   const isGettingReceipt = useSelector(GovernanceSelectors.isLoadingReceipt);
+  const proposal = useSelector(GovernancePageSelectors.selectedProposal);
 
   const dispatch = useDispatch();
 
   const disabled = receipt?.hasVoted || isGettingReceipt || false;
 
   const handleForClick = () => {
-    if (library) {
+    if (library && proposal) {
       dispatch(GovernancePageActions.setIsModalOpen(true));
       dispatch(GovernanceActions.vote({ proposal, voteFor: 0 }));
     }
   };
 
   const handleAgainstClick = () => {
-    if (library) {
+    if (library && proposal) {
       dispatch(GovernancePageActions.setIsModalOpen(true));
       dispatch(GovernanceActions.vote({ proposal, voteFor: 1 }));
     }

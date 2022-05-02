@@ -1,12 +1,9 @@
 import { Route, Switch } from "react-router-dom";
-// import { Proposals } from "./subPages/proposals";
 import { Proposals } from "./pages/Proposals";
 import { GovernanceSubPages } from "./routes";
 import { AppPages } from "app/types";
 import { styled } from "@mui/material";
-// import { ProposalDetails } from "./subPages/details";
 import { Details } from "./pages/Details";
-// import { NewProposalForm } from "./subPages/newProposal";
 import { NewProposal } from "./pages/NewProposal";
 import { Allocations } from "./pages/Allocations";
 

@@ -1,3 +1,4 @@
+import { Proposal } from "app/containers/BlockChain/Governance/types";
 import { GaugeItem, PoolProvider } from "app/containers/PoolsAndGauges/types";
 
 export interface SelectablePoolProvider extends PoolProvider {
@@ -36,6 +37,7 @@ export interface GovernancePageState {
     };
   };
   isModalOpen: boolean;
+  selectedProposal: Proposal | undefined;
 }
 
 export type ContainerState = GovernancePageState;

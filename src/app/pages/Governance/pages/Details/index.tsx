@@ -1,7 +1,7 @@
-import { FC } from "react";
-import { Grid, styled } from "@mui/material";
+import { FC, useEffect } from "react";
+import { Grid, Skeleton, styled } from "@mui/material";
 import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 
 import { translations } from "locales/i18n";
@@ -15,6 +15,11 @@ import { GovernanceSelectors } from "app/containers/BlockChain/Governance/select
 import { Proposal } from "app/containers/BlockChain/Governance/types";
 import { DetailNavigationHead } from "../../components/Navigation/DetailsNavigationHead";
 import { VotingConfirmationModal } from "./components/VotingConfirmationModal";
+import { VoteStatus } from "./components/VoteStatus";
+import { Web3Selectors } from "app/containers/BlockChain/Web3/selectors";
+import { GovernanceActions } from "app/containers/BlockChain/Governance/slice";
+import { GovernancePageActions } from "../../slice";
+import { CssVariables } from "styles/cssVariables/cssVariables";
 
 type TParams = { proposalIndex: string };
 
@@ -23,10 +28,23 @@ export const Details: FC = () => {
 
   const { proposalIndex } = useParams<TParams>();
   const proposals = useSelector(GovernanceSelectors.proposals);
+  const receipt = useSelector(GovernanceSelectors.receipt);
+  const library = useSelector(Web3Selectors.selectLibrary);
+  const isLoading = useSelector(GovernanceSelectors.isLoadingReceipt);
+
+  const dispatch = useDispatch();
 
   const proposal: Proposal | undefined = proposals.find(
     (item) => item.governance_id === proposalIndex
   );
+
+  useEffect(() => {
+    if (library && proposal && proposalIndex) {
+      dispatch(GovernanceActions.getVotingReceipt({ proposal }));
+      dispatch(GovernancePageActions.setSelectedProposal(proposal));
+    }
+    return () => {};
+  }, [library, proposal, proposalIndex]);
 
   if (proposals.length === 0) {
     return <>Loading</>;
@@ -35,6 +53,9 @@ export const Details: FC = () => {
   if (proposal === undefined) {
     return <>proposal not found</>;
   }
+
+  const multiOptional = proposal?.execution_contexts.length > 1;
+  const hasVoted = receipt?.hasVoted;
 
   return (
     <>
@@ -51,7 +72,7 @@ export const Details: FC = () => {
           </Grid>
 
           <Grid item>
-            <ProposalDetails proposal={proposal} />
+            <ProposalDetails />
           </Grid>
 
           <Grid item>
@@ -59,20 +80,21 @@ export const Details: FC = () => {
           </Grid>
 
           <Grid item>
-            <VoteOptions proposal={proposal} />
+            {isLoading ? (
+              <StyledLoader />
+            ) : hasVoted && !multiOptional ? (
+              <VoteStatus />
+            ) : (
+              <VoteOptions />
+            )}
           </Grid>
 
           <Grid item>
-            <DocLinksAndInfo
-              discordLink={proposal?.discussion || ""}
-              documentLink={proposal?.document || ""}
-              startTime={proposal?.start_date || ""}
-              endTime={proposal?.end_date || ""}
-            />
+            <DocLinksAndInfo />
           </Grid>
 
           <Grid item>
-            <ProposalDescription description={proposal?.description} />
+            <ProposalDescription />
           </Grid>
         </Grid>
       </StyledMax1040>
@@ -83,3 +105,7 @@ export const Details: FC = () => {
 const StyledMax1040 = styled(Max1040)(() => ({
   margin: "0 auto",
 }));
+
+const StyledLoader = styled(Skeleton)({
+  backgroundColor: CssVariables.primary,
+});

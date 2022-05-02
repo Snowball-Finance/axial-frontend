@@ -9,6 +9,7 @@ import {
   fitGaugeWeightsEqually,
   fitGaugeWeightsProportionally,
 } from "./utils/fit";
+import { Proposal } from "app/containers/BlockChain/Governance/types";
 
 // The initial state of the GovernancePage container
 export const initialState: ContainerState = {
@@ -37,6 +38,7 @@ export const initialState: ContainerState = {
     },
   },
   isModalOpen: false,
+  selectedProposal: undefined,
 };
 
 const governancePageSlice = createSlice({
@@ -173,6 +175,12 @@ const governancePageSlice = createSlice({
     submitNewProposal: (state, action: PayloadAction<void>) => {},
     setIsModalOpen: (state, action: PayloadAction<boolean>) => {
       state.isModalOpen = action.payload;
+    },
+    setSelectedProposal: (
+      state,
+      action: PayloadAction<Proposal | undefined>
+    ) => {
+      state.selectedProposal = action.payload;
     },
   },
 });

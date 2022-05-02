@@ -70,7 +70,12 @@ export const ExecutionListItem: FC<Props> = ({
 
         <Grid item xs={6}>
           <Text variant="body2" align="right">
-            {contractAddress}
+            {contractAddress.substring(0, 6) +
+              "..." +
+              contractAddress.substring(
+                contractAddress.length - 4,
+                contractAddress.length
+              )}
           </Text>
         </Grid>
       </Grid>

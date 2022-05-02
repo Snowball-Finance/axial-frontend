@@ -23,33 +23,31 @@ export const VoteStatus: FC<Props> = ({ proposal }) => {
 
       <Grid item container justifyContent="space-between" alignItems="center">
         <Grid item>
-          <Text variant="body1">{t(translations.GovernancePage.Status())}</Text>
+          <Text variant="body1">Option 1</Text>
         </Grid>
 
         <Grid item>
-          <Text variant="body2">Active</Text>
-        </Grid>
-      </Grid>
-
-      <Grid item container justifyContent="space-between" alignItems="center">
-        <Grid item>
-          <Text variant="body1">
-            {t(translations.GovernancePage.Proposedby())}
-          </Text>
-        </Grid>
-
-        <Grid item>
-          <Text variant="body2">0x8f24..b56A</Text>
+          <Text variant="body2">1.853.280</Text>
         </Grid>
       </Grid>
 
       <Grid item container justifyContent="space-between" alignItems="center">
         <Grid item>
-          <Text variant="body1">{t(translations.GovernancePage.Date())}</Text>
+          <Text variant="body1">Option 2</Text>
         </Grid>
 
         <Grid item>
-          <Text variant="body2">Feb 23, 2022</Text>
+          <Text variant="body2">853.280</Text>
+        </Grid>
+      </Grid>
+
+      <Grid item container justifyContent="space-between" alignItems="center">
+        <Grid item>
+          <Text variant="body1">Option 3</Text>
+        </Grid>
+
+        <Grid item>
+          <Text variant="body2">3.280</Text>
         </Grid>
       </Grid>
     </Grid>

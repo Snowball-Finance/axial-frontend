@@ -6,42 +6,33 @@ import { useTranslation } from "react-i18next";
 import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { GovernanceSelectors } from "app/containers/BlockChain/Governance/selectors";
-import {
-  Proposal,
-  ProposalState,
-} from "app/containers/BlockChain/Governance/types";
-import { formatNumber } from "common/format";
-import { env } from "environment";
+import { ProposalState } from "app/containers/BlockChain/Governance/types";
+import { GovernancePageSelectors } from "app/pages/Governance/selectors";
 
-interface Props {
-  proposal: Proposal;
-}
-
-export const VotedInfo: FC<Props> = ({ proposal }) => {
+export const VotedInfo: FC = () => {
   const { t } = useTranslation();
 
   const receipt = useSelector(GovernanceSelectors.receipt);
+  const proposal = useSelector(GovernancePageSelectors.selectedProposal);
 
-  const isFor = receipt?.support || false;
+  const supportingOption = receipt?.support;
   const hasVoted = receipt?.hasVoted || false;
   const bg = !hasVoted
-    ? CssVariables.mildYellow
-    : isFor
-    ? CssVariables.green
-    : CssVariables.red;
+    ? CssVariables.secondary
+    : supportingOption
+    ? CssVariables.red
+    : CssVariables.green;
   const longMessage = t(
     translations.GovernancePage.youVotedForAgainstThisProposalWithAmountGovernanceToken(),
     {
-      forAgainst: isFor
-        ? t(translations.GovernancePage.For())
-        : t(translations.GovernancePage.Against()),
-      amount: formatNumber(Number(receipt?.votes) || 0, 2),
-      name: env.GOVERNANCE_TOKEN_NAME,
+      forAgainst: supportingOption
+        ? t(translations.GovernancePage.No())
+        : t(translations.GovernancePage.Yes()),
     }
   );
   const message = hasVoted
     ? longMessage
-    : proposal.proposal_state === ProposalState.Active
+    : proposal?.proposal_state === ProposalState.Active
     ? t(translations.GovernancePage.YouHaventVotedOnThisProposalYet())
     : t(translations.GovernancePage.YouDidntVoteOnThisProposal());
 

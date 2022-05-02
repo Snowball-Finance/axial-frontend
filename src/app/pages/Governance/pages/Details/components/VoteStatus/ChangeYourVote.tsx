@@ -6,29 +6,30 @@ import { translations } from "locales/i18n";
 import { ContainedButton } from "app/components/common/buttons/containedButton";
 import { GovernanceActions } from "app/containers/BlockChain/Governance/slice";
 import { GovernanceSelectors } from "app/containers/BlockChain/Governance/selectors";
-import {
-  Proposal,
-  ProposalState,
-} from "app/containers/BlockChain/Governance/types";
+import { ProposalState } from "app/containers/BlockChain/Governance/types";
+import { GovernancePageSelectors } from "app/pages/Governance/selectors";
+import { GovernancePageActions } from "app/pages/Governance/slice";
 
-interface Props {
-  proposal: Proposal;
-}
-
-export const ChangeYourVote: FC<Props> = ({ proposal }) => {
+export const ChangeYourVote: FC = () => {
   const { t } = useTranslation();
   const receipt = useSelector(GovernanceSelectors.receipt);
   const isVotingFor = useSelector(GovernanceSelectors.isVotingFor);
+  const proposal = useSelector(GovernancePageSelectors.selectedProposal);
 
   const dispatch = useDispatch();
-  const isFor = receipt?.support || false;
+  const supportingOption = receipt?.support;
   const hasVoted = receipt?.hasVoted || false;
 
   const handleSwitchClick = () => {
-    dispatch(GovernanceActions.vote({ proposal, voteFor: isFor ? 0 : 1 }));
+    if (proposal) {
+      dispatch(GovernancePageActions.setIsModalOpen(true));
+      dispatch(
+        GovernanceActions.vote({ proposal, voteFor: supportingOption ? 0 : 1 })
+      );
+    }
   };
 
-  const isActive = proposal.proposal_state === ProposalState.Active;
+  const isActive = proposal?.proposal_state === ProposalState.Active;
 
   if (!(isActive && hasVoted)) {
     return <></>;

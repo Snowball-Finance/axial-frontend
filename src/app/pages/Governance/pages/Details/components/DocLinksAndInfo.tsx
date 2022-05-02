@@ -1,5 +1,6 @@
 import { FC } from "react";
 import { Grid, styled, Typography } from "@mui/material";
+import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 
 import { translations } from "locales/i18n";
@@ -8,21 +9,13 @@ import ClockIcon from "assets/images/iconComponents/clock";
 import DiscordChatIcon from "assets/images/iconComponents/discordChat";
 import DocumentIcon from "assets/images/iconComponents/document";
 import ExternalLinkIcon from "assets/images/iconComponents/externalLink";
+import { GovernancePageSelectors } from "app/pages/Governance/selectors";
+import { dateFormat } from "app/pages/Governance/utils/date";
 
-interface Props {
-  discordLink: string;
-  documentLink: string;
-  startTime: string;
-  endTime: string;
-}
-
-export const DocLinksAndInfo: FC<Props> = ({
-  discordLink,
-  documentLink,
-  startTime,
-  endTime,
-}) => {
+export const DocLinksAndInfo: FC = () => {
   const { t } = useTranslation();
+
+  const proposal = useSelector(GovernancePageSelectors.selectedProposal);
 
   return (
     <StyledPoolCard>
@@ -39,7 +32,11 @@ export const DocLinksAndInfo: FC<Props> = ({
           </Grid>
 
           <Grid item>
-            <Anchor target="_blank" rel="noreferrer" href={discordLink}>
+            <Anchor
+              target="_blank"
+              rel="noreferrer"
+              href={proposal?.discussion || ""}
+            >
               <ExternalLinkIcon color={CssVariables.primary} />
             </Anchor>
           </Grid>
@@ -57,7 +54,7 @@ export const DocLinksAndInfo: FC<Props> = ({
           </Grid>
 
           <Grid item>
-            <Text variant="body2">{startTime}</Text>
+            <Text variant="body2">{dateFormat(proposal?.start_date)}</Text>
           </Grid>
         </Grid>
 
@@ -73,7 +70,11 @@ export const DocLinksAndInfo: FC<Props> = ({
           </Grid>
 
           <Grid item>
-            <Anchor target="_blank" rel="noreferrer" href={documentLink}>
+            <Anchor
+              target="_blank"
+              rel="noreferrer"
+              href={proposal?.document || ""}
+            >
               <ExternalLinkIcon color={CssVariables.primary} />
             </Anchor>
           </Grid>
@@ -91,7 +92,7 @@ export const DocLinksAndInfo: FC<Props> = ({
           </Grid>
 
           <Grid item>
-            <Text variant="body2">{endTime}</Text>
+            <Text variant="body2">{dateFormat(proposal?.end_date)}</Text>
           </Grid>
         </Grid>
       </Grid>
