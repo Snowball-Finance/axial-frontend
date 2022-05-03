@@ -43,8 +43,8 @@ const swapAddresses: {
   };
 } = {
   USDC_AM3D: {
-    Avalanche: "0xba5f105A3E3D7C0eAa36AAa1e3BE11D77F1A6162",
-    Fuji: "0xba5f105A3E3D7C0eAa36AAa1e3BE11D77F1A6162",
+    Avalanche: "0x26694e4047eA77cC96341f0aC491773aC5469d72",
+    Fuji: "0x26694e4047eA77cC96341f0aC491773aC5469d72",
   },
 };
 

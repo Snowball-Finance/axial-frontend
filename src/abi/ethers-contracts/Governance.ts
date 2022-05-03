@@ -115,6 +115,7 @@ export interface GovernanceInterface extends utils.Interface {
     "constructProposalMetadata(string,string,uint256,bool)": FunctionFragment;
     "execute(uint256)": FunctionFragment;
     "executionDelay()": FunctionFragment;
+    "getProposalVotes(uint256)": FunctionFragment;
     "getReceipt(uint256,address)": FunctionFragment;
     "lastProposalByAddress(address)": FunctionFragment;
     "minimumVotingPeriod()": FunctionFragment;
@@ -187,6 +188,10 @@ export interface GovernanceInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "executionDelay",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getProposalVotes",
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "getReceipt",
@@ -306,6 +311,10 @@ export interface GovernanceInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "execute", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "executionDelay",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getProposalVotes",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "getReceipt", data: BytesLike): Result;
@@ -513,6 +522,11 @@ export interface Governance extends BaseContract {
 
     executionDelay(overrides?: CallOverrides): Promise<[BigNumber]>;
 
+    getProposalVotes(
+      proposalId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber[]]>;
+
     getReceipt(
       _proposalId: BigNumberish,
       _voter: string,
@@ -665,6 +679,11 @@ export interface Governance extends BaseContract {
 
   executionDelay(overrides?: CallOverrides): Promise<BigNumber>;
 
+  getProposalVotes(
+    proposalId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber[]>;
+
   getReceipt(
     _proposalId: BigNumberish,
     _voter: string,
@@ -813,6 +832,11 @@ export interface Governance extends BaseContract {
     ): Promise<string[]>;
 
     executionDelay(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getProposalVotes(
+      proposalId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber[]>;
 
     getReceipt(
       _proposalId: BigNumberish,
@@ -1035,6 +1059,11 @@ export interface Governance extends BaseContract {
 
     executionDelay(overrides?: CallOverrides): Promise<BigNumber>;
 
+    getProposalVotes(
+      proposalId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     getReceipt(
       _proposalId: BigNumberish,
       _voter: string,
@@ -1173,6 +1202,11 @@ export interface Governance extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     executionDelay(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    getProposalVotes(
+      proposalId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     getReceipt(
       _proposalId: BigNumberish,

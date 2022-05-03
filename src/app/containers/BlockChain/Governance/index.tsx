@@ -30,7 +30,8 @@ export const Governance = ({
       process.env.REACT_APP_GOVERNANCE_TOKEN_CONTRACT_ADDRESS,
     GOVERNANCE_TOKEN_LOGO_ADDRESS:
       process.env.REACT_APP_GOVERNANCE_TOKEN_LOGO_ADDRESS,
-    VOTING_CONTRACT_ADDRESS: process.env.REACT_APP_VOTING_CONTRACT_ADDRESS,
+    GOVERNANCE_CONTRACT_ADDRESS:
+      process.env.REACT_APP_GOVERNANCE_CONTRACT_ADDRESS,
     IPFS_API_URL: process.env.REACT_APP_IPFS_API_URL,
   };
 
@@ -47,7 +48,7 @@ export const Governance = ({
   const governanceTokenContract = useSelector(
     GovernanceSelectors.governanceTokenContract
   );
-  const library = useSelector(Web3Selectors.selectLibrary);
+  const networkLibrary = useSelector(Web3Selectors.selectNetworkLibrary);
   const proposals = useSelector(GovernanceSelectors.proposals);
   const syncedProposalsWithBlockChain = useSelector(
     GovernanceSelectors.syncedProposalsWithBlockChain
@@ -61,23 +62,23 @@ export const Governance = ({
   }, [governanceTokenContract]);
 
   useEffect(() => {
-    dispatch(GovernanceActions.setGovernanceABI(governanceABI));
-    dispatch(GovernanceActions.setGovernanceTokenABI(tokenABI));
-    dispatch(GovernanceActions.getProposals({}));
-    dispatch(GovernanceActions.getProposals({}));
+    if (networkLibrary) {
+      dispatch(GovernanceActions.setGovernanceABI(governanceABI));
+      dispatch(GovernanceActions.setGovernanceTokenABI(tokenABI));
+      dispatch(GovernanceActions.getProposals({}));
+    }
     return () => {};
-  }, []);
+  }, [networkLibrary]);
 
   useEffect(() => {
     if (
-      library &&
+      networkLibrary &&
       proposals &&
-      proposals.length &&
       syncedProposalsWithBlockChain === false
     ) {
       dispatch(GovernanceActions.syncProposalsWithBlockchain());
     }
-  }, [library, proposals, syncedProposalsWithBlockChain]);
+  }, [networkLibrary, proposals, syncedProposalsWithBlockChain]);
 
   return (
     <>

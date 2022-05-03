@@ -1,16 +1,31 @@
 // import { take, call, put, select, takeLatest } from 'redux-saga/effects';
 // import { actions } from './slice';
 
+import { GaugeProxy } from "abi/ethers-contracts";
 import { GovernanceActions } from "app/containers/BlockChain/Governance/slice";
 import { Web3Domains } from "app/containers/BlockChain/Web3/selectors";
-import { selectGaugeContractDomain } from "app/containers/PoolsAndGauges/selectors";
+import { selectGaugeProxyABIDomain } from "app/containers/PoolsAndGauges/selectors";
 import { PoolsAndGaugesActions } from "app/containers/PoolsAndGauges/slice";
-import { IS_DEV } from "environment";
+import { env, IS_DEV } from "environment";
+import { Contract } from "ethers";
 import { toast } from "react-toastify";
 import { call, put, select, takeLatest } from "redux-saga/effects";
 import { GovernancePageDomains, GovernancePageSelectors } from "./selectors";
 import { GovernancePageActions } from "./slice";
 import { isPositiveNumber } from "./utils/isPositiveNumber";
+
+export function* getGaugeProxyContract() {
+  const library = yield select(Web3Domains.selectNetworkLibraryDomain);
+  const GAUGE_PROXY_ABI = yield select(selectGaugeProxyABIDomain);
+  const gaugeProxyContract = new Contract(
+    //|| '' is added because the error of not existing env var is handled in index file of this module
+    env.GAUGE_PROXY_ADDRESS || "",
+    GAUGE_PROXY_ABI,
+    library
+  ) as GaugeProxy;
+
+  return gaugeProxyContract;
+}
 
 export function* voteForFarms() {
   yield put(GovernancePageActions.setIsVotingForFarms(true));
@@ -18,7 +33,7 @@ export function* voteForFarms() {
     const selectedPairs = yield select(
       GovernancePageSelectors.selectedVoteAllocationPair
     );
-    const gaugeProxyVoteContract = yield select(selectGaugeContractDomain);
+    const gaugeProxyContract = yield call(getGaugeProxyContract);
     const library = yield select(Web3Domains.selectLibraryDomain);
     //make them weight proportional if they are not
     let pairsObject = selectedPairs;
@@ -56,11 +71,11 @@ export function* voteForFarms() {
     // const adjustedWeightList = adjustValues(weightsList)
     const adjustedWeightList = weightsList.map((item) => Math.round(item));
     const gasLimit = yield call(
-      gaugeProxyVoteContract.estimateGas.vote,
+      gaugeProxyContract.estimateGas.vote,
       tokenAddressList,
       adjustedWeightList
     );
-    const signer = gaugeProxyVoteContract.connect(library.getSigner());
+    const signer = gaugeProxyContract.connect(library.getSigner());
     const tokenVote = yield call(
       signer.vote,
       tokenAddressList,

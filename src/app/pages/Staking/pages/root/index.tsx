@@ -44,6 +44,7 @@ const InfoValue = styled("span")({
 const InfoWrapper = styled("div")({
   display: "flex",
   justifyContent: "space-between",
+  flexDirection: "column",
   marginBottom: "8px",
 });
 
@@ -95,56 +96,76 @@ export const StakingRoot = () => {
   return (
     <Wrapper>
       <StyledSnowPaper>
-        <IconWrapper>
-          <StyledIcon src={sAxialIcon} />
-          <TokenTitle>sAxial</TokenTitle>
-        </IconWrapper>
-        <Desc>{t(translations.Staking.StakingRootsaxialDescs())}</Desc>
-        <InfosWrapper>
-          <Info title="sAXIAL" value={lockedTokenAmount || "0.000"} />
-          <Info title="AXIAL Unlocked" value={unlockedAxialAmount || "0.000"} />
-          {lockEndDate && <Info title="Lock End" value={lockEndDate} />}
-        </InfosWrapper>
-        <ContainedButton onClick={goToSAxial}>Lock</ContainedButton>
-        {Number(unlockedAxialAmount || 0) > 0 && (
-          <ContainedButton
-            onClick={withdrawSAxial}
-            loading={isWithdrawingGovernanceToken}
-          >
-            Withdraw
-          </ContainedButton>
-        )}
+        <TitleWrapper>
+          <IconWrapper>
+            <StyledIcon src={sAxialIcon} />
+            <TokenTitle>sAXIAL</TokenTitle>
+          </IconWrapper>
+          <Desc>{t(translations.Staking.StakingRootsaxialDescs())}</Desc>
+        </TitleWrapper>
+        <InfoActionsWrapper>
+          <InfosWrapper>
+            <Info title="sAXIAL" value={lockedTokenAmount || "0.000"} />
+            <Info
+              title="AXIAL Unlocked"
+              value={unlockedAxialAmount || "0.000"}
+            />
+            {lockEndDate && <Info title="Lock End" value={lockEndDate} />}
+          </InfosWrapper>
+          <ContainedButton onClick={goToSAxial}>Lock</ContainedButton>
+          {Number(unlockedAxialAmount || 0) > 0 && (
+            <ContainedButton
+              onClick={withdrawSAxial}
+              loading={isWithdrawingGovernanceToken}
+            >
+              Withdraw
+            </ContainedButton>
+          )}
+        </InfoActionsWrapper>
       </StyledSnowPaper>
       <StyledSnowPaper>
-        <IconWrapper>
-          <StyledIcon src={veAxialIcon} />
-          <TokenTitle>veAxial</TokenTitle>
-        </IconWrapper>
-        <Desc>{t(translations.Staking.StakingRootveAxialDescs())}</Desc>
-        <InfosWrapper>
-          <Info title="veAxial" value={veAxialBalance || "0.000"} />
-          <Info
-            title="AXIAL Staked"
-            value={stakedAxialIntoVeAxial || "0.000"}
-          />
-        </InfosWrapper>
-        <ContainedButton onClick={goToVeAxial}>Deposit</ContainedButton>
-        {Number(veAxialBalance || 0) > 0 && (
-          <ContainedButton
-            onClick={withdrawVeAxial}
-            loading={isWithdrawingAccruingToken}
-          >
-            Withdraw
-          </ContainedButton>
-        )}
+        <TitleWrapper>
+          <IconWrapper>
+            <StyledIcon src={veAxialIcon} />
+            <TokenTitle>veAXIAL</TokenTitle>
+          </IconWrapper>
+          <Desc>{t(translations.Staking.StakingRootveAxialDescs())}</Desc>
+        </TitleWrapper>
+
+        <InfoActionsWrapper>
+          <InfosWrapper>
+            <Info title="veAxial" value={veAxialBalance || "0.000"} />
+            <Info
+              title="AXIAL Staked"
+              value={stakedAxialIntoVeAxial || "0.000"}
+            />
+          </InfosWrapper>
+          <ContainedButton onClick={goToVeAxial}>Stake</ContainedButton>
+          {Number(veAxialBalance || 0) > 0 && (
+            <ContainedButton
+              onClick={withdrawVeAxial}
+              loading={isWithdrawingAccruingToken}
+            >
+              Withdraw
+            </ContainedButton>
+          )}
+        </InfoActionsWrapper>
       </StyledSnowPaper>
     </Wrapper>
   );
 };
 
+const InfoActionsWrapper = styled("div")({
+  display: "flex",
+  flexDirection: "row",
+  justifyContent: "space-between",
+  alignItems: "center",
+});
+
 const InfosWrapper = styled("div")({
   display: "flex",
-  flexDirection: "column",
+  flexDirection: "row",
+  gap: "24px",
 });
 
 const TokenTitle = styled("span")({
@@ -153,10 +174,17 @@ const TokenTitle = styled("span")({
   color: CssVariables.commonTextColor,
 });
 
+const TitleWrapper = styled("div")({
+  display: "flex",
+  alignItems: "center",
+  order: "0",
+  alignSelf: "stretch",
+  flexGrow: "0",
+  gap: "24px",
+});
+
 const Desc = styled("span")({
-  margin: "auto",
   textAlign: "center",
-  maxWidth: "280px",
   fontFamily: FontFamilies.IBMPlexSans,
   fontSize: "14px",
   fontWeight: 700,
@@ -164,9 +192,8 @@ const Desc = styled("span")({
 });
 
 const IconWrapper = styled("div")({
-  margin: "auto",
   display: "flex",
-  gap: "12px",
+  gap: "8px",
 });
 
 const StyledIcon = styled("img")({
@@ -187,10 +214,10 @@ const Wrapper = styled(Max1040)({
 });
 
 const StyledSnowPaper = styled(SnowPaper)({
+  background: CssVariables.poolCardBackground,
   padding: "24px 32px",
   width: "100%",
   position: "relative",
-  maxWidth: "490px",
   display: "flex",
   flexDirection: "column",
   gap: "12px",

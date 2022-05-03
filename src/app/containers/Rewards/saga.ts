@@ -133,8 +133,10 @@ export function* getMasterChefBalances() {
   const library = yield select(Web3Domains.selectLibraryDomain);
   try {
     yield put(RewardsActions.setIsGettingMasterChefBalances(true));
-    const list = Object.values(tokens).filter(token=>token.isLPToken);
-    const tokensList=list.sort((a,b)=>(a.masterchefId||0)-(b.masterchefId||0));
+    const list = Object.values(tokens).filter((token) => token.isLPToken);
+    const tokensList = list.sort(
+      (a, b) => (a.masterchefId || 0) - (b.masterchefId || 0)
+    );
     const masterchefBalancesCall: ContractCall[] = [];
     const tokenAddressList: string[] = [];
     tokensList.forEach((token) => {
