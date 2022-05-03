@@ -43,10 +43,6 @@ const StyledContainer = styled(Grid)({
 
 const PoolInfoTitleText = styled(Typography)({
   color: CssVariables.white,
-
-  [mobile]: {
-    fontSize: "14px",
-  },
 });
 
 const PoolTokenImage = styled("img")({

@@ -81,6 +81,10 @@ export const ClaimRewardsModal: FC = () => {
 
 const StyledContainer = styled(Box)({
   width: 550,
+
+  [mobile]: {
+    width: "100%",
+  },
 });
 
 const IconImage = styled("img")({
