@@ -30,7 +30,7 @@ export const Period: FC = () => {
 
   return (
     <Grid container alignItems="center">
-      <Grid item xs={6}>
+      <Grid item xs={12} xl={6}>
         <Grid container alignItems="center" spacing={1}>
           <Grid item>
             <ClockIcon color={CssVariables.commonTextColor} />
@@ -48,7 +48,7 @@ export const Period: FC = () => {
         </Grid>
       </Grid>
 
-      <Grid item xs={6}>
+      <Grid item xs={12} xl={6}>
         <InputField
           margin="dense"
           size="small"

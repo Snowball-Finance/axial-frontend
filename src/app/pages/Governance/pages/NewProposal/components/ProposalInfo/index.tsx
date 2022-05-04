@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Grid } from "@mui/material";
+import { Grid, styled } from "@mui/material";
 
 import { PrimaryCardWrapper } from "app/components/wrappers/PrimaryCard";
 import { Title } from "./Title";
@@ -8,6 +8,7 @@ import { Execution } from "../Execution";
 import { ExecutionList } from "../ExecutionList";
 import { SubmitButton } from "../SubmitButton";
 import { Message } from "../Message";
+import { mobile } from "styles/media";
 
 export const ProposalInfo: FC = () => {
   return (
@@ -30,17 +31,31 @@ export const ProposalInfo: FC = () => {
         </Grid>
 
         <Grid item>
-          <Grid container spacing={2} alignItems="center">
-            <Grid item>
+          <StyledContainer container spacing={2}>
+            <StyledFullContainer item>
               <SubmitButton />
-            </Grid>
+            </StyledFullContainer>
 
-            <Grid item>
+            <StyledFullContainer item>
               <Message />
-            </Grid>
-          </Grid>
+            </StyledFullContainer>
+          </StyledContainer>
         </Grid>
       </Grid>
     </PrimaryCardWrapper>
   );
 };
+
+const StyledContainer = styled(Grid)(() => ({
+  alignItems: "center",
+
+  [mobile]: {
+    flexDirection: "column",
+  },
+}));
+
+const StyledFullContainer = styled(Grid)(() => ({
+  [mobile]: {
+    width: "100%",
+  },
+}));

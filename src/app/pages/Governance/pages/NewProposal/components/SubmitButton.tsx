@@ -7,6 +7,8 @@ import { GovernanceSelectors } from "app/containers/BlockChain/Governance/select
 import { ContainedButton } from "app/components/common/buttons/containedButton";
 import { GovernancePageSelectors } from "app/pages/Governance/selectors";
 import { GovernancePageActions } from "app/pages/Governance/slice";
+import { styled } from "@mui/material";
+import { mobile } from "styles/media";
 
 export const SubmitButton: FC = () => {
   const { t } = useTranslation();
@@ -23,13 +25,19 @@ export const SubmitButton: FC = () => {
   const disabled = !title || !votingPeriod || !description;
 
   return (
-    <ContainedButton
+    <StyledContainedButton
       loading={isLoading}
       disabled={disabled}
       height={48}
       onClick={handleSubmitButton}
     >
       {t(translations.GovernancePage.SubmitProposal())}
-    </ContainedButton>
+    </StyledContainedButton>
   );
 };
+
+const StyledContainedButton = styled(ContainedButton)(() => ({
+  [mobile]: {
+    width: "100%",
+  },
+}));
