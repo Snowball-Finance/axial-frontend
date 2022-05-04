@@ -8,6 +8,7 @@ import { CssVariables } from "styles/cssVariables/cssVariables";
 import { StakingSelectors } from "app/containers/BlockChain/Governance/Staking/selectors";
 import { BNToFractionString } from "common/format";
 import { StakingPageSelectors } from "app/pages/Staking/selectors";
+import { mobile } from "styles/media";
 
 export const SAxialInfo: FC = () => {
   const { t } = useTranslation();
@@ -21,12 +22,7 @@ export const SAxialInfo: FC = () => {
   const lockEndDate = useSelector(StakingPageSelectors.lockEndDate);
 
   return (
-    <Grid
-      container
-      justifyContent="space-between"
-      alignItems="center"
-      spacing={2}
-    >
+    <StyledContainer container spacing={2}>
       <Grid item>
         <Text variant="body1">{t(translations.Staking.Info.sAXIAL())}</Text>
         <Text variant="body2">
@@ -47,9 +43,21 @@ export const SAxialInfo: FC = () => {
         <Text variant="body1">{t(translations.Staking.Info.LockEnd())}</Text>
         <Text variant="body2">{lockEndDate || "-"}</Text>
       </Grid>
-    </Grid>
+    </StyledContainer>
   );
 };
+
+const StyledContainer = styled(Grid)({
+  flexDirection: "row",
+  justifyContent: "space-between",
+  alignItems: "center",
+
+  [mobile]: {
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+  },
+});
 
 const Text = styled(Typography)({
   color: CssVariables.white,

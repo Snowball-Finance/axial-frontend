@@ -8,6 +8,7 @@ import veAxialIcon from "assets/icons/veaxial.png";
 import { TokenWithTitle } from "../TokenWithTitle";
 import { VeAxialInfo } from "./Info";
 import { Actions } from "./Actions";
+import { mobile } from "styles/media";
 
 export const VeAxialItem: FC = () => {
   const { t } = useTranslation();
@@ -16,7 +17,7 @@ export const VeAxialItem: FC = () => {
     <StyledPoolCard>
       <Grid container spacing={4}>
         <Grid item xs={12}>
-          <Grid container justifyContent="space-between" alignItems="center">
+          <StyledContainer container>
             <Grid item>
               <TokenWithTitle src={veAxialIcon} title="veAXIAL" />
             </Grid>
@@ -26,19 +27,19 @@ export const VeAxialItem: FC = () => {
                 {t(translations.Staking.StakeAxialDescription())}
               </Text>
             </Grid>
-          </Grid>
+          </StyledContainer>
         </Grid>
 
         <Grid item xs={12}>
-          <Grid container justifyContent="space-between" alignItems="center">
+          <StyledLowerContainer container>
             <Grid item>
               <VeAxialInfo />
             </Grid>
 
-            <Grid item>
+            <StyledFullWidthContainer item>
               <Actions />
-            </Grid>
-          </Grid>
+            </StyledFullWidthContainer>
+          </StyledLowerContainer>
         </Grid>
       </Grid>
     </StyledPoolCard>
@@ -50,8 +51,47 @@ const StyledPoolCard = styled("div")({
   border: `4px solid ${CssVariables.cardBorder}`,
   borderRadius: "20px",
   padding: "26px 36px",
+
+  [mobile]: {
+    padding: "15px 15px",
+  },
+});
+
+const StyledContainer = styled(Grid)({
+  justifyContent: "space-between",
+  alignItems: "center",
+  flexDirection: "row",
+
+  [mobile]: {
+    justifyContent: "center",
+    flexDirection: "column",
+    rowGap: 10,
+  },
+});
+
+const StyledLowerContainer = styled(Grid)({
+  justifyContent: "space-between",
+  alignItems: "center",
+  flexDirection: "row",
+
+  [mobile]: {
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    flexDirection: "column",
+    rowGap: 20,
+  },
+});
+
+const StyledFullWidthContainer = styled(Grid)({
+  [mobile]: {
+    width: "100%",
+  },
 });
 
 const Text = styled(Typography)({
   color: CssVariables.white,
+
+  [mobile]: {
+    textAlign: "center",
+  },
 });

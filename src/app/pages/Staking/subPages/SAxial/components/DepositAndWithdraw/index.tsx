@@ -9,6 +9,7 @@ import { StakingPageSelectors } from "app/pages/Staking/selectors";
 import { Deposit } from "app/pages/Staking/subPages/SAxial/components/DepositAndWithdraw/components/Deposit";
 import { Withdraw } from "app/pages/Staking/subPages/SAxial/components/DepositAndWithdraw/components/Withdraw";
 import { StakingPageActions } from "app/pages/Staking/slice";
+import { mobile } from "styles/media";
 
 const tabs = (t: any): { title: string; value: DepositAndWithdrawTab }[] => [
   {
@@ -56,4 +57,8 @@ const StyledPoolCard = styled("div")({
   border: `4px solid ${CssVariables.cardBorder}`,
   borderRadius: "20px",
   padding: "26px 36px",
+
+  [mobile]: {
+    padding: "15px 15px"
+  }
 });

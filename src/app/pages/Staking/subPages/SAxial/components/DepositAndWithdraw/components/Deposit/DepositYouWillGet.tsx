@@ -7,6 +7,7 @@ import { CssVariables } from "styles/cssVariables/cssVariables";
 import { StakingPageSelectors } from "app/pages/Staking/selectors";
 import { env } from "environment";
 import { Description } from "app/pages/Staking/components/Description";
+import { mobile } from "styles/media";
 
 export const DepositYouWillGet = () => {
   const { t } = useTranslation();
@@ -40,4 +41,8 @@ export const DepositYouWillGet = () => {
 
 const Text = styled(Typography)({
   color: CssVariables.white,
+
+  [mobile]: {
+    textAlign: "center"
+  }
 });

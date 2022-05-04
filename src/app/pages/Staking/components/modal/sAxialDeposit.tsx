@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Grid, Typography, Box, CircularProgress } from "@mui/material";
+import { Grid, Typography, Box, CircularProgress, styled } from "@mui/material";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import {
@@ -12,6 +12,7 @@ import { CardWrapper } from "app/components/wrappers/Card";
 import { globalSelectors } from "app/appSelectors";
 import { StakingSelectors } from "app/containers/BlockChain/Governance/Staking/selectors";
 import { env } from "environment";
+import { mobile } from "styles/media";
 
 export const SAxialDepositModal: FC = () => {
   const { t } = useTranslation();
@@ -42,37 +43,48 @@ export const SAxialDepositModal: FC = () => {
   return (
     <Box mt={2}>
       <CardWrapper>
-        <Grid container item xs={12} spacing={2} alignItems="center">
-          <Grid item>{renderIcon(env.MAIN_TOKEN_NAME)}</Grid>
+        <StyledContainer container spacing={1}>
+          <Grid container item spacing={2} alignItems="center">
+            <Grid item>{renderIcon(env.MAIN_TOKEN_NAME)}</Grid>
 
-          <Grid item>
-            <Typography variant="body2">
-              {t(translations.Common.Approval())} AXIAL
-            </Typography>
+            <Grid item>
+              <Typography variant="body2">
+                {t(translations.Common.Approval())} AXIAL
+              </Typography>
+            </Grid>
           </Grid>
-        </Grid>
-        <Grid container item xs={12} spacing={2} alignItems="center">
-          <Grid item>{renderDepositIcon()}</Grid>
 
-          <Grid item>
-            <Typography variant="body2">
-              {t(translations.Common.DepositingTokens())}
-            </Typography>
-          </Grid>
-        </Grid>
+          <Grid container item spacing={2} alignItems="center">
+            <Grid item>{renderDepositIcon()}</Grid>
 
-        <Grid container spacing={1}>
-          <Grid
-            container
-            item
-            xs={12}
-            alignItems="center"
-            justifyContent="center"
-          >
-            <Typography variant="body2">Steps {stepsCount}/2</Typography>
+            <Grid item>
+              <Typography variant="body2">
+                {t(translations.Common.DepositingTokens())}
+              </Typography>
+            </Grid>
           </Grid>
-        </Grid>
+
+          <Grid container item>
+            <Grid
+              container
+              item
+              xs={12}
+              alignItems="center"
+              justifyContent="center"
+            >
+              <Typography variant="body2">Steps {stepsCount}/2</Typography>
+            </Grid>
+          </Grid>
+        </StyledContainer>
       </CardWrapper>
     </Box>
   );
 };
+
+const StyledContainer = styled(Grid)({
+  flexDirection: "column",
+
+  [mobile]: {
+    width: "100%",
+  },
+});

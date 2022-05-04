@@ -7,6 +7,7 @@ import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { BNToFractionString } from "common/format";
 import { GovernanceSelectors } from "app/containers/BlockChain/Governance/selectors";
+import { mobile } from "styles/media";
 
 export const Info: FC = () => {
   const { t } = useTranslation();
@@ -19,12 +20,7 @@ export const Info: FC = () => {
 
   return (
     <StyledPoolCard>
-      <Grid
-        container
-        justifyContent="space-between"
-        alignItems="center"
-        spacing={2}
-      >
+      <StyledContainer container spacing={2}>
         <Grid item>
           <Title variant="h5">
             {t(translations.Staking.Info.AXIALStaked())}
@@ -38,7 +34,7 @@ export const Info: FC = () => {
           </Text>
           <Text variant="body2">{balance?.toString() || "0"}</Text>
         </Grid>
-      </Grid>
+      </StyledContainer>
     </StyledPoolCard>
   );
 };
@@ -48,6 +44,22 @@ const StyledPoolCard = styled("div")({
   border: `4px solid ${CssVariables.cardBorder}`,
   borderRadius: "20px",
   padding: "26px 36px",
+
+  [mobile]: {
+    padding: "15px 15px",
+  },
+});
+
+const StyledContainer = styled(Grid)({
+  flexDirection: "row",
+  justifyContent: "space-between",
+  alignItems: "center",
+
+  [mobile]: {
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+  },
 });
 
 const Text = styled(Typography)({

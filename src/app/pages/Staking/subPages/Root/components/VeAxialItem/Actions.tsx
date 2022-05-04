@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Grid } from "@mui/material";
+import { Grid, styled } from "@mui/material";
 import { push } from "connected-react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
@@ -12,6 +12,7 @@ import { StakingSelectors } from "app/containers/BlockChain/Governance/Staking/s
 import { BNToFractionString } from "common/format";
 import { GovernanceSelectors } from "app/containers/BlockChain/Governance/selectors";
 import { OutlinedButton } from "app/components/common/buttons/outlinedButton";
+import { mobile } from "styles/media";
 
 export const Actions: FC = () => {
   const { t } = useTranslation();
@@ -35,23 +36,43 @@ export const Actions: FC = () => {
   const veAxialBalance = BNToFractionString(rawVeAxialBalance);
 
   return (
-    <Grid container spacing={2}>
+    <StyledContainer container spacing={2}>
       <Grid item>
-        <ContainedButton onClick={goToVeAxial}>
+        <StyledContainedButton onClick={goToVeAxial}>
           {t(translations.Staking.Stake())}
-        </ContainedButton>
+        </StyledContainedButton>
       </Grid>
 
       {Number(veAxialBalance || 0) > 0 && (
         <Grid item>
-          <OutlinedButton
+          <StyledOutlinedButton
             onClick={withdrawVeAxial}
             loading={isWithdrawingAccruingToken}
           >
             {t(translations.Staking.Withdraw())}
-          </OutlinedButton>
+          </StyledOutlinedButton>
         </Grid>
       )}
-    </Grid>
+    </StyledContainer>
   );
 };
+
+const StyledContainer = styled(Grid)({
+  flexDirection: "row",
+
+  [mobile]: {
+    flexDirection: "column",
+  },
+});
+
+const StyledContainedButton = styled(ContainedButton)({
+  [mobile]: {
+    width: "100%",
+  },
+});
+
+const StyledOutlinedButton = styled(OutlinedButton)({
+  [mobile]: {
+    width: "100%",
+  },
+});

@@ -89,6 +89,10 @@ const DisabledSlider = styled("div")<{ width: string }>(({ width }) => ({
   marginTop: "14px",
   backgroundColor: CssVariables.primaryDisabled,
   borderRadius: 5,
+
+  [mobile]: {
+    marginTop: "20px",
+  },
 }));
 
 const Wrapper = styled(Box)({

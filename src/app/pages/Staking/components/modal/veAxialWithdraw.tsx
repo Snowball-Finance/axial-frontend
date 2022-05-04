@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Grid, Typography, Box, CircularProgress } from "@mui/material";
+import { Grid, Typography, Box, CircularProgress, styled } from "@mui/material";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { CircleOutlined } from "@mui/icons-material";
@@ -7,6 +7,7 @@ import { CircleOutlined } from "@mui/icons-material";
 import { translations } from "locales/i18n";
 import { CardWrapper } from "app/components/wrappers/Card";
 import { StakingSelectors } from "app/containers/BlockChain/Governance/Staking/selectors";
+import { mobile } from "styles/media";
 
 export const VeAxialWithdrawModal: FC = () => {
   const { t } = useTranslation();
@@ -25,28 +26,38 @@ export const VeAxialWithdrawModal: FC = () => {
   return (
     <Box mt={2}>
       <CardWrapper>
-        <Grid container item xs={12} spacing={2} alignItems="center">
-          <Grid item>{renderWithdrawIcon()}</Grid>
+        <StyledContainer container spacing={1}>
+          <Grid container item spacing={2} alignItems="center">
+            <Grid item>{renderWithdrawIcon()}</Grid>
 
-          <Grid item>
-            <Typography variant="body2">
-              {t(translations.Common.WithdrawingTokens())}
-            </Typography>
+            <Grid item>
+              <Typography variant="body2">
+                {t(translations.Common.WithdrawingTokens())}
+              </Typography>
+            </Grid>
           </Grid>
-        </Grid>
 
-        <Grid container spacing={1}>
-          <Grid
-            container
-            item
-            xs={12}
-            alignItems="center"
-            justifyContent="center"
-          >
-            <Typography variant="body2">Steps 1/1</Typography>
+          <Grid container>
+            <Grid
+              container
+              item
+              xs={12}
+              alignItems="center"
+              justifyContent="center"
+            >
+              <Typography variant="body2">Steps 1/1</Typography>
+            </Grid>
           </Grid>
-        </Grid>
+        </StyledContainer>
       </CardWrapper>
     </Box>
   );
 };
+
+const StyledContainer = styled(Grid)({
+  flexDirection: "column",
+
+  [mobile]: {
+    width: "100%",
+  },
+});

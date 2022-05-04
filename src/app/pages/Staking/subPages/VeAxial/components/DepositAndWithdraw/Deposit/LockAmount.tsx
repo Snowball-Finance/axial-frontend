@@ -46,8 +46,8 @@ export const LockAmount = () => {
 
       <Grid item xs={12}>
         <CardWrapper>
-          <Grid container justifyContent="space-between" alignItems="center">
-            <Grid item>
+          <StyledInputContainer container>
+            <StyledChildInputContainer item>
               <Grid container direction="column">
                 <Grid item>
                   <AmountInput
@@ -61,9 +61,9 @@ export const LockAmount = () => {
                   <EquivalentLockAmountUSD />
                 </Grid>
               </Grid>
-            </Grid>
+            </StyledChildInputContainer>
 
-            <Grid item>
+            <StyledChildInputContainer item>
               <TokenIconContainer>
                 <Grid
                   container
@@ -83,8 +83,8 @@ export const LockAmount = () => {
                   </Grid>
                 </Grid>
               </TokenIconContainer>
-            </Grid>
-          </Grid>
+            </StyledChildInputContainer>
+          </StyledInputContainer>
         </CardWrapper>
       </Grid>
 
@@ -94,6 +94,21 @@ export const LockAmount = () => {
     </Grid>
   );
 };
+
+const StyledInputContainer = styled(Grid)({
+  justifyContent: "space-between",
+  alignItems: "center",
+
+  [mobile]: {
+    flexDirection: "row",
+  },
+});
+
+const StyledChildInputContainer = styled(Grid)({
+  [mobile]: {
+    width: "50%",
+  },
+});
 
 const TokenIconContainer = styled("div")({
   border: `2px solid ${CssVariables.cardBorder}`,
@@ -112,6 +127,7 @@ const TokenIcon = styled("img")({
 
   [mobile]: {
     width: "25px",
+    height: "25px",
   },
 });
 
@@ -127,7 +143,6 @@ const AmountInput = styled("input")({
   maxWidth: "calc(100% - 125px )",
 
   [mobile]: {
-    width: "100%",
     padding: 0,
   },
 });
