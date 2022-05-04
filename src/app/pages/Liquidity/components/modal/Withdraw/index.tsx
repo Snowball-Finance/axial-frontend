@@ -81,10 +81,10 @@ export const WithdrawModal: FC = () => {
 
       <Grid item>
         <Grid container justifyContent="center" alignItems="center" spacing={2}>
-          <Grid item xs={6}>
+          <Grid item xs={12} xl={6}>
             <WithdrawApproveButton />
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={12} xl={6}>
             <WithdrawButton />
           </Grid>
         </Grid>

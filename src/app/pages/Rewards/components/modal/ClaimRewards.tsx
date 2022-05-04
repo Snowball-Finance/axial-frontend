@@ -93,6 +93,7 @@ const IconImage = styled("img")({
 
   [mobile]: {
     width: "25px",
+    height: "25px",
   },
 });
 

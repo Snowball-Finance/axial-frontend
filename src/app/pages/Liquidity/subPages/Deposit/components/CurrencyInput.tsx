@@ -11,6 +11,7 @@ import { WalletBalance } from "./walletBalance";
 import { EquivalentTokenPriceUSD } from "app/pages/Liquidity/subPages/Deposit/components/EquivalentTokenPriceUSD";
 import { Max } from "./Max";
 import { InsufficientBalance } from "./InsufficientBalance";
+import { mobile } from "styles/media";
 
 export const CurrencyInputs: FC = () => {
   const tokens = useSelector(globalSelectors.tokens) as Token[];
@@ -87,6 +88,10 @@ const StyledCurrencyInput = styled(Grid)({
   border: `4px solid ${CssVariables.cardBorder}`,
   borderRadius: "20px",
   padding: "12px 36px",
+
+  [mobile]: {
+    padding: 15,
+  },
 });
 
 const TokenIconContainer = styled(Grid)({

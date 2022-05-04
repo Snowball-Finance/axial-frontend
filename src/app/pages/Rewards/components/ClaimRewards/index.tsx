@@ -26,12 +26,8 @@ export const ClaimRewards: FC = () => {
             {demoData.map((item) => {
               return (
                 <Grid item key={item.symbol} xs={12}>
-                  <Grid
-                    container
-                    justifyContent="space-between"
-                    alignItems="center"
-                  >
-                    <Grid container spacing={1} alignItems="center" xs={4}>
+                  <StyledContainer container>
+                    <Grid container item spacing={1} alignItems="center" xs={4}>
                       <Grid item>
                         <IconImage src={item.logo} alt={item.symbol} />
                       </Grid>
@@ -74,7 +70,7 @@ export const ClaimRewards: FC = () => {
                         </Text>
                       </Grid>
                     </Grid>
-                  </Grid>
+                  </StyledContainer>
                 </Grid>
               );
             })}
@@ -89,21 +85,27 @@ export const ClaimRewards: FC = () => {
   );
 };
 
+const StyledContainer = styled(Grid)({
+  justifyContent: "space-between",
+  alignItems: "center",
+
+  [mobile]: {
+    alignItems: "flex-start",
+  },
+});
+
 const IconImage = styled("img")({
   width: "33px",
   height: "33px",
 
   [mobile]: {
     width: "25px",
+    height: "25px",
   },
 });
 
 const TokenText = styled(Typography)({
   color: CssVariables.white,
-
-  [mobile]: {
-    fontSize: "1rem",
-  },
 });
 
 const Text = styled(Typography)({
