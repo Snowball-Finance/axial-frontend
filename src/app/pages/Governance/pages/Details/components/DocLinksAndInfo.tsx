@@ -11,6 +11,7 @@ import DocumentIcon from "assets/images/iconComponents/document";
 import ExternalLinkIcon from "assets/images/iconComponents/externalLink";
 import { GovernancePageSelectors } from "app/pages/Governance/selectors";
 import { dateFormat } from "app/pages/Governance/utils/date";
+import { PrimaryCardWrapper } from "app/components/wrappers/PrimaryCard";
 
 export const DocLinksAndInfo: FC = () => {
   const { t } = useTranslation();
@@ -18,9 +19,9 @@ export const DocLinksAndInfo: FC = () => {
   const proposal = useSelector(GovernancePageSelectors.selectedProposal);
 
   return (
-    <StyledPoolCard>
-      <Grid container>
-        <Grid item container spacing={1} alignItems="center" xs={6}>
+    <PrimaryCardWrapper>
+      <Grid container spacing={{ xs: 1, xl: 0 }}>
+        <Grid item container spacing={1} alignItems="center" xs={12} xl={6}>
           <Grid item>
             <DiscordChatIcon color={CssVariables.commonTextColor} />
           </Grid>
@@ -42,7 +43,7 @@ export const DocLinksAndInfo: FC = () => {
           </Grid>
         </Grid>
 
-        <Grid item container spacing={1} alignItems="center" xs={6}>
+        <Grid item container spacing={1} alignItems="center" xs={12} xl={6}>
           <Grid item>
             <ClockIcon color={CssVariables.commonTextColor} />
           </Grid>
@@ -58,7 +59,7 @@ export const DocLinksAndInfo: FC = () => {
           </Grid>
         </Grid>
 
-        <Grid item container spacing={1} alignItems="center" xs={6}>
+        <Grid item container spacing={1} alignItems="center" xs={12} xl={6}>
           <Grid item>
             <DocumentIcon color={CssVariables.commonTextColor} />
           </Grid>
@@ -80,7 +81,7 @@ export const DocLinksAndInfo: FC = () => {
           </Grid>
         </Grid>
 
-        <Grid item container spacing={1} alignItems="center" xs={6}>
+        <Grid item container spacing={1} alignItems="center" xs={12} xl={6}>
           <Grid item>
             <ClockIcon color={CssVariables.commonTextColor} />
           </Grid>
@@ -96,16 +97,9 @@ export const DocLinksAndInfo: FC = () => {
           </Grid>
         </Grid>
       </Grid>
-    </StyledPoolCard>
+    </PrimaryCardWrapper>
   );
 };
-
-const StyledPoolCard = styled("div")({
-  backgroundColor: CssVariables.poolCardBackground,
-  border: `4px solid ${CssVariables.cardBorder}`,
-  borderRadius: "20px",
-  padding: "20px",
-});
 
 const Text = styled(Typography)({
   color: CssVariables.white,

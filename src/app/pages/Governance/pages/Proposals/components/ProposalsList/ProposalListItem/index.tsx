@@ -8,6 +8,7 @@ import { PrimaryCardWrapper } from "app/components/wrappers/PrimaryCard";
 import { Info } from "./Info";
 import { DetailsButton } from "./DetailsButton";
 import { Proposal } from "app/containers/BlockChain/Governance/types";
+import { mobile } from "styles/media";
 
 interface ProposalListItemProps {
   proposal: Proposal;
@@ -32,20 +33,36 @@ export const ProposalListItem: FC<ProposalListItemProps> = ({ proposal }) => {
         </Grid>
 
         <Grid item>
-          <Grid container alignItems="flex-end" justifyContent="space-between">
-            <Grid item>
+          <StyledChildContainer container>
+            <StyledSubChildContainer item>
               <Info proposal={proposal} />
-            </Grid>
+            </StyledSubChildContainer>
 
-            <Grid item>
+            <StyledSubChildContainer item>
               <DetailsButton proposal={proposal} />
-            </Grid>
-          </Grid>
+            </StyledSubChildContainer>
+          </StyledChildContainer>
         </Grid>
       </Grid>
     </PrimaryCardWrapper>
   );
 };
+
+const StyledChildContainer = styled(Grid)(() => ({
+  justifyContent: "space-between",
+  alignItems: "flex-end",
+
+  [mobile]: {
+    flexDirection: "column",
+    rowGap: 10,
+  },
+}));
+
+const StyledSubChildContainer = styled(Grid)(() => ({
+  [mobile]: {
+    width: "100%",
+  },
+}));
 
 const Title = styled(Typography)({
   color: CssVariables.white,

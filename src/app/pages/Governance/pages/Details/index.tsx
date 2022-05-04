@@ -62,8 +62,8 @@ export const Details: FC = () => {
       <VotingConfirmationModal />
 
       <StyledMax1040>
-        <Grid container direction="column" spacing={4}>
-          <Grid item>
+        <Grid container spacing={4}>
+          <Grid item xs={12}>
             <DetailNavigationHead
               routeName={t(translations.GovernancePage.ProposalNumber(), {
                 number: proposal.governance_id,
@@ -71,15 +71,15 @@ export const Details: FC = () => {
             />
           </Grid>
 
-          <Grid item>
+          <Grid item xs={12}>
             <ProposalDetails />
           </Grid>
 
-          <Grid item>
+          <Grid item xs={12}>
             <VotingPowerInfo />
           </Grid>
 
-          <Grid item>
+          <Grid item xs={12}>
             {isLoading ? (
               <StyledLoader />
             ) : hasVoted && !multiOptional ? (
@@ -89,11 +89,11 @@ export const Details: FC = () => {
             )}
           </Grid>
 
-          <Grid item>
+          <Grid item xs={12}>
             <DocLinksAndInfo />
           </Grid>
 
-          <Grid item>
+          <Grid item xs={12}>
             <ProposalDescription />
           </Grid>
         </Grid>

@@ -7,6 +7,8 @@ import { translations } from "locales/i18n";
 import { ContainedButton } from "app/components/common/buttons/containedButton";
 import { GovernanceSelectors } from "app/containers/BlockChain/Governance/selectors";
 import { GovernanceSubPages } from "app/pages/Governance/routes";
+import { styled } from "@mui/material";
+import { mobile } from "styles/media";
 
 export const NewProposalButton: FC = () => {
   const { t } = useTranslation();
@@ -19,8 +21,14 @@ export const NewProposalButton: FC = () => {
   };
 
   return (
-    <ContainedButton disabled={!canAddNewProposal} onClick={handleClick}>
+    <StyledContainedButton disabled={!canAddNewProposal} onClick={handleClick}>
       {t(translations.GovernancePage.NewProposal())}
-    </ContainedButton>
+    </StyledContainedButton>
   );
 };
+
+const StyledContainedButton = styled(ContainedButton)(() => ({
+  [mobile]: {
+    width: "100%",
+  },
+}));

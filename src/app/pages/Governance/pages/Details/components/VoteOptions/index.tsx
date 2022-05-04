@@ -21,12 +21,12 @@ export const VoteOptions: FC = () => {
   }
 
   return (
-    <Grid container spacing={1} direction="column">
-      <Grid item>
+    <Grid container spacing={1}>
+      <Grid item xs={12}>
         <Text variant="h2">{t(translations.GovernancePage.VoteOptions())}</Text>
       </Grid>
 
-      <Grid item>
+      <Grid item xs={12}>
         <PrimaryCardWrapper>
           {isForAgainstType ? <VoteButtons /> : <ExecutionContext />}
         </PrimaryCardWrapper>

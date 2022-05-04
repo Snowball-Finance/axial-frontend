@@ -7,6 +7,8 @@ import { translations } from "locales/i18n";
 import { ContainedButton } from "app/components/common/buttons/containedButton";
 import { Proposal } from "app/containers/BlockChain/Governance/types";
 import { GovernanceSubPages } from "app/pages/Governance/routes";
+import { styled } from "@mui/material";
+import { mobile } from "styles/media";
 
 interface Props {
   proposal: Proposal;
@@ -21,8 +23,14 @@ export const DetailsButton: FC<Props> = ({ proposal }) => {
   };
 
   return (
-    <ContainedButton onClick={handleDetailsClick}>
+    <StyledContainedButton onClick={handleDetailsClick}>
       {t(translations.Common.Details())}
-    </ContainedButton>
+    </StyledContainedButton>
   );
 };
+
+const StyledContainedButton = styled(ContainedButton)(() => ({
+  [mobile]: {
+    width: "100%",
+  },
+}));

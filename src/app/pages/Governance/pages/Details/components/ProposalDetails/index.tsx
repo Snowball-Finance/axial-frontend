@@ -25,13 +25,13 @@ export const ProposalDetails: FC = () => {
           </Text>
         </Grid>
 
-        <Grid item xs={10}>
+        <Grid item xs={12} xl={10}>
           <Title variant="h2">{proposal?.title}</Title>
         </Grid>
 
-        <Grid item xs={8}>
+        <Grid item xs={12} xl={8}>
           <Grid container spacing={2}>
-            <Grid item xs={6}>
+            <Grid item xs={12} xl={6}>
               <Info />
             </Grid>
           </Grid>

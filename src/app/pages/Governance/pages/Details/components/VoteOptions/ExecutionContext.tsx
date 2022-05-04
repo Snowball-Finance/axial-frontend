@@ -1,11 +1,12 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Grid } from "@mui/material";
+import { Grid, styled } from "@mui/material";
 
 import { OutlinedButton } from "app/components/common/buttons/outlinedButton";
 import { GovernanceSelectors } from "app/containers/BlockChain/Governance/selectors";
 import { GovernanceActions } from "app/containers/BlockChain/Governance/slice";
 import { ContainedButton } from "app/components/common/buttons/containedButton";
 import { GovernancePageSelectors } from "app/pages/Governance/selectors";
+import { mobile } from "styles/media";
 
 export const ExecutionContext = () => {
   const receipt = useSelector(GovernanceSelectors.receipt);
@@ -35,13 +36,19 @@ export const ExecutionContext = () => {
         return (
           <Grid item key={index}>
             {supportingOption === index ? (
-              <ContainedButton fullWidth onClick={() => handleVoteClick(index)}>
+              <StyledContainedButton
+                fullWidth
+                onClick={() => handleVoteClick(index)}
+              >
                 {context.label}
-              </ContainedButton>
+              </StyledContainedButton>
             ) : (
-              <OutlinedButton fullWidth onClick={() => handleVoteClick(index)}>
+              <StyledOutlinedButton
+                fullWidth
+                onClick={() => handleVoteClick(index)}
+              >
                 {context.label}
-              </OutlinedButton>
+              </StyledOutlinedButton>
             )}
           </Grid>
         );
@@ -49,3 +56,15 @@ export const ExecutionContext = () => {
     </Grid>
   );
 };
+
+const StyledContainedButton = styled(ContainedButton)({
+  [mobile]: {
+    width: "100%",
+  },
+});
+
+const StyledOutlinedButton = styled(OutlinedButton)({
+  [mobile]: {
+    width: "100%",
+  },
+});

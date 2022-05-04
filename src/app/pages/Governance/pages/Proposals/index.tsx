@@ -8,6 +8,7 @@ import { Message } from "./components/Message";
 import { ProposalsList } from "./components/ProposalsList";
 import { NewProposalButton } from "./components/NewProposalButton";
 import { NavigationHead } from "../../components/Navigation/NavigationHead";
+import { mobile } from "styles/media";
 
 export const Proposals: FC = () => {
   return (
@@ -22,15 +23,15 @@ export const Proposals: FC = () => {
         </Grid>
 
         <Grid item>
-          <Grid container justifyContent="space-between" alignItems="center">
-            <Grid item>
+          <StyledContainer container>
+            <StyledFullContainer item>
               <Filter />
-            </Grid>
+            </StyledFullContainer>
 
-            <Grid item>
+            <StyledFullContainer item>
               <NewProposalButton />
-            </Grid>
-          </Grid>
+            </StyledFullContainer>
+          </StyledContainer>
         </Grid>
 
         <Grid item alignSelf="flex-end">
@@ -47,4 +48,21 @@ export const Proposals: FC = () => {
 
 const StyledMax1040 = styled(Max1040)(() => ({
   margin: "0 auto",
+}));
+
+const StyledContainer = styled(Grid)(() => ({
+  flexDirection: "row",
+  justifyContent: "space-between",
+  alignItems: "center",
+
+  [mobile]: {
+    flexDirection: "column",
+    rowGap: 10,
+  },
+}));
+
+const StyledFullContainer = styled(Grid)(() => ({
+  [mobile]: {
+    width: "100%",
+  },
 }));

@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { GovernancePageSelectors } from "app/pages/Governance/selectors";
+import { PrimaryCardWrapper } from "app/components/wrappers/PrimaryCard";
 
 export const ProposalDescription: FC = () => {
   const { t } = useTranslation();
@@ -13,28 +14,21 @@ export const ProposalDescription: FC = () => {
   const proposal = useSelector(GovernancePageSelectors.selectedProposal);
 
   return (
-    <StyledPoolCard>
-      <Grid container spacing={2} direction="column">
-        <Grid item>
+    <PrimaryCardWrapper>
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
           <Text variant="body1">
             {t(translations.GovernancePage.ProposalDescription())}
           </Text>
         </Grid>
 
-        <Grid item>
+        <Grid item xs={12}>
           <Text variant="body2">{proposal?.description}</Text>
         </Grid>
       </Grid>
-    </StyledPoolCard>
+    </PrimaryCardWrapper>
   );
 };
-
-const StyledPoolCard = styled("div")({
-  backgroundColor: CssVariables.poolCardBackground,
-  border: `4px solid ${CssVariables.cardBorder}`,
-  borderRadius: "20px",
-  padding: "20px",
-});
 
 const Text = styled(Typography)({
   color: CssVariables.white,
