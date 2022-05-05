@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 
 export const AllocationInput = ({ data }: { data: GaugeItem }) => {
-  const pair = useSelector(
+  const gauge = useSelector(
     GovernancePageSelectors.selectedVoteAllocationPair(data.address)
   );
   const dispatch = useDispatch();
@@ -20,12 +20,12 @@ export const AllocationInput = ({ data }: { data: GaugeItem }) => {
       return;
     }
 
-    const newPair = { ...pair, enteredAllocation: v ? Number(v) : 0 };
+    const newGauge = { ...gauge, enteredAllocation: v ? Number(v) : 0 };
     dispatch(
-      GovernancePageActions.setSelectedPairAllocationInputValue(newPair)
+      GovernancePageActions.setSelectedPairAllocationInputValue(newGauge)
     );
   };
-  let v = pair?.enteredAllocation + "" ?? "";
+  let v = gauge?.enteredAllocation + "" ?? "";
   if (!isNaN(Number(v))) {
     if (v.length > 1 && v.charAt(0) === "0" && v.charAt(1) !== ".") {
       v = v.substring(1);

@@ -9,13 +9,58 @@ import { Web3Domains } from "../BlockChain/Web3/selectors";
 
 import { initialState } from "./slice";
 
+export const PoolsAndGaugesDomains = {
+  root: (state: RootState) => state.poolsAndGauges || initialState,
+  lastInfo: (state: RootState) =>
+    state.poolsAndGauges?.lastInfo || initialState.lastInfo,
+  gotUserPools: (state: RootState) =>
+    state.poolsAndGauges?.gotUserPools || initialState.gotUserPools,
+  isLoadingUserPoolsAndGauges: (state: RootState) =>
+    state.poolsAndGauges?.isLoadingUserPoolsAndGauges ||
+    initialState.isLoadingUserPoolsAndGauges,
+  pools: (state: RootState) =>
+    state.poolsAndGauges?.pools || initialState.pools,
+  gauges: (state: RootState) =>
+    state.poolsAndGauges?.gauges || initialState.gauges,
+};
+
+export const PoolsAndGaugesSelectors = {
+  root: createSelector(
+    PoolsAndGaugesDomains.root,
+    (poolsAndGaugesState) => poolsAndGaugesState
+  ),
+  lastInfo: createSelector(
+    PoolsAndGaugesDomains.lastInfo,
+    (lastInfoState) => lastInfoState
+  ),
+  gotUserPools: createSelector(
+    PoolsAndGaugesDomains.gotUserPools,
+    (gotUserPoolsState) => gotUserPoolsState
+  ),
+  isLoadingUserPoolsAndGauges: createSelector(
+    PoolsAndGaugesDomains.isLoadingUserPoolsAndGauges,
+    (isLoadingUserPoolsAndGaugesState) => isLoadingUserPoolsAndGaugesState
+  ),
+  pools: createSelector(
+    PoolsAndGaugesDomains.pools,
+    (poolsState) => poolsState
+  ),
+  poolsArray: createSelector(PoolsAndGaugesDomains.pools, (poolsState) =>
+    Object.values(poolsState)
+  ),
+  gauges: createSelector(
+    PoolsAndGaugesDomains.gauges,
+    (gaugesState) => gaugesState
+  ),
+};
+
 const selectDomain = (state: RootState) => state.poolsAndGauges || initialState;
 export const selectGaugeProxyABIDomain = (state: RootState) =>
   state.poolsAndGauges?.gaugeProxyABI || undefined;
 export const selectGaugeContractDomain = (state: RootState) =>
   state.poolsAndGauges?.gaugeContract || undefined;
 export const selectPoolsArrayDomain = (state: RootState) =>
-  state.poolsAndGauges?.lastInfo?.poolsInfo || [];
+  state.poolsAndGauges?.lastInfo || [];
 const selectGotUserPoolsDomain = (state: RootState) =>
   state.poolsAndGauges?.gotUserPools || initialState.gotUserPools;
 export const selectIsLoadingUserPoolsAndGaugesDomain = (state: RootState) =>
@@ -87,12 +132,9 @@ export const selectIsReadyToGetUserData = createSelector(
     Web3Domains.selectAccountDomain,
     selectPoolsArrayDomain,
     EthersDomains.selectPrivateProviderDomain,
-    selectGaugeContractDomain,
     BlockChainDomains.selectPricesDomain,
   ],
-  (account, pools, provider, contract, prices) => {
-    return (
-      account && pools.length > 0 && provider && contract && !!prices.mainToken
-    );
+  (account, pools, provider, prices) => {
+    return account && pools.length > 0 && provider && !!prices.mainToken;
   }
 );

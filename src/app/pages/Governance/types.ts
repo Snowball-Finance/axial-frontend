@@ -15,7 +15,7 @@ export interface ExecutionContext {
 /* --- STATE --- */
 export interface GovernancePageState {
   isVoteAllocationSelectionOpen: boolean;
-  selectedPairs: {
+  selectedGauges: {
     [key: string]: GaugeItem;
   };
   pairSearchInput: string;

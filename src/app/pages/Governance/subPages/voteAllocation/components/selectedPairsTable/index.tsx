@@ -20,7 +20,7 @@ interface GridConfigTypes {
 export const SelectedPairsTable = () => {
   const { t } = useTranslation();
   const selectedPairs = useSelector(
-    GovernancePageSelectors.selectedVoteAllocationPairsArray
+    GovernancePageSelectors.selectedVoteAllocationGaugesArray
   );
   const smallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const noSelectedPair = selectedPairs.length === 0;

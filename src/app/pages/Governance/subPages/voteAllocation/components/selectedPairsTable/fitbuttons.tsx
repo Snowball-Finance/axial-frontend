@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 export const FitButtons = () => {
   const selectedPairs = useSelector(
-    GovernancePageSelectors.selectedVoteAllocationPairsArray
+    GovernancePageSelectors.selectedVoteAllocationGaugesArray
   );
 
   const { t } = useTranslation();

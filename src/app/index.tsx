@@ -41,6 +41,7 @@ import { Web3Selectors } from "./containers/BlockChain/Web3/selectors";
 import { SwapPage } from "./pages/Swap";
 import { GlobalModals } from "./components/modals";
 import { Playground } from "./pages/playground";
+import { PoolsAndGauges } from "./containers/PoolsAndGauges/Loadable";
 // import { PoolsAndGauges } from "./containers/PoolsAndGauges/Loadable";
 // import { INFO_QUERY } from "services/apollo/queries/snowballInfo";
 // import GAUGE_PROXY_ABI from 'abi/gaugeProxy.json'
@@ -105,7 +106,7 @@ export function App() {
           },
         }}
       />
-      {/* <PoolsAndGauges abi={GAUGE_PROXY_ABI} initialDataQuery={INFO_QUERY} /> */}
+      <PoolsAndGauges />
       <Rewards pools={pools} />
       <Swap
         swapRouterABI={AGGREGATOR_ABI}
