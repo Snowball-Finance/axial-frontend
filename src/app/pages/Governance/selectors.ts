@@ -8,14 +8,10 @@ export const GovernancePageDomains = {
   isVoteAllocationSelectionOpen: (state: RootState) =>
     state.governancePage?.isVoteAllocationSelectionOpen ||
     initialState.isVoteAllocationSelectionOpen,
-  selectedVoteAllocationPairs: (state: RootState) =>
+  selectedVoteAllocationGauges: (state: RootState) =>
     state.governancePage?.selectedGauges || { ...initialState.selectedGauges },
   pairSearchInput: (state: RootState) =>
     state.governancePage?.pairSearchInput || initialState.pairSearchInput,
-  selectedPoolProviders: (state: RootState) =>
-    state.governancePage?.selectedPoolProviders || [
-      ...initialState.selectedPoolProviders,
-    ],
   isVotingForFarms: (state: RootState) =>
     state.governancePage?.isVotingForFarms || initialState.isVotingForFarms,
   newProposalFields: (state: RootState) =>
@@ -53,23 +49,19 @@ export const GovernancePageSelectors = {
     GovernancePageDomains.pairSearchInput,
     (v) => v
   ),
-  selectedPoolProviders: createSelector(
-    GovernancePageDomains.selectedPoolProviders,
-    (list) => list
-  ),
-  selectedVoteAllocationPairsObj: createSelector(
-    GovernancePageDomains.selectedVoteAllocationPairs,
+  selectedVoteAllocationGaugesObj: createSelector(
+    GovernancePageDomains.selectedVoteAllocationGauges,
     (selectedVoteAllocationPairs) => selectedVoteAllocationPairs
   ),
-  selectedVoteAllocationPairsArray: createSelector(
-    GovernancePageDomains.selectedVoteAllocationPairs,
-    (selectedVoteAllocationPairs) => {
-      return Object.values(selectedVoteAllocationPairs);
+  selectedVoteAllocationGaugesArray: createSelector(
+    GovernancePageDomains.selectedVoteAllocationGauges,
+    (selectedVoteAllocationGauges) => {
+      return Object.values(selectedVoteAllocationGauges);
     }
   ),
   selectedVoteAllocationPair: (address: string) =>
     createSelector(
-      GovernancePageDomains.selectedVoteAllocationPairs,
+      GovernancePageDomains.selectedVoteAllocationGauges,
       (pairsObj) => pairsObj[address]
     ),
   isVoteAllocationSelectionOpen: createSelector(

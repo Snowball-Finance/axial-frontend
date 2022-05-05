@@ -59,14 +59,14 @@ export const bottomTableRowsConfig = ({ t }: { t: any }): ColumnDef[] => [
     flex: 1,
     minWidth: 100,
   },
-  {
-    headerName: t(translations.GovernancePage.VoteAllocation.Balance()),
-    field: "balance",
-    flex: 1,
-    minWidth: 100,
-    headerClass: "blue",
-    cellClass: "darkBold",
-    valueFormatter: ({ data }: { data: GaugeItem }) =>
-      formatNumber(Number(data.balance.toString()), 2),
-  },
+  // {
+  //   headerName: t(translations.GovernancePage.VoteAllocation.Balance()),
+  //   field: "balance",
+  //   flex: 1,
+  //   minWidth: 100,
+  //   headerClass: "blue",
+  //   cellClass: "darkBold",
+  //   valueFormatter: ({ data }: { data: GaugeItem }) =>
+  //     formatNumber(Number(data.balance.toString()), 2),
+  // },
 ];

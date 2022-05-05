@@ -14,7 +14,7 @@ export const SelectedPairs = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const selectedPairs = useSelector(
-    GovernancePageSelectors.selectedVoteAllocationPairsArray
+    GovernancePageSelectors.selectedVoteAllocationGaugesArray
   );
   const noSelectedPair = selectedPairs.length === 0;
 

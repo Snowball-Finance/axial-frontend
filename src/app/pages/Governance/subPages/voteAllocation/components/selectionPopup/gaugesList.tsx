@@ -7,11 +7,11 @@ import { GovernancePageActions } from "app/pages/Governance/slice";
 import { useDispatch, useSelector } from "react-redux";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 
-export const PoolsList = () => {
+export const GaugesListToSelectFrom = () => {
   const dispatch = useDispatch();
-  const pools = useSelector(PoolsAndGaugesSelectors.poolsArray);
+  const gauges = useSelector(PoolsAndGaugesSelectors.gauges);
   const selectedGauges = useSelector(
-    GovernancePageSelectors.selectedVoteAllocationPairsObj
+    GovernancePageSelectors.selectedVoteAllocationGaugesObj
   );
   const handleGaugeClick = (gauge: GaugeItem) => {
     dispatch(GovernancePageActions.toggleSelectedGauge(gauge));
@@ -19,23 +19,21 @@ export const PoolsList = () => {
 
   return (
     <Wrapper>
-      {pools.map((pool) => {
+      {gauges.map((gauge: GaugeItem) => {
         return (
           <ItemWrapper
             onClick={() => {
-              handleGaugeClick(pool.gauge as GaugeItem);
+              handleGaugeClick(gauge);
             }}
-            key={pool.tokenaddress}
+            key={gauge.address}
           >
             <span>
               <Checkbox
-                checked={Object.keys(selectedGauges).includes(
-                  pool.gauge_address
-                )}
+                checked={Object.keys(selectedGauges).includes(gauge.address)}
                 size="medium"
               />
             </span>
-            <span>{pool.symbol}</span>
+            <span>{gauge.poolName}</span>
           </ItemWrapper>
         );
       })}

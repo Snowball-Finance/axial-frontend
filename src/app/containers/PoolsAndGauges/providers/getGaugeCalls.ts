@@ -3,15 +3,15 @@ import GAUGE_ABI from "abi/gauge.json";
 import { PoolInfo } from "../types";
 
 export const getGaugeCalls = ({
-  item,
+  item: pool,
   account,
 }: {
   item: PoolInfo;
   account: string;
 }) => {
-  const gaugeCalls = new ContractCall(item.gauge_address, GAUGE_ABI);
+  const gaugeCalls = new ContractCall(pool.gauge_address, GAUGE_ABI);
   gaugeCalls.setCall("balanceOf", [account]);
-  item.last_rewards_apr.forEach((reward, index) => {
+  pool.last_rewards_apr.forEach((reward, index) => {
     gaugeCalls.setCall(
       "earned",
       [account, reward[0]],

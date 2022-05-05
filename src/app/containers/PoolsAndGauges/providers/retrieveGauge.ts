@@ -11,7 +11,7 @@ export const retrieveGauge = ({
   totalWeight: any;
   poolsData: any;
 }) => {
-  const harvestable: any[] = [];
+  const harvestable: any = {};
   const poolTokens = [...pool.tokens];
   const lpTokenData = poolsData[pool.tokenaddress];
   const gaugeData = gaugesData[pool.gauge_address];
@@ -19,8 +19,8 @@ export const retrieveGauge = ({
   for (let i = 0; i < 10; i++) {
     const key = `earned${i === 0 ? "" : i}`;
     if (!!gaugeData[key]) {
-      harvestable.push(gaugeData[key]);
-      // poolTokens[i].harvestable=gaugeData[key]
+      const k = pool.last_rewards_apr[i][0];
+      harvestable[k] = gaugeData[key];
     }
   }
   const lpTokenBalance = lpTokenData.balanceOf;
