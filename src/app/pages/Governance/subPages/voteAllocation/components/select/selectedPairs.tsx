@@ -20,7 +20,7 @@ export const SelectedPairs = () => {
 
   const handleRemoveGaugeClick = (e: any, gauge: GaugeItem) => {
     e.stopPropagation();
-    dispatch(GovernancePageActions.toggleSelectedPair(gauge));
+    dispatch(GovernancePageActions.toggleSelectedGauge(gauge));
   };
 
   return (

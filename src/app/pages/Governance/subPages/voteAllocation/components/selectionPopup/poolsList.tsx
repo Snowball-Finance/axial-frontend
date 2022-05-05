@@ -1,55 +1,42 @@
 import { Checkbox, styled } from "@mui/material";
+import { PoolsAndGaugesSelectors } from "app/containers/PoolsAndGauges/selectors";
 
 import { GaugeItem } from "app/containers/PoolsAndGauges/types";
 import { GovernancePageSelectors } from "app/pages/Governance/selectors";
 import { GovernancePageActions } from "app/pages/Governance/slice";
 import { useDispatch, useSelector } from "react-redux";
 import { CssVariables } from "styles/cssVariables/cssVariables";
-import { SubListTitle } from "./styles";
 
 export const PoolsList = () => {
   const dispatch = useDispatch();
-  const providers = useSelector(GovernancePageSelectors.poolProviders);
-  const selectedProviders = useSelector(
-    GovernancePageSelectors.selectedPoolProviders
+  const pools = useSelector(PoolsAndGaugesSelectors.poolsArray);
+  const selectedGauges = useSelector(
+    GovernancePageSelectors.selectedVoteAllocationPairsObj
   );
-
-  let providersToShow = providers;
-
-  if (selectedProviders.length !== 0) {
-    providersToShow = providers.filter((provider) => {
-      return selectedProviders.includes(provider.name);
-    });
-  }
-
   const handleGaugeClick = (gauge: GaugeItem) => {
-    dispatch(GovernancePageActions.toggleSelectedPair(gauge));
+    dispatch(GovernancePageActions.toggleSelectedGauge(gauge));
   };
 
   return (
     <Wrapper>
-      {providersToShow.map((provider) => {
+      {pools.map((pool) => {
         return (
-          <ProviderNameAndPoolsWrapper key={provider.name}>
-            <SubListTitle>{provider.name}</SubListTitle>
-            <ListWrapper>
-              {provider.gauges.map((gauge) => {
-                return (
-                  <ItemWrapper
-                    onClick={() => {
-                      handleGaugeClick(gauge);
-                    }}
-                    key={gauge.address}
-                  >
-                    <span>
-                      <Checkbox checked={gauge.selected} size="medium" />
-                    </span>
-                    <span>{gauge.depositTokenName}</span>
-                  </ItemWrapper>
-                );
-              })}
-            </ListWrapper>
-          </ProviderNameAndPoolsWrapper>
+          <ItemWrapper
+            onClick={() => {
+              handleGaugeClick(pool.gauge as GaugeItem);
+            }}
+            key={pool.tokenaddress}
+          >
+            <span>
+              <Checkbox
+                checked={Object.keys(selectedGauges).includes(
+                  pool.gauge_address
+                )}
+                size="medium"
+              />
+            </span>
+            <span>{pool.symbol}</span>
+          </ItemWrapper>
         );
       })}
     </Wrapper>
@@ -64,10 +51,6 @@ const ItemWrapper = styled("div")({
   alignItems: "center",
   cursor: "pointer",
 });
-
-const ListWrapper = styled("div")({});
-
-const ProviderNameAndPoolsWrapper = styled("div")({});
 
 const Wrapper = styled("div")({
   maxHeight: "330px",

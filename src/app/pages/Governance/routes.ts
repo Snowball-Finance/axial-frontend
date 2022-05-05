@@ -8,4 +8,5 @@ export const GovernanceSubPages = {
   newProposal: `${AppPages.GovernancePage}/newProposal`,
   proposals: `${AppPages.GovernancePage}/proposals`,
   proposal: `${AppPages.GovernancePage}/proposals/:${GovernancePathQueries.proposalIndex}`,
+  voteAllocation: `${AppPages.GovernancePage}/voteAllocation`,
 };

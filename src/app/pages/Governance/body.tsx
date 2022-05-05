@@ -5,6 +5,7 @@ import { AppPages } from "app/types";
 import { styled } from "@mui/material";
 import { ProposalDetails } from "./subPages/details";
 import { NewProposalForm } from "./subPages/newProposal";
+import { VoteAllocation } from "./subPages/voteAllocation";
 
 export const GovernanceBody = () => {
   return (
@@ -21,6 +22,9 @@ export const GovernanceBody = () => {
         </Route>
         <Route path={`${GovernanceSubPages.proposal}`}>
           <ProposalDetails />
+        </Route>
+        <Route path={`${GovernanceSubPages.voteAllocation}`}>
+          <VoteAllocation />
         </Route>
       </Switch>
     </PageWrapper>
