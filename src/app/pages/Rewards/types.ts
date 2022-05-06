@@ -17,6 +17,8 @@ export interface RewardsPageState {
   withdrawAmount: string;
   isModalOpen: boolean;
   isClaimModalOpen: boolean;
+  checkedClaimRewards: number[];
+  isClaimRewardsLoading: boolean;
 }
 
 export interface PoolCardItemProps {

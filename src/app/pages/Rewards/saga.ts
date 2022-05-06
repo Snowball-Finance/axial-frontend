@@ -19,6 +19,9 @@ import { parseUnits } from "ethers/lib/utils";
 import { TokenSymbols } from "app/containers/Swap/types";
 import { checkAndApproveTokensInList } from "utils/tokenVerifier";
 import { getRewardPoolData } from "app/containers/Rewards/saga";
+import GAUGE_ABI from "abi/gauge.json";
+import { PoolsAndGaugesDomains } from "app/containers/PoolsAndGauges/selectors";
+import { getProviderOrSigner } from "app/containers/utils/contractUtils";
 
 export function* poolInfoByAddress(action: { type: string; payload: string }) {
   const { payload } = action;
@@ -116,6 +119,35 @@ export function* claim(action: { type: string; payload: Pool }) {
   }
 }
 
+export function* claimRewardsToken() {
+  const library = yield select(Web3Domains.selectLibraryDomain);
+  const account = yield select(Web3Domains.selectAccountDomain);
+  const claimedRewards = yield select(RewardsPageDomains.checkedClaimRewards);
+  const pools = yield select(PoolsAndGaugesDomains.pools);
+  const selectedPool = yield select(RewardsPageDomains.pool);
+
+  const selectedPoolForClaim = pools[selectedPool?.address];
+  const gaugeContract = new Contract(
+    selectedPoolForClaim.gauge_address,
+    GAUGE_ABI,
+    getProviderOrSigner(library, account)
+  );
+  try {
+    const isClaimAll =
+      claimedRewards.length === pools[selectedPool?.address].tokens.length;
+    yield put(RewardsPageActions.setisClaimRewardsLoading(true));
+    if (isClaimAll) {
+      yield call(gaugeContract.getAllRewards());
+    } else {
+      yield call(gaugeContract.getRewards(claimedRewards));
+    }
+  } catch (e) {
+    console.log(e);
+  } finally {
+    yield put(RewardsPageActions.setisClaimRewardsLoading(false));
+  }
+}
+
 export function* getPoolDataUsingMasterchef() {
   const pool: Pool = yield select(RewardsPageDomains.pool);
   if (pool) {
@@ -141,4 +173,8 @@ export function* rewardsPageSaga() {
   );
   yield takeLatest(RewardsPageActions.withdraw.type, withdraw);
   yield takeLatest(RewardsPageActions.claim.type, claim);
+  yield takeLatest(
+    RewardsPageActions.claimRewardsToken.type,
+    claimRewardsToken
+  );
 }

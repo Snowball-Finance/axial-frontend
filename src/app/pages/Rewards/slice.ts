@@ -25,6 +25,8 @@ export const initialState: ContainerState = {
   withdrawAmount: zeroString,
   isModalOpen: false,
   isClaimModalOpen: false,
+  checkedClaimRewards: [],
+  isClaimRewardsLoading: false,
 };
 
 const rewardsPageSlice = createSlice({
@@ -74,6 +76,13 @@ const rewardsPageSlice = createSlice({
     ) {
       state.userShareDataUsingMasterchef = action.payload;
     },
+    setCheckedClaimRewards(state, action: PayloadAction<number[]>) {
+      state.checkedClaimRewards = action.payload;
+    },
+    setisClaimRewardsLoading(state, action: PayloadAction<boolean>) {
+      state.isClaimRewardsLoading = action.payload;
+    },
+    claimRewardsToken() {},
   },
 });
 

@@ -1,12 +1,24 @@
 import React, { FC } from "react";
 import { styled, Grid, Typography } from "@mui/material";
+import { useSelector } from "react-redux";
 
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import axialIcon from "assets/icons/logo_icon.svg";
-import avaxIcon from "assets/icons/AVAX.png";
 import { mobile } from "styles/media";
+import { PoolsAndGaugesSelectors } from "app/containers/PoolsAndGauges/selectors";
+import { RewardsPageSelectors } from "app/pages/Rewards/selectors";
 
-export const RewardsTokens: FC = () => {
+interface Props {
+  poolKey: string;
+}
+export const RewardsTokens: FC<Props> = ({ poolKey }) => {
+  const pools = useSelector(PoolsAndGaugesSelectors.pools);
+  const rewardsPool = useSelector(RewardsPageSelectors.rewardsPool(poolKey));
+
+  if (!(rewardsPool.address in pools)) {
+    return null;
+  }
+
   return (
     <Grid container spacing={1}>
       <Grid item xs={12}>
@@ -14,23 +26,27 @@ export const RewardsTokens: FC = () => {
       </Grid>
 
       <Grid item container>
-        <Grid item container spacing={1} alignItems="center" xs={6}>
-          <Grid item>
-            <PoolTokenImage src={axialIcon} alt={`token-AXIAL`} />
-          </Grid>
-          <Grid item>
-            <PoolInfoTitleText variant="body1">AXIAL</PoolInfoTitleText>
-          </Grid>
-        </Grid>
-
-        <Grid item container spacing={1} alignItems="center" xs={6}>
-          <Grid item>
-            <PoolTokenImage src={avaxIcon} alt={`token-AVAX`} />
-          </Grid>
-          <Grid item>
-            <PoolInfoTitleText variant="body1">AVAX</PoolInfoTitleText>
-          </Grid>
-        </Grid>
+        {pools[rewardsPool.address]?.tokens.map((token) => {
+          return (
+            <Grid
+              key={token.address}
+              container
+              spacing={1}
+              alignItems="center"
+              item
+              xs={6}
+            >
+              <Grid item>
+                <PoolTokenImage src={axialIcon} alt={`token-AXIAL`} />
+              </Grid>
+              <Grid item>
+                <PoolInfoTitleText variant="body1">
+                  {token.symbol}
+                </PoolInfoTitleText>
+              </Grid>
+            </Grid>
+          );
+        })}
       </Grid>
     </Grid>
   );
@@ -38,10 +54,6 @@ export const RewardsTokens: FC = () => {
 
 const PoolInfoTitleText = styled(Typography)({
   color: CssVariables.white,
-
-  [mobile]: {
-    fontSize: "14px",
-  },
 });
 
 const PoolTokenImage = styled("img")({
@@ -50,5 +62,6 @@ const PoolTokenImage = styled("img")({
 
   [mobile]: {
     width: "22px",
+    height: "22px",
   },
 });

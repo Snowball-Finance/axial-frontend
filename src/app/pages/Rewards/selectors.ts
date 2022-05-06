@@ -38,6 +38,11 @@ export const RewardsPageDomains = {
     state.rewardsPage?.isModalOpen || initialState.isModalOpen,
   isClaimModalOpen: (state: RootState) =>
     state.rewardsPage?.isClaimModalOpen || initialState.isClaimModalOpen,
+  checkedClaimRewards: (state: RootState) =>
+    state.rewardsPage?.checkedClaimRewards || initialState.checkedClaimRewards,
+  isClaimRewardsLoading: (state: RootState) =>
+    state.rewardsPage?.isClaimRewardsLoading ||
+    initialState.isClaimRewardsLoading,
 };
 
 export const RewardsPageSelectors = {
@@ -143,5 +148,13 @@ export const RewardsPageSelectors = {
   userShareDataUsingMasterchef: createSelector(
     RewardsPageDomains.userShareDataUsingMasterChef,
     (userShareDataUsingMasterchef) => userShareDataUsingMasterchef
+  ),
+  checkedClaimRewards: createSelector(
+    RewardsPageDomains.checkedClaimRewards,
+    (checkedClaimRewards) => checkedClaimRewards
+  ),
+  isClaimRewardsLoading: createSelector(
+    RewardsPageDomains.isClaimRewardsLoading,
+    (isClaimRewardsLoading) => isClaimRewardsLoading
   ),
 };

@@ -49,7 +49,7 @@ export const PoolCardItem: FC<PoolCardItemProps> = ({ poolKey }) => {
 
         <StyledPoolChildLowerContainer item container>
           <Grid item>
-            <RewardsTokens />
+            <RewardsTokens poolKey={poolKey}/>
           </Grid>
 
           <Grid item>

@@ -227,7 +227,8 @@
     "Confirm": "Confirm",
     "MoreInfo": "More Info",
     "ConnectToWallet": "Connect to Wallet",
-    "DisconnectFromWallet": "Disconnect from Wallet"
+    "DisconnectFromWallet": "Disconnect from Wallet",
+    "CheckAll": "Check All"
   },
   "External": {
     "Discord": "Discord"
