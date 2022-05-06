@@ -1,13 +1,47 @@
 import { FC } from "react";
-import { Checkbox, Grid, styled, TextField, Typography } from "@mui/material";
+import { Checkbox, Grid, styled, Typography } from "@mui/material";
 // import { useTranslation } from "react-i18next";
 
 // import { translations } from "locales/i18n";
 import { CardWrapper } from "app/components/wrappers/Card";
 import { CssVariables } from "styles/cssVariables/cssVariables";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  PoolsAndGaugesSelectors,
+  selectIsLoadingUserPoolsAndGauges,
+} from "app/containers/PoolsAndGauges/selectors";
+import { GovernancePageSelectors } from "app/pages/Governance/selectors";
+import { GaugeItem } from "app/containers/PoolsAndGauges/types";
+import { GovernancePageActions } from "app/pages/Governance/slice";
+import { AllocationInput } from "./AllocationInput";
+import { formatNumber } from "common/format";
 
 export const Selection: FC = () => {
   //   const { t } = useTranslation();
+
+  const dispatch = useDispatch();
+  const gauges = useSelector(PoolsAndGaugesSelectors.gauges);
+  const selectedGauges = useSelector(
+    GovernancePageSelectors.selectedVoteAllocationGaugesObj
+  );
+  const isLoading = useSelector(selectIsLoadingUserPoolsAndGauges);
+
+  const handleGaugeClick = (gauge: GaugeItem) => {
+    dispatch(GovernancePageActions.toggleSelectedGauge(gauge));
+  };
+
+  const valueFormatter = (data: GaugeItem) => {
+    const pickleAPYMin = data.fullApy * 100 * 0.4;
+    const pickleAPYMax = data.fullApy * 100;
+    return `${formatNumber(pickleAPYMin, 2)} ~ ${formatNumber(
+      pickleAPYMax,
+      2
+    )}`;
+  };
+
+  if (isLoading) {
+    return <>Loading...</>;
+  }
 
   return (
     <CardWrapper>
@@ -32,9 +66,9 @@ export const Selection: FC = () => {
           </Grid>
         </Grid>
 
-        {[1, 2, 3, 4].map((item) => {
+        {gauges.map((gauge: GaugeItem) => {
           return (
-            <Grid item xs={12} key={item}>
+            <Grid item xs={12} key={gauge.address}>
               <Grid container>
                 <Grid item xs={4}>
                   <Grid
@@ -43,38 +77,28 @@ export const Selection: FC = () => {
                     justifyContent="flex-start"
                   >
                     <Grid item>
-                      <CustomCheckbox checked={false} onChange={() => {}} />
+                      <CustomCheckbox
+                        checked={Object.keys(selectedGauges).includes(
+                          gauge.address
+                        )}
+                        onChange={() => {
+                          handleGaugeClick(gauge);
+                        }}
+                      />
                     </Grid>
                     <Grid item>
-                      <Text variant="body1">AC4D</Text>
+                      <Text variant="body1">{gauge.poolName}</Text>
                     </Grid>
                   </Grid>
                 </Grid>
 
                 <Grid item xs={4}>
-                  <Grid
-                    container
-                    alignItems="center"
-                    spacing={1}
-                    justifyContent="center"
-                  >
-                    <Grid item>
-                      <InputField
-                        value={""}
-                        onChange={() => {}}
-                        isselected={undefined}
-                      />
-                    </Grid>
-
-                    <Grid item>
-                      <PercentageText variant="body1">%</PercentageText>
-                    </Grid>
-                  </Grid>
+                  <AllocationInput data={gauge} />
                 </Grid>
 
                 <Grid item xs={4}>
                   <Text variant="body2" align="right">
-                    {"0.05% -> 0.0%"}
+                    {valueFormatter(gauge)}
                   </Text>
                 </Grid>
               </Grid>
@@ -89,30 +113,6 @@ export const Selection: FC = () => {
 const Text = styled(Typography)({
   color: CssVariables.white,
 });
-
-const PercentageText = styled(Typography)({
-  color: CssVariables.green,
-});
-
-const InputField = styled(TextField)<{ isselected: "true" | undefined }>(
-  ({ isselected }) => ({
-    ".MuiInputBase-root": {
-      color: CssVariables.white,
-      fontSize: "16px",
-      width: 60,
-      height: 30,
-    },
-
-    ".MuiOutlinedInput-notchedOutline": {
-      border: `2px solid ${CssVariables.green} !important`,
-      borderRadius: CssVariables.buttonBorderRadius,
-    },
-    ...(isselected && {
-      backgroundColor: CssVariables.ctaBlue,
-      borderRadius: CssVariables.buttonBorderRadius,
-    }),
-  })
-);
 
 const CustomCheckbox = styled(Checkbox)({
   path: {

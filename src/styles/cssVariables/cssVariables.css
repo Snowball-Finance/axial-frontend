@@ -62,6 +62,9 @@ html {
   --radioWidth: 18px;
   --radioHeight: 18px;
 
+  /* Table */
+  --tableHeadColor: "#0F0E3B";
+
   /* ag grid related styles */
   --ag-border-color: transparent;
   --ag-row-border-color: transparent;

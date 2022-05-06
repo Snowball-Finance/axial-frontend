@@ -6,6 +6,7 @@ import { GovernanceActions } from "app/containers/BlockChain/Governance/slice";
 import { Web3Domains } from "app/containers/BlockChain/Web3/selectors";
 import { selectGaugeProxyABIDomain } from "app/containers/PoolsAndGauges/selectors";
 import { PoolsAndGaugesActions } from "app/containers/PoolsAndGauges/slice";
+import { getProviderOrSigner } from "app/containers/utils/contractUtils";
 import { env, IS_DEV } from "environment";
 import { Contract } from "ethers";
 import { toast } from "react-toastify";
@@ -16,12 +17,13 @@ import { isPositiveNumber } from "./utils/isPositiveNumber";
 
 export function* getGaugeProxyContract() {
   const library = yield select(Web3Domains.selectNetworkLibraryDomain);
+  const account = yield select(Web3Domains.selectAccountDomain);
   const GAUGE_PROXY_ABI = yield select(selectGaugeProxyABIDomain);
   const gaugeProxyContract = new Contract(
     //|| '' is added because the error of not existing env var is handled in index file of this module
     env.GAUGE_PROXY_ADDRESS || "",
     GAUGE_PROXY_ABI,
-    library
+    getProviderOrSigner(library, account)
   ) as GaugeProxy;
 
   return gaugeProxyContract;
@@ -33,7 +35,7 @@ export function* voteForFarms() {
     const selectedPairs = yield select(
       GovernancePageSelectors.selectedVoteAllocationPair
     );
-    const gaugeProxyContract = yield call(getGaugeProxyContract);
+    const gaugeProxyContract: GaugeProxy = yield call(getGaugeProxyContract);
     const library = yield select(Web3Domains.selectLibraryDomain);
     //make them weight proportional if they are not
     let pairsObject = selectedPairs;
@@ -86,6 +88,7 @@ export function* voteForFarms() {
     if (transactionVote.status) {
       toast.success("Voted successfully");
       yield put(PoolsAndGaugesActions.getInitialData());
+      yield put(GovernancePageActions.setIsVoteAllocationModalOpen(false));
     } else {
       toast.error("something went wrong");
     }

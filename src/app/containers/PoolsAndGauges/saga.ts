@@ -1,31 +1,32 @@
 // import { take, call, put, select, takeLatest } from 'redux-saga/effects';
 // import { actions } from './slice';
-import { IS_DEV } from "environment";
-import { BigNumber } from "ethers";
+import { env, IS_DEV } from "environment";
+import { BigNumber, Contract } from "ethers";
 import { toast } from "react-toastify";
 import { all, call, put, select, takeLatest } from "redux-saga/effects";
-import { generatePoolInfo, getMultiContractData } from "services/multicall";
-import { getGaugeCalls, getPoolCalls } from "services/multicall-queries";
+import { getMultiContractData } from "services/multicall";
 import { EthersDomains } from "../BlockChain/Ethers/selectors";
-import { BlockChainDomains } from "../BlockChain/selectors";
 import { Web3Domains } from "../BlockChain/Web3/selectors";
-import { getAllocations, httpQuery, retrieveGauge } from "./providers/gauge";
-import { selectGaugeContractDomain, selectPoolsArrayDomain } from "./selectors";
+import { getAllocations } from "./providers/gauge";
+import { selectPoolsArrayDomain } from "./selectors";
 import { PoolsAndGaugesActions } from "./slice";
-import { LastInfo, PoolInfoItem, PoolProvider } from "./types";
+import { PoolInfo } from "./types";
+import GAUGE_PROXY_ABI from "abi/gaugeProxy.json";
+// import GAUGE_ABI from "abi/gauge.json";
+import LP_ABI from "abi/lp-token.json";
+import { getProviderOrSigner } from "../utils/contractUtils";
+import { GaugeProxy, LpToken } from "abi/ethers-contracts";
+import { getLastInfoAPI } from "./providers/lastInfo";
+import { getPoolCalls } from "./providers/getPoolCalls";
+import { getGaugeCalls } from "./providers/getGaugeCalls";
+import { retrieveGauge } from "./providers/retrieveGauge";
 
-export function* getLastInfo(action: {
-  type: string;
-  payload: { query: string };
-}) {
+export function* getLastInfo() {
   try {
-    const { query } = action.payload;
     yield put(PoolsAndGaugesActions.setIsLoadingLastInfo(true));
-    const lastInfoQuery = query;
-    const { data } = yield call(httpQuery, lastInfoQuery || "");
-    yield put(PoolsAndGaugesActions.setLastInfo(data.LastSnowballInfo));
-    const lastSnowballInfo: LastInfo = data.LastSnowballInfo;
-    const pools = lastSnowballInfo.poolsInfo.map((pool) => {
+    const lastSnowballInfo: PoolInfo[] = yield call(getLastInfoAPI);
+    yield put(PoolsAndGaugesActions.setLastInfo(lastSnowballInfo));
+    const pools = lastSnowballInfo.map((pool) => {
       return {
         ...pool,
         userLPBalance: BigNumber.from(0.0),
@@ -33,7 +34,7 @@ export function* getLastInfo(action: {
     });
     const tmp = {};
     pools.forEach((item) => {
-      tmp[item.address] = item;
+      tmp[item.swapaddress] = item;
     });
     yield put(PoolsAndGaugesActions.setPools(tmp));
   } catch (error) {
@@ -45,51 +46,110 @@ export function* getLastInfo(action: {
     yield put(PoolsAndGaugesActions.setIsLoadingLastInfo(false));
   }
 }
+
+export function* getGaugeProxyContract() {
+  const library = yield select(Web3Domains.selectNetworkLibraryDomain);
+  const account = yield select(Web3Domains.selectAccountDomain);
+  const gaugeAddress = env.GAUGE_PROXY_ADDRESS || "";
+  const gaugeProxyContract = new Contract(
+    gaugeAddress,
+    GAUGE_PROXY_ABI,
+    getProviderOrSigner(library, account)
+  );
+  return gaugeProxyContract;
+}
+
+function* getAndMergeAdditionalPoolInfo({
+  item,
+  gauges,
+  contractData,
+}: {
+  item: PoolInfo;
+  gauges: any;
+  contractData: any;
+}) {
+  const library = yield select(Web3Domains.selectNetworkLibraryDomain);
+  const account = yield select(Web3Domains.selectAccountDomain);
+  // const gaugeContract = new Contract(
+  //   item.gauge_address,
+  //   GAUGE_ABI,
+  //   getProviderOrSigner(library, account)
+  // ) as Gauge;
+
+  const poolContract = new Contract(
+    item.tokenaddress,
+    LP_ABI,
+    getProviderOrSigner(library, account)
+  ) as LpToken;
+
+  const lpData = contractData[item.tokenaddress];
+  const gauge = gauges.find(
+    (gauge) => gauge.address.toLowerCase() === item.gauge_address.toLowerCase()
+  );
+
+  let totalSupply = 0,
+    userDepositedLP = 0,
+    underlyingTokens = item.tokens,
+    lpDecimals = 18;
+  lpDecimals = lpData.decimals;
+
+  [lpDecimals, userDepositedLP, totalSupply] = yield all([
+    call(poolContract.decimals),
+    call(poolContract.balanceOf, account),
+    call(poolContract.totalSupply),
+  ]);
+  return {
+    ...item,
+    address: item.tokenaddress,
+    lpDecimals, //from pool contract call
+    userDepositedLP, //from pool contract call
+    totalSupply, //from pool contract call
+    gauge, // from gauges
+    underlyingTokens, // from api
+    userBalanceGauge: gauge ? gauge.staked : 0, //from the gauge
+  };
+}
+
 export function* getAndSetUserPools() {
   try {
     yield put(PoolsAndGaugesActions.setIsGettingPoolsAndGauges(true));
-    const gaugeProxyContract = yield select(selectGaugeContractDomain);
+    const gaugeProxyContract: GaugeProxy = yield call(getGaugeProxyContract);
     const account = yield select(Web3Domains.selectAccountDomain);
     const provider = yield select(EthersDomains.selectPrivateProviderDomain);
-    const prices = yield select(BlockChainDomains.selectPricesDomain);
-    const pools = yield select(selectPoolsArrayDomain);
-    let poolsCalls = [];
-    let contractCalls = [];
-    const poolProviders: { [key: string]: PoolProvider } = {};
-
+    const pools: PoolInfo[] = yield select(selectPoolsArrayDomain);
+    let poolsCalls: any[] = [];
+    let gaugesCalls: any[] = [];
     pools.forEach((item) => {
-      //@ts-ignore
       poolsCalls = poolsCalls.concat(getPoolCalls({ item, account }));
-      if (!poolProviders[item.source]) {
-        poolProviders[item.source] = {
-          name: item.source,
-          //FIXME: implement correct Icon
-          icon: "",
-        };
-      }
-    });
-    yield put(PoolsAndGaugesActions.setPoolProviders(poolProviders));
-    pools.forEach((item) => {
-      //@ts-ignore
-      contractCalls = contractCalls.concat(getGaugeCalls(item, account));
+      gaugesCalls = gaugesCalls.concat(getGaugeCalls({ item, account }));
     });
     const [gaugesData, poolsData, totalWeight] = yield all([
-      call(getMultiContractData, provider, contractCalls),
+      call(getMultiContractData, provider, gaugesCalls, true),
       call(getMultiContractData, provider, poolsCalls),
       call(gaugeProxyContract.totalWeight),
     ]);
-    let gauges = pools.map((item) =>
-      retrieveGauge({ pool: item, gaugesData, totalWeight })
+    let gauges: any = pools.map((item) =>
+      retrieveGauge({ pool: item, gaugesData, totalWeight, poolsData })
     );
-    const poolInfo = pools.map((item) =>
-      generatePoolInfo({ item, gauges, contractData: poolsData, prices })
-    );
+    let poolsInfoCallArray: any[] = [];
+    pools.forEach((item) => {
+      poolsInfoCallArray.push(
+        call(getAndMergeAdditionalPoolInfo, {
+          item,
+          gauges,
+          contractData: poolsData,
+        })
+      );
+    });
+    const poolInfo = yield all(poolsInfoCallArray);
     gauges = yield call(getAllocations, { gauges, gaugeProxyContract });
+    console.log({ gauges });
     yield put(PoolsAndGaugesActions.setGauges(gauges));
     const tmp = {};
-    poolInfo.forEach((item: PoolInfoItem) => {
-      tmp[item.address] = item;
+    poolInfo.forEach((item: PoolInfo) => {
+      tmp[item.tokenaddress] = item;
     });
+
     yield all([put(PoolsAndGaugesActions.setPools(tmp))]);
   } catch (error) {
     console.log(error);

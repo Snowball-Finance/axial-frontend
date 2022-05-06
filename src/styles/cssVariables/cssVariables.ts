@@ -41,6 +41,7 @@ export enum CssVariables {
   navigationDrawerBackground = "var(--navigationDrawerBackground)",
   modalBackground = "var(--modalBackground)",
   modalOverlayBackground = "var(--modalOverlayBackground)",
+  tableHeadColor = "var(--tableHeadColor)",
 }
 
 export enum FontFamilies {

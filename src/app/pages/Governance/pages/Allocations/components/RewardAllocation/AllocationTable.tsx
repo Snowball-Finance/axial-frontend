@@ -7,99 +7,49 @@ import {
   TableRow,
   TableCell,
 } from "@mui/material";
+import { useSelector } from "react-redux";
+
 import { CssVariables, FontFamilies } from "styles/cssVariables/cssVariables";
-
-function createData(
-  name: string,
-  allocation: string,
-  allocationPerDay: string,
-  axialAPR: string,
-  boostedAxialAPR: string,
-  voteWeight: string,
-  balance: string
-) {
-  return {
-    name,
-    allocation,
-    allocationPerDay,
-    axialAPR,
-    boostedAxialAPR,
-    voteWeight,
-    balance,
-  };
-}
-
-const rows = [
-  createData(
-    "AM3D",
-    "6.0%",
-    "40",
-    "36.0%",
-    "36.0%",
-    "36.0%",
-    "6,632 AM3D ($6,632.4)"
-  ),
-  createData(
-    "AC4D",
-    "6.0%",
-    "40",
-    "36.0%",
-    "36.0%",
-    "36.0%",
-    "6,632 AM3D ($6,632.4)"
-  ),
-  createData(
-    "AS4D",
-    "6.0%",
-    "40",
-    "36.0%",
-    "36.0%",
-    "36.0%",
-    "6,632 AM3D ($6,632.4)"
-  ),
-  createData(
-    "AA3D",
-    "6.0%",
-    "40",
-    "36.0%",
-    "36.0%",
-    "36.0%",
-    "6,632 AM3D ($6,632.4)"
-  ),
-];
+import {
+  selectGauges,
+  selectIsLoadingUserPoolsAndGauges,
+} from "app/containers/PoolsAndGauges/selectors";
+import { tableHeader } from "./constants";
+import { formatNumber } from "common/format";
 
 export const AllocationTable: FC = () => {
+  const gauges = useSelector(selectGauges);
+  const isLoading = useSelector(selectIsLoadingUserPoolsAndGauges);
+
+  if (isLoading) {
+    return <>Loading...</>;
+  }
+
   return (
-    <StyledTable sx={{ minWidth: 700 }} aria-label="customized table">
+    <StyledTable aria-label="customized table">
       <StyledTableHead>
         <TableRow>
-          <StyledTableCell>Name</StyledTableCell>
-          <StyledTableCell align="right">Allocation</StyledTableCell>
-          <StyledTableCell align="right">Allocation per day</StyledTableCell>
-          <StyledTableCell align="right">Axial APR</StyledTableCell>
-          <StyledTableCell align="right">Boosted Axial APR</StyledTableCell>
-          <StyledTableCell align="right">Vote Weight</StyledTableCell>
-          <StyledTableCell align="right">Balance</StyledTableCell>
+          {tableHeader().map((header) => {
+            return (
+              <StyledTableCell key={header.key}>{header.label}</StyledTableCell>
+            );
+          })}
         </TableRow>
       </StyledTableHead>
       <TableBody>
-        {rows.map((row) => (
-          <StyledTableRow key={row.name}>
+        {gauges.map((gauge) => (
+          <StyledTableRow key={gauge.address}>
             <StyledTableCell component="th" scope="row">
-              {row.name}
+              {gauge.depositTokenName}
             </StyledTableCell>
-            <StyledTableCell align="right">{row.allocation}</StyledTableCell>
-            <StyledTableCell align="right">
-              {row.allocationPerDay}
+            <StyledTableCell>
+              {formatNumber(gauge.allocPoint, 2)}
             </StyledTableCell>
-            <StyledTableCell align="right">{row.axialAPR}</StyledTableCell>
-            <StyledTableCell align="right">
-              {row.boostedAxialAPR}
-            </StyledTableCell>
-            <StyledTableCell align="right">{row.voteWeight}</StyledTableCell>
-            <StyledTableCell component="th" align="right">
-              {row.balance}
-            </StyledTableCell>
+            <StyledTableCell>{"-"}</StyledTableCell>
+            <StyledTableCell>{"-"}</StyledTableCell>
+            <StyledTableCell>{"-"}</StyledTableCell>
+            <StyledTableCell>{"-"}</StyledTableCell>
+            <StyledTableCell>{"-"}</StyledTableCell>
           </StyledTableRow>
         ))}
       </TableBody>
@@ -108,14 +58,16 @@ export const AllocationTable: FC = () => {
 };
 
 const StyledTable = styled(Table)({
+  minWidth: 700,
   backgroundColor: "transparent",
   borderStyle: "hidden",
   borderRadius: "20px",
   boxShadow: `0 0 0 4px ${CssVariables.cardBorder}`,
+  overflow: "auto",
 });
 
 const StyledTableHead = styled(TableHead)({
-  backgroundColor: "#0F0E3B",
+  backgroundColor: CssVariables.tableHeadColor,
   border: 0,
 });
 

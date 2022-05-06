@@ -1,27 +1,33 @@
 import { FC } from "react";
 import { Grid, styled, Typography } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
+import { translations } from "locales/i18n";
 import { PrimaryCardWrapper } from "app/components/wrappers/PrimaryCard";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { VoteButton } from "./VoteButton";
 
 export const VoteForPair: FC = () => {
+  const { t } = useTranslation();
+
   return (
     <PrimaryCardWrapper>
-      <Grid container direction="column" spacing={2}>
-        <Grid item>
-          <HeaderText variant="h2">Vote for preferred pair</HeaderText>
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <HeaderText variant="h2">
+            {t(
+              translations.GovernancePage.VoteAllocation.Voteforyourpreferredpair()
+            )}
+          </HeaderText>
         </Grid>
 
-        <Grid item>
+        <Grid item xs={12}>
           <Text variant="body2">
-            Once voted, your vote will rollover to the following week. There is
-            no need to vote more than once, unless you would like to make
-            changes to your original vote.
+            {t(translations.GovernancePage.VoteAllocation.TopDescs())}
           </Text>
         </Grid>
 
-        <Grid item>
+        <Grid item xs={12}>
           <VoteButton />
         </Grid>
       </Grid>

@@ -16,7 +16,7 @@ export interface ExecutionContext {
 /* --- STATE --- */
 export interface GovernancePageState {
   isVoteAllocationSelectionOpen: boolean;
-  selectedPairs: {
+  selectedGauges: {
     [key: string]: GaugeItem;
   };
   pairSearchInput: string;
@@ -38,6 +38,7 @@ export interface GovernancePageState {
   };
   isModalOpen: boolean;
   selectedProposal: Proposal | undefined;
+  isVoteAllocationModalOpen: boolean;
 }
 
 export type ContainerState = GovernancePageState;
