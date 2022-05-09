@@ -303,6 +303,7 @@
       "Name": "Name",
       "Pairs": "Pairs",
       "YourAllocation": "Your Allocation",
+      "Variation": "Variation",
       "TOKEN_APR": "{{token}} APR",
       "WeightVariation": "Weight Variation",
       "VoteAllocation": "Vote Allocation",
@@ -317,7 +318,16 @@
       "TOKEN_BalanceNeededToVote": "{{token}} balance needed to vote",
       "IfPercentage": "If the percentage is not exactly 100%, we will fit proportionally your choice.",
       "TopDescs": "Once voted, your vote will rollover to the following week. There is no need to vote more than once, unless you would like to make changes to your original vote.",
-      "VoteMessage": "If you have already voted, there is no need to vote more than once unless you want to make changes to your original vote. If the total percentage does not equal 100, then we will automatically adjust proportionately so it does."
+      "VoteMessage": "If you have already voted, there is no need to vote more than once unless you want to make changes to your original vote. If the total percentage does not equal 100, then we will automatically adjust proportionately so it does.",
+      "AllocationTable": {
+        "Name": "Name",
+        "Allocation": "Allocation",
+        "AllocationPerDay": "Allocation per day",
+        "AxialAPR": "Axial APR",
+        "BoostedAxialAPR": "Boosted Axial APR",
+        "GaugeWeight": "Gauge Weight",
+        "Balance": "Balance"
+      }
     },
   
     "Tabs": {

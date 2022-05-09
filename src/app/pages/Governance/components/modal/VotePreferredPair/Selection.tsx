@@ -1,8 +1,8 @@
 import { FC } from "react";
 import { Checkbox, Grid, styled, Typography } from "@mui/material";
-// import { useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
-// import { translations } from "locales/i18n";
+import { translations } from "locales/i18n";
 import { CardWrapper } from "app/components/wrappers/Card";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,7 +17,7 @@ import { AllocationInput } from "./AllocationInput";
 import { formatNumber } from "common/format";
 
 export const Selection: FC = () => {
-  //   const { t } = useTranslation();
+  const { t } = useTranslation();
 
   const dispatch = useDispatch();
   const gauges = useSelector(PoolsAndGaugesSelectors.gauges);
@@ -50,17 +50,17 @@ export const Selection: FC = () => {
           <Grid container>
             <Grid item xs={4}>
               <Text variant="body1" align="left">
-                Pairs
+                {t(translations.GovernancePage.VoteAllocation.Pairs())}
               </Text>
             </Grid>
             <Grid item xs={4}>
               <Text variant="body1" align="center">
-                Your Allocation
+                {t(translations.GovernancePage.VoteAllocation.YourAllocation())}
               </Text>
             </Grid>
             <Grid item xs={4}>
               <Text variant="body1" align="right">
-                Variation
+                {t(translations.GovernancePage.VoteAllocation.Variation())}
               </Text>
             </Grid>
           </Grid>
@@ -87,7 +87,7 @@ export const Selection: FC = () => {
                       />
                     </Grid>
                     <Grid item>
-                      <Text variant="body1">{gauge.poolName}</Text>
+                      <Text variant="body1">{gauge.depositTokenName}</Text>
                     </Grid>
                   </Grid>
                 </Grid>

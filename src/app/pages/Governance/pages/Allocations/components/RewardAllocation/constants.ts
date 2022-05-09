@@ -1,30 +1,44 @@
-export const tableHeader = () => [
+import { translations } from "locales/i18n";
+
+export const tableHeader = (t) => [
   {
-    key: "name",
-    label: "Name",
+    id: "name",
+    label: t(translations.GovernancePage.VoteAllocation.AllocationTable.Name()),
   },
   {
-    key: "allocation",
-    label: "Allocation",
+    id: "allocation",
+    label: t(
+      translations.GovernancePage.VoteAllocation.AllocationTable.Allocation()
+    ),
   },
   {
-    key: "allocationPerDay",
-    label: "Allocation per day",
+    id: "allocationPerDay",
+    label: t(
+      translations.GovernancePage.VoteAllocation.AllocationTable.AllocationPerDay()
+    ),
   },
   {
-    key: "axialAPR",
-    label: "Axial APR",
+    id: "axialAPR",
+    label: t(
+      translations.GovernancePage.VoteAllocation.AllocationTable.AxialAPR()
+    ),
   },
   {
-    key: "boostedAxialAPR",
-    label: "Boosted Axial APR",
+    id: "boostedAxialAPR",
+    label: t(
+      translations.GovernancePage.VoteAllocation.AllocationTable.BoostedAxialAPR()
+    ),
   },
   {
-    key: "voteWeight",
-    label: "Vote Weight",
+    id: "gaugeWeight",
+    label: t(
+      translations.GovernancePage.VoteAllocation.AllocationTable.GaugeWeight()
+    ),
   },
   {
-    key: "Balance",
-    label: "Balance",
+    id: "Balance",
+    label: t(
+      translations.GovernancePage.VoteAllocation.AllocationTable.Balance()
+    ),
   },
 ];

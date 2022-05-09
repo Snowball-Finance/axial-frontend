@@ -8,18 +8,35 @@ import {
   TableCell,
 } from "@mui/material";
 import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 import { CssVariables, FontFamilies } from "styles/cssVariables/cssVariables";
 import {
   selectGauges,
   selectIsLoadingUserPoolsAndGauges,
+  PoolsAndGaugesSelectors,
 } from "app/containers/PoolsAndGauges/selectors";
 import { tableHeader } from "./constants";
 import { formatNumber } from "common/format";
 
 export const AllocationTable: FC = () => {
+  const { t } = useTranslation();
+
   const gauges = useSelector(selectGauges);
   const isLoading = useSelector(selectIsLoadingUserPoolsAndGauges);
+  const poolsArray = useSelector(PoolsAndGaugesSelectors.poolsArray);
+
+  const getAllocation = (address: string) => {
+    const gaugeAllocation = gauges.find(
+      (item) => item.address === address
+    )?.allocPoint;
+    return formatNumber(gaugeAllocation || 0, 2);
+  };
+
+  const getBoostedAxialAPR = (pool) => {
+    const data = pool.last_rewards_apr[0][pool.last_rewards_apr[0].length - 1];
+    return formatNumber(+data || 0, 2);
+  };
 
   if (isLoading) {
     return <>Loading...</>;
@@ -29,27 +46,33 @@ export const AllocationTable: FC = () => {
     <StyledTable aria-label="customized table">
       <StyledTableHead>
         <TableRow>
-          {tableHeader().map((header) => {
+          {tableHeader(t).map((header) => {
             return (
-              <StyledTableCell key={header.key}>{header.label}</StyledTableCell>
+              <StyledTableCell key={header.id}>{header.label}</StyledTableCell>
             );
           })}
         </TableRow>
       </StyledTableHead>
       <TableBody>
-        {gauges.map((gauge) => (
-          <StyledTableRow key={gauge.address}>
+        {poolsArray.map((pool) => (
+          <StyledTableRow key={pool.id}>
             <StyledTableCell component="th" scope="row">
-              {gauge.depositTokenName}
+              {pool.symbol}
             </StyledTableCell>
             <StyledTableCell>
-              {formatNumber(gauge.allocPoint, 2)}
+              {getAllocation(pool.gauge_address)}
             </StyledTableCell>
-            <StyledTableCell>{"-"}</StyledTableCell>
-            <StyledTableCell>{"-"}</StyledTableCell>
-            <StyledTableCell>{"-"}</StyledTableCell>
-            <StyledTableCell>{"-"}</StyledTableCell>
-            <StyledTableCell>{"-"}</StyledTableCell>
+            <StyledTableCell>
+              {formatNumber(+pool.last_daily_axial_alloc, 2)}
+            </StyledTableCell>
+            <StyledTableCell>{formatNumber(+pool.last_apr, 2)}</StyledTableCell>
+            <StyledTableCell>{getBoostedAxialAPR(pool)}</StyledTableCell>
+            <StyledTableCell>
+              {formatNumber(+pool.last_gauge_weight, 2)}
+            </StyledTableCell>
+            <StyledTableCell>
+              {formatNumber(+pool.last_gauge_axial_balance, 2)}
+            </StyledTableCell>
           </StyledTableRow>
         ))}
       </TableBody>
