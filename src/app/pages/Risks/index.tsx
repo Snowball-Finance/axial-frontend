@@ -13,6 +13,7 @@ import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { Content } from "./components/Content";
 import { mobile } from "styles/media";
+import { Max1040 } from "app/components/wrappers/max1040";
 
 export const RisksPage: FC = () => {
   const { t } = useTranslation();
@@ -34,15 +35,15 @@ export const RisksPage: FC = () => {
   );
 };
 
-const StyledSwapCard = styled("div")({
-  width: 700,
-  margin: "auto",
+const StyledSwapCard = styled(Max1040)({
+  margin: "0px auto",
   backgroundColor: CssVariables.poolCardBackground,
   border: `4px solid ${CssVariables.cardBorder}`,
   borderRadius: "20px",
-  paddingBottom: "40px",
+  padding: "26px 36px",
 
   [mobile]: {
     width: "100%",
+    padding: 15,
   },
 });
