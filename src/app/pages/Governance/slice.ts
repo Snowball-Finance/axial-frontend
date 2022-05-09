@@ -13,7 +13,7 @@ import {
 // The initial state of the GovernancePage container
 export const initialState: ContainerState = {
   isVoteAllocationSelectionOpen: false,
-  selectedPairs: {},
+  selectedGauges: {},
   pairSearchInput: "",
   selectedPoolProviders: [],
   isVotingForFarms: false,
@@ -55,7 +55,7 @@ const governancePageSlice = createSlice({
       state,
       action: PayloadAction<GaugeItem>
     ) => {
-      state.selectedPairs[action.payload.address] = action.payload;
+      state.selectedGauges[action.payload.address] = action.payload;
     },
     toggleSelectedPoolProvider: (state, action: PayloadAction<string>) => {
       const { selectedPoolProviders } = state;
@@ -67,26 +67,26 @@ const governancePageSlice = createSlice({
       }
       state.selectedPoolProviders = selectedPoolProviders;
     },
-    toggleSelectedPair: (state, action: PayloadAction<GaugeItem>) => {
-      const { selectedPairs } = state;
+    toggleSelectedGauge: (state, action: PayloadAction<GaugeItem>) => {
+      const { selectedGauges } = state;
       const { payload } = action;
       const { address } = payload;
-      if (selectedPairs[address]) {
-        delete selectedPairs[address];
+      if (selectedGauges[address]) {
+        delete selectedGauges[address];
       } else {
-        selectedPairs[address] = payload;
+        selectedGauges[address] = payload;
       }
-      state.selectedPairs = selectedPairs;
+      state.selectedGauges = selectedGauges;
     },
     fitSelectedPairsEqually: (state) => {
-      const { selectedPairs } = state;
-      const tmp = fitGaugeWeightsEqually(selectedPairs);
-      state.selectedPairs = tmp;
+      const { selectedGauges } = state;
+      const tmp = fitGaugeWeightsEqually(selectedGauges);
+      state.selectedGauges = tmp;
     },
     fitSelectedPairsProportionally: (state) => {
-      const { selectedPairs } = state;
-      const tmp = fitGaugeWeightsProportionally(selectedPairs);
-      state.selectedPairs = tmp;
+      const { selectedGauges } = state;
+      const tmp = fitGaugeWeightsProportionally(selectedGauges);
+      state.selectedGauges = tmp;
     },
     voteForFarms: (state, action: PayloadAction<void>) => {},
     setIsVotingForFarms: (state, action: PayloadAction<boolean>) => {

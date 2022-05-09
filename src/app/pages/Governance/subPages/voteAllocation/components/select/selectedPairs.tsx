@@ -14,13 +14,13 @@ export const SelectedPairs = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const selectedPairs = useSelector(
-    GovernancePageSelectors.selectedVoteAllocationPairsArray
+    GovernancePageSelectors.selectedVoteAllocationGaugesArray
   );
   const noSelectedPair = selectedPairs.length === 0;
 
   const handleRemoveGaugeClick = (e: any, gauge: GaugeItem) => {
     e.stopPropagation();
-    dispatch(GovernancePageActions.toggleSelectedPair(gauge));
+    dispatch(GovernancePageActions.toggleSelectedGauge(gauge));
   };
 
   return (

@@ -61,25 +61,12 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "MCAV3",
+    name: "MCAV2",
     outputs: [
       {
-        internalType: "contract IMasterChefAxialV3",
+        internalType: "contract IMasterChef",
         name: "",
         type: "address",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "UINT256_MAX",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
       },
     ],
     stateMutability: "view",
@@ -159,7 +146,7 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "deposit",
+    name: "depositDummyToken",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -397,6 +384,19 @@ const _abi = [
       },
     ],
     name: "setGovernance",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_masterChef",
+        type: "address",
+      },
+    ],
+    name: "setMasterChef",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

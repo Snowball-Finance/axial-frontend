@@ -28,6 +28,10 @@ theme = createTheme(theme, {
         fontSize: "20px",
       },
     },
+    h5: {
+      fontSize: "20px",
+      fontFamily: FontFamilies.FugazOne,
+    },
     body1: {
       fontSize: "16px",
       fontFamily: FontFamilies.IBMPlexSans,

@@ -3,21 +3,12 @@ import { GaugeItem } from "app/containers/PoolsAndGauges/types";
 import { formatNumber } from "common/format";
 import { env } from "environment";
 import { translations } from "locales/i18n";
-import { multiply } from "precise-math";
 
 interface ColumnDef extends ColDef {
   field?: keyof GaugeItem;
 }
 
-export const bottomTableRowsConfig = ({
-  t,
-  isSmall,
-  totalSnob,
-}: {
-  t: any;
-  isSmall: boolean;
-  totalSnob: number;
-}): ColumnDef[] => [
+export const bottomTableRowsConfig = ({ t }: { t: any }): ColumnDef[] => [
   {
     headerName: t(translations.GovernancePage.VoteAllocation.Name()),
     field: "poolName",
@@ -25,12 +16,7 @@ export const bottomTableRowsConfig = ({
     minWidth: 100,
     valueFormatter: ({ data }: { data: GaugeItem }) => data.depositTokenName,
   },
-  {
-    headerName: t(translations.GovernancePage.VoteAllocation.Platform()),
-    field: "source",
-    flex: 1,
-    minWidth: 100,
-  },
+
   {
     headerName: t(translations.GovernancePage.VoteAllocation.Allocation()),
     field: "allocPoint",
@@ -57,9 +43,6 @@ export const bottomTableRowsConfig = ({
     flex: 1,
     minWidth: 100,
     valueFormatter: ({ data }: { data: GaugeItem }) => {
-      if (totalSnob) {
-        return formatNumber(multiply(data.allocPoint, totalSnob), 2);
-      }
       return "-";
     },
   },
@@ -76,14 +59,14 @@ export const bottomTableRowsConfig = ({
     flex: 1,
     minWidth: 100,
   },
-  {
-    headerName: t(translations.GovernancePage.VoteAllocation.Balance()),
-    field: "balance",
-    flex: 1,
-    minWidth: 100,
-    headerClass: "blue",
-    cellClass: "darkBold",
-    valueFormatter: ({ data }: { data: GaugeItem }) =>
-      formatNumber(Number(data.balance.toString()), 2),
-  },
+  // {
+  //   headerName: t(translations.GovernancePage.VoteAllocation.Balance()),
+  //   field: "balance",
+  //   flex: 1,
+  //   minWidth: 100,
+  //   headerClass: "blue",
+  //   cellClass: "darkBold",
+  //   valueFormatter: ({ data }: { data: GaugeItem }) =>
+  //     formatNumber(Number(data.balance.toString()), 2),
+  // },
 ];

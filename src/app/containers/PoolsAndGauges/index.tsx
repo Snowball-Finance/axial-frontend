@@ -14,12 +14,8 @@ import { PoolsAndGaugesActions, usePoolsAndGaugesSlice } from "./slice";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-balham.min.css";
 import { EthersSelectors } from "../BlockChain/Ethers/selectors";
-interface Props {
-  abi: any;
-  initialDataQuery: string;
-}
 
-export const PoolsAndGauges: FC<Props> = ({ abi, initialDataQuery: query }) => {
+export const PoolsAndGauges: FC = () => {
   usePoolsAndGaugesSlice();
   const dispatch = useDispatch();
   const gaugeContract = useSelector(selectGaugeContract);
@@ -28,12 +24,8 @@ export const PoolsAndGauges: FC<Props> = ({ abi, initialDataQuery: query }) => {
   const provider = useSelector(EthersSelectors.selectPrivateProvider);
 
   useEffect(() => {
-    dispatch(PoolsAndGaugesActions.setGaugeProxyABI(abi));
-  }, []);
-
-  useEffect(() => {
     if (provider && !alreadyGotUserPools) {
-      dispatch(PoolsAndGaugesActions.getLastInfo({ query }));
+      dispatch(PoolsAndGaugesActions.getLastInfo());
     }
   }, [provider, alreadyGotUserPools]);
 

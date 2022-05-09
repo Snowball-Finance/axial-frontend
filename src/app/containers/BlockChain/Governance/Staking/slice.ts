@@ -5,6 +5,7 @@ import {
   DistributorData,
   StakeAccruingTokenModel,
   LockedInfo,
+  SAxialData,
 } from "./types";
 import { createSlice } from "store/toolkit";
 import { useInjectReducer, useInjectSaga } from "store/redux-injectors";
@@ -32,6 +33,7 @@ export const initialState: ContainerState = {
   claimable: {
     userClaimable: BigNumber.from(0),
   },
+  sAxialDataFromAPI: undefined,
 };
 
 const stakingSlice = createSlice({
@@ -120,6 +122,10 @@ const stakingSlice = createSlice({
       );
       state.keepThaUnclaimedWhenExtendingLockPeriod = action.payload;
     },
+    setSAxialDataFromAPI(state, action: PayloadAction<SAxialData>) {
+      state.sAxialDataFromAPI = action.payload;
+    },
+    getSAxialDataFromAPI() {},
   },
 });
 

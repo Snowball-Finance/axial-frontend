@@ -22,15 +22,14 @@ export interface GaugeProxyInterface extends utils.Interface {
   functions: {
     "Axial()": FunctionFragment;
     "DISTRIBUTION_DEADLINE()": FunctionFragment;
-    "MCAV3()": FunctionFragment;
-    "UINT256_MAX()": FunctionFragment;
+    "MCAV2()": FunctionFragment;
     "acceptGovernance()": FunctionFragment;
     "addDeployer(address)": FunctionFragment;
     "addGauge(address)": FunctionFragment;
     "axialDummyToken()": FunctionFragment;
     "collect()": FunctionFragment;
     "deployers(address)": FunctionFragment;
-    "deposit()": FunctionFragment;
+    "depositDummyToken()": FunctionFragment;
     "deprecateGauge(address)": FunctionFragment;
     "deprecated(address)": FunctionFragment;
     "distribute(uint256,uint256)": FunctionFragment;
@@ -48,6 +47,7 @@ export interface GaugeProxyInterface extends utils.Interface {
     "reset()": FunctionFragment;
     "sAxial()": FunctionFragment;
     "setGovernance(address)": FunctionFragment;
+    "setMasterChef(address)": FunctionFragment;
     "setPID(uint256)": FunctionFragment;
     "tokenVote(address,uint256)": FunctionFragment;
     "tokens()": FunctionFragment;
@@ -64,11 +64,7 @@ export interface GaugeProxyInterface extends utils.Interface {
     functionFragment: "DISTRIBUTION_DEADLINE",
     values?: undefined
   ): string;
-  encodeFunctionData(functionFragment: "MCAV3", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "UINT256_MAX",
-    values?: undefined
-  ): string;
+  encodeFunctionData(functionFragment: "MCAV2", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "acceptGovernance",
     values?: undefined
@@ -81,7 +77,10 @@ export interface GaugeProxyInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "collect", values?: undefined): string;
   encodeFunctionData(functionFragment: "deployers", values: [string]): string;
-  encodeFunctionData(functionFragment: "deposit", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "depositDummyToken",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "deprecateGauge",
     values: [string]
@@ -124,6 +123,10 @@ export interface GaugeProxyInterface extends utils.Interface {
     values: [string]
   ): string;
   encodeFunctionData(
+    functionFragment: "setMasterChef",
+    values: [string]
+  ): string;
+  encodeFunctionData(
     functionFragment: "setPID",
     values: [BigNumberish]
   ): string;
@@ -153,11 +156,7 @@ export interface GaugeProxyInterface extends utils.Interface {
     functionFragment: "DISTRIBUTION_DEADLINE",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "MCAV3", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "UINT256_MAX",
-    data: BytesLike
-  ): Result;
+  decodeFunctionResult(functionFragment: "MCAV2", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "acceptGovernance",
     data: BytesLike
@@ -173,7 +172,10 @@ export interface GaugeProxyInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "collect", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "deployers", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "depositDummyToken",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "deprecateGauge",
     data: BytesLike
@@ -207,6 +209,10 @@ export interface GaugeProxyInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "sAxial", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "setGovernance",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setMasterChef",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "setPID", data: BytesLike): Result;
@@ -260,9 +266,7 @@ export interface GaugeProxy extends BaseContract {
 
     DISTRIBUTION_DEADLINE(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    MCAV3(overrides?: CallOverrides): Promise<[string]>;
-
-    UINT256_MAX(overrides?: CallOverrides): Promise<[BigNumber]>;
+    MCAV2(overrides?: CallOverrides): Promise<[string]>;
 
     acceptGovernance(
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -286,7 +290,7 @@ export interface GaugeProxy extends BaseContract {
 
     deployers(arg0: string, overrides?: CallOverrides): Promise<[boolean]>;
 
-    deposit(
+    depositDummyToken(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -351,6 +355,11 @@ export interface GaugeProxy extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    setMasterChef(
+      _masterChef: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     setPID(
       _pid: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -389,9 +398,7 @@ export interface GaugeProxy extends BaseContract {
 
   DISTRIBUTION_DEADLINE(overrides?: CallOverrides): Promise<BigNumber>;
 
-  MCAV3(overrides?: CallOverrides): Promise<string>;
-
-  UINT256_MAX(overrides?: CallOverrides): Promise<BigNumber>;
+  MCAV2(overrides?: CallOverrides): Promise<string>;
 
   acceptGovernance(
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -415,7 +422,7 @@ export interface GaugeProxy extends BaseContract {
 
   deployers(arg0: string, overrides?: CallOverrides): Promise<boolean>;
 
-  deposit(
+  depositDummyToken(
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -480,6 +487,11 @@ export interface GaugeProxy extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  setMasterChef(
+    _masterChef: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   setPID(
     _pid: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -518,9 +530,7 @@ export interface GaugeProxy extends BaseContract {
 
     DISTRIBUTION_DEADLINE(overrides?: CallOverrides): Promise<BigNumber>;
 
-    MCAV3(overrides?: CallOverrides): Promise<string>;
-
-    UINT256_MAX(overrides?: CallOverrides): Promise<BigNumber>;
+    MCAV2(overrides?: CallOverrides): Promise<string>;
 
     acceptGovernance(overrides?: CallOverrides): Promise<void>;
 
@@ -534,7 +544,7 @@ export interface GaugeProxy extends BaseContract {
 
     deployers(arg0: string, overrides?: CallOverrides): Promise<boolean>;
 
-    deposit(overrides?: CallOverrides): Promise<void>;
+    depositDummyToken(overrides?: CallOverrides): Promise<void>;
 
     deprecateGauge(_token: string, overrides?: CallOverrides): Promise<void>;
 
@@ -581,6 +591,11 @@ export interface GaugeProxy extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    setMasterChef(
+      _masterChef: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     setPID(_pid: BigNumberish, overrides?: CallOverrides): Promise<void>;
 
     tokenVote(
@@ -619,9 +634,7 @@ export interface GaugeProxy extends BaseContract {
 
     DISTRIBUTION_DEADLINE(overrides?: CallOverrides): Promise<BigNumber>;
 
-    MCAV3(overrides?: CallOverrides): Promise<BigNumber>;
-
-    UINT256_MAX(overrides?: CallOverrides): Promise<BigNumber>;
+    MCAV2(overrides?: CallOverrides): Promise<BigNumber>;
 
     acceptGovernance(
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -645,7 +658,7 @@ export interface GaugeProxy extends BaseContract {
 
     deployers(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-    deposit(
+    depositDummyToken(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -710,6 +723,11 @@ export interface GaugeProxy extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    setMasterChef(
+      _masterChef: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     setPID(
       _pid: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -751,9 +769,7 @@ export interface GaugeProxy extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    MCAV3(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    UINT256_MAX(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    MCAV2(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     acceptGovernance(
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -780,7 +796,7 @@ export interface GaugeProxy extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    deposit(
+    depositDummyToken(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -851,6 +867,11 @@ export interface GaugeProxy extends BaseContract {
 
     setGovernance(
       _governance: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setMasterChef(
+      _masterChef: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

@@ -1,12 +1,8 @@
 import { styled, useMediaQuery } from "@mui/material";
 import { ColDef } from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react";
-import {
-  selectGauges,
-  selectPoolsAndGaugesLastInfo,
-} from "app/containers/PoolsAndGauges/selectors";
+import { selectGauges } from "app/containers/PoolsAndGauges/selectors";
 import { GaugeItem } from "app/containers/PoolsAndGauges/types";
-import { multiply } from "precise-math";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -22,20 +18,13 @@ interface GridConfigTypes {
 export const RewardsAllocationsTable = () => {
   const { t } = useTranslation();
   const smallScreen = useMediaQuery(theme.breakpoints.down("sm"));
-  const lastInfo = useSelector(selectPoolsAndGaugesLastInfo);
   const rowConfigs = useMemo(
     () =>
       bottomTableRowsConfig({
         t,
-        isSmall: smallScreen,
-        totalSnob: multiply(
-          // @ts-ignore ignored, because snobPerBlock is specific to this project and is not defined in lastInfo model
-          lastInfo?.snobPerBlock ?? 0,
-          lastInfo?.blocksPast24hrs ?? 0
-        ),
       }),
     //@ts-ignore ignored for the same reason as above
-    [smallScreen, lastInfo?.snobPerBlock]
+    [smallScreen]
   );
   const gauges = useSelector(selectGauges);
   const gridConfig: GridConfigTypes = {

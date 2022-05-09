@@ -3,29 +3,30 @@
  * StakingPage
  *
  */
+import { Helmet } from "react-helmet-async";
+import { useTranslation } from "react-i18next";
+
+import { translations } from "locales/i18n";
 import { useStakingPageSlice } from "./slice";
-import { Route, Switch } from "react-router-dom";
-import { AppPages } from "app/types";
-import { StakingRoot } from "./pages/root";
-import { StakingSubPages } from "./routes";
-import { SAxialPage } from "./pages/sAxial";
-import { VeAxialPage } from "./pages/veAxial";
+import { StakingBody } from "./body";
 
 interface Props {}
 export function StakingPage(props: Props) {
   useStakingPageSlice();
 
+  const { t } = useTranslation();
+
   return (
-    <Switch>
-      <Route exact path={AppPages.StakingPage}>
-        <StakingRoot />
-      </Route>
-      <Route exact path={`${StakingSubPages.sAxial}`}>
-        <SAxialPage />
-      </Route>
-      <Route path={`${StakingSubPages.veAxial}`}>
-        <VeAxialPage />
-      </Route>
-    </Switch>
+    <>
+      <Helmet>
+        <title>{t(translations.Staking.Staking())}</title>
+        <meta
+          name="description"
+          content={`${t(translations.Staking.StakingDesc())}`}
+        />
+      </Helmet>
+
+      <StakingBody />
+    </>
   );
 }
