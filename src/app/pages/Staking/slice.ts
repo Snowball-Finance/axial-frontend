@@ -26,6 +26,7 @@ export const initialState: ContainerState = {
   selectedDepositAndWithdrawTab: DepositAndWithdrawTab.Deposit,
   selectedVeAxialDepositAndWithdrawTab: DepositAndWithdrawTab.Deposit,
   selectedDepositUnlockPeriod: DepositUnlockPeriod.end,
+  isModalOpen: false,
 };
 
 const stakingPageSlice = createSlice({
@@ -78,6 +79,9 @@ const stakingPageSlice = createSlice({
       state.selectedEpoch = addDaysToTodayAndGetOnlyDate(
         daysFromNowFromPercentage
       );
+    },
+    setIsModalOpen(state, action: PayloadAction<boolean>) {
+      state.isModalOpen = action.payload;
     },
   },
 });

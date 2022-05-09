@@ -19,6 +19,13 @@ export interface StakingState {
   };
   otherDistributors?: DistributorData[];
   keepThaUnclaimedWhenExtendingLockPeriod: boolean;
+  sAxialDataFromAPI: SAxialData | undefined;
+}
+
+export interface SAxialData {
+  totalStaked: string;
+  walletStaked: string;
+  averageStaked: number;
 }
 
 export interface DistributorData {
