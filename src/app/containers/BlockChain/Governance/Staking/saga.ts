@@ -1,12 +1,8 @@
 import { parseEther } from "ethers/lib/utils";
 import { all, call, delay, put, select, takeLatest } from "redux-saga/effects";
 import { StakingActions } from "./slice";
-import {
-  StakeGovernanceTokenModel,
-  DistributorData,
-  StakeAccruingTokenModel,
-} from "./types";
-import { Contract, ethers } from "ethers";
+import { StakeGovernanceTokenModel, StakeAccruingTokenModel } from "./types";
+import { Contract } from "ethers";
 import { env } from "environment";
 import { BlockChainActions } from "../../slice";
 import { toast } from "react-toastify";
@@ -186,87 +182,6 @@ export function* stakeAccruingToken(action: {
   }
 }
 
-export function* claim() {
-  const account = yield select(Web3Domains.selectAccountDomain);
-  if (!account) {
-    toast.warn("connect to your wallet please");
-    return;
-  }
-  const feeDistributorABI = yield select(
-    StakingDomains.selectFeeDistributorABIDomain
-  );
-  const library = yield select(Web3Domains.selectLibraryDomain);
-  const otherDistributors = yield select(
-    StakingDomains.selectOtherDistributorsDomain
-  );
-  try {
-    yield put(StakingActions.setIsClaiming(true));
-    const feeDistributorContract = new ethers.Contract(
-      // || '' is used because if .env is not set,we will fetch the error in early stages
-      env.FEE_DISTRIBUTOR_CONTRACT_ADDRESS || "",
-      feeDistributorABI,
-      library.getSigner()
-    );
-    const gasLimit = yield call(feeDistributorContract.estimateGas["claim()"]);
-    const tokenClaim = yield call(feeDistributorContract["claim()"], {
-      gasLimit,
-    });
-    const transactionResponse = yield call(tokenClaim.wait, 1);
-    if (transactionResponse.status && otherDistributors) {
-      const tmp = {};
-      for (let i = 0; i < otherDistributors.length; i++) {
-        const element: DistributorData = otherDistributors[i];
-        const contract = new ethers.Contract(
-          element.address,
-          feeDistributorABI,
-          library.getSigner()
-        );
-        tmp[element.name] = yield call(
-          contract.callStatic["claim(address)"],
-          account,
-          { gasLimit: 1000000 }
-        );
-      }
-      yield put(
-        StakingActions.setOtherClaimables({
-          ...tmp,
-        })
-      );
-    }
-  } catch (error) {
-    console.debug(error);
-  } finally {
-    yield put(StakingActions.setIsClaiming(false));
-  }
-}
-
-export function* getFeeDistributionInfo() {
-  const library = yield select(Web3Domains.selectLibraryDomain);
-  try {
-    yield put(StakingActions.setIsGettingFeeDistributionInfo(true));
-    const account = yield select(Web3Domains.selectAccountDomain);
-    const feeDistributorABI = yield select(
-      StakingDomains.selectFeeDistributorABIDomain
-    );
-    const feeDistributorContract = new ethers.Contract(
-      // || '' is used because if .env is not set,we will fetch the error in early stages
-      env.FEE_DISTRIBUTOR_CONTRACT_ADDRESS || "",
-      feeDistributorABI,
-      library.getSigner()
-    );
-    const userClaimable = yield call(
-      feeDistributorContract.callStatic["claim(address)"],
-      account,
-      { gasLimit: 1000000 }
-    );
-    yield put(StakingActions.setUserClaimable(userClaimable));
-  } catch (error) {
-    console.debug(error);
-  } finally {
-    yield put(StakingActions.setIsGettingFeeDistributionInfo(false));
-  }
-}
-
 export function* getLockedGovernanceTokenInfo(action: {
   type: string;
   payload: skipLoading;
@@ -379,11 +294,6 @@ export function* stakingSaga() {
     stakeGovernanceToken
   );
   yield takeLatest(StakingActions.stakeAccruingToken.type, stakeAccruingToken);
-  yield takeLatest(StakingActions.claim.type, claim);
-  yield takeLatest(
-    StakingActions.getFeeDistributionInfo.type,
-    getFeeDistributionInfo
-  );
   yield takeLatest(
     StakingActions.getLockedGovernanceTokenInfo.type,
     getLockedGovernanceTokenInfo

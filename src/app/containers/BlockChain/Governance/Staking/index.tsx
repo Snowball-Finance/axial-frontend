@@ -3,8 +3,6 @@
  * Staking
  *
  */
-
-import { env } from "environment";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Web3Selectors } from "../../Web3/selectors";
@@ -25,12 +23,6 @@ export function Staking({ feeDistributorABI, otherDistributors }: Props) {
   const governanceTokenContract = useSelector(
     GovernanceSelectors.governanceTokenContract
   );
-
-  if (!env.FEE_DISTRIBUTOR_CONTRACT_ADDRESS) {
-    throw new Error(
-      "REACT_APP_FEE_DISTRIBUTOR_CONTRACT_ADDRESS is not set in .env for the staking"
-    );
-  }
 
   useEffect(() => {
     dispatch(
