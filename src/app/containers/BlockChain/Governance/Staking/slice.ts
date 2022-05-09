@@ -63,7 +63,6 @@ const stakingSlice = createSlice({
     setIsStakingGovernanceToken(state, action: PayloadAction<boolean>) {
       state.isStaking = action.payload;
     },
-    claim() {},
     withdrawGovernanceToken() {},
     withdrawAccruingToken() {},
     setIsWithdrawingGovernanceToken(state, action: PayloadAction<boolean>) {
@@ -75,7 +74,6 @@ const stakingSlice = createSlice({
     setIsClaiming(state, action: PayloadAction<boolean>) {
       state.isClaiming = action.payload;
     },
-    getFeeDistributionInfo() {},
     setIsGettingFeeDistributionInfo(state, action: PayloadAction<boolean>) {
       state.isGettingFeeDistributionInfo = action.payload;
     },
