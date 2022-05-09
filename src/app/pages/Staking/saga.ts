@@ -24,6 +24,7 @@ export function* stakeAllTheBalances() {
 }
 
 export function* stakeGovernanceToken() {
+  yield put(StakingPageActions.setIsModalOpen(true));
   const enteredBalance = yield select(
     StakingPageDomains.selectEnteredMainTokenToStakeDomain
   );
@@ -57,6 +58,7 @@ export function* stakeGovernanceToken() {
 }
 
 export function* stakeAccruingToken() {
+  yield put(StakingPageActions.setIsModalOpen(true));
   const enteredBalance = yield select(
     StakingPageDomains.selectEnteredMainTokenToStakeIntoVeAxialDomain
   );
