@@ -48,6 +48,6 @@ const ReviewContainer = styled(Grid)({
   marginTop: 10,
 
   [mobile]: {
-    maxWidth: "80vw",
+    maxWidth: "100%",
   },
 });

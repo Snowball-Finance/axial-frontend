@@ -20,6 +20,10 @@ export const StyledDialog = styled(Dialog)({
       backgroundColor: CssVariables.actionColor,
       borderRadius: 8,
     },
+
+    [mobile]: {
+      minWidth: "95%",
+    },
   },
 });
 
@@ -33,6 +37,7 @@ export const Wrapper = styled("div")({
 
   [mobile]: {
     minWidth: "80vw",
+    padding: "25px 20px",
   },
 });
 export const ChildWrapper = styled("div")({

@@ -35,7 +35,7 @@ export const Actions: FC = () => {
 
   return (
     <Grid container spacing={1} justifyContent="center">
-      <Grid item xs={6}>
+      <Grid item xs={12} xl={6}>
         <ContainedButton
           onClick={handleApprove}
           loading={isApproving}
@@ -46,7 +46,7 @@ export const Actions: FC = () => {
         </ContainedButton>
       </Grid>
 
-      <Grid item xs={6}>
+      <Grid item xs={12} xl={6}>
         <ContainedButton
           onClick={handleSwap}
           loading={isSwapping}

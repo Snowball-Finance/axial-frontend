@@ -10,11 +10,11 @@ export const RewardsTokens: FC = () => {
   return (
     <Grid container spacing={1}>
       <Grid item xs={12}>
-        <PoolInfoTitleText variant="body1">Rewards</PoolInfoTitleText>
+        <PoolInfoHeaderText variant="body1">Rewards</PoolInfoHeaderText>
       </Grid>
 
       <Grid item container>
-        <Grid item container spacing={1} alignItems="center" xs={6}>
+        <Grid item container spacing={1} alignItems="center" xl={6} xs>
           <Grid item>
             <PoolTokenImage src={axialIcon} alt={`token-AXIAL`} />
           </Grid>
@@ -23,7 +23,7 @@ export const RewardsTokens: FC = () => {
           </Grid>
         </Grid>
 
-        <Grid item container spacing={1} alignItems="center" xs={6}>
+        <Grid item container spacing={1} alignItems="center" xl={6} xs>
           <Grid item>
             <PoolTokenImage src={avaxIcon} alt={`token-AVAX`} />
           </Grid>
@@ -36,12 +36,16 @@ export const RewardsTokens: FC = () => {
   );
 };
 
-const PoolInfoTitleText = styled(Typography)({
+const PoolInfoHeaderText = styled(Typography)({
   color: CssVariables.white,
 
   [mobile]: {
-    fontSize: "14px",
+    textAlign: "center",
   },
+});
+
+const PoolInfoTitleText = styled(Typography)({
+  color: CssVariables.white,
 });
 
 const PoolTokenImage = styled("img")({

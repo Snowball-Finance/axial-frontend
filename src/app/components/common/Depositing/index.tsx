@@ -12,9 +12,9 @@ export const Depositing: FC = () => {
     <Box mt={2}>
       <CardWrapper>
         <Grid container spacing={1}>
-          <Grid container item xs={12} spacing={2} alignItems="center">
+          <Grid container item xs={12} spacing={1} alignItems="center">
             <Grid item>
-              <CircularProgress color="primary" size={24} />
+              <CircularProgress color="primary" size={20} />
             </Grid>
 
             <Grid item>

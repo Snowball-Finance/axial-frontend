@@ -9,6 +9,7 @@ import { getKeyFromPoolIndex } from "app/pages/Liquidity/constants";
 import { Token } from "app/containers/Swap/types";
 import { WithdrawInput } from "./input";
 import { EquivalentWithdrawAmount } from "./equivalentWithdrawAmount";
+import { mobile } from "styles/media";
 
 type TParams = { poolIndex: string };
 
@@ -69,6 +70,10 @@ const StyledCurrencyInput = styled(Grid)({
   border: `4px solid ${CssVariables.cardBorder}`,
   borderRadius: "20px",
   padding: "12px 36px",
+
+  [mobile]: {
+    padding: 15
+  }
 });
 
 const TokenIconContainer = styled(Grid)({

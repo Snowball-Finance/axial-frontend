@@ -43,28 +43,23 @@ export const ActionButtons: FC<ActionButtonProps> = ({ poolKey }) => {
 
   return (
     <StyledContainer container spacing={{ xs: 1, xl: 2 }}>
-      <Grid item>
-        <ContainedButton
-          width={120}
+      <StyledFullChildContainer item>
+        <StyledContainedButton
           onClick={() => handleNavigateToDeposit(poolKey)}
           disabled={poolData?.isPaused}
         >
           {t(translations.RewardsPage.ActionButtons.Deposit())}
-        </ContainedButton>
-      </Grid>
+        </StyledContainedButton>
+      </StyledFullChildContainer>
 
-      <Grid item>
-        <OutlinedButton
-          width={120}
-          onClick={() => handleNavigateToWithdraw(poolKey)}
-        >
+      <StyledFullChildContainer item>
+        <StyledOutlinedButton onClick={() => handleNavigateToWithdraw(poolKey)}>
           {t(translations.RewardsPage.ActionButtons.Withdraw())}
-        </OutlinedButton>
-      </Grid>
+        </StyledOutlinedButton>
+      </StyledFullChildContainer>
 
-      <Grid item>
-        <OutlinedButton
-          width={120}
+      <StyledFullChildContainer item>
+        <StyledOutlinedButton
           onClick={() => handleClaimClick(pools[poolKey])}
           disabled={
             !account ||
@@ -73,17 +68,41 @@ export const ActionButtons: FC<ActionButtonProps> = ({ poolKey }) => {
           }
         >
           {t(translations.RewardsPage.ActionButtons.Claim())}
-        </OutlinedButton>
-      </Grid>
+        </StyledOutlinedButton>
+      </StyledFullChildContainer>
     </StyledContainer>
   );
 };
 
 const StyledContainer = styled(Grid)({
   flexDirection: "row",
+
   [mobile]: {
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "column",
+    width: "100%",
+  },
+});
+
+const StyledFullChildContainer = styled(Grid)({
+  [mobile]: {
+    width: "100%",
+  },
+});
+
+const StyledContainedButton = styled(ContainedButton)({
+  width: 120,
+
+  [mobile]: {
+    width: "100%",
+  },
+});
+
+const StyledOutlinedButton = styled(OutlinedButton)({
+  width: 120,
+
+  [mobile]: {
+    width: "100%",
   },
 });

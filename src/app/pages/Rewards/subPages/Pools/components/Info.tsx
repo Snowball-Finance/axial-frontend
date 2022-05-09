@@ -107,7 +107,7 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
     <StyledContainer container spacing={{ xs: 2, xl: 4 }}>
       {info.map((item, index) => (
         <Grid item key={index}>
-          <Grid container spacing={1} direction="column">
+          <StyledChildContainer container>
             <Grid item>
               <PoolInfoTitleText variant="body1">
                 {item.title}
@@ -118,7 +118,7 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
                 {isGettingPoolsData ? <TextLoader width={50} /> : item.value}
               </PoolInfoSubTitleText>
             </Grid>
-          </Grid>
+          </StyledChildContainer>
         </Grid>
       ))}
     </StyledContainer>
@@ -131,6 +131,18 @@ const StyledContainer = styled(Grid)({
 
   [mobile]: {
     flexDirection: "column",
+    alignItems: "flex-start",
+  },
+});
+
+const StyledChildContainer = styled(Grid)({
+  flexDirection: "column",
+  alignItems: "center",
+  rowGap: 20,
+
+  [mobile]: {
+    flexDirection: "row",
+    columnGap: 20,
   },
 });
 

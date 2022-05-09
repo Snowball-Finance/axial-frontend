@@ -32,22 +32,18 @@ export const ActionButtons: FC<ActionButtonProps> = ({ poolKey }) => {
   return (
     <StyledContainer container spacing={{ xs: 1, xl: 2 }}>
       <Grid item>
-        <ContainedButton
-          width={120}
+        <DepositButton
           onClick={() => handleNavigateToDeposit(poolKey)}
           disabled={pool?.poolData?.isPaused}
         >
           {t(translations.LiquidityPage.ActionButtons.Deposit())}
-        </ContainedButton>
+        </DepositButton>
       </Grid>
 
       <Grid item>
-        <OutlinedButton
-          width={120}
-          onClick={() => handleNavigateToWithdraw(poolKey)}
-        >
+        <WithdrawButton onClick={() => handleNavigateToWithdraw(poolKey)}>
           {t(translations.LiquidityPage.ActionButtons.Withdraw())}
-        </OutlinedButton>
+        </WithdrawButton>
       </Grid>
     </StyledContainer>
   );
@@ -55,9 +51,24 @@ export const ActionButtons: FC<ActionButtonProps> = ({ poolKey }) => {
 
 const StyledContainer = styled(Grid)({
   flexDirection: "row",
+
   [mobile]: {
-    justifyContent: "center",
-    alignItems: "center",
     flexDirection: "column",
+    width: "100%",
+  },
+});
+
+const DepositButton = styled(ContainedButton)({
+  width: 120,
+
+  [mobile]: {
+    width: "100%",
+  },
+});
+
+const WithdrawButton = styled(OutlinedButton)({
+  width: 120,
+  [mobile]: {
+    width: "100%",
   },
 });

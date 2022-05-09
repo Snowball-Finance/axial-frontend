@@ -10,6 +10,6 @@ export const CardWrapper = styled("div")({
   padding: "26px 36px",
 
   [mobile]: {
-    padding: "15px 10px",
-  },
+    padding: 15
+  }
 });

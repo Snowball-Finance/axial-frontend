@@ -1,12 +1,32 @@
 import { createTheme } from "@mui/material";
 import { FontFamilies } from "styles/cssVariables/cssVariables";
 
-export const theme = createTheme({
+let theme = createTheme({
+  direction: "ltr",
+  palette: {
+    secondary: {
+      main: "#d20e42",
+    },
+    primary: {
+      main: "#d15e2c",
+    },
+    action: {
+      disabledBackground: "#efefef",
+      disabled: "#333333",
+    },
+  },
+});
+
+theme = createTheme(theme, {
   typography: {
     fontFamily: "Montserrat",
     h2: {
       fontSize: "26px",
       fontFamily: FontFamilies.FugazOne,
+
+      [theme.breakpoints.down("md")]: {
+        fontSize: "20px",
+      },
     },
     h5: {
       fontSize: "20px",
@@ -22,17 +42,6 @@ export const theme = createTheme({
       fontFamily: FontFamilies.IBMPlexSans,
     },
   },
-  direction: "ltr",
-  palette: {
-    secondary: {
-      main: "#d20e42",
-    },
-    primary: {
-      main: "#d15e2c",
-    },
-    action: {
-      disabledBackground: "#efefef",
-      disabled: "#333333",
-    },
-  },
 });
+
+export { theme };
