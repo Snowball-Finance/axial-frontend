@@ -44,6 +44,7 @@ export interface PoolInfoToken {
 }
 
 export interface PoolInfo {
+  userDepositedLP: BigNumber;
   selected?: boolean;
   created: string; //"2022-05-04T02:09:13.551Z"
   deprecated: boolean; // false

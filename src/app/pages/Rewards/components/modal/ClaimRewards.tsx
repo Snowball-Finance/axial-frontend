@@ -12,6 +12,8 @@ import { ContainedButton } from "app/components/common/buttons/containedButton";
 import { PoolsAndGaugesSelectors } from "app/containers/PoolsAndGauges/selectors";
 import { RewardsPageSelectors } from "app/pages/Rewards/selectors";
 import { RewardsPageActions } from "app/pages/Rewards/slice";
+import { formatBNToString } from "app/containers/utils/contractUtils";
+import { Zero } from "app/containers/Rewards/constants";
 
 export const ClaimRewardsModal: FC = () => {
   const { t } = useTranslation();
@@ -112,17 +114,19 @@ export const ClaimRewardsModal: FC = () => {
                     </Grid>
                   </Grid>
 
-                  {/* <Grid item>
+                  <Grid item>
                     <Grid container spacing={1} alignItems="center">
                       <Grid item>
-                        <Text variant="body1">{token.totalEarned}</Text>
-                      </Grid>
-
-                      <Grid item>
-                        <Text variant="body2">(${token.totalEarnedUSD})</Text>
+                        <Text variant="body1">
+                          {formatBNToString(
+                            pools[selectedPool.address]?.userDepositedLP ??
+                              Zero,
+                            18
+                          )}
+                        </Text>
                       </Grid>
                     </Grid>
-                  </Grid> */}
+                  </Grid>
                 </Grid>
               </Grid>
             );

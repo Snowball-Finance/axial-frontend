@@ -137,9 +137,9 @@ export function* claimRewardsToken() {
       claimedRewards.length === pools[selectedPool?.address].tokens.length;
     yield put(RewardsPageActions.setisClaimRewardsLoading(true));
     if (isClaimAll) {
-      yield call(gaugeContract.getAllRewards());
+      yield call(gaugeContract.getAllRewards);
     } else {
-      yield call(gaugeContract.getRewards(claimedRewards));
+      yield call(gaugeContract.getRewards, claimedRewards);
     }
   } catch (e) {
     console.log(e);

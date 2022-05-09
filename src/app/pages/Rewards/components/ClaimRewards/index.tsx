@@ -11,6 +11,8 @@ import { PoolsAndGaugesSelectors } from "app/containers/PoolsAndGauges/selectors
 import { RewardsPageSelectors } from "app/pages/Rewards/selectors";
 import axialIcon from "assets/icons/logo_icon.svg";
 import { Actions } from "./Actions";
+import { formatBNToString } from "app/containers/utils/contractUtils";
+import { Zero } from "app/containers/Rewards/constants";
 
 export const ClaimRewards: FC = () => {
   const { t } = useTranslation();
@@ -63,9 +65,11 @@ export const ClaimRewards: FC = () => {
                           <Text variant="body2">APR</Text>
                         </Grid>
 
-                        {/* <Grid item xs={12}>
-                          <Text variant="body1">{token.apr}</Text>
-                        </Grid> */}
+                        <Grid item xs={12}>
+                          <Text variant="body1">
+                            {pools[selectedPool.address]?.last_apr}
+                          </Text>
+                        </Grid>
                       </Grid>
 
                       <Grid
@@ -79,11 +83,15 @@ export const ClaimRewards: FC = () => {
                           <Text variant="body2">Earned</Text>
                         </Grid>
 
-                        {/* <Grid item xs={12}>
+                        <Grid item xs={12}>
                           <Text variant="body1">
-                            {token.totalEarned} (${token.totalEarnedUSD})
+                            {formatBNToString(
+                              pools[selectedPool.address]?.userDepositedLP ??
+                                Zero,
+                              18
+                            )}
                           </Text>
-                        </Grid> */}
+                        </Grid>
                       </Grid>
                     </Grid>
                   </Grid>
