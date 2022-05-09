@@ -1,12 +1,10 @@
 import React, { FC } from "react";
-import { Grid, Typography, Box, styled } from "@mui/material";
-import { keyframes } from "@mui/system";
+import { Grid, Typography, Box, CircularProgress } from "@mui/material";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 
 import { translations } from "locales/i18n";
 import { CardWrapper } from "app/components/wrappers/Card";
-import ApprovalLoaderIcon from "assets/images/iconComponents/approvalLoader";
 import { SwapPageSelectors } from "app/pages/Swap/selectors";
 
 export const Approving: FC = () => {
@@ -17,11 +15,9 @@ export const Approving: FC = () => {
     <Box mt={2}>
       <CardWrapper>
         <Grid container spacing={1}>
-          <Grid container item xs={12} spacing={2} alignItems="center">
+          <Grid container item xs={12} spacing={1} alignItems="center">
             <Grid item>
-              <StyledAnimatedWrapper>
-                <ApprovalLoaderIcon />
-              </StyledAnimatedWrapper>
+              <CircularProgress color="primary" size={20} />
             </Grid>
 
             <Grid item>
@@ -46,18 +42,3 @@ export const Approving: FC = () => {
     </Box>
   );
 };
-
-const spin = keyframes`
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-`;
-
-const StyledAnimatedWrapper = styled("div")({
-  width: 24,
-  height: 24,
-  animation: `${spin} 1s linear infinite`,
-});

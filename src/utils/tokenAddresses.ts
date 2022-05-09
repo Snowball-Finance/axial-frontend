@@ -2,7 +2,7 @@ import { TokenSymbols } from "app/containers/Swap/types";
 
 export type NetworkName = "Fuji" | "Avalanche";
 const networkName =
-  process.env.REACT_APP_NETORK_NAME || ("Avalanche" as NetworkName);
+  process.env.REACT_APP_NETWORK_NAME || ("Avalanche" as NetworkName);
 
 const tokenAddresses: {
   [K in TokenSymbols]: {

@@ -219,6 +219,7 @@
     "WalletBalance": "Wallet Balance",
     "GoBackTo": "Go Back To {{name}}",
     "SwitchToAvalanche": "Switch To Avalanche",
+    "SwitchTo_NETWORK_NAME": "Switch To {{networkName}}",
     "DownloadMetamask": "Download Metamask",
     "ErrorConnectingWallet": "Error Connecting to Wallet",
     "Yes": "Yes",

@@ -3,10 +3,11 @@ import { NetworkConnector } from "@web3-react/network-connector";
 import { WalletLinkConnector } from "@web3-react/walletlink-connector";
 
 const NODE_ADDRESS = process.env.REACT_APP_NODE_ADDRESS;
+const CHAIN_NAME = process.env.REACT_APP_CHAIN_NAME;
 export const rpcUrl = `${NODE_ADDRESS}/ext/bc/C/rpc`;
 const AVALANCHE_MAINNET_PARAMS = {
   chainId: process.env.REACT_APP_CHAIN_ID_HEX,
-  chainName: "Avalanche Mainnet C-Chain",
+  chainName: CHAIN_NAME,
   nativeCurrency: {
     name: "Avalanche",
     symbol: "AVAX",

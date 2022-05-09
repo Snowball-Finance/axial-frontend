@@ -11,7 +11,7 @@ export const WalletBalance = ({ token }: { token: Token }) => {
   const amountString = BNToString(token.balance ?? Zero, token.decimals);
 
   return (
-    <BalanceText variant="body2">
+    <BalanceText variant="body2" noWrap>
       {t(translations.LiquidityPage.WalletBalance())}: {amountString}
     </BalanceText>
   );
