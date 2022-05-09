@@ -10,7 +10,6 @@ import {
   Receipt,
   SubmitNewProposalPayload,
 } from "./types";
-import { BNToFloat } from "common/format";
 import { totalSupplyProvider } from "app/containers/BlockChain/providers/balanceAPI";
 import { env } from "environment";
 import { Web3Domains } from "../Web3/selectors";
@@ -25,6 +24,8 @@ import { GovernancePageActions } from "app/pages/Governance/slice";
 import axios from "axios";
 import { add } from "precise-math";
 import { getProviderOrSigner } from "app/containers/utils/contractUtils";
+import { GlobalActions } from "store/slice";
+import { BNToFloat } from "common/format";
 
 export function* getProposals(action: {
   type: string;
@@ -101,6 +102,7 @@ export function* vote(action: {
   try {
     const governanceContract: Governance = yield call(getGovernanceContract);
     yield put(GovernanceActions.setIsVotingFor(voteFor));
+    yield put(GlobalActions.setTransactionSuccessId(undefined));
     const proposalId: BigNumber = yield call(getProposalId, proposal);
     const proposalVote = yield call(
       governanceContract.vote,
@@ -109,6 +111,9 @@ export function* vote(action: {
     );
     const transactionVote = yield call(proposalVote.wait, 1);
     if (transactionVote.status) {
+      yield put(
+        GlobalActions.setTransactionSuccessId(transactionVote.transactionHash)
+      );
       toast.success(`voted successfully for proposal`);
     }
     yield put(GovernanceActions.getVotingReceipt({ proposal }));
@@ -266,11 +271,10 @@ export function* getVotingReceipt(action: {
       proposalId,
       account
     );
-    const votes = BNToFloat(receipt[2], 18);
     const rec = {
       hasVoted: receipt[0] || false,
-      support: receipt[1] || false,
-      votes: votes || BigNumber.from(0),
+      support: Number(receipt[1]),
+      votes: Number(receipt[2]),
     };
     yield put(GovernanceActions.setVotingReceipt(rec));
   } catch (error) {

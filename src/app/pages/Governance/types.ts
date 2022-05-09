@@ -1,3 +1,4 @@
+import { Proposal } from "app/containers/BlockChain/Governance/types";
 import { GaugeItem, PoolProvider } from "app/containers/PoolsAndGauges/types";
 
 export interface SelectablePoolProvider extends PoolProvider {
@@ -10,6 +11,11 @@ export interface ExecutionContext {
   contractAddress: string;
   avaxValue: string;
   data: string;
+}
+
+export interface AllocationSorting {
+  order: "asc" | "desc";
+  orderBy: string;
 }
 
 /* --- STATE --- */
@@ -35,6 +41,10 @@ export interface GovernancePageState {
       votingPeriod: string;
     };
   };
+  isModalOpen: boolean;
+  selectedProposal: Proposal | undefined;
+  isVoteAllocationModalOpen: boolean;
+  allocationSortingData: AllocationSorting;
 }
 
 export type ContainerState = GovernancePageState;

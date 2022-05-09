@@ -25,6 +25,16 @@ export const GovernancePageDomains = {
     },
   submittedExecutionContexts: (state: RootState) =>
     state.governancePage?.submittedExecutionContexts || [],
+  isModalOpen: (state: RootState) =>
+    state.governancePage?.isModalOpen || initialState.isModalOpen,
+  selectedProposal: (state: RootState) =>
+    state.governancePage?.selectedProposal || initialState.selectedProposal,
+  isVoteAllocationModalOpen: (state: RootState) =>
+    state.governancePage?.isVoteAllocationModalOpen ||
+    initialState.isVoteAllocationModalOpen,
+  allocationSortingData: (state: RootState) =>
+    state.governancePage?.allocationSortingData ||
+    initialState.allocationSortingData,
 };
 
 export const GovernancePageSelectors = {
@@ -85,5 +95,21 @@ export const GovernancePageSelectors = {
         currentExecutionContext.data
       );
     }
+  ),
+  selectIsModalOpen: createSelector(
+    GovernancePageDomains.isModalOpen,
+    (isModalOpen) => isModalOpen
+  ),
+  selectedProposal: createSelector(
+    GovernancePageDomains.selectedProposal,
+    (selectedProposal) => selectedProposal
+  ),
+  isVoteAllocationModalOpen: createSelector(
+    GovernancePageDomains.isVoteAllocationModalOpen,
+    (isVoteAllocationModalOpen) => isVoteAllocationModalOpen
+  ),
+  allocationSortingData: createSelector(
+    GovernancePageDomains.allocationSortingData,
+    (allocationSortingData) => allocationSortingData
   ),
 };
