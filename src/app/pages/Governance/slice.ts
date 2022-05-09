@@ -1,5 +1,5 @@
 import { PayloadAction } from "@reduxjs/toolkit";
-import { ContainerState } from "./types";
+import { AllocationSorting, ContainerState } from "./types";
 import { createSlice } from "store/toolkit";
 import { useInjectReducer, useInjectSaga } from "store/redux-injectors";
 
@@ -40,6 +40,10 @@ export const initialState: ContainerState = {
   isModalOpen: false,
   selectedProposal: undefined,
   isVoteAllocationModalOpen: false,
+  allocationSortingData: {
+    order: "asc",
+    orderBy: "name",
+  },
 };
 
 const governancePageSlice = createSlice({
@@ -185,6 +189,9 @@ const governancePageSlice = createSlice({
     },
     setIsVoteAllocationModalOpen: (state, action: PayloadAction<boolean>) => {
       state.isVoteAllocationModalOpen = action.payload;
+    },
+    setSortingData: (state, action: PayloadAction<AllocationSorting>) => {
+      state.allocationSortingData = action.payload;
     },
   },
 });

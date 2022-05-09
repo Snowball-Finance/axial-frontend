@@ -13,6 +13,11 @@ export interface ExecutionContext {
   data: string;
 }
 
+export interface AllocationSorting {
+  order: "asc" | "desc";
+  orderBy: string;
+}
+
 /* --- STATE --- */
 export interface GovernancePageState {
   isVoteAllocationSelectionOpen: boolean;
@@ -39,6 +44,7 @@ export interface GovernancePageState {
   isModalOpen: boolean;
   selectedProposal: Proposal | undefined;
   isVoteAllocationModalOpen: boolean;
+  allocationSortingData: AllocationSorting;
 }
 
 export type ContainerState = GovernancePageState;

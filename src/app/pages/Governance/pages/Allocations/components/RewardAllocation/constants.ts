@@ -10,18 +10,21 @@ export const tableHeader = (t) => [
     label: t(
       translations.GovernancePage.VoteAllocation.AllocationTable.Allocation()
     ),
+    numeric: true,
   },
   {
     id: "allocationPerDay",
     label: t(
       translations.GovernancePage.VoteAllocation.AllocationTable.AllocationPerDay()
     ),
+    numeric: true,
   },
   {
     id: "axialAPR",
     label: t(
       translations.GovernancePage.VoteAllocation.AllocationTable.AxialAPR()
     ),
+    numeric: true,
   },
   {
     id: "boostedAxialAPR",
@@ -34,11 +37,13 @@ export const tableHeader = (t) => [
     label: t(
       translations.GovernancePage.VoteAllocation.AllocationTable.GaugeWeight()
     ),
+    numeric: true,
   },
   {
-    id: "Balance",
+    id: "balance",
     label: t(
       translations.GovernancePage.VoteAllocation.AllocationTable.Balance()
     ),
+    numeric: true,
   },
 ];

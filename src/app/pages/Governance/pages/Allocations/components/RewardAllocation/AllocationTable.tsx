@@ -6,8 +6,9 @@ import {
   TableBody,
   TableRow,
   TableCell,
+  TableSortLabel,
 } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 
 import { CssVariables, FontFamilies } from "styles/cssVariables/cssVariables";
@@ -18,6 +19,9 @@ import {
 } from "app/containers/PoolsAndGauges/selectors";
 import { tableHeader } from "./constants";
 import { formatNumber } from "common/format";
+import { getComparator, stableSort } from "./utils/sorting";
+import { GovernancePageActions } from "app/pages/Governance/slice";
+import { GovernancePageSelectors } from "app/pages/Governance/selectors";
 
 export const AllocationTable: FC = () => {
   const { t } = useTranslation();
@@ -25,6 +29,11 @@ export const AllocationTable: FC = () => {
   const gauges = useSelector(selectGauges);
   const isLoading = useSelector(selectIsLoadingUserPoolsAndGauges);
   const poolsArray = useSelector(PoolsAndGaugesSelectors.poolsArray);
+  const sortingData = useSelector(
+    GovernancePageSelectors.allocationSortingData
+  );
+
+  const dispatch = useDispatch();
 
   const getAllocation = (address: string) => {
     const gaugeAllocation = gauges.find(
@@ -42,39 +51,76 @@ export const AllocationTable: FC = () => {
     return <>Loading...</>;
   }
 
+  const handleRequestSort = (property) => {
+    const isAsc =
+      sortingData.orderBy === property && sortingData.order === "asc";
+    dispatch(
+      GovernancePageActions.setSortingData({
+        order: isAsc ? "desc" : "asc",
+        orderBy: property,
+      })
+    );
+  };
+
+  const rows = poolsArray.map((pool) => {
+    return {
+      name: pool.symbol,
+      allocation: getAllocation(pool.gauge_address),
+      allocationPerDay: formatNumber(+pool.last_daily_axial_alloc, 2),
+      axialAPR: formatNumber(+pool.last_apr, 2),
+      boostedAxialAPR: getBoostedAxialAPR(pool),
+      gaugeWeight: formatNumber(+pool.last_gauge_weight, 2),
+      balance: formatNumber(+pool.last_gauge_axial_balance, 2),
+    };
+  });
+
   return (
     <StyledTable aria-label="customized table">
       <StyledTableHead>
         <TableRow>
           {tableHeader(t).map((header) => {
             return (
-              <StyledTableCell key={header.id}>{header.label}</StyledTableCell>
+              <StyledTableCell
+                key={header.id}
+                sortDirection={
+                  sortingData.orderBy === header.id ? sortingData.order : false
+                }
+              >
+                <TableSortLabel
+                  active={true}
+                  direction={
+                    sortingData.orderBy === header.id
+                      ? sortingData.order
+                      : "asc"
+                  }
+                  onClick={() => handleRequestSort(header.id)}
+                >
+                  {header.label}
+                </TableSortLabel>
+              </StyledTableCell>
             );
           })}
         </TableRow>
       </StyledTableHead>
       <TableBody>
-        {poolsArray.map((pool) => (
-          <StyledTableRow key={pool.id}>
-            <StyledTableCell component="th" scope="row">
-              {pool.symbol}
-            </StyledTableCell>
-            <StyledTableCell>
-              {getAllocation(pool.gauge_address)}
-            </StyledTableCell>
-            <StyledTableCell>
-              {formatNumber(+pool.last_daily_axial_alloc, 2)}
-            </StyledTableCell>
-            <StyledTableCell>{formatNumber(+pool.last_apr, 2)}</StyledTableCell>
-            <StyledTableCell>{getBoostedAxialAPR(pool)}</StyledTableCell>
-            <StyledTableCell>
-              {formatNumber(+pool.last_gauge_weight, 2)}
-            </StyledTableCell>
-            <StyledTableCell>
-              {formatNumber(+pool.last_gauge_axial_balance, 2)}
-            </StyledTableCell>
-          </StyledTableRow>
-        ))}
+        {stableSort(
+          rows,
+          getComparator(sortingData.order, sortingData.orderBy)
+        ).map((pool) => {
+          return (
+            <StyledTableRow key={pool.name}>
+              <StyledTableCell component="th" scope="row">
+                {pool.name}
+              </StyledTableCell>
+              <StyledTableCell>{pool.allocation}</StyledTableCell>
+              <StyledTableCell>{pool.allocationPerDay}</StyledTableCell>
+              <StyledTableCell>{pool.axialAPR}</StyledTableCell>
+              <StyledTableCell>{pool.boostedAxialAPR}</StyledTableCell>
+              <StyledTableCell>{pool.gaugeWeight}</StyledTableCell>
+              <StyledTableCell>{pool.balance}</StyledTableCell>
+            </StyledTableRow>
+          );
+        })}
       </TableBody>
     </StyledTable>
   );
@@ -87,6 +133,14 @@ const StyledTable = styled(Table)({
   borderRadius: "20px",
   boxShadow: `0 0 0 4px ${CssVariables.cardBorder}`,
   overflow: "auto",
+
+  ".MuiTableSortLabel-root": {
+    color: CssVariables.white,
+
+    ".MuiSvgIcon-root": {
+      color: CssVariables.white,
+    },
+  },
 });
 
 const StyledTableHead = styled(TableHead)({

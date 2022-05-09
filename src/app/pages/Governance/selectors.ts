@@ -32,6 +32,9 @@ export const GovernancePageDomains = {
   isVoteAllocationModalOpen: (state: RootState) =>
     state.governancePage?.isVoteAllocationModalOpen ||
     initialState.isVoteAllocationModalOpen,
+  allocationSortingData: (state: RootState) =>
+    state.governancePage?.allocationSortingData ||
+    initialState.allocationSortingData,
 };
 
 export const GovernancePageSelectors = {
@@ -104,5 +107,9 @@ export const GovernancePageSelectors = {
   isVoteAllocationModalOpen: createSelector(
     GovernancePageDomains.isVoteAllocationModalOpen,
     (isVoteAllocationModalOpen) => isVoteAllocationModalOpen
+  ),
+  allocationSortingData: createSelector(
+    GovernancePageDomains.allocationSortingData,
+    (allocationSortingData) => allocationSortingData
   ),
 };
