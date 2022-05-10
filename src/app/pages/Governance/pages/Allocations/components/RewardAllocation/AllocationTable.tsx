@@ -133,14 +133,6 @@ const StyledTable = styled(Table)({
   borderRadius: "20px",
   boxShadow: `0 0 0 4px ${CssVariables.cardBorder}`,
   overflow: "auto",
-
-  ".MuiTableSortLabel-root": {
-    color: CssVariables.white,
-
-    ".MuiSvgIcon-root": {
-      color: CssVariables.white,
-    },
-  },
 });
 
 const StyledTableHead = styled(TableHead)({
@@ -173,5 +165,13 @@ const StyledTableCell = styled(TableCell)({
 
   "&:last-child": {
     borderRadius: "0px 20px 0px 0px",
+  },
+
+  ".MuiTableSortLabel-root": {
+    color: `${CssVariables.white} !important`,
+
+    ".MuiTableSortLabel-icon": {
+      color: `${CssVariables.white} !important`,
+    },
   },
 });

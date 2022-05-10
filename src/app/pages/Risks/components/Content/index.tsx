@@ -15,7 +15,7 @@ export const Content: FC = () => {
   const { t } = useTranslation();
 
   return (
-    <Grid container spacing={4}>
+    <Grid container spacing={8}>
       <Grid item xs={12}>
         <Grid container spacing={1}>
           <Grid item>
