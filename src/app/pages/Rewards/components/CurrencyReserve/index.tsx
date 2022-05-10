@@ -39,7 +39,7 @@ export const CurrencyReserve: FC = () => {
       <Grid item>
         <CardWrapper>
           <Grid container spacing={4}>
-            {rewardsPoolData?.tokens.map((infoItem: TokenShareType) => (
+            {rewardsPoolData?.rewardTokens.map((infoItem: TokenShareType) => (
               <Grid item key={infoItem.symbol} xs={12}>
                 <Grid
                   container

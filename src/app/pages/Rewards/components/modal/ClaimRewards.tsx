@@ -38,14 +38,14 @@ export const ClaimRewardsModal: FC = () => {
   }
 
   const isCheckAll =
-    checkedClaimRewards.length === pools[selectedPool?.address].tokens.length;
+    checkedClaimRewards.length === pools[selectedPool?.address].rewardTokens?.length;
 
   const handleCheckAllClick = () => {
     if (isCheckAll) {
       dispatch(RewardsPageActions.setCheckedClaimRewards([]));
     } else {
       let checkedItems: number[] = [];
-      pools[selectedPool?.address].tokens.forEach((_, index) => {
+      pools[selectedPool?.address].rewardTokens?.forEach((_, index) => {
         checkedItems.push(index);
       });
 
@@ -87,7 +87,7 @@ export const ClaimRewardsModal: FC = () => {
             </Grid>
           </Grid>
 
-          {pools[selectedPool?.address].tokens.map((token, index) => {
+          {pools[selectedPool?.address].rewardTokens?.map((token, index) => {
             return (
               <Grid item key={token.symbol} xs={12}>
                 <Grid

@@ -43,6 +43,14 @@ export interface PoolInfoToken {
   harvestable?: BigNumber;
 }
 
+export interface RewardToken {
+  address: string; //"0xE68E161AA7A32403308cA0B29F15FEC1960c6ca9"
+  decimals: string; // "18"
+  symbol: string; // "TEST"
+  avg_apr: string; // "0"
+  boosted_apr: string; // "0"
+}
+
 export interface PoolInfo {
   userDepositedLP: BigNumber;
   selected?: boolean;
@@ -63,6 +71,7 @@ export interface PoolInfo {
   tokenaddress: string; //"0xE68E161AA7A32403308cA0B29F15FEC1960c6ca9"
   tokens: PoolInfoToken[];
   gauge?: GaugeItem;
+  rewardTokens?: RewardToken[];
 }
 
 export interface PoolProvider {

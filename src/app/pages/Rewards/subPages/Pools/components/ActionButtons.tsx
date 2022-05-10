@@ -38,7 +38,7 @@ export const ActionButtons: FC<ActionButtonProps> = ({ poolKey }) => {
   };
 
   const handleClaimClick = (pool: Pool) => {
-    dispatch(RewardsPageActions.claim(pool));
+    dispatch(RewardsPageActions.claimRewardsToken());
   };
 
   return (

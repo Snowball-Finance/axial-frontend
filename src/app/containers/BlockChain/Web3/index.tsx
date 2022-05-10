@@ -12,7 +12,7 @@ import {
   useWeb3React,
   Web3ReactProvider,
 } from "@web3-react/core";
-import { BaseProvider, getDefaultProvider } from "@ethersproject/providers";
+import { BaseProvider, StaticJsonRpcProvider } from "@ethersproject/providers";
 
 import { Web3Provider } from "@ethersproject/providers";
 import { NetworkContextName } from "../constants";
@@ -80,7 +80,7 @@ const getLibrary = (provider: any) => {
 
 let networkLibrary: BaseProvider | undefined;
 export function getNetworkLibrary(): BaseProvider {
-  const provider = getDefaultProvider(rpcUrl);
+  const provider = new StaticJsonRpcProvider(rpcUrl)
   const library = (networkLibrary = networkLibrary ?? provider);
   return library;
 }

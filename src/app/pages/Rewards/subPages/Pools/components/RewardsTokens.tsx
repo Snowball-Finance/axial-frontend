@@ -26,7 +26,7 @@ export const RewardsTokens: FC<Props> = ({ poolKey }) => {
       </Grid>
 
       <Grid item container>
-        {pools[rewardsPool.address]?.tokens.map((token) => {
+        {pools[rewardsPool.address]?.rewardTokens?.map((token) => {
           return (
             <Grid
               key={token.address}

@@ -36,7 +36,7 @@ export const ClaimRewards: FC = () => {
         <CardWrapper>
           <Grid container spacing={2}>
             {selectedPool &&
-              pools[selectedPool.address]?.tokens.map((token) => {
+              pools[selectedPool.address]?.rewardTokens?.map((token) => {
                 return (
                   <Grid item key={token.symbol} xs={12}>
                     <Grid
@@ -67,7 +67,7 @@ export const ClaimRewards: FC = () => {
 
                         <Grid item xs={12}>
                           <Text variant="body1">
-                            {pools[selectedPool.address]?.last_apr}
+                            {token.avg_apr}
                           </Text>
                         </Grid>
                       </Grid>
