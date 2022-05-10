@@ -4,11 +4,11 @@ import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import { CssVariables } from "styles/cssVariables/cssVariables";
-import { getKeyFromPoolIndex } from "app/pages/Rewards/constants";
 import { RewardsPageSelectors } from "app/pages/Rewards/selectors";
 import { RewardsDepositInput } from "./input";
 import { CardWrapper } from "app/components/wrappers/Card";
 import { EquivalentInUsd } from "./equivalentInUsd";
+import { getKeyFromPoolIndex } from "app/pages/Liquidity/constants";
 
 type TParams = { poolIndex: string };
 

@@ -6,11 +6,11 @@ import { CurrencyInfo } from "../../components/Currencyinfo";
 import { mobile } from "styles/media";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getKeyFromPoolIndex } from "../../constants";
 import { pools } from "app/pools";
 import { Pool } from "app/containers/Rewards/types";
 import { RewardsPageActions } from "../../slice";
 import { DepositConfirmationModal } from "./components/DepositWrapped/depositConfirmationModal";
+import { getKeyFromPoolIndex } from "app/pages/Liquidity/constants";
 
 type TParams = { poolIndex: string };
 

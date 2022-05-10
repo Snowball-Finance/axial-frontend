@@ -9,7 +9,6 @@ import { ContainedButton } from "app/components/common/buttons/containedButton";
 import { OutlinedButton } from "app/components/common/buttons/outlinedButton";
 import { AppPages } from "app/types";
 import { ActionButtonProps } from "app/pages/Rewards/types";
-import { getPoolIndexFromKey } from "app/pages/Rewards/constants";
 import { RewardsSelectors } from "app/containers/Rewards/selectors";
 import { pools } from "app/pools";
 import { RewardsPageActions } from "app/pages/Rewards/slice";
@@ -17,6 +16,7 @@ import { Pool } from "app/containers/Rewards/types";
 import { Web3Selectors } from "app/containers/BlockChain/Web3/selectors";
 import { mobile } from "styles/media";
 import { RewardsPageSelectors } from "app/pages/Rewards/selectors";
+import { getPoolIndexFromKey } from "app/pages/Liquidity/constants";
 
 export const ActionButtons: FC<ActionButtonProps> = ({ poolKey }) => {
   const { t } = useTranslation();

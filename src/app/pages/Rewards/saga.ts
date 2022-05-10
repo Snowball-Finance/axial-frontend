@@ -2,8 +2,6 @@ import { toast } from "react-toastify";
 import { call, put, select, takeLatest } from "redux-saga/effects";
 
 import { Web3Domains } from "app/containers/BlockChain/Web3/selectors";
-import { AXIAL_MASTERCHEF_CONTRACT_ADDRESS } from "app/containers/Rewards/constants";
-import masterchef from "abi/masterchef.json";
 import {
   DepositPayload,
   WithdrawPayload,
@@ -19,6 +17,8 @@ import { parseUnits } from "ethers/lib/utils";
 import { TokenSymbols } from "app/containers/Swap/types";
 import { checkAndApproveTokensInList } from "utils/tokenVerifier";
 import { getRewardPoolData } from "app/containers/Rewards/saga";
+import GAUGE_ABI from "abi/gauge.json";
+import { Gauge } from "abi/ethers-contracts";
 
 export function* poolInfoByAddress(action: { type: string; payload: string }) {
   const { payload } = action;
@@ -58,7 +58,7 @@ export function* deposit() {
     tokensToVerify: [
       {
         amount: amountToSpend || BigNumber.from(0),
-        spenderAddress: AXIAL_MASTERCHEF_CONTRACT_ADDRESS,
+        spenderAddress: selectedPool.gauge_address,
         token,
       },
     ],
@@ -102,15 +102,17 @@ export function* withdraw() {
 }
 
 export function* claim(action: { type: string; payload: Pool }) {
+  //TODO: implement claim CHECK_HERE
   const pool = action.payload;
   const library = yield select(Web3Domains.selectLibraryDomain);
-  const materchefContract = new Contract(
-    AXIAL_MASTERCHEF_CONTRACT_ADDRESS,
-    masterchef,
+  const gaugeContract = new Contract(
+    pool.gauge_address,
+    GAUGE_ABI,
     library?.getSigner()
-  );
+  ) as Gauge;
   try {
-    yield call(materchefContract.withdraw, pool.lpToken.masterchefId, 0);
+    // CHECK_HERE check amount
+    yield call(gaugeContract.withdraw, 0);
   } catch (e) {
     console.log(e);
   }

@@ -5,14 +5,10 @@ import { Token, TokenSymbols } from "../Swap/types";
 
 interface PoolInfo {
   amount: BigNumber;
-  rewardDebt: BigNumber;
 }
 
 export interface PendingTokens {
   pendingAxial: BigNumber;
-  bonusTokenAddress: string;
-  bonusTokenSymbol: string;
-  pendingBonusToken: BigNumber;
 }
 
 export interface MasterchefResponse {
@@ -37,6 +33,10 @@ export interface AxialLPData {
   LPTVL: number;
   tokenPoolPrice: number;
 }
+export interface BalanceResponse {
+  [key: string]: //key is token address
+  MasterchefResponse;
+}
 
 export interface MasterchefApr {
   [swapAddress: string]: {
@@ -44,7 +44,6 @@ export interface MasterchefApr {
     lptvl: number;
     totalStaked: string;
     tokenPoolPrice: number;
-    extraTokens: ExtraTokens[];
   };
 }
 
@@ -55,6 +54,10 @@ export enum Pools {
   AXIAL_AA3D = "AXIAL_AA3D",
   AXIAL_JLP = "AXIAL_JLP",
   USDC_AM3D = "USDC_AM3D",
+  //Fuji pools
+  T3P = "T3P",
+  PGL = "PGL",
+  TEST = "TEST",
 }
 
 export enum PoolTypes {
@@ -78,6 +81,7 @@ export interface Pool {
   key: Pools;
   poolData?: PoolData;
   userShareData?: UserShareData;
+  gauge_address: string;
 }
 export interface DepositPayload {
   poolKey: Pools;

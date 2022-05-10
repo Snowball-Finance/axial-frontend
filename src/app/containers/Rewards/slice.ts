@@ -60,7 +60,6 @@ const rewardsSlice = createSlice({
     setRewardPools(state, action: PayloadAction<ContainerState["pools"]>) {
       state.pools = action.payload;
     },
-    getMasterChefBalances(state, action: PayloadAction<void>) {},
     setIsGettingMasterChefBalances(state, action: PayloadAction<boolean>) {},
     setMasterChefBalances(
       state,
@@ -68,7 +67,6 @@ const rewardsSlice = createSlice({
     ) {
       state.masterChefBalances = action.payload;
     },
-    getMasterchefAPR(state, action: PayloadAction<void>) {},
     getSwapStats(state, action: PayloadAction<void>) {},
     setIsGettingSwapStats(state, action: PayloadAction<boolean>) {
       state.isGettingSwapStats = action.payload;

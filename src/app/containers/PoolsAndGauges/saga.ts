@@ -12,17 +12,21 @@ import { selectPoolsArrayDomain } from "./selectors";
 import { PoolsAndGaugesActions } from "./slice";
 import { PoolInfo } from "./types";
 import GAUGE_PROXY_ABI from "abi/gaugeProxy.json";
-// import GAUGE_ABI from "abi/gauge.json";
+import GAUGE_ABI from "abi/gauge.json";
 import LP_ABI from "abi/lp-token.json";
 import { getProviderOrSigner } from "../utils/contractUtils";
-import { GaugeProxy, LpToken } from "abi/ethers-contracts";
+import { Gauge, GaugeProxy, LpToken } from "abi/ethers-contracts";
 import { getLastInfoAPI } from "./providers/lastInfo";
 import { getPoolCalls } from "./providers/getPoolCalls";
 import { getGaugeCalls } from "./providers/getGaugeCalls";
 import { retrieveGauge } from "./providers/retrieveGauge";
+import { RewardsActions } from "../Rewards/slice";
+import { MasterchefApr } from "../Rewards/types";
 
 export function* getLastInfo() {
   try {
+    const library = yield select(Web3Domains.selectNetworkLibraryDomain);
+    const account = yield select(Web3Domains.selectAccountDomain);
     yield put(PoolsAndGaugesActions.setIsLoadingLastInfo(true));
     const lastSnowballInfo: PoolInfo[] = yield call(getLastInfoAPI);
     yield put(PoolsAndGaugesActions.setLastInfo(lastSnowballInfo));
@@ -33,10 +37,38 @@ export function* getLastInfo() {
       };
     });
     const tmp = {};
+    const poolsAprData: MasterchefApr = {};
     pools.forEach((item) => {
-      tmp[item.swapaddress] = item;
+      tmp[item.swapaddress || item.tokenaddress] = item;
+      //CHECK_HERE, we want to replace masterchef apr data
+      //swap address is used in liquidity and for rewards we will use lpTokenAddress as key
+      poolsAprData[item.swapaddress || item.tokenaddress] = {
+        apr: Number(item.last_apr), // apr for liquidity page should be last_swap_apr,
+        lptvl: Number(item.last_tvl),
+        tokenPoolPrice: Number(item.last_token_price),
+        //TODO:this part should come through contract call,address:pool.gaugeAddress, abi:GaugeABI
+        //for liquidity it's lpToken address total supply and for rewards data it's gauge address
+        totalStaked: "0x00",
+      };
     });
+    const callStack: any[] = [];
+    const providerOrSigner = getProviderOrSigner(library, account);
+    for (const pool of pools) {
+      const address = pool.tokenaddress || pool.gauge_address;
+      let contract = new Contract(
+        address,
+        GAUGE_ABI,
+        providerOrSigner
+      ) as Gauge;
+      callStack.push(call(contract.totalSupply));
+    }
+    const results: any[] = yield all(callStack);
+    for (const pool of pools) {
+      poolsAprData[pool.swapaddress || pool.tokenaddress].totalStaked =
+        results.shift();
+    }
     yield put(PoolsAndGaugesActions.setPools(tmp));
+    yield put(RewardsActions.setMasterChefAPR(poolsAprData));
   } catch (error) {
     if (IS_DEV) {
       console.error(error);
@@ -143,14 +175,18 @@ export function* getAndSetUserPools() {
     });
     const poolInfo = yield all(poolsInfoCallArray);
     gauges = yield call(getAllocations, { gauges, gaugeProxyContract });
-    console.log({ gauges });
     yield put(PoolsAndGaugesActions.setGauges(gauges));
     const tmp = {};
+    const userPoolsData = {};
     poolInfo.forEach((item: PoolInfo) => {
       tmp[item.tokenaddress] = item;
+      userPoolsData[item.symbol] = item.gauge?.additionalData || {};
     });
-
-    yield all([put(PoolsAndGaugesActions.setPools(tmp))]);
+    yield all([
+      put(PoolsAndGaugesActions.setPools(tmp)),
+      put(PoolsAndGaugesActions.setUserPoolsData(userPoolsData)),
+      put(RewardsActions.setMasterChefBalances(userPoolsData)),
+    ]);
   } catch (error) {
     console.log(error);
 

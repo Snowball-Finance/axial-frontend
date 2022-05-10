@@ -4,7 +4,7 @@ import { BigNumber, ethers } from "ethers";
 import { rpcUrl } from "app/containers/BlockChain/utils/wallet/connectors";
 import { pools } from "app/pools";
 import lpAMM from "abi/lpTokenAMM.json";
-import { AXIAL_MASTERCHEF_CONTRACT_ADDRESS, ZERO_ADDRESS } from "../constants";
+import { ZERO_ADDRESS } from "../constants";
 import masterchefABI from "abi/masterchef.json";
 import swap from "abi/swapFlashLoanNoWithdrawFee.json";
 import erc20 from "abi/erc20.json";
@@ -77,104 +77,4 @@ export async function getAXIALPriceWithLP(): Promise<AxialLPData> {
       tokenPoolPrice: 0,
     };
   }
-}
-
-export async function getVaultRewardAprNow(): Promise<MasterchefApr> {
-  const { AXIALPrice, LPTVL, tokenPoolPrice } = await getAXIALPriceWithLP();
-
-  let APRData: MasterchefApr = {};
-  for (const pool of Object.values(pools)) {
-    try {
-      const provider = new ethers.providers.StaticJsonRpcProvider(rpcUrl);
-      const masterchefContract = new ethers.Contract(
-        AXIAL_MASTERCHEF_CONTRACT_ADDRESS,
-        masterchefABI,
-        provider
-      ) as Masterchef;
-      const swapTokenContract = new ethers.Contract(
-        pool.address,
-        swap,
-        provider
-      ) as SwapFlashLoanNoWithdrawFee;
-      const tokenContract = new ethers.Contract(
-        pool.lpToken.address,
-        erc20,
-        provider
-      ) as Erc20;
-      const balanceToken = (await tokenContract.balanceOf(
-        AXIAL_MASTERCHEF_CONTRACT_ADDRESS
-      )) as BigNumber;
-
-      let virtualPrice = BigNumber.from(0),
-        TVL = 0;
-      if (pool.poolType !== PoolTypes.LP) {
-        try {
-          virtualPrice = await swapTokenContract.getVirtualPrice();
-        } catch (error) {
-          virtualPrice = ethers.utils.parseUnits("1", 18);
-        }
-
-        TVL = (+virtualPrice / 1e18) * (+balanceToken / 1e18);
-      } else {
-        TVL = tokenPoolPrice * (+balanceToken / 1e18);
-      }
-
-      const [totalAllocPoint, poolInfo, axialPerSecondRes] = await Promise.all([
-        masterchefContract.totalAllocPoint(),
-        masterchefContract.poolInfo(BigNumber.from(pool.lpToken.masterchefId)),
-        masterchefContract.axialPerSec(),
-      ]);
-      //@ts-ignore
-      const axialPerSecond: number = axialPerSecondRes / 1e18;
-
-      let poolFraction = 0;
-      if (+poolInfo.allocPoint > 0) {
-        poolFraction = +poolInfo.allocPoint / +totalAllocPoint;
-      }
-
-      const extraTokens: ExtraTokens[] = [];
-      if (poolInfo.rewarder !== ZERO_ADDRESS) {
-        const rewarderContract = new ethers.Contract(
-          poolInfo.rewarder,
-          simplerewarder,
-          provider
-        );
-        const [tokenPerSec, tokenAddress] = await Promise.all([
-          rewarderContract.tokenPerSec(),
-          rewarderContract.rewardToken(),
-        ]);
-        extraTokens.push({
-          address: tokenAddress,
-          tokenPerSec: tokenPerSec.toHexString(),
-        });
-      }
-
-      const usdPerWeek = axialPerSecond * poolFraction * AXIALPrice * 604_800;
-      const APRYearly = (usdPerWeek / TVL) * 100 * 52;
-
-      APRData = {
-        ...APRData,
-        [pool.address]: {
-          apr: APRYearly,
-          lptvl: LPTVL,
-          totalStaked: balanceToken.toHexString(),
-          tokenPoolPrice: tokenPoolPrice,
-          extraTokens: extraTokens,
-        },
-      };
-    } catch (error) {
-      console.error(`Error fetching Pool Reward APY for Pool: ${pool.address}`);
-      APRData = {
-        ...APRData,
-        [pool.address]: {
-          apr: 0,
-          lptvl: 0,
-          tokenPoolPrice: 0,
-          totalStaked: "0x0",
-          extraTokens: [],
-        },
-      };
-    }
-  }
-  return APRData;
 }

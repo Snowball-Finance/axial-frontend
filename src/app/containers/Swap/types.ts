@@ -32,6 +32,12 @@ export enum TokenSymbols {
   aa3dUSD = "aa3dUSD",
   am3dUSD = "am3dUSD",
   ORCA = "ORCA",
+  //Fuji token symbols
+  SC1 = "SC1",
+  SC2 = "SC2",
+  SC3 = "SC3",
+  T3P = "T3P",
+  PGL = "PGL",
 }
 
 export interface Token {

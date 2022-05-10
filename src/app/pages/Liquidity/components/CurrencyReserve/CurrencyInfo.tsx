@@ -18,7 +18,11 @@ export const CurrencyInfo: FC = () => {
   const { poolIndex } = useParams<TParams>();
   const poolKey = getKeyFromPoolIndex(poolIndex) || "";
   const poolData = useSelector(RewardsSelectors.poolData(poolKey));
-
+  console.log({
+    poolKey,
+    poolData,
+    pools,
+  });
   const formattedDecimals = pools[poolKey].poolType === PoolTypes.USD ? 2 : 4;
 
   return (

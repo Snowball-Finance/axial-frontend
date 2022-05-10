@@ -19,7 +19,6 @@ import { RewardsTokens } from "./RewardsTokens";
 
 export const PoolCardItem: FC<PoolCardItemProps> = ({ poolKey }) => {
   const rewardsPool = useSelector(RewardsPageSelectors.rewardsPool(poolKey));
-
   return (
     <StyledPoolCard>
       <StyledPoolContainer container>

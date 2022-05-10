@@ -2,24 +2,16 @@
 // import { actions } from './slice';
 
 import { GlobalDomains } from "app/appSelectors";
-import { tokens } from "app/tokens";
 import { BigNumber, Contract } from "ethers";
 import { all, call, put, select, takeLatest } from "redux-saga/effects";
 import { Web3Domains } from "../BlockChain/Web3/selectors";
 import { getContract, getProviderOrSigner } from "../utils/contractUtils";
-import {
-  ContractCall,
-  getMultiContractData,
-  getUserMasterchefInfo,
-} from "../utils/multicall";
 import { fetchSwapStatsNow } from "./providers/getSwapStats";
-import { getVaultRewardAprNow } from "./providers/getVaultRewardsAPR";
 import { RewardsDomains } from "./selectors";
 import { RewardsActions } from "./slice";
 import {
   DepositPayload,
   WithdrawPayload,
-  MasterchefResponse,
   Pool,
   Pools,
   RewardsState,
@@ -32,41 +24,24 @@ import {
 } from "./utils/calculatePoolData";
 import { LpTokenUnguarded } from "abi/ethers-contracts/LpTokenUnguarded";
 import { Token, TokenSymbols } from "../Swap/types";
-import { AXIAL_MASTERCHEF_CONTRACT_ADDRESS } from "./constants";
-import MASTERCHEF_ABI from "abi/masterchef.json";
+import GAUGE_ABI from "abi/gauge.json";
 import checkAndApproveTokenForTrade from "../utils/checkAndApproveTokenForTrade";
-import {
-  Erc20,
-  Masterchef,
-  SwapFlashLoanNoWithdrawFee,
-} from "abi/ethers-contracts";
+import { Erc20, Gauge, SwapFlashLoanNoWithdrawFee } from "abi/ethers-contracts";
 import { addSlippage, subtractSlippage } from "../../../utils/slippage";
 import { Deadlines, formatDeadlineToNumber } from "./utils/deadline";
 import { GlobalActions } from "store/slice";
 import { toast } from "react-toastify";
+import { PoolsAndGaugesActions } from "../PoolsAndGauges/slice";
 
 export function* getRewardPoolData(payload: {
   pool: Pool;
   useMasterchef: boolean;
 }) {
   const { pool, useMasterchef } = payload;
-  const networkLibrary = yield select(Web3Domains.selectNetworkLibraryDomain);
-  const account = yield select(Web3Domains.selectAccountDomain);
-  const chainId = yield select(Web3Domains.selectChainIDDomain);
-  const tokenPricesUSD = yield select(GlobalDomains.tokenPricesUSD);
-  const masterchefApr = yield select(RewardsDomains.masterchefApr);
-  const masterchefBalances = yield select(RewardsDomains.masterChefBalances);
-  const swapStats = yield select(RewardsDomains.swapStats);
+
   const dataToPass: CalculatePoolDataProps = {
     pool,
-    account,
-    chainId,
-    library: networkLibrary,
     useMasterchef,
-    tokenPricesUSD,
-    masterchefApr,
-    masterchefBalances,
-    swapStats,
   };
   const result = yield call(calculatePoolData, dataToPass);
   return result;
@@ -87,31 +62,17 @@ export function* getRewardPoolsData(action: {
   }
   const pools: RewardsState["pools"] = yield select(RewardsDomains.pools);
   yield put(RewardsActions.setIsGettingPoolsData(true));
-  const networkLibrary = yield select(Web3Domains.selectNetworkLibraryDomain);
-  const account = yield select(Web3Domains.selectAccountDomain);
-  const chainId = yield select(Web3Domains.selectChainIDDomain);
-  const tokenPricesUSD = yield select(GlobalDomains.tokenPricesUSD);
-  const masterchefApr = yield select(RewardsDomains.masterchefApr);
-  const masterchefBalances = yield select(RewardsDomains.masterChefBalances);
-  const swapStats = yield select(RewardsDomains.swapStats);
-
   try {
     const poolKeys: Pools[] = [];
     const arrayOfDataGetters = Object.values(pools).map((pool: any) => {
       poolKeys.push(pool.key);
       const dataToPass: CalculatePoolDataProps = {
         pool,
-        account,
-        chainId,
-        library: networkLibrary,
-        tokenPricesUSD,
-        masterchefApr,
-        masterchefBalances,
-        swapStats,
       };
       return call(calculatePoolData, dataToPass);
     });
     const responses = yield all(arrayOfDataGetters);
+    console.log({ responses });
     const tmpPools = {};
     poolKeys.forEach((key: Pools, index) => {
       //because some pools like AXIAL_JLP dont have a response
@@ -128,83 +89,6 @@ export function* getRewardPoolsData(action: {
   }
 }
 
-export function* getMasterChefBalances() {
-  const account = yield select(Web3Domains.selectAccountDomain);
-  const library = yield select(Web3Domains.selectLibraryDomain);
-  try {
-    yield put(RewardsActions.setIsGettingMasterChefBalances(true));
-    const list = Object.values(tokens).filter((token) => token.isLPToken);
-    const tokensList = list.sort(
-      (a, b) => (a.masterchefId || 0) - (b.masterchefId || 0)
-    );
-    const masterchefBalancesCall: ContractCall[] = [];
-    const tokenAddressList: string[] = [];
-    tokensList.forEach((token) => {
-      if (token.isLPToken && token.masterchefId !== undefined) {
-        masterchefBalancesCall.push(
-          getUserMasterchefInfo(account, token.masterchefId)
-        );
-        tokenAddressList.push(token.address);
-      }
-    });
-    const balanceResponses = yield call(
-      getMultiContractData,
-      library,
-      masterchefBalancesCall,
-      tokenAddressList
-    );
-    const _info: MasterchefResponse = {
-      userInfo: {
-        amount: BigNumber.from("0"),
-        rewardDebt: BigNumber.from("0"),
-      },
-      pendingTokens: {
-        bonusTokenAddress: "",
-        bonusTokenSymbol: "",
-        pendingAxial: BigNumber.from("0"),
-        pendingBonusToken: BigNumber.from("0"),
-      },
-    };
-
-    const balances = tokensList.reduce(
-      (acc, t) => ({
-        ...acc,
-        [t.symbol]: {
-          userInfo: {
-            amount: balanceResponses[t.address]?.userInfo[0],
-            rewardDebt: balanceResponses[t.address]?.userInfo[1],
-          },
-          pendingTokens: {
-            pendingAxial: balanceResponses[t.address]?.pendingTokens[0],
-            bonusTokenAddress: balanceResponses[t.address]?.pendingTokens[1],
-            bonusTokenSymbol: balanceResponses[t.address]?.pendingTokens[2],
-            pendingBonusToken: balanceResponses[t.address]?.pendingTokens[3],
-          },
-        },
-      }),
-      { _info: _info }
-    );
-    yield all([
-      put(RewardsActions.setMasterChefBalances(balances)),
-      put(RewardsActions.setIsGettingMasterChefBalances(false)),
-    ]);
-  } catch (e) {
-    yield put(RewardsActions.setIsGettingMasterChefBalances(false));
-    console.log(e);
-  }
-}
-
-export function* getMasterchefAPR() {
-  try {
-    yield put(RewardsActions.setIsGettingMasterchefApr(true));
-    const aprData = yield call(getVaultRewardAprNow);
-    yield put(RewardsActions.setMasterChefAPR(aprData));
-    yield put(RewardsActions.setIsGettingMasterchefApr(false));
-  } catch (e) {
-    console.log(e);
-    yield put(RewardsActions.setIsGettingMasterchefApr(false));
-  }
-}
 export function* getSwapStats() {
   try {
     yield put(RewardsActions.setIsGettingSwapStats(true));
@@ -307,11 +191,11 @@ export function* deposit(action: { type: string; payload: DepositPayload }) {
       getProviderOrSigner(library, account)
     );
 
-    const masterchefContract = new Contract(
-      AXIAL_MASTERCHEF_CONTRACT_ADDRESS,
-      MASTERCHEF_ABI,
+    const gaugeContract = new Contract(
+      pool.gauge_address,
+      GAUGE_ABI,
       library?.getSigner()
-    ) as Masterchef;
+    ) as Gauge;
 
     const lpTokenContract = getContract(
       pool.lpToken.address,
@@ -360,7 +244,7 @@ export function* deposit(action: { type: string; payload: DepositPayload }) {
       }
     } else {
       const spendTransaction = yield call(
-        masterchefContract.deposit,
+        gaugeContract.deposit,
         BigNumber.from(pool.lpToken.masterchefId),
         tokenAmounts[pool.lpToken.symbol]
       );
@@ -370,7 +254,8 @@ export function* deposit(action: { type: string; payload: DepositPayload }) {
         yield put(
           GlobalActions.setTransactionSuccessId(result.transactionHash)
         );
-        yield put(RewardsActions.getMasterChefBalances());
+        yield put(PoolsAndGaugesActions.getInitialData());
+        // yield put(RewardsActions.getMasterChefBalances());
       }
     }
     yield put(RewardsActions.setIsDepositing(false));
@@ -409,12 +294,12 @@ export function* withdraw(action: { type: string; payload: WithdrawPayload }) {
       pool.swapABI,
       getProviderOrSigner(library, account)
     );
-    const masterchefContract = new Contract(
-      AXIAL_MASTERCHEF_CONTRACT_ADDRESS,
-      MASTERCHEF_ABI,
+    const gaugeContract = new Contract(
+      pool.gauge_address,
+      GAUGE_ABI,
       library?.getSigner()
     );
-
+    //in liquidity page :masterchefwithdraw is not true
     if (!masterchefwithdraw) {
       const deadline = Math.round(
         new Date().getTime() / 1000 +
@@ -466,7 +351,7 @@ export function* withdraw(action: { type: string; payload: WithdrawPayload }) {
       }
     } else {
       const spendTransaction = yield call(
-        masterchefContract.withdraw,
+        gaugeContract.withdraw,
         pool.lpToken.masterchefId,
         tokenAmounts[pool.lpToken.symbol]
       );
@@ -476,7 +361,8 @@ export function* withdraw(action: { type: string; payload: WithdrawPayload }) {
         yield put(
           GlobalActions.setTransactionSuccessId(result.transactionHash)
         );
-        yield put(RewardsActions.getMasterChefBalances());
+        yield put(PoolsAndGaugesActions.getInitialData());
+        // yield put(RewardsActions.getMasterChefBalances());
       }
     }
     yield put(RewardsActions.setIsWithdrawing(false));
@@ -498,11 +384,6 @@ export function* withdraw(action: { type: string; payload: WithdrawPayload }) {
 
 export function* rewardsSaga() {
   yield takeLatest(RewardsActions.getRewardPoolsData.type, getRewardPoolsData);
-  yield takeLatest(
-    RewardsActions.getMasterChefBalances.type,
-    getMasterChefBalances
-  );
-  yield takeLatest(RewardsActions.getMasterchefAPR.type, getMasterchefAPR);
   yield takeLatest(RewardsActions.getSwapStats.type, getSwapStats);
   yield takeLatest(RewardsActions.deposit.type, deposit);
   yield takeLatest(RewardsActions.withdraw.type, withdraw);
