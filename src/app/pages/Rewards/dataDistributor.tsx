@@ -5,7 +5,7 @@ import { pools } from "app/pools";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getKeyFromPoolIndex } from "./constants";
+import { getKeyFromPoolIndex } from "../Liquidity/constants";
 import { RewardsPageSelectors } from "./selectors";
 import { RewardsPageActions } from "./slice";
 
