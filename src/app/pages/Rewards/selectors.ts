@@ -19,9 +19,9 @@ export const RewardsPageDomains = {
     state.rewardsPage?.poolData || initialState.poolData,
   userShareData: (state: RootState) =>
     state.rewardsPage?.userShareData || initialState.userShareData,
-  userShareDataUsingMasterChef: (state: RootState) =>
-    state.rewardsPage?.userShareDataUsingMasterchef ||
-    initialState.userShareDataUsingMasterchef,
+  rewardsPageUserShareData: (state: RootState) =>
+    state.rewardsPage?.rewardsPageUserShareData ||
+    initialState.rewardsPageUserShareData,
   isCompoundWithSnowballLoading: (state: RootState) =>
     state.rewardsPage?.isCompoundWithSnowballLoading ||
     initialState.isCompoundWithSnowballLoading,
@@ -140,8 +140,8 @@ export const RewardsPageSelectors = {
     RewardsPageDomains.isClaimModalOpen,
     (isClaimModalOpen) => isClaimModalOpen
   ),
-  userShareDataUsingMasterchef: createSelector(
-    RewardsPageDomains.userShareDataUsingMasterChef,
-    (userShareDataUsingMasterchef) => userShareDataUsingMasterchef
+  rewardsPageUserShareData: createSelector(
+    RewardsPageDomains.rewardsPageUserShareData,
+    (rewardsPageUserShareData) => rewardsPageUserShareData
   ),
 };

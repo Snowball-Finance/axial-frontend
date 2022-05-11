@@ -1,0 +1,67 @@
+import { tokenAddress } from "utils/tokenAddresses";
+import { Token, TokenSymbols } from "./containers/Swap/types";
+import ERC20_ABI from "abi/erc20.json";
+import axialLogo from "assets/icons/logo_icon.svg";
+
+export const fujiTokens: { [K in TokenSymbols]?: Token } = {
+  [TokenSymbols.SC1]: {
+    address: tokenAddress(TokenSymbols.SC1),
+    ABI: ERC20_ABI,
+    symbol: TokenSymbols.SC1,
+    logo: axialLogo,
+    name: "Stablecoin1",
+    geckoId: "usd-coin",
+    decimals: 18,
+    masterchefId: -1,
+    isSynthetic: false,
+    isLPToken: false,
+  },
+  [TokenSymbols.SC2]: {
+    address: tokenAddress(TokenSymbols.SC2),
+    ABI: ERC20_ABI,
+    symbol: TokenSymbols.SC2,
+    name: "Stablecoin2",
+    geckoId: "usd-coin",
+    decimals: 18,
+    logo: axialLogo,
+    masterchefId: -1,
+    isSynthetic: false,
+    isLPToken: false,
+  },
+  [TokenSymbols.SC3]: {
+    address: tokenAddress(TokenSymbols.SC3),
+    ABI: ERC20_ABI,
+    symbol: TokenSymbols.SC3,
+    name: "Stablecoin3",
+    geckoId: "usd-coin",
+    decimals: 18,
+    masterchefId: -1,
+    logo: axialLogo,
+    isSynthetic: false,
+    isLPToken: false,
+  },
+  [TokenSymbols.T3P]: {
+    address: tokenAddress(TokenSymbols.T3P),
+    ABI: ERC20_ABI,
+    symbol: TokenSymbols.T3P,
+    name: "Tundra 3Pool",
+    geckoId: "tundra3pool",
+    decimals: 18,
+    masterchefId: -1,
+    isSynthetic: false,
+    isLPToken: true,
+    logo: axialLogo,
+  },
+  [TokenSymbols.PGL]: {
+    address: tokenAddress(TokenSymbols.PGL),
+    ABI: ERC20_ABI,
+    symbol: TokenSymbols.PGL,
+    name: "PGL AVAX-EXTRAT",
+    geckoId: "pglavaxextrat",
+    decimals: 18,
+    masterchefId: -1,
+    isSynthetic: false,
+    isLPToken: true,
+    logo: axialLogo,
+  },
+};

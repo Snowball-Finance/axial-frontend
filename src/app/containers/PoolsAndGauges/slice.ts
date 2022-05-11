@@ -17,6 +17,7 @@ export const initialState: ContainerState = {
   isLoadingLastInfo: false,
   lastInfo: undefined,
   poolProviders: {},
+  userPoolsData: {},
 };
 
 const poolsAndGaugesSlice = createSlice({
@@ -36,6 +37,9 @@ const poolsAndGaugesSlice = createSlice({
     },
     setPools(state, action: PayloadAction<ContainerState["pools"]>) {
       state.pools = action.payload;
+    },
+    setUserPoolsData(state, action: PayloadAction<any>) {
+      state.userPoolsData = action.payload;
     },
     setGaugeContract(state, action: PayloadAction<any>) {
       state.gaugeContract = action.payload;

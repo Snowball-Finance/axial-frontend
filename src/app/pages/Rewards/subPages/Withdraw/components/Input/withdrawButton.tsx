@@ -19,18 +19,16 @@ export const RewardsWithdrawButton = () => {
   );
   const loading = useSelector(RewardsSelectors.isWithdrawing);
   const withdrawAmount = useSelector(RewardsPageSelectors.withdrawAmount);
-  const masterchefBalance = useSelector(RewardsSelectors.masterChefBalances);
+  const poolsBalances = useSelector(RewardsSelectors.poolsBalances);
 
   const tokenKey = selectedPool?.lpToken.symbol;
 
   let withdrawError = "";
-  if (tokenKey && masterchefBalance) {
-    if (masterchefBalance[tokenKey]?.userInfo.amount.eq(0)) {
+  if (tokenKey && poolsBalances) {
+    if (poolsBalances[tokenKey]?.userInfo.amount.eq(0)) {
       withdrawError = "You don't have Balance on this pool";
     } else if (
-      masterchefBalance[tokenKey]?.userInfo.amount.lt(
-        parseUnits(withdrawAmount)
-      )
+      poolsBalances[tokenKey]?.userInfo.amount.lt(parseUnits(withdrawAmount))
     ) {
       withdrawError = "Insufficient Balance";
     } else {

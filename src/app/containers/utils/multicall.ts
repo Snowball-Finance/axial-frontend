@@ -1,9 +1,7 @@
 import ERC_20 from "abi/erc20.json";
 import LP_TOKEN_UNGUARDED from "abi/lpTokenUnguarded.json";
-import MASTERCHEF from "abi/masterchef.json";
 import { Multicall } from "ethereum-multicall";
 import { ethers } from "ethers";
-import { AXIAL_MASTERCHEF_CONTRACT_ADDRESS } from "../Rewards/constants";
 
 interface ReturnValues {
   [index: string]: any;
@@ -111,25 +109,4 @@ function getUserBalance(account: string, tokenAddress: string): ContractCall {
   return contractCall;
 }
 
-function getUserMasterchefInfo(
-  account: string,
-  masterchefId: number
-): ContractCall {
-  const contractCall = new ContractCall(
-    AXIAL_MASTERCHEF_CONTRACT_ADDRESS || "",
-    MASTERCHEF,
-    masterchefId.toString()
-  );
-  contractCall.setCall("userInfo", [masterchefId, account]);
-  contractCall.setCall("pendingTokens", [masterchefId, account]);
-
-  return contractCall;
-}
-
-export {
-  ContractCall,
-  getMultiContractData,
-  getPoolsTVL,
-  getUserBalance,
-  getUserMasterchefInfo,
-};
+export { ContractCall, getMultiContractData, getPoolsTVL, getUserBalance };

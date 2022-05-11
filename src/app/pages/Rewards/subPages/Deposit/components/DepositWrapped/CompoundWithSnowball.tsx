@@ -7,13 +7,11 @@ import { useTranslation } from "react-i18next";
 import { translations } from "locales/i18n";
 import { OutlinedButton } from "app/components/common/buttons/outlinedButton";
 import { RewardsPageActions } from "app/pages/Rewards/slice";
-import {
-  getKeyFromPoolIndex,
-  POOLS_INFO_MAP,
-} from "app/pages/Rewards/constants";
+import { POOLS_INFO_MAP } from "app/pages/Rewards/constants";
 import { RewardsPageSelectors } from "app/pages/Rewards/selectors";
 import { CssVariables, FontFamilies } from "styles/cssVariables/cssVariables";
 import { mobile } from "styles/media";
+import { getKeyFromPoolIndex } from "app/pages/Liquidity/constants";
 
 type TParams = { poolIndex: string };
 

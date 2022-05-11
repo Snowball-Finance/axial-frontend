@@ -1,3 +1,5 @@
+import { poolBalance, Pool } from "app/containers/Rewards/types";
+import { pools } from "app/pools";
 import { PoolInfo } from "../types";
 
 export const retrieveGauge = ({
@@ -26,6 +28,16 @@ export const retrieveGauge = ({
   const lpTokenBalance = lpTokenData.balanceOf;
   const totalStaked = gaugeData.balanceOf;
   const totalSupply = gaugeData.totalSupply;
+  const initialPoolData: Pool = pools[pool.symbol];
+
+  const additionalData: poolBalance = {
+    userInfo: {
+      amount: gaugeData.balanceOf,
+    },
+    pendingTokens: {
+      pendingAxial: gaugeData.earned,
+    },
+  };
 
   return {
     ...gaugeData,
@@ -39,7 +51,9 @@ export const retrieveGauge = ({
     harvestable,
     poolTokens,
     depositTokenName: pool.symbol,
-    poolName: pool.symbol,
+    poolName: initialPoolData.name,
+    poolAddress: initialPoolData.address,
+    additionalData,
   };
 };
 // export const getGauges = async ({

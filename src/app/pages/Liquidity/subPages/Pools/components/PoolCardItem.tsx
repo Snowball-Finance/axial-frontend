@@ -14,7 +14,6 @@ export const PoolCardItem: FC<PoolCardItemProps> = ({ poolKey }) => {
   const liquidityPool = useSelector(
     LiquidityPageSelectors.liquidityPool(poolKey)
   );
-
   return (
     <StyledPoolCard>
       <StyledPoolContainer container>

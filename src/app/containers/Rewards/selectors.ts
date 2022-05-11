@@ -13,20 +13,18 @@ export const RewardsDomains = {
     state?.rewards?.pools[poolKey]?.userShareData || undefined,
   isGettingPoolsData: (state: RootState) =>
     state.rewards?.isGettingPoolsData || initialState.isGettingPoolsData,
-  isGettingMasterChefBalances: (state: RootState) =>
-    state.rewards?.isGettingMasterChefBalances ||
-    initialState.isGettingMasterChefBalances,
-  isGettingMasterchefApr: (state: RootState) =>
-    state.rewards?.isGettingMasterchefApr ||
-    initialState.isGettingMasterchefApr,
+  isGettingPoolsBalances: (state: RootState) =>
+    state.rewards?.isGettingPoolsBalances ||
+    initialState.isGettingPoolsBalances,
+  isGettingAprData: (state: RootState) =>
+    state.rewards?.isGettingAprData || initialState.isGettingAprData,
   isGettingSwapStats: (state: RootState) =>
     state.rewards?.isGettingSwapStats || initialState.isGettingSwapStats,
-  masterChefBalances: (state: RootState) =>
-    state.rewards?.masterChefBalances || initialState.masterChefBalances,
+  poolsBalances: (state: RootState) =>
+    state.rewards?.poolsBalances || initialState.poolsBalances,
   swapStats: (state: RootState) =>
     state.rewards?.swapStats || initialState.swapStats,
-  masterchefApr: (state: RootState) =>
-    state.rewards?.masterchefApr || initialState.masterchefApr,
+  aprData: (state: RootState) => state.rewards?.aprData || initialState.aprData,
   isDepositing: (state: RootState) =>
     state.rewards?.isDepositing || initialState.isDepositing,
   isWithdrawing: (state: RootState) =>
@@ -40,27 +38,24 @@ export const RewardsSelectors = {
     (lastTransactionTimes) => lastTransactionTimes
   ),
   pools: createSelector([RewardsDomains.pools], (pools) => pools),
-  isGettingMasterChefBalances: createSelector(
-    RewardsDomains.isGettingMasterChefBalances,
-    (isGettingMasterChefBalances) => isGettingMasterChefBalances
+  isGettingPoolsBalances: createSelector(
+    RewardsDomains.isGettingPoolsBalances,
+    (isGettingPoolsBalances) => isGettingPoolsBalances
   ),
-  isGettingMasterchefApr: createSelector(
-    RewardsDomains.isGettingMasterchefApr,
-    (isGettingMasterchefApr) => isGettingMasterchefApr
+  isGettingAprData: createSelector(
+    RewardsDomains.isGettingAprData,
+    (isGetting) => isGetting
   ),
   isGettingSwapStats: createSelector(
     RewardsDomains.isGettingSwapStats,
     (isGettingSwapStats) => isGettingSwapStats
   ),
-  masterChefBalances: createSelector(
-    RewardsDomains.masterChefBalances,
-    (masterChefBalances) => masterChefBalances
+  poolsBalances: createSelector(
+    RewardsDomains.poolsBalances,
+    (poolsBalances) => poolsBalances
   ),
   swapStats: createSelector(RewardsDomains.swapStats, (swapStats) => swapStats),
-  masterchefApr: createSelector(
-    RewardsDomains.masterchefApr,
-    (masterchefApr) => masterchefApr
-  ),
+  aprData: createSelector(RewardsDomains.aprData, (apr) => apr),
   isDepositing: createSelector(
     RewardsDomains.isDepositing,
     (isDepositing) => isDepositing

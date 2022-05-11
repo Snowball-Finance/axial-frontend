@@ -31,7 +31,7 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
     TVL: formatBNToShortString(poolData?.totalLocked || Zero, 18),
     axialPending: userShareData
       ? formatBNToShortString(
-          userShareData?.masterchefBalance?.pendingTokens.pendingAxial || Zero,
+          userShareData?.poolBalance?.pendingTokens.pendingAxial || Zero,
           18
         )
       : "",
@@ -59,15 +59,14 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
       : "-",
     userBalanceUSD: userShareData
       ? formatBNToShortString(
-          userShareData?.masterchefBalance?.userInfo.amount || Zero,
+          userShareData?.poolBalance?.userInfo.amount || Zero,
           18
         )
       : "-",
   };
 
   const hasShare =
-    userShareData &&
-    !!userShareData?.masterchefBalance?.userInfo.amount.gt("0");
+    userShareData && !!userShareData?.poolBalance?.userInfo.amount.gt("0");
   let info: InfoData[] = [];
 
   if (pools[poolKey].poolType !== PoolTypes.LP) {
