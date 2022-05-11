@@ -11,7 +11,7 @@ export const RewardsWithdrawSlider = () => {
   const dispatch = useDispatch();
   const sliderValue = useSelector(RewardsPageSelectors.withdrawPercentage);
   const pool = useSelector(RewardsPageSelectors.selectedPool);
-  const tokens = useSelector(RewardsSelectors.masterChefBalances);
+  const tokens = useSelector(RewardsSelectors.poolsBalances);
   const account = useSelector(Web3Selectors.selectAccount);
 
   const handleSliderChange = (e: number) => {

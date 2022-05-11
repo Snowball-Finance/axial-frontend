@@ -13,7 +13,7 @@ import {
 import { PoolsAndGaugesActions, usePoolsAndGaugesSlice } from "./slice";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-balham.min.css";
-import { EthersSelectors } from "../BlockChain/Ethers/selectors";
+import { Web3Selectors } from "../BlockChain/Web3/selectors";
 
 export const PoolsAndGauges: FC = () => {
   usePoolsAndGaugesSlice();
@@ -21,13 +21,12 @@ export const PoolsAndGauges: FC = () => {
   const gaugeContract = useSelector(selectGaugeContract);
   const isReadyToGetUserPools = useSelector(selectIsReadyToGetUserData);
   const alreadyGotUserPools = useSelector(selectGotUserPools);
-  const provider = useSelector(EthersSelectors.selectPrivateProvider);
-
+  const networkLibrary = useSelector(Web3Selectors.selectNetworkLibrary);
   useEffect(() => {
-    if (provider && !alreadyGotUserPools) {
+    if (networkLibrary && !alreadyGotUserPools) {
       dispatch(PoolsAndGaugesActions.getLastInfo());
     }
-  }, [provider, alreadyGotUserPools]);
+  }, [networkLibrary, alreadyGotUserPools]);
 
   useEffect(() => {
     if (isReadyToGetUserPools && !alreadyGotUserPools) {

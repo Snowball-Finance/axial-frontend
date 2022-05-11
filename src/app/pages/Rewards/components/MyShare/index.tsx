@@ -16,7 +16,7 @@ import { CardWrapper } from "app/components/wrappers/Card";
 export const MyShare: FC = () => {
   const { t } = useTranslation();
   const userShareData = useSelector(
-    RewardsPageSelectors.userShareDataUsingMasterchef
+    RewardsPageSelectors.rewardsPageUserShareData
   );
 
   return (
@@ -82,8 +82,7 @@ export const MyShare: FC = () => {
                     {userShareData &&
                       commify(
                         formatBNToString(
-                          userShareData?.masterchefBalance?.userInfo.amount ||
-                            Zero,
+                          userShareData?.poolBalance?.userInfo.amount || Zero,
                           18
                         )
                       )}
@@ -111,7 +110,7 @@ export const MyShare: FC = () => {
                     {userShareData &&
                       commify(
                         formatBNToString(
-                          userShareData?.masterchefBalance?.pendingTokens
+                          userShareData?.poolBalance?.pendingTokens
                             ?.pendingAxial || Zero,
                           18
                         )

@@ -8,8 +8,8 @@ export interface RewardsPageState {
   poolTokens: Token[] | undefined;
   poolData: PoolData | undefined;
   userShareData: UserShareData | undefined;
-  userShareDataUsingMasterchef: UserShareData | undefined;
-  isGettingUserDataUsingMasterchef: boolean;
+  rewardsPageUserShareData: UserShareData | undefined;
+  isGettingUserShareDataInRewardsPage: boolean;
   isCompoundWithSnowballLoading: boolean;
   compoundWithSnowballAPY: string;
   depositValue: string;

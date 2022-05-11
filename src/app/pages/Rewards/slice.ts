@@ -16,8 +16,8 @@ export const initialState: ContainerState = {
   poolTokens: undefined,
   poolData: undefined,
   userShareData: undefined,
-  userShareDataUsingMasterchef: undefined,
-  isGettingUserDataUsingMasterchef: false,
+  rewardsPageUserShareData: undefined,
+  isGettingUserShareDataInRewardsPage: false,
   isCompoundWithSnowballLoading: false,
   compoundWithSnowballAPY: "0.00",
   depositValue: zeroString,
@@ -67,12 +67,9 @@ const rewardsPageSlice = createSlice({
     setIsClaimModalOpen(state, action: PayloadAction<boolean>) {
       state.isClaimModalOpen = action.payload;
     },
-    getPoolDataUsingMasterchef() {},
-    setUserShareDataUsingMasterchef(
-      state,
-      action: PayloadAction<UserShareData>
-    ) {
-      state.userShareDataUsingMasterchef = action.payload;
+    getRewardPoolData() {},
+    setRewardsPageUserShareData(state, action: PayloadAction<UserShareData>) {
+      state.rewardsPageUserShareData = action.payload;
     },
   },
 });

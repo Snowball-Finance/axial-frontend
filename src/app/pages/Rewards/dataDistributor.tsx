@@ -5,7 +5,7 @@ import { pools } from "app/pools";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getKeyFromPoolIndex } from "./constants";
+import { getKeyFromPoolIndex } from "../Liquidity/constants";
 import { RewardsPageSelectors } from "./selectors";
 import { RewardsPageActions } from "./slice";
 
@@ -17,11 +17,9 @@ export const DataDistributor = () => {
 
   const networkLibrary = useSelector(Web3Selectors.selectNetworkLibrary);
   const selectedPool = useSelector(RewardsPageSelectors.selectedPool);
-  const masterchefApr = useSelector(RewardsSelectors.masterchefApr);
-  const masterchefBalances = useSelector(RewardsSelectors.masterChefBalances);
-
+  const aprData = useSelector(RewardsSelectors.aprData);
+  const poolsBalances = useSelector(RewardsSelectors.poolsBalances);
   const poolKey = getKeyFromPoolIndex(poolIndex) || "";
-
   useEffect(() => {
     if (poolKey) {
       const pool = pools[poolKey] as Pool;
@@ -31,9 +29,9 @@ export const DataDistributor = () => {
 
   useEffect(() => {
     if (networkLibrary && selectedPool) {
-      dispatch(RewardsPageActions.getPoolDataUsingMasterchef());
+      dispatch(RewardsPageActions.getRewardPoolData());
     }
     return () => {};
-  }, [masterchefApr, masterchefBalances, networkLibrary, selectedPool]);
+  }, [aprData, poolsBalances, networkLibrary]);
   return <></>;
 };
