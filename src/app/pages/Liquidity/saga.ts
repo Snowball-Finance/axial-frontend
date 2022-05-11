@@ -92,7 +92,7 @@ export function* buildTransactionData() {
     const library = yield select(Web3Domains.selectLibraryDomain);
     const account = yield select(Web3Domains.selectAccountDomain);
     const targetContract = new Contract(
-      pool.swapAddress || pool.gauge_address,
+      pool.swapAddress || pool.address,
       pool.swapABI,
       getProviderOrSigner(library, account)
     )  as SwapFlashLoanNoWithdrawFee;

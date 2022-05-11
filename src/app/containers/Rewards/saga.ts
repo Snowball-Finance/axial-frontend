@@ -72,7 +72,6 @@ export function* getRewardPoolsData(action: {
       return call(calculatePoolData, dataToPass);
     });
     const responses = yield all(arrayOfDataGetters);
-    console.log({ responses });
     const tmpPools = {};
     poolKeys.forEach((key: Pools, index) => {
       //because some pools like AXIAL_JLP dont have a response
