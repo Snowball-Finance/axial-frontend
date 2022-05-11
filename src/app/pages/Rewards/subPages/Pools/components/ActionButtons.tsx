@@ -20,7 +20,7 @@ import { getPoolIndexFromKey } from "app/pages/Liquidity/constants";
 
 export const ActionButtons: FC<ActionButtonProps> = ({ poolKey }) => {
   const { t } = useTranslation();
-  const masterchefBalance = useSelector(RewardsSelectors.masterChefBalances);
+  const poolsBalances = useSelector(RewardsSelectors.poolsBalances);
   const account = useSelector(Web3Selectors.selectAccount);
   const poolData = useSelector(RewardsPageSelectors.rewardsPoolData(poolKey));
   const dispatch = useDispatch();
@@ -68,8 +68,8 @@ export const ActionButtons: FC<ActionButtonProps> = ({ poolKey }) => {
           onClick={() => handleClaimClick(pools[poolKey])}
           disabled={
             !account ||
-            (masterchefBalance &&
-              masterchefBalance[tokenKey]?.pendingTokens.pendingAxial.eq("0x0"))
+            (poolsBalances &&
+              poolsBalances[tokenKey]?.pendingTokens.pendingAxial.eq("0x0"))
           }
         >
           {t(translations.RewardsPage.ActionButtons.Claim())}

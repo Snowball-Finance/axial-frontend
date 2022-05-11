@@ -21,7 +21,7 @@ import { getPoolCalls } from "./providers/getPoolCalls";
 import { getGaugeCalls } from "./providers/getGaugeCalls";
 import { retrieveGauge } from "./providers/retrieveGauge";
 import { RewardsActions } from "../Rewards/slice";
-import { MasterchefApr } from "../Rewards/types";
+import { AprData } from "../Rewards/types";
 
 export function* getLastInfo() {
   try {
@@ -37,7 +37,7 @@ export function* getLastInfo() {
       };
     });
     const tmp = {};
-    const poolsAprData: MasterchefApr = {};
+    const poolsAprData: AprData = {};
     pools.forEach((item) => {
       tmp[item.swapaddress || item.tokenaddress] = item;
       //CHECK_HERE, we want to replace masterchef apr data
@@ -68,7 +68,7 @@ export function* getLastInfo() {
         results.shift();
     }
     yield put(PoolsAndGaugesActions.setPools(tmp));
-    yield put(RewardsActions.setMasterChefAPR(poolsAprData));
+    yield put(RewardsActions.setAprData(poolsAprData));
   } catch (error) {
     if (IS_DEV) {
       console.error(error);
@@ -185,7 +185,7 @@ export function* getAndSetUserPools() {
     yield all([
       put(PoolsAndGaugesActions.setPools(tmp)),
       put(PoolsAndGaugesActions.setUserPoolsData(userPoolsData)),
-      put(RewardsActions.setMasterChefBalances(userPoolsData)),
+      put(RewardsActions.setPoolsBalances(userPoolsData)),
     ]);
   } catch (error) {
     console.log(error);

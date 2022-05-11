@@ -9,13 +9,13 @@ export const DataDistributor = () => {
   const dispatch = useDispatch();
   const networkLibrary = useSelector(Web3Selectors.selectNetworkLibrary);
   const selectedPool = useSelector(RewardsPageSelectors.selectedPool);
-  const masterchefApr = useSelector(RewardsSelectors.masterchefApr);
-  const masterchefBalances = useSelector(RewardsSelectors.masterChefBalances);
+  const aprData = useSelector(RewardsSelectors.aprData);
+  const poolsBalances = useSelector(RewardsSelectors.poolsBalances);
   useEffect(() => {
     if (networkLibrary && selectedPool) {
-      dispatch(RewardsPageActions.getPoolDataUsingMasterchef());
+      dispatch(RewardsPageActions.getRewardPoolData());
     }
     return () => {};
-  }, [masterchefApr, masterchefBalances, networkLibrary]);
+  }, [aprData, poolsBalances, networkLibrary]);
   return <></>;
 };

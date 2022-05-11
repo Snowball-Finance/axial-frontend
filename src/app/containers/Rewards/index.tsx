@@ -20,8 +20,8 @@ interface Props {
 export const Rewards: FC<Props> = ({ pools }) => {
   useRewardsSlice();
   const networkLibrary = useSelector(Web3Selectors.selectNetworkLibrary);
-  const masterchefApr = useSelector(RewardsSelectors.masterchefApr);
-  const masterchefBalances = useSelector(RewardsSelectors.masterChefBalances);
+  const aprData = useSelector(RewardsSelectors.aprData);
+  const poolsBalances = useSelector(RewardsSelectors.poolsBalances);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -29,7 +29,7 @@ export const Rewards: FC<Props> = ({ pools }) => {
       dispatch(RewardsActions.getRewardPoolsData(pools));
     }
     return () => {};
-  }, [masterchefApr, masterchefBalances, networkLibrary]);
+  }, [aprData, poolsBalances, networkLibrary]);
 
   useEffect(() => {
     dispatch(RewardsActions.getSwapStats());

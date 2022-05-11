@@ -1,4 +1,4 @@
-import { MasterchefResponse, Pool } from "app/containers/Rewards/types";
+import { poolBalance, Pool } from "app/containers/Rewards/types";
 import { pools } from "app/pools";
 import { PoolInfo } from "../types";
 
@@ -30,7 +30,7 @@ export const retrieveGauge = ({
   const totalSupply = gaugeData.totalSupply;
   const initialPoolData: Pool = pools[pool.symbol];
 
-  const additionalData: MasterchefResponse = {
+  const additionalData: poolBalance = {
     userInfo: {
       amount: gaugeData.balanceOf,
     },

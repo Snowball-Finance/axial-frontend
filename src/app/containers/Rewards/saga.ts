@@ -35,13 +35,13 @@ import { PoolsAndGaugesActions } from "../PoolsAndGauges/slice";
 
 export function* getRewardPoolData(payload: {
   pool: Pool;
-  useMasterchef: boolean;
+  isRewardsPool: boolean;
 }) {
-  const { pool, useMasterchef } = payload;
+  const { pool, isRewardsPool } = payload;
 
   const dataToPass: CalculatePoolDataProps = {
     pool,
-    useMasterchef,
+    isRewardsPool,
   };
   const result = yield call(calculatePoolData, dataToPass);
   return result;
@@ -166,14 +166,14 @@ export function* resetTokensInQueueForApproval(tokenSymbols: TokenSymbols[]) {
 
 export function* deposit(action: { type: string; payload: DepositPayload }) {
   yield put(GlobalActions.setTransactionSuccessId(undefined));
-  const { poolKey, masterchefDeposit, tokenAmounts, shouldDepositWrapped } =
+  const { poolKey, rewardsDeposit, tokenAmounts, shouldDepositWrapped } =
     action.payload;
   const pools = yield select(RewardsDomains.pools);
   const pool: Pool = pools[poolKey];
 
   const poolTokens = shouldDepositWrapped
     ? (pool.underlyingPoolTokens as Token[])
-    : masterchefDeposit
+    : rewardsDeposit
     ? [pool.lpToken]
     : pool.poolTokens;
 
@@ -203,7 +203,7 @@ export function* deposit(action: { type: string; payload: DepositPayload }) {
       library,
       account ?? undefined
     ) as LpTokenUnguarded;
-    if (!masterchefDeposit) {
+    if (!rewardsDeposit) {
       if (!lpTokenContract) return;
       const totalSupply = yield call(lpTokenContract.totalSupply);
       const isFirstTransaction = totalSupply.isZero();
@@ -245,7 +245,6 @@ export function* deposit(action: { type: string; payload: DepositPayload }) {
     } else {
       const spendTransaction = yield call(
         gaugeContract.deposit,
-        BigNumber.from(pool.lpToken.masterchefId),
         tokenAmounts[pool.lpToken.symbol]
       );
       const result = yield call(spendTransaction.wait);
@@ -255,7 +254,6 @@ export function* deposit(action: { type: string; payload: DepositPayload }) {
           GlobalActions.setTransactionSuccessId(result.transactionHash)
         );
         yield put(PoolsAndGaugesActions.getInitialData());
-        // yield put(RewardsActions.getMasterChefBalances());
       }
     }
     yield put(RewardsActions.setIsDepositing(false));
@@ -283,7 +281,7 @@ export function* withdraw(action: { type: string; payload: WithdrawPayload }) {
     const {
       poolKey,
       tokenAmounts,
-      masterchefwithdraw,
+      rewardsWithdraw,
       type,
       lpTokenAmountToSpend,
       onSuccess,
@@ -298,9 +296,9 @@ export function* withdraw(action: { type: string; payload: WithdrawPayload }) {
       pool.gauge_address,
       GAUGE_ABI,
       library?.getSigner()
-    );
-    //in liquidity page :masterchefwithdraw is not true
-    if (!masterchefwithdraw) {
+    ) as Gauge;
+    //in liquidity page :rewardsWithdraw is not true
+    if (!rewardsWithdraw) {
       const deadline = Math.round(
         new Date().getTime() / 1000 +
           60 * formatDeadlineToNumber(transactionDeadline)
@@ -352,7 +350,6 @@ export function* withdraw(action: { type: string; payload: WithdrawPayload }) {
     } else {
       const spendTransaction = yield call(
         gaugeContract.withdraw,
-        pool.lpToken.masterchefId,
         tokenAmounts[pool.lpToken.symbol]
       );
       const result = yield call(spendTransaction.wait);
@@ -362,7 +359,6 @@ export function* withdraw(action: { type: string; payload: WithdrawPayload }) {
           GlobalActions.setTransactionSuccessId(result.transactionHash)
         );
         yield put(PoolsAndGaugesActions.getInitialData());
-        // yield put(RewardsActions.getMasterChefBalances());
       }
     }
     yield put(RewardsActions.setIsWithdrawing(false));

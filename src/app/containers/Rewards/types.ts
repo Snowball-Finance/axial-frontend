@@ -11,7 +11,7 @@ export interface PendingTokens {
   pendingAxial: BigNumber;
 }
 
-export interface MasterchefResponse {
+export interface poolBalance {
   userInfo: PoolInfo;
   pendingTokens: PendingTokens;
 }
@@ -35,10 +35,10 @@ export interface AxialLPData {
 }
 export interface BalanceResponse {
   [key: string]: //key is token address
-  MasterchefResponse;
+  poolBalance;
 }
 
-export interface MasterchefApr {
+export interface AprData {
   [swapAddress: string]: {
     apr: number;
     lptvl: number;
@@ -85,7 +85,7 @@ export interface Pool {
 }
 export interface DepositPayload {
   poolKey: Pools;
-  masterchefDeposit?: boolean;
+  rewardsDeposit?: boolean;
   shouldDepositWrapped: boolean;
   tokenAmounts: { [K in TokenSymbols]?: BigNumber };
 }
@@ -97,7 +97,7 @@ export enum WithdrawType {
 export type TokenAmounts = { [K in TokenSymbols]?: BigNumber };
 export interface WithdrawPayload {
   poolKey: Pools;
-  masterchefwithdraw?: boolean;
+  rewardsWithdraw?: boolean;
   type: WithdrawType | TokenSymbols;
   lpTokenAmountToSpend: BigNumber;
   tokenAmounts: TokenAmounts;
@@ -141,7 +141,7 @@ export interface UserShareData {
     value: BigNumber;
   }[];
   lpTokenBalance: BigNumber;
-  masterchefBalance: MasterchefResponse | null;
+  poolBalance: poolBalance | null;
 }
 export interface SwapStatsReponse {
   symbol: string;
@@ -153,12 +153,12 @@ export interface SwapStatsReponse {
 export interface RewardsState {
   lastTransactionTimes: any;
   swapStats: any;
-  masterchefApr: MasterchefApr | undefined;
-  isGettingMasterChefBalances: boolean;
-  isGettingMasterchefApr: boolean;
+  aprData: AprData | undefined;
+  isGettingPoolsBalances: boolean;
+  isGettingAprData: boolean;
   isGettingPoolsData: boolean;
   isGettingSwapStats: boolean;
-  masterChefBalances: { [key: string]: MasterchefResponse } | undefined;
+  poolsBalances: { [key: string]: poolBalance } | undefined;
   pools: { [K in Pools]?: Pool };
   isDepositing: boolean;
   isWithdrawing: boolean;

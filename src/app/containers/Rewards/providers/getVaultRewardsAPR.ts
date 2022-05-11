@@ -1,19 +1,9 @@
-import { AxialLPData, ExtraTokens, MasterchefApr, PoolTypes } from "../types";
+import { AxialLPData, ExtraTokens, AprData, PoolTypes } from "../types";
 import axios from "axios";
-import { BigNumber, ethers } from "ethers";
+import { ethers } from "ethers";
 import { rpcUrl } from "app/containers/BlockChain/utils/wallet/connectors";
 import { pools } from "app/pools";
 import lpAMM from "abi/lpTokenAMM.json";
-import { ZERO_ADDRESS } from "../constants";
-import masterchefABI from "abi/masterchef.json";
-import swap from "abi/swapFlashLoanNoWithdrawFee.json";
-import erc20 from "abi/erc20.json";
-import simplerewarder from "abi/simplerewarder.json";
-import {
-  Masterchef,
-  SwapFlashLoanNoWithdrawFee,
-  Erc20,
-} from "abi/ethers-contracts";
 
 export async function getAVAXPrice(): Promise<number> {
   const query = JSON.stringify({

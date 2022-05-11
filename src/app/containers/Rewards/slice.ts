@@ -20,12 +20,12 @@ export const initialState: ContainerState = {
     [TRANSACTION_TYPES.MIGRATE]: Date.now(),
   },
   pools: {},
-  isGettingMasterChefBalances: false,
-  isGettingMasterchefApr: false,
+  isGettingPoolsBalances: false,
+  isGettingAprData: false,
   isGettingSwapStats: false,
-  masterChefBalances: undefined,
+  poolsBalances: undefined,
   swapStats: undefined,
-  masterchefApr: undefined,
+  aprData: undefined,
   isDepositing: false,
   isWithdrawing: false,
   isGettingPoolsData: false,
@@ -39,7 +39,7 @@ export interface ExtraTokens {
   tokenPerSec: string;
 }
 
-export interface MasterchefApr {
+export interface AprData {
   [swapAddress: string]: {
     apr: number;
     lptvl: number;
@@ -60,12 +60,12 @@ const rewardsSlice = createSlice({
     setRewardPools(state, action: PayloadAction<ContainerState["pools"]>) {
       state.pools = action.payload;
     },
-    setIsGettingMasterChefBalances(state, action: PayloadAction<boolean>) {},
-    setMasterChefBalances(
+    setIsGettingPoolsBalances(state, action: PayloadAction<boolean>) {},
+    setPoolsBalances(
       state,
-      action: PayloadAction<ContainerState["masterChefBalances"]>
+      action: PayloadAction<ContainerState["poolsBalances"]>
     ) {
-      state.masterChefBalances = action.payload;
+      state.poolsBalances = action.payload;
     },
     getSwapStats(state, action: PayloadAction<void>) {},
     setIsGettingSwapStats(state, action: PayloadAction<boolean>) {
@@ -95,12 +95,9 @@ const rewardsSlice = createSlice({
       );
       state.swapStats = formattedPayload;
     },
-    setIsGettingMasterchefApr(state, action: PayloadAction<boolean>) {},
-    setMasterChefAPR(
-      state,
-      action: PayloadAction<ContainerState["masterchefApr"]>
-    ) {
-      state.masterchefApr = action.payload;
+    setIsGettingAprData(state, action: PayloadAction<boolean>) {},
+    setAprData(state, action: PayloadAction<ContainerState["aprData"]>) {
+      state.aprData = action.payload;
     },
     updateLastTransactionTimes(
       state,

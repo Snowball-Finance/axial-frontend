@@ -47,7 +47,7 @@ export function* deposit() {
   const amountToSpend = floatToBN(Number(value), token.decimals);
   const dataToSend: DepositPayload = {
     poolKey: selectedPool.key,
-    masterchefDeposit: true,
+    rewardsDeposit: true,
     shouldDepositWrapped: false,
     tokenAmounts: {
       [token.symbol]: amountToSpend,
@@ -85,7 +85,7 @@ export function* withdraw() {
     floatToBN(amount, pool.lpToken.decimals) || BigNumber.from("0");
   if (userShareData && withdrawPercentage) {
     effectiveUserLPTokenBalance =
-      userShareData.masterchefBalance?.userInfo.amount
+      userShareData.poolBalance?.userInfo.amount
         .mul(parseUnits(withdrawPercentage.toString(), 5)) // difference between numerator and denominator because we're going from 100 to 1.00
         .div(10 ** 7) ?? BigNumber.from("0");
   }
@@ -95,7 +95,7 @@ export function* withdraw() {
     poolKey: pool.key,
     lpTokenAmountToSpend: effectiveUserLPTokenBalance,
     type: pool.lpToken.symbol as TokenSymbols,
-    masterchefwithdraw: true,
+    rewardsWithdraw: true,
   };
   yield put(RewardsPageActions.setIsModalOpen(true));
   yield put(RewardsActions.withdraw(dataToSend));
@@ -118,15 +118,15 @@ export function* claim(action: { type: string; payload: Pool }) {
   }
 }
 
-export function* getPoolDataUsingMasterchef() {
+export function* getRewardsPoolData() {
   const pool: Pool = yield select(RewardsPageDomains.pool);
   if (pool) {
     const poolData = yield call(getRewardPoolData, {
       pool,
-      useMasterchef: true,
+      isRewardsPool: true,
     });
     yield put(
-      RewardsPageActions.setUserShareDataUsingMasterchef(poolData.userShareData)
+      RewardsPageActions.setRewardsPageUserShareData(poolData.userShareData)
     );
   }
 }
@@ -138,8 +138,8 @@ export function* rewardsPageSaga() {
   );
   yield takeLatest(RewardsPageActions.deposit.type, deposit);
   yield takeLatest(
-    RewardsPageActions.getPoolDataUsingMasterchef.type,
-    getPoolDataUsingMasterchef
+    RewardsPageActions.getRewardPoolData.type,
+    getRewardsPoolData
   );
   yield takeLatest(RewardsPageActions.withdraw.type, withdraw);
   yield takeLatest(RewardsPageActions.claim.type, claim);
