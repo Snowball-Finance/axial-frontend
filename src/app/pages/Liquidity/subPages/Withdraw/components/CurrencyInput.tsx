@@ -72,8 +72,8 @@ const StyledCurrencyInput = styled(Grid)({
   padding: "12px 36px",
 
   [mobile]: {
-    padding: 15
-  }
+    padding: 15,
+  },
 });
 
 const TokenIconContainer = styled(Grid)({

@@ -59,6 +59,6 @@ const StyledPoolCard = styled("div")({
   padding: "26px 36px",
 
   [mobile]: {
-    padding: "15px 15px"
-  }
+    padding: "15px 15px",
+  },
 });

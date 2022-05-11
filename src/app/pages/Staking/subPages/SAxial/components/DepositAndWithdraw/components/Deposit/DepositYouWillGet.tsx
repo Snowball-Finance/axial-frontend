@@ -43,6 +43,6 @@ const Text = styled(Typography)({
   color: CssVariables.white,
 
   [mobile]: {
-    textAlign: "center"
-  }
+    textAlign: "center",
+  },
 });

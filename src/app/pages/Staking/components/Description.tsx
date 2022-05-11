@@ -19,7 +19,11 @@ export const Description: FC = () => {
         }
       )}{" "}
       <AnchorWrapper>
-        <Anchor target="_blank" rel="noreferrer" href={`https://docs.axial.exchange`}>
+        <Anchor
+          target="_blank"
+          rel="noreferrer"
+          href={`https://docs.axial.exchange`}
+        >
           Read more
         </Anchor>
       </AnchorWrapper>
