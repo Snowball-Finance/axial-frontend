@@ -45,6 +45,9 @@ export const StakingPageDomains = {
 
   selectSelectedDepositSliderValueDomain: (state: RootState) =>
     state.stakingPage?.selectedDepositSliderValue,
+
+  selectIsModalOpen: (state: RootState) =>
+    state.stakingPage?.isModalOpen || initialState.isModalOpen,
 };
 
 export const StakingPageSelectors = {
@@ -108,5 +111,9 @@ export const StakingPageSelectors = {
   remainingDaysToShow: createSelector(
     StakingPageDomains.remainingDaysToUnlock,
     (lockedDays) => lockedDays
+  ),
+  selectIsModalOpen: createSelector(
+    StakingPageDomains.selectIsModalOpen,
+    (isModalOpen) => isModalOpen
   ),
 };

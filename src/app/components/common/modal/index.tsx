@@ -57,15 +57,11 @@ const CloseWrapper = styled("div")({
   display: "flex",
 
   [mobile]: {
-    width: 20,
-    height: 20,
+    width: 25,
+    height: 25,
   },
 });
 const Title = styled(Typography)({
   color: CssVariables.white,
   textTransform: "uppercase",
-
-  [mobile]: {
-    fontSize: "20px",
-  },
 });

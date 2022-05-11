@@ -35,17 +35,17 @@ export const PoolCardItem: FC<PoolCardItemProps> = ({ poolKey }) => {
           </StyledPoolChildContainer>
         </Grid>
 
-        <Grid item>
+        <StyledFullChildContainer item>
           <StyledPoolChildContainer container>
-            <Grid item>
+            <StyledFullChildContainer item>
               <TokenImages poolKey={poolKey} />
-            </Grid>
+            </StyledFullChildContainer>
 
-            <Grid item>
+            <StyledFullChildContainer item>
               <ActionButtons poolKey={poolKey} />
-            </Grid>
+            </StyledFullChildContainer>
           </StyledPoolChildContainer>
-        </Grid>
+        </StyledFullChildContainer>
       </StyledPoolContainer>
     </StyledPoolCard>
   );
@@ -63,8 +63,8 @@ const StyledPoolContainer = styled(Grid)({
   rowGap: 20,
 
   [mobile]: {
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
     flexDirection: "row",
     columnGap: 20,
   },
@@ -75,8 +75,8 @@ const StyledPoolChildContainer = styled(Grid)({
   alignItems: "center",
 
   [mobile]: {
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
     flexDirection: "column",
     rowGap: 20,
   },
@@ -90,4 +90,10 @@ const PoolHeaderText = styled(Typography)({
 const Tag = styled(Typography)({
   color: CssVariables.error,
   textTransform: "uppercase",
+});
+
+const StyledFullChildContainer = styled(Grid)({
+  [mobile]: {
+    width: "100%",
+  },
 });

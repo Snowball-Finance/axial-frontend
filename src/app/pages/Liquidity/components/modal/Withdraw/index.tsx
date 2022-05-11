@@ -13,6 +13,7 @@ import { Deadline } from "./components/Deadline";
 import { GasPrice } from "./components/GasPrice";
 import { WithdrawApproveButton } from "./components/approveButton";
 import { WithdrawButton } from "./components/withdrawButton";
+import { mobile } from "styles/media";
 
 export const WithdrawModal: FC = () => {
   const withdrawReviewData = useSelector(
@@ -80,10 +81,10 @@ export const WithdrawModal: FC = () => {
 
       <Grid item>
         <Grid container justifyContent="center" alignItems="center" spacing={2}>
-          <Grid item xs={6}>
+          <Grid item xs={12} xl={6}>
             <WithdrawApproveButton />
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={12} xl={6}>
             <WithdrawButton />
           </Grid>
         </Grid>
@@ -95,6 +96,10 @@ export const WithdrawModal: FC = () => {
 const StyledContainer = styled(Grid)({
   marginTop: 20,
   width: 600,
+
+  [mobile]: {
+    width: "100%",
+  },
 });
 
 const Text = styled(Typography)({

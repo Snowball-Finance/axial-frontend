@@ -41,20 +41,22 @@ export const PoolCardItem: FC<PoolCardItemProps> = ({ poolKey }) => {
             </Grid>
           )}
 
-          <Grid item xs={4}>
+          <Grid item xs={12} xl={4}>
             <Info poolKey={poolKey} />
           </Grid>
         </StyledPoolChildUpperContainer>
 
-        <StyledPoolChildLowerContainer item container>
-          <Grid item>
-            <RewardsTokens />
-          </Grid>
+        <StyledFullChildContainer item>
+          <StyledPoolChildLowerContainer container>
+            <StyledFullChildContainer item>
+              <RewardsTokens />
+            </StyledFullChildContainer>
 
-          <Grid item>
-            <ActionButtons poolKey={poolKey} />
-          </Grid>
-        </StyledPoolChildLowerContainer>
+            <StyledFullChildContainer item>
+              <ActionButtons poolKey={poolKey} />
+            </StyledFullChildContainer>
+          </StyledPoolChildLowerContainer>
+        </StyledFullChildContainer>
       </StyledPoolContainer>
     </StyledPoolCard>
   );
@@ -84,10 +86,11 @@ const StyledPoolChildUpperContainer = styled(Grid)({
   alignItems: "flex-start",
 
   [mobile]: {
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
     flexDirection: "column",
     rowGap: 20,
+    width: "100%",
   },
 });
 
@@ -100,6 +103,13 @@ const StyledPoolChildLowerContainer = styled(Grid)({
     alignItems: "center",
     flexDirection: "column",
     rowGap: 20,
+    width: "100%",
+  },
+});
+
+const StyledFullChildContainer = styled(Grid)({
+  [mobile]: {
+    width: "100%",
   },
 });
 
