@@ -92,20 +92,20 @@ export function* buildTransactionData() {
     const library = yield select(Web3Domains.selectLibraryDomain);
     const account = yield select(Web3Domains.selectAccountDomain);
     const targetContract = new Contract(
-      pool.swapAddress || pool.address,
+      pool.swapAddress || pool.gauge_address,
       pool.swapABI,
       getProviderOrSigner(library, account)
-    );
+    )  as SwapFlashLoanNoWithdrawFee;
 
     const shouldDepositWrapped =
-      pool.swapAddress === undefined ? false : !depositRaw;
+      pool.swapAddress ? false : !depositRaw;
 
     const poolTokens = shouldDepositWrapped
       ? (pool.underlyingPoolTokens as Token[])
       : pool.poolTokens;
 
     const minToMint = yield call(
-      (targetContract as SwapFlashLoanNoWithdrawFee).calculateTokenAmount,
+      (targetContract).calculateTokenAmount,
       poolTokens.map(({ symbol }) => tokenAmounts[symbol]),
       true
     );
