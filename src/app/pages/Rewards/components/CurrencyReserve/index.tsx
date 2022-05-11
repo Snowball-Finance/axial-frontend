@@ -30,13 +30,13 @@ export const CurrencyReserve: FC = () => {
 
   return (
     <Grid container spacing={2}>
-      <Grid item>
+      <Grid item xs={12}>
         <HeaderText variant="h2">
           {t(translations.RewardsPage.CurrencyReserve.Title())}
         </HeaderText>
       </Grid>
 
-      <Grid item>
+      <Grid item xs={12}>
         <CardWrapper>
           <Grid container spacing={4}>
             {rewardsPoolData?.tokens.map((infoItem: TokenShareType) => (

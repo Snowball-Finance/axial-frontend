@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import { Grid, styled } from "@mui/material";
 
 import { WithdrawInput } from "./components/WithdrawInput";
-import { CurrencyReserve } from "../../components/CurrencyReserve";
+import { CurrencyInfo } from "../../components/CurrencyInfo";
 import { WithdrawConfirmation } from "./components/withdrawConfirmationModal";
 import { mobile } from "styles/media";
 
@@ -16,7 +16,7 @@ export const Withdraw: FC = () => {
             <WithdrawInput />
           </Grid>
           <Grid item>
-            <CurrencyReserve />
+            <CurrencyInfo />
           </Grid>
         </Grid>
       </PageWrapper>
