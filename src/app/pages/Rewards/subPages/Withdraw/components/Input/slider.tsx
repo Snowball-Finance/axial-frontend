@@ -16,7 +16,7 @@ export const RewardsWithdrawSlider = () => {
 
   const handleSliderChange = (e: number) => {
     if (tokens && pool) {
-      const balance = tokens[pool.lpToken.symbol].userInfo.amount;
+      const balance = tokens[pool.lpToken.symbol]?.userInfo.amount;
 
       dispatch(
         RewardsPageActions.setWithdrawPercentage({
@@ -31,7 +31,7 @@ export const RewardsWithdrawSlider = () => {
       disabled={
         !account ||
         !tokens ||
-        (pool && tokens[pool.lpToken.symbol].userInfo.amount.eq(0))
+        (pool && tokens[pool.lpToken.symbol]?.userInfo.amount.eq(0))
       }
       onChange={(e, v) => {
         handleSliderChange(v as number);

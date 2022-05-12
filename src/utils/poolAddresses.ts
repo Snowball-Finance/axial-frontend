@@ -35,17 +35,13 @@ const poolAddresses: {
     Fuji: "0xba5f105A3E3D7C0eAa36AAa1e3BE11D77F1A6162",
   },
   //Fuji pools
-  [Pools.T3P]: {
-    Avalanche: "0xE730AFB0C84416e33f17a6C781e46E59C6780CC4",
-    Fuji: "0xE730AFB0C84416e33f17a6C781e46E59C6780CC4",
+  [Pools.P3T]: {
+    Avalanche: "0xD3e8706cf9547f18756FDAF7015C97C2e6dEFCC3",
+    Fuji: "0xD3e8706cf9547f18756FDAF7015C97C2e6dEFCC3",
   },
   [Pools.PGL]: {
     Avalanche: "0xdb7BC8c03c821ade48EF22F1047411FAd2A3e944",
     Fuji: "0xdb7BC8c03c821ade48EF22F1047411FAd2A3e944",
-  },
-  [Pools.TEST]: {
-    Avalanche: "0xE68E161AA7A32403308cA0B29F15FEC1960c6ca9",
-    Fuji: "0xE68E161AA7A32403308cA0B29F15FEC1960c6ca9",
   },
 };
 //@ts-ignore
@@ -55,17 +51,13 @@ const gaugeAddresses: {
     Fuji: string;
   };
 } = {
-  [Pools.T3P]: {
-    Avalanche: "0x015b16E27Ae7D4B409B44147f5AC08Ac8746e654",
-    Fuji: "0x015b16E27Ae7D4B409B44147f5AC08Ac8746e654",
+  [Pools.P3T]: {
+    Avalanche: "0x81195A398ea621991175967AED395e0B82605D1c",
+    Fuji: "0x81195A398ea621991175967AED395e0B82605D1c",
   },
   [Pools.PGL]: {
     Avalanche: "0x92ffd3c24F1660186d5F51c52bd54C31A578c81d",
     Fuji: "0x92ffd3c24F1660186d5F51c52bd54C31A578c81d",
-  },
-  [Pools.TEST]: {
-    Avalanche: "0x6bb1e54489C26da81b5E3a15826d4c96faAa5Cbe",
-    Fuji: "0x6bb1e54489C26da81b5E3a15826d4c96faAa5Cbe",
   },
 };
 
@@ -80,9 +72,9 @@ const swapAddresses: {
     Avalanche: "0x26694e4047eA77cC96341f0aC491773aC5469d72",
     Fuji: "0x26694e4047eA77cC96341f0aC491773aC5469d72",
   },
-  [Pools.T3P]: {
-    Avalanche: "0x427BBe0E9D632b0285F046Ca36898D07F449452A",
-    Fuji: "0x427BBe0E9D632b0285F046Ca36898D07F449452A",
+  [Pools.P3T]: {
+    Avalanche: "0x25949663b5C22e49e541eDEA98F70edB865f1Ec4",
+    Fuji: "0x25949663b5C22e49e541eDEA98F70edB865f1Ec4",
   },
 };
 
