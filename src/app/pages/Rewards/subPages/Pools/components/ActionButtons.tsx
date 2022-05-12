@@ -23,6 +23,7 @@ export const ActionButtons: FC<ActionButtonProps> = ({ poolKey }) => {
   const poolsBalances = useSelector(RewardsSelectors.poolsBalances);
   const account = useSelector(Web3Selectors.selectAccount);
   const poolData = useSelector(RewardsPageSelectors.rewardsPoolData(poolKey));
+  const claimingSymbol=useSelector(RewardsPageSelectors.claimingPendingAxialPoolSymbol);
   const dispatch = useDispatch();
 
   const tokenKey = pools[poolKey].lpToken.symbol;
@@ -38,7 +39,9 @@ export const ActionButtons: FC<ActionButtonProps> = ({ poolKey }) => {
   };
 
   const handleClaimClick = (pool: Pool) => {
-    dispatch(RewardsPageActions.claim(pool));
+    if(!(claimingSymbol===pool.lpToken.symbol)){
+      dispatch(RewardsPageActions.claim(pool));
+    }
   };
 
   return (
@@ -61,6 +64,7 @@ export const ActionButtons: FC<ActionButtonProps> = ({ poolKey }) => {
       <StyledFullChildContainer item>
         <StyledOutlinedButton
           onClick={() => handleClaimClick(pools[poolKey])}
+          loading={claimingSymbol===tokenKey}
           disabled={
             !account ||
             (poolsBalances &&

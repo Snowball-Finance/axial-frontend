@@ -38,6 +38,9 @@ export const RewardsPageDomains = {
     state.rewardsPage?.isModalOpen || initialState.isModalOpen,
   isClaimModalOpen: (state: RootState) =>
     state.rewardsPage?.isClaimModalOpen || initialState.isClaimModalOpen,
+  claimingPendingAxialPoolSymbol: (state: RootState) =>
+    state.rewardsPage?.claimingPendingAxialPoolSymbol ||
+    initialState.claimingPendingAxialPoolSymbol,
 };
 
 export const RewardsPageSelectors = {
@@ -143,5 +146,9 @@ export const RewardsPageSelectors = {
   rewardsPageUserShareData: createSelector(
     RewardsPageDomains.rewardsPageUserShareData,
     (rewardsPageUserShareData) => rewardsPageUserShareData
+  ),
+  claimingPendingAxialPoolSymbol: createSelector(
+    RewardsPageDomains.claimingPendingAxialPoolSymbol,
+    (claimingPendingAxialPoolSymbol) => claimingPendingAxialPoolSymbol
   ),
 };

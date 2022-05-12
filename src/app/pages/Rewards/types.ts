@@ -17,6 +17,7 @@ export interface RewardsPageState {
   withdrawAmount: string;
   isModalOpen: boolean;
   isClaimModalOpen: boolean;
+  claimingPendingAxialPoolSymbol: string;
 }
 
 export interface PoolCardItemProps {

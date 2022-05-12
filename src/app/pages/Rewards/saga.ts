@@ -19,6 +19,7 @@ import { checkAndApproveTokensInList } from "utils/tokenVerifier";
 import { getRewardPoolData } from "app/containers/Rewards/saga";
 import GAUGE_ABI from "abi/gauge.json";
 import { Gauge } from "abi/ethers-contracts";
+import { RewardsDomains } from "app/containers/Rewards/selectors";
 
 export function* poolInfoByAddress(action: { type: string; payload: string }) {
   const { payload } = action;
@@ -102,20 +103,28 @@ export function* withdraw() {
 }
 
 export function* claim(action: { type: string; payload: Pool }) {
-  //TODO: implement claim CHECK_HERE
   const pool = action.payload;
+  const poolBalances=yield select(RewardsDomains.poolsBalances)
   const library = yield select(Web3Domains.selectLibraryDomain);
+  const balance=poolBalances[pool.lpToken.symbol]?.pendingTokens?.pendingAxial
+yield put(RewardsPageActions.setSymbolForClaimingPendingAxial(pool.lpToken.symbol));
   const gaugeContract = new Contract(
     pool.gauge_address,
     GAUGE_ABI,
     library?.getSigner()
   ) as Gauge;
   try {
-    // CHECK_HERE check amount
-    yield call(gaugeContract.withdraw, 0);
+    yield call(gaugeContract.withdraw, balance);
+    yield put(RewardsPageActions.setSymbolForClaimingPendingAxial(''));
   } catch (e) {
     console.log(e);
+    toast.error("error while claiming");
+    yield put(RewardsPageActions.setSymbolForClaimingPendingAxial(''));
+
   }
+
+
+
 }
 
 export function* getRewardsPoolData() {

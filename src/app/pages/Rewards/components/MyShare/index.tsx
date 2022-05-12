@@ -18,7 +18,6 @@ export const MyShare: FC = () => {
   const userShareData = useSelector(
     RewardsPageSelectors.rewardsPageUserShareData
   );
-  console.log({ userShareData });
   return (
     <Grid container spacing={2}>
       <Grid item container justifyContent="space-between" alignItems="center">

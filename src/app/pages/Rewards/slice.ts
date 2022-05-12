@@ -25,6 +25,7 @@ export const initialState: ContainerState = {
   withdrawAmount: zeroString,
   isModalOpen: false,
   isClaimModalOpen: false,
+  claimingPendingAxialPoolSymbol: "",
 };
 
 const rewardsPageSlice = createSlice({
@@ -46,6 +47,9 @@ const rewardsPageSlice = createSlice({
     },
     deposit() {},
     withdraw() {},
+    setSymbolForClaimingPendingAxial(state, action: PayloadAction<string>) {
+      state.claimingPendingAxialPoolSymbol = action.payload;
+    },
     claim(state, action: PayloadAction<Pool>) {},
     setWithdrawPercentage(
       state,
