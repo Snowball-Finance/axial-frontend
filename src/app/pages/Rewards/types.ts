@@ -1,3 +1,4 @@
+import { HarvestableToken } from "app/containers/PoolsAndGauges/types";
 import { Pool, PoolData, UserShareData } from "app/containers/Rewards/types";
 import { Token } from "app/containers/Swap/types";
 
@@ -16,8 +17,8 @@ export interface RewardsPageState {
   withdrawPercentage: number;
   withdrawAmount: string;
   isModalOpen: boolean;
-  isClaimModalOpen: boolean;
   claimingPendingAxialPoolSymbol: string;
+  tokensToClaim: HarvestableToken[];
 }
 
 export interface PoolCardItemProps {

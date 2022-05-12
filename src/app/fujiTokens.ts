@@ -64,4 +64,16 @@ export const fujiTokens: { [K in TokenSymbols]?: Token } = {
     isLPToken: true,
     logo: axialLogo,
   },
+  [TokenSymbols.AXIAL]: {
+    symbol: "AXIAL",
+    name: "Axial Token",
+    geckoId: "axial-token",
+    ABI: ERC20_ABI,
+    decimals: 18,
+    masterchefId: -1,
+    isSynthetic: false,
+    isLPToken: false,
+    logo: axialLogo,
+    address: tokenAddress(TokenSymbols.AXIAL),
+  },
 };

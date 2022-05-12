@@ -18,8 +18,7 @@ import { TokenSymbols } from "app/containers/Swap/types";
 import { checkAndApproveTokensInList } from "utils/tokenVerifier";
 import { getRewardPoolData } from "app/containers/Rewards/saga";
 import GAUGE_ABI from "abi/gauge.json";
-import { Gauge } from "abi/ethers-contracts";
-import { RewardsDomains } from "app/containers/Rewards/selectors";
+import { getProviderOrSigner } from "app/containers/utils/contractUtils";
 
 export function* poolInfoByAddress(action: { type: string; payload: string }) {
   const { payload } = action;
@@ -104,27 +103,30 @@ export function* withdraw() {
 
 export function* claim(action: { type: string; payload: Pool }) {
   const pool = action.payload;
-  const poolBalances=yield select(RewardsDomains.poolsBalances)
+  const claimable = yield select(RewardsPageDomains.claimingTokens);
+
   const library = yield select(Web3Domains.selectLibraryDomain);
-  const balance=poolBalances[pool.lpToken.symbol]?.pendingTokens?.pendingAxial
-yield put(RewardsPageActions.setSymbolForClaimingPendingAxial(pool.lpToken.symbol));
+  const account = yield select(Web3Domains.selectAccountDomain);
+  const claimedRewards = [1]; //yield select(RewardsPageDomains.checkedClaimRewards);
+
   const gaugeContract = new Contract(
     pool.gauge_address,
     GAUGE_ABI,
-    library?.getSigner()
-  ) as Gauge;
+    getProviderOrSigner(library, account)
+  );
   try {
-    yield call(gaugeContract.withdraw, balance);
-    yield put(RewardsPageActions.setSymbolForClaimingPendingAxial(''));
+    const isClaimAll = claimedRewards.length === claimable.length;
+    // yield put(RewardsPageActions.setisClaimRewardsLoading(true));
+    if (isClaimAll) {
+      yield call(gaugeContract.getAllRewards);
+    } else {
+      yield call(gaugeContract.getRewards, claimedRewards);
+    }
   } catch (e) {
     console.log(e);
-    toast.error("error while claiming");
-    yield put(RewardsPageActions.setSymbolForClaimingPendingAxial(''));
-
+  } finally {
+    // yield put(RewardsPageActions.setisClaimRewardsLoading(false));
   }
-
-
-
 }
 
 export function* getRewardsPoolData() {

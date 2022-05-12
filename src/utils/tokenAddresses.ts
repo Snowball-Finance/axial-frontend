@@ -108,6 +108,10 @@ const tokenAddresses: {
     Avalanche: "0xdb7BC8c03c821ade48EF22F1047411FAd2A3e944",
     Fuji: "0xdb7BC8c03c821ade48EF22F1047411FAd2A3e944",
   },
+  [TokenSymbols.AXIAL]: {
+    Avalanche: "0x0708f10f657b16abe18954361e96a641b217648b",
+    Fuji: "0x0708f10f657b16abe18954361e96a641b217648b",
+  },
 };
 
 export const tokenAddress = (key: TokenSymbols): string => {

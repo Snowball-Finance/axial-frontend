@@ -34,6 +34,7 @@ export function* getLastInfo() {
       if (tmp.symbol === "Pool 3 Tokens") {
         tmp.symbol = "P3T";
       }
+      tmp.key = tmp.symbol;
       return tmp;
     });
     yield put(PoolsAndGaugesActions.setLastInfo(parsedLastInfo));

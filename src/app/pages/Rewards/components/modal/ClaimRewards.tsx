@@ -6,12 +6,20 @@ import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { mobile } from "styles/media";
 import { CardWrapper } from "app/components/wrappers/Card";
-import { demoData } from "../ClaimRewards/staticValues";
 import { ContainedButton } from "app/components/common/buttons/containedButton";
+import { RewardsPageSelectors } from "../../selectors";
+import { useDispatch, useSelector } from "react-redux";
+import { RewardsPageActions } from "../../slice";
+import { Pool } from "app/containers/Rewards/types";
 
 export const ClaimRewardsModal: FC = () => {
   const { t } = useTranslation();
-
+  const dispatch = useDispatch();
+  const pool = useSelector(RewardsPageSelectors.selectedPool) as Pool;
+  const harvestables = useSelector(RewardsPageSelectors.tokensToClaim);
+  const handleClaimClick = () => {
+    dispatch(RewardsPageActions.claim(pool));
+  };
   return (
     <StyledContainer mt={2}>
       <CardWrapper>
@@ -28,9 +36,9 @@ export const ClaimRewardsModal: FC = () => {
             </Grid>
           </Grid>
 
-          {demoData.map((item) => {
+          {harvestables.map((item) => {
             return (
-              <Grid item key={item.symbol} xs={12}>
+              <Grid item key={item.token.symbol} xs={12}>
                 <Grid
                   container
                   justifyContent="space-between"
@@ -43,11 +51,16 @@ export const ClaimRewardsModal: FC = () => {
                       </Grid>
 
                       <Grid item>
-                        <IconImage src={item.logo} alt={item.symbol} />
+                        <IconImage
+                          src={item.token.logo}
+                          alt={item.token.symbol}
+                        />
                       </Grid>
 
                       <Grid item>
-                        <TokenText variant="body1">{item.symbol}</TokenText>
+                        <TokenText variant="body1">
+                          {item.token.symbol}
+                        </TokenText>
                       </Grid>
                     </Grid>
                   </Grid>
@@ -55,11 +68,11 @@ export const ClaimRewardsModal: FC = () => {
                   <Grid item>
                     <Grid container spacing={1} alignItems="center">
                       <Grid item>
-                        <Text variant="body1">{item.totalEarned}</Text>
+                        <Text variant="body1">{item.amountToHarvest}</Text>
                       </Grid>
 
                       <Grid item>
-                        <Text variant="body2">(${item.totalEarnedUSD})</Text>
+                        <Text variant="body2">(${item.amountInUsd})</Text>
                       </Grid>
                     </Grid>
                   </Grid>
@@ -69,7 +82,7 @@ export const ClaimRewardsModal: FC = () => {
           })}
 
           <Grid item xs={12}>
-            <ContainedButton fullWidth>
+            <ContainedButton onClick={handleClaimClick} fullWidth>
               {t(translations.RewardsPage.ActionButtons.Claim())}
             </ContainedButton>
           </Grid>

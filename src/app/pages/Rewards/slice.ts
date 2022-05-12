@@ -8,6 +8,7 @@ import { rewardsPageSaga } from "./saga";
 import { zeroString } from "../Liquidity/constants";
 import { Pool, UserShareData } from "app/containers/Rewards/types";
 import { divide, multiply } from "precise-math";
+import { HarvestableToken } from "app/containers/PoolsAndGauges/types";
 
 // The initial state of the RewardsPage container
 export const initialState: ContainerState = {
@@ -24,8 +25,8 @@ export const initialState: ContainerState = {
   withdrawPercentage: 0,
   withdrawAmount: zeroString,
   isModalOpen: false,
-  isClaimModalOpen: false,
   claimingPendingAxialPoolSymbol: "",
+  tokensToClaim: [],
 };
 
 const rewardsPageSlice = createSlice({
@@ -68,8 +69,9 @@ const rewardsPageSlice = createSlice({
     setIsModalOpen(state, action: PayloadAction<boolean>) {
       state.isModalOpen = action.payload;
     },
-    setIsClaimModalOpen(state, action: PayloadAction<boolean>) {
-      state.isClaimModalOpen = action.payload;
+
+    setTokensToClaim(state, action: PayloadAction<HarvestableToken[]>) {
+      state.tokensToClaim = action.payload;
     },
     getRewardPoolData() {},
     setRewardsPageUserShareData(state, action: PayloadAction<UserShareData>) {

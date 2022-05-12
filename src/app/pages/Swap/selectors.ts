@@ -58,13 +58,15 @@ export const SwapPageSelectors = {
             calculatePrice(tokenBalance, tokenPricesUSD?.[symbol], decimals) ||
             Zero;
 
-          fromTokens.push({
-            value: symbol,
-            icon,
-            balance: tokens?.[symbol].balance,
-            balanceUSD: tokenBalanceUSD,
-            decimals,
-          });
+          if (tokens && !tokens[symbol].blockSwap) {
+            fromTokens.push({
+              value: symbol,
+              icon,
+              balance: tokens?.[symbol].balance,
+              balanceUSD: tokenBalanceUSD,
+              decimals,
+            });
+          }
         }
       });
 
@@ -104,14 +106,15 @@ export const SwapPageSelectors = {
           const tokenBalanceUSD =
             calculatePrice(tokenBalance, tokenPricesUSD?.[symbol], decimals) ||
             Zero;
-
-          toTokens.push({
-            value: symbol,
-            icon,
-            balance: tokens?.[symbol].balance,
-            balanceUSD: tokenBalanceUSD,
-            decimals,
-          });
+          if (tokens && !tokens[symbol].blockSwap) {
+            toTokens.push({
+              value: symbol,
+              icon,
+              balance: tokens?.[symbol].balance,
+              balanceUSD: tokenBalanceUSD,
+              decimals,
+            });
+          }
         }
       });
 

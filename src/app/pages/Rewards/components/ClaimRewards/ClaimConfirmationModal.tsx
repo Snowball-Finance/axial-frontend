@@ -12,10 +12,10 @@ export const ClaimConfirmationModal: FC = () => {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
-  const open = useSelector(RewardsPageSelectors.isClaimModalOpen);
+  const open = useSelector(RewardsPageSelectors.tokensToClaim).length > 0;
 
   const handleClose = () => {
-    dispatch(RewardsPageActions.setIsClaimModalOpen(false));
+    dispatch(RewardsPageActions.setTokensToClaim([]));
   };
 
   return (

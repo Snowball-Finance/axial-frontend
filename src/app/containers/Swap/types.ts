@@ -38,6 +38,7 @@ export enum TokenSymbols {
   STABLE3 = "STABLE3",
   P3T = "P3T",
   PGL = "PGL",
+  AXIAL = "AXIAL",
 }
 
 export interface Token {
@@ -52,6 +53,7 @@ export interface Token {
   isLPToken: boolean;
   isSynthetic: boolean;
   balance?: BigNumber;
+  blockSwap?: boolean;
 }
 
 export enum GasPrices {
