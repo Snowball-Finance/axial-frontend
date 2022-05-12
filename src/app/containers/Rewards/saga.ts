@@ -288,10 +288,11 @@ export function* withdraw(action: { type: string; payload: WithdrawPayload }) {
     } = action.payload;
     const pool: Pool = pools[poolKey];
     const targetContract = new Contract(
-      pool.address,
+      pool.swapAddress || pool.address,
       pool.swapABI,
       getProviderOrSigner(library, account)
     );
+
     const gaugeContract = new Contract(
       pool.gauge_address,
       GAUGE_ABI,
