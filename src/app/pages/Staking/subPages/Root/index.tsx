@@ -4,6 +4,7 @@ import { Grid, styled } from "@mui/material";
 import { HeaderText } from "./components/HeaderText";
 import { SAxialItem } from "./components/SAxialItem";
 import { VeAxialItem } from "./components/VeAxialItem";
+import { Max1040 } from "app/components/wrappers/max1040";
 
 export const StakingRoot: FC = () => {
   return (
@@ -25,7 +26,6 @@ export const StakingRoot: FC = () => {
   );
 };
 
-const StyledCards = styled("div")({
-  maxWidth: 730,
+const StyledCards = styled(Max1040)({
   margin: "0px auto",
 });

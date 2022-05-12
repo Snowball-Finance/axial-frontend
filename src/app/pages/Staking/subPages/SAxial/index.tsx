@@ -5,6 +5,7 @@ import { Navigation } from "../../components/Navigation";
 import { Info } from "./components/Info";
 import { HeaderText } from "./components/HeaderText";
 import { DepositAndWithdraw } from "./components/DepositAndWithdraw";
+import { Max1040 } from "app/components/wrappers/max1040";
 
 export const SAxialPage: FC = () => {
   return (
@@ -30,7 +31,6 @@ export const SAxialPage: FC = () => {
   );
 };
 
-const StyledCards = styled("div")({
-  maxWidth: 730,
+const StyledCards = styled(Max1040)({
   margin: "0px auto",
 });
