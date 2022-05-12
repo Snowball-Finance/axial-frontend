@@ -131,9 +131,9 @@ export function* calculatePoolData(props: CalculatePoolDataProps) {
     }
   }
   //@ts-ignore ignored because we will always have pool
-  const userPoolBalance = poolsBalances
-    ? poolsBalances[POOL.lpToken.symbol]
-    : null;
+  let symbol = POOL.lpToken.symbol;
+
+  const userPoolBalance = poolsBalances ? poolsBalances[symbol] : null;
   const effectivePoolTokens = POOL.underlyingPoolTokens || POOL.poolTokens;
   const isMetaSwap = POOL.swapAddress != null;
 
