@@ -14,6 +14,10 @@ import {
   injected,
 } from "app/containers/BlockChain/utils/wallet/connectors";
 
+if (!process.env.REACT_APP_NETWORK_NAME) {
+  throw new Error("REACT_APP_NETWORK_NAME is not set in .env file");
+}
+
 export const WrongNetworkModalAlert: FC = () => {
   const { t } = useTranslation();
   const error = useSelector(Web3Selectors.selectWeb3Error);
@@ -46,7 +50,9 @@ export const WrongNetworkModalAlert: FC = () => {
         </ErrorDescription>
         <ActionsWrapper>
           <ContainedButton onClick={handleSwitchToAvalancheClick}>
-            {t(translations.Common.SwitchToAvalanche())}
+            {t(translations.Common.SwitchTo_NETWORK_NAME(), {
+              networkName: process.env.REACT_APP_NETWORK_NAME,
+            })}
           </ContainedButton>
         </ActionsWrapper>
       </Wrapper>

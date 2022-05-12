@@ -7,13 +7,13 @@ import { useTranslation } from "react-i18next";
 import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { RewardsPageSelectors } from "app/pages/Rewards/selectors";
-import { getKeyFromPoolIndex } from "app/pages/Rewards/constants";
 import { PoolTypes, TokenShareType } from "app/containers/Rewards/types";
 import { commify, formatBNToString } from "app/containers/utils/contractUtils";
 import { pools } from "app/pools";
 import { tokens } from "app/tokens";
 import { mobile } from "styles/media";
 import { CardWrapper } from "app/components/wrappers/Card";
+import { getKeyFromPoolIndex } from "app/pages/Liquidity/constants";
 
 type TParams = { poolIndex: string };
 
@@ -30,13 +30,13 @@ export const CurrencyReserve: FC = () => {
 
   return (
     <Grid container spacing={2}>
-      <Grid item>
+      <Grid item xs={12}>
         <HeaderText variant="h2">
           {t(translations.RewardsPage.CurrencyReserve.Title())}
         </HeaderText>
       </Grid>
 
-      <Grid item>
+      <Grid item xs={12}>
         <CardWrapper>
           <Grid container spacing={4}>
             {rewardsPoolData?.rewardTokens.map((infoItem: TokenShareType) => (

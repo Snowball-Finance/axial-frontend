@@ -15,6 +15,7 @@ import { Receiving } from "./components/Receiving";
 import { Share } from "./components/Share";
 import { DepositApproveButton } from "./components/approveButton";
 import { ConfirmButton } from "./components/confirmButton";
+import { mobile } from "styles/media";
 
 export const DepositModal: FC = () => {
   const { t } = useTranslation();
@@ -90,10 +91,10 @@ export const DepositModal: FC = () => {
 
       <Grid item>
         <Grid container justifyContent="center" alignItems="center" spacing={2}>
-          <Grid item xs={6}>
+          <Grid item xs={12} xl={6}>
             <DepositApproveButton />
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={12} xl={6}>
             <ConfirmButton />
           </Grid>
         </Grid>
@@ -105,6 +106,10 @@ export const DepositModal: FC = () => {
 const StyledContainer = styled(Grid)({
   marginTop: 24,
   width: 600,
+
+  [mobile]: {
+    width: "100%",
+  },
 });
 
 const Text = styled(Typography)({

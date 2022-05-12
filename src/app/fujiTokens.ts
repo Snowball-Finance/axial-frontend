@@ -1,0 +1,67 @@
+import { tokenAddress } from "utils/tokenAddresses";
+import { Token, TokenSymbols } from "./containers/Swap/types";
+import ERC20_ABI from "abi/erc20.json";
+import axialLogo from "assets/icons/logo_icon.svg";
+
+export const fujiTokens: { [K in TokenSymbols]?: Token } = {
+  [TokenSymbols.STABLE1]: {
+    address: tokenAddress(TokenSymbols.STABLE1),
+    name: "Stable1",
+    ABI: ERC20_ABI,
+    symbol: TokenSymbols.STABLE1,
+    logo: axialLogo,
+    geckoId: "usd-coin",
+    decimals: 18,
+    masterchefId: -1,
+    isSynthetic: false,
+    isLPToken: false,
+  },
+  [TokenSymbols.STABLE2]: {
+    address: tokenAddress(TokenSymbols.STABLE2),
+    ABI: ERC20_ABI,
+    symbol: TokenSymbols.STABLE2,
+    name: "Stable2",
+    geckoId: "usd-coin",
+    decimals: 18,
+    logo: axialLogo,
+    masterchefId: -1,
+    isSynthetic: false,
+    isLPToken: false,
+  },
+  [TokenSymbols.STABLE3]: {
+    address: tokenAddress(TokenSymbols.STABLE3),
+    ABI: ERC20_ABI,
+    symbol: TokenSymbols.STABLE3,
+    name: "Stable3",
+    geckoId: "usd-coin",
+    decimals: 18,
+    masterchefId: -1,
+    logo: axialLogo,
+    isSynthetic: false,
+    isLPToken: false,
+  },
+  [TokenSymbols.P3T]: {
+    address: tokenAddress(TokenSymbols.P3T),
+    ABI: ERC20_ABI,
+    symbol: TokenSymbols.P3T,
+    name: "Pool 3 Tokens",
+    geckoId: "pool3tokens",
+    decimals: 18,
+    masterchefId: -1,
+    isSynthetic: false,
+    isLPToken: true,
+    logo: axialLogo,
+  },
+  [TokenSymbols.PGL]: {
+    address: tokenAddress(TokenSymbols.PGL),
+    ABI: ERC20_ABI,
+    symbol: TokenSymbols.PGL,
+    name: "PGL AVAX-EXTRAT",
+    geckoId: "pglavaxextrat",
+    decimals: 18,
+    masterchefId: -1,
+    isSynthetic: false,
+    isLPToken: true,
+    logo: axialLogo,
+  },
+};

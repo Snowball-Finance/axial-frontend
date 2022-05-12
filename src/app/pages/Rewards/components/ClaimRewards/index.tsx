@@ -108,6 +108,15 @@ export const ClaimRewards: FC = () => {
   );
 };
 
+const StyledContainer = styled(Grid)({
+  justifyContent: "space-between",
+  alignItems: "center",
+
+  [mobile]: {
+    alignItems: "flex-start",
+  },
+});
+
 const IconImage = styled("img")({
   width: "33px",
   height: "33px",
@@ -120,10 +129,6 @@ const IconImage = styled("img")({
 
 const TokenText = styled(Typography)({
   color: CssVariables.white,
-
-  [mobile]: {
-    fontSize: "1rem",
-  },
 });
 
 const Text = styled(Typography)({

@@ -15,6 +15,11 @@ export const getPoolIndexFromKey = (poolKey: string) => {
       return PoolsRouteIndex.AXIAL_JLP_ROUTE;
     case Pools.USDC_AM3D:
       return PoolsRouteIndex.USDC_AM3D_ROUTE;
+    //Fuji pools
+    case Pools.P3T:
+      return PoolsRouteIndex.P3T_ROUTE;
+    case Pools.PGL:
+      return PoolsRouteIndex.PGL_ROUTE;
     default:
       return null;
   }
@@ -34,6 +39,11 @@ export const getKeyFromPoolIndex = (poolIndex: string) => {
       return Pools.AXIAL_JLP;
     case PoolsRouteIndex.USDC_AM3D_ROUTE:
       return Pools.USDC_AM3D;
+    //Fuji pools
+    case PoolsRouteIndex.P3T_ROUTE:
+      return Pools.P3T;
+    case PoolsRouteIndex.PGL_ROUTE:
+      return Pools.PGL;
     default:
       return null;
   }

@@ -5,44 +5,35 @@ import {
   getTokenSymbolForPoolType,
 } from "app/containers/utils/contractUtils";
 import { pools } from "app/pools";
-import { Pool, PoolTypes, RewardsState } from "../types";
+import { Pool, PoolTypes } from "../types";
 import LPTOKEN_UNGUARDED_ABI from "abi/lpTokenUnguarded.json";
 import { LpTokenUnguarded } from "abi/ethers-contracts/LpTokenUnguarded";
-import {
-  AXIAL_MASTERCHEF_CONTRACT_ADDRESS,
-  Zero,
-  ZERO_ADDRESS,
-} from "../constants";
+import { Zero, ZERO_ADDRESS } from "../constants";
 
 import { BigNumber, Contract, ethers } from "ethers";
-import { extraRewardTokens } from "app/tokens";
 import { parseUnits } from "ethers/lib/utils";
-import { GlobalState } from "store/slice";
+import { all, call, select } from "redux-saga/effects";
+import { Token } from "app/containers/Swap/types";
+import { Web3Domains } from "app/containers/BlockChain/Web3/selectors";
+import { GlobalDomains } from "app/appSelectors";
+import { RewardsDomains } from "../selectors";
 
 export interface CalculatePoolDataProps {
   pool: Pool;
-  tokenPricesUSD: GlobalState["tokenPricesUSD"];
-  library: any;
-  chainId: number;
-  useMasterchef?: boolean;
-  masterchefApr?: RewardsState["masterchefApr"];
-  masterchefBalances?: RewardsState["masterChefBalances"];
-  account: string;
-  swapStats?: RewardsState["swapStats"];
+  isRewardsPool?: boolean;
 }
-export const calculatePoolData = async (props: CalculatePoolDataProps) => {
-  const {
-    pool,
-    tokenPricesUSD,
-    library,
-    masterchefApr,
-    masterchefBalances,
-    account,
-    useMasterchef,
-    swapStats,
-  } = props;
-  const swapContract = new Contract(
-    pool.swapAddress || pool.address,
+export function* calculatePoolData(props: CalculatePoolDataProps) {
+  const { pool, isRewardsPool } = props;
+
+  const library = yield select(Web3Domains.selectNetworkLibraryDomain);
+  const account = yield select(Web3Domains.selectAccountDomain);
+  const tokenPricesUSD = yield select(GlobalDomains.tokenPricesUSD);
+  const aprData = yield select(RewardsDomains.aprData);
+  const poolsBalances = yield select(RewardsDomains.poolsBalances);
+  const swapStats = yield select(RewardsDomains.swapStats);
+
+  const poolEffectiveContract = new Contract(
+    pool.swapAddress || pool.gauge_address,
     pool.swapABI,
     getProviderOrSigner(library, account)
   );
@@ -58,41 +49,36 @@ export const calculatePoolData = async (props: CalculatePoolDataProps) => {
       if (POOL.poolType !== PoolTypes.LP) {
         return;
       }
-      let masterchefPool;
-      if (masterchefApr && masterchefBalances) {
-        masterchefPool = masterchefApr[POOL.address];
+      let poolAprData;
+      if (aprData && poolsBalances && aprData[POOL.address]) {
+        poolAprData = aprData[POOL.address];
       } else {
         return;
       }
-
       const lpTokenContract = getContract(
         POOL.lpToken.address,
         LPTOKEN_UNGUARDED_ABI,
         library,
         account ?? undefined
       ) as LpTokenUnguarded;
-      const [totalLpTokenBalance] = await Promise.all([
-        lpTokenContract.balanceOf(AXIAL_MASTERCHEF_CONTRACT_ADDRESS),
-      ]);
-      const poolApr = masterchefPool.apr ?? 0;
+      let totalLpTokenBalance = yield call(lpTokenContract.balanceOf, account);
+      const poolApr = poolAprData?.apr ?? 0;
       let DEXLockedBN = BigNumber.from(0);
-      if (masterchefPool.tokenPoolPrice > 0 && totalLpTokenBalance.gt("0x0")) {
+      if (poolAprData?.tokenPoolPrice > 0 && totalLpTokenBalance.gt("0x0")) {
         const totalLocked =
-          masterchefPool.tokenPoolPrice * (+totalLpTokenBalance / 1e18);
+          poolAprData?.tokenPoolPrice * (+totalLpTokenBalance / 1e18);
         DEXLockedBN = BigNumber.from(totalLocked.toFixed(0)).mul(
           BigNumber.from(10).pow(18)
         );
       }
-
       let tokenPoolPriceBN = BigNumber.from(0);
       try {
         tokenPoolPriceBN = ethers.utils.parseUnits(
-          masterchefPool.tokenPoolPrice.toFixed(2)
+          poolAprData.tokenPoolPrice.toFixed(2)
         );
       } catch (error) {
         console.log("Error converting Float to BN");
       }
-
       const poolData = {
         name: poolKey,
         rapr: poolApr,
@@ -111,13 +97,11 @@ export const calculatePoolData = async (props: CalculatePoolDataProps) => {
         lpToken: POOL.lpToken.symbol,
         isPaused: false,
       };
-
-      const userMasterchefBalances = masterchefBalances[POOL.lpToken.symbol];
-      if (!userMasterchefBalances) {
+      const userPoolsBalances = poolsBalances[POOL.lpToken.symbol];
+      if (!userPoolsBalances) {
         return { poolData, userShareData: undefined };
       }
-
-      const userLpTokenBalance = userMasterchefBalances.userInfo.amount;
+      const userLpTokenBalance = userPoolsBalances.userInfo.amount;
 
       const share = userLpTokenBalance
         ?.mul(BigNumber.from(10).pow(18))
@@ -126,7 +110,6 @@ export const calculatePoolData = async (props: CalculatePoolDataProps) => {
             ? BigNumber.from("1")
             : totalLpTokenBalance
         );
-
       const usdBalance = DEXLockedBN.isZero()
         ? BigNumber.from("0")
         : DEXLockedBN.mul(share).div(BigNumber.from(10).pow(18));
@@ -139,7 +122,7 @@ export const calculatePoolData = async (props: CalculatePoolDataProps) => {
             usdBalance: usdBalance,
             tokens: [],
             lpTokenBalance: userLpTokenBalance,
-            masterchefBalance: userMasterchefBalances,
+            poolBalance: userPoolsBalances,
           }
         : null;
       return { poolData, userShareData };
@@ -148,78 +131,48 @@ export const calculatePoolData = async (props: CalculatePoolDataProps) => {
     }
   }
   //@ts-ignore ignored because we will always have pool
-  const userMasterchefBalances = masterchefBalances
-    ? masterchefBalances[POOL.lpToken.symbol]
+  const userPoolBalance = poolsBalances
+    ? poolsBalances[POOL.lpToken.symbol]
     : null;
   const effectivePoolTokens = POOL.underlyingPoolTokens || POOL.poolTokens;
   const isMetaSwap = POOL.swapAddress != null;
 
-  const effectiveSwapContract = swapContract;
-
   // Swap fees, price, and LP Token data
-  const [aParameter, isPaused, swapStorage] = await Promise.all([
-    effectiveSwapContract.getA(),
-    effectiveSwapContract.paused(),
-    effectiveSwapContract?.swapStorage(),
+  const [isPaused, swapStorage] = yield all([
+    call(poolEffectiveContract.paused),
+    call(poolEffectiveContract?.swapStorage),
   ]);
 
-  const { adminFee, lpToken: lpTokenAddress, swapFee } = swapStorage;
+  let { adminFee, swapFee } = swapStorage;
+
   const lpTokenContract = getContract(
-    lpTokenAddress,
+    pool.lpToken.address,
     LPTOKEN_UNGUARDED_ABI,
     library,
     account ?? undefined
   ) as LpTokenUnguarded;
-  const totalLpTokenBalance = await lpTokenContract.totalSupply();
+  const totalLpTokenBalance = yield call(lpTokenContract.totalSupply);
 
   let poolApr: number | null = null,
-    extraapr: number | null = null,
-    extraUSDPerWeek = 0;
-  if (masterchefApr) {
-    poolApr = masterchefApr[POOL.address].apr ?? 0;
-
-    //set extra APR
-    if (masterchefApr[POOL.address].extraTokens.length > 0) {
-      const TVL = +totalLpTokenBalance / 10 ** 18;
-      for (const token of masterchefApr[POOL.address].extraTokens) {
-        const extraReward = extraRewardTokens.find(
-          (o) => o.address.toLowerCase() === token.address.toLowerCase()
-        );
-        if (extraReward) {
-          const tokenPrice = tokenPricesUSD[extraReward.symbol];
-
-          const tokensPerSec = ethers.BigNumber.from(token.tokenPerSec);
-          extraUSDPerWeek +=
-            (+tokensPerSec / 10 ** extraReward.decimals) * tokenPrice * 604_800;
-        } else {
-          console.error(`Not found mapping for token: ${token.address}`);
-        }
-      }
-      if (extraUSDPerWeek > 0 && TVL > 0) {
-        extraapr = ((extraUSDPerWeek * 52) / TVL) * 100;
-      }
-    }
+    extraapr: number | null = null;
+  if (aprData) {
+    poolApr = aprData[POOL.address]?.apr || 0;
   }
 
-  //      lpTokenContract.add(masterchef)
   const userLpTokenBalance =
-    useMasterchef && userMasterchefBalances
-      ? userMasterchefBalances.userInfo.amount
-      : await lpTokenContract.balanceOf(account || ZERO_ADDRESS);
+    isRewardsPool && userPoolBalance
+      ? userPoolBalance.userInfo.amount
+      : yield call(lpTokenContract.balanceOf, account || ZERO_ADDRESS);
 
   const virtualPrice = totalLpTokenBalance.isZero()
     ? BigNumber.from(10).pow(18)
-    : await effectiveSwapContract.getVirtualPrice();
+    : yield call(poolEffectiveContract.getVirtualPrice);
 
   // Pool token data
-  const tokenBalances: BigNumber[] = await Promise.all(
-    effectivePoolTokens.map(async (token, i) => {
-      const balance = await effectiveSwapContract.getTokenBalance(i);
-      return BigNumber.from(10)
-        .pow(18 - token.decimals) // cast all to 18 decimals
-        .mul(balance);
-    })
-  );
+  const tokenBalances: BigNumber[] = yield call(getTokenBalances, {
+    effectivePoolTokens,
+    effectiveSwapContract: poolEffectiveContract,
+  });
   const tokenBalancesSum: BigNumber = tokenBalances.reduce((sum, b) =>
     sum.add(b)
   );
@@ -242,9 +195,10 @@ export const calculatePoolData = async (props: CalculatePoolDataProps) => {
     : tokenBalancesUSDSum.mul(BigNumber.from(10).pow(18)).div(tokenBalancesSum);
 
   function calculatePctOfTotalShare(lpTokenAmount: BigNumber): BigNumber {
+    const apr = aprData[POOL.address] || aprData[POOL.swapAddress || ""];
     const baseCalc =
-      useMasterchef && masterchefApr
-        ? BigNumber.from(masterchefApr[POOL.address].totalStaked)
+      isRewardsPool && aprData && apr
+        ? BigNumber.from(apr.totalStaked)
         : totalLpTokenBalance;
 
     // returns the % of total lpTokens
@@ -305,7 +259,6 @@ export const calculatePoolData = async (props: CalculatePoolDataProps) => {
     virtualPrice: virtualPrice,
     adminFee: adminFee,
     swapFee: swapFee,
-    aParameter: aParameter,
     volume: oneDayVolume,
     utilization: utilization ? parseUnits(utilization, 18) : undefined,
     apr: apr,
@@ -322,8 +275,26 @@ export const calculatePoolData = async (props: CalculatePoolDataProps) => {
         usdBalance: userPoolTokenBalancesUSDSum,
         tokens: userPoolTokens,
         lpTokenBalance: userLpTokenBalance,
-        masterchefBalance: userMasterchefBalances,
+        poolBalance: userPoolBalance,
       }
     : undefined;
   return { poolData, userShareData };
+}
+
+const getTokenBalances = async ({
+  effectivePoolTokens,
+  effectiveSwapContract,
+}: {
+  effectivePoolTokens: Token[];
+  effectiveSwapContract: Contract;
+}) => {
+  const balances = await Promise.all(
+    effectivePoolTokens.map(async (token, i) => {
+      const balance = await effectiveSwapContract.getTokenBalance(i);
+      return BigNumber.from(10)
+        .pow(18 - token.decimals) // cast all to 18 decimals
+        .mul(balance);
+    })
+  );
+  return balances;
 };

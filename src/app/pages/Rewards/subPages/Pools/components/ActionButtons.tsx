@@ -9,7 +9,6 @@ import { ContainedButton } from "app/components/common/buttons/containedButton";
 import { OutlinedButton } from "app/components/common/buttons/outlinedButton";
 import { AppPages } from "app/types";
 import { ActionButtonProps } from "app/pages/Rewards/types";
-import { getPoolIndexFromKey } from "app/pages/Rewards/constants";
 import { RewardsSelectors } from "app/containers/Rewards/selectors";
 import { pools } from "app/pools";
 import { RewardsPageActions } from "app/pages/Rewards/slice";
@@ -17,10 +16,11 @@ import { Pool } from "app/containers/Rewards/types";
 import { Web3Selectors } from "app/containers/BlockChain/Web3/selectors";
 import { mobile } from "styles/media";
 import { RewardsPageSelectors } from "app/pages/Rewards/selectors";
+import { getPoolIndexFromKey } from "app/pages/Liquidity/constants";
 
 export const ActionButtons: FC<ActionButtonProps> = ({ poolKey }) => {
   const { t } = useTranslation();
-  const masterchefBalance = useSelector(RewardsSelectors.masterChefBalances);
+  const poolsBalances = useSelector(RewardsSelectors.poolsBalances);
   const account = useSelector(Web3Selectors.selectAccount);
   const poolData = useSelector(RewardsPageSelectors.rewardsPoolData(poolKey));
   const dispatch = useDispatch();
@@ -43,47 +43,66 @@ export const ActionButtons: FC<ActionButtonProps> = ({ poolKey }) => {
 
   return (
     <StyledContainer container spacing={{ xs: 1, xl: 2 }}>
-      <Grid item>
-        <ContainedButton
-          width={120}
+      <StyledFullChildContainer item>
+        <StyledContainedButton
           onClick={() => handleNavigateToDeposit(poolKey)}
           disabled={poolData?.isPaused}
         >
           {t(translations.RewardsPage.ActionButtons.Deposit())}
-        </ContainedButton>
-      </Grid>
+        </StyledContainedButton>
+      </StyledFullChildContainer>
 
-      <Grid item>
-        <OutlinedButton
-          width={120}
-          onClick={() => handleNavigateToWithdraw(poolKey)}
-        >
+      <StyledFullChildContainer item>
+        <StyledOutlinedButton onClick={() => handleNavigateToWithdraw(poolKey)}>
           {t(translations.RewardsPage.ActionButtons.Withdraw())}
-        </OutlinedButton>
-      </Grid>
+        </StyledOutlinedButton>
+      </StyledFullChildContainer>
 
-      <Grid item>
-        <OutlinedButton
-          width={120}
+      <StyledFullChildContainer item>
+        <StyledOutlinedButton
           onClick={() => handleClaimClick(pools[poolKey])}
           disabled={
             !account ||
-            (masterchefBalance &&
-              masterchefBalance[tokenKey]?.pendingTokens.pendingAxial.eq("0x0"))
+            (poolsBalances &&
+              poolsBalances[tokenKey]?.pendingTokens.pendingAxial.eq("0x0"))
           }
         >
           {t(translations.RewardsPage.ActionButtons.Claim())}
-        </OutlinedButton>
-      </Grid>
+        </StyledOutlinedButton>
+      </StyledFullChildContainer>
     </StyledContainer>
   );
 };
 
 const StyledContainer = styled(Grid)({
   flexDirection: "row",
+
   [mobile]: {
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "column",
+    width: "100%",
+  },
+});
+
+const StyledFullChildContainer = styled(Grid)({
+  [mobile]: {
+    width: "100%",
+  },
+});
+
+const StyledContainedButton = styled(ContainedButton)({
+  width: 120,
+
+  [mobile]: {
+    width: "100%",
+  },
+});
+
+const StyledOutlinedButton = styled(OutlinedButton)({
+  width: 120,
+
+  [mobile]: {
+    width: "100%",
   },
 });

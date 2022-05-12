@@ -15,6 +15,14 @@ export interface GaugeItem {
   totalWeight: number;
   allocPoint: number;
   enteredAllocation: number;
+  additionalData: {
+    userInfo: {
+      amount: BigNumber;
+    };
+    pendingTokens: {
+      pendingAxial: BigNumber;
+    };
+  };
 }
 
 export interface GaugeInfo {
@@ -43,14 +51,6 @@ export interface PoolInfoToken {
   harvestable?: BigNumber;
 }
 
-export interface RewardToken {
-  address: string; //"0xE68E161AA7A32403308cA0B29F15FEC1960c6ca9"
-  decimals: string; // "18"
-  symbol: string; // "TEST"
-  avg_apr: string; // "0"
-  boosted_apr: string; // "0"
-}
-
 export interface PoolInfo {
   userDepositedLP: BigNumber;
   selected?: boolean;
@@ -71,8 +71,21 @@ export interface PoolInfo {
   tokenaddress: string; //"0xE68E161AA7A32403308cA0B29F15FEC1960c6ca9"
   tokens: PoolInfoToken[];
   gauge?: GaugeItem;
-  rewardTokens?: RewardToken[];
+  last_daily_axial_alloc: string; //"0"
+  last_gauge_axial_balance: string; // "0"
+  last_gauge_weight: string; //"0"
+  last_perc_gauge_alloc: string; //"0"
+  last_swap_apr: string; //"0"
+  last_token_price: string; //"501.61767527308837"
+  rewardTokens: PoolRewardToken[];
 }
+
+export interface PoolRewardToken {
+  address: string; //"0x0708F10F657b16ABE18954361E96a641b217648B"
+  avg_apr: string; // "0"
+  boosted_apr: string; //"0"
+  decimals: string; //"18"
+  symbol: string; // "AXIAL"
 
 export interface PoolProvider {
   name: string;
@@ -93,6 +106,7 @@ export interface PoolsAndGaugesState {
   gotUserPools: boolean;
   lastInfo: PoolInfo[] | undefined;
   poolProviders: { [key: string]: PoolProvider };
+  userPoolsData: { [key: string]: GaugeItem["additionalData"] };
 }
 
 export type ContainerState = PoolsAndGaugesState;

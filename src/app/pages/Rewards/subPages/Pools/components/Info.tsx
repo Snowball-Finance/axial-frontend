@@ -31,7 +31,7 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
     TVL: formatBNToShortString(poolData?.totalLocked || Zero, 18),
     axialPending: userShareData
       ? formatBNToShortString(
-          userShareData?.masterchefBalance?.pendingTokens.pendingAxial || Zero,
+          userShareData?.poolBalance?.pendingTokens.pendingAxial || Zero,
           18
         )
       : "",
@@ -59,15 +59,14 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
       : "-",
     userBalanceUSD: userShareData
       ? formatBNToShortString(
-          userShareData?.masterchefBalance?.userInfo.amount || Zero,
+          userShareData?.poolBalance?.userInfo.amount || Zero,
           18
         )
       : "-",
   };
 
   const hasShare =
-    userShareData &&
-    !!userShareData?.masterchefBalance?.userInfo.amount.gt("0");
+    userShareData && !!userShareData?.poolBalance?.userInfo.amount.gt("0");
   let info: InfoData[] = [];
 
   if (pools[poolKey].poolType !== PoolTypes.LP) {
@@ -107,7 +106,7 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
     <StyledContainer container spacing={{ xs: 2, xl: 4 }}>
       {info.map((item, index) => (
         <Grid item key={index}>
-          <Grid container spacing={1} direction="column">
+          <StyledChildContainer container>
             <Grid item>
               <PoolInfoTitleText variant="body1">
                 {item.title}
@@ -118,7 +117,7 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
                 {isGettingPoolsData ? <TextLoader width={50} /> : item.value}
               </PoolInfoSubTitleText>
             </Grid>
-          </Grid>
+          </StyledChildContainer>
         </Grid>
       ))}
     </StyledContainer>
@@ -131,6 +130,18 @@ const StyledContainer = styled(Grid)({
 
   [mobile]: {
     flexDirection: "column",
+    alignItems: "flex-start",
+  },
+});
+
+const StyledChildContainer = styled(Grid)({
+  flexDirection: "column",
+  alignItems: "center",
+  rowGap: 20,
+
+  [mobile]: {
+    flexDirection: "row",
+    columnGap: 20,
   },
 });
 

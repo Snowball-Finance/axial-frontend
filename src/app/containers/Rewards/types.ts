@@ -5,17 +5,13 @@ import { Token, TokenSymbols } from "../Swap/types";
 
 interface PoolInfo {
   amount: BigNumber;
-  rewardDebt: BigNumber;
 }
 
 export interface PendingTokens {
   pendingAxial: BigNumber;
-  bonusTokenAddress: string;
-  bonusTokenSymbol: string;
-  pendingBonusToken: BigNumber;
 }
 
-export interface MasterchefResponse {
+export interface poolBalance {
   userInfo: PoolInfo;
   pendingTokens: PendingTokens;
 }
@@ -37,14 +33,17 @@ export interface AxialLPData {
   LPTVL: number;
   tokenPoolPrice: number;
 }
+export interface BalanceResponse {
+  [key: string]: //key is token address
+  poolBalance;
+}
 
-export interface MasterchefApr {
+export interface AprData {
   [swapAddress: string]: {
     apr: number;
     lptvl: number;
     totalStaked: string;
     tokenPoolPrice: number;
-    extraTokens: ExtraTokens[];
   };
 }
 
@@ -55,6 +54,9 @@ export enum Pools {
   AXIAL_AA3D = "AXIAL_AA3D",
   AXIAL_JLP = "AXIAL_JLP",
   USDC_AM3D = "USDC_AM3D",
+  //Fuji pools
+  P3T = "P3T",
+  PGL = "PGL",
 }
 
 export enum PoolTypes {
@@ -78,10 +80,11 @@ export interface Pool {
   key: Pools;
   poolData?: PoolData;
   userShareData?: UserShareData;
+  gauge_address: string;
 }
 export interface DepositPayload {
   poolKey: Pools;
-  masterchefDeposit?: boolean;
+  rewardsDeposit?: boolean;
   shouldDepositWrapped: boolean;
   tokenAmounts: { [K in TokenSymbols]?: BigNumber };
 }
@@ -93,7 +96,7 @@ export enum WithdrawType {
 export type TokenAmounts = { [K in TokenSymbols]?: BigNumber };
 export interface WithdrawPayload {
   poolKey: Pools;
-  masterchefwithdraw?: boolean;
+  rewardsWithdraw?: boolean;
   type: WithdrawType | TokenSymbols;
   lpTokenAmountToSpend: BigNumber;
   tokenAmounts: TokenAmounts;
@@ -137,7 +140,7 @@ export interface UserShareData {
     value: BigNumber;
   }[];
   lpTokenBalance: BigNumber;
-  masterchefBalance: MasterchefResponse | null;
+  poolBalance: poolBalance | null;
 }
 export interface SwapStatsReponse {
   symbol: string;
@@ -149,12 +152,12 @@ export interface SwapStatsReponse {
 export interface RewardsState {
   lastTransactionTimes: any;
   swapStats: any;
-  masterchefApr: MasterchefApr | undefined;
-  isGettingMasterChefBalances: boolean;
-  isGettingMasterchefApr: boolean;
+  aprData: AprData | undefined;
+  isGettingPoolsBalances: boolean;
+  isGettingAprData: boolean;
   isGettingPoolsData: boolean;
   isGettingSwapStats: boolean;
-  masterChefBalances: { [key: string]: MasterchefResponse } | undefined;
+  poolsBalances: { [key: string]: poolBalance } | undefined;
   pools: { [K in Pools]?: Pool };
   isDepositing: boolean;
   isWithdrawing: boolean;

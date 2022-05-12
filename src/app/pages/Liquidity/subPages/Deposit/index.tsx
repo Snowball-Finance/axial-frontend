@@ -2,7 +2,7 @@ import React, { FC, useEffect } from "react";
 import { Grid, styled } from "@mui/material";
 
 import { AddLiquidity } from "./components/AddLiquidity";
-import { CurrencyReserve } from "../../components/CurrencyReserve";
+import { CurrencyInfo } from "../../components/CurrencyInfo";
 import { useParams } from "react-router-dom";
 import { getKeyFromPoolIndex } from "../../constants";
 import { pools } from "app/pools";
@@ -34,7 +34,7 @@ export const Deposit: FC = () => {
         <Grid container spacing={4}>
           <Grid item>{pool && <AddLiquidity />}</Grid>
           <Grid item>
-            <CurrencyReserve />
+            <CurrencyInfo />
           </Grid>
         </Grid>
       </PageWrapper>

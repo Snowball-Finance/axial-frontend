@@ -88,6 +88,7 @@ export function* voteForFarms() {
     if (transactionVote.status) {
       toast.success("Voted successfully");
       yield put(PoolsAndGaugesActions.getInitialData());
+      yield put(GovernancePageActions.setIsVoteAllocationModalOpen(false));
     } else {
       toast.error("something went wrong");
     }

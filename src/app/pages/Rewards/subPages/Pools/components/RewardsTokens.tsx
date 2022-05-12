@@ -22,7 +22,7 @@ export const RewardsTokens: FC<Props> = ({ poolKey }) => {
   return (
     <Grid container spacing={1}>
       <Grid item xs={12}>
-        <PoolInfoTitleText variant="body1">Rewards</PoolInfoTitleText>
+        <PoolInfoHeaderText variant="body1">Rewards</PoolInfoHeaderText>
       </Grid>
 
       <Grid item container>
@@ -51,6 +51,14 @@ export const RewardsTokens: FC<Props> = ({ poolKey }) => {
     </Grid>
   );
 };
+
+const PoolInfoHeaderText = styled(Typography)({
+  color: CssVariables.white,
+
+  [mobile]: {
+    textAlign: "center",
+  },
+});
 
 const PoolInfoTitleText = styled(Typography)({
   color: CssVariables.white,

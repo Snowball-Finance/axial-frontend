@@ -28,7 +28,7 @@ export const initialState: ContainerState = {
   withdrawTokenAmounts: {},
   withdrawPercentage: 0,
   selectedTokenToWithdraw: TypeOfTokensToWithdraw.Combo,
-  depositRaw: false,
+  depositRaw: true,
   depositTransactionData: undefined,
   withdrawReviewData: undefined,
   withdrawBonus: undefined,

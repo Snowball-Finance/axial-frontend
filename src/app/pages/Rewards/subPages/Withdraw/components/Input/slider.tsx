@@ -11,12 +11,12 @@ export const RewardsWithdrawSlider = () => {
   const dispatch = useDispatch();
   const sliderValue = useSelector(RewardsPageSelectors.withdrawPercentage);
   const pool = useSelector(RewardsPageSelectors.selectedPool);
-  const tokens = useSelector(RewardsSelectors.masterChefBalances);
+  const tokens = useSelector(RewardsSelectors.poolsBalances);
   const account = useSelector(Web3Selectors.selectAccount);
 
   const handleSliderChange = (e: number) => {
     if (tokens && pool) {
-      const balance = tokens[pool.lpToken.symbol].userInfo.amount;
+      const balance = tokens[pool.lpToken.symbol]?.userInfo.amount;
 
       dispatch(
         RewardsPageActions.setWithdrawPercentage({
@@ -31,7 +31,7 @@ export const RewardsWithdrawSlider = () => {
       disabled={
         !account ||
         !tokens ||
-        (pool && tokens[pool.lpToken.symbol].userInfo.amount.eq(0))
+        (pool && tokens[pool.lpToken.symbol]?.userInfo.amount.eq(0))
       }
       onChange={(e, v) => {
         handleSliderChange(v as number);
