@@ -18,7 +18,6 @@ export const RewardsWithdrawSlider = () => {
   const handleSliderChange = (e: number) => {
     if (tokens && pool) {
       const balance = tokens[symbol]?.userInfo.amount;
-
       dispatch(
         RewardsPageActions.setWithdrawPercentage({
           percent: e,
