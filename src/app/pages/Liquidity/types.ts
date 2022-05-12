@@ -90,7 +90,7 @@ export enum PoolsRouteIndex {
   AXIAL_JLP_ROUTE = "jlp",
   USDC_AM3D_ROUTE = "usdc-am3d",
   //Fuji pools
-  T3P_ROUTE = "t3p",
+  P3T_ROUTE = "p3t",
   PGL_ROUTE = "pgl",
   TEST_ROUTE = "test",
 }

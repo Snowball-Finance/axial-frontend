@@ -11,6 +11,6 @@ export const PrimaryCardWrapper = styled("div")({
 
   [mobile]: {
     padding: 15,
-    width: "100%"
+    width: "100%",
   },
 });

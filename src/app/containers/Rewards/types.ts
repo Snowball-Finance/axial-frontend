@@ -55,9 +55,8 @@ export enum Pools {
   AXIAL_JLP = "AXIAL_JLP",
   USDC_AM3D = "USDC_AM3D",
   //Fuji pools
-  T3P = "T3P",
+  P3T = "P3T",
   PGL = "PGL",
-  TEST = "TEST",
 }
 
 export enum PoolTypes {

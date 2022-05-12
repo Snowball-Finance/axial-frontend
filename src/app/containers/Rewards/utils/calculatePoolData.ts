@@ -195,9 +195,10 @@ export function* calculatePoolData(props: CalculatePoolDataProps) {
     : tokenBalancesUSDSum.mul(BigNumber.from(10).pow(18)).div(tokenBalancesSum);
 
   function calculatePctOfTotalShare(lpTokenAmount: BigNumber): BigNumber {
+    const apr = aprData[POOL.address] || aprData[POOL.swapAddress || ""];
     const baseCalc =
-      isRewardsPool && aprData
-        ? BigNumber.from(aprData[POOL.address].totalStaked)
+      isRewardsPool && aprData && apr
+        ? BigNumber.from(apr.totalStaked)
         : totalLpTokenBalance;
 
     // returns the % of total lpTokens

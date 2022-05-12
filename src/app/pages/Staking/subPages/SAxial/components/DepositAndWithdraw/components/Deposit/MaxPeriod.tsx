@@ -16,7 +16,9 @@ export const MaxPeriod = () => {
   const maximumDaysFromNow = convertPercentToDaysFromNow(100);
   const maximumDate = addDaysToTodayAndGetOnlyDate(maximumDaysFromNow);
   const handleMaxClick = () => {
-    dispatch(StakingPageActions.setSelectedDateInStakingGovernance(maximumDate));
+    dispatch(
+      StakingPageActions.setSelectedDateInStakingGovernance(maximumDate)
+    );
   };
   return (
     <TextButton onClick={handleMaxClick}>
