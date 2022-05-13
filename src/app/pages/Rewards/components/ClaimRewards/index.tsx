@@ -7,23 +7,22 @@ import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { mobile } from "styles/media";
 import { CardWrapper } from "app/components/wrappers/Card";
-import { PoolsAndGaugesSelectors } from "app/containers/PoolsAndGauges/selectors";
-import { RewardsPageSelectors } from "app/pages/Rewards/selectors";
-import axialIcon from "assets/icons/logo_icon.svg";
 import { Actions } from "./Actions";
-import { formatBNToString } from "app/containers/utils/contractUtils";
-import { Zero } from "app/containers/Rewards/constants";
+import { PoolsAndGaugesSelectors } from "app/containers/PoolsAndGauges/selectors";
+import { RewardsPageSelectors } from "../../selectors";
+import { commify } from "app/containers/utils/contractUtils";
+import { formatNumber } from "common/format";
 
 export const ClaimRewards: FC = () => {
   const { t } = useTranslation();
-
-  const pools = useSelector(PoolsAndGaugesSelectors.pools);
-  const selectedPool = useSelector(RewardsPageSelectors.selectedPool);
-
-  if (selectedPool && !(selectedPool.address in pools)) {
-    return null;
+  const pools = useSelector(RewardsPageSelectors.selectedPool);
+  const key = pools?.key;
+  const harvestables = useSelector(
+    PoolsAndGaugesSelectors.harvestableTokensOfPool(key)
+  );
+  if (harvestables.length === 0) {
+    return <></>;
   }
-
   return (
     <Grid container spacing={2} direction="column">
       <Grid item>
@@ -35,68 +34,70 @@ export const ClaimRewards: FC = () => {
       <Grid item>
         <CardWrapper>
           <Grid container spacing={2}>
-            {selectedPool &&
-              pools[selectedPool.address]?.rewardTokens?.map((token) => {
-                return (
-                  <Grid item key={token.symbol} xs={12}>
+            {harvestables.map((item) => {
+              return (
+                <Grid item key={item.token.symbol} xs={12}>
+                  <Grid container>
+                    <Grid container item spacing={1} alignItems="center" xs={4}>
+                      <Grid item>
+                        <IconImage
+                          src={item.token.logo}
+                          alt={item.token.symbol}
+                        />
+                      </Grid>
+
+                      <Grid item>
+                        <TokenText variant="body2">
+                          {item.token.symbol}
+                        </TokenText>
+                      </Grid>
+                    </Grid>
+
                     <Grid
+                      item
                       container
-                      justifyContent="space-between"
+                      justifyContent="center"
                       alignItems="center"
+                      xs={4}
                     >
-                      <Grid container spacing={1} alignItems="center" xs={4}>
-                        <Grid item>
-                          <IconImage src={axialIcon} alt={token.symbol} />
-                        </Grid>
+                      <Grid item xs={12}>
+                        <Text variant="body2">APR</Text>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <Text variant="body1">
+                          {commify(formatNumber(+item.apr, 4).toString())}
+                        </Text>
+                      </Grid>
+                    </Grid>
 
-                        <Grid item>
-                          <TokenText variant="body2">{token.symbol}</TokenText>
-                        </Grid>
+                    <Grid
+                      item
+                      container
+                      justifyContent="center"
+                      alignItems="center"
+                      xs={4}
+                    >
+                      <Grid item xs={12}>
+                        <Text variant="body2">Earned</Text>
                       </Grid>
 
-                      <Grid
-                        item
-                        container
-                        justifyContent="center"
-                        alignItems="center"
-                        xs={4}
-                      >
-                        <Grid item xs={12}>
-                          <Text variant="body2">APR</Text>
-                        </Grid>
-
-                        <Grid item xs={12}>
-                          <Text variant="body1">
-                            {token.avg_apr}
-                          </Text>
-                        </Grid>
-                      </Grid>
-
-                      <Grid
-                        item
-                        container
-                        justifyContent="center"
-                        alignItems="center"
-                        xs={4}
-                      >
-                        <Grid item xs={12}>
-                          <Text variant="body2">Earned</Text>
-                        </Grid>
-
-                        <Grid item xs={12}>
-                          <Text variant="body1">
-                            {formatBNToString(
-                              pools[selectedPool.address]?.userDepositedLP ??
-                                Zero,
-                              18
-                            )}
-                          </Text>
-                        </Grid>
+                      <Grid item xs={12}>
+                        <Text variant="body1">
+                          {commify(
+                            formatNumber(+item.amountToHarvest, 4).toString()
+                          )}{" "}
+                          ($
+                          {commify(
+                            formatNumber(+item.amountInUsd, 4).toString()
+                          )}
+                          )
+                        </Text>
                       </Grid>
                     </Grid>
                   </Grid>
-                );
-              })}
+                </Grid>
+              );
+            })}
 
             <Grid item xs={12}>
               <Actions />

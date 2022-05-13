@@ -10,7 +10,10 @@ import { RewardsPageSelectors } from "app/pages/Rewards/selectors";
 import { PoolDataProps } from "app/pages/Rewards/types";
 import { PoolTypes } from "app/containers/Rewards/types";
 import { Zero } from "app/containers/Rewards/constants";
-import { formatBNToShortString } from "app/containers/utils/contractUtils";
+import {
+  formatBNToShortString,
+  formatBNToString,
+} from "app/containers/utils/contractUtils";
 import { mobile } from "styles/media";
 import { RewardsSelectors } from "app/containers/Rewards/selectors";
 
@@ -30,9 +33,10 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
   const formattedData = {
     TVL: formatBNToShortString(poolData?.totalLocked || Zero, 18),
     axialPending: userShareData
-      ? formatBNToShortString(
+      ? formatBNToString(
           userShareData?.poolBalance?.pendingTokens.pendingAxial || Zero,
-          18
+          18,
+          2
         )
       : "",
     apr: poolData?.apr
@@ -58,9 +62,10 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
       ? "0%"
       : "-",
     userBalanceUSD: userShareData
-      ? formatBNToShortString(
+      ? formatBNToString(
           userShareData?.poolBalance?.userInfo.amount || Zero,
-          18
+          18,
+          2
         )
       : "-",
   };

@@ -1,13 +1,17 @@
 import { createSelector } from "@reduxjs/toolkit";
+import { GlobalDomains } from "app/appSelectors";
+import { BNToFloat } from "common/format";
 import { env } from "environment";
 import { Contract, ethers } from "ethers";
-
+import { multiply } from "precise-math";
 import { RootState } from "store/types";
 import { EthersDomains } from "../BlockChain/Ethers/selectors";
 import { BlockChainDomains } from "../BlockChain/selectors";
 import { Web3Domains } from "../BlockChain/Web3/selectors";
+import { Pools } from "../Rewards/types";
 
 import { initialState } from "./slice";
+import { HarvestableToken } from "./types";
 
 export const PoolsAndGaugesDomains = {
   root: (state: RootState) => state.poolsAndGauges || initialState,
@@ -52,6 +56,53 @@ export const PoolsAndGaugesSelectors = {
     PoolsAndGaugesDomains.gauges,
     (gaugesState) => gaugesState
   ),
+  harvestableTokensOfPool: (key?: Pools) =>
+    createSelector(
+      PoolsAndGaugesDomains.pools,
+      GlobalDomains.tokens,
+      GlobalDomains.tokenPricesUSD,
+      (pools, tokens, prices) => {
+        const returnArray: HarvestableToken[] = [];
+        if (!key) return returnArray;
+        const pool = Object.values(pools).find(
+          (pool) => pool.symbol.toLowerCase() === key.toLowerCase()
+        );
+        if (!pool || !pool.gauge || !tokens) return returnArray;
+        const harvestables = Object.keys(pool.gauge.harvestable);
+        const tokensArray = Object.values(tokens);
+        for (const harvestableAddress of harvestables) {
+          for (let i = 0; i < tokensArray.length; i++) {
+            const token = tokensArray[i];
+            const amount =
+              BNToFloat(pool.gauge.harvestable[harvestableAddress] || 0, 18) ||
+              0;
+            let equivalentAmount = 0;
+            if (prices[token.symbol]) {
+              equivalentAmount = multiply(amount, prices[token.symbol]);
+            }
+            if (
+              token.address.toLowerCase() === harvestableAddress.toLowerCase()
+            ) {
+              const lastRewardAPR = pool.last_rewards_apr;
+              let apr = "0";
+              for (const tokenApr of lastRewardAPR) {
+                if (tokenApr[0].toLowerCase() === token.address.toLowerCase()) {
+                  apr = tokenApr[1];
+                }
+              }
+
+              returnArray.push({
+                token,
+                amountToHarvest: amount,
+                amountInUsd: equivalentAmount,
+                apr,
+              });
+            }
+          }
+        }
+        return returnArray;
+      }
+    ),
 };
 
 const selectDomain = (state: RootState) => state.poolsAndGauges || initialState;

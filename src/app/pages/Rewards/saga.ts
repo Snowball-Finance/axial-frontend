@@ -18,9 +18,8 @@ import { TokenSymbols } from "app/containers/Swap/types";
 import { checkAndApproveTokensInList } from "utils/tokenVerifier";
 import { getRewardPoolData } from "app/containers/Rewards/saga";
 import GAUGE_ABI from "abi/gauge.json";
-import { PoolsAndGaugesDomains } from "app/containers/PoolsAndGauges/selectors";
 import { getProviderOrSigner } from "app/containers/utils/contractUtils";
-import { Gauge } from "abi/ethers-contracts";
+import { PoolsAndGaugesActions } from "app/containers/PoolsAndGauges/slice";
 
 export function* poolInfoByAddress(action: { type: string; payload: string }) {
   const { payload } = action;
@@ -104,48 +103,38 @@ export function* withdraw() {
 }
 
 export function* claim(action: { type: string; payload: Pool }) {
-  //TODO: implement claim CHECK_HERE
   const pool = action.payload;
-  const library = yield select(Web3Domains.selectLibraryDomain);
-  const gaugeContract = new Contract(
-    pool.gauge_address,
-    GAUGE_ABI,
-    library?.getSigner()
-  ) as Gauge;
-  try {
-    // CHECK_HERE check amount
-    yield call(gaugeContract.withdraw, 0);
-  } catch (e) {
-    console.log(e);
-  }
-}
-
-export function* claimRewardsToken() {
+  const claimable = yield select(RewardsPageDomains.claimingTokens);
   const library = yield select(Web3Domains.selectLibraryDomain);
   const account = yield select(Web3Domains.selectAccountDomain);
   const claimedRewards = yield select(RewardsPageDomains.checkedClaimRewards);
-  const pools = yield select(PoolsAndGaugesDomains.pools);
-  const selectedPool = yield select(RewardsPageDomains.pool);
 
-  const selectedPoolForClaim = pools[selectedPool?.address];
   const gaugeContract = new Contract(
-    selectedPoolForClaim.gauge_address,
+    pool.gauge_address,
     GAUGE_ABI,
     getProviderOrSigner(library, account)
   );
   try {
-    const isClaimAll =
-      claimedRewards.length === pools[selectedPool?.address].rewardTokens.length;
-    yield put(RewardsPageActions.setisClaimRewardsLoading(true));
+    const isClaimAll = claimedRewards.length === claimable.length;
+    yield put(RewardsPageActions.setIsClaimRewardsLoading(true));
+    let transaction;
     if (isClaimAll) {
-      yield call(gaugeContract.getAllRewards);
+      transaction = yield call(gaugeContract.getAllRewards);
     } else {
-      yield call(gaugeContract.getRewards, claimedRewards);
+      transaction = yield call(gaugeContract.getRewards, claimedRewards);
+    }
+    const transactionStatus = yield call(transaction.wait);
+    if (transactionStatus.status) {
+      toast.success("claim successful");
+      yield put(PoolsAndGaugesActions.getInitialData());
     }
   } catch (e) {
     console.log(e);
+    toast.error("claim failed, please try again later");
   } finally {
-    yield put(RewardsPageActions.setisClaimRewardsLoading(false));
+    yield put(RewardsPageActions.setIsClaimRewardsLoading(false));
+    yield put(RewardsPageActions.setTokensToClaim([]));
+    yield put(RewardsPageActions.setCheckedClaimRewards([]));
   }
 }
 
@@ -174,8 +163,4 @@ export function* rewardsPageSaga() {
   );
   yield takeLatest(RewardsPageActions.withdraw.type, withdraw);
   yield takeLatest(RewardsPageActions.claim.type, claim);
-  yield takeLatest(
-    RewardsPageActions.claimRewardsToken.type,
-    claimRewardsToken
-  );
 }

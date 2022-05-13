@@ -12,17 +12,24 @@ import { ActionButtonProps } from "app/pages/Rewards/types";
 import { RewardsSelectors } from "app/containers/Rewards/selectors";
 import { pools } from "app/pools";
 import { RewardsPageActions } from "app/pages/Rewards/slice";
-import { Pool } from "app/containers/Rewards/types";
 import { Web3Selectors } from "app/containers/BlockChain/Web3/selectors";
 import { mobile } from "styles/media";
 import { RewardsPageSelectors } from "app/pages/Rewards/selectors";
 import { getPoolIndexFromKey } from "app/pages/Liquidity/constants";
+import { ClaimConfirmationModal } from "app/pages/Rewards/components/ClaimRewards/ClaimConfirmationModal";
+import { PoolsAndGaugesSelectors } from "app/containers/PoolsAndGauges/selectors";
 
 export const ActionButtons: FC<ActionButtonProps> = ({ poolKey }) => {
   const { t } = useTranslation();
   const poolsBalances = useSelector(RewardsSelectors.poolsBalances);
   const account = useSelector(Web3Selectors.selectAccount);
   const poolData = useSelector(RewardsPageSelectors.rewardsPoolData(poolKey));
+  const claimingSymbol = useSelector(
+    RewardsPageSelectors.claimingPendingAxialPoolSymbol
+  );
+  const harvestables = useSelector(
+    PoolsAndGaugesSelectors.harvestableTokensOfPool(pools[poolKey]?.key)
+  );
   const dispatch = useDispatch();
 
   const tokenKey = pools[poolKey].lpToken.symbol;
@@ -37,40 +44,49 @@ export const ActionButtons: FC<ActionButtonProps> = ({ poolKey }) => {
     dispatch(push(`${AppPages.RewardPage}/${poolIndex}/withdraw`));
   };
 
-  const handleClaimClick = (pool: Pool) => {
-    dispatch(RewardsPageActions.claimRewardsToken());
+  const handleClaimClick = () => {
+    if (!(claimingSymbol === tokenKey)) {
+      dispatch(RewardsPageActions.setTokensToClaim(harvestables));
+    }
   };
 
   return (
-    <StyledContainer container spacing={{ xs: 1, xl: 2 }}>
-      <StyledFullChildContainer item>
-        <StyledContainedButton
-          onClick={() => handleNavigateToDeposit(poolKey)}
-          disabled={poolData?.isPaused}
-        >
-          {t(translations.RewardsPage.ActionButtons.Deposit())}
-        </StyledContainedButton>
-      </StyledFullChildContainer>
+    <>
+      <ClaimConfirmationModal pool={pools[poolKey]} />
 
-      <StyledFullChildContainer item>
-        <StyledOutlinedButton onClick={() => handleNavigateToWithdraw(poolKey)}>
-          {t(translations.RewardsPage.ActionButtons.Withdraw())}
-        </StyledOutlinedButton>
-      </StyledFullChildContainer>
+      <StyledContainer container spacing={{ xs: 1, xl: 2 }}>
+        <StyledFullChildContainer item>
+          <StyledContainedButton
+            onClick={() => handleNavigateToDeposit(poolKey)}
+            disabled={poolData?.isPaused}
+          >
+            {t(translations.RewardsPage.ActionButtons.Deposit())}
+          </StyledContainedButton>
+        </StyledFullChildContainer>
 
-      <StyledFullChildContainer item>
-        <StyledOutlinedButton
-          onClick={() => handleClaimClick(pools[poolKey])}
-          disabled={
-            !account ||
-            (poolsBalances &&
-              poolsBalances[tokenKey]?.pendingTokens.pendingAxial.eq("0x0"))
-          }
-        >
-          {t(translations.RewardsPage.ActionButtons.Claim())}
-        </StyledOutlinedButton>
-      </StyledFullChildContainer>
-    </StyledContainer>
+        <StyledFullChildContainer item>
+          <StyledOutlinedButton
+            onClick={() => handleNavigateToWithdraw(poolKey)}
+          >
+            {t(translations.RewardsPage.ActionButtons.Withdraw())}
+          </StyledOutlinedButton>
+        </StyledFullChildContainer>
+
+        <StyledFullChildContainer item>
+          <StyledOutlinedButton
+            onClick={() => handleClaimClick()}
+            loading={claimingSymbol === tokenKey}
+            disabled={
+              !account ||
+              (poolsBalances &&
+                poolsBalances[tokenKey]?.pendingTokens.pendingAxial.eq("0x0"))
+            }
+          >
+            {t(translations.RewardsPage.ActionButtons.Claim())}
+          </StyledOutlinedButton>
+        </StyledFullChildContainer>
+      </StyledContainer>
+    </>
   );
 };
 

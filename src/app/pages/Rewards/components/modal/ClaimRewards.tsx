@@ -7,45 +7,38 @@ import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { mobile } from "styles/media";
 import { CardWrapper } from "app/components/wrappers/Card";
-import axialIcon from "assets/icons/logo_icon.svg";
 import { ContainedButton } from "app/components/common/buttons/containedButton";
-import { PoolsAndGaugesSelectors } from "app/containers/PoolsAndGauges/selectors";
-import { RewardsPageSelectors } from "app/pages/Rewards/selectors";
-import { RewardsPageActions } from "app/pages/Rewards/slice";
-import { formatBNToString } from "app/containers/utils/contractUtils";
-import { Zero } from "app/containers/Rewards/constants";
+import { RewardsPageSelectors } from "../../selectors";
+import { RewardsPageActions } from "../../slice";
+import { Pool } from "app/containers/Rewards/types";
+import { commify } from "app/containers/utils/contractUtils";
+import { formatNumber } from "common/format";
 
-export const ClaimRewardsModal: FC = () => {
+interface Props {
+  pool?: Pool;
+}
+
+export const ClaimRewardsModal: FC<Props> = ({ pool }) => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
 
-  const pools = useSelector(PoolsAndGaugesSelectors.pools);
-  const selectedPool = useSelector(RewardsPageSelectors.selectedPool);
+  const harvestables = useSelector(RewardsPageSelectors.tokensToClaim);
   const checkedClaimRewards = useSelector(
     RewardsPageSelectors.checkedClaimRewards
   );
+  const claimable = useSelector(RewardsPageSelectors.tokensToClaim);
   const isClaimRewardsLoading = useSelector(
     RewardsPageSelectors.isClaimRewardsLoading
   );
 
-  const dispatch = useDispatch();
-
-  if (!selectedPool) {
-    return null;
-  }
-
-  if (selectedPool && !(selectedPool.address in pools)) {
-    return null;
-  }
-
-  const isCheckAll =
-    checkedClaimRewards.length === pools[selectedPool?.address].rewardTokens?.length;
+  const isCheckAll = checkedClaimRewards.length === claimable.length;
 
   const handleCheckAllClick = () => {
     if (isCheckAll) {
       dispatch(RewardsPageActions.setCheckedClaimRewards([]));
     } else {
       let checkedItems: number[] = [];
-      pools[selectedPool?.address].rewardTokens?.forEach((_, index) => {
+      harvestables?.forEach((_, index) => {
         checkedItems.push(index);
       });
 
@@ -64,8 +57,10 @@ export const ClaimRewardsModal: FC = () => {
     dispatch(RewardsPageActions.setCheckedClaimRewards(checkedItems));
   };
 
-  const handleClaim = () => {
-    dispatch(RewardsPageActions.claimRewardsToken());
+  const handleClaimClick = () => {
+    if (pool) {
+      dispatch(RewardsPageActions.claim(pool));
+    }
   };
 
   return (
@@ -73,23 +68,24 @@ export const ClaimRewardsModal: FC = () => {
       <CardWrapper>
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <Grid container spacing={1} alignItems="center">
-              <Grid item>
-                <CustomCheckbox
-                  checked={isCheckAll}
-                  onChange={handleCheckAllClick}
-                />
+            {harvestables.length > 1 && (
+              <Grid container spacing={1} alignItems="center">
+                <Grid item>
+                  <CustomCheckbox
+                    checked={isCheckAll}
+                    onChange={handleCheckAllClick}
+                  />
+                </Grid>
+                <Grid item>
+                  <Text variant="body2">{t(translations.Common.CheckAll())}</Text>
+                </Grid>
               </Grid>
-
-              <Grid item>
-                <Text variant="body2">{t(translations.Common.CheckAll())}</Text>
-              </Grid>
-            </Grid>
+            )}
           </Grid>
 
-          {pools[selectedPool?.address].rewardTokens?.map((token, index) => {
+          {harvestables.map((item, index) => {
             return (
-              <Grid item key={token.symbol} xs={12}>
+              <Grid item key={item.token.symbol} xs={12}>
                 <Grid
                   container
                   justifyContent="space-between"
@@ -105,11 +101,16 @@ export const ClaimRewardsModal: FC = () => {
                       </Grid>
 
                       <Grid item>
-                        <IconImage src={axialIcon} alt={token.symbol} />
+                        <IconImage
+                          src={item.token.logo}
+                          alt={item.token.symbol}
+                        />
                       </Grid>
 
                       <Grid item>
-                        <TokenText variant="body1">{token.symbol}</TokenText>
+                        <TokenText variant="body1">
+                          {item.token.symbol}
+                        </TokenText>
                       </Grid>
                     </Grid>
                   </Grid>
@@ -118,11 +119,19 @@ export const ClaimRewardsModal: FC = () => {
                     <Grid container spacing={1} alignItems="center">
                       <Grid item>
                         <Text variant="body1">
-                          {formatBNToString(
-                            pools[selectedPool.address]?.userDepositedLP ??
-                              Zero,
-                            18
+                          {commify(
+                            formatNumber(+item.amountToHarvest, 4).toString()
                           )}
+                        </Text>
+                      </Grid>
+
+                      <Grid item>
+                        <Text variant="body2">
+                          {"($"}
+                          {commify(
+                            formatNumber(+item.amountInUsd, 4).toString()
+                          )}
+                          {")"}
                         </Text>
                       </Grid>
                     </Grid>
@@ -134,9 +143,10 @@ export const ClaimRewardsModal: FC = () => {
 
           <Grid item xs={12}>
             <ContainedButton
-              loading={isClaimRewardsLoading}
               fullWidth
-              onClick={handleClaim}
+              disabled={checkedClaimRewards.length === 0}
+              loading={isClaimRewardsLoading}
+              onClick={handleClaimClick}
             >
               {t(translations.RewardsPage.ActionButtons.Claim())}
             </ContainedButton>

@@ -29,8 +29,16 @@ export function* getLastInfo() {
     const account = yield select(Web3Domains.selectAccountDomain);
     yield put(PoolsAndGaugesActions.setIsLoadingLastInfo(true));
     const lastSnowballInfo: PoolInfo[] = yield call(getLastInfoAPI);
-    yield put(PoolsAndGaugesActions.setLastInfo(lastSnowballInfo));
-    const pools = lastSnowballInfo.map((pool) => {
+    const parsedLastInfo = lastSnowballInfo.map((pool) => {
+      let tmp = { ...pool };
+      if (tmp.symbol === "Pool 3 Tokens") {
+        tmp.symbol = "P3T";
+      }
+      tmp.key = tmp.symbol;
+      return tmp;
+    });
+    yield put(PoolsAndGaugesActions.setLastInfo(parsedLastInfo));
+    const pools = parsedLastInfo.map((pool) => {
       return {
         ...pool,
         userLPBalance: BigNumber.from(0.0),

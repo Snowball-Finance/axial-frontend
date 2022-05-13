@@ -372,7 +372,7 @@ function* getSwapContractForWithdraw() {
   const library = yield select(Web3Domains.selectLibraryDomain);
   const account = yield select(Web3Domains.selectAccountDomain);
   const swapContract = getContract(
-    pool.address,
+    pool.swapAddress || pool.address,
     pool.swapABI,
     library,
     account ?? undefined

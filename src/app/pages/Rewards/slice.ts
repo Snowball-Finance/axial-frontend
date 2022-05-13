@@ -8,6 +8,7 @@ import { rewardsPageSaga } from "./saga";
 import { zeroString } from "../Liquidity/constants";
 import { Pool, UserShareData } from "app/containers/Rewards/types";
 import { divide, multiply } from "precise-math";
+import { HarvestableToken } from "app/containers/PoolsAndGauges/types";
 
 // The initial state of the RewardsPage container
 export const initialState: ContainerState = {
@@ -24,7 +25,8 @@ export const initialState: ContainerState = {
   withdrawPercentage: 0,
   withdrawAmount: zeroString,
   isModalOpen: false,
-  isClaimModalOpen: false,
+  claimingPendingAxialPoolSymbol: "",
+  tokensToClaim: [],
   checkedClaimRewards: [],
   isClaimRewardsLoading: false,
 };
@@ -48,6 +50,9 @@ const rewardsPageSlice = createSlice({
     },
     deposit() {},
     withdraw() {},
+    setSymbolForClaimingPendingAxial(state, action: PayloadAction<string>) {
+      state.claimingPendingAxialPoolSymbol = action.payload;
+    },
     claim(state, action: PayloadAction<Pool>) {},
     setWithdrawPercentage(
       state,
@@ -66,20 +71,23 @@ const rewardsPageSlice = createSlice({
     setIsModalOpen(state, action: PayloadAction<boolean>) {
       state.isModalOpen = action.payload;
     },
-    setIsClaimModalOpen(state, action: PayloadAction<boolean>) {
-      state.isClaimModalOpen = action.payload;
+
+    setTokensToClaim(state, action: PayloadAction<HarvestableToken[]>) {
+      state.tokensToClaim = action.payload;
+      if (state.tokensToClaim.length === 1) {
+        state.checkedClaimRewards = [0];
+      }
     },
     getRewardPoolData() {},
     setRewardsPageUserShareData(state, action: PayloadAction<UserShareData>) {
       state.rewardsPageUserShareData = action.payload;
     },
+    setIsClaimRewardsLoading(state, action: PayloadAction<boolean>) {
+      state.isClaimRewardsLoading = action.payload;
+    },
     setCheckedClaimRewards(state, action: PayloadAction<number[]>) {
       state.checkedClaimRewards = action.payload;
     },
-    setisClaimRewardsLoading(state, action: PayloadAction<boolean>) {
-      state.isClaimRewardsLoading = action.payload;
-    },
-    claimRewardsToken() {},
   },
 });
 

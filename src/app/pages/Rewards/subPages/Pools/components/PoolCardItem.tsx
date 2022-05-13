@@ -16,6 +16,7 @@ import { Info } from "./Info";
 import { ActionButtons } from "./ActionButtons";
 import { mobile } from "styles/media";
 import { RewardsTokens } from "./RewardsTokens";
+import { Pools } from "app/containers/Rewards/types";
 
 export const PoolCardItem: FC<PoolCardItemProps> = ({ poolKey }) => {
   const rewardsPool = useSelector(RewardsPageSelectors.rewardsPool(poolKey));
@@ -46,15 +47,17 @@ export const PoolCardItem: FC<PoolCardItemProps> = ({ poolKey }) => {
           </Grid>
         </StyledPoolChildUpperContainer>
 
-        <StyledPoolChildLowerContainer item container>
-          <Grid item>
-            <RewardsTokens poolKey={poolKey}/>
-          </Grid>
+        <StyledFullChildContainer item>
+          <StyledPoolChildLowerContainer container>
+            <StyledFullChildContainer item>
+              <RewardsTokens poolKey={poolKey as Pools} />
+            </StyledFullChildContainer>
 
-          <Grid item>
-            <ActionButtons poolKey={poolKey} />
-          </Grid>
-        </StyledPoolChildLowerContainer>
+            <StyledFullChildContainer item>
+              <ActionButtons poolKey={poolKey} />
+            </StyledFullChildContainer>
+          </StyledPoolChildLowerContainer>
+        </StyledFullChildContainer>
       </StyledPoolContainer>
     </StyledPoolCard>
   );
@@ -101,6 +104,12 @@ const StyledPoolChildLowerContainer = styled(Grid)({
     alignItems: "center",
     flexDirection: "column",
     rowGap: 20,
+    width: "100%",
+  },
+});
+
+const StyledFullChildContainer = styled(Grid)({
+  [mobile]: {
     width: "100%",
   },
 });

@@ -9,6 +9,7 @@ import { Zero } from "app/containers/Rewards/constants";
 import {
   commify,
   formatBNToShortString,
+  formatBNToString,
 } from "app/containers/utils/contractUtils";
 import { PoolDataProps } from "app/pages/Liquidity/types";
 import { RewardsSelectors } from "app/containers/Rewards/selectors";
@@ -39,10 +40,7 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
       : poolData?.volume === 0
       ? "0"
       : "-",
-    userBalanceUSD: formatBNToShortString(
-      userShareData?.usdBalance || Zero,
-      18
-    ),
+    userBalanceUSD: formatBNToString(userShareData?.usdBalance || Zero, 18, 2),
   };
 
   const hasShare = !!userShareData?.usdBalance.gt("0");

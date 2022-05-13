@@ -3,45 +3,41 @@ import { styled, Grid, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 
 import { CssVariables } from "styles/cssVariables/cssVariables";
-import axialIcon from "assets/icons/logo_icon.svg";
 import { mobile } from "styles/media";
+import { Pools } from "app/containers/Rewards/types";
 import { PoolsAndGaugesSelectors } from "app/containers/PoolsAndGauges/selectors";
-import { RewardsPageSelectors } from "app/pages/Rewards/selectors";
 
-interface Props {
-  poolKey: string;
-}
-export const RewardsTokens: FC<Props> = ({ poolKey }) => {
-  const pools = useSelector(PoolsAndGaugesSelectors.pools);
-  const rewardsPool = useSelector(RewardsPageSelectors.rewardsPool(poolKey));
-
-  if (!(rewardsPool.address in pools)) {
-    return null;
-  }
-
+export const RewardsTokens: FC<{ poolKey: Pools }> = ({ poolKey }) => {
+  const harvestables = useSelector(
+    PoolsAndGaugesSelectors.harvestableTokensOfPool(poolKey)
+  );
   return (
     <Grid container spacing={1}>
-      <Grid item xs={12}>
-        <PoolInfoHeaderText variant="body1">Rewards</PoolInfoHeaderText>
-      </Grid>
+      {harvestables.length > 0 && (
+        <Grid item xs={12}>
+          <PoolInfoHeaderText variant="body1">Rewards</PoolInfoHeaderText>
+        </Grid>
+      )}
 
       <Grid item container>
-        {pools[rewardsPool.address]?.rewardTokens?.map((token) => {
+        {harvestables.map((harvestable) => {
           return (
             <Grid
-              key={token.address}
+              item
               container
               spacing={1}
               alignItems="center"
-              item
-              xs={6}
+              key={harvestable.token.address}
             >
               <Grid item>
-                <PoolTokenImage src={axialIcon} alt={`token-AXIAL`} />
+                <PoolTokenImage
+                  src={harvestable.token.logo}
+                  alt={`token-AXIAL`}
+                />
               </Grid>
               <Grid item>
                 <PoolInfoTitleText variant="body1">
-                  {token.symbol}
+                  {harvestable.token.name}
                 </PoolInfoTitleText>
               </Grid>
             </Grid>
