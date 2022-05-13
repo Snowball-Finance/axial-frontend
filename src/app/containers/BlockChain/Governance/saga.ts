@@ -393,7 +393,6 @@ export function* syncProposalsWithBlockchain() {
       all(statesCallArray),
       all(votesCallArray),
     ]);
-
     const metadataCallArray: any[] = [];
     for (let i = 0; i < proposalsFromBlockChain.length; i++) {
       const proposal = proposalsFromBlockChain[i];
