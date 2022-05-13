@@ -125,8 +125,9 @@ export function* amountChange(action: { type: string; payload: string }) {
   if (isNaN(Number(value))) {
     return;
   }
-  yield call(validation);
+
   yield put(SwapPageActions.setFromAmount(value));
+  yield call(validation);
 }
 
 export function* maxAmountSelection() {

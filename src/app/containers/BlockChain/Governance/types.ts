@@ -89,5 +89,6 @@ export interface GovernanceState {
   accruingTokenBalance: BigNumber | undefined;
   totalAccruedToken: BigNumber | undefined;
   totalMainTokenStakedForAccruingToken: BigNumber | undefined;
+  minimumTokenAmountForNewProposal: number;
 }
 export type ContainerState = GovernanceState;

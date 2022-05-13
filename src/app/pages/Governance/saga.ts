@@ -11,14 +11,14 @@ import { env, IS_DEV } from "environment";
 import { Contract } from "ethers";
 import { toast } from "react-toastify";
 import { call, put, select, takeLatest } from "redux-saga/effects";
-import { GovernancePageDomains, GovernancePageSelectors } from "./selectors";
+import { GovernancePageDomains } from "./selectors";
 import { GovernancePageActions } from "./slice";
 import { isPositiveNumber } from "./utils/isPositiveNumber";
+import GAUGE_PROXY_ABI from "abi/gaugeProxy.json";
 
 export function* getGaugeProxyContract() {
   const library = yield select(Web3Domains.selectNetworkLibraryDomain);
   const account = yield select(Web3Domains.selectAccountDomain);
-  const GAUGE_PROXY_ABI = yield select(selectGaugeProxyABIDomain);
   const gaugeProxyContract = new Contract(
     //|| '' is added because the error of not existing env var is handled in index file of this module
     env.GAUGE_PROXY_ADDRESS || "",
@@ -33,7 +33,7 @@ export function* voteForFarms() {
   yield put(GovernancePageActions.setIsVotingForFarms(true));
   try {
     const selectedPairs = yield select(
-      GovernancePageSelectors.selectedVoteAllocationPair
+      GovernancePageDomains.selectedVoteAllocationGauges
     );
     const gaugeProxyContract: GaugeProxy = yield call(getGaugeProxyContract);
     const library = yield select(Web3Domains.selectLibraryDomain);
@@ -64,7 +64,6 @@ export function* voteForFarms() {
         }
       }
     }
-
     if (tokenAddressList.length === 0) {
       toast.warn("please fill at least one allocation field");
       return;

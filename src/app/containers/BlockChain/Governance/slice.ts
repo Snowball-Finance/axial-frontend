@@ -32,12 +32,17 @@ export const initialState: ContainerState = {
   totalGovernanceTokenSupply: BigNumber.from(0),
   totalAccruedToken: BigNumber.from(0),
   totalMainTokenStakedForAccruingToken: BigNumber.from(0),
+  minimumTokenAmountForNewProposal: 0,
 };
 
 const governanceSlice = createSlice({
   name: "governance",
   initialState,
   reducers: {
+    getEssentialDataForGovernance() {},
+    setMinimumTokenForNewProposal(state, action: PayloadAction<number>) {
+      state.minimumTokenAmountForNewProposal = action.payload;
+    },
     getGovernanceTokenBalance(
       state,
       action: PayloadAction<skipLoading | undefined>

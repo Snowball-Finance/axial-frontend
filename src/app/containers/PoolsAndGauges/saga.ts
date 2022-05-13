@@ -48,14 +48,10 @@ export function* getLastInfo() {
     const poolsAprData: AprData = {};
     pools.forEach((item) => {
       tmp[item.swapaddress || item.tokenaddress] = item;
-      //CHECK_HERE, we want to replace masterchef apr data
-      //swap address is used in liquidity and for rewards we will use lpTokenAddress as key
       poolsAprData[item.swapaddress || item.tokenaddress] = {
         apr: Number(item.last_apr), // apr for liquidity page should be last_swap_apr,
         lptvl: Number(item.last_tvl),
         tokenPoolPrice: Number(item.last_token_price),
-        //TODO:this part should come through contract call,address:pool.gaugeAddress, abi:GaugeABI
-        //for liquidity it's lpToken address total supply and for rewards data it's gauge address
         totalStaked: "0x00",
       };
     });
