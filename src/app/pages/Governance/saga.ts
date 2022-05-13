@@ -14,7 +14,7 @@ import { call, put, select, takeLatest } from "redux-saga/effects";
 import { GovernancePageDomains } from "./selectors";
 import { GovernancePageActions } from "./slice";
 import { isPositiveNumber } from "./utils/isPositiveNumber";
-import GAUGE_PROXY_ABI from 'abi/gaugeProxy.json'
+import GAUGE_PROXY_ABI from "abi/gaugeProxy.json";
 
 export function* getGaugeProxyContract() {
   const library = yield select(Web3Domains.selectNetworkLibraryDomain);
@@ -64,10 +64,6 @@ export function* voteForFarms() {
         }
       }
     }
-console.log({
-  weightsList,
-  tokenAddressList
-})
     if (tokenAddressList.length === 0) {
       toast.warn("please fill at least one allocation field");
       return;

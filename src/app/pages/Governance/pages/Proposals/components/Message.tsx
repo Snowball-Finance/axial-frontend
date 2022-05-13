@@ -13,21 +13,26 @@ import { GovernanceSelectors } from "app/containers/BlockChain/Governance/select
 export const Message: FC = () => {
   const { t } = useTranslation();
   const account = useSelector(Web3Selectors.selectAccount);
-  const minimum =  useSelector(GovernanceSelectors.minimumTokenRequiredForNewProposal);
+  const minimum = useSelector(
+    GovernanceSelectors.minimumTokenRequiredForNewProposal
+  );
   const canAddNewProposal = useSelector(GovernanceSelectors.canAddNewProposal);
 
   let message = "";
   if (!account) {
     message = t(translations.Common.ConnectToWallet());
+  } else {
+    message = t(translations.GovernancePage.MinGovernanceTokenToSubmitError(), {
+      amount: formatNumber(minimum, 2).toString(),
+      name: env.GOVERNANCE_TOKEN_NAME,
+    });
   }
-else{
-  message = t(translations.GovernancePage.MinGovernanceTokenToSubmitError(), {
-    amount: formatNumber(minimum, 2).toString(),
-    name: env.GOVERNANCE_TOKEN_NAME,
-  });
-}
- 
-  return !canAddNewProposal && minimum ?<Text variant="body1">* {message}</Text>:<></>;
+
+  return !canAddNewProposal && minimum ? (
+    <Text variant="body1">* {message}</Text>
+  ) : (
+    <></>
+  );
 };
 
 const Text = styled(Typography)({

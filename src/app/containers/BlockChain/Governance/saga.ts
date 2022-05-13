@@ -26,17 +26,18 @@ import { add } from "precise-math";
 import { getProviderOrSigner } from "app/containers/utils/contractUtils";
 import { GlobalActions } from "store/slice";
 import { BNToFloat } from "common/format";
-import GOVERNANCE_ABI from "abi/governance.json"
+import GOVERNANCE_ABI from "abi/governance.json";
 
-
-export function* getEssentialDataForGovernance(){
-  const governanceContract:Governance=yield call(getGovernanceContract)
-try {
-  const threshold=yield call(governanceContract.proposalThreshold)
-  yield put(GovernanceActions.setMinimumTokenForNewProposal(Number(threshold)))
-} catch (error) {
-  yield put(GovernanceActions.setMinimumTokenForNewProposal(100000))
-}
+export function* getEssentialDataForGovernance() {
+  const governanceContract: Governance = yield call(getGovernanceContract);
+  try {
+    const threshold = yield call(governanceContract.proposalThreshold);
+    yield put(
+      GovernanceActions.setMinimumTokenForNewProposal(Number(threshold))
+    );
+  } catch (error) {
+    yield put(GovernanceActions.setMinimumTokenForNewProposal(100000));
+  }
 }
 
 export function* getProposals(action: {
@@ -522,7 +523,10 @@ export function* governanceSaga() {
   yield takeLatest(GovernanceActions.vote.type, vote);
   yield takeLatest(GovernanceActions.submitNewProposal.type, submitNewProposal);
   yield takeLatest(GovernanceActions.getVotingReceipt.type, getVotingReceipt);
-  yield takeLatest(GovernanceActions.getEssentialDataForGovernance.type,getEssentialDataForGovernance)
+  yield takeLatest(
+    GovernanceActions.getEssentialDataForGovernance.type,
+    getEssentialDataForGovernance
+  );
   yield takeLatest(
     GovernanceActions.syncProposalsWithBlockchain.type,
     syncProposalsWithBlockchain

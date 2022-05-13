@@ -52,11 +52,11 @@ export const Governance = ({
   const syncedProposalsWithBlockChain = useSelector(
     GovernanceSelectors.syncedProposalsWithBlockChain
   );
-  useEffect(()=>{
-    if(networkLibrary){
-      dispatch(GovernanceActions.getEssentialDataForGovernance())
+  useEffect(() => {
+    if (networkLibrary) {
+      dispatch(GovernanceActions.getEssentialDataForGovernance());
     }
-  },[networkLibrary])
+  }, [networkLibrary]);
   useEffect(() => {
     if (governanceTokenContract !== undefined) {
       dispatch(

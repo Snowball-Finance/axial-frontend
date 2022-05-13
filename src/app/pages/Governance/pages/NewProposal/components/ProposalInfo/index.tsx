@@ -35,8 +35,7 @@ export const ProposalInfo: FC = () => {
               <SubmitButton />
             </StyledFullContainer>
 
-            <StyledFullContainer item>
-            </StyledFullContainer>
+            <StyledFullContainer item></StyledFullContainer>
           </StyledContainer>
         </Grid>
       </Grid>
