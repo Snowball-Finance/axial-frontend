@@ -7,11 +7,13 @@ import { GovernanceActions } from "app/containers/BlockChain/Governance/slice";
 import { ContainedButton } from "app/components/common/buttons/containedButton";
 import { GovernancePageSelectors } from "app/pages/Governance/selectors";
 import { mobile } from "styles/media";
+import { ProposalState } from "app/containers/BlockChain/Governance/types";
 
 export const ExecutionContext = () => {
   const receipt = useSelector(GovernanceSelectors.receipt);
   const proposal = useSelector(GovernancePageSelectors.selectedProposal);
   const supportingOption = receipt?.support;
+  const isActive = proposal?.proposal_state === ProposalState.Active;
 
   const dispatch = useDispatch();
 
@@ -30,6 +32,8 @@ export const ExecutionContext = () => {
     return <></>;
   }
 
+  const disabled = !isActive;
+
   return (
     <Grid container spacing={2} direction="column">
       {proposal.execution_contexts.map((context, index) => {
@@ -37,6 +41,7 @@ export const ExecutionContext = () => {
           <Grid item key={index}>
             {supportingOption === index ? (
               <StyledContainedButton
+                disabled={disabled}
                 fullWidth
                 onClick={() => handleVoteClick(index)}
               >
@@ -44,6 +49,7 @@ export const ExecutionContext = () => {
               </StyledContainedButton>
             ) : (
               <StyledOutlinedButton
+                disabled={disabled}
                 fullWidth
                 onClick={() => handleVoteClick(index)}
               >
