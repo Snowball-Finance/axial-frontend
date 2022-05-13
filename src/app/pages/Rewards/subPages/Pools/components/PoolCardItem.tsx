@@ -16,6 +16,7 @@ import { Info } from "./Info";
 import { ActionButtons } from "./ActionButtons";
 import { mobile } from "styles/media";
 import { RewardsTokens } from "./RewardsTokens";
+import { Pools } from "app/containers/Rewards/types";
 
 export const PoolCardItem: FC<PoolCardItemProps> = ({ poolKey }) => {
   const rewardsPool = useSelector(RewardsPageSelectors.rewardsPool(poolKey));
@@ -49,7 +50,7 @@ export const PoolCardItem: FC<PoolCardItemProps> = ({ poolKey }) => {
         <StyledFullChildContainer item>
           <StyledPoolChildLowerContainer container>
             <StyledFullChildContainer item>
-              <RewardsTokens />
+              <RewardsTokens poolKey={poolKey as Pools} />
             </StyledFullChildContainer>
 
             <StyledFullChildContainer item>

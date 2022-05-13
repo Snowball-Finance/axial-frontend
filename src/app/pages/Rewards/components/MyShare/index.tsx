@@ -18,7 +18,6 @@ export const MyShare: FC = () => {
   const userShareData = useSelector(
     RewardsPageSelectors.rewardsPageUserShareData
   );
-
   return (
     <Grid container spacing={2}>
       <Grid item container justifyContent="space-between" alignItems="center">
@@ -27,7 +26,6 @@ export const MyShare: FC = () => {
             {t(translations.RewardsPage.MyShare.Title())}
           </MyShareTitle>
         </Grid>
-
         <Grid item>
           <MyShareBalanceText variant="body1">
             {formatBNToPercentString(userShareData?.share || Zero, 18)}{" "}

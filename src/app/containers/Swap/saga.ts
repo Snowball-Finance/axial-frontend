@@ -53,7 +53,6 @@ export function* findBestPath(action: {
       findBestPathParams,
       { gasLimit: 1e9 }
     );
-
     const additional = multiply(Number(gasEstimate.toString()), 0.2).toFixed(0);
 
     const optimalPath = yield call(
@@ -63,7 +62,6 @@ export function* findBestPath(action: {
         gasLimit: (Number(gasEstimate) + Number(additional)).toString(),
       }
     );
-    console.log(optimalPath);
     yield all([
       put(SwapActions.setBestPath(optimalPath)),
       put(SwapActions.setIsGettingBestPath(false)),

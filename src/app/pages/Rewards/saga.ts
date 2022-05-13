@@ -18,7 +18,8 @@ import { TokenSymbols } from "app/containers/Swap/types";
 import { checkAndApproveTokensInList } from "utils/tokenVerifier";
 import { getRewardPoolData } from "app/containers/Rewards/saga";
 import GAUGE_ABI from "abi/gauge.json";
-import { Gauge } from "abi/ethers-contracts";
+import { getProviderOrSigner } from "app/containers/utils/contractUtils";
+import { PoolsAndGaugesActions } from "app/containers/PoolsAndGauges/slice";
 
 export function* poolInfoByAddress(action: { type: string; payload: string }) {
   const { payload } = action;
@@ -102,19 +103,38 @@ export function* withdraw() {
 }
 
 export function* claim(action: { type: string; payload: Pool }) {
-  //TODO: implement claim CHECK_HERE
   const pool = action.payload;
+  const claimable = yield select(RewardsPageDomains.claimingTokens);
   const library = yield select(Web3Domains.selectLibraryDomain);
+  const account = yield select(Web3Domains.selectAccountDomain);
+  const claimedRewards = yield select(RewardsPageDomains.checkedClaimRewards);
+
   const gaugeContract = new Contract(
     pool.gauge_address,
     GAUGE_ABI,
-    library?.getSigner()
-  ) as Gauge;
+    getProviderOrSigner(library, account)
+  );
   try {
-    // CHECK_HERE check amount
-    yield call(gaugeContract.withdraw, 0);
+    const isClaimAll = claimedRewards.length === claimable.length;
+    yield put(RewardsPageActions.setIsClaimRewardsLoading(true));
+    let transaction;
+    if (isClaimAll) {
+      transaction = yield call(gaugeContract.getAllRewards);
+    } else {
+      transaction = yield call(gaugeContract.getRewards, claimedRewards);
+    }
+    const transactionStatus = yield call(transaction.wait);
+    if (transactionStatus.status) {
+      toast.success("claim successful");
+      yield put(PoolsAndGaugesActions.getInitialData());
+    }
   } catch (e) {
     console.log(e);
+    toast.error("claim failed, please try again later");
+  } finally {
+    yield put(RewardsPageActions.setIsClaimRewardsLoading(false));
+    yield put(RewardsPageActions.setTokensToClaim([]));
+    yield put(RewardsPageActions.setCheckedClaimRewards([]));
   }
 }
 

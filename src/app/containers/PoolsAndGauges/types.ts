@@ -1,4 +1,5 @@
 import { BigNumber, Contract } from "ethers";
+import { Token } from "../Swap/types";
 
 export interface GaugeItem {
   address: string; //"0x015b16E27Ae7D4B409B44147f5AC08Ac8746e654"
@@ -6,7 +7,7 @@ export interface GaugeItem {
   depositTokenName: string; //"T3P"
   fullApy: 0;
   gaugeAddress: string; //"0x015b16E27Ae7D4B409B44147f5AC08Ac8746e654"
-  harvestable: BigNumber[];
+  harvestable: { [key: string]: BigNumber };
   poolName: string; //"T3P"
   poolTokens: PoolInfoToken[];
   staked: BigNumber;
@@ -67,6 +68,7 @@ export interface PoolInfo {
   modified: string; // "2022-05-04T07:34:55.077Z"
   swapaddress: string; //""
   symbol: string; // "TEST"
+  key: string; // "TEST"
   tokenaddress: string; //"0xE68E161AA7A32403308cA0B29F15FEC1960c6ca9"
   tokens: PoolInfoToken[];
   gauge?: GaugeItem;
@@ -85,6 +87,13 @@ export interface PoolRewardToken {
   boosted_apr: string; //"0"
   decimals: string; //"18"
   symbol: string; // "AXIAL"
+}
+
+export interface HarvestableToken {
+  token: Token;
+  amountToHarvest: number;
+  amountInUsd: number;
+  apr: string;
 }
 
 export interface PoolProvider {

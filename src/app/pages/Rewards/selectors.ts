@@ -36,8 +36,16 @@ export const RewardsPageDomains = {
     state.rewardsPage?.withdrawAmount || initialState.withdrawAmount,
   isModalOpen: (state: RootState) =>
     state.rewardsPage?.isModalOpen || initialState.isModalOpen,
-  isClaimModalOpen: (state: RootState) =>
-    state.rewardsPage?.isClaimModalOpen || initialState.isClaimModalOpen,
+  claimingPendingAxialPoolSymbol: (state: RootState) =>
+    state.rewardsPage?.claimingPendingAxialPoolSymbol ||
+    initialState.claimingPendingAxialPoolSymbol,
+  claimingTokens: (state: RootState) =>
+    state.rewardsPage?.tokensToClaim || initialState.tokensToClaim,
+  checkedClaimRewards: (state: RootState) =>
+    state.rewardsPage?.checkedClaimRewards || initialState.checkedClaimRewards,
+  isClaimRewardsLoading: (state: RootState) =>
+    state.rewardsPage?.isClaimRewardsLoading ||
+    initialState.isClaimRewardsLoading,
 };
 
 export const RewardsPageSelectors = {
@@ -136,12 +144,25 @@ export const RewardsPageSelectors = {
     RewardsPageDomains.isModalOpen,
     (isModalOpen) => isModalOpen
   ),
-  isClaimModalOpen: createSelector(
-    RewardsPageDomains.isClaimModalOpen,
-    (isClaimModalOpen) => isClaimModalOpen
-  ),
+
   rewardsPageUserShareData: createSelector(
     RewardsPageDomains.rewardsPageUserShareData,
     (rewardsPageUserShareData) => rewardsPageUserShareData
+  ),
+  claimingPendingAxialPoolSymbol: createSelector(
+    RewardsPageDomains.claimingPendingAxialPoolSymbol,
+    (claimingPendingAxialPoolSymbol) => claimingPendingAxialPoolSymbol
+  ),
+  tokensToClaim: createSelector(
+    RewardsPageDomains.claimingTokens,
+    (claimingTokens) => claimingTokens
+  ),
+  checkedClaimRewards: createSelector(
+    RewardsPageDomains.checkedClaimRewards,
+    (checkedClaimRewards) => checkedClaimRewards
+  ),
+  isClaimRewardsLoading: createSelector(
+    RewardsPageDomains.isClaimRewardsLoading,
+    (isClaimRewardsLoading) => isClaimRewardsLoading
   ),
 };
