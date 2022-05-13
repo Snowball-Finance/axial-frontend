@@ -20,6 +20,7 @@ import { getRewardPoolData } from "app/containers/Rewards/saga";
 import GAUGE_ABI from "abi/gauge.json";
 import { getProviderOrSigner } from "app/containers/utils/contractUtils";
 import { PoolsAndGaugesActions } from "app/containers/PoolsAndGauges/slice";
+import { Gauge } from "abi/ethers-contracts";
 
 export function* poolInfoByAddress(action: { type: string; payload: string }) {
   const { payload } = action;
@@ -113,7 +114,7 @@ export function* claim(action: { type: string; payload: Pool }) {
     pool.gauge_address,
     GAUGE_ABI,
     getProviderOrSigner(library, account)
-  );
+  ) as Gauge;
   try {
     const isClaimAll = claimedRewards.length === claimable.length;
     yield put(RewardsPageActions.setIsClaimRewardsLoading(true));

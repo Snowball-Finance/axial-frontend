@@ -50,6 +50,9 @@ export const AllocationInput: FC<Props> = ({ data }) => {
       gaugeInputValue = gaugeInputValue.substring(1);
     }
   }
+if(gaugeInputValue==='undefined'){
+  gaugeInputValue="0";
+}
 
   return (
     <Grid container alignItems="center" spacing={1} justifyContent="center">

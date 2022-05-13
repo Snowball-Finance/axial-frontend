@@ -19,7 +19,6 @@ export const Governance = ({
   };
 }) => {
   const variables = {
-    MINIMUM_TOKEN_FOR_VOTING: process.env.REACT_APP_MINIMUM_TOKEN_FOR_VOTING,
     MINIMUM_VOTING_PERIOD: process.env.REACT_APP_MINIMUM_VOTING_PERIOD,
     MAXIMUM_VOTING_PERIOD: process.env.REACT_APP_MAXIMUM_VOTING_PERIOD,
     MINIMUM_VOTING_PERIOD_UNIT:
@@ -53,6 +52,11 @@ export const Governance = ({
   const syncedProposalsWithBlockChain = useSelector(
     GovernanceSelectors.syncedProposalsWithBlockChain
   );
+  useEffect(()=>{
+    if(networkLibrary){
+      dispatch(GovernanceActions.getEssentialDataForGovernance())
+    }
+  },[networkLibrary])
   useEffect(() => {
     if (governanceTokenContract !== undefined) {
       dispatch(

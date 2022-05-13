@@ -10,6 +10,8 @@ import { Proposal, ProposalFilters, ProposalState } from "./types";
 
 export const GovernanceDomains = {
   governance: (state: RootState) => state.governance || initialState,
+  minimumTokenForNewProposal: (state: RootState) =>
+    state.governance?.minimumTokenAmountForNewProposal ||0,
   selectedProposalFilter: (state: RootState) =>
     state.governance?.selectedProposalFilter ||
     initialState.selectedProposalFilter,
@@ -43,6 +45,10 @@ export const GovernanceSelectors = {
   syncedProposalsWithBlockChain: createSelector(
     GovernanceDomains.syncedProposalsWithBlockchain,
     (syncedProposalsWithBlockchain) => syncedProposalsWithBlockchain
+  ),
+  minimumTokenRequiredForNewProposal: createSelector(
+    GovernanceDomains.minimumTokenForNewProposal,
+    (minimumTokenForNewProposal) => minimumTokenForNewProposal
   ),
   governance: createSelector(
     GovernanceDomains.governance,
@@ -135,15 +141,18 @@ export const GovernanceSelectors = {
     }
   ),
   canAddNewProposal: createSelector(
-    [GovernanceDomains.governance, Web3Domains.selectAccountDomain],
-    (governance, account) => {
+    [GovernanceDomains.governance, 
+      Web3Domains.selectAccountDomain,
+      GovernanceDomains.minimumTokenForNewProposal
+    ],
+    (governance, account,minimum) => {
       if (governance.governanceTokenBalance) {
         const floatedBalance = BNToFloat(
           governance.governanceTokenBalance,
           18
         )?.toFixed(3);
         if (
-          Number(floatedBalance) > Number(env.MINIMUM_TOKEN_FOR_VOTING) &&
+          (Number(floatedBalance) > minimum) &&
           account
         ) {
           return true;

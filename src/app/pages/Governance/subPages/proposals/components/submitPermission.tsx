@@ -14,7 +14,7 @@ export const SubmitPermission = () => {
     GovernanceSelectors.floatedGovernanceTokenBalance
   );
   const account = useSelector(Web3Selectors.selectAccount);
-  const minimum = Number(env.MINIMUM_TOKEN_FOR_VOTING);
+  const minimum = useSelector(GovernanceSelectors.minimumTokenRequiredForNewProposal);
   const { t } = useTranslation();
   let message = "";
   if (!account) {

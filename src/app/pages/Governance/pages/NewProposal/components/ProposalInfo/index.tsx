@@ -7,7 +7,6 @@ import { Description } from "./Description";
 import { Execution } from "../Execution";
 import { ExecutionList } from "../ExecutionList";
 import { SubmitButton } from "../SubmitButton";
-import { Message } from "../Message";
 import { mobile } from "styles/media";
 
 export const ProposalInfo: FC = () => {
@@ -37,7 +36,6 @@ export const ProposalInfo: FC = () => {
             </StyledFullContainer>
 
             <StyledFullContainer item>
-              <Message />
             </StyledFullContainer>
           </StyledContainer>
         </Grid>
