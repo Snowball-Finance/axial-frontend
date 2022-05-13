@@ -29,7 +29,7 @@ export const DepositModal: FC = () => {
 
   const renderIcon = (tokenSymbol) => {
     if (tokensInQueueToApproving[tokenSymbol]) {
-      return <CircularProgress color="primary" size={20} />;
+      return <CircularProgress color="primary" size={"1.5rem"} />;
     } else {
       return <CheckCircleOutlineOutlined color="primary" />;
     }
@@ -37,7 +37,7 @@ export const DepositModal: FC = () => {
 
   const renderDepositIcon = () => {
     if (isDepositing) {
-      return <CircularProgress color="primary" size={20} />;
+      return <CircularProgress color="primary" size={"1.5rem"} />;
     } else {
       return <CircleOutlined color="primary" />;
     }
@@ -46,34 +46,35 @@ export const DepositModal: FC = () => {
   return (
     <Box mt={2}>
       <CardWrapper>
-        <Grid container item xs={12} spacing={2} alignItems="center">
-          <Grid item>{renderIcon(poolData?.lpToken)}</Grid>
-
-          <Grid item>
-            <Typography variant="body2">
-              {t(translations.Common.Approval())} {poolData?.lpToken}
-            </Typography>
-          </Grid>
-        </Grid>
-        <Grid container item xs={12} spacing={2} alignItems="center">
-          <Grid item>{renderDepositIcon()}</Grid>
-
-          <Grid item>
-            <Typography variant="body2">
-              {t(translations.Common.DepositingTokens())}
-            </Typography>
-          </Grid>
-        </Grid>
-
         <Grid container spacing={1}>
-          <Grid
-            container
-            item
-            xs={12}
-            alignItems="center"
-            justifyContent="center"
-          >
-            <Typography variant="body2">Steps {stepsCount}/2</Typography>
+          <Grid item xs={12}>
+            <Grid container spacing={2} alignItems="center">
+              <Grid item>{renderIcon(poolData?.lpToken)}</Grid>
+
+              <Grid item>
+                <Typography variant="body2">
+                  {t(translations.Common.Approval())} {poolData?.lpToken}
+                </Typography>
+              </Grid>
+            </Grid>
+          </Grid>
+
+          <Grid item xs={12}>
+            <Grid container spacing={2} alignItems="center">
+              <Grid item>{renderDepositIcon()}</Grid>
+
+              <Grid item>
+                <Typography variant="body2">
+                  {t(translations.Common.DepositingTokens())}
+                </Typography>
+              </Grid>
+            </Grid>
+          </Grid>
+
+          <Grid item xs={12}>
+            <Typography variant="body2" align="center">
+              Steps {stepsCount}/2
+            </Typography>
           </Grid>
         </Grid>
       </CardWrapper>

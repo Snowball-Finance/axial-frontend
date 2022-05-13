@@ -24,7 +24,7 @@ export const Approving: FC = () => {
 
   const renderIcon = (tokenSymbol) => {
     if (tokensInQueueToApproving[tokenSymbol]) {
-      return <CircularProgress color="primary" size={20} />;
+      return <CircularProgress color="primary" size={"1.5rem"}/>;
     } else if (tokensInQueue[tokenSymbol]) {
       return <CheckCircleOutlineOutlined color="primary" />;
     } else {
@@ -35,35 +35,25 @@ export const Approving: FC = () => {
   return (
     <Box mt={2}>
       <CardWrapper>
-        {Object.keys(tokensInQueue).map((tokenSymbol) => {
-          return (
-            <Grid
-              key={tokenSymbol}
-              container
-              item
-              xs={12}
-              spacing={2}
-              alignItems="center"
-            >
-              <Grid item>{renderIcon(tokenSymbol)}</Grid>
-
-              <Grid item>
-                <Typography variant="body2">
-                  {t(translations.Common.Approval())} {tokenSymbol}
-                </Typography>
-              </Grid>
-            </Grid>
-          );
-        })}
         <Grid container spacing={1}>
-          <Grid
-            container
-            item
-            xs={12}
-            alignItems="center"
-            justifyContent="center"
-          >
-            <Typography variant="body2">
+          {Object.keys(tokensInQueue).map((tokenSymbol) => {
+            return (
+              <Grid key={tokenSymbol} item xs={12}>
+                <Grid container spacing={2} alignItems="center">
+                  <Grid item>{renderIcon(tokenSymbol)}</Grid>
+
+                  <Grid item>
+                    <Typography variant="body2">
+                      {t(translations.Common.Approval())} {tokenSymbol}
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </Grid>
+            );
+          })}
+
+          <Grid item xs={12}>
+            <Typography variant="body2" align="center">
               Steps {stepsCount + 1}/{tokensInQueueLength}
             </Typography>
           </Grid>
