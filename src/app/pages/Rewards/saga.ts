@@ -19,6 +19,7 @@ import { checkAndApproveTokensInList } from "utils/tokenVerifier";
 import { getRewardPoolData } from "app/containers/Rewards/saga";
 import GAUGE_ABI from "abi/gauge.json";
 import { getProviderOrSigner } from "app/containers/utils/contractUtils";
+import { PoolsAndGaugesActions } from "app/containers/PoolsAndGauges/slice";
 
 export function* poolInfoByAddress(action: { type: string; payload: string }) {
   const { payload } = action;
@@ -104,7 +105,6 @@ export function* withdraw() {
 export function* claim(action: { type: string; payload: Pool }) {
   const pool = action.payload;
   const claimable = yield select(RewardsPageDomains.claimingTokens);
-
   const library = yield select(Web3Domains.selectLibraryDomain);
   const account = yield select(Web3Domains.selectAccountDomain);
   const claimedRewards = yield select(RewardsPageDomains.checkedClaimRewards);
@@ -117,16 +117,24 @@ export function* claim(action: { type: string; payload: Pool }) {
   try {
     const isClaimAll = claimedRewards.length === claimable.length;
     yield put(RewardsPageActions.setIsClaimRewardsLoading(true));
+    let transaction;
     if (isClaimAll) {
-      yield call(gaugeContract.getAllRewards);
+      transaction = yield call(gaugeContract.getAllRewards);
     } else {
-      yield call(gaugeContract.getRewards, claimedRewards);
+      transaction = yield call(gaugeContract.getRewards, claimedRewards);
     }
-    yield put(RewardsPageActions.setTokensToClaim([]));
+    const transactionStatus = yield call(transaction.wait);
+    if (transactionStatus.status) {
+      toast.success("claim successful");
+      yield put(PoolsAndGaugesActions.getInitialData());
+    }
   } catch (e) {
     console.log(e);
+    toast.error("claim failed, please try again later");
   } finally {
     yield put(RewardsPageActions.setIsClaimRewardsLoading(false));
+    yield put(RewardsPageActions.setTokensToClaim([]));
+    yield put(RewardsPageActions.setCheckedClaimRewards([]));
   }
 }
 
