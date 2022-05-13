@@ -29,7 +29,7 @@ export const ClaimConfirmationModal: FC<Props> = ({ pool }) => {
       onClose={handleClose}
       title={t(translations.RewardsPage.Modal.ClaimableTokens())}
     >
-      <ClaimRewardsModal pool={pool}/>
+      <ClaimRewardsModal pool={pool} />
     </SnowModal>
   );
 };

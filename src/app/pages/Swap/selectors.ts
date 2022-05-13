@@ -45,7 +45,9 @@ export const SwapPageSelectors = {
     (tokens, tokenPricesUSD, tokenChange, searchValue) => {
       const fromTokens: TokenOption[] = [];
       const tokensArray = tokens ? Object.values(tokens) : [];
-      const visibleTokens = tokensArray.filter(({ isLPToken,blockSwap }) => !isLPToken && !blockSwap);
+      const visibleTokens = tokensArray.filter(
+        ({ isLPToken, blockSwap }) => !isLPToken && !blockSwap
+      );
 
       visibleTokens.forEach(({ symbol, logo, decimals }) => {
         const icon = logo || "";
@@ -58,14 +60,13 @@ export const SwapPageSelectors = {
             calculatePrice(tokenBalance, tokenPricesUSD?.[symbol], decimals) ||
             Zero;
 
-            fromTokens.push({
-              value: symbol,
-              icon,
-              balance: tokens?.[symbol].balance,
-              balanceUSD: tokenBalanceUSD,
-              decimals,
-            });
-          
+          fromTokens.push({
+            value: symbol,
+            icon,
+            balance: tokens?.[symbol].balance,
+            balanceUSD: tokenBalanceUSD,
+            decimals,
+          });
         }
       });
       return fromTokens
@@ -92,7 +93,9 @@ export const SwapPageSelectors = {
     (tokens, tokenPricesUSD, fromToken, searchValue) => {
       const toTokens: TokenOption[] = [];
       const tokensArray = tokens ? Object.values(tokens) : [];
-      const visibleTokens = tokensArray.filter(({ isLPToken,blockSwap }) => !isLPToken && !blockSwap);
+      const visibleTokens = tokensArray.filter(
+        ({ isLPToken, blockSwap }) => !isLPToken && !blockSwap
+      );
 
       visibleTokens.forEach(({ symbol, logo, decimals }) => {
         const icon = logo || "";
@@ -104,14 +107,13 @@ export const SwapPageSelectors = {
           const tokenBalanceUSD =
             calculatePrice(tokenBalance, tokenPricesUSD?.[symbol], decimals) ||
             Zero;
-            toTokens.push({
-              value: symbol,
-              icon,
-              balance: tokens?.[symbol].balance,
-              balanceUSD: tokenBalanceUSD,
-              decimals,
-            });
-          
+          toTokens.push({
+            value: symbol,
+            icon,
+            balance: tokens?.[symbol].balance,
+            balanceUSD: tokenBalanceUSD,
+            decimals,
+          });
         }
       });
 

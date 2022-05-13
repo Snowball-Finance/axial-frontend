@@ -74,7 +74,7 @@ export const fujiTokens: { [K in TokenSymbols]?: Token } = {
     isSynthetic: false,
     isLPToken: false,
     logo: axialLogo,
-    blockSwap:true,
+    blockSwap: true,
     address: tokenAddress(TokenSymbols.AXIAL),
   },
 };

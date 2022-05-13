@@ -68,18 +68,19 @@ export const ClaimRewardsModal: FC<Props> = ({ pool }) => {
       <CardWrapper>
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <Grid container spacing={1} alignItems="center">
-              <Grid item>
-                <CustomCheckbox
-                  checked={isCheckAll}
-                  onChange={handleCheckAllClick}
-                />
+            {harvestables.length > 1 && (
+              <Grid container spacing={1} alignItems="center">
+                <Grid item>
+                  <CustomCheckbox
+                    checked={isCheckAll}
+                    onChange={handleCheckAllClick}
+                  />
+                </Grid>
+                <Grid item>
+                  <Text variant="body2">Check all</Text>
+                </Grid>
               </Grid>
-
-              <Grid item>
-                <Text variant="body2">Check all</Text>
-              </Grid>
-            </Grid>
+            )}
           </Grid>
 
           {harvestables.map((item, index) => {
@@ -143,6 +144,7 @@ export const ClaimRewardsModal: FC<Props> = ({ pool }) => {
           <Grid item xs={12}>
             <ContainedButton
               fullWidth
+              disabled={checkedClaimRewards.length === 0}
               loading={isClaimRewardsLoading}
               onClick={handleClaimClick}
             >

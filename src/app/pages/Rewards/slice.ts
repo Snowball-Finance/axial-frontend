@@ -74,6 +74,9 @@ const rewardsPageSlice = createSlice({
 
     setTokensToClaim(state, action: PayloadAction<HarvestableToken[]>) {
       state.tokensToClaim = action.payload;
+      if (state.tokensToClaim.length === 1) {
+        state.checkedClaimRewards = [0];
+      }
     },
     getRewardPoolData() {},
     setRewardsPageUserShareData(state, action: PayloadAction<UserShareData>) {
