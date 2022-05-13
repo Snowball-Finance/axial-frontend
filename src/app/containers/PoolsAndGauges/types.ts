@@ -86,6 +86,7 @@ export interface PoolRewardToken {
   boosted_apr: string; //"0"
   decimals: string; //"18"
   symbol: string; // "AXIAL"
+}
 
 export interface PoolProvider {
   name: string;

@@ -19,7 +19,7 @@ import { NetworkContextName } from "../constants";
 import { rpcUrl } from "../utils/wallet/connectors";
 import { Web3ReactContextInterface } from "@web3-react/core/dist/types";
 import Web3ReactManager from "./Web3ReactManager";
-import { ethers } from "ethers";
+
 const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName);
 
 export function useActiveWeb3React(): Web3ReactContextInterface<Web3Provider> & {} {

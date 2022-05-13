@@ -105,12 +105,6 @@ const StyledPoolChildLowerContainer = styled(Grid)({
   },
 });
 
-const StyledFullChildContainer = styled(Grid)({
-  [mobile]: {
-    width: "100%",
-  },
-});
-
 const PoolHeaderText = styled(Typography)({
   color: CssVariables.white,
   textTransform: "uppercase",

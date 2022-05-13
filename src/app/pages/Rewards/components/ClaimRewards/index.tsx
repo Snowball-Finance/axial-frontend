@@ -108,15 +108,6 @@ export const ClaimRewards: FC = () => {
   );
 };
 
-const StyledContainer = styled(Grid)({
-  justifyContent: "space-between",
-  alignItems: "center",
-
-  [mobile]: {
-    alignItems: "flex-start",
-  },
-});
-
 const IconImage = styled("img")({
   width: "33px",
   height: "33px",
