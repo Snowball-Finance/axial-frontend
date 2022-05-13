@@ -39,8 +39,7 @@ export function* periodicallyRefetchTheData() {
     put(StakingActions.getClaimableGovernanceToken()),
   ]);
   yield delay(5000);
-  //TODO: uncomment after sAxial is deployed on mainnet
-  // yield call(periodicallyRefetchTheData);
+  yield call(periodicallyRefetchTheData);
 }
 
 export function* stakeGovernanceToken(action: {

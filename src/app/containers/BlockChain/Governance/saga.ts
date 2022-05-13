@@ -26,6 +26,19 @@ import { add } from "precise-math";
 import { getProviderOrSigner } from "app/containers/utils/contractUtils";
 import { GlobalActions } from "store/slice";
 import { BNToFloat } from "common/format";
+import GOVERNANCE_ABI from "abi/governance.json";
+
+export function* getEssentialDataForGovernance() {
+  const governanceContract: Governance = yield call(getGovernanceContract);
+  try {
+    const threshold = yield call(governanceContract.proposalThreshold);
+    yield put(
+      GovernanceActions.setMinimumTokenForNewProposal(Number(threshold))
+    );
+  } catch (error) {
+    yield put(GovernanceActions.setMinimumTokenForNewProposal(100000));
+  }
+}
 
 export function* getProposals(action: {
   type: string;
@@ -63,7 +76,6 @@ export function* getProposalId(proposal: Proposal) {
 export function* getGovernanceContract() {
   const library = yield select(Web3Domains.selectNetworkLibraryDomain);
   const account = yield select(Web3Domains.selectAccountDomain);
-  const GOVERNANCE_ABI = yield select(GovernanceDomains.governanceABI);
   const governanceContract = new ethers.Contract(
     //|| '' is added because the error of not existing env var is handled in index file of this module
     env.GOVERNANCE_CONTRACT_ADDRESS || "",
@@ -381,7 +393,6 @@ export function* syncProposalsWithBlockchain() {
       all(statesCallArray),
       all(votesCallArray),
     ]);
-
     const metadataCallArray: any[] = [];
     for (let i = 0; i < proposalsFromBlockChain.length; i++) {
       const proposal = proposalsFromBlockChain[i];
@@ -511,6 +522,10 @@ export function* governanceSaga() {
   yield takeLatest(GovernanceActions.vote.type, vote);
   yield takeLatest(GovernanceActions.submitNewProposal.type, submitNewProposal);
   yield takeLatest(GovernanceActions.getVotingReceipt.type, getVotingReceipt);
+  yield takeLatest(
+    GovernanceActions.getEssentialDataForGovernance.type,
+    getEssentialDataForGovernance
+  );
   yield takeLatest(
     GovernanceActions.syncProposalsWithBlockchain.type,
     syncProposalsWithBlockchain
