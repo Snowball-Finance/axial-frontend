@@ -4,7 +4,6 @@
 import { GaugeProxy } from "abi/ethers-contracts";
 import { GovernanceActions } from "app/containers/BlockChain/Governance/slice";
 import { Web3Domains } from "app/containers/BlockChain/Web3/selectors";
-import { selectGaugeProxyABIDomain } from "app/containers/PoolsAndGauges/selectors";
 import { PoolsAndGaugesActions } from "app/containers/PoolsAndGauges/slice";
 import { getProviderOrSigner } from "app/containers/utils/contractUtils";
 import { env, IS_DEV } from "environment";
