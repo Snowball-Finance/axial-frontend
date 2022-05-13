@@ -41,6 +41,11 @@ export const RewardsPageDomains = {
     initialState.claimingPendingAxialPoolSymbol,
   claimingTokens: (state: RootState) =>
     state.rewardsPage?.tokensToClaim || initialState.tokensToClaim,
+  checkedClaimRewards: (state: RootState) =>
+    state.rewardsPage?.checkedClaimRewards || initialState.checkedClaimRewards,
+  isClaimRewardsLoading: (state: RootState) =>
+    state.rewardsPage?.isClaimRewardsLoading ||
+    initialState.isClaimRewardsLoading,
 };
 
 export const RewardsPageSelectors = {
@@ -151,5 +156,13 @@ export const RewardsPageSelectors = {
   tokensToClaim: createSelector(
     RewardsPageDomains.claimingTokens,
     (claimingTokens) => claimingTokens
+  ),
+  checkedClaimRewards: createSelector(
+    RewardsPageDomains.checkedClaimRewards,
+    (checkedClaimRewards) => checkedClaimRewards
+  ),
+  isClaimRewardsLoading: createSelector(
+    RewardsPageDomains.isClaimRewardsLoading,
+    (isClaimRewardsLoading) => isClaimRewardsLoading
   ),
 };

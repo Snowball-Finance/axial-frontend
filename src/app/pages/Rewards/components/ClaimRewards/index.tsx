@@ -10,6 +10,8 @@ import { Actions } from "./Actions";
 import { useSelector } from "react-redux";
 import { PoolsAndGaugesSelectors } from "app/containers/PoolsAndGauges/selectors";
 import { RewardsPageSelectors } from "../../selectors";
+import { commify } from "app/containers/utils/contractUtils";
+import { formatNumber } from "common/format";
 
 export const ClaimRewards: FC = () => {
   const { t } = useTranslation();
@@ -63,7 +65,9 @@ export const ClaimRewards: FC = () => {
                       </Grid>
 
                       <Grid item xs={12}>
-                        <Text variant="body1">{item.apr}</Text>
+                        <Text variant="body1">
+                          {commify(formatNumber(+item.apr, 4).toString())}
+                        </Text>
                       </Grid>
                     </Grid>
 
@@ -80,7 +84,14 @@ export const ClaimRewards: FC = () => {
 
                       <Grid item xs={12}>
                         <Text variant="body1">
-                          {item.amountToHarvest} (${item.amountInUsd})
+                          {commify(
+                            formatNumber(+item.amountToHarvest, 4).toString()
+                          )}{" "}
+                          ($
+                          {commify(
+                            formatNumber(+item.amountInUsd, 4).toString()
+                          )}
+                          )
                         </Text>
                       </Grid>
                     </Grid>

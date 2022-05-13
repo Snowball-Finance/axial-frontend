@@ -8,6 +8,8 @@ import { RewardsPageActions } from "../../slice";
 import { ClaimConfirmationModal } from "./ClaimConfirmationModal";
 import { PoolsAndGaugesSelectors } from "app/containers/PoolsAndGauges/selectors";
 import { RewardsPageSelectors } from "../../selectors";
+import { RewardsSelectors } from "app/containers/Rewards/selectors";
+import { Web3Selectors } from "app/containers/BlockChain/Web3/selectors";
 
 export const Actions: FC = () => {
   const { t } = useTranslation();
@@ -16,6 +18,9 @@ export const Actions: FC = () => {
   const harvestables = useSelector(
     PoolsAndGaugesSelectors.harvestableTokensOfPool(key)
   );
+  const poolsBalances = useSelector(RewardsSelectors.poolsBalances);
+  const account = useSelector(Web3Selectors.selectAccount);
+  const tokenKey = pool?.lpToken.symbol || "";
 
   const dispatch = useDispatch();
 
@@ -25,8 +30,16 @@ export const Actions: FC = () => {
 
   return (
     <>
-      <ClaimConfirmationModal />
-      <ContainedButton fullWidth onClick={handleClick}>
+      <ClaimConfirmationModal pool={pool} />
+      <ContainedButton
+        fullWidth
+        onClick={handleClick}
+        disabled={
+          !account ||
+          (poolsBalances &&
+            poolsBalances[tokenKey]?.pendingTokens.pendingAxial.eq("0x0"))
+        }
+      >
         {t(translations.RewardsPage.ActionButtons.ClaimRewards())}
       </ContainedButton>
     </>

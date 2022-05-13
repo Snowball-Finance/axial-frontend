@@ -107,7 +107,7 @@ export function* claim(action: { type: string; payload: Pool }) {
 
   const library = yield select(Web3Domains.selectLibraryDomain);
   const account = yield select(Web3Domains.selectAccountDomain);
-  const claimedRewards = [1]; //yield select(RewardsPageDomains.checkedClaimRewards);
+  const claimedRewards = yield select(RewardsPageDomains.checkedClaimRewards);
 
   const gaugeContract = new Contract(
     pool.gauge_address,
@@ -116,16 +116,17 @@ export function* claim(action: { type: string; payload: Pool }) {
   );
   try {
     const isClaimAll = claimedRewards.length === claimable.length;
-    // yield put(RewardsPageActions.setisClaimRewardsLoading(true));
+    yield put(RewardsPageActions.setIsClaimRewardsLoading(true));
     if (isClaimAll) {
       yield call(gaugeContract.getAllRewards);
     } else {
       yield call(gaugeContract.getRewards, claimedRewards);
     }
+    yield put(RewardsPageActions.setTokensToClaim([]));
   } catch (e) {
     console.log(e);
   } finally {
-    // yield put(RewardsPageActions.setisClaimRewardsLoading(false));
+    yield put(RewardsPageActions.setIsClaimRewardsLoading(false));
   }
 }
 

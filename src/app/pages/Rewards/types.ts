@@ -19,6 +19,8 @@ export interface RewardsPageState {
   isModalOpen: boolean;
   claimingPendingAxialPoolSymbol: string;
   tokensToClaim: HarvestableToken[];
+  checkedClaimRewards: number[];
+  isClaimRewardsLoading: boolean;
 }
 
 export interface PoolCardItemProps {

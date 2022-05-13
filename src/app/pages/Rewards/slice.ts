@@ -27,6 +27,8 @@ export const initialState: ContainerState = {
   isModalOpen: false,
   claimingPendingAxialPoolSymbol: "",
   tokensToClaim: [],
+  checkedClaimRewards: [],
+  isClaimRewardsLoading: false,
 };
 
 const rewardsPageSlice = createSlice({
@@ -76,6 +78,12 @@ const rewardsPageSlice = createSlice({
     getRewardPoolData() {},
     setRewardsPageUserShareData(state, action: PayloadAction<UserShareData>) {
       state.rewardsPageUserShareData = action.payload;
+    },
+    setIsClaimRewardsLoading(state, action: PayloadAction<boolean>) {
+      state.isClaimRewardsLoading = action.payload;
+    },
+    setCheckedClaimRewards(state, action: PayloadAction<number[]>) {
+      state.checkedClaimRewards = action.payload;
     },
   },
 });

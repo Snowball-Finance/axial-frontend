@@ -22,7 +22,13 @@ export const RewardsTokens: FC<{ poolKey: Pools }> = ({ poolKey }) => {
       <Grid item container>
         {harvestables.map((harvestable) => {
           return (
-            <Grid item container spacing={1} alignItems="center" xl={6} xs>
+            <Grid
+              item
+              container
+              spacing={1}
+              alignItems="center"
+              key={harvestable.token.address}
+            >
               <Grid item>
                 <PoolTokenImage
                   src={harvestable.token.logo}

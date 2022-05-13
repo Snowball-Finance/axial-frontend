@@ -7,8 +7,13 @@ import { SnowModal } from "app/components/common/modal";
 import { ClaimRewardsModal } from "../modal/ClaimRewards";
 import { RewardsPageSelectors } from "../../selectors";
 import { RewardsPageActions } from "../../slice";
+import { Pool } from "app/containers/Rewards/types";
 
-export const ClaimConfirmationModal: FC = () => {
+interface Props {
+  pool?: Pool;
+}
+
+export const ClaimConfirmationModal: FC<Props> = ({ pool }) => {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
@@ -24,7 +29,7 @@ export const ClaimConfirmationModal: FC = () => {
       onClose={handleClose}
       title={t(translations.RewardsPage.Modal.ClaimableTokens())}
     >
-      <ClaimRewardsModal />
+      <ClaimRewardsModal pool={pool}/>
     </SnowModal>
   );
 };
