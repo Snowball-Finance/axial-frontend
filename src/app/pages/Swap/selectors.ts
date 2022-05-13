@@ -45,7 +45,7 @@ export const SwapPageSelectors = {
     (tokens, tokenPricesUSD, tokenChange, searchValue) => {
       const fromTokens: TokenOption[] = [];
       const tokensArray = tokens ? Object.values(tokens) : [];
-      const visibleTokens = tokensArray.filter(({ isLPToken }) => !isLPToken);
+      const visibleTokens = tokensArray.filter(({ isLPToken,blockSwap }) => !isLPToken && !blockSwap);
 
       visibleTokens.forEach(({ symbol, logo, decimals }) => {
         const icon = logo || "";
@@ -58,7 +58,6 @@ export const SwapPageSelectors = {
             calculatePrice(tokenBalance, tokenPricesUSD?.[symbol], decimals) ||
             Zero;
 
-          if (tokens && !tokens[symbol].blockSwap) {
             fromTokens.push({
               value: symbol,
               icon,
@@ -66,10 +65,9 @@ export const SwapPageSelectors = {
               balanceUSD: tokenBalanceUSD,
               decimals,
             });
-          }
+          
         }
       });
-
       return fromTokens
         .filter((item) =>
           item.value.toLowerCase().includes(searchValue.toLowerCase())
@@ -94,7 +92,7 @@ export const SwapPageSelectors = {
     (tokens, tokenPricesUSD, fromToken, searchValue) => {
       const toTokens: TokenOption[] = [];
       const tokensArray = tokens ? Object.values(tokens) : [];
-      const visibleTokens = tokensArray.filter(({ isLPToken }) => !isLPToken);
+      const visibleTokens = tokensArray.filter(({ isLPToken,blockSwap }) => !isLPToken && !blockSwap);
 
       visibleTokens.forEach(({ symbol, logo, decimals }) => {
         const icon = logo || "";
@@ -106,7 +104,6 @@ export const SwapPageSelectors = {
           const tokenBalanceUSD =
             calculatePrice(tokenBalance, tokenPricesUSD?.[symbol], decimals) ||
             Zero;
-          if (tokens && !tokens[symbol].blockSwap) {
             toTokens.push({
               value: symbol,
               icon,
@@ -114,7 +111,7 @@ export const SwapPageSelectors = {
               balanceUSD: tokenBalanceUSD,
               decimals,
             });
-          }
+          
         }
       });
 

@@ -47,13 +47,14 @@ export function* findBestPath(action: {
       maxSteps,
       gasPrice: ethers.utils.parseUnits("225", "gwei"),
     };
-
+    console.log({swapRouterAddress})
+console.log({findBestPathParams})
     const gasEstimate = yield call(
       swapContract.estimateGas.findBestPath,
       findBestPathParams,
       { gasLimit: 1e9 }
     );
-
+console.log({gasEstimate,findBestPathParams})
     const additional = multiply(Number(gasEstimate.toString()), 0.2).toFixed(0);
 
     const optimalPath = yield call(
@@ -63,7 +64,7 @@ export function* findBestPath(action: {
         gasLimit: (Number(gasEstimate) + Number(additional)).toString(),
       }
     );
-    console.log(optimalPath);
+    console.log({optimalPath,findBestPathParams})
     yield all([
       put(SwapActions.setBestPath(optimalPath)),
       put(SwapActions.setIsGettingBestPath(false)),
