@@ -15,7 +15,7 @@ export const VotingModal: FC = () => {
 
   const renderVotingIcon = () => {
     if (isVotingFor) {
-      return <CircularProgress color="primary" size={20} />;
+      return <CircularProgress color="primary" size={"1.5rem"} />;
     } else {
       return <CircleOutlined color="primary" />;
     }

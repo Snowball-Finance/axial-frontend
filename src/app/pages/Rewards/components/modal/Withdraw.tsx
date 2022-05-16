@@ -14,7 +14,7 @@ export const WithdrawModal: FC = () => {
 
   const renderWithdrawIcon = () => {
     if (isWithdrawing) {
-      return <CircularProgress color="primary" size={20} />;
+      return <CircularProgress color="primary" size={"1.5rem"} />;
     } else {
       return <CircleOutlined color="primary" />;
     }
@@ -23,25 +23,23 @@ export const WithdrawModal: FC = () => {
   return (
     <Box mt={2}>
       <CardWrapper>
-        <Grid container item xs={12} spacing={2} alignItems="center">
-          <Grid item>{renderWithdrawIcon()}</Grid>
-
-          <Grid item>
-            <Typography variant="body2">
-              {t(translations.Common.WithdrawingTokens())}
-            </Typography>
-          </Grid>
-        </Grid>
-
         <Grid container spacing={1}>
-          <Grid
-            container
-            item
-            xs={12}
-            alignItems="center"
-            justifyContent="center"
-          >
-            <Typography variant="body2">Steps 1/1</Typography>
+          <Grid item xs={12}>
+            <Grid container spacing={2} alignItems="center">
+              <Grid item>{renderWithdrawIcon()}</Grid>
+
+              <Grid item>
+                <Typography variant="body2">
+                  {t(translations.Common.WithdrawingTokens())}
+                </Typography>
+              </Grid>
+            </Grid>
+          </Grid>
+
+          <Grid item xs={12}>
+            <Typography variant="body2" align="center">
+              Steps 1/1
+            </Typography>
           </Grid>
         </Grid>
       </CardWrapper>
