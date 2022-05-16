@@ -12,6 +12,8 @@ import { BlockChainActions, useBlockChainSlice } from "./slice";
 import { Governance } from "./Governance";
 import { DistributorData } from "./Governance/Staking/types";
 import { BlockChainSelectors } from "./selectors";
+import { Web3Selectors } from "./Web3/selectors";
+import { useWeb3Slice } from "./Web3/slice";
 
 interface BlockChainProps {
   mainTokenABI: any;
@@ -41,9 +43,10 @@ export const BlockChain: FC<BlockChainProps> = ({
   }
 
   useBlockChainSlice();
+  useWeb3Slice();
 
   const dispatch = useDispatch();
-
+  const account = useSelector(Web3Selectors.selectAccount);
   useEffect(() => {
     dispatch(BlockChainActions.setMainTokenABI(mainTokenABI));
     return () => {};
@@ -64,7 +67,7 @@ export const BlockChain: FC<BlockChainProps> = ({
         })
       );
     }
-  }, [mainTokenContract]);
+  }, [mainTokenContract, account]);
 
   return (
     <>

@@ -12,6 +12,7 @@ import { BlockChainSelectors } from "app/containers/BlockChain/selectors";
 import { parseUnits } from "ethers/lib/utils";
 import { zeroString } from "app/pages/Liquidity/constants";
 import { env } from "environment";
+import { BigNumber } from "ethers";
 
 export const Actions = () => {
   const { t } = useTranslation();
@@ -23,13 +24,14 @@ export const Actions = () => {
   const mainTokenBalance = useSelector(
     BlockChainSelectors.selectMainTokenBalance
   );
+  const bnEnteredAmount = parseUnits(enteredAmount || zeroString, 18);
 
   let depositError = "";
   if (mainTokenBalance?.eq(0)) {
     depositError = "You don't have Balance on this pool";
   } else if (
     enteredAmount !== "" &&
-    mainTokenBalance?.lt(parseUnits(enteredAmount ?? zeroString, 18))
+    bnEnteredAmount.gt(mainTokenBalance || BigNumber.from(0))
   ) {
     depositError = "Insufficient Balance";
   } else {
@@ -56,7 +58,7 @@ export const Actions = () => {
           onClick={handleStakeButtonClick}
           fullWidth
         >
-          {depositError || t(translations.Staking.Lock())} {tokenName}
+          {depositError || `${t(translations.Staking.Lock())} ${tokenName}`}
         </ContainedButton>
       }
       disConnected={<WalletToggle fullWidth />}

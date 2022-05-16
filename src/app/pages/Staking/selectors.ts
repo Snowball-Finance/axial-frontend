@@ -1,11 +1,12 @@
 import { createSelector } from "@reduxjs/toolkit";
+import { GovernanceDomains } from "app/containers/BlockChain/Governance/selectors";
 import { StakingDomains } from "app/containers/BlockChain/Governance/Staking/selectors";
-import { divide } from "precise-math";
+import { BNToFloat } from "common/format";
+import { add, divide, multiply, subtract } from "precise-math";
 
 import { RootState } from "store/types";
 import { initialState } from "./slice";
 import { dateDifferenceFromNowByHours } from "./utils/dateDifference";
-import { estimateGovernanceTokenForDate } from "./utils/stakeDate";
 
 export const StakingPageDomains = {
   selectDomain: (state: RootState) => state.stakingPage || initialState,
@@ -87,14 +88,30 @@ export const StakingPageSelectors = {
     [
       StakingPageDomains.selectEnteredMainTokenToStakeDomain,
       StakingPageDomains.selectSelectedEpochDomain,
+      StakingDomains.lockedGovernanceTokenInfo,
+      GovernanceDomains.governanceTokenBalance,
     ],
-    (amount, epoch) => {
+    (amount, epoch, lockedInfo, gtb) => {
       if (isNaN(Number(amount))) return;
-      const calculatedYouWillGet = estimateGovernanceTokenForDate(
-        amount,
-        epoch
+      if (!lockedInfo || !epoch) return;
+      if (gtb === undefined) return;
+      const governanceTokenBalance = BNToFloat(gtb, 18) || 0;
+      const nowInSeconds = Math.floor(Date.now() / 1000);
+      const currentBlockTime = nowInSeconds;
+      const endBlockTime = Number((epoch.getTime() / 1000).toFixed(0));
+      const enteredMainTokenAmountToStake = Number(amount || "0");
+      const summedAmount = add(
+        governanceTokenBalance,
+        enteredMainTokenAmountToStake
       );
-      return calculatedYouWillGet;
+      const diff = subtract(endBlockTime - currentBlockTime);
+      const multiplied = multiply(
+        diff,
+        summedAmount || enteredMainTokenAmountToStake || 0
+      );
+      const twoYearsInSeconds = 2 * 365 * 24 * 60 * 60;
+      const res = divide(multiplied, twoYearsInSeconds);
+      return res.toFixed(4);
     }
   ),
   lockEndDate: createSelector(

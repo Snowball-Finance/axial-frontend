@@ -1,8 +1,5 @@
-import { call, put, select, takeLatest } from "redux-saga/effects";
-import { BigNumber } from "ethers";
-
+import { put, select, takeLatest } from "redux-saga/effects";
 import { GlobalDomains } from "app/appSelectors";
-import { BNToString } from "common/format";
 import { SwapPageActions } from "./slice";
 import { TokenChangePayload, TokensData } from "./types";
 import { SwapPageDomains } from "./selectors";
@@ -17,20 +14,6 @@ import {
   calculatePriceImpact,
   isHighPriceImpact,
 } from "app/containers/Swap/utils/priceImpact";
-
-function* validation() {
-  const fromToken = yield select(SwapPageDomains.fromToken);
-  const fromAmount = yield select(SwapPageDomains.fromAmount);
-  const maxAmount =
-    BNToString(fromToken?.balance ?? BigNumber.from(0), fromToken?.decimals) ||
-    "0";
-
-  if (+fromAmount > +maxAmount) {
-    yield put(SwapPageActions.setFromTokenError("Insufficient balance"));
-  } else {
-    yield put(SwapPageActions.setFromTokenError(""));
-  }
-}
 
 export function* buildReviewSwap() {
   const fromToken = yield select(SwapPageDomains.fromToken);
@@ -125,9 +108,7 @@ export function* amountChange(action: { type: string; payload: string }) {
   if (isNaN(Number(value))) {
     return;
   }
-
   yield put(SwapPageActions.setFromAmount(value));
-  yield call(validation);
 }
 
 export function* maxAmountSelection() {

@@ -14,9 +14,9 @@ export function* stakeAllTheBalances() {
     BlockChainDomains.selectMainTokenBalanceDomain
   );
   if (mainTokenBalance) {
-    const stringMainTokenBalance = parseFloat(
-      BNToString(mainTokenBalance ?? BigNumber.from(0), 18) || "0"
-    ).toFixed(3);
+    const stringMainTokenBalance =
+      parseFloat(BNToString(mainTokenBalance ?? BigNumber.from(0), 18) || "0") +
+      "";
     yield put(
       StakingPageActions.setEnteredMainTokenToStake(stringMainTokenBalance)
     );
