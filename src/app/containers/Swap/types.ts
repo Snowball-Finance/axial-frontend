@@ -36,7 +36,10 @@ export enum TokenSymbols {
   STABLE1 = "STABLE1",
   STABLE2 = "STABLE2",
   STABLE3 = "STABLE3",
+  STABLE4 = "STABLE4",
+  STABLE5 = "STABLE5",
   P3T = "P3T",
+  S3T = "S3T",
   PGL = "PGL",
   AXIAL = "AXIAL",
 }

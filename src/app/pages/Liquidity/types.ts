@@ -93,6 +93,7 @@ export enum PoolsRouteIndex {
   P3T_ROUTE = "p3t",
   PGL_ROUTE = "pgl",
   TEST_ROUTE = "test",
+  S3T_ROUTE = "s3t",
 }
 
 export type ContainerState = LiquidityPageState;

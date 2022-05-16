@@ -43,6 +43,7 @@ export function* getRewardPoolData(payload: {
     pool,
     isRewardsPool,
   };
+
   const result = yield call(calculatePoolData, dataToPass);
   return result;
 }

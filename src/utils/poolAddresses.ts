@@ -43,6 +43,10 @@ const poolAddresses: {
     Avalanche: "0xdb7BC8c03c821ade48EF22F1047411FAd2A3e944",
     Fuji: "0xdb7BC8c03c821ade48EF22F1047411FAd2A3e944",
   },
+  [Pools.S3T]: {
+    Avalanche: "0x4Ed45bEad84d1f76f620Df262F88477d7D27A420",
+    Fuji: "0x4Ed45bEad84d1f76f620Df262F88477d7D27A420",
+  },
 };
 //@ts-ignore
 const gaugeAddresses: {
@@ -58,6 +62,10 @@ const gaugeAddresses: {
   [Pools.PGL]: {
     Avalanche: "0x92ffd3c24F1660186d5F51c52bd54C31A578c81d",
     Fuji: "0x92ffd3c24F1660186d5F51c52bd54C31A578c81d",
+  },
+  [Pools.S3T]: {
+    Avalanche: "0x0797a8F7636DEE441b70B3f91D7D3217301401F3",
+    Fuji: "0x0797a8F7636DEE441b70B3f91D7D3217301401F3",
   },
 };
 
@@ -75,6 +83,10 @@ const swapAddresses: {
   [Pools.P3T]: {
     Avalanche: "0x25949663b5C22e49e541eDEA98F70edB865f1Ec4",
     Fuji: "0x25949663b5C22e49e541eDEA98F70edB865f1Ec4",
+  },
+  [Pools.S3T]: {
+    Avalanche: "0x80e20538A5f8347b94a9f617Fc568174C88821c2",
+    Fuji: "0x80e20538A5f8347b94a9f617Fc568174C88821c2",
   },
 };
 

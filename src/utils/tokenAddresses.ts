@@ -100,6 +100,20 @@ const tokenAddresses: {
     Avalanche: "0x68Da82d3962ECc31599fCA43360A7D58959ff6C4",
     Fuji: "0x68Da82d3962ECc31599fCA43360A7D58959ff6C4",
   },
+  [TokenSymbols.STABLE4]: {
+    Avalanche: "0xF8407410836F4CA8bf3abCdae72740F3DAE28C7E",
+    Fuji: "0xF8407410836F4CA8bf3abCdae72740F3DAE28C7E",
+  },
+
+  [TokenSymbols.STABLE5]: {
+    Avalanche: "0xFEA4d0360d9422C54330aacc4AB90ef06e9A63df",
+    Fuji: "0xFEA4d0360d9422C54330aacc4AB90ef06e9A63df",
+  },
+  [TokenSymbols.S3T]: {
+    Avalanche: "0x4Ed45bEad84d1f76f620Df262F88477d7D27A420",
+    Fuji: "0x4Ed45bEad84d1f76f620Df262F88477d7D27A420",
+  },
+
   [TokenSymbols.P3T]: {
     Avalanche: "0xD3e8706cf9547f18756FDAF7015C97C2e6dEFCC3",
     Fuji: "0xD3e8706cf9547f18756FDAF7015C97C2e6dEFCC3",

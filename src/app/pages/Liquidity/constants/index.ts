@@ -20,6 +20,8 @@ export const getPoolIndexFromKey = (poolKey: string) => {
       return PoolsRouteIndex.P3T_ROUTE;
     case Pools.PGL:
       return PoolsRouteIndex.PGL_ROUTE;
+    case Pools.S3T:
+      return PoolsRouteIndex.S3T_ROUTE;
     default:
       return null;
   }
@@ -44,6 +46,8 @@ export const getKeyFromPoolIndex = (poolIndex: string) => {
       return Pools.P3T;
     case PoolsRouteIndex.PGL_ROUTE:
       return Pools.PGL;
+    case PoolsRouteIndex.S3T_ROUTE:
+      return Pools.S3T;
     default:
       return null;
   }

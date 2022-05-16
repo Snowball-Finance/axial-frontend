@@ -57,6 +57,7 @@ export enum Pools {
   //Fuji pools
   P3T = "P3T",
   PGL = "PGL",
+  S3T = "S3T",
 }
 
 export enum PoolTypes {

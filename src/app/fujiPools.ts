@@ -29,4 +29,15 @@ export const fujiPools = {
     lpToken: tokens.PGL,
     gauge_address: gaugeAddress(Pools.PGL),
   },
+  [Pools.S3T]: {
+    key: Pools.S3T,
+    name: "Secondary 3 Tokens",
+    address: poolAddress(Pools.S3T),
+    swapABI: SWAP_FLASH_LOAN_NO_WITHDRAW_FEE_ABI,
+    poolType: PoolTypes.USD,
+    poolTokens: [tokens.STABLE3, tokens.STABLE4, tokens.STABLE5],
+    lpToken: tokens.S3T,
+    gauge_address: gaugeAddress(Pools.S3T),
+    swapAddress: poolSwapAddress(Pools.S3T),
+  },
 } as RewardsState["pools"];
