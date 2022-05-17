@@ -10,6 +10,9 @@ import { Proposal, ProposalFilters, ProposalState } from "./types";
 
 export const GovernanceDomains = {
   governance: (state: RootState) => state.governance || initialState,
+  governanceTokenBalance: (state: RootState) =>
+    state.governance?.governanceTokenBalance ||
+    initialState.governanceTokenBalance,
   minimumTokenForNewProposal: (state: RootState) =>
     state.governance?.minimumTokenAmountForNewProposal || 0,
   selectedProposalFilter: (state: RootState) =>
@@ -59,8 +62,8 @@ export const GovernanceSelectors = {
     (governanceState) => governanceState.isGettingGovernanceTokenBalance
   ),
   governanceTokenBalance: createSelector(
-    GovernanceDomains.governance,
-    (governanceState) => governanceState.governanceTokenBalance
+    GovernanceDomains.governanceTokenBalance,
+    (governanceTokenBalance) => governanceTokenBalance
   ),
   accruingTokenBalance: createSelector(
     GovernanceDomains.governance,

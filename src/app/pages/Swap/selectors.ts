@@ -11,6 +11,8 @@ import {
 } from "app/containers/utils/contractUtils";
 import { Zero } from "app/containers/Rewards/constants";
 import { SwapDomains } from "app/containers/Swap/selectors";
+import { BigNumber } from "ethers";
+import { BNToString } from "common/format";
 
 export const SwapPageDomains = {
   swapPage: (state: RootState) => state.swapPage || initialState,
@@ -152,7 +154,6 @@ export const SwapPageSelectors = {
           toToken?.decimals || 18
         );
       }
-
       return "0.0";
     }
   ),
@@ -161,8 +162,33 @@ export const SwapPageSelectors = {
     (toToken) => toToken
   ),
   errorMessage: createSelector(
-    SwapPageDomains.fromTokenError,
-    (error) => error
+    [
+      SwapPageDomains.fromToken,
+      SwapPageDomains.fromAmount,
+      GlobalDomains.tokens,
+    ],
+    (fromToken, fromAmount, tokens) => {
+      if (!tokens) {
+        return "";
+      }
+      const symbol = fromToken?.symbol;
+      if (!symbol) {
+        return "";
+      }
+      const token = tokens[fromToken?.symbol];
+      if (!token) {
+        return "";
+      }
+      const maxAmount =
+        BNToString(token.balance ?? BigNumber.from(0), token.decimals) || "0";
+      if (+fromAmount === 0) {
+        return "enter a value";
+      }
+      if (+fromAmount > +maxAmount) {
+        return "Insufficient balance";
+      }
+      return "";
+    }
   ),
   searchValue: createSelector(
     SwapPageDomains.searchValue,
