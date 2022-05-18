@@ -16,6 +16,14 @@ export const SlippageSelect = () => {
   const valueToShow = customSlippage?.valueRaw || "";
 
   const handleSlippageInputChange = (e: string) => {
+    if (e.split(".").length > 2) {
+      return;
+    }
+    if (e.split(".").length === 2) {
+      if (e.split(".")[1].length > 2) {
+        return;
+      }
+    }
     dispatch(GlobalActions.setCustomSlippage(e || "0"));
   };
 
@@ -70,6 +78,8 @@ export const SlippageSelect = () => {
             <Grid container alignItems="center" spacing={1}>
               <Grid item>
                 <InputField
+                  type="tel"
+                  inputProps={{ step: "0.01" }}
                   isselected={
                     selectedSlippage === Slippages.Custom ? "true" : undefined
                   }
