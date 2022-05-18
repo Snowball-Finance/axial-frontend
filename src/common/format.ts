@@ -27,7 +27,7 @@ export const formatNumber = (
 
 //this function doesnt parse scientific notation floats, you need
 //to use toLocaleString if you want to avoid it
-export const floatToBN = (number: number, decimals = 18) => {
+export const floatToBN = (number: number | string, decimals = 18) => {
   try {
     if (!isEmpty(number)) {
       return ethers.utils.parseUnits(roundDown(number, decimals), decimals);

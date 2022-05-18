@@ -253,11 +253,11 @@ export function* deposit(action: { type: string; payload: DepositPayload }) {
         yield put(
           GlobalActions.setTransactionSuccessId(result.transactionHash)
         );
-        yield put(PoolsAndGaugesActions.getInitialData());
       }
     }
     yield put(RewardsActions.setIsDepositing(false));
     toast.success("deposit successful");
+    yield put(PoolsAndGaugesActions.getInitialData());
     yield put(GlobalActions.getTokenBalances());
     yield put(RewardsActions.getRewardPoolsData(pools));
   } catch (e: any) {

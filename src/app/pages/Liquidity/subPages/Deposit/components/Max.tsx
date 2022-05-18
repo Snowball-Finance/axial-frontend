@@ -16,10 +16,11 @@ export const Max = ({ token }: { token: Token }) => {
   const amountString = BNToString(token.balance ?? Zero, token.decimals);
 
   const handleAllInClick = () => {
+    let value = amountString || "0";
     dispatch(
       LiquidityPageActions.setLiquidityDepositTokenAmount({
         symbol: token.symbol as TokenSymbols,
-        value: amountString || "0",
+        value,
       })
     );
   };

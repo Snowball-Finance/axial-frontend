@@ -46,7 +46,7 @@ export function* deposit() {
   const selectedPool: Pool = yield select(RewardsPageDomains.pool);
   const value = yield select(RewardsPageDomains.depositValue) || "0";
   const token = selectedPool.lpToken;
-  const amountToSpend = floatToBN(Number(value), token.decimals);
+  const amountToSpend = floatToBN(value, token.decimals);
   const dataToSend: DepositPayload = {
     poolKey: selectedPool.key,
     rewardsDeposit: true,
