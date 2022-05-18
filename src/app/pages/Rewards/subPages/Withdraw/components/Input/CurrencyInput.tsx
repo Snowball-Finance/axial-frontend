@@ -41,7 +41,7 @@ export const CurrencyInput: FC = () => {
               </Grid>
             </TokenIconContainer>
 
-            <Grid item xs={6}>
+            <Grid item xs={5} xl={6}>
               <Grid container direction="column">
                 <Grid item xs={12}>
                   <WithdrawInput />
