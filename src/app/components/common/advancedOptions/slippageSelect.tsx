@@ -70,6 +70,8 @@ export const SlippageSelect = () => {
             <Grid container alignItems="center" spacing={1}>
               <Grid item>
                 <InputField
+                  type="number"
+                  inputProps={{step: "0.01" }}
                   isselected={
                     selectedSlippage === Slippages.Custom ? "true" : undefined
                   }
