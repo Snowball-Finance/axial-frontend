@@ -10,16 +10,15 @@ import { VotingPowerInfo } from "../../components/VotingPowerInfo";
 import { DocLinksAndInfo } from "./components/DocLinksAndInfo";
 import { ProposalDescription } from "./components/ProposalDescription";
 import { ProposalDetails } from "./components/ProposalDetails";
-import { VoteOptions } from "./components/VoteOptions";
 import { GovernanceSelectors } from "app/containers/BlockChain/Governance/selectors";
 import { Proposal } from "app/containers/BlockChain/Governance/types";
 import { DetailNavigationHead } from "../../components/Navigation/DetailsNavigationHead";
 import { VotingConfirmationModal } from "./components/VotingConfirmationModal";
-import { VoteStatus } from "./components/VoteStatus";
 import { Web3Selectors } from "app/containers/BlockChain/Web3/selectors";
 import { GovernanceActions } from "app/containers/BlockChain/Governance/slice";
 import { GovernancePageActions } from "../../slice";
 import { CssVariables } from "styles/cssVariables/cssVariables";
+import { ConditionalVoting } from "./components/ConditionalVoting";
 
 type TParams = { proposalIndex: string };
 
@@ -28,7 +27,6 @@ export const Details: FC = () => {
 
   const { proposalIndex } = useParams<TParams>();
   const proposals = useSelector(GovernanceSelectors.proposals);
-  const receipt = useSelector(GovernanceSelectors.receipt);
   const library = useSelector(Web3Selectors.selectLibrary);
   const isLoading = useSelector(GovernanceSelectors.isLoadingReceipt);
 
@@ -54,9 +52,6 @@ export const Details: FC = () => {
     return <>proposal not found</>;
   }
 
-  const multiOptional = proposal?.execution_contexts.length > 1;
-  const hasVoted = receipt?.hasVoted;
-
   return (
     <>
       <VotingConfirmationModal />
@@ -80,13 +75,7 @@ export const Details: FC = () => {
           </Grid>
 
           <Grid item xs={12}>
-            {isLoading ? (
-              <StyledLoader />
-            ) : hasVoted && !multiOptional ? (
-              <VoteStatus />
-            ) : (
-              <VoteOptions />
-            )}
+            {isLoading ? <StyledLoader /> : <ConditionalVoting />}
           </Grid>
 
           <Grid item xs={12}>

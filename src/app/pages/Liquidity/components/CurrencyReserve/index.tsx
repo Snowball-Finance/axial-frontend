@@ -43,6 +43,7 @@ export const CurrencyReserve: FC = () => {
                   container
                   justifyContent="space-between"
                   alignItems="center"
+                  spacing={2}
                 >
                   <Grid item xs={4}>
                     <Grid container spacing={1}>
@@ -53,8 +54,8 @@ export const CurrencyReserve: FC = () => {
                         ></IconImage>
                       </Grid>
 
-                      <Grid item alignSelf="center">
-                        <TokenText variant="body1">{infoItem.symbol}</TokenText>
+                      <Grid item alignSelf="center" xs zeroMinWidth>
+                        <TokenText variant="body1" noWrap>{infoItem.symbol}</TokenText>
                       </Grid>
                     </Grid>
                   </Grid>
