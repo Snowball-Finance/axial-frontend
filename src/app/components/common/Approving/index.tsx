@@ -24,7 +24,7 @@ export const Approving: FC = () => {
 
   const renderIcon = (tokenSymbol) => {
     if (tokensInQueueToApproving[tokenSymbol]) {
-      return <CircularProgress color="primary" size={"1.5rem"}/>;
+      return <CircularProgress color="primary" size={"1.5rem"} />;
     } else if (tokensInQueue[tokenSymbol]) {
       return <CheckCircleOutlineOutlined color="primary" />;
     } else {

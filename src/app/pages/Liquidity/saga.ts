@@ -70,10 +70,9 @@ export function* buildTransactionData() {
   const tokenAmounts = {};
   for (let tokenKey in depositTokenAmounts) {
     const v = depositTokenAmounts[tokenKey];
-    const num = Number(v);
-    const toSend = floatToBN(num, tokens[tokenKey].decimals);
+    const toSend = floatToBN(v, tokens[tokenKey].decimals);
     tokenAmounts[tokenKey] = toSend;
-    if (num > 0) {
+    if (Number(v) > 0) {
       fromStateData.tokens = [
         ...fromStateData?.tokens,
         {
@@ -198,8 +197,7 @@ export function* deposit() {
     const tmp = {};
     for (let k in depositTokenAmounts) {
       const v = depositTokenAmounts[k];
-      const num = Number(v);
-      const toSend = floatToBN(num, tokens[k].decimals);
+      const toSend = floatToBN(v, tokens[k].decimals);
       tmp[k] = toSend;
     }
     const dataToSend: DepositPayload = {
@@ -229,8 +227,7 @@ export function* withdraw() {
     for (let k in withdrawTokens) {
       const v = withdrawTokens[k];
       if (Number(v) > 0) {
-        const num = Number(v);
-        const toSend = floatToBN(num, tokens[k].decimals);
+        const toSend = floatToBN(v, tokens[k].decimals);
         tokenAmounts[k] = toSend;
       }
     }
@@ -544,7 +541,7 @@ function* calculateWithdrawBonusAndDetectErrors() {
       const inputCalculatedLPTokenAmount = yield call(
         swapContract.calculateTokenAmount,
         pool.poolTokens.map(({ symbol }) =>
-          floatToBN(Number(amounts[symbol] || "0"), tokens[symbol].decimals)
+          floatToBN(amounts[symbol] || "0", tokens[symbol].decimals)
         ),
         false
       );
@@ -579,8 +576,7 @@ function* tokensToApproveForDeposit() {
   const toApprove: TokenToVerify[] = Object.keys(amounts).map((symbol) => {
     const token: Token = tokens[symbol];
     return {
-      amount:
-        floatToBN(Number(amounts[symbol]), token.decimals) || BigNumber.from(0),
+      amount: floatToBN(amounts[symbol], token.decimals) || BigNumber.from(0),
       spenderAddress: pool.swapAddress || pool.address,
       token,
     };
