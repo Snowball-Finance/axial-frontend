@@ -11,6 +11,7 @@ import { GovernanceSelectors } from "app/containers/BlockChain/Governance/select
 import { GovernanceActions } from "app/containers/BlockChain/Governance/slice";
 import { GovernancePageActions } from "app/pages/Governance/slice";
 import { GovernancePageSelectors } from "app/pages/Governance/selectors";
+import { ProposalState } from "app/containers/BlockChain/Governance/types";
 
 export const VoteButtons: FC = () => {
   const { t } = useTranslation();
@@ -23,7 +24,8 @@ export const VoteButtons: FC = () => {
 
   const dispatch = useDispatch();
 
-  const disabled = receipt?.hasVoted || isGettingReceipt || false;
+  const isActive = proposal?.proposal_state === ProposalState.Active;
+  const disabled = receipt?.hasVoted || isGettingReceipt || false || !isActive;
 
   const handleForClick = () => {
     if (library && proposal) {
