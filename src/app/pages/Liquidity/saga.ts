@@ -72,7 +72,7 @@ export function* buildTransactionData() {
     const v = depositTokenAmounts[tokenKey];
     const toSend = floatToBN(v, tokens[tokenKey].decimals);
     tokenAmounts[tokenKey] = toSend;
-    if (num > 0) {
+    if (Number(v) > 0) {
       fromStateData.tokens = [
         ...fromStateData?.tokens,
         {
