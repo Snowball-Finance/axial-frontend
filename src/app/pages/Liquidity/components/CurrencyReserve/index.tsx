@@ -55,7 +55,9 @@ export const CurrencyReserve: FC = () => {
                       </Grid>
 
                       <Grid item alignSelf="center" xs zeroMinWidth>
-                        <TokenText variant="body1" noWrap>{infoItem.symbol}</TokenText>
+                        <TokenText variant="body1" noWrap>
+                          {infoItem.symbol}
+                        </TokenText>
                       </Grid>
                     </Grid>
                   </Grid>

@@ -10,6 +10,9 @@ export const WithdrawInput = () => {
   const value = useSelector(RewardsPageSelectors.withdrawAmount);
 
   const handleInputChange = (e: string) => {
+    if (isNaN(Number(e))) {
+      return;
+    }
     dispatch(RewardsPageActions.setWithdrawAmount(e));
   };
 
