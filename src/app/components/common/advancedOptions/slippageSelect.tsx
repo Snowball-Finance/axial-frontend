@@ -79,7 +79,7 @@ export const SlippageSelect = () => {
 
           <Grid item>
             <Grid container alignItems="center" spacing={1}>
-              <Grid item>
+              <Grid item style={{paddingTop:0}}>
                 <InputField
                   type="tel"
                   inputProps={{ step: "0.01" }}

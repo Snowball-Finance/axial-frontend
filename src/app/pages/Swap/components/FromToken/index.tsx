@@ -15,7 +15,6 @@ export const FromToken: FC = () => {
         <Grid item>
           <Grid container justifyContent="space-between" alignItems="center">
             <Header />
-
             <Max />
           </Grid>
         </Grid>
