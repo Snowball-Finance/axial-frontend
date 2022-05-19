@@ -7,12 +7,13 @@ import { useTranslation } from "react-i18next";
 import { translations } from "locales/i18n";
 import { ContainedButton } from "app/components/common/buttons/containedButton";
 import { StakingSubPages } from "app/pages/Staking/routes";
-import { StakingActions } from "app/containers/BlockChain/Governance/Staking/slice";
 import { StakingSelectors } from "app/containers/BlockChain/Governance/Staking/selectors";
 import { BNToFractionString } from "common/format";
 import { GovernanceSelectors } from "app/containers/BlockChain/Governance/selectors";
 import { OutlinedButton } from "app/components/common/buttons/outlinedButton";
 import { mobile } from "styles/media";
+import { StakingPageActions } from "app/pages/Staking/slice";
+import { DepositAndWithdrawTab } from "app/pages/Staking/types";
 
 export const Actions: FC = () => {
   const { t } = useTranslation();
@@ -26,10 +27,20 @@ export const Actions: FC = () => {
   const dispatch = useDispatch();
 
   const withdrawVeAxial = () => {
-    dispatch(StakingActions.withdrawAccruingToken());
+    dispatch(
+      StakingPageActions.setSelectedVeAxialDepositAndWithdrawTab(
+        DepositAndWithdrawTab.Withdraw
+      )
+    );
+    dispatch(push(StakingSubPages.veAxial));
   };
 
   const goToVeAxial = () => {
+    dispatch(
+      StakingPageActions.setSelectedVeAxialDepositAndWithdrawTab(
+        DepositAndWithdrawTab.Deposit
+      )
+    );
     dispatch(push(StakingSubPages.veAxial));
   };
 

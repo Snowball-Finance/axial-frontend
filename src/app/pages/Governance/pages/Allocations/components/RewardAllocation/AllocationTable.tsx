@@ -7,6 +7,7 @@ import {
   TableRow,
   TableCell,
   TableSortLabel,
+  TableContainer,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
@@ -22,6 +23,7 @@ import { formatNumber } from "common/format";
 import { getComparator, stableSort } from "./utils/sorting";
 import { GovernancePageActions } from "app/pages/Governance/slice";
 import { GovernancePageSelectors } from "app/pages/Governance/selectors";
+import { mobile } from "styles/media";
 
 export const AllocationTable: FC = () => {
   const { t } = useTranslation();
@@ -75,63 +77,75 @@ export const AllocationTable: FC = () => {
   });
 
   return (
-    <StyledTable aria-label="customized table">
-      <StyledTableHead>
-        <TableRow>
-          {tableHeader(t).map((header) => {
-            return (
-              <StyledTableCell
-                key={header.id}
-                sortDirection={
-                  sortingData.orderBy === header.id ? sortingData.order : false
-                }
-              >
-                <TableSortLabel
-                  active={true}
-                  direction={
+    <StyledTableContainer>
+      <StyledTable aria-label="customized table">
+        <StyledTableHead>
+          <TableRow>
+            {tableHeader(t).map((header) => {
+              return (
+                <StyledTableCell
+                  key={header.id}
+                  sortDirection={
                     sortingData.orderBy === header.id
                       ? sortingData.order
-                      : "asc"
+                      : false
                   }
-                  onClick={() => handleRequestSort(header.id)}
                 >
-                  {header.label}
-                </TableSortLabel>
-              </StyledTableCell>
+                  <TableSortLabel
+                    active={true}
+                    direction={
+                      sortingData.orderBy === header.id
+                        ? sortingData.order
+                        : "asc"
+                    }
+                    onClick={() => handleRequestSort(header.id)}
+                  >
+                    {header.label}
+                  </TableSortLabel>
+                </StyledTableCell>
+              );
+            })}
+          </TableRow>
+        </StyledTableHead>
+        <TableBody>
+          {stableSort(
+            rows,
+            getComparator(sortingData.order, sortingData.orderBy)
+          ).map((pool) => {
+            return (
+              <StyledTableRow key={pool.name}>
+                <StyledTableCell component="th" scope="row">
+                  {pool.name}
+                </StyledTableCell>
+                <StyledTableCell>{pool.allocation}</StyledTableCell>
+                <StyledTableCell>{pool.allocationPerDay}</StyledTableCell>
+                <StyledTableCell>{pool.axialAPR}</StyledTableCell>
+                <StyledTableCell>{pool.boostedAxialAPR}</StyledTableCell>
+                <StyledTableCell>{pool.gaugeWeight}</StyledTableCell>
+                <StyledTableCell>{pool.balance}</StyledTableCell>
+              </StyledTableRow>
             );
           })}
-        </TableRow>
-      </StyledTableHead>
-      <TableBody>
-        {stableSort(
-          rows,
-          getComparator(sortingData.order, sortingData.orderBy)
-        ).map((pool) => {
-          return (
-            <StyledTableRow key={pool.name}>
-              <StyledTableCell component="th" scope="row">
-                {pool.name}
-              </StyledTableCell>
-              <StyledTableCell>{pool.allocation}</StyledTableCell>
-              <StyledTableCell>{pool.allocationPerDay}</StyledTableCell>
-              <StyledTableCell>{pool.axialAPR}</StyledTableCell>
-              <StyledTableCell>{pool.boostedAxialAPR}</StyledTableCell>
-              <StyledTableCell>{pool.gaugeWeight}</StyledTableCell>
-              <StyledTableCell>{pool.balance}</StyledTableCell>
-            </StyledTableRow>
-          );
-        })}
-      </TableBody>
-    </StyledTable>
+        </TableBody>
+      </StyledTable>
+    </StyledTableContainer>
   );
 };
+
+const StyledTableContainer = styled(TableContainer)({
+  boxShadow: `0 0 0 4px ${CssVariables.cardBorder}`,
+  borderRadius: "20px",
+
+  [mobile]: {
+    maxWidth: 350,
+    overflowX: "auto",
+  },
+});
 
 const StyledTable = styled(Table)({
   minWidth: 700,
   backgroundColor: "transparent",
   borderStyle: "hidden",
-  borderRadius: "20px",
-  boxShadow: `0 0 0 4px ${CssVariables.cardBorder}`,
   overflow: "auto",
 });
 

@@ -6,12 +6,13 @@ import { useTranslation } from "react-i18next";
 
 import { translations } from "locales/i18n";
 import { ContainedButton } from "app/components/common/buttons/containedButton";
-import { StakingActions } from "app/containers/BlockChain/Governance/Staking/slice";
 import { StakingSubPages } from "app/pages/Staking/routes";
 import { StakingSelectors } from "app/containers/BlockChain/Governance/Staking/selectors";
 import { BNToFractionString } from "common/format";
 import { OutlinedButton } from "app/components/common/buttons/outlinedButton";
 import { mobile } from "styles/media";
+import { StakingPageActions } from "app/pages/Staking/slice";
+import { DepositAndWithdrawTab } from "app/pages/Staking/types";
 
 export const Actions: FC = () => {
   const { t } = useTranslation();
@@ -25,10 +26,20 @@ export const Actions: FC = () => {
   const dispatch = useDispatch();
 
   const withdrawSAxial = () => {
-    dispatch(StakingActions.withdrawGovernanceToken());
+    dispatch(
+      StakingPageActions.setSelectedDepositAndWithdrawTab(
+        DepositAndWithdrawTab.Withdraw
+      )
+    );
+    dispatch(push(StakingSubPages.sAxial));
   };
 
   const goToSAxial = () => {
+    dispatch(
+      StakingPageActions.setSelectedDepositAndWithdrawTab(
+        DepositAndWithdrawTab.Deposit
+      )
+    );
     dispatch(push(StakingSubPages.sAxial));
   };
 
