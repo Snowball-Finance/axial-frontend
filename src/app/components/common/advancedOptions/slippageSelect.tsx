@@ -24,6 +24,9 @@ export const SlippageSelect = () => {
         return;
       }
     }
+    if(isNaN(Number(e))){
+      return
+    }
     dispatch(GlobalActions.setCustomSlippage(e || "0"));
   };
 
