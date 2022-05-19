@@ -9,10 +9,10 @@ import { StakingSelectors } from "app/containers/BlockChain/Governance/Staking/s
 import { StakingPageSelectors } from "app/pages/Staking/selectors";
 import { StakingPageActions } from "app/pages/Staking/slice";
 import { BlockChainSelectors } from "app/containers/BlockChain/selectors";
-import { parseUnits } from "ethers/lib/utils";
 import { zeroString } from "app/pages/Liquidity/constants";
 import { env } from "environment";
 import { BigNumber } from "ethers";
+import { floatToBN } from "common/format";
 
 export const Actions = () => {
   const { t } = useTranslation();
@@ -24,7 +24,8 @@ export const Actions = () => {
   const mainTokenBalance = useSelector(
     BlockChainSelectors.selectMainTokenBalance
   );
-  const bnEnteredAmount = parseUnits(enteredAmount || zeroString, 18);
+  const bnEnteredAmount =
+    floatToBN(enteredAmount || zeroString, 18) || BigNumber.from(0);
 
   let depositError = "";
   if (mainTokenBalance?.eq(0)) {

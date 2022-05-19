@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Grid, Typography, Box, CircularProgress } from "@mui/material";
+import { Grid, Typography, Box } from "@mui/material";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import {
@@ -10,6 +10,7 @@ import {
 import { translations } from "locales/i18n";
 import { CardWrapper } from "app/components/wrappers/Card";
 import { globalSelectors } from "app/appSelectors";
+import { SnowCircularProgressInModal } from "../snowCircularProgressInModals";
 
 export const Approving: FC = () => {
   const { t } = useTranslation();
@@ -24,7 +25,7 @@ export const Approving: FC = () => {
 
   const renderIcon = (tokenSymbol) => {
     if (tokensInQueueToApproving[tokenSymbol]) {
-      return <CircularProgress color="primary" size={"1.5rem"} />;
+      return <SnowCircularProgressInModal />;
     } else if (tokensInQueue[tokenSymbol]) {
       return <CheckCircleOutlineOutlined color="primary" />;
     } else {

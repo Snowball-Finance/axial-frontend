@@ -13,16 +13,19 @@ import { mobile } from "styles/media";
 import { EquivalentLockAmountUSD } from "./EquivalentLockAmountUSD";
 import { Max } from "./Max";
 import { WalletBalance } from "./WalletBalance";
+import { toFixed } from "utils/tofixed";
 
 export const LockAmount = () => {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
 
-  const enteredAmount = useSelector(
+  let enteredAmount = useSelector(
     StakingPageSelectors.selectEnteredMainTokenToStakeIntoVeAxial
   );
-
+  if (enteredAmount) {
+    enteredAmount = toFixed(enteredAmount, 7);
+  }
   const handleAmountInputChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     dispatch(
       StakingPageActions.setEnteredMainTokenToStakeIntoVeAxial(e.target.value)
@@ -140,7 +143,6 @@ const AmountInput = styled("input")({
   color: CssVariables.commonTextColor,
   padding: "0 0 0 8px",
   background: "transparent",
-  maxWidth: "calc(100% - 125px )",
 
   [mobile]: {
     padding: 0,

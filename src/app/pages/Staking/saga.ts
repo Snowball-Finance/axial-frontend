@@ -15,10 +15,25 @@ export function* stakeAllTheBalances() {
   );
   if (mainTokenBalance) {
     const stringMainTokenBalance =
-      parseFloat(BNToString(mainTokenBalance ?? BigNumber.from(0), 18) || "0") +
-      "";
+      BNToString(mainTokenBalance ?? BigNumber.from(0), 18) || "0";
     yield put(
       StakingPageActions.setEnteredMainTokenToStake(stringMainTokenBalance)
+    );
+  }
+}
+
+export function* stakeAllTheAxialBalancesIntoVeAxial() {
+  const mainTokenBalance = yield select(
+    BlockChainDomains.selectMainTokenBalanceDomain
+  );
+  if (mainTokenBalance) {
+    const stringMainTokenBalance =
+      BNToString(mainTokenBalance ?? BigNumber.from(0), 18) || "0";
+
+    yield put(
+      StakingPageActions.setEnteredMainTokenToStakeIntoVeAxial(
+        stringMainTokenBalance
+      )
     );
   }
 }
@@ -70,22 +85,6 @@ export function* stakeAccruingToken() {
       amountToStake: enteredBalance,
     })
   );
-}
-
-export function* stakeAllTheAxialBalancesIntoVeAxial() {
-  const mainTokenBalance = yield select(
-    BlockChainDomains.selectMainTokenBalanceDomain
-  );
-  if (mainTokenBalance) {
-    const stringMainTokenBalance = parseFloat(
-      BNToString(mainTokenBalance ?? BigNumber.from(0), 18) || "0"
-    ).toFixed(3);
-    yield put(
-      StakingPageActions.setEnteredMainTokenToStakeIntoVeAxial(
-        stringMainTokenBalance
-      )
-    );
-  }
 }
 
 export function* stakingPageSaga() {

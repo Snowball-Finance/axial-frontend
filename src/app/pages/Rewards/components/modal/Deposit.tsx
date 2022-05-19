@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Grid, Typography, Box, CircularProgress } from "@mui/material";
+import { Grid, Typography, Box } from "@mui/material";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import {
@@ -13,6 +13,7 @@ import { globalSelectors } from "app/appSelectors";
 import { RewardsSelectors } from "app/containers/Rewards/selectors";
 import { RewardsPageSelectors } from "../../selectors";
 import { PoolData } from "app/containers/Rewards/types";
+import { SnowCircularProgressInModal } from "app/components/common/snowCircularProgressInModals";
 
 export const DepositModal: FC = () => {
   const { t } = useTranslation();
@@ -29,7 +30,7 @@ export const DepositModal: FC = () => {
 
   const renderIcon = (tokenSymbol) => {
     if (tokensInQueueToApproving[tokenSymbol]) {
-      return <CircularProgress color="primary" size={"1.5rem"} />;
+      return <SnowCircularProgressInModal />;
     } else {
       return <CheckCircleOutlineOutlined color="primary" />;
     }
@@ -37,7 +38,7 @@ export const DepositModal: FC = () => {
 
   const renderDepositIcon = () => {
     if (isDepositing) {
-      return <CircularProgress color="primary" size={"1.5rem"} />;
+      return <SnowCircularProgressInModal />;
     } else {
       return <CircleOutlined color="primary" />;
     }

@@ -384,7 +384,7 @@
     "DailyUnlocked": "Daily Unlocked",
     "MAIN_TOKEN_NAME_Unlocked": "{{mainTokenName}} Unlocked",
     "HowItWorks": "How it works",
-    "LockAxialDescription":"Lock your AXIAL to vote on governance proposals and earn tokens.",
+    "LockAxialDescription":"Lock your AXIAL to vote on governance proposals and potentially earn tokens.",
     "StakeAxialDescription":"Stake your AXIAL to boost your yields",
     "StakingBottomDescriptions_GOVERNANCETOKENNAME_MAINTOKENNAME":
     "Your {{governanceTokenName}} tokens will linearly decrease in amount and will be unlocked daily. Daily you can withdraw your {{mainTokenName}} tokens.",
