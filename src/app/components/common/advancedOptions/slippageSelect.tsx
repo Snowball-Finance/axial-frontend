@@ -24,8 +24,8 @@ export const SlippageSelect = () => {
         return;
       }
     }
-    if(isNaN(Number(e))){
-      return
+    if (isNaN(Number(e))) {
+      return;
     }
     dispatch(GlobalActions.setCustomSlippage(e || "0"));
   };
@@ -79,7 +79,7 @@ export const SlippageSelect = () => {
 
           <Grid item>
             <Grid container alignItems="center" spacing={1}>
-              <Grid item style={{paddingTop:0}}>
+              <Grid item style={{ paddingTop: 0 }}>
                 <InputField
                   type="tel"
                   inputProps={{ step: "0.01" }}
