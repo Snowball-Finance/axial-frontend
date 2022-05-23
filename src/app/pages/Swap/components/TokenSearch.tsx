@@ -41,14 +41,16 @@ export const TokenSearch: FC<Props> = ({
     if (selectedValue?.address) {
       return (
         <Grid container spacing={1} alignItems="center">
-          <Grid item style={{paddingTop:'10px'}} >
+          <Grid item style={{ paddingTop: "10px" }}>
             <TokenIcon
               src={selectedValue?.logo}
               alt={`token-${selectedValue.symbol}`}
             />
           </Grid>
-          <Grid item >
-            <TokenIconTitle  style={{paddingTop:'5px'}} variant="h2">{selectedValue.symbol}</TokenIconTitle>
+          <Grid item>
+            <TokenIconTitle style={{ paddingTop: "5px" }} variant="h2">
+              {selectedValue.symbol}
+            </TokenIconTitle>
           </Grid>
         </Grid>
       );

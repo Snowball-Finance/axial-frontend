@@ -2,7 +2,7 @@ import { StakingActions } from "app/containers/BlockChain/Governance/Staking/sli
 import { BlockChainDomains } from "app/containers/BlockChain/selectors";
 import { BNToString } from "common/format";
 import { BigNumber } from "ethers";
-import { subtract } from "precise-math";
+import { add, subtract } from "precise-math";
 import { toast } from "react-toastify";
 import { put, select, takeLatest } from "redux-saga/effects";
 import { StakingPageDomains } from "./selectors";
@@ -60,6 +60,14 @@ export function* stakeGovernanceToken() {
       Number(duration),
       previousNumberOfLockedDays * 24 * 60 * 60
     ).toString();
+  }
+  const twoYearsInSeconds = 2 * 365 * 24 * 60 * 60;
+  if (add(Number(finalDurationToAdd), Number(duration)) > twoYearsInSeconds) {
+    let num = subtract(Number(finalDurationToAdd), 2 * 60 * 60 * 24);
+    if (num < 0) {
+      num = 0;
+    }
+    finalDurationToAdd = num.toString();
   }
   if (Number(finalDurationToAdd) < 0) {
     finalDurationToAdd = "0";
