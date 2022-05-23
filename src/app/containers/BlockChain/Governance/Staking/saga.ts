@@ -2,7 +2,7 @@ import { parseEther } from "ethers/lib/utils";
 import { all, call, delay, put, select, takeLatest } from "redux-saga/effects";
 import { StakingActions } from "./slice";
 import { StakeGovernanceTokenModel, StakeAccruingTokenModel } from "./types";
-import { Contract } from "ethers";
+import { BigNumber, Contract } from "ethers";
 import { env } from "environment";
 import { BlockChainActions } from "../../slice";
 import { toast } from "react-toastify";
@@ -14,7 +14,7 @@ import { BlockChainDomains } from "../../selectors";
 import { GovernanceActions } from "../slice";
 import { Axial, SAxial, VeAxial } from "abi/ethers-contracts";
 import AccruingTokenABI from "abi/veAxial.json";
-import { BNToFloat } from "common/format";
+import { BNToFloat, floatToBN } from "common/format";
 import { getAccruingTokenContract, getGovernanceTokenContract } from "../saga";
 import { checkAndApproveTokensInList } from "utils/tokenVerifier";
 import { Token } from "app/containers/Swap/types";
@@ -131,7 +131,7 @@ export function* stakeAccruingToken(action: {
   payload: StakeAccruingTokenModel;
 }) {
   const { amountToStake: amount } = action.payload;
-  const amountToStake = parseEther(amount.toString());
+  const amountToStake = floatToBN(amount, 18) || BigNumber.from(0);
   yield put(GlobalActions.setTransactionSuccessId(undefined));
   const library = yield select(Web3Domains.selectLibraryDomain);
   //|| is used because if .env is not set,we will fetch the error in early stages

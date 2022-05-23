@@ -137,7 +137,6 @@ const AmountInput = styled("input")({
   color: CssVariables.commonTextColor,
   padding: "0 0 0 8px",
   background: "transparent",
-  maxWidth: "calc(100% - 125px )",
 
   [mobile]: {
     padding: 0,

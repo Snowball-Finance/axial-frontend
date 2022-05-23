@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Grid, Typography, Box, CircularProgress } from "@mui/material";
+import { Grid, Typography, Box } from "@mui/material";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { CircleOutlined } from "@mui/icons-material";
@@ -7,6 +7,7 @@ import { CircleOutlined } from "@mui/icons-material";
 import { translations } from "locales/i18n";
 import { CardWrapper } from "app/components/wrappers/Card";
 import { GovernanceSelectors } from "app/containers/BlockChain/Governance/selectors";
+import { SnowCircularProgressInModal } from "app/components/common/snowCircularProgressInModals";
 
 export const VotingModal: FC = () => {
   const { t } = useTranslation();
@@ -15,7 +16,7 @@ export const VotingModal: FC = () => {
 
   const renderVotingIcon = () => {
     if (isVotingFor) {
-      return <CircularProgress color="primary" size={"1.5rem"} />;
+      return <SnowCircularProgressInModal />;
     } else {
       return <CircleOutlined color="primary" />;
     }

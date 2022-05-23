@@ -1,11 +1,12 @@
 import React, { FC } from "react";
-import { Grid, Typography, Box, CircularProgress } from "@mui/material";
+import { Grid, Typography, Box } from "@mui/material";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 
 import { translations } from "locales/i18n";
 import { CardWrapper } from "app/components/wrappers/Card";
 import { SwapPageSelectors } from "app/pages/Swap/selectors";
+import { SnowCircularProgressInModal } from "app/components/common/snowCircularProgressInModals";
 
 export const Approving: FC = () => {
   const { t } = useTranslation();
@@ -17,7 +18,7 @@ export const Approving: FC = () => {
         <Grid container spacing={1}>
           <Grid container item xs={12} spacing={1} alignItems="center">
             <Grid item>
-              <CircularProgress color="primary" size={"1.5rem"} />
+              <SnowCircularProgressInModal />
             </Grid>
 
             <Grid item>

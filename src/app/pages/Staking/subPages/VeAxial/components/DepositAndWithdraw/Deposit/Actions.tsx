@@ -9,9 +9,9 @@ import { StakingSelectors } from "app/containers/BlockChain/Governance/Staking/s
 import { StakingPageActions } from "app/pages/Staking/slice";
 import { StakingPageSelectors } from "app/pages/Staking/selectors";
 import { BlockChainSelectors } from "app/containers/BlockChain/selectors";
-import { parseUnits } from "ethers/lib/utils";
-import { zeroString } from "app/pages/Liquidity/constants";
 import { env } from "environment";
+import { BNToFloat } from "common/format";
+import { BigNumber } from "ethers";
 
 export const Actions = () => {
   const { t } = useTranslation();
@@ -23,13 +23,17 @@ export const Actions = () => {
   const mainTokenBalance = useSelector(
     BlockChainSelectors.selectMainTokenBalance
   );
+  const floatMainTokenBalance = BNToFloat(
+    mainTokenBalance || BigNumber.from(0),
+    18
+  );
 
   let depositError = "";
   if (mainTokenBalance?.eq(0)) {
     depositError = "You don't have Balance on this pool";
   } else if (
     enteredAmount !== "" &&
-    mainTokenBalance?.lt(parseUnits(enteredAmount ?? zeroString, 18))
+    (floatMainTokenBalance || 0) < Number(enteredAmount || "0")
   ) {
     depositError = "Insufficient Balance";
   } else {

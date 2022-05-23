@@ -15,15 +15,19 @@ import { getKeyFromPoolIndex } from "app/pages/Liquidity/constants";
 import { RewardsSelectors } from "app/containers/Rewards/selectors";
 import { Zero } from "app/containers/Rewards/constants";
 import { CardWrapper } from "app/components/wrappers/Card";
+import { Web3Selectors } from "app/containers/BlockChain/Web3/selectors";
 
 type TParams = { poolIndex: string };
 
 export const MyShare: FC = () => {
   const { t } = useTranslation();
+  const account = useSelector(Web3Selectors.selectAccount);
   const { poolIndex } = useParams<TParams>();
   const poolKey = getKeyFromPoolIndex(poolIndex) || "";
   const userShareData = useSelector(RewardsSelectors.userShareData(poolKey));
-
+  if (!account) {
+    return <></>;
+  }
   return (
     <Grid container spacing={2}>
       <Grid item container justifyContent="space-between" alignItems="center">

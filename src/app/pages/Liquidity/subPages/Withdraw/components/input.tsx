@@ -13,6 +13,9 @@ export const WithdrawInput = ({ token }: { token: Token }) => {
     useSelector(LiquidityPageSelectors.withdrawAmount(token.symbol)) ||
     zeroString;
   const handleInputChange = (e: string) => {
+    if (isNaN(Number(e))) {
+      return;
+    }
     dispatch(
       LiquidityPageActions.setAmountForTokenToWithdraw({
         symbol: token.symbol as TokenSymbols,

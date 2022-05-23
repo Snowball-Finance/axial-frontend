@@ -1,5 +1,6 @@
 import { styled, Typography } from "@mui/material";
 import { BlockChainSelectors } from "app/containers/BlockChain/selectors";
+import { commify } from "app/containers/utils/contractUtils";
 import { BNToString } from "common/format";
 import { BigNumber } from "ethers";
 import { translations } from "locales/i18n";
@@ -19,7 +20,7 @@ export const WalletBalance = () => {
   return (
     <BalanceText variant="body2" align="right">
       {t(translations.Common.WalletBalance())}:{" "}
-      {parseFloat(stringMainTokenBalance || "0").toFixed(3)}
+      {commify(parseFloat(stringMainTokenBalance || "0").toFixed(3))}
     </BalanceText>
   );
 };

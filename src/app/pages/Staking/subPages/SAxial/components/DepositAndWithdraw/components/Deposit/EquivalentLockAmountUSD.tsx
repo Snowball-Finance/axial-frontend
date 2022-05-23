@@ -13,7 +13,6 @@ export const EquivalentLockAmountUSD: FC = () => {
   const enteredAmount = useSelector(
     StakingPageSelectors.selectEnteredMainTokenToStake
   );
-
   let tokenUSDValue: number = 0;
   if (env.MAIN_TOKEN_NAME) {
     tokenUSDValue = tokenPricesUSD?.[env.MAIN_TOKEN_NAME];

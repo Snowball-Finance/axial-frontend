@@ -9,6 +9,9 @@ export const RewardsDepositInput = () => {
   const dispatch = useDispatch();
   const value = useSelector(RewardsPageSelectors.depositValue);
   const handleInputChange = (e: string) => {
+    if (isNaN(Number(e))) {
+      return;
+    }
     dispatch(RewardsPageActions.setDepositValue(e));
   };
   return <CurrencyInputField value={value} onChange={handleInputChange} />;

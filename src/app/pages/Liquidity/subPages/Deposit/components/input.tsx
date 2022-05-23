@@ -17,6 +17,9 @@ export const LiquidityDepositInput = memo(
       ) || zeroString;
 
     const handleInputChange = (e: string) => {
+      if (isNaN(Number(e))) {
+        return;
+      }
       dispatch(
         LiquidityPageActions.setLiquidityDepositTokenAmount({
           symbol: tokenSymbol,
