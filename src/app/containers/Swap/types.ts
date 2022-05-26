@@ -69,8 +69,8 @@ export enum Slippages {
 }
 
 export interface SwapState {
-  swapRouterAddress: string;
-  swapRouterABI: any;
+  aggregatorAddress: string;
+  aggregatorABI: any;
   tokens: { [K in TokenSymbols]?: Token };
   isGettingBestPath: boolean;
   bestPath: BestPath | undefined;

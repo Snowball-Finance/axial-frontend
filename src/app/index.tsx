@@ -109,8 +109,8 @@ export function App() {
       <PoolsAndGauges />
       <Rewards pools={pools} />
       <Swap
-        swapRouterABI={AGGREGATOR_ABI}
-        swapRouterAddress={process.env.REACT_APP_SWAP_ROUTER_ADDRESS || ""}
+        aggregatorABI={AGGREGATOR_ABI}
+        aggregatorAddress={process.env.REACT_APP_AGGREGATOR_ADDRESS || ""}
         tokens={tokens as { [K in TokenSymbols]: Token }}
       />
       <Layout>

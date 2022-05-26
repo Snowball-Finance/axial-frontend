@@ -6,8 +6,8 @@ import { swapSaga } from "./saga";
 
 // The initial state of the Swap container
 export const initialState: ContainerState = {
-  swapRouterAddress: "",
-  swapRouterABI: undefined,
+  aggregatorAddress: "",
+  aggregatorABI: undefined,
   isGettingBestPath: false,
   bestPath: undefined,
   isSwapping: false,
@@ -21,16 +21,16 @@ const swapSlice = createSlice({
   name: "swap",
   initialState,
   reducers: {
-    setSwapRouterConfigs(
+    setAggregatorConfigs(
       state,
       action: PayloadAction<{
-        address: ContainerState["swapRouterAddress"];
-        abi: ContainerState["swapRouterABI"];
+        address: ContainerState["aggregatorAddress"];
+        abi: ContainerState["aggregatorABI"];
         tokens: ContainerState["tokens"];
       }>
     ) {
-      state.swapRouterAddress = action.payload.address;
-      state.swapRouterABI = action.payload.abi;
+      state.aggregatorAddress = action.payload.address;
+      state.aggregatorABI = action.payload.abi;
       state.tokens = action.payload.tokens;
     },
     findBestPath(state, action: PayloadAction<FindBestPathPayload>) {},

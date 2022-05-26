@@ -5,10 +5,10 @@ import { initialState } from "./slice";
 
 export const SwapDomains = {
   mainDomain: (state: RootState) => state.swap || initialState,
-  swapRouterABI: (state: RootState) =>
-    state.swap?.swapRouterABI || initialState.swapRouterABI,
-  swapRouterAddress: (state: RootState) =>
-    state.swap?.swapRouterAddress || initialState.swapRouterAddress,
+  aggregatorABI: (state: RootState) =>
+    state.swap?.aggregatorABI || initialState.aggregatorABI,
+  aggregatorAddress: (state: RootState) =>
+    state.swap?.aggregatorAddress || initialState.aggregatorAddress,
   swapTokens: (state: RootState) => state.swap?.tokens || initialState.tokens,
   isGettingBestPath: (state: RootState) =>
     state.swap?.isGettingBestPath || initialState.isGettingBestPath,
@@ -23,12 +23,12 @@ export const SwapDomains = {
 
 export const SwapSelectors = {
   selectSwapState: createSelector([SwapDomains.mainDomain], (state) => state),
-  selectSwapRouterABI: createSelector(
-    [SwapDomains.swapRouterABI],
+  aggregatorABI: createSelector(
+    [SwapDomains.aggregatorABI],
     (abi) => abi
   ),
-  selectSwapRouterAddress: createSelector(
-    [SwapDomains.swapRouterAddress],
+  aggregatorAddress: createSelector(
+    [SwapDomains.aggregatorAddress],
     (address) => address
   ),
   selectIsGettingBestPath: createSelector(
