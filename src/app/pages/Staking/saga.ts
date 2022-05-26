@@ -69,9 +69,7 @@ export function* stakeGovernanceToken() {
     }
     finalDurationToAdd = num.toString();
   }
-  if (Number(finalDurationToAdd) < 0) {
-    finalDurationToAdd = "0";
-  }
+
   yield put(
     StakingActions.stakeGovernanceToken({
       amount: enteredBalance,

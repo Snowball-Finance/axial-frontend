@@ -1,6 +1,5 @@
 import {
   gaugeAddress,
-  poolAddress,
   poolSwapAddress,
 } from "utils/poolAddresses";
 import { Pools, PoolTypes, RewardsState } from "./containers/Rewards/types";
@@ -11,7 +10,7 @@ export const fujiPools = {
   [Pools.P3T]: {
     key: Pools.P3T,
     name: "Pool 3 Tokens",
-    address: poolAddress(Pools.P3T),
+    address: tokens.P3T?.address,
     swapABI: SWAP_FLASH_LOAN_NO_WITHDRAW_FEE_ABI,
     poolType: PoolTypes.USD,
     poolTokens: [tokens.STABLE1, tokens.STABLE2, tokens.STABLE3],
@@ -22,7 +21,7 @@ export const fujiPools = {
   [Pools.PGL]: {
     key: Pools.PGL,
     name: "PGL AVAX-EXTRAT",
-    address: poolAddress(Pools.PGL),
+    address: tokens.PGL?.address,
     swapABI: SWAP_FLASH_LOAN_NO_WITHDRAW_FEE_ABI,
     poolType: PoolTypes.LP,
     poolTokens: [],
@@ -32,7 +31,7 @@ export const fujiPools = {
   [Pools.S3T]: {
     key: Pools.S3T,
     name: "Secondary 3 Tokens",
-    address: poolAddress(Pools.S3T),
+    address: tokens.S3T?.address,
     swapABI: SWAP_FLASH_LOAN_NO_WITHDRAW_FEE_ABI,
     poolType: PoolTypes.USD,
     poolTokens: [tokens.STABLE3, tokens.STABLE4, tokens.STABLE5],

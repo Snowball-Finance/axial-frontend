@@ -11,7 +11,6 @@ import {
   formatBNToPercentString,
   commify,
 } from "app/containers/utils/contractUtils";
-import { getKeyFromPoolIndex } from "app/pages/Liquidity/constants";
 import { RewardsSelectors } from "app/containers/Rewards/selectors";
 import { Zero } from "app/containers/Rewards/constants";
 import { CardWrapper } from "app/components/wrappers/Card";
@@ -23,7 +22,7 @@ export const MyShare: FC = () => {
   const { t } = useTranslation();
   const account = useSelector(Web3Selectors.selectAccount);
   const { poolIndex } = useParams<TParams>();
-  const poolKey = getKeyFromPoolIndex(poolIndex) || "";
+  const poolKey = poolIndex?.toUpperCase() || "";
   const userShareData = useSelector(RewardsSelectors.userShareData(poolKey));
   if (!account) {
     return <></>;

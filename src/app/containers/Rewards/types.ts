@@ -48,12 +48,17 @@ export interface AprData {
 }
 
 export enum Pools {
-  AXIAL_AS4D = "AXIAL_AS4D",
-  AXIAL_AC4D = "AXIAL_AC4D",
-  AXIAL_AM3D = "AXIAL_AM3D",
-  AXIAL_AA3D = "AXIAL_AA3D",
-  AXIAL_JLP = "AXIAL_JLP",
-  USDC_AM3D = "USDC_AM3D",
+  // AXIAL_AS4D = "AXIAL_AS4D",
+  // AXIAL_AC4D = "AXIAL_AC4D",
+  // AXIAL_AM3D = "AXIAL_AM3D",
+  // AXIAL_AA3D = "AXIAL_AA3D",
+  // AXIAL_JLP = "AXIAL_JLP",
+  // USDC_AM3D = "USDC_AM3D",
+  SCALES = "SCALES",
+  HERO = "HERO",
+  AS4D = "AS4D",
+  AC4D = "AC4D",
+  AM3D = "AM3D",
   //Fuji pools
   P3T = "P3T",
   PGL = "PGL",

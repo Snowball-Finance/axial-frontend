@@ -8,13 +8,12 @@ import { RewardsPageSelectors } from "app/pages/Rewards/selectors";
 import { RewardsDepositInput } from "./input";
 import { CardWrapper } from "app/components/wrappers/Card";
 import { EquivalentInUsd } from "./equivalentInUsd";
-import { getKeyFromPoolIndex } from "app/pages/Liquidity/constants";
 
 type TParams = { poolIndex: string };
 
 export const CurrencyInput: FC = () => {
   const { poolIndex } = useParams<TParams>();
-  const poolKey = getKeyFromPoolIndex(poolIndex) || "";
+  const poolKey = poolIndex?.toUpperCase() || "";
   const rewardsPool = useSelector(RewardsPageSelectors.rewardsPool(poolKey));
 
   return (

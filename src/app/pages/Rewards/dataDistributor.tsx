@@ -5,7 +5,6 @@ import { pools } from "app/pools";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getKeyFromPoolIndex } from "../Liquidity/constants";
 import { RewardsPageSelectors } from "./selectors";
 import { RewardsPageActions } from "./slice";
 
@@ -19,7 +18,7 @@ export const DataDistributor = () => {
   const selectedPool = useSelector(RewardsPageSelectors.selectedPool);
   const aprData = useSelector(RewardsSelectors.aprData);
   const poolsBalances = useSelector(RewardsSelectors.poolsBalances);
-  const poolKey = getKeyFromPoolIndex(poolIndex) || "";
+  const poolKey = poolIndex?.toUpperCase() || "";
   useEffect(() => {
     if (poolKey) {
       const pool = pools[poolKey] as Pool;

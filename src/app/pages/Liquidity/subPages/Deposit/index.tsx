@@ -4,7 +4,6 @@ import { Grid, styled } from "@mui/material";
 import { AddLiquidity } from "./components/AddLiquidity";
 import { CurrencyInfo } from "../../components/CurrencyInfo";
 import { useParams } from "react-router-dom";
-import { getKeyFromPoolIndex } from "../../constants";
 import { pools } from "app/pools";
 import { useDispatch, useSelector } from "react-redux";
 import { LiquidityPageActions } from "../../slice";
@@ -18,7 +17,7 @@ type TParams = { poolIndex: string };
 export const Deposit: FC = () => {
   const dispatch = useDispatch();
   const { poolIndex } = useParams<TParams>();
-  const poolKey = getKeyFromPoolIndex(poolIndex) || "";
+  const poolKey = poolIndex?.toUpperCase() || "";
   const pool = useSelector(LiquidityPageSelectors.selectedPool);
 
   useEffect(() => {

@@ -82,18 +82,4 @@ export interface WithdrawReviewData {
   gasPrice: string;
 }
 
-export enum PoolsRouteIndex {
-  AXIAL_AS4D_ROUTE = "as4d",
-  AXIAL_AC4D_ROUTE = "ac4d",
-  AXIAL_AM3D_ROUTE = "am3d",
-  AXIAL_AA3D_ROUTE = "aa3d",
-  AXIAL_JLP_ROUTE = "jlp",
-  USDC_AM3D_ROUTE = "usdc-am3d",
-  //Fuji pools
-  P3T_ROUTE = "p3t",
-  PGL_ROUTE = "pgl",
-  TEST_ROUTE = "test",
-  S3T_ROUTE = "s3t",
-}
-
 export type ContainerState = LiquidityPageState;

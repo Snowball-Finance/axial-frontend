@@ -11,7 +11,6 @@ import { commify, formatBNToString } from "app/containers/utils/contractUtils";
 import { pools } from "app/pools";
 import { tokens } from "app/tokens";
 import { RewardsSelectors } from "app/containers/Rewards/selectors";
-import { getKeyFromPoolIndex } from "../../constants";
 import { mobile } from "styles/media";
 import { CardWrapper } from "app/components/wrappers/Card";
 
@@ -21,7 +20,7 @@ export const CurrencyReserve: FC = () => {
   const { t } = useTranslation();
 
   const { poolIndex } = useParams<TParams>();
-  const poolKey = getKeyFromPoolIndex(poolIndex) || "";
+  const poolKey = poolIndex?.toUpperCase() || "";
   const poolData = useSelector(RewardsSelectors.poolData(poolKey));
 
   const formattedDecimals = pools[poolKey].poolType === PoolTypes.USD ? 2 : 4;
