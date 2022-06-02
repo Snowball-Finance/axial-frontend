@@ -14,6 +14,8 @@ import {
 import { PoolDataProps } from "app/pages/Liquidity/types";
 import { RewardsSelectors } from "app/containers/Rewards/selectors";
 import { mobile } from "styles/media";
+import { PoolsAndGaugesSelectors } from "app/containers/PoolsAndGauges/selectors";
+import { pools } from "app/pools";
 
 interface InfoData {
   title: string;
@@ -24,19 +26,23 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
   const { t } = useTranslation();
   const poolData = useSelector(RewardsSelectors.poolData(poolKey));
   const userShareData = useSelector(RewardsSelectors.userShareData(poolKey));
+  const poolsAndGaugesPools = useSelector(PoolsAndGaugesSelectors.pools);
   const isGettingPoolsData = useSelector(RewardsSelectors.isGettingPoolsData);
+  const vol = poolsAndGaugesPools[pools[poolKey]?.address]?.last_vol || 0;
+  const swapApr =
+    poolsAndGaugesPools[pools[poolKey]?.address]?.last_swap_apr || 0;
 
   const formattedData = {
     reserve: poolData?.reserve
       ? formatBNToShortString(poolData?.reserve, 18)
       : "-",
     apr: poolData?.apr
-      ? `${Number(poolData?.apr).toFixed(2)}%`
+      ? `${Number(swapApr).toFixed(2)}%`
       : poolData?.apr === 0
       ? "0%"
       : "-",
     volume: poolData?.volume
-      ? `${commify(Number(poolData?.volume).toFixed(2))}`
+      ? `${commify(Number(vol).toFixed(2))}`
       : poolData?.volume === 0
       ? "0"
       : "-",

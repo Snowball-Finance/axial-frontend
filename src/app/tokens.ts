@@ -1,13 +1,6 @@
 import ERC20_ABI from "abi/erc20.json";
 import { Token, TokenSymbols } from "./containers/Swap/types";
 import axialLogo from "assets/icons/logo_icon.svg"; // this needs a smaller icon logo(24)
-import daiLogo from "assets/icons/dai.svg";
-import fraxLogo from "assets/icons/frax.svg";
-import tsdLogo from "assets/icons/tsd.svg";
-import mimLogo from "assets/icons/mim.svg";
-import tusdLogo from "assets/icons/tusd.svg";
-import usdcLogo from "assets/icons/usdc.svg";
-import usdtLogo from "assets/icons/usdt.svg";
 import { networkName, tokenAddress } from "utils/tokenAddresses";
 import { fujiTokens } from "./fujiTokens";
 import { iconSrcWithAddress } from "utils/iconSrcByAddress";

@@ -1,7 +1,4 @@
-import {
-  gaugeAddress,
-  poolSwapAddress,
-} from "utils/poolAddresses";
+import { gaugeAddress, poolSwapAddress } from "utils/poolAddresses";
 import { Pools, PoolTypes, RewardsState } from "./containers/Rewards/types";
 import { tokens } from "./tokens";
 import SWAP_FLASH_LOAN_NO_WITHDRAW_FEE_ABI from "abi/swapFlashLoanNoWithdrawFee.json";

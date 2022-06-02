@@ -208,7 +208,6 @@ export function* deposit(action: { type: string; payload: DepositPayload }) {
       const totalSupply = yield call(lpTokenContract.totalSupply);
       const isFirstTransaction = totalSupply.isZero();
       let minToMint: BigNumber;
-
       if (isFirstTransaction) {
         minToMint = BigNumber.from("0");
       } else {
@@ -218,7 +217,6 @@ export function* deposit(action: { type: string; payload: DepositPayload }) {
           true
         );
       }
-
       minToMint = subtractSlippage(minToMint, selectedSlippage, customSlippage);
       const deadline = formatDeadlineToNumber(transactionDeadline);
       const txnAmounts = poolTokens.map(({ symbol }) => {
@@ -229,7 +227,6 @@ export function* deposit(action: { type: string; payload: DepositPayload }) {
       const txnDeadline = Math.round(
         new Date().getTime() / 1000 + 60 * deadline
       );
-
       const spendTransaction = yield call(
         (targetContract as SwapFlashLoanNoWithdrawFee)?.addLiquidity,
         txnAmounts,
@@ -262,8 +259,12 @@ export function* deposit(action: { type: string; payload: DepositPayload }) {
     yield put(RewardsActions.getRewardPoolsData(pools));
   } catch (e: any) {
     console.log(e);
-    toast.error("error while depositing");
     yield put(RewardsActions.setIsDepositing(false));
+    if (e?.message?.includes("User denied transaction signature")) {
+      toast.error("You denied the transaction");
+      return;
+    }
+    toast.error("error while depositing");
   }
 }
 

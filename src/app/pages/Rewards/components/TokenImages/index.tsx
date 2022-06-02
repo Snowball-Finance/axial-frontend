@@ -6,18 +6,12 @@ import { CssVariables } from "styles/cssVariables/cssVariables";
 import { RewardsPageSelectors } from "app/pages/Rewards/selectors";
 import { TokenImageProps } from "app/pages/Rewards/types";
 import { Token } from "app/containers/Swap/types";
-import { Pools } from "app/containers/Rewards/types";
-import { JLPToken } from "./JLPToken";
 import { mobile } from "styles/media";
 
 export const TokenImages: FC<TokenImageProps> = ({ poolKey }) => {
   const poolTokens = useSelector(
     RewardsPageSelectors.rewardsPoolTokens(poolKey)
   );
-
-  if (poolKey === Pools.AXIAL_JLP) {
-    return <JLPToken />;
-  }
 
   return (
     <StyledContainer container spacing={{ xs: 1, xl: 2 }} alignItems="center">

@@ -25,7 +25,7 @@ export const EquivalentInUsd = () => {
       );
     } else {
       if (symbol) {
-        tokenUSDValue = tokenPricesUSD?.[symbol];
+        tokenUSDValue = tokenPricesUSD?.[symbol] || 0;
       }
     }
   }

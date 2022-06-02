@@ -3,11 +3,10 @@ import { GlobalDomains } from "app/appSelectors";
 import { Zero } from "app/containers/Rewards/constants";
 
 import { RewardsDomains } from "app/containers/Rewards/selectors";
-import { Pool, Pools } from "app/containers/Rewards/types";
+import { Pool } from "app/containers/Rewards/types";
 import { multiply } from "precise-math";
 import { RootState } from "store/types";
 import { initialState } from "./slice";
-import { axialJlpToken } from "./staticValue";
 
 export const RewardsPageDomains = {
   rewardsPage: (state: RootState) => state.rewardsPage || initialState,
@@ -88,12 +87,6 @@ export const RewardsPageSelectors = {
     }),
   rewardsPoolData: (key: string) =>
     createSelector(RewardsDomains.pools, (pools) => {
-      if (key === Pools.AXIAL_JLP) {
-        return {
-          ...(pools[key]?.poolData || {}),
-          tokens: axialJlpToken,
-        };
-      }
       return pools[key]?.poolData;
     }),
   rewardsUserShareData: (key?: string) =>

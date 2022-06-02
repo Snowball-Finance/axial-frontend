@@ -4,7 +4,6 @@ export type NetworkName = "Fuji" | "Avalanche";
 const networkName =
   process.env.REACT_APP_NETWORK_NAME || ("Avalanche" as NetworkName);
 
-
 //@ts-ignore
 const gaugeAddresses: {
   [K in Pools]: {
@@ -33,23 +32,23 @@ const swapAddresses: {
     Fuji: string;
   };
 } = {
-  [Pools.SCALES]:{
+  [Pools.SCALES]: {
     Avalanche: "0xfD24d41B7C4C7C8Cd363Dd3FF6f49C99c8280430",
     Fuji: "0xfD24d41B7C4C7C8Cd363Dd3FF6f49C99c8280430",
   },
-  [Pools.HERO]:{
+  [Pools.HERO]: {
     Avalanche: "0xa0f6397FEBB03021F9BeF25134DE79835a24D76e",
     Fuji: "0xa0f6397FEBB03021F9BeF25134DE79835a24D76e",
   },
-  [Pools.AS4D]:{
+  [Pools.AS4D]: {
     Avalanche: "0x2a716c4933A20Cd8B9f9D9C39Ae7196A85c24228",
     Fuji: "0x2a716c4933A20Cd8B9f9D9C39Ae7196A85c24228",
   },
-  [Pools.AC4D]:{
+  [Pools.AC4D]: {
     Avalanche: "0x8c3c1C6F971C01481150CA7942bD2bbB9Bc27bC7",
     Fuji: "0x8c3c1C6F971C01481150CA7942bD2bbB9Bc27bC7",
   },
-  [Pools.AM3D]:{
+  [Pools.AM3D]: {
     Avalanche: "0x90c7b96AD2142166D001B27b5fbc128494CDfBc8",
     Fuji: "0x90c7b96AD2142166D001B27b5fbc128494CDfBc8",
   },
@@ -72,7 +71,6 @@ export const poolSwapAddress = (key: Pools): string => {
   const address = swapAddresses[key][networkName];
   return address;
 };
-
 
 export const gaugeAddress = (key: Pools): string => {
   const address = gaugeAddresses[key][networkName];

@@ -1,10 +1,10 @@
 import { Pools, PoolTypes, RewardsState } from "./containers/Rewards/types";
-import META_SWAP_ABI from "abi/metaSwap.json";
 
 import SWAP_FLASH_LOAN_NO_WITHDRAW_FEE_ABI from "abi/swapFlashLoanNoWithdrawFee.json";
 import { tokens } from "./tokens";
 import { networkName } from "utils/tokenAddresses";
 import { fujiPools } from "./fujiPools";
+import { poolSwapAddress } from "utils/poolAddresses";
 
 export const pools =
   networkName === "Fuji"
@@ -13,7 +13,7 @@ export const pools =
         SCALES: {
           key: Pools.SCALES,
           name: "Scales Stablecoins",
-          address: tokens.SCALES?.address||'',
+          address: tokens.SCALES?.address || "",
           swapABI: SWAP_FLASH_LOAN_NO_WITHDRAW_FEE_ABI,
           poolType: PoolTypes.USD,
           poolTokens: [
@@ -23,6 +23,7 @@ export const pools =
             tokens.USDC,
           ],
           lpToken: tokens.SCALES,
+          swapAddress: poolSwapAddress(Pools.SCALES),
           gauge_address: "",
         },
         HERO: {
@@ -33,6 +34,7 @@ export const pools =
           poolType: PoolTypes.USD,
           poolTokens: [tokens.USDC, tokens.USDt, tokens.MIM, tokens.YUSD],
           lpToken: tokens.HERO,
+          swapAddress: poolSwapAddress(Pools.HERO),
           gauge_address: "",
         },
         AS4D: {
@@ -42,12 +44,13 @@ export const pools =
           swapABI: SWAP_FLASH_LOAN_NO_WITHDRAW_FEE_ABI,
           poolType: PoolTypes.USD,
           poolTokens: [
+            tokens.TUSD,
+            tokens["USDC.e"],
             tokens["DAI.e"],
             tokens["USDT.e"],
-            tokens["USDC.e"],
-            tokens.TUSD,
           ],
           lpToken: tokens.AS4D,
+          swapAddress: poolSwapAddress(Pools.AS4D),
           gauge_address: "",
         },
         AC4D: {
@@ -56,8 +59,9 @@ export const pools =
           address: tokens.AC4D?.address,
           swapABI: SWAP_FLASH_LOAN_NO_WITHDRAW_FEE_ABI,
           poolType: PoolTypes.USD,
-          poolTokens: [tokens["DAI.e"], tokens.MIM, tokens.TSD, tokens.FRAX],
+          poolTokens: [tokens.TSD, tokens.MIM, tokens.FRAX, tokens["DAI.e"]],
           lpToken: tokens.AC4D,
+          swapAddress: poolSwapAddress(Pools.AC4D),
           gauge_address: "",
         },
         AM3D: {
@@ -66,8 +70,9 @@ export const pools =
           address: tokens.AM3D?.address,
           swapABI: SWAP_FLASH_LOAN_NO_WITHDRAW_FEE_ABI,
           poolType: PoolTypes.USD,
-          poolTokens: [tokens["DAI.e"], tokens["USDC.e"], tokens.MIM],
+          poolTokens: [tokens.MIM, tokens["USDC.e"], tokens["DAI.e"]],
           lpToken: tokens.AM3D,
+          swapAddress: poolSwapAddress(Pools.AM3D),
           gauge_address: "",
         },
       } as RewardsState["pools"]);

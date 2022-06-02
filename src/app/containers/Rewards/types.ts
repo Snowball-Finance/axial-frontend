@@ -87,6 +87,8 @@ export interface Pool {
   poolData?: PoolData;
   userShareData?: UserShareData;
   gauge_address: string;
+  last_vol?: string;
+  last_swap_apr?: string;
 }
 export interface DepositPayload {
   poolKey: Pools;

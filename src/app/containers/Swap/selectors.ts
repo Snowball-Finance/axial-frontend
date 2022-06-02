@@ -23,10 +23,7 @@ export const SwapDomains = {
 
 export const SwapSelectors = {
   selectSwapState: createSelector([SwapDomains.mainDomain], (state) => state),
-  aggregatorABI: createSelector(
-    [SwapDomains.aggregatorABI],
-    (abi) => abi
-  ),
+  aggregatorABI: createSelector([SwapDomains.aggregatorABI], (abi) => abi),
   aggregatorAddress: createSelector(
     [SwapDomains.aggregatorAddress],
     (address) => address

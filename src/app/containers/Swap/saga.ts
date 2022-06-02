@@ -47,14 +47,12 @@ export function* findBestPath(action: {
       maxSteps,
       gasPrice: ethers.utils.parseUnits("225", "gwei"),
     };
-
     const gasEstimate = yield call(
       swapContract.estimateGas.findBestPath,
       findBestPathParams,
       { gasLimit: 1e9 }
     );
     const additional = multiply(Number(gasEstimate.toString()), 0.2).toFixed(0);
-
     const optimalPath = yield call(
       swapContract.findBestPath,
       findBestPathParams,
