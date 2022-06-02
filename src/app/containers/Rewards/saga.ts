@@ -261,7 +261,7 @@ export function* deposit(action: { type: string; payload: DepositPayload }) {
     console.log(e);
     yield put(RewardsActions.setIsDepositing(false));
     if (e?.message?.includes("User denied transaction signature")) {
-      toast.error("You denied the transaction");
+      toast.error("You've rejected the transaction");
       return;
     }
     toast.error("error while depositing");
