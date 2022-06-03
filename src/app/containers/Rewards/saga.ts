@@ -217,6 +217,7 @@ export function* deposit(action: { type: string; payload: DepositPayload }) {
           true
         );
       }
+
       minToMint = subtractSlippage(minToMint, selectedSlippage, customSlippage);
       const deadline = formatDeadlineToNumber(transactionDeadline);
       const txnAmounts = poolTokens.map(({ symbol }) => {
@@ -252,11 +253,13 @@ export function* deposit(action: { type: string; payload: DepositPayload }) {
         );
       }
     }
-    yield put(RewardsActions.setIsDepositing(false));
     toast.success("deposit successful");
-    yield put(PoolsAndGaugesActions.getInitialData());
-    yield put(GlobalActions.getTokenBalances());
-    yield put(RewardsActions.getRewardPoolsData(pools));
+    yield all([
+      put(RewardsActions.setIsDepositing(false)),
+      put(PoolsAndGaugesActions.getInitialData()),
+      put(GlobalActions.getTokenBalances()),
+      put(RewardsActions.getRewardPoolsData(pools))
+    ])
   } catch (e: any) {
     console.log(e);
     yield put(RewardsActions.setIsDepositing(false));
