@@ -35,7 +35,6 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
   const poolsAndGaugesPools = useSelector(PoolsAndGaugesSelectors.pools);
 
   const totalAPR = poolsAndGaugesPools[pools[poolKey]?.address]?.last_apr || 0;
-  console.log(totalAPR)
   const lastSwapApr =
     poolsAndGaugesPools[pools[poolKey]?.address]?.last_swap_apr || 0;
 const lastAPR=poolsAndGaugesPools[pools[poolKey]?.address]?.last_apr || 0;

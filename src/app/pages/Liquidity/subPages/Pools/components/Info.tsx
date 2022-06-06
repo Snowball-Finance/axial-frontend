@@ -28,16 +28,18 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
   const userShareData = useSelector(RewardsSelectors.userShareData(poolKey));
   const poolsAndGaugesPools = useSelector(PoolsAndGaugesSelectors.pools);
   const isGettingPoolsData = useSelector(RewardsSelectors.isGettingPoolsData);
-  const vol = poolsAndGaugesPools[pools[poolKey]?.swapAddress]?.last_vol || 0;
+  const poolDataFromAPI=poolsAndGaugesPools[pools[poolKey]?.swapAddress]||poolsAndGaugesPools[pools[poolKey]?.address];
+
+  const vol = poolDataFromAPI?.last_vol || 0;
   const swapApr =
-    poolsAndGaugesPools[pools[poolKey]?.swapAddress]?.last_swap_apr || 0;
+  poolDataFromAPI?.last_swap_apr || 0;
 
   const formattedData = {
     reserve: poolData?.reserve
       ? formatBNToShortString(poolData?.reserve, 18)
       : "-",
     apr: swapApr
-      ? `${Number(swapApr).toFixed(2)}%`
+      ? `${commify(Number(swapApr).toFixed(2))}%`
       : swapApr === '0'
       ? "0%"
       : "-",
