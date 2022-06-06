@@ -83,14 +83,8 @@ export const ClaimRewards: FC = () => {
 
                       <Grid item xs={12}>
                         <Text variant="body1">
-                          {
-                            formatNumber(+item.amountToHarvest, 4).toString()
-                          }{" "}
-                          ($
-                          {
-                            formatNumber(+item.amountInUsd, 4).toString()
-                          }
-                          )
+                          {formatNumber(+item.amountToHarvest, 4).toString()} ($
+                          {formatNumber(+item.amountInUsd, 4).toString()})
                         </Text>
                       </Grid>
                     </Grid>

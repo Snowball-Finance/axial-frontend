@@ -86,7 +86,6 @@ export function* buildTransactionData() {
         fromStateData.total + parseFloat(depositTokenAmounts[tokenKey]);
     }
   }
-
   try {
     const library = yield select(Web3Domains.selectLibraryDomain);
     const account = yield select(Web3Domains.selectAccountDomain);
@@ -111,24 +110,28 @@ export function* buildTransactionData() {
       tokenAmountsArray,
       true
     );
-    const tokenInputSum = parseUnits(
-      pool.poolTokens
-        .reduce((sum, { symbol }) => sum + (+tokenAmounts[symbol] || 0), 0)
-        .toString(),
-      18
-    );
+    let tokenInputSum = BigNumber.from(0);
+    const tokensInPool = pool.poolTokens;
+    for (let i = 0; i < tokensInPool.length; i++) {
+      const token = tokensInPool[i];
+      const tokenAmount: string = tokenAmounts[token.symbol];
+      if (tokenAmount && !isNaN(Number(tokenAmount))) {
+        tokenInputSum = tokenInputSum.add(tokenAmount);
+      }
+    }
     let estDepositLPTokenAmount = Zero;
     if (pool.poolData?.totalLocked.gt(0) && tokenInputSum.gt(0)) {
       estDepositLPTokenAmount = minToMint;
     } else {
       estDepositLPTokenAmount = tokenInputSum;
     }
-const toDivide=estDepositLPTokenAmount.add(pool.poolData?.totalLocked||BigNumber.from(0));
-    const shareOfPool = pool.poolData?.totalLocked.gt(0) && toDivide.gt(0)
-      ? estDepositLPTokenAmount
-          .mul(BigNumber.from(10).pow(18))
-          .div(toDivide)
-      : BigNumber.from(10).pow(18);
+    const toDivide = estDepositLPTokenAmount.add(
+      pool.poolData?.totalLocked || BigNumber.from(0)
+    );
+    const shareOfPool =
+      pool.poolData?.totalLocked.gt(0) && toDivide.gt(0)
+        ? estDepositLPTokenAmount.mul(BigNumber.from(10).pow(18)).div(toDivide)
+        : BigNumber.from(10).pow(18);
 
     yield put(
       LiquidityPageActions.setDepositTransactionData({

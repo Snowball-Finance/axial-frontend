@@ -33,22 +33,25 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
   );
   const isGettingPoolsData = useSelector(RewardsSelectors.isGettingPoolsData);
   const poolsAndGaugesPools = useSelector(PoolsAndGaugesSelectors.pools);
-const poolDataFromAPI= poolsAndGaugesPools[pools[poolKey]?.swapAddress]||poolsAndGaugesPools[pools[poolKey]?.address];
+  const poolDataFromAPI =
+    poolsAndGaugesPools[pools[poolKey]?.swapAddress] ||
+    poolsAndGaugesPools[pools[poolKey]?.address];
   const totalAPR = poolDataFromAPI?.last_apr || 0;
-  const lastSwapApr =
-    poolDataFromAPI?.last_swap_apr || 0;
-  const lastAPR=poolDataFromAPI?.last_apr || 0;
+  const lastSwapApr = poolDataFromAPI?.last_swap_apr || 0;
+  const lastAPR = poolDataFromAPI?.last_apr || 0;
 
-const rewardsAPR=subtract(Number(lastAPR),Number(lastSwapApr))
+  const rewardsAPR = subtract(Number(lastAPR), Number(lastSwapApr));
 
   const formattedData = {
     TVL: formatBNToShortString(poolData?.totalLocked || Zero, 18),
     axialPending: userShareData
-      ? commify(formatBNToString(
-          userShareData?.poolBalance?.pendingTokens.pendingAxial || Zero,
-          18,
-          2
-        ))
+      ? commify(
+          formatBNToString(
+            userShareData?.poolBalance?.pendingTokens.pendingAxial || Zero,
+            18,
+            2
+          )
+        )
       : "",
     apr: poolData?.apr
       ? `${Number(poolData?.apr).toFixed(2)}%`
@@ -63,7 +66,8 @@ const rewardsAPR=subtract(Number(lastAPR),Number(lastSwapApr))
     extraapr: poolData?.extraapr
       ? `${Number(poolData.extraapr).toFixed(2)}%`
       : null,
-    totalapr: totalAPR? commify(Number(totalAPR).toFixed(2)) + "%"
+    totalapr: totalAPR
+      ? commify(Number(totalAPR).toFixed(2)) + "%"
       : poolData?.rapr === 0
       ? "0%"
       : "-",
