@@ -44,11 +44,11 @@ const rewardsAPR=subtract(Number(lastAPR),Number(lastSwapApr))
   const formattedData = {
     TVL: formatBNToShortString(poolData?.totalLocked || Zero, 18),
     axialPending: userShareData
-      ? formatBNToString(
+      ? commify(formatBNToString(
           userShareData?.poolBalance?.pendingTokens.pendingAxial || Zero,
           18,
           2
-        )
+        ))
       : "",
     apr: poolData?.apr
       ? `${Number(poolData?.apr).toFixed(2)}%`
