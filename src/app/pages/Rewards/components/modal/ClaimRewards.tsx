@@ -120,7 +120,7 @@ export const ClaimRewardsModal: FC<Props> = ({ pool }) => {
                       <Grid item>
                         <Text variant="body1">
                           {commify(
-                            formatNumber(+item.amountToHarvest, 4).toString()
+                            Number(+item.amountToHarvest).toFixed(8)
                           )}
                         </Text>
                       </Grid>
