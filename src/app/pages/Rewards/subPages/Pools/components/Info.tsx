@@ -33,11 +33,11 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
   );
   const isGettingPoolsData = useSelector(RewardsSelectors.isGettingPoolsData);
   const poolsAndGaugesPools = useSelector(PoolsAndGaugesSelectors.pools);
-
-  const totalAPR = poolsAndGaugesPools[pools[poolKey]?.address]?.last_apr || 0;
+const poolDataFromAPI= poolsAndGaugesPools[pools[poolKey]?.swapAddress]||poolsAndGaugesPools[pools[poolKey]?.address];
+  const totalAPR = poolDataFromAPI?.last_apr || 0;
   const lastSwapApr =
-    poolsAndGaugesPools[pools[poolKey]?.address]?.last_swap_apr || 0;
-const lastAPR=poolsAndGaugesPools[pools[poolKey]?.address]?.last_apr || 0;
+    poolDataFromAPI?.last_swap_apr || 0;
+  const lastAPR=poolDataFromAPI?.last_apr || 0;
 
 const rewardsAPR=subtract(Number(lastAPR),Number(lastSwapApr))
 
