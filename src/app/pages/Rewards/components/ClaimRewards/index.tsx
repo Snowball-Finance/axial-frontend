@@ -66,7 +66,7 @@ export const ClaimRewards: FC = () => {
 
                       <Grid item xs={12}>
                         <Text variant="body1">
-                          {commify(formatNumber(+item.apr, 4).toString())}
+                          {formatNumber(+item.apr, 4).toString()}
                         </Text>
                       </Grid>
                     </Grid>
@@ -84,13 +84,13 @@ export const ClaimRewards: FC = () => {
 
                       <Grid item xs={12}>
                         <Text variant="body1">
-                          {commify(
+                          {
                             formatNumber(+item.amountToHarvest, 4).toString()
-                          )}{" "}
+                          }{" "}
                           ($
-                          {commify(
+                          {
                             formatNumber(+item.amountInUsd, 4).toString()
-                          )}
+                          }
                           )
                         </Text>
                       </Grid>
