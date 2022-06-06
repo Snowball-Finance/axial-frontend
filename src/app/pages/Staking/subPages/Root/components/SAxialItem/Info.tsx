@@ -20,7 +20,6 @@ export const SAxialInfo: FC = () => {
     StakingSelectors.claimableGovernanceToken
   );
   const lockEndDate = useSelector(StakingPageSelectors.lockEndDate);
-
   return (
     <StyledContainer container spacing={2}>
       <Grid item>

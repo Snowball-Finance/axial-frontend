@@ -88,7 +88,7 @@ export const tokens =
           decimals: 18,
           symbol: TokenSymbols.YUSD,
           name: "YUSD Stablecoin",
-          logo:'https://assets.coingecko.com/coins/images/12210/small/yUSD.png?1600166557',// iconSrcWithAddress(tokenAddress(TokenSymbols.YUSD)),
+          logo:'https://assets.coingecko.com/coins/images/25024/small/1_oJ0F2Zf6CuAhLP0zOboo6w.png?1649837252',// iconSrcWithAddress(tokenAddress(TokenSymbols.YUSD)),
           geckoId: "yusd-stablecoin",
           masterchefId: -1,
           isSynthetic: false,

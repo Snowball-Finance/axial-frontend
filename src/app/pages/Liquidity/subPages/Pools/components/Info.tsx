@@ -28,22 +28,22 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
   const userShareData = useSelector(RewardsSelectors.userShareData(poolKey));
   const poolsAndGaugesPools = useSelector(PoolsAndGaugesSelectors.pools);
   const isGettingPoolsData = useSelector(RewardsSelectors.isGettingPoolsData);
-  const vol = poolsAndGaugesPools[pools[poolKey]?.address]?.last_vol || 0;
+  const vol = poolsAndGaugesPools[pools[poolKey]?.swapAddress]?.last_vol || 0;
   const swapApr =
-    poolsAndGaugesPools[pools[poolKey]?.address]?.last_swap_apr || 0;
+    poolsAndGaugesPools[pools[poolKey]?.swapAddress]?.last_swap_apr || 0;
 
   const formattedData = {
     reserve: poolData?.reserve
       ? formatBNToShortString(poolData?.reserve, 18)
       : "-",
-    apr: poolData?.apr
+    apr: swapApr
       ? `${Number(swapApr).toFixed(2)}%`
-      : poolData?.apr === 0
+      : swapApr === '0'
       ? "0%"
       : "-",
-    volume: poolData?.volume
+    volume: vol
       ? `${commify(Number(vol).toFixed(2))}`
-      : poolData?.volume === 0
+      : vol === '0'
       ? "0"
       : "-",
     userBalanceUSD: formatBNToString(userShareData?.usdBalance || Zero, 18, 2),
