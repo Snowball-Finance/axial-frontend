@@ -11,11 +11,14 @@ import { PoolDataProps } from "app/pages/Rewards/types";
 import { PoolTypes } from "app/containers/Rewards/types";
 import { Zero } from "app/containers/Rewards/constants";
 import {
+  commify,
   formatBNToShortString,
   formatBNToString,
 } from "app/containers/utils/contractUtils";
 import { mobile } from "styles/media";
 import { RewardsSelectors } from "app/containers/Rewards/selectors";
+import { PoolsAndGaugesSelectors } from "app/containers/PoolsAndGauges/selectors";
+import { subtract } from "precise-math";
 
 interface InfoData {
   title: string;
@@ -29,6 +32,14 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
     RewardsPageSelectors.rewardsUserShareData(poolKey)
   );
   const isGettingPoolsData = useSelector(RewardsSelectors.isGettingPoolsData);
+  const poolsAndGaugesPools = useSelector(PoolsAndGaugesSelectors.pools);
+
+  const totalAPR = poolsAndGaugesPools[pools[poolKey]?.address]?.last_apr || 0;
+  const lastSwapApr =
+    poolsAndGaugesPools[pools[poolKey]?.address]?.last_swap_apr || 0;
+const lastAPR=poolsAndGaugesPools[pools[poolKey]?.address]?.last_apr || 0;
+
+const rewardsAPR=subtract(Number(lastAPR),Number(lastSwapApr))
 
   const formattedData = {
     TVL: formatBNToShortString(poolData?.totalLocked || Zero, 18),
@@ -52,12 +63,7 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
     extraapr: poolData?.extraapr
       ? `${Number(poolData.extraapr).toFixed(2)}%`
       : null,
-    totalapr: Number(poolData?.rapr)
-      ? (
-          Number(poolData?.rapr) +
-          (poolData?.apr ? Number(poolData?.apr) : 0) +
-          (poolData?.extraapr ? Number(poolData?.extraapr) : 0)
-        ).toFixed(2) + "%"
+    totalapr: totalAPR? commify(Number(totalAPR).toFixed(2)) + "%"
       : poolData?.rapr === 0
       ? "0%"
       : "-",
@@ -77,9 +83,7 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
   if (pools[poolKey].poolType !== PoolTypes.LP) {
     info.push({
       title: t(translations.RewardsPage.Info.RewardsAPR()),
-      value: `${formattedData.rapr}${
-        formattedData.extraapr ? " + " + formattedData.extraapr : ""
-      }`,
+      value: `${commify(Number(rewardsAPR).toFixed(2))}%`,
     });
   }
 
