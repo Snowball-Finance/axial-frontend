@@ -11,7 +11,6 @@ import { POOLS_INFO_MAP } from "app/pages/Rewards/constants";
 import { RewardsPageSelectors } from "app/pages/Rewards/selectors";
 import { CssVariables, FontFamilies } from "styles/cssVariables/cssVariables";
 import { mobile } from "styles/media";
-import { getKeyFromPoolIndex } from "app/pages/Liquidity/constants";
 
 type TParams = { poolIndex: string };
 
@@ -19,7 +18,7 @@ export const CompoundWithSnowball: FC = () => {
   const { t } = useTranslation();
 
   const { poolIndex } = useParams<TParams>();
-  const poolKey = getKeyFromPoolIndex(poolIndex) || "";
+  const poolKey = poolIndex?.toUpperCase() || "";
   const poolAddress = POOLS_INFO_MAP[poolKey]?.snowglobeAddress;
   const poolPairName = POOLS_INFO_MAP[poolKey]?.pair;
 

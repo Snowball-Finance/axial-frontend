@@ -5,7 +5,6 @@ import { useParams } from "react-router-dom";
 
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { LiquidityPageSelectors } from "app/pages/Liquidity/selectors";
-import { getKeyFromPoolIndex } from "app/pages/Liquidity/constants";
 import { Token } from "app/containers/Swap/types";
 import { WithdrawInput } from "./input";
 import { EquivalentWithdrawAmount } from "./equivalentWithdrawAmount";
@@ -15,7 +14,7 @@ type TParams = { poolIndex: string };
 
 export const CurrencyInput: FC = () => {
   const { poolIndex } = useParams<TParams>();
-  const poolKey = getKeyFromPoolIndex(poolIndex) || "";
+  const poolKey = poolIndex?.toUpperCase() || "";
   const poolTokens = useSelector(
     LiquidityPageSelectors.liquidityPoolTokens(poolKey)
   );

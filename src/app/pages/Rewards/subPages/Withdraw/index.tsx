@@ -6,7 +6,6 @@ import { WithdrawInput } from "./components/Input";
 import { mobile } from "styles/media";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getKeyFromPoolIndex } from "app/pages/Liquidity/constants";
 import { pools } from "app/pools";
 import { Pool } from "app/containers/Rewards/types";
 import { RewardsPageActions } from "../../slice";
@@ -17,7 +16,7 @@ type TParams = { poolIndex: string };
 export const Withdraw: FC = () => {
   const dispatch = useDispatch();
   const { poolIndex } = useParams<TParams>();
-  const poolKey = getKeyFromPoolIndex(poolIndex) || "";
+  const poolKey = poolIndex?.toUpperCase() || "";
 
   useEffect(() => {
     if (poolKey) {

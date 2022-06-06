@@ -10,17 +10,17 @@ import { SwapActions, useSwapSlice } from "./slice";
 import { Token, TokenSymbols } from "./types";
 
 interface Props {
-  swapRouterAddress: string;
-  swapRouterABI: any;
+  aggregatorAddress: string;
+  aggregatorABI: any;
   tokens: { [K in TokenSymbols]: Token };
 }
-if (!process.env.REACT_APP_SWAP_ROUTER_ADDRESS) {
-  throw new Error("REACT_APP_SWAP_ROUTER_ADDRESS is not set");
+if (!process.env.REACT_APP_AGGREGATOR_ADDRESS) {
+  throw new Error("REACT_APP_AGGREGATOR_ADDRESS is not set");
 }
 
 export const Swap: FC<Props> = ({
-  swapRouterABI,
-  swapRouterAddress,
+  aggregatorABI,
+  aggregatorAddress,
   tokens,
 }) => {
   useSwapSlice();
@@ -28,9 +28,9 @@ export const Swap: FC<Props> = ({
 
   useEffect(() => {
     dispatch(
-      SwapActions.setSwapRouterConfigs({
-        abi: swapRouterABI,
-        address: swapRouterAddress,
+      SwapActions.setAggregatorConfigs({
+        abi: aggregatorABI,
+        address: aggregatorAddress,
         tokens,
       })
     );

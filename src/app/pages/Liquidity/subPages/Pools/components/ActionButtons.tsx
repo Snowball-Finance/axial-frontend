@@ -9,7 +9,6 @@ import { ContainedButton } from "app/components/common/buttons/containedButton";
 import { OutlinedButton } from "app/components/common/buttons/outlinedButton";
 import { AppPages } from "app/types";
 import { ActionButtonProps } from "app/pages/Liquidity/types";
-import { getPoolIndexFromKey } from "app/pages/Liquidity/constants";
 import { mobile } from "styles/media";
 import { LiquidityPageSelectors } from "app/pages/Liquidity/selectors";
 
@@ -20,12 +19,12 @@ export const ActionButtons: FC<ActionButtonProps> = ({ poolKey }) => {
   const pool = useSelector(LiquidityPageSelectors.liquidityPool(poolKey));
 
   const handleNavigateToDeposit = (poolKey: string) => {
-    const poolIndex = getPoolIndexFromKey(poolKey);
+    const poolIndex = poolKey.toLowerCase();
     dispatch(push(`${AppPages.LiquidityPage}/${poolIndex}/deposit`));
   };
 
   const handleNavigateToWithdraw = (poolKey: string) => {
-    const poolIndex = getPoolIndexFromKey(poolKey);
+    const poolIndex = poolKey.toLowerCase();
     dispatch(push(`${AppPages.LiquidityPage}/${poolIndex}/withdraw`));
   };
 

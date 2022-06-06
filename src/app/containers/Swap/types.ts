@@ -14,24 +14,20 @@ export interface BestPath {
 
 export enum TokenSymbols {
   USDTe = "USDT.e",
+  USDt = "USDt",
   FRAX = "FRAX",
   DAI = "DAI.e",
-  AVAI = "AVAI",
   TSD = "TSD",
   USDC = "USDC",
   MIM = "MIM",
-  TEDDY = "TEDDY",
-  FXS = "FXS",
-  WAVAX = "WAVAX",
   TUSD = "TUSD",
   USDCe = "USDC.e",
-  JLP = "JLP",
-  as4dUSD = "as4dUSD",
-  usdcAM3DUSD = "usdcAM3DUSD",
-  ac4dUSD = "ac4dUSD",
-  aa3dUSD = "aa3dUSD",
-  am3dUSD = "am3dUSD",
-  ORCA = "ORCA",
+  YUSD = "YUSD",
+  SCALES = "SCALES",
+  HERO = "HERO",
+  AS4D = "AS4D",
+  AC4D = "AC4D",
+  AM3D = "AM3D",
   //Fuji token symbols
   STABLE1 = "STABLE1",
   STABLE2 = "STABLE2",
@@ -73,8 +69,8 @@ export enum Slippages {
 }
 
 export interface SwapState {
-  swapRouterAddress: string;
-  swapRouterABI: any;
+  aggregatorAddress: string;
+  aggregatorABI: any;
   tokens: { [K in TokenSymbols]?: Token };
   isGettingBestPath: boolean;
   bestPath: BestPath | undefined;

@@ -11,7 +11,6 @@ import { useParams } from "react-router-dom";
 
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { SnowRadio } from "app/components/base/SnowRadio";
-import { getKeyFromPoolIndex } from "app/pages/Liquidity/constants";
 import { LiquidityPageSelectors } from "app/pages/Liquidity/selectors";
 import { Token, TokenSymbols } from "app/containers/Swap/types";
 import { LiquidityPageActions } from "app/pages/Liquidity/slice";
@@ -23,7 +22,7 @@ export const Selection: FC = memo(
   () => {
     const dispatch = useDispatch();
     const { poolIndex } = useParams<TParams>();
-    const poolKey = getKeyFromPoolIndex(poolIndex) || "";
+    const poolKey = poolIndex?.toUpperCase() || "";
     const poolTokens = useSelector(
       LiquidityPageSelectors.liquidityPoolTokens(poolKey)
     );

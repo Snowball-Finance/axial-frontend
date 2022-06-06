@@ -7,7 +7,6 @@ import { CurrencyInput } from "./CurrencyInput";
 import { Selection } from "./Selection";
 import { WithdrawSlider } from "./slider";
 import { useParams } from "react-router-dom";
-import { getKeyFromPoolIndex } from "app/pages/Liquidity/constants";
 import { useDispatch } from "react-redux";
 import { pools } from "app/pools";
 import { Pool } from "app/containers/Rewards/types";
@@ -24,7 +23,7 @@ export const WithdrawInput: FC = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { poolIndex } = useParams<TParams>();
-  const poolKey = getKeyFromPoolIndex(poolIndex) || "";
+  const poolKey = poolIndex?.toUpperCase() || "";
 
   useEffect(() => {
     if (poolKey) {

@@ -16,7 +16,6 @@ import { Pool } from "app/containers/Rewards/types";
 import { Web3Selectors } from "app/containers/BlockChain/Web3/selectors";
 import { mobile } from "styles/media";
 import { RewardsPageSelectors } from "app/pages/Rewards/selectors";
-import { getPoolIndexFromKey } from "app/pages/Liquidity/constants";
 import { ClaimConfirmationModal } from "app/pages/Rewards/components/ClaimRewards/ClaimConfirmationModal";
 import { PoolsAndGaugesSelectors } from "app/containers/PoolsAndGauges/selectors";
 
@@ -36,12 +35,12 @@ export const ActionButtons: FC<ActionButtonProps> = ({ poolKey }) => {
   const tokenKey = pools[poolKey].lpToken.symbol;
 
   const handleNavigateToDeposit = (poolKey: string) => {
-    const poolIndex = getPoolIndexFromKey(poolKey);
+    const poolIndex = poolKey.toLowerCase();
     dispatch(push(`${AppPages.RewardPage}/${poolIndex}/deposit`));
   };
 
   const handleNavigateToWithdraw = (poolKey: string) => {
-    const poolIndex = getPoolIndexFromKey(poolKey);
+    const poolIndex = poolKey.toLowerCase();
     dispatch(push(`${AppPages.RewardPage}/${poolIndex}/withdraw`));
   };
 

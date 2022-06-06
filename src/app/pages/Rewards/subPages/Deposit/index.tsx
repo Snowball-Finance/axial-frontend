@@ -10,14 +10,13 @@ import { pools } from "app/pools";
 import { Pool } from "app/containers/Rewards/types";
 import { RewardsPageActions } from "../../slice";
 import { DepositConfirmationModal } from "./components/DepositWrapped/depositConfirmationModal";
-import { getKeyFromPoolIndex } from "app/pages/Liquidity/constants";
 
 type TParams = { poolIndex: string };
 
 export const Deposit: FC = () => {
   const dispatch = useDispatch();
   const { poolIndex } = useParams<TParams>();
-  const poolKey = getKeyFromPoolIndex(poolIndex) || "";
+  const poolKey = poolIndex?.toUpperCase() || "";
 
   useEffect(() => {
     if (poolKey) {

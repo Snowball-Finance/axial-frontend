@@ -1,3 +1,3 @@
 import { BigNumber } from "ethers";
 
-export const SWAP_ROUTER_FEE = BigNumber.from(0);
+export const SWAP_FEE = BigNumber.from(0);

@@ -172,7 +172,7 @@ export const GovernanceSelectors = {
       if (provider && library && governanceTokenABI) {
         if (!env.GOVERNANCE_TOKEN_CONTRACT_ADDRESS) {
           throw new Error(
-            "Governance Token Contract Address is not defined in environment, please define REACT_APP_GOVERNANCE_TOKEN_CONTRACT_ADDRESS"
+            "Governance Token Contract Address is not defined in environment, please define REACT_APP_GOVERNANCE_TOKEN_ADDRESS"
           );
         }
         return new ethers.Contract(

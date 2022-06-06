@@ -31,7 +31,6 @@ export function* calculatePoolData(props: CalculatePoolDataProps) {
   const aprData = yield select(RewardsDomains.aprData);
   const poolsBalances = yield select(RewardsDomains.poolsBalances);
   const swapStats = yield select(RewardsDomains.swapStats);
-
   const poolEffectiveContract = new Contract(
     pool.swapAddress || pool.gauge_address,
     pool.swapABI,
@@ -132,7 +131,6 @@ export function* calculatePoolData(props: CalculatePoolDataProps) {
   }
   //@ts-ignore ignored because we will always have pool
   let symbol = POOL.lpToken.symbol;
-
   const userPoolBalance = poolsBalances ? poolsBalances[symbol] : null;
   const effectivePoolTokens = POOL.underlyingPoolTokens || POOL.poolTokens;
   const isMetaSwap = POOL.swapAddress != null;

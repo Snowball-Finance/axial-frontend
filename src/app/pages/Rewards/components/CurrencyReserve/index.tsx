@@ -13,7 +13,6 @@ import { pools } from "app/pools";
 import { tokens } from "app/tokens";
 import { mobile } from "styles/media";
 import { CardWrapper } from "app/components/wrappers/Card";
-import { getKeyFromPoolIndex } from "app/pages/Liquidity/constants";
 
 type TParams = { poolIndex: string };
 
@@ -21,7 +20,7 @@ export const CurrencyReserve: FC = () => {
   const { t } = useTranslation();
 
   const { poolIndex } = useParams<TParams>();
-  const poolKey = getKeyFromPoolIndex(poolIndex) || "";
+  const poolKey = poolIndex?.toUpperCase() || "";
   const rewardsPoolData = useSelector(
     RewardsPageSelectors.rewardsPoolData(poolKey)
   );

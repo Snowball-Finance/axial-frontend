@@ -131,7 +131,10 @@ export function formatBNToShortString(
   const div = Math.floor((numLen - 1) / 3);
   const mod = numLen % 3;
   const suffixes = ["", "k", "m", "b", "t"];
-  return `${bnStr.substr(0, mod || 3)}.${bnStr[mod || 3]}${suffixes[div]}`;
+  const formattedData = `${bnStr.substr(0, mod || 3)}.${bnStr[mod || 3]}${
+    suffixes[div]
+  }`;
+  return formattedData;
 }
 
 export function commify(str: string): string {

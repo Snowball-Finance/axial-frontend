@@ -119,6 +119,7 @@ export const StakingPageSelectors = {
     (lockedGovernanceTokenInfo) => {
       if (!lockedGovernanceTokenInfo) return;
       const { endBlockTime: endTimeInSeconds } = lockedGovernanceTokenInfo;
+     if(endTimeInSeconds.eq(0)) return;
       const endDateInLocalString = new Date(
         endTimeInSeconds.toNumber() * 1000
       ).toLocaleString();

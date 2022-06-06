@@ -7,7 +7,7 @@ import { all, call, put, select, takeLatest } from "redux-saga/effects";
 import { Web3Domains } from "../BlockChain/Web3/selectors";
 import checkAndApproveTokenForTrade from "../utils/checkAndApproveTokenForTrade";
 import { getProviderOrSigner } from "../utils/contractUtils";
-import { SWAP_ROUTER_FEE } from "./constants";
+import { SWAP_FEE } from "./constants";
 import { SwapDomains } from "./selectors";
 import { SwapActions } from "./slice";
 import { BestPath, ContainerState, FindBestPathPayload } from "./types";
@@ -26,8 +26,8 @@ export function* findBestPath(action: {
   try {
     yield put(SwapActions.setBestPath(undefined));
     yield put(SwapActions.setIsGettingBestPath(true));
-    const swapRouterAddress = yield select(SwapDomains.swapRouterAddress);
-    const swapRouterABI = yield select(SwapDomains.swapRouterABI);
+    const aggregatorAddress = yield select(SwapDomains.aggregatorAddress);
+    const aggregatorABI = yield select(SwapDomains.aggregatorABI);
     const { amountToGive, toToken, fromToken } = action.payload;
     const fromTokenAddress = fromToken.address;
     const toTokenAddress = toToken.address;
@@ -35,8 +35,8 @@ export function* findBestPath(action: {
     const account = yield select(Web3Domains.selectAccountDomain);
     const maxSteps = 4;
     const swapContract = new Contract(
-      swapRouterAddress,
-      swapRouterABI,
+      aggregatorAddress,
+      aggregatorABI,
       getProviderOrSigner(library, account)
     ) as AxialAggregator;
 
@@ -47,14 +47,12 @@ export function* findBestPath(action: {
       maxSteps,
       gasPrice: ethers.utils.parseUnits("225", "gwei"),
     };
-
     const gasEstimate = yield call(
       swapContract.estimateGas.findBestPath,
       findBestPathParams,
       { gasLimit: 1e9 }
     );
     const additional = multiply(Number(gasEstimate.toString()), 0.2).toFixed(0);
-
     const optimalPath = yield call(
       swapContract.findBestPath,
       findBestPathParams,
@@ -81,11 +79,11 @@ export function* swap() {
     const optimalPath: BestPath = yield select(SwapDomains.bestPath);
     const { bestPath, useInternalRouter } = optimalPath;
 
-    const swapRouterAddress = yield select(SwapDomains.swapRouterAddress);
-    const swapRouterABI = yield select(SwapDomains.swapRouterABI);
-    const swapRouterContract = new Contract(
-      swapRouterAddress,
-      swapRouterABI,
+    const aggregatorAddress = yield select(SwapDomains.aggregatorAddress);
+    const aggregatorABI = yield select(SwapDomains.aggregatorABI);
+    const aggregatorContract = new Contract(
+      aggregatorAddress,
+      aggregatorABI,
       getProviderOrSigner(library, account)
     ) as AxialAggregator;
 
@@ -103,10 +101,10 @@ export function* swap() {
       adapters: bestPath.adapters,
     };
     const swapTransaction = yield call(
-      swapRouterContract.swap,
+      aggregatorContract.swap,
       swapData,
       account,
-      SWAP_ROUTER_FEE,
+      SWAP_FEE,
       useInternalRouter
     );
     const result = yield call(swapTransaction?.wait);
@@ -135,7 +133,7 @@ export function* tokenApprovalStatus() {
       SwapDomains.swapTokens
     );
     const tokensList = Object.values(tokens);
-    const swapRouterAddress = yield select(SwapDomains.swapRouterAddress);
+    const aggregatorAddress = yield select(SwapDomains.aggregatorAddress);
 
     const fromTokenAddress = bestPath.path[0];
     const fromTokenABI = tokensList.find(
@@ -151,7 +149,7 @@ export function* tokenApprovalStatus() {
     const approvalStatus = yield call(
       checkTokenApprovalStatus,
       fromTokenContract as Erc20,
-      swapRouterAddress,
+      aggregatorAddress,
       account,
       amountToGive
     );
@@ -173,7 +171,7 @@ export function* approve() {
     const tokens: ContainerState["tokens"] = yield select(
       SwapDomains.swapTokens
     );
-    const swapRouterAddress = yield select(SwapDomains.swapRouterAddress);
+    const aggregatorAddress = yield select(SwapDomains.aggregatorAddress);
     const infiniteApproval = yield select(GlobalDomains.infiniteApproval);
 
     const fromTokenAddress = bestPath.path[0];
@@ -191,7 +189,7 @@ export function* approve() {
     yield call(
       checkAndApproveTokenForTrade,
       fromTokenContract as Erc20,
-      swapRouterAddress,
+      aggregatorAddress,
       account,
       amountToGive,
       infiniteApproval,

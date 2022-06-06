@@ -118,17 +118,16 @@ export function* buildTransactionData() {
       18
     );
     let estDepositLPTokenAmount = Zero;
-
     if (pool.poolData?.totalLocked.gt(0) && tokenInputSum.gt(0)) {
       estDepositLPTokenAmount = minToMint;
     } else {
       estDepositLPTokenAmount = tokenInputSum;
     }
-
-    const shareOfPool = pool.poolData?.totalLocked.gt(0)
+const toDivide=estDepositLPTokenAmount.add(pool.poolData?.totalLocked||BigNumber.from(0));
+    const shareOfPool = pool.poolData?.totalLocked.gt(0) && toDivide.gt(0)
       ? estDepositLPTokenAmount
           .mul(BigNumber.from(10).pow(18))
-          .div(estDepositLPTokenAmount.add(pool.poolData?.totalLocked))
+          .div(toDivide)
       : BigNumber.from(10).pow(18);
 
     yield put(

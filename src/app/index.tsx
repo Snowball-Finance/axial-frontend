@@ -42,9 +42,6 @@ import { SwapPage } from "./pages/Swap";
 import { GlobalModals } from "./components/modals";
 import { Playground } from "./pages/playground";
 import { PoolsAndGauges } from "./containers/PoolsAndGauges/Loadable";
-// import { PoolsAndGauges } from "./containers/PoolsAndGauges/Loadable";
-// import { INFO_QUERY } from "services/apollo/queries/snowballInfo";
-// import GAUGE_PROXY_ABI from 'abi/gaugeProxy.json'
 
 export function App() {
   const { t } = useTranslation();
@@ -109,8 +106,8 @@ export function App() {
       <PoolsAndGauges />
       <Rewards pools={pools} />
       <Swap
-        swapRouterABI={AGGREGATOR_ABI}
-        swapRouterAddress={process.env.REACT_APP_SWAP_ROUTER_ADDRESS || ""}
+        aggregatorABI={AGGREGATOR_ABI}
+        aggregatorAddress={process.env.REACT_APP_AGGREGATOR_ADDRESS || ""}
         tokens={tokens as { [K in TokenSymbols]: Token }}
       />
       <Layout>
