@@ -119,9 +119,7 @@ export const ClaimRewardsModal: FC<Props> = ({ pool }) => {
                     <Grid container spacing={1} alignItems="center">
                       <Grid item>
                         <Text variant="body1">
-                          {commify(
-                            Number(+item.amountToHarvest).toFixed(8)
-                          )}
+                          {commify(Number(+item.amountToHarvest).toFixed(8))}
                         </Text>
                       </Grid>
 
