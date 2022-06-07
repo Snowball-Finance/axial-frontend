@@ -114,7 +114,12 @@ export const RewardsPageSelectors = {
   ),
   withdrawAmount: createSelector(
     RewardsPageDomains.withdrawAmount,
-    (withdrawAmount) => withdrawAmount
+    (withdrawAmount) => {
+      if(withdrawAmount.toString().includes('-17')||withdrawAmount.toString().includes('-18')) {
+      return '0'
+      }
+      return withdrawAmount
+    }
   ),
   equivalentWithdrawAmount: createSelector(
     [

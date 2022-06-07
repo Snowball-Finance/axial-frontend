@@ -131,7 +131,11 @@ export function* stakeAccruingToken(action: {
   payload: StakeAccruingTokenModel;
 }) {
   const { amountToStake: amount } = action.payload;
-  const amountToStake = floatToBN(amount, 18) || BigNumber.from(0);
+  let amountToStake = floatToBN(amount, 18) || BigNumber.from(0);
+  const mainTokenBalance = yield select(BlockChainDomains.selectMainTokenBalanceDomain);
+  if(amountToStake.gt(mainTokenBalance)){
+amountToStake=mainTokenBalance;
+  }
   yield put(GlobalActions.setTransactionSuccessId(undefined));
   const library = yield select(Web3Domains.selectLibraryDomain);
   //|| is used because if .env is not set,we will fetch the error in early stages

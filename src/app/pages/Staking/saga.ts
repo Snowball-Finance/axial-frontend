@@ -23,7 +23,7 @@ export function* stakeAllTheBalances() {
 }
 
 export function* stakeAllTheAxialBalancesIntoVeAxial() {
-  const mainTokenBalance = yield select(
+  const mainTokenBalance:BigNumber = yield select(
     BlockChainDomains.selectMainTokenBalanceDomain
   );
   if (mainTokenBalance) {

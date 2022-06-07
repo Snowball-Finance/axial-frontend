@@ -32,6 +32,7 @@ import { Deadlines, formatDeadlineToNumber } from "./utils/deadline";
 import { GlobalActions } from "store/slice";
 import { toast } from "react-toastify";
 import { PoolsAndGaugesActions } from "../PoolsAndGauges/slice";
+import { RewardsPageActions } from "app/pages/Rewards/slice";
 
 export function* getRewardPoolData(payload: {
   pool: Pool;
@@ -370,7 +371,7 @@ export function* withdraw(action: { type: string; payload: WithdrawPayload }) {
     toast.success("withdraw success");
     yield put(GlobalActions.getTokenBalances());
     yield put(RewardsActions.getRewardPoolsData(pools));
-
+    yield put(RewardsPageActions.resetWithdraw())
     if (onSuccess) {
       yield call(onSuccess);
     }
@@ -380,6 +381,7 @@ export function* withdraw(action: { type: string; payload: WithdrawPayload }) {
       toast.error(e.data.message);
     }
     yield put(RewardsActions.setIsWithdrawing(false));
+    yield put(RewardsPageActions.setIsModalOpen(false))
   }
 }
 

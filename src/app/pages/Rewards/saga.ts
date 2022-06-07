@@ -21,6 +21,7 @@ import GAUGE_ABI from "abi/gauge.json";
 import { getProviderOrSigner } from "app/containers/utils/contractUtils";
 import { PoolsAndGaugesActions } from "app/containers/PoolsAndGauges/slice";
 import { Gauge } from "abi/ethers-contracts";
+import { RewardsDomains } from "app/containers/Rewards/selectors";
 
 export function* poolInfoByAddress(action: { type: string; payload: string }) {
   const { payload } = action;
@@ -75,10 +76,25 @@ export function* deposit() {
 export function* withdraw() {
   const pool: Pool = yield select(RewardsPageDomains.pool);
   const amount = yield select(RewardsPageDomains.withdrawAmount);
-  const tokenAmounts = {
+  const percent= yield select(RewardsPageDomains.withdrawPercentage);
+  let tokenAmounts = {
     [pool.lpToken.symbol]:
       floatToBN(amount, pool.lpToken.decimals) || BigNumber.from("0"),
   };
+  if(percent) {
+    const balances=yield select(RewardsDomains.poolsBalances)
+    if(balances){
+      const balance:BigNumber=balances[pool.lpToken.symbol]?.userInfo.amount
+      const fraction=balance?.div(100).mul(percent)
+         tokenAmounts = {
+          [pool.lpToken.symbol]:
+          fraction || BigNumber.from("0"),
+        };
+    }
+  }
+
+
+
   const userShareData = pool.userShareData;
   const withdrawPercentage: number = yield select(
     RewardsPageDomains.withdrawPercentage

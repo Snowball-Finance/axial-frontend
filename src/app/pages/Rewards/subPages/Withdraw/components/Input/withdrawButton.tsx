@@ -5,7 +5,9 @@ import { RewardsSelectors } from "app/containers/Rewards/selectors";
 import { UserShareData } from "app/containers/Rewards/types";
 import { RewardsPageSelectors } from "app/pages/Rewards/selectors";
 import { RewardsPageActions } from "app/pages/Rewards/slice";
-import { parseUnits } from "ethers/lib/utils";
+import { tokens } from "app/tokens";
+import { floatToBN } from "common/format";
+import { BigNumber } from "ethers";
 import { translations } from "locales/i18n";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -28,7 +30,7 @@ export const RewardsWithdrawButton = () => {
     if (poolsBalances[tokenKey]?.userInfo.amount.eq(0)) {
       withdrawError = "You don't have Balance on this pool";
     } else if (
-      poolsBalances[tokenKey]?.userInfo.amount.lt(parseUnits(withdrawAmount))
+      poolsBalances[tokenKey]?.userInfo.amount.lt(floatToBN(withdrawAmount,tokens[tokenKey].decimals)||BigNumber.from(0))
     ) {
       withdrawError = "Insufficient Balance";
     } else {

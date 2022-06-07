@@ -19,13 +19,7 @@ export const tableHeader = (t) => [
     ),
     numeric: true,
   },
-  {
-    id: "axialAPR",
-    label: t(
-      translations.GovernancePage.VoteAllocation.AllocationTable.AxialAPR()
-    ),
-    numeric: true,
-  },
+
   {
     id: "boostedAxialAPR",
     label: t(
