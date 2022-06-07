@@ -32,6 +32,7 @@ import { Deadlines, formatDeadlineToNumber } from "./utils/deadline";
 import { GlobalActions } from "store/slice";
 import { toast } from "react-toastify";
 import { PoolsAndGaugesActions } from "../PoolsAndGauges/slice";
+import { RewardsPageActions } from "app/pages/Rewards/slice";
 
 export function* getRewardPoolData(payload: {
   pool: Pool;
@@ -259,6 +260,7 @@ export function* deposit(action: { type: string; payload: DepositPayload }) {
       put(PoolsAndGaugesActions.getInitialData()),
       put(GlobalActions.getTokenBalances()),
       put(RewardsActions.getRewardPoolsData(pools)),
+      put(RewardsPageActions.resetWithdraw()),
     ]);
   } catch (e: any) {
     console.log(e);

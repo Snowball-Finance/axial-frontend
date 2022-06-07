@@ -26,10 +26,11 @@ export const RewardsWithdrawSlider = () => {
       );
     }
   };
+  const verySmall=tokens && tokens[symbol]?.userInfo.amount.lte(100)
   return (
     <WithdrawSlider
       disabled={
-        !account || !tokens || (pool && tokens[symbol]?.userInfo.amount.eq(0))
+        !account || !tokens || (pool && tokens[symbol]?.userInfo.amount.eq(0))||verySmall
       }
       onChange={(e, v) => {
         handleSliderChange(v as number);
