@@ -10,7 +10,7 @@ import { StakingPageActions } from "app/pages/Staking/slice";
 import { StakingPageSelectors } from "app/pages/Staking/selectors";
 import { BlockChainSelectors } from "app/containers/BlockChain/selectors";
 import { env } from "environment";
-import { BNToFloat, floatToBN } from "common/format";
+import { floatToBN } from "common/format";
 import { BigNumber } from "ethers";
 
 export const Actions = () => {
