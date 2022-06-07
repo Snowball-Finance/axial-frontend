@@ -21,7 +21,6 @@ import GAUGE_ABI from "abi/gauge.json";
 import { getProviderOrSigner } from "app/containers/utils/contractUtils";
 import { PoolsAndGaugesActions } from "app/containers/PoolsAndGauges/slice";
 import { Gauge } from "abi/ethers-contracts";
-import { globalSelectors } from "app/appSelectors";
 import { RewardsDomains } from "app/containers/Rewards/selectors";
 
 export function* poolInfoByAddress(action: { type: string; payload: string }) {
