@@ -92,9 +92,7 @@ export function* withdraw() {
         };
     }
   }
-
-
-
+  
   const userShareData = pool.userShareData;
   const withdrawPercentage: number = yield select(
     RewardsPageDomains.withdrawPercentage
