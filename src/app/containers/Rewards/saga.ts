@@ -259,8 +259,8 @@ export function* deposit(action: { type: string; payload: DepositPayload }) {
       put(RewardsActions.setIsDepositing(false)),
       put(PoolsAndGaugesActions.getInitialData()),
       put(GlobalActions.getTokenBalances()),
-      put(RewardsActions.getRewardPoolsData(pools)),
     ]);
+    yield put(RewardsActions.getRewardPoolsData(pools))
   } catch (e: any) {
     console.log(e);
     yield put(RewardsActions.setIsDepositing(false));
