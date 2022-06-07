@@ -111,7 +111,6 @@ export const MyShare: FC = () => {
 
                 <Grid item>
                   <BalanceText variant="body2">
-                    $
                     {userShareData &&
                       commify(
                         formatBNToString(
