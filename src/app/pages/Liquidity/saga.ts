@@ -385,6 +385,9 @@ function* getEffectiveUserLpBalance(percent?: number) {
   const pool: Pool = pools[selectedPool.key];
   const userShareData = pool.userShareData as UserShareData;
   const percentage = yield select(LiquidityPageDomains.withdrawPercentage);
+  if (!percent && !percentage) {
+    return BigNumber.from(0);
+  }
   const effectiveUserLPTokenBalance = userShareData.lpTokenBalance
     .mul(parseUnits((percent || percentage).toString(), 5)) // difference between numerator and denominator because we're going from 100 to 1.00
     .div(10 ** 7);
@@ -394,11 +397,19 @@ function* getEffectiveUserLpBalance(percent?: number) {
 function* calculateAmountsIfItsASingleToken() {
   const pool = yield select(LiquidityPageDomains.pool);
   const tokens = yield select(GlobalDomains.tokens);
+  const poolTokens = pool.poolTokens;
   const withdrawType = yield select(
     LiquidityPageDomains.selectedTokenToWithdraw
   );
   const swapContract = yield call(getSwapContractForWithdraw);
   const effectiveUserLPTokenBalance = yield call(getEffectiveUserLpBalance);
+  if (effectiveUserLPTokenBalance.isZero()) {
+    const amounts = {};
+    for (const element of poolTokens) {
+      amounts[element.symbol] = "0";
+    }
+    return amounts;
+  }
   const tokenIndex = pool.poolTokens.findIndex(
     ({ symbol }) => symbol === withdrawType
   );
@@ -410,7 +421,6 @@ function* calculateAmountsIfItsASingleToken() {
   const tokenAmountString = (
     BNToFloat(tokenAmount, tokens[withdrawType].decimals) || "0"
   ).toString();
-  const poolTokens = pool.poolTokens;
   const amounts = {};
   for (const element of poolTokens) {
     amounts[element.symbol] =

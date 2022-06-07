@@ -44,7 +44,7 @@ const rewardsPageSlice = createSlice({
     poolInfoByAddress(state, action: PayloadAction<string>) {},
     setSelectedPool(state, action: PayloadAction<Pool | undefined>) {
       state.pool = action.payload;
-      state.withdrawAmount= zeroString;
+      state.withdrawAmount = zeroString;
       state.withdrawPercentage = 0;
     },
     setDepositValue(state, action: PayloadAction<string>) {
