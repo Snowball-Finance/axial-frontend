@@ -1,19 +1,22 @@
 import React, { FC } from "react";
 import { styled, Grid, Typography } from "@mui/material";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 
 import { translations } from "locales/i18n";
 import { TextButton } from "app/components/common/buttons/textButton";
 import { SwapPageActions } from "../../../slice";
 import { CssVariables } from "styles/cssVariables/cssVariables";
+import { SwapPageSelectors } from "app/pages/Swap/selectors";
 
 export const Max: FC = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-
+const selectedFromToken=useSelector(SwapPageSelectors.selectedFromToken)
   const handleMaxAmountSelection = () => {
-    dispatch(SwapPageActions.maxAmountSelection());
+    if(selectedFromToken?.symbol){
+      dispatch(SwapPageActions.maxAmountSelection());
+    }
   };
 
   return (
