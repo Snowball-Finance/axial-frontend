@@ -85,10 +85,11 @@ export function* withdraw() {
   if(percent) {
     const balances=yield select(RewardsDomains.poolsBalances)
     if(balances){
-      const balance=balances[pool.lpToken.symbol]?.userInfo.amount
+      const balance:BigNumber=balances[pool.lpToken.symbol]?.userInfo.amount
+      const fraction=balance?.div(100).mul(percent)
          tokenAmounts = {
           [pool.lpToken.symbol]:
-          balance || BigNumber.from("0"),
+          fraction || BigNumber.from("0"),
         };
     }
   }
