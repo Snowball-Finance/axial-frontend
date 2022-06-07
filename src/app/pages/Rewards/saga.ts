@@ -113,7 +113,6 @@ export function* withdraw() {
     type: pool.lpToken.symbol as TokenSymbols,
     rewardsWithdraw: true,
   };
-  console.log({dataToSend})
   yield put(RewardsPageActions.setIsModalOpen(true));
   yield put(RewardsActions.withdraw(dataToSend));
 }
