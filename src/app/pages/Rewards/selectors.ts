@@ -118,6 +118,9 @@ export const RewardsPageSelectors = {
       if(withdrawAmount.toString().includes('-17')||withdrawAmount.toString().includes('-18')) {
       return '0'
       }
+      else if(withdrawAmount.toString().includes('e-')||withdrawAmount.toString().includes('E-')) {
+        return Number(withdrawAmount).toFixed(18)
+      }
       return withdrawAmount
     }
   ),
