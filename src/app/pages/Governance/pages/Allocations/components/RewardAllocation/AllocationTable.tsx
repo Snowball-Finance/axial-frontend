@@ -115,7 +115,6 @@ export const AllocationTable: FC = () => {
               <StyledTableCell>{pool.allocation}</StyledTableCell>
               <StyledTableCell>{pool.allocationPerDay}</StyledTableCell>
               <StyledTableCell>{pool.axialAPR}</StyledTableCell>
-              <StyledTableCell>{pool.boostedAxialAPR}</StyledTableCell>
               <StyledTableCell>{pool.gaugeWeight}</StyledTableCell>
               <StyledTableCell>{pool.balance}</StyledTableCell>
             </StyledTableRow>
