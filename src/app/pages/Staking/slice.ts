@@ -56,7 +56,7 @@ const stakingPageSlice = createSlice({
       state.selectedVeAxialDepositAndWithdrawTab = action.payload;
     },
     stakeAllTheBalances() {},
-    stakeAllTheAxialBalancesIntoVeAxial() {},
+    stakeAllTheMainTokensIntoAccruing() {},
     stakeGovernanceToken() {},
     stakeAccruingToken() {},
     setSelectedDepositUnlockPeriod(

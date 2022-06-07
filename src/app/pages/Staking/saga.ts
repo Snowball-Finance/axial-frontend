@@ -22,7 +22,7 @@ export function* stakeAllTheBalances() {
   }
 }
 
-export function* stakeAllTheAxialBalancesIntoVeAxial() {
+export function* stakeAllTheMainTokensIntoAccruing() {
   const mainTokenBalance:BigNumber = yield select(
     BlockChainDomains.selectMainTokenBalanceDomain
   );
@@ -99,8 +99,8 @@ export function* stakingPageSaga() {
     stakeAllTheBalances
   );
   yield takeLatest(
-    StakingPageActions.stakeAllTheAxialBalancesIntoVeAxial.type,
-    stakeAllTheAxialBalancesIntoVeAxial
+    StakingPageActions.stakeAllTheMainTokensIntoAccruing.type,
+    stakeAllTheMainTokensIntoAccruing
   );
   yield takeLatest(
     StakingPageActions.stakeGovernanceToken.type,

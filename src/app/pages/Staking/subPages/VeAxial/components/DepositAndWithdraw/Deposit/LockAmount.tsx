@@ -27,6 +27,9 @@ export const LockAmount = () => {
     enteredAmount = toFixed(enteredAmount, 7);
   }
   const handleAmountInputChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    if(isNaN(Number(e.target.value))){
+      return
+    }
     dispatch(
       StakingPageActions.setEnteredMainTokenToStakeIntoVeAxial(e.target.value)
     );

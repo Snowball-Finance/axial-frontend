@@ -10,7 +10,7 @@ import { StakingPageActions } from "app/pages/Staking/slice";
 import { StakingPageSelectors } from "app/pages/Staking/selectors";
 import { BlockChainSelectors } from "app/containers/BlockChain/selectors";
 import { env } from "environment";
-import { BNToFloat } from "common/format";
+import { floatToBN } from "common/format";
 import { BigNumber } from "ethers";
 
 export const Actions = () => {
@@ -23,17 +23,13 @@ export const Actions = () => {
   const mainTokenBalance = useSelector(
     BlockChainSelectors.selectMainTokenBalance
   );
-  const floatMainTokenBalance = BNToFloat(
-    mainTokenBalance || BigNumber.from(0),
-    18
-  );
 
   let depositError = "";
   if (mainTokenBalance?.eq(0)) {
     depositError = "You don't have Balance on this pool";
   } else if (
     enteredAmount !== "" &&
-    (floatMainTokenBalance || 0) < Number(enteredAmount || "0")
+    (mainTokenBalance || BigNumber.from(0)).lt(floatToBN(enteredAmount||"0")||BigNumber.from(0)) 
   ) {
     depositError = "Insufficient Balance";
   } else {
