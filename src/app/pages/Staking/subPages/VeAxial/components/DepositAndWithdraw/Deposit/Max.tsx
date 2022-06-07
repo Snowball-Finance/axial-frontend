@@ -12,7 +12,7 @@ export const Max = () => {
   const dispatch = useDispatch();
 
   const handleMaxClick = () => {
-    dispatch(StakingPageActions.stakeAllTheAxialBalancesIntoVeAxial());
+    dispatch(StakingPageActions.stakeAllTheMainTokensIntoAccruing());
   };
 
   return (

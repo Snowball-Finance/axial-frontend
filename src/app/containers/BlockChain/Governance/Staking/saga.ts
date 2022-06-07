@@ -134,7 +134,7 @@ export function* stakeAccruingToken(action: {
   let amountToStake = floatToBN(amount, 18) || BigNumber.from(0);
   const mainTokenBalance = yield select(BlockChainDomains.selectMainTokenBalanceDomain);
   if(amountToStake.gt(mainTokenBalance)){
-amountToStake=mainTokenBalance;
+    amountToStake=mainTokenBalance;
   }
   yield put(GlobalActions.setTransactionSuccessId(undefined));
   const library = yield select(Web3Domains.selectLibraryDomain);
