@@ -31,6 +31,6 @@ export const DataDistributor = () => {
       dispatch(RewardsPageActions.getRewardPoolData());
     }
     return () => {};
-  }, [aprData, poolsBalances, networkLibrary]);
+  }, [aprData, poolsBalances, networkLibrary,selectedPool]);
   return <></>;
 };
