@@ -46,7 +46,8 @@ export function* stakeGovernanceToken(action: {
   type: string;
   payload: StakeGovernanceTokenModel;
 }) {
-  const { amount, duration } = action.payload;
+  const { amount, duration: time } = action.payload;
+  let duration = time
   const amountToStake = parseEther(amount.toString());
   yield put(GlobalActions.setTransactionSuccessId(undefined));
   const library = yield select(Web3Domains.selectLibraryDomain);
@@ -92,7 +93,9 @@ export function* stakeGovernanceToken(action: {
       const keepThaUnclaimedWhenExtendingLockPeriod = yield select(
         StakingDomains.keepThaUnclaimedWhenExtendingLockPeriod
       );
-
+      if (Number(duration) < 0) {
+        duration = '0'
+      }
       const tokenLock = yield call(
         governanceTokenContract.stake,
         duration,
@@ -133,8 +136,8 @@ export function* stakeAccruingToken(action: {
   const { amountToStake: amount } = action.payload;
   let amountToStake = floatToBN(amount, 18) || BigNumber.from(0);
   const mainTokenBalance = yield select(BlockChainDomains.selectMainTokenBalanceDomain);
-  if(amountToStake.gt(mainTokenBalance)){
-    amountToStake=mainTokenBalance;
+  if (amountToStake.gt(mainTokenBalance)) {
+    amountToStake = mainTokenBalance;
   }
   yield put(GlobalActions.setTransactionSuccessId(undefined));
   const library = yield select(Web3Domains.selectLibraryDomain);
