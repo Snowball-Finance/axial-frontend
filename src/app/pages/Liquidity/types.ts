@@ -77,7 +77,7 @@ export interface DepositTransactionData {
 
 export interface WithdrawReviewData {
   tokens: FromTokens[];
-  total: number;
+  total: string;
   deadline: number;
   gasPrice: string;
 }

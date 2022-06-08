@@ -39,7 +39,7 @@ import {
   formatDeadlineToNumber,
 } from "app/containers/Rewards/utils/deadline";
 import { zeroString } from "./constants";
-import { divide, multiply } from "precise-math";
+import { add, divide, multiply } from "precise-math";
 import { parseUnits } from "ethers/lib/utils";
 import { RewardsDomains } from "app/containers/Rewards/selectors";
 import { calculatePriceImpact } from "app/containers/Swap/utils/priceImpact";
@@ -52,6 +52,7 @@ import {
 import LPTOKEN_UNGUARDED_ABI from "abi/lpTokenUnguarded.json";
 import { addSlippage } from "utils/slippage";
 import { withdrawType } from "./utils/withdrawType";
+import { stringifyScientific } from "utils/stringifyScientific";
 
 export function* buildTransactionData() {
   const depositTokenAmounts = yield select(
@@ -83,7 +84,7 @@ export function* buildTransactionData() {
         },
       ];
       fromStateData.total =
-        fromStateData.total + parseFloat(depositTokenAmounts[tokenKey]);
+        add(fromStateData.total, parseFloat(depositTokenAmounts[tokenKey]));
     }
   }
   try {
@@ -155,20 +156,22 @@ export function* buildWithdrawReviewData() {
   const transactionDeadline = Deadlines.Twenty;
 
   let tokensData: any = [];
-  let total = 0;
+  let total:string|number = 0;
 
   for (let tokenKey in withdrawTokens) {
     if (Number(withdrawTokens[tokenKey]) > 0) {
+      let v:string=stringifyScientific(withdrawTokens[tokenKey])
       tokensData = [
         ...tokensData,
         {
           symbol: tokenKey,
-          value: parseFloat(withdrawTokens[tokenKey]),
+          value: v,
         },
       ];
-      total = total + parseFloat(withdrawTokens[tokenKey]);
+      total =add(total , parseFloat(withdrawTokens[tokenKey]));
     }
   }
+  total=stringifyScientific(total)
 
   try {
     const gasPrices: GenericGasResponse = yield select(GlobalDomains.gasPrice);
@@ -361,6 +364,14 @@ export function* setWithdrawPercentage(action: {
   } else {
     amounts = yield call(calculateAmountsIfItsASingleToken);
   }
+  for (const symbol in amounts) {
+    if (Object.prototype.hasOwnProperty.call(amounts, symbol)) {
+      const element = amounts[symbol];
+      if(element.includes('e-')){
+        amounts[symbol] = Number(element).toFixed(18);
+      }
+    }
+  }
   yield put(LiquidityPageActions.setTokenAmountsToWithdraw(amounts));
   yield call(calculateWithdrawBonusAndDetectErrors);
 }
@@ -449,6 +460,7 @@ function* calculateAmountsIfItsCombo() {
     }),
     {}
   );
+  
   return calculatedAmounts;
 }
 
@@ -465,7 +477,7 @@ export function* setSelectedTokenToWithdraw(action: {
   let amounts = { ...amountsObj };
   const tokensWithNonZeroAmount = {};
   for (let token in amounts) {
-    if (amounts[token] > 0) {
+    if (Number(amounts[token]) > 0) {
       tokensWithNonZeroAmount[token] = amounts[token];
     }
   }
@@ -511,13 +523,17 @@ function* calculateWithdrawBonusAndDetectErrors() {
   pool = pools[pool.key];
   if (!pool?.poolData) return;
   const swapContract = yield call(getSwapContractForWithdraw);
-
-  const tokenInputSum = parseUnits(
-    pool.poolTokens
-      .reduce((sum, { symbol }) => sum + (+amounts[symbol] || 0), 0)
-      .toString(),
+let sum= pool.poolTokens
+.reduce((sum, { symbol }) => add(sum , (+amounts[symbol] || 0)), 0)
+.toString()
+if(sum.toString().includes('e-')){
+  sum=Number(sum).toFixed(18)
+}
+  const tokenInputSum = floatToBN(
+    sum,
     18
-  );
+  )||BigNumber.from(0);
+
   let withdrawLPTokenAmount;
   const poolData: PoolData = pool.poolData;
   if (poolData.totalLocked.gt(0) && tokenInputSum.gt(0)) {
