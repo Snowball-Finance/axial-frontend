@@ -1,3 +1,4 @@
+import styled from "@emotion/styled";
 import { ContainedButton } from "app/components/common/buttons/containedButton";
 import { NeedsWalletConnection } from "app/components/common/needsWalletConnection";
 import { WalletToggle } from "app/components/common/walletToggle";
@@ -8,6 +9,7 @@ import { LiquidityPageActions } from "app/pages/Liquidity/slice";
 import { translations } from "locales/i18n";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { mobile } from "styles/media";
 
 export const WithdrawButton = () => {
   const { t } = useTranslation();
@@ -36,7 +38,7 @@ export const WithdrawButton = () => {
   return (
     <NeedsWalletConnection
       connected={
-        <ContainedButton
+        <StyledContainedButton
           height={42}
           disabled={disabled}
           onClick={handleWithdrawClick}
@@ -44,9 +46,14 @@ export const WithdrawButton = () => {
         >
           {withdrawError?.main ||
             t(translations.LiquidityPage.ActionButtons.Withdraw())}
-        </ContainedButton>
+        </StyledContainedButton>
       }
       disConnected={<WalletToggle fullWidth />}
     />
   );
 };
+const StyledContainedButton = styled(ContainedButton)({
+  [mobile]:{
+    fontSize:'12px'
+  }
+})
