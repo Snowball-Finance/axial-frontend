@@ -87,7 +87,9 @@ const rewardsPageSlice = createSlice({
         state.checkedClaimRewards = [0];
       }
     },
-    getRewardPoolData() {},
+    getRewardPoolData(state) {
+      state.rewardsPageUserShareData = undefined;
+    },
     setRewardsPageUserShareData(state, action: PayloadAction<UserShareData>) {
       state.rewardsPageUserShareData = action.payload;
     },
