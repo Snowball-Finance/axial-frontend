@@ -37,7 +37,7 @@ export function* getEssentialDataForGovernance() {
       numberThreshold = 200000
     }
     yield put(
-      GovernanceActions.setMinimumTokenForNewProposal(1)
+      GovernanceActions.setMinimumTokenForNewProposal(numberThreshold)
     );
   } catch (error) {
     yield put(GovernanceActions.setMinimumTokenForNewProposal(100000));
