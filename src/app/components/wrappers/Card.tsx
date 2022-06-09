@@ -8,7 +8,6 @@ export const CardWrapper = styled("div")({
   border: `4px solid ${CssVariables.cardBorder}`,
   borderRadius: "20px",
   padding: "26px 36px",
-
   [mobile]: {
     padding: 15,
   },

@@ -7,15 +7,18 @@ import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
 import { Web3Selectors } from "app/containers/BlockChain/Web3/selectors";
 import { env } from "environment";
-import { formatNumber } from "common/format";
 import { GovernanceSelectors } from "app/containers/BlockChain/Governance/selectors";
+import { commify } from "app/containers/utils/contractUtils";
 
 export const Message: FC = () => {
   const { t } = useTranslation();
   const account = useSelector(Web3Selectors.selectAccount);
-  const minimum = useSelector(
+  let minimum:string|number = useSelector(
     GovernanceSelectors.minimumTokenRequiredForNewProposal
   );
+  if(minimum.toString().includes('e-')){
+    minimum = Number(minimum).toFixed(18)
+  }
   const canAddNewProposal = useSelector(GovernanceSelectors.canAddNewProposal);
 
   let message = "";
@@ -23,7 +26,7 @@ export const Message: FC = () => {
     message = t(translations.Common.ConnectToWallet());
   } else {
     message = t(translations.GovernancePage.MinGovernanceTokenToSubmitError(), {
-      amount: formatNumber(minimum, 2).toString(),
+      amount: commify(minimum.toString()),
       name: env.GOVERNANCE_TOKEN_NAME,
     });
   }

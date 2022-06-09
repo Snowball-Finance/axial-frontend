@@ -140,7 +140,10 @@ export const GovernanceSelectors = {
           rest.push(p);
         }
       });
-      return [...active, ...rest];
+const sortedActive=active.sort((a,b)=>{
+  return Number(b.governance_id||0)-Number(a.governance_id||0)
+})
+      return [...sortedActive, ...rest];
     }
   ),
   canAddNewProposal: createSelector(

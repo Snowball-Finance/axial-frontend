@@ -21,7 +21,9 @@ export const NewProposalButton: FC = () => {
   };
 
   return (
-    <StyledContainedButton disabled={!canAddNewProposal} onClick={handleClick}>
+    <StyledContainedButton 
+      disabled={!canAddNewProposal}
+      onClick={handleClick}>
       {t(translations.GovernancePage.NewProposal())}
     </StyledContainedButton>
   );

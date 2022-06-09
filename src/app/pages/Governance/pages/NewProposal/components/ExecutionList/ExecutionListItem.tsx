@@ -131,4 +131,5 @@ export const ExecutionListItem: FC<Props> = ({
 
 const Text = styled(Typography)({
   color: CssVariables.white,
+  maxWidth:'445px'
 });
