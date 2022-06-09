@@ -351,7 +351,7 @@ export function* getAccruingTokenBalance(action: {
       put(GovernanceActions.setMainTokenAmountStakedForAccruing(staked)),
     ]);
   } catch (error) {
-    toast.error(`Error getting ${env.ACCRUING_TOKEN_NAME} balance`);
+    console.error(`Error getting ${env.ACCRUING_TOKEN_NAME} balance`);
   } finally {
     yield put(GovernanceActions.setIsGettingGovernanceTokenBalance(false));
   }
