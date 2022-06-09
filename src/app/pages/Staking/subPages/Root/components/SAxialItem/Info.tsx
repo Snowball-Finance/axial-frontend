@@ -9,6 +9,8 @@ import { StakingSelectors } from "app/containers/BlockChain/Governance/Staking/s
 import { BNToFractionString } from "common/format";
 import { StakingPageSelectors } from "app/pages/Staking/selectors";
 import { mobile } from "styles/media";
+import { commify } from "app/containers/utils/contractUtils";
+import { BigNumber } from "ethers";
 
 export const SAxialInfo: FC = () => {
   const { t } = useTranslation();
@@ -25,7 +27,7 @@ export const SAxialInfo: FC = () => {
       <Grid item>
         <Text variant="body1">{t(translations.Staking.Info.sAXIAL())}</Text>
         <Text variant="body2">
-          {BNToFractionString(rawLockedTokenAmount) || "0"}
+          {commify(BNToFractionString(rawLockedTokenAmount|| BigNumber.from(0))|| "0.000")}
         </Text>
       </Grid>
 
@@ -34,7 +36,7 @@ export const SAxialInfo: FC = () => {
           {t(translations.Staking.Info.AXIALUnlocked())}
         </Text>
         <Text variant="body2">
-          {BNToFractionString(rawClaimableAxial) || "0"}
+          {commify(BNToFractionString(rawClaimableAxial|| BigNumber.from(0))|| "0.000")}
         </Text>
       </Grid>
 

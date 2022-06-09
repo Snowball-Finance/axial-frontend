@@ -8,7 +8,7 @@ import { BigNumber } from "@ethersproject/bignumber";
 // The initial state of the BlockChain container
 export const initialState: ContainerState = {
   mainTokenBalance: undefined,
-  isGettingSnobBalance: false,
+  isGettingMainTokenBalance: false,
   includesGovernance: false,
   mainTokenABI: undefined,
   prices: {
@@ -18,6 +18,7 @@ export const initialState: ContainerState = {
   contracts: {
     mainTokenContract: undefined,
   },
+  numberOfFailedRetriesForGettingMainTokenBalance: 0,
 };
 
 const blockChainSlice = createSlice({
@@ -26,6 +27,11 @@ const blockChainSlice = createSlice({
   reducers: {
     setMainTokenABI(state, action: PayloadAction<any>) {
       state.mainTokenABI = action.payload;
+    },
+    increaseNumberOfFailedRetriesForGettingMainTokenBalance(state) {
+      state.numberOfFailedRetriesForGettingMainTokenBalance =
+      state.numberOfFailedRetriesForGettingMainTokenBalance + 1;
+      ;
     },
     setIncludesGovernance(state, action: PayloadAction<boolean>) {
       state.includesGovernance = action.payload;
@@ -43,7 +49,7 @@ const blockChainSlice = createSlice({
     },
 
     setIsGettingMainTokenBalance(state, action: PayloadAction<boolean>) {
-      state.isGettingSnobBalance = action.payload;
+      state.isGettingMainTokenBalance = action.payload;
     },
     setMainTokenBalance(state, action: PayloadAction<BigNumber>) {
       state.mainTokenBalance = action.payload;
