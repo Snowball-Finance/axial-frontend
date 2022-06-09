@@ -9,6 +9,7 @@ import { env } from "environment";
 import { PrimaryCardWrapper } from "app/components/wrappers/PrimaryCard";
 import { GovernanceSelectors } from "app/containers/BlockChain/Governance/selectors";
 import { Web3Selectors } from "app/containers/BlockChain/Web3/selectors";
+import { commify } from "app/containers/utils/contractUtils";
 
 export const VotingPowerInfo: FC = () => {
   const { t } = useTranslation();
@@ -20,7 +21,7 @@ export const VotingPowerInfo: FC = () => {
 
   const balance =
     governanceTokenBalance && account
-      ? governanceTokenBalance.toString()
+      ? commify(governanceTokenBalance.toString())
       : "0.000";
 
   return (

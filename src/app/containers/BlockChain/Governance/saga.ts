@@ -32,8 +32,12 @@ export function* getEssentialDataForGovernance() {
   const governanceContract: Governance = yield call(getGovernanceContract);
   try {
     const threshold = yield call(governanceContract.proposalThreshold);
+    let numberThreshold = BNToFloat(threshold, 18) || 100000
+    if (numberThreshold === 199999.99999999997) {
+      numberThreshold = 200000
+    }
     yield put(
-      GovernanceActions.setMinimumTokenForNewProposal(Number(threshold))
+      GovernanceActions.setMinimumTokenForNewProposal(numberThreshold)
     );
   } catch (error) {
     yield put(GovernanceActions.setMinimumTokenForNewProposal(100000));
@@ -256,10 +260,18 @@ export function* submitNewProposal(action: {
   } catch (error: any) {
     console.log(error);
     const message = error?.data?.message;
+    
     if (message) {
-      toast.error(
-        message.replace("execution reverted: Governance::propose: ", "")
-      );
+      if(message.includes("proposer votes below proposal threshold")){
+        toast.error(
+        "you don't have enough aAxial to create new proposal"
+        );
+      }
+      else{
+        toast.error(
+          message.replace("execution reverted: Governance::propose: ", "")
+        );
+      }
     }
   } finally {
     yield all([
@@ -351,7 +363,7 @@ export function* getAccruingTokenBalance(action: {
       put(GovernanceActions.setMainTokenAmountStakedForAccruing(staked)),
     ]);
   } catch (error) {
-    toast.error(`Error getting ${env.ACCRUING_TOKEN_NAME} balance`);
+    console.error(`Error getting ${env.ACCRUING_TOKEN_NAME} balance`);
   } finally {
     yield put(GovernanceActions.setIsGettingGovernanceTokenBalance(false));
   }

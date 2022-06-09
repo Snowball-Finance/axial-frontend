@@ -55,7 +55,7 @@ const stakingPageSlice = createSlice({
     ) {
       state.selectedVeAxialDepositAndWithdrawTab = action.payload;
     },
-    stakeAllTheBalances() {},
+    stakeAllTheMainTokenBalance() {},
     stakeAllTheMainTokensIntoAccruing() {},
     stakeGovernanceToken() {},
     stakeAccruingToken() {},

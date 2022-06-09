@@ -17,6 +17,8 @@ export const BlockChainDomains = {
     state.blockChain?.prices || { ...initialState.prices },
   selectMainTokenBalanceDomain: (state: RootState) =>
     state.blockChain?.mainTokenBalance || undefined,
+    numberOfFailedRetriesForGettingMainTokenBalanceDomain: (state: RootState) =>
+    state.blockChain?.numberOfFailedRetriesForGettingMainTokenBalance || 0,
 };
 
 export const BlockChainSelectors = {
@@ -34,7 +36,7 @@ export const BlockChainSelectors = {
   ),
   selectIsLoadingSnobBalance: createSelector(
     BlockChainDomains.selectBlockChainDomain,
-    (blockChainState) => blockChainState.isGettingSnobBalance
+    (blockChainState) => blockChainState.isGettingMainTokenBalance
   ),
   selectContracts: createSelector(
     BlockChainDomains.selectBlockChainDomain,

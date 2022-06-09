@@ -4,9 +4,10 @@ import { BigNumber } from "ethers";
 /* --- STATE --- */
 export interface BlockChainState {
   mainTokenBalance: BigNumber | undefined;
-  isGettingSnobBalance: boolean;
+  isGettingMainTokenBalance: boolean;
   mainTokenABI: any;
   includesGovernance: boolean;
+  numberOfFailedRetriesForGettingMainTokenBalance: number;
   prices: {
     mainToken: number;
     mainToken24hChange: number;

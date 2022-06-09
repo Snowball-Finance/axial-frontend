@@ -12,7 +12,7 @@ export const Max = () => {
   const dispatch = useDispatch();
 
   const handleMaxClick = () => {
-    dispatch(StakingPageActions.stakeAllTheBalances());
+    dispatch(StakingPageActions.stakeAllTheMainTokenBalance());
   };
   return (
     <TextButton onClick={handleMaxClick}>

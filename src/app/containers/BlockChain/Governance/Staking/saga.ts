@@ -32,14 +32,18 @@ export function* getLatestGovernanceData() {
 }
 
 export function* periodicallyRefetchTheData() {
+  const numberOfFailedRetries:Number=
+  yield select(BlockChainDomains.numberOfFailedRetriesForGettingMainTokenBalanceDomain)
   yield all([
     put(GovernanceActions.getGovernanceTokenBalance(true)),
     put(GovernanceActions.getAccruingTokenBalance(true)),
     put(StakingActions.getLockedGovernanceTokenInfo(true)),
     put(StakingActions.getClaimableGovernanceToken()),
   ]);
-  yield delay(5000);
-  yield call(periodicallyRefetchTheData);
+  if(numberOfFailedRetries<4){
+    yield delay(5000);
+    yield call(periodicallyRefetchTheData);
+  }
 }
 
 export function* stakeGovernanceToken(action: {

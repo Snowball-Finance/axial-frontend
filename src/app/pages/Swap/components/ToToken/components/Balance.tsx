@@ -9,6 +9,7 @@ import { CssVariables } from "styles/cssVariables/cssVariables";
 import { BNToString } from "common/format";
 import { globalSelectors } from "app/appSelectors";
 import { SwapPageSelectors } from "../../../selectors";
+import { commify } from "app/containers/utils/contractUtils";
 
 export const Balance: FC = () => {
   const { t } = useTranslation();
@@ -17,10 +18,12 @@ export const Balance: FC = () => {
 
   const getWalletBalance = () => {
     if (tokens && selectedToToken) {
-      return BNToString(
+      const str= BNToString(
         tokens[selectedToToken.symbol]?.balance ?? BigNumber.from(0),
         tokens[selectedToToken.symbol]?.decimals
       );
+      const commified = commify(str || "0");
+      return commified;
     }
 
     return "0";

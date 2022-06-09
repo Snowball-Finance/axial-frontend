@@ -9,7 +9,7 @@ import { StakingPageDomains } from "./selectors";
 
 import { StakingPageActions } from "./slice";
 
-export function* stakeAllTheBalances() {
+export function* stakeAllTheMainTokenBalance() {
   const mainTokenBalance = yield select(
     BlockChainDomains.selectMainTokenBalanceDomain
   );
@@ -95,8 +95,8 @@ export function* stakeAccruingToken() {
 
 export function* stakingPageSaga() {
   yield takeLatest(
-    StakingPageActions.stakeAllTheBalances.type,
-    stakeAllTheBalances
+    StakingPageActions.stakeAllTheMainTokenBalance.type,
+    stakeAllTheMainTokenBalance
   );
   yield takeLatest(
     StakingPageActions.stakeAllTheMainTokensIntoAccruing.type,
