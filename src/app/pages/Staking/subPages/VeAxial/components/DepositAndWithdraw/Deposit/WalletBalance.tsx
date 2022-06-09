@@ -7,6 +7,7 @@ import { translations } from "locales/i18n";
 import { BlockChainSelectors } from "app/containers/BlockChain/selectors";
 import { BNToString } from "common/format";
 import { CssVariables } from "styles/cssVariables/cssVariables";
+import { commify } from "app/containers/utils/contractUtils";
 
 export const WalletBalance = () => {
   const { t } = useTranslation();
@@ -17,11 +18,12 @@ export const WalletBalance = () => {
     mainTokenBalance ?? BigNumber.from(0),
     18
   );
+  const commified=commify(parseFloat(stringMainTokenBalance || "0").toFixed(3))
 
   return (
     <BalanceText variant="body2" align="right">
       {t(translations.Common.WalletBalance())}:{" "}
-      {parseFloat(stringMainTokenBalance || "0").toFixed(3)}
+      {commified}
     </BalanceText>
   );
 };
