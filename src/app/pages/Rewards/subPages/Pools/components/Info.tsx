@@ -11,7 +11,6 @@ import { PoolDataProps } from "app/pages/Rewards/types";
 import { PoolTypes } from "app/containers/Rewards/types";
 import { Zero } from "app/containers/Rewards/constants";
 import {
-  abbreviatedNumber,
   commify,
   formatBNToShortString,
   formatBNToString,
