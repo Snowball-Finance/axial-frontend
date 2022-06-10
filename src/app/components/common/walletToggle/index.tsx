@@ -1,3 +1,4 @@
+import { styled } from "@mui/material";
 import { Web3Selectors } from "app/containers/BlockChain/Web3/selectors";
 import { Web3Actions } from "app/containers/BlockChain/Web3/slice";
 import { ConnectorPayload } from "app/containers/BlockChain/Web3/types";
@@ -5,6 +6,7 @@ import { translations } from "locales/i18n";
 import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { mobile } from "styles/media";
 import { LocalStorageKeys, storage } from "../../../../store/storage";
 import { ContainedButton } from "../buttons/containedButton";
 import { OutlinedButton } from "../buttons/outlinedButton";
@@ -41,7 +43,7 @@ export const WalletToggle: FC<WalletToggleProps> = ({ fullWidth }) => {
         account.substring(account.length, account.length - 4)}
     </OutlinedButton>
   ) : (
-    <ContainedButton
+    <StyledContainedButton
       color="primary"
       height={40.5}
       loading={isConnecting}
@@ -49,6 +51,12 @@ export const WalletToggle: FC<WalletToggleProps> = ({ fullWidth }) => {
       fullWidth={fullWidth}
     >
       {t(translations.Common.ConnectToWallet())}
-    </ContainedButton>
+    </StyledContainedButton>
   );
 };
+
+const StyledContainedButton= styled(ContainedButton)({
+  [mobile]:{
+    fontSize:'12px'
+  }
+})
