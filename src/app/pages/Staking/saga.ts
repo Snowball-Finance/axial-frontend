@@ -23,7 +23,7 @@ export function* stakeAllTheMainTokenBalance() {
 }
 
 export function* stakeAllTheMainTokensIntoAccruing() {
-  const mainTokenBalance:BigNumber = yield select(
+  const mainTokenBalance: BigNumber = yield select(
     BlockChainDomains.selectMainTokenBalanceDomain
   );
   if (mainTokenBalance) {

@@ -17,7 +17,7 @@ export const BlockChainDomains = {
     state.blockChain?.prices || { ...initialState.prices },
   selectMainTokenBalanceDomain: (state: RootState) =>
     state.blockChain?.mainTokenBalance || undefined,
-    numberOfFailedRetriesForGettingMainTokenBalanceDomain: (state: RootState) =>
+  numberOfFailedRetriesForGettingMainTokenBalanceDomain: (state: RootState) =>
     state.blockChain?.numberOfFailedRetriesForGettingMainTokenBalance || 0,
 };
 

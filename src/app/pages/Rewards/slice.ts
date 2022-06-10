@@ -52,9 +52,9 @@ const rewardsPageSlice = createSlice({
     },
     deposit() {},
     withdraw() {},
-    resetWithdraw(state){
-      state.withdrawAmount='0'
-      state.withdrawPercentage=0
+    resetWithdraw(state) {
+      state.withdrawAmount = "0";
+      state.withdrawPercentage = 0;
     },
     setSymbolForClaimingPendingAxial(state, action: PayloadAction<string>) {
       state.claimingPendingAxialPoolSymbol = action.payload;
@@ -68,8 +68,8 @@ const rewardsPageSlice = createSlice({
       state.withdrawPercentage = percent;
       //calculate percentage of balance
       let amount = divide(multiply(action.payload.percent, balance), 100);
-      if(action.payload.percent===100){
-        amount=balance;
+      if (action.payload.percent === 100) {
+        amount = balance;
       }
       state.withdrawAmount = amount.toString();
     },

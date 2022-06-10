@@ -28,7 +28,7 @@ interface InfoData {
 export const Info: FC<PoolDataProps> = ({ poolKey }) => {
   const { t } = useTranslation();
   const poolData = useSelector(RewardsPageSelectors.rewardsPoolData(poolKey));
-  const userShareData:UserShareData|undefined = useSelector(
+  const userShareData: UserShareData | undefined = useSelector(
     RewardsPageSelectors.rewardsUserShareData(poolKey)
   );
   const isGettingPoolsData = useSelector(RewardsSelectors.isGettingPoolsData);
@@ -41,7 +41,7 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
   const lastAPR = poolDataFromAPI?.last_apr || 0;
   const rewardsAPR = subtract(Number(lastAPR), Number(lastSwapApr));
   const formattedData = {
-    TVL:formatBNToShortString(poolData?.totalLocked || Zero, 18), //abbreviatedNumber(Number(poolDataFromAPI?.last_tvl||"0")),
+    TVL: formatBNToShortString(poolData?.totalLocked || Zero, 18), //abbreviatedNumber(Number(poolDataFromAPI?.last_tvl||"0")),
     axialPending: userShareData
       ? commify(
           formatBNToString(

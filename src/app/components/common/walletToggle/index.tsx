@@ -55,8 +55,8 @@ export const WalletToggle: FC<WalletToggleProps> = ({ fullWidth }) => {
   );
 };
 
-const StyledContainedButton= styled(ContainedButton)({
-  [mobile]:{
-    fontSize:'12px'
-  }
-})
+const StyledContainedButton = styled(ContainedButton)({
+  [mobile]: {
+    fontSize: "12px",
+  },
+});

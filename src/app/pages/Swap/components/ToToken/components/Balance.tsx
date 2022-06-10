@@ -18,7 +18,7 @@ export const Balance: FC = () => {
 
   const getWalletBalance = () => {
     if (tokens && selectedToToken) {
-      const str= BNToString(
+      const str = BNToString(
         tokens[selectedToToken.symbol]?.balance ?? BigNumber.from(0),
         tokens[selectedToToken.symbol]?.decimals
       );

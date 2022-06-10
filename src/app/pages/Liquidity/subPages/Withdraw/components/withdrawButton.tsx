@@ -53,7 +53,7 @@ export const WithdrawButton = () => {
   );
 };
 const StyledContainedButton = styled(ContainedButton)({
-  [mobile]:{
-    fontSize:'12px'
-  }
-})
+  [mobile]: {
+    fontSize: "12px",
+  },
+});

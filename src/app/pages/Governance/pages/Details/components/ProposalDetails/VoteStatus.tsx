@@ -4,15 +4,41 @@ import { useTranslation } from "react-i18next";
 
 import { translations } from "locales/i18n";
 import { CssVariables } from "styles/cssVariables/cssVariables";
+import { useSelector } from "react-redux";
+import { GovernancePageSelectors } from "app/pages/Governance/selectors";
+import { commify } from "app/containers/utils/contractUtils";
 import { Proposal } from "app/containers/BlockChain/Governance/types";
 
-interface Props {
-  proposal: Proposal;
+interface Props{
+  proposal?:Proposal
 }
 
-export const VoteStatus: FC<Props> = ({ proposal }) => {
+export const VoteOptionsStatus: FC<Props> = ({proposal}) => {
   const { t } = useTranslation();
-
+  let selectedProposal = useSelector(GovernancePageSelectors.selectedProposal);
+  if(proposal) selectedProposal = proposal;
+  const options: { title: string; votes: string }[] = [];
+  if (selectedProposal?.votes && selectedProposal.votes.length === 2) {
+    options.push({
+      title: t(translations.GovernancePage.For()),
+      votes: commify(selectedProposal.votes[0]),
+    });
+    options.push({
+      title: t(translations.GovernancePage.Against()),
+      votes: commify(selectedProposal.votes[1]),
+    });
+  } else if (selectedProposal?.votes && selectedProposal.votes.length > 2) {
+    let execContexts = selectedProposal.execution_contexts;
+    execContexts.forEach((item) => {
+      options.push({
+        title: item.label,
+        votes: commify(item.value),
+      });
+    });
+  }
+  else{
+    return <></>
+  }
   return (
     <Grid container>
       <Grid item>
@@ -21,35 +47,24 @@ export const VoteStatus: FC<Props> = ({ proposal }) => {
         </TextUnderline>
       </Grid>
 
-      <Grid item container justifyContent="space-between" alignItems="center">
-        <Grid item>
-          <Text variant="body1">Option 1</Text>
-        </Grid>
-
-        <Grid item>
-          <Text variant="body2">1.853.280</Text>
-        </Grid>
-      </Grid>
-
-      <Grid item container justifyContent="space-between" alignItems="center">
-        <Grid item>
-          <Text variant="body1">Option 2</Text>
-        </Grid>
-
-        <Grid item>
-          <Text variant="body2">853.280</Text>
-        </Grid>
-      </Grid>
-
-      <Grid item container justifyContent="space-between" alignItems="center">
-        <Grid item>
-          <Text variant="body1">Option 3</Text>
-        </Grid>
-
-        <Grid item>
-          <Text variant="body2">3.280</Text>
-        </Grid>
-      </Grid>
+      {options.map((item, index) => {
+        return (
+          <Grid
+            key={index}
+            item
+            container
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Grid item>
+              <Text variant="body1">{item.title}</Text>
+            </Grid>
+            <Grid item>
+              <Text variant="body2">{item.votes}</Text>
+            </Grid>
+          </Grid>
+        );
+      })}
     </Grid>
   );
 };

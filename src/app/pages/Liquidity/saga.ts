@@ -83,8 +83,10 @@ export function* buildTransactionData() {
           ),
         },
       ];
-      fromStateData.total =
-        add(fromStateData.total, parseFloat(depositTokenAmounts[tokenKey]));
+      fromStateData.total = add(
+        fromStateData.total,
+        parseFloat(depositTokenAmounts[tokenKey])
+      );
     }
   }
   try {
@@ -156,11 +158,11 @@ export function* buildWithdrawReviewData() {
   const transactionDeadline = Deadlines.Twenty;
 
   let tokensData: any = [];
-  let total:string|number = 0;
+  let total: string | number = 0;
 
   for (let tokenKey in withdrawTokens) {
     if (Number(withdrawTokens[tokenKey]) > 0) {
-      let v:string=stringifyScientific(withdrawTokens[tokenKey])
+      let v: string = stringifyScientific(withdrawTokens[tokenKey]);
       tokensData = [
         ...tokensData,
         {
@@ -168,10 +170,10 @@ export function* buildWithdrawReviewData() {
           value: v,
         },
       ];
-      total =add(total , parseFloat(withdrawTokens[tokenKey]));
+      total = add(total, parseFloat(withdrawTokens[tokenKey]));
     }
   }
-  total=stringifyScientific(total)
+  total = stringifyScientific(total);
 
   try {
     const gasPrices: GenericGasResponse = yield select(GlobalDomains.gasPrice);
@@ -367,7 +369,7 @@ export function* setWithdrawPercentage(action: {
   for (const symbol in amounts) {
     if (Object.prototype.hasOwnProperty.call(amounts, symbol)) {
       const element = amounts[symbol];
-      if(element.includes('e-')){
+      if (element.includes("e-")) {
         amounts[symbol] = Number(element).toFixed(18);
       }
     }
@@ -460,7 +462,7 @@ function* calculateAmountsIfItsCombo() {
     }),
     {}
   );
-  
+
   return calculatedAmounts;
 }
 
@@ -523,16 +525,13 @@ function* calculateWithdrawBonusAndDetectErrors() {
   pool = pools[pool.key];
   if (!pool?.poolData) return;
   const swapContract = yield call(getSwapContractForWithdraw);
-let sum= pool.poolTokens
-.reduce((sum, { symbol }) => add(sum , (+amounts[symbol] || 0)), 0)
-.toString()
-if(sum.toString().includes('e-')){
-  sum=Number(sum).toFixed(18)
-}
-  const tokenInputSum = floatToBN(
-    sum,
-    18
-  )||BigNumber.from(0);
+  let sum = pool.poolTokens
+    .reduce((sum, { symbol }) => add(sum, +amounts[symbol] || 0), 0)
+    .toString();
+  if (sum.toString().includes("e-")) {
+    sum = Number(sum).toFixed(18);
+  }
+  const tokenInputSum = floatToBN(sum, 18) || BigNumber.from(0);
 
   let withdrawLPTokenAmount;
   const poolData: PoolData = pool.poolData;

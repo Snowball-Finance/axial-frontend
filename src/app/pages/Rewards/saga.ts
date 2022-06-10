@@ -76,20 +76,19 @@ export function* deposit() {
 export function* withdraw() {
   const pool: Pool = yield select(RewardsPageDomains.pool);
   const amount = yield select(RewardsPageDomains.withdrawAmount);
-  const percent= yield select(RewardsPageDomains.withdrawPercentage);
+  const percent = yield select(RewardsPageDomains.withdrawPercentage);
   let tokenAmounts = {
     [pool.lpToken.symbol]:
       floatToBN(amount, pool.lpToken.decimals) || BigNumber.from("0"),
   };
-  if(percent) {
-    const balances=yield select(RewardsDomains.poolsBalances)
-    if(balances){
-      const balance:BigNumber=balances[pool.lpToken.symbol]?.userInfo.amount
-      const fraction=balance?.div(100).mul(percent)
-         tokenAmounts = {
-          [pool.lpToken.symbol]:
-          fraction || BigNumber.from("0"),
-        };
+  if (percent) {
+    const balances = yield select(RewardsDomains.poolsBalances);
+    if (balances) {
+      const balance: BigNumber = balances[pool.lpToken.symbol]?.userInfo.amount;
+      const fraction = balance?.div(100).mul(percent);
+      tokenAmounts = {
+        [pool.lpToken.symbol]: fraction || BigNumber.from("0"),
+      };
     }
   }
 

@@ -260,7 +260,7 @@ export function* deposit(action: { type: string; payload: DepositPayload }) {
       put(PoolsAndGaugesActions.getInitialData()),
       put(GlobalActions.getTokenBalances()),
     ]);
-    yield put(RewardsActions.getRewardPoolsData(pools))
+    yield put(RewardsActions.getRewardPoolsData(pools));
   } catch (e: any) {
     console.log(e);
     yield put(RewardsActions.setIsDepositing(false));
@@ -371,7 +371,7 @@ export function* withdraw(action: { type: string; payload: WithdrawPayload }) {
     toast.success("withdraw success");
     yield put(GlobalActions.getTokenBalances());
     yield put(RewardsActions.getRewardPoolsData(pools));
-    yield put(RewardsPageActions.resetWithdraw())
+    yield put(RewardsPageActions.resetWithdraw());
     if (onSuccess) {
       yield call(onSuccess);
     }
@@ -381,7 +381,7 @@ export function* withdraw(action: { type: string; payload: WithdrawPayload }) {
       toast.error(e.data.message);
     }
     yield put(RewardsActions.setIsWithdrawing(false));
-    yield put(RewardsPageActions.setIsModalOpen(false))
+    yield put(RewardsPageActions.setIsModalOpen(false));
   }
 }
 

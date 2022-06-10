@@ -25,14 +25,16 @@ export const VeAxialInfo: FC = () => {
     <StyledContainer container spacing={2}>
       <Grid item>
         <Text variant="body1">{t(translations.Staking.Info.veAXIAL())}</Text>
-        <Text variant="body2">{commify(veAxialBalance|| "0.000") }</Text>
+        <Text variant="body2">{commify(veAxialBalance || "0.000")}</Text>
       </Grid>
 
       <Grid item>
         <Text variant="body1">
           {t(translations.Staking.Info.AXIALStaked())}
         </Text>
-        <Text variant="body2">{commify(stakedAxialIntoVeAxial|| "0.000")}</Text>
+        <Text variant="body2">
+          {commify(stakedAxialIntoVeAxial || "0.000")}
+        </Text>
       </Grid>
     </StyledContainer>
   );

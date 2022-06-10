@@ -18,11 +18,11 @@ export const Balance: FC = () => {
 
   const getWalletBalance = () => {
     if (tokens && selectedFromToken) {
-      const str= BNToString(
+      const str = BNToString(
         tokens[selectedFromToken.symbol]?.balance ?? BigNumber.from(0),
         tokens[selectedFromToken.symbol]?.decimals
       );
-      const commified=commify(str || "0")
+      const commified = commify(str || "0");
       return commified;
     }
 

@@ -97,10 +97,6 @@ export const GovernanceSelectors = {
     GovernanceDomains.selectedProposalFilter,
     (filter) => filter
   ),
-  selectedProposal: createSelector(
-    GovernanceDomains.selectedProposal,
-    (proposal) => proposal
-  ),
   proposals: createSelector(
     GovernanceDomains.proposals,
     (proposals) => proposals
@@ -140,9 +136,9 @@ export const GovernanceSelectors = {
           rest.push(p);
         }
       });
-const sortedActive=active.sort((a,b)=>{
-  return Number(b.governance_id||0)-Number(a.governance_id||0)
-})
+      const sortedActive = active.sort((a, b) => {
+        return Number(b.governance_id || 0) - Number(a.governance_id || 0);
+      });
       return [...sortedActive, ...rest];
     }
   ),

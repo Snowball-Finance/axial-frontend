@@ -29,7 +29,9 @@ export const Actions = () => {
     depositError = "You don't have Balance on this pool";
   } else if (
     enteredAmount !== "" &&
-    (mainTokenBalance || BigNumber.from(0)).lt(floatToBN(enteredAmount||"0")||BigNumber.from(0)) 
+    (mainTokenBalance || BigNumber.from(0)).lt(
+      floatToBN(enteredAmount || "0") || BigNumber.from(0)
+    )
   ) {
     depositError = "Insufficient Balance";
   } else {

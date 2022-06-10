@@ -37,7 +37,6 @@ export const ProposalListItem: FC<ProposalListItemProps> = ({ proposal }) => {
             <StyledSubChildContainer item>
               <Info proposal={proposal} />
             </StyledSubChildContainer>
-
             <StyledSubChildContainer item>
               <DetailsButton proposal={proposal} />
             </StyledSubChildContainer>

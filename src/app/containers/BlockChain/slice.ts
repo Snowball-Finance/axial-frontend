@@ -30,8 +30,7 @@ const blockChainSlice = createSlice({
     },
     increaseNumberOfFailedRetriesForGettingMainTokenBalance(state) {
       state.numberOfFailedRetriesForGettingMainTokenBalance =
-      state.numberOfFailedRetriesForGettingMainTokenBalance + 1;
-      ;
+        state.numberOfFailedRetriesForGettingMainTokenBalance + 1;
     },
     setIncludesGovernance(state, action: PayloadAction<boolean>) {
       state.includesGovernance = action.payload;

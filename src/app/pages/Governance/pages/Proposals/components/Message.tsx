@@ -13,11 +13,11 @@ import { commify } from "app/containers/utils/contractUtils";
 export const Message: FC = () => {
   const { t } = useTranslation();
   const account = useSelector(Web3Selectors.selectAccount);
-  let minimum:string|number = useSelector(
+  let minimum: string | number = useSelector(
     GovernanceSelectors.minimumTokenRequiredForNewProposal
   );
-  if(minimum.toString().includes('e-')){
-    minimum = Number(minimum).toFixed(18)
+  if (minimum.toString().includes("e-")) {
+    minimum = Number(minimum).toFixed(18);
   }
   const canAddNewProposal = useSelector(GovernanceSelectors.canAddNewProposal);
 
