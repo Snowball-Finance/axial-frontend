@@ -264,7 +264,7 @@ export function* submitNewProposal(action: {
     if (message) {
       if(message.includes("proposer votes below proposal threshold")){
         toast.error(
-        "you don't have enough aAxial to create new proposal"
+        "you don't have enough sAxial to create new proposal"
         );
       }
       else{
