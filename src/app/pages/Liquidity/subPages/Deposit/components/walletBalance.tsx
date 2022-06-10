@@ -10,7 +10,7 @@ import { CssVariables } from "styles/cssVariables/cssVariables";
 export const WalletBalance = ({ token }: { token: Token }) => {
   const { t } = useTranslation();
   const amountString = BNToString(token.balance ?? Zero, token.decimals);
-const commified=commify(amountString||'0');
+  const commified = commify(amountString || "0");
   return (
     <BalanceText variant="body2" noWrap>
       {t(translations.LiquidityPage.WalletBalance())}: {commified}

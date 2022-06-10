@@ -69,9 +69,6 @@ export const BlockChain: FC<BlockChainProps> = ({
     }
   }, [mainTokenContract, account]);
 
-
-
-
   return (
     <>
       <Web3 />

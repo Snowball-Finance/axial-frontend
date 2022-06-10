@@ -20,7 +20,9 @@ export function* getMainTokenBalance() {
     yield put(BlockChainActions.setMainTokenBalance(response));
   } catch (error) {
     toast.error(`Error getting ${env.MAIN_TOKEN_NAME} balance`);
-    yield put(BlockChainActions.increaseNumberOfFailedRetriesForGettingMainTokenBalance())
+    yield put(
+      BlockChainActions.increaseNumberOfFailedRetriesForGettingMainTokenBalance()
+    );
   } finally {
     yield put(BlockChainActions.setIsGettingMainTokenBalance(false));
   }

@@ -45,7 +45,7 @@ export function _applySlippage(
     denominator = 100;
     numerator = denominator + (add ? 1 : -1);
   }
-  return (inputValue||BigNumber.from(0)).mul(numerator).div(denominator);
+  return (inputValue || BigNumber.from(0)).mul(numerator).div(denominator);
 }
 
 export function addSlippage(

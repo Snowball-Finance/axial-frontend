@@ -8,6 +8,7 @@ import { CssVariables } from "styles/cssVariables/cssVariables";
 import { Info } from "./Info";
 import { GovernancePageSelectors } from "app/pages/Governance/selectors";
 import { PrimaryCardWrapper } from "app/components/wrappers/PrimaryCard";
+import { VoteOptionsStatus } from "./VoteStatus";
 
 export const ProposalDetails: FC = () => {
   const { t } = useTranslation();
@@ -33,6 +34,9 @@ export const ProposalDetails: FC = () => {
           <Grid container spacing={2}>
             <Grid item xs={12} xl={6}>
               <Info />
+            </Grid>
+            <Grid item xs={12} xl={6}>
+              <VoteOptionsStatus />
             </Grid>
           </Grid>
         </Grid>

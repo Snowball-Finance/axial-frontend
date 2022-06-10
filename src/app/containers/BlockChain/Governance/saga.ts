@@ -32,13 +32,11 @@ export function* getEssentialDataForGovernance() {
   const governanceContract: Governance = yield call(getGovernanceContract);
   try {
     const threshold = yield call(governanceContract.proposalThreshold);
-    let numberThreshold = BNToFloat(threshold, 18) || 100000
+    let numberThreshold = BNToFloat(threshold, 18) || 100000;
     if (numberThreshold === 199999.99999999997) {
-      numberThreshold = 200000
+      numberThreshold = 200000;
     }
-    yield put(
-      GovernanceActions.setMinimumTokenForNewProposal(numberThreshold)
-    );
+    yield put(GovernanceActions.setMinimumTokenForNewProposal(numberThreshold));
   } catch (error) {
     yield put(GovernanceActions.setMinimumTokenForNewProposal(100000));
   }
@@ -260,14 +258,11 @@ export function* submitNewProposal(action: {
   } catch (error: any) {
     console.log(error);
     const message = error?.data?.message;
-    
+
     if (message) {
-      if(message.includes("proposer votes below proposal threshold")){
-        toast.error(
-        "you don't have enough sAxial to create new proposal"
-        );
-      }
-      else{
+      if (message.includes("proposer votes below proposal threshold")) {
+        toast.error("you don't have enough sAxial to create new proposal");
+      } else {
         toast.error(
           message.replace("execution reverted: Governance::propose: ", "")
         );

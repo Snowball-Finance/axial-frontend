@@ -27,7 +27,10 @@ export const SAxialInfo: FC = () => {
       <Grid item>
         <Text variant="body1">{t(translations.Staking.Info.sAXIAL())}</Text>
         <Text variant="body2">
-          {commify(BNToFractionString(rawLockedTokenAmount|| BigNumber.from(0))|| "0.000")}
+          {commify(
+            BNToFractionString(rawLockedTokenAmount || BigNumber.from(0)) ||
+              "0.000"
+          )}
         </Text>
       </Grid>
 
@@ -36,7 +39,10 @@ export const SAxialInfo: FC = () => {
           {t(translations.Staking.Info.AXIALUnlocked())}
         </Text>
         <Text variant="body2">
-          {commify(BNToFractionString(rawClaimableAxial|| BigNumber.from(0))|| "0.000")}
+          {commify(
+            BNToFractionString(rawClaimableAxial || BigNumber.from(0)) ||
+              "0.000"
+          )}
         </Text>
       </Grid>
 

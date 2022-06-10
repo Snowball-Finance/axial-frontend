@@ -12,9 +12,9 @@ import { SwapPageSelectors } from "app/pages/Swap/selectors";
 export const Max: FC = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-const selectedFromToken=useSelector(SwapPageSelectors.selectedFromToken)
+  const selectedFromToken = useSelector(SwapPageSelectors.selectedFromToken);
   const handleMaxAmountSelection = () => {
-    if(selectedFromToken?.symbol){
+    if (selectedFromToken?.symbol) {
       dispatch(SwapPageActions.maxAmountSelection());
     }
   };

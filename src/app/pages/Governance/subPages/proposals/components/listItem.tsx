@@ -5,6 +5,7 @@ import {
   Proposal,
   ProposalState,
 } from "app/containers/BlockChain/Governance/types";
+import { VoteOptionsStatus } from "app/pages/Governance/pages/Details/components/ProposalDetails/VoteStatus";
 import { push } from "connected-react-router";
 import { translations } from "locales/i18n";
 import { FC } from "react";
@@ -77,6 +78,7 @@ export const ProposalListItem: FC<ProposalListItemProps> = ({
                 value={new Date(proposal.start_date).toLocaleString()}
               />
             </DataWrapper>
+            <VoteOptionsStatus proposal={proposal} />
             {/* <VotesBarWrapper>
               <VoteProgressBar
                 title={`${t(translations.GovernancePage.Votes_FOR_AGAINST(), {

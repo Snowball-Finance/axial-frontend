@@ -19,7 +19,7 @@ export const RewardsWithdrawButton = () => {
   const userShareData: UserShareData = useSelector(
     RewardsSelectors.userShareData(selectedPool?.key)
   );
-  const percent=useSelector(RewardsPageSelectors.withdrawPercentage);
+  const percent = useSelector(RewardsPageSelectors.withdrawPercentage);
   const loading = useSelector(RewardsSelectors.isWithdrawing);
   const withdrawAmount = useSelector(RewardsPageSelectors.withdrawAmount);
   const poolsBalances = useSelector(RewardsSelectors.poolsBalances);
@@ -32,7 +32,10 @@ export const RewardsWithdrawButton = () => {
       withdrawError = "You don't have Balance on this pool";
     } else if (
       !percent &&
-      poolsBalances[tokenKey]?.userInfo.amount.lt(floatToBN(withdrawAmount,tokens[tokenKey].decimals)||BigNumber.from(0))
+      poolsBalances[tokenKey]?.userInfo.amount.lt(
+        floatToBN(withdrawAmount, tokens[tokenKey].decimals) ||
+          BigNumber.from(0)
+      )
     ) {
       withdrawError = "Insufficient Balance";
     } else {

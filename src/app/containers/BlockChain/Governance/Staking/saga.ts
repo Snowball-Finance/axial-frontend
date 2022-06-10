@@ -32,15 +32,16 @@ export function* getLatestGovernanceData() {
 }
 
 export function* periodicallyRefetchTheData() {
-  const numberOfFailedRetries:Number=
-  yield select(BlockChainDomains.numberOfFailedRetriesForGettingMainTokenBalanceDomain)
+  const numberOfFailedRetries: Number = yield select(
+    BlockChainDomains.numberOfFailedRetriesForGettingMainTokenBalanceDomain
+  );
   yield all([
     put(GovernanceActions.getGovernanceTokenBalance(true)),
     put(GovernanceActions.getAccruingTokenBalance(true)),
     put(StakingActions.getLockedGovernanceTokenInfo(true)),
     put(StakingActions.getClaimableGovernanceToken()),
   ]);
-  if(numberOfFailedRetries<4){
+  if (numberOfFailedRetries < 4) {
     yield delay(5000);
     yield call(periodicallyRefetchTheData);
   }
@@ -51,7 +52,7 @@ export function* stakeGovernanceToken(action: {
   payload: StakeGovernanceTokenModel;
 }) {
   const { amount, duration: time } = action.payload;
-  let duration = time
+  let duration = time;
   const amountToStake = parseEther(amount.toString());
   yield put(GlobalActions.setTransactionSuccessId(undefined));
   const library = yield select(Web3Domains.selectLibraryDomain);
@@ -98,7 +99,7 @@ export function* stakeGovernanceToken(action: {
         StakingDomains.keepThaUnclaimedWhenExtendingLockPeriod
       );
       if (Number(duration) < 0) {
-        duration = '0'
+        duration = "0";
       }
       const tokenLock = yield call(
         governanceTokenContract.stake,
@@ -139,7 +140,9 @@ export function* stakeAccruingToken(action: {
 }) {
   const { amountToStake: amount } = action.payload;
   let amountToStake = floatToBN(amount, 18) || BigNumber.from(0);
-  const mainTokenBalance = yield select(BlockChainDomains.selectMainTokenBalanceDomain);
+  const mainTokenBalance = yield select(
+    BlockChainDomains.selectMainTokenBalanceDomain
+  );
   if (amountToStake.gt(mainTokenBalance)) {
     amountToStake = mainTokenBalance;
   }

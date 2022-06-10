@@ -18,12 +18,13 @@ export const WalletBalance = () => {
     mainTokenBalance ?? BigNumber.from(0),
     18
   );
-  const commified=commify(parseFloat(stringMainTokenBalance || "0").toFixed(3))
+  const commified = commify(
+    parseFloat(stringMainTokenBalance || "0").toFixed(3)
+  );
 
   return (
     <BalanceText variant="body2" align="right">
-      {t(translations.Common.WalletBalance())}:{" "}
-      {commified}
+      {t(translations.Common.WalletBalance())}: {commified}
     </BalanceText>
   );
 };

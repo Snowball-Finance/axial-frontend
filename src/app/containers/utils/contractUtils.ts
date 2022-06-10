@@ -146,16 +146,15 @@ export const abbreviatedNumber = (num: number, digits = 2) => {
     { value: 1e12, symbol: "t" },
     { value: 1e15, symbol: "p" },
     { value: 1e18, symbol: "e" },
-  ]
+  ];
   var item = lookup
     .slice()
     .reverse()
     .find(function (item) {
-      return num >= item.value
-    })
-  return item ? (num / item.value).toFixed(digits) + item.symbol : "0"
-}
-
+      return num >= item.value;
+    });
+  return item ? (num / item.value).toFixed(digits) + item.symbol : "0";
+};
 
 export function commify(str: string): string {
   const parts = str.split(".");
