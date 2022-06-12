@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-import { call, put, select, takeLatest } from "redux-saga/effects";
+import { all, call, put, select, takeLatest } from "redux-saga/effects";
 
 import { Web3Domains } from "app/containers/BlockChain/Web3/selectors";
 import {
@@ -22,6 +22,7 @@ import { getProviderOrSigner } from "app/containers/utils/contractUtils";
 import { PoolsAndGaugesActions } from "app/containers/PoolsAndGauges/slice";
 import { Gauge } from "abi/ethers-contracts";
 import { RewardsDomains } from "app/containers/Rewards/selectors";
+import { BlockChainActions } from "app/containers/BlockChain/slice";
 
 export function* poolInfoByAddress(action: { type: string; payload: string }) {
   const { payload } = action;
@@ -146,9 +147,13 @@ export function* claim(action: { type: string; payload: Pool }) {
     console.log(e);
     toast.error("claim failed, please try again later");
   } finally {
-    yield put(RewardsPageActions.setIsClaimRewardsLoading(false));
-    yield put(RewardsPageActions.setTokensToClaim([]));
-    yield put(RewardsPageActions.setCheckedClaimRewards([]));
+    yield all([
+      put(RewardsPageActions.setIsClaimRewardsLoading(false)),
+      put(RewardsPageActions.setTokensToClaim([])),
+      put(RewardsPageActions.setCheckedClaimRewards([])),
+      put(BlockChainActions.getMainTokenBalance())
+    ])
+
   }
 }
 
