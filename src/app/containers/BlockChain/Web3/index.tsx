@@ -22,6 +22,7 @@ import { ethers } from "ethers";
 import { GnosisSafeSelectors } from "app/containers/GnosisSafe/selectors";
 import { SafeAppProvider } from "@gnosis.pm/safe-apps-provider";
 import { useGnosisSafeSlice } from "app/containers/GnosisSafe/slice";
+import { rpcUrl } from "../utils/wallet/connectors";
 const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName);
 
 export function useActiveWeb3React(): Web3ReactContextInterface<Web3Provider> & {} {
@@ -82,25 +83,26 @@ export const Web3 = () => {
   useGnosisSafeSlice()
 const sdk=useSelector(GnosisSafeSelectors.sdk)
 const safe=useSelector(GnosisSafeSelectors.safe)
+const connectedToGnosis=useSelector(GnosisSafeSelectors.connected)
 const getNetworkLibrary=useCallback(
   (): BaseProvider=> {
     // @ts-ignore
     const safeProvider=new SafeAppProvider(safe, sdk)
-    const provider = new ethers.providers.Web3Provider(safeProvider) //new ethers.providers.StaticJsonRpcProvider(rpcUrl);;
+    const provider =connectedToGnosis? new ethers.providers.Web3Provider(safeProvider) :new ethers.providers.StaticJsonRpcProvider(rpcUrl);
     const library = (networkLibrary = networkLibrary ?? provider);
     return library;
   }
-  ,[])
+  ,[connectedToGnosis])
 const getLibrary=useCallback(
-  () => {
+  (prvdr) => {
     // @ts-ignore
     const safeProvider=new SafeAppProvider(safe, sdk)
-    const provider = new ethers.providers.Web3Provider(safeProvider)
+    const provider = connectedToGnosis?new ethers.providers.Web3Provider(safeProvider):new Web3Provider(prvdr)
     const library = provider
     library.pollingInterval = 8000;
     return library;
   },
-  [],
+  [connectedToGnosis],
 )
 
 

@@ -311,7 +311,7 @@ export function* getGovernanceTokenBalance(action: {
     GovernanceActions.setIsGettingGovernanceTokenBalance(!action.payload)
   );
   const account = yield select(Web3Domains.selectAccountDomain);
-  const library = yield select(Web3Domains.selectLibraryDomain);
+  const library = yield select(Web3Domains.selectNetworkLibraryDomain);
   const governanceTokenAddress = env.GOVERNANCE_TOKEN_CONTRACT_ADDRESS || "";
   const governanceTokenABI = yield select(GovernanceDomains.governanceTokenABI);
   const governanceTokenContract: SAxial = new Contract(
@@ -341,6 +341,7 @@ export function* getAccruingTokenBalance(action: {
     GovernanceActions.setIsGettingGovernanceTokenBalance(!action.payload)
   );
   const account = yield select(Web3Domains.selectAccountDomain);
+ if(account){
   const accruingTokenContract: VeAxial = yield call(getAccruingTokenContract);
   try {
     const [userAccrued, totalAccrued, staked]: [
@@ -362,6 +363,7 @@ export function* getAccruingTokenBalance(action: {
   } finally {
     yield put(GovernanceActions.setIsGettingGovernanceTokenBalance(false));
   }
+ }
 }
 export function* getTotalGovernanceTokenSupply() {
   const governanceToken = yield select(
@@ -501,7 +503,7 @@ export function* getGovernanceTokenContract() {
   return governanceTokenContract;
 }
 export function* getAccruingTokenContract() {
-  const library = yield select(Web3Domains.selectLibraryDomain);
+  const library = yield select(Web3Domains.selectNetworkLibraryDomain);
   const accruingTokenAddress =
     process.env.REACT_APP_ACCRUING_TOKEN_ADDRESS || "";
   const accruingTokenContract: VeAxial = new Contract(

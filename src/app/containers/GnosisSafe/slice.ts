@@ -2,23 +2,25 @@ import { ContainerState } from "./types";
 import { createSlice } from "store/toolkit";
 import { useInjectReducer, useInjectSaga } from "store/redux-injectors";
 import { gnosisSafeSaga } from "./saga";
+import { PayloadAction } from "@reduxjs/toolkit";
+import SafeAppsSDK, { SafeInfo } from '@gnosis.pm/safe-apps-sdk';
 
 // The initial state of the Swap container
 export const initialState: ContainerState = {
-safe:undefined,
-sdk:undefined
+  safe: undefined,
+  sdk: undefined,
+  connected: false,
 };
 
 const GnosisSafeSlice = createSlice({
   name: "gnosisSafe",
   initialState,
   reducers: {
-   setGnosisSdk: (state, action) => {
-    state.sdk = action.payload;
-   },
-   setGnosisSafe: (state, action) => {
-    state.safe = action.payload;
-   }
+    setGnosisData: (state, action: PayloadAction<{ safe: SafeInfo, sdk: SafeAppsSDK, connected: boolean }>) => {
+      state.safe = action.payload.safe;
+      state.sdk = action.payload.sdk;
+      state.connected = action.payload.connected;
+    },
   },
 });
 

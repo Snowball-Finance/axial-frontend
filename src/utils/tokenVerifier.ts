@@ -41,7 +41,7 @@ export function* checkAndApproveTokensInList(tokens: TokensToVerifyPayload) {
       })
     );
   }
-  const library = yield select(Web3Domains.selectLibraryDomain);
+  const library = yield select(Web3Domains.selectNetworkLibraryDomain);
   const account = yield select(Web3Domains.selectAccountDomain);
   const infiniteApproval = yield select(GlobalDomains.infiniteApproval);
 
@@ -104,7 +104,7 @@ export function* checkIfTokensAreVerified(tokens: TokensToVerifyPayload) {
     item.amount.gt(0)
   );
 
-  const library = yield select(Web3Domains.selectLibraryDomain);
+  const library = yield select(Web3Domains.selectNetworkLibraryDomain);
   const account = yield select(Web3Domains.selectAccountDomain);
   let numberOfVerifiedTokens = 0;
   try {

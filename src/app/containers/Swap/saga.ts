@@ -74,7 +74,7 @@ export function* swap() {
     yield put(SwapActions.setIsSwapping(true));
     const selectedSlippage = yield select(GlobalDomains.selectedSlippage);
     const customSlippage = yield select(GlobalDomains.customSlippage);
-    const library = yield select(Web3Domains.selectLibraryDomain);
+    const library = yield select(Web3Domains.selectNetworkLibraryDomain);
     const account = yield select(Web3Domains.selectAccountDomain);
     const optimalPath: BestPath = yield select(SwapDomains.bestPath);
     const { bestPath, useInternalRouter } = optimalPath;
@@ -125,7 +125,7 @@ export function* tokenApprovalStatus() {
   yield put(SwapActions.setIsTokenApproved(false));
 
   try {
-    const library = yield select(Web3Domains.selectLibraryDomain);
+    const library = yield select(Web3Domains.selectNetworkLibraryDomain);
     const account = yield select(Web3Domains.selectAccountDomain);
     const optimalPath: BestPath = yield select(SwapDomains.bestPath);
     const bestPath = optimalPath?.bestPath;
@@ -164,7 +164,7 @@ export function* approve() {
   try {
     yield put(SwapActions.setIsApproving(true));
     const gasPrice: GenericGasResponse = yield select(GlobalDomains.gasPrice);
-    const library = yield select(Web3Domains.selectLibraryDomain);
+    const library = yield select(Web3Domains.selectNetworkLibraryDomain);
     const account = yield select(Web3Domains.selectAccountDomain);
     const optimalPath: BestPath = yield select(SwapDomains.bestPath);
     const bestPath = optimalPath?.bestPath;

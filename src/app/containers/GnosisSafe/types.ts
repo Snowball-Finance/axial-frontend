@@ -5,7 +5,8 @@ import SafeAppsSDK, { SafeInfo } from '@gnosis.pm/safe-apps-sdk';
 
 export interface GnosisSafeState {
 safe:SafeInfo|undefined,
-sdk:SafeAppsSDK|undefined
+sdk:SafeAppsSDK|undefined,
+connected:boolean,
 }
 
 

@@ -32,18 +32,21 @@ export function* getLatestGovernanceData() {
 }
 
 export function* periodicallyRefetchTheData() {
-  const numberOfFailedRetries: Number = yield select(
-    BlockChainDomains.numberOfFailedRetriesForGettingMainTokenBalanceDomain
-  );
-  yield all([
-    put(GovernanceActions.getGovernanceTokenBalance(true)),
-    put(GovernanceActions.getAccruingTokenBalance(true)),
-    put(StakingActions.getLockedGovernanceTokenInfo(true)),
-    put(StakingActions.getClaimableGovernanceToken()),
-  ]);
-  if (numberOfFailedRetries < 4) {
-    yield delay(5000);
-    yield call(periodicallyRefetchTheData);
+  const account=yield select(Web3Domains.selectAccountDomain)
+  if(account){
+    const numberOfFailedRetries: Number = yield select(
+      BlockChainDomains.numberOfFailedRetriesForGettingMainTokenBalanceDomain
+    );
+    yield all([
+      put(GovernanceActions.getGovernanceTokenBalance(true)),
+      put(GovernanceActions.getAccruingTokenBalance(true)),
+      put(StakingActions.getLockedGovernanceTokenInfo(true)),
+      put(StakingActions.getClaimableGovernanceToken()),
+    ]);
+    if (numberOfFailedRetries < 4) {
+      yield delay(5000);
+      yield call(periodicallyRefetchTheData);
+    }
   }
 }
 
@@ -55,7 +58,7 @@ export function* stakeGovernanceToken(action: {
   let duration = time;
   const amountToStake = parseEther(amount.toString());
   yield put(GlobalActions.setTransactionSuccessId(undefined));
-  const library = yield select(Web3Domains.selectLibraryDomain);
+  const library = yield select(Web3Domains.selectNetworkLibraryDomain);
   //|| is used because if .env is not set,we will fetch the error in early stages
   const mainTokenAddress = env.MAIN_TOKEN_ADDRESS || "";
   const mainTokenABI = yield select(BlockChainDomains.selectMainTokenABIDomain);
@@ -147,7 +150,7 @@ export function* stakeAccruingToken(action: {
     amountToStake = mainTokenBalance;
   }
   yield put(GlobalActions.setTransactionSuccessId(undefined));
-  const library = yield select(Web3Domains.selectLibraryDomain);
+  const library = yield select(Web3Domains.selectNetworkLibraryDomain);
   //|| is used because if .env is not set,we will fetch the error in early stages
   const mainTokenAddress = env.MAIN_TOKEN_ADDRESS || "";
   const mainTokenABI = yield select(BlockChainDomains.selectMainTokenABIDomain);
@@ -158,7 +161,7 @@ export function* stakeAccruingToken(action: {
       library.getSigner()
     ) as Axial;
     if (mainTokenContract) {
-      const library = yield select(Web3Domains.selectLibraryDomain);
+      const library = yield select(Web3Domains.selectNetworkLibraryDomain);
       const accruingTokenAddress =
         process.env.REACT_APP_ACCRUING_TOKEN_ADDRESS || "";
       const accruingTokenContract: VeAxial = new Contract(
@@ -213,7 +216,7 @@ export function* getLockedGovernanceTokenInfo(action: {
   type: string;
   payload: skipLoading;
 }) {
-  const library = yield select(Web3Domains.selectLibraryDomain);
+  const library = yield select(Web3Domains.selectNetworkLibraryDomain);
   const governanceTokenABI = yield select(GovernanceDomains.governanceTokenABI);
   const governanceTokenContract: SAxial = new Contract(
     env.GOVERNANCE_TOKEN_CONTRACT_ADDRESS || "",
@@ -221,7 +224,8 @@ export function* getLockedGovernanceTokenInfo(action: {
     getProviderOrSigner(library)
   ) as SAxial;
   const account = yield select(Web3Domains.selectAccountDomain);
-  try {
+  if(account){
+      try {
     yield put(StakingActions.setIsGettingGovernanceTokenInfo(!action.payload));
     const info = yield call(governanceTokenContract.getLock, account);
     yield put(StakingActions.setGovernanceTokenInfo(info));
@@ -230,6 +234,8 @@ export function* getLockedGovernanceTokenInfo(action: {
   } finally {
     yield put(StakingActions.setIsGettingGovernanceTokenInfo(false));
   }
+  }
+
 }
 
 export function* withdrawGovernanceToken() {
@@ -271,26 +277,28 @@ export function* withdrawGovernanceToken() {
 export function* getClaimableGovernanceToken() {
   const account = yield select(Web3Domains.selectAccountDomain);
 
-  try {
-    const governanceTokenContract: SAxial = yield call(
-      getGovernanceTokenContract
-    );
-    const gasLimit = yield call(
-      governanceTokenContract.estimateGas.getUnclaimed,
-      account
-    );
-    const claimable = yield call(
-      governanceTokenContract.getUnclaimed,
-      account,
-      {
-        gasLimit,
+  if(account){
+    try {
+      const governanceTokenContract: SAxial = yield call(
+        getGovernanceTokenContract
+      );
+      const gasLimit = yield call(
+        governanceTokenContract.estimateGas.getUnclaimed,
+        account
+      );
+      const claimable = yield call(
+        governanceTokenContract.getUnclaimed,
+        account,
+        {
+          gasLimit,
+        }
+      );
+      yield put(StakingActions.setClaimableGovernanceToken(claimable));
+    } catch (e: any) {
+      console.debug(e);
+      if (e?.data?.message) {
+        toast.error(e.data.message);
       }
-    );
-    yield put(StakingActions.setClaimableGovernanceToken(claimable));
-  } catch (e: any) {
-    console.debug(e);
-    if (e?.data?.message) {
-      toast.error(e.data.message);
     }
   }
 }

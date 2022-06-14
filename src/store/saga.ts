@@ -85,7 +85,7 @@ export function* getGasPrice() {
 }
 
 export function* getTokenBalances() {
-  const library = yield select(Web3Domains.selectLibraryDomain);
+  const library = yield select(Web3Domains.selectNetworkLibraryDomain);
   const account = yield select(Web3Domains.selectAccountDomain);
   const tokens: GlobalState["tokens"] = yield select(GlobalDomains.tokens);
   const tokensArray = Object.values(tokens || {});

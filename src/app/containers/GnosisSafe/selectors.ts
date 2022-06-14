@@ -3,7 +3,8 @@ import { RootState } from "store/types";
 
 export const GnosisSafeDomains = {
   safe:(state:RootState)=>state.gnosisSafe?.safe,
-  sdk:(state:RootState)=>state.gnosisSafe?.sdk
+  sdk:(state:RootState)=>state.gnosisSafe?.sdk,
+  connected:(state:RootState)=>state.gnosisSafe?.connected,
 };
 
 export const GnosisSafeSelectors = {
@@ -14,5 +15,9 @@ export const GnosisSafeSelectors = {
   sdk:createSelector(
     GnosisSafeDomains.sdk,
     (sdk)=>sdk
-  )
+  ),
+  connected:createSelector(
+    GnosisSafeDomains.connected,
+    (connectedToGnosis)=>connectedToGnosis
+  ),
 };

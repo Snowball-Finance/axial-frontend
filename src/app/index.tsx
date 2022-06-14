@@ -51,7 +51,7 @@ export function App() {
   const dispatch = useDispatch();
 
   const account = useSelector(Web3Selectors.selectAccount);
-  const library = useSelector(Web3Selectors.selectLibrary);
+  const library = useSelector(Web3Selectors.selectNetworkLibrary);
 
   useEffect(() => {
     dispatch(GlobalActions.setTokens(tokens));

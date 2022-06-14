@@ -114,7 +114,7 @@ export function* approveSingleToken({
   amount: BigNumber;
 }) {
   try {
-    const library = yield select(Web3Domains.selectLibraryDomain);
+    const library = yield select(Web3Domains.selectNetworkLibraryDomain);
     const account = yield select(Web3Domains.selectAccountDomain);
     const infiniteApproval = yield select(GlobalDomains.infiniteApproval);
     const tokenContract = new Contract(
@@ -184,7 +184,7 @@ export function* deposit(action: { type: string; payload: DepositPayload }) {
     const customSlippage = yield select(GlobalDomains.customSlippage);
     const transactionDeadline = Deadlines.Twenty;
 
-    const library = yield select(Web3Domains.selectLibraryDomain);
+    const library = yield select(Web3Domains.selectNetworkLibraryDomain);
     const account = yield select(Web3Domains.selectAccountDomain);
     const targetContract = new Contract(
       pool.swapAddress || pool.address,
@@ -281,7 +281,7 @@ export function* withdraw(action: { type: string; payload: WithdrawPayload }) {
     const customSlippage = yield select(GlobalDomains.customSlippage);
     const transactionDeadline = Deadlines.Twenty;
     const pools = yield select(RewardsDomains.pools);
-    const library = yield select(Web3Domains.selectLibraryDomain);
+    const library = yield select(Web3Domains.selectNetworkLibraryDomain);
     const account = yield select(Web3Domains.selectAccountDomain);
     const {
       poolKey,

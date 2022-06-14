@@ -90,7 +90,7 @@ export function* buildTransactionData() {
     }
   }
   try {
-    const library = yield select(Web3Domains.selectLibraryDomain);
+    const library = yield select(Web3Domains.selectNetworkLibraryDomain);
     const account = yield select(Web3Domains.selectAccountDomain);
     const providerOrSigner = getProviderOrSigner(library, account);
     const targetContract = new Contract(
@@ -381,7 +381,7 @@ function* getSwapContractForWithdraw() {
   const pools = yield select(RewardsDomains.pools);
   const selectedPool = yield select(LiquidityPageDomains.pool);
   const pool: Pool = pools[selectedPool.key];
-  const library = yield select(Web3Domains.selectLibraryDomain);
+  const library = yield select(Web3Domains.selectNetworkLibraryDomain);
   const account = yield select(Web3Domains.selectAccountDomain);
   const swapContract = getContract(
     pool.swapAddress || pool.address,
@@ -695,7 +695,7 @@ function* checkForWithdrawApproval(requestForApprove?: boolean) {
   yield put(LiquidityPageActions.setIsCheckingForApproval(true));
   const pools = yield select(RewardsDomains.pools);
   const selectedPool = yield select(LiquidityPageDomains.pool);
-  const library = yield select(Web3Domains.selectLibraryDomain);
+  const library = yield select(Web3Domains.selectNetworkLibraryDomain);
   const pool = pools[selectedPool.key];
   const account = yield select(Web3Domains.selectAccountDomain);
   const tokenAmounts = yield select(LiquidityPageDomains.withdrawTokenAmounts);

@@ -1,6 +1,8 @@
 import { useWeb3React } from "@web3-react/core";
+import { GnosisSafeSelectors } from "app/containers/GnosisSafe/selectors";
 import { useEffect } from "react";
-import { gnosisSafe } from "../../utils/wallet/connectors";
+import { useSelector } from "react-redux";
+import { gnosisSafe, injected } from "../../utils/wallet/connectors";
 
 /**
  * Use for network and injected - logs user in
@@ -9,14 +11,14 @@ import { gnosisSafe } from "../../utils/wallet/connectors";
  */
 export function useInactiveListener(suppress = false): void {
   const { active, error, activate } = useWeb3React(); // specifically using useWeb3React because of what this hook does
-
+const connectedToGnosis=useSelector(GnosisSafeSelectors.connected);
   useEffect(() => {
     const { ethereum } = window;
-
+const connector=connectedToGnosis?gnosisSafe:injected;
     if (ethereum && ethereum.on && !active && !error && !suppress) {
       const handleChainChanged = (): void => {
         // eat errors
-        activate(gnosisSafe, undefined, true).catch((error) => {
+        activate(connector, undefined, true).catch((error) => {
           console.error("Failed to activate after chain changed", error);
         });
       };
@@ -24,7 +26,7 @@ export function useInactiveListener(suppress = false): void {
       const handleAccountsChanged = (accounts: string[]): void => {
         if (accounts.length > 0) {
           // eat errors
-          activate(gnosisSafe, undefined, true).catch((error) => {
+          activate(connector, undefined, true).catch((error) => {
             console.error("Failed to activate after accounts changed", error);
           });
         }
@@ -41,5 +43,5 @@ export function useInactiveListener(suppress = false): void {
       };
     }
     return undefined;
-  }, [active, error, suppress, activate]);
+  }, [active, error, suppress, activate,connectedToGnosis]);
 }

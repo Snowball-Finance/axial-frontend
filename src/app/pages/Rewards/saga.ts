@@ -120,7 +120,7 @@ export function* withdraw() {
 export function* claim(action: { type: string; payload: Pool }) {
   const pool = action.payload;
   const claimable = yield select(RewardsPageDomains.claimingTokens);
-  const library = yield select(Web3Domains.selectLibraryDomain);
+  const library = yield select(Web3Domains.selectNetworkLibraryDomain);
   const account = yield select(Web3Domains.selectAccountDomain);
   const claimedRewards = yield select(RewardsPageDomains.checkedClaimRewards);
 

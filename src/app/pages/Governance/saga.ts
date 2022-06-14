@@ -35,7 +35,7 @@ export function* voteForFarms() {
       GovernancePageDomains.selectedVoteAllocationGauges
     );
     const gaugeProxyContract: GaugeProxy = yield call(getGaugeProxyContract);
-    const library = yield select(Web3Domains.selectLibraryDomain);
+    const library = yield select(Web3Domains.selectNetworkLibraryDomain);
     //make them weight proportional if they are not
     let pairsObject = selectedPairs;
     // const arr: GaugeItem[] = Object.values(selectedPairs)

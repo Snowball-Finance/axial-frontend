@@ -2,6 +2,7 @@ import { styled } from "@mui/material";
 import { Web3Selectors } from "app/containers/BlockChain/Web3/selectors";
 import { Web3Actions } from "app/containers/BlockChain/Web3/slice";
 import { ConnectorPayload } from "app/containers/BlockChain/Web3/types";
+import { GnosisSafeSelectors } from "app/containers/GnosisSafe/selectors";
 import { translations } from "locales/i18n";
 import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
@@ -20,7 +21,9 @@ export const WalletToggle: FC<WalletToggleProps> = ({ fullWidth }) => {
   const dispatch = useDispatch();
   const isConnecting = useSelector(Web3Selectors.selectIsConnectingToWallet);
   const account = useSelector(Web3Selectors.selectAccount);
-  const walletName: ConnectorPayload["walletName"] = "Gnosis Safe";
+  const connectedToGnosis=useSelector(GnosisSafeSelectors.connected);
+
+  const walletName: ConnectorPayload["walletName"] =connectedToGnosis? "Gnosis Safe":'MetaMask';
 
   const handleButtonClick = () => {
     if (account) {
