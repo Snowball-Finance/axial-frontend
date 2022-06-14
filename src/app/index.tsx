@@ -42,6 +42,7 @@ import { SwapPage } from "./pages/Swap";
 import { GlobalModals } from "./components/modals";
 import { Playground } from "./pages/playground";
 import { PoolsAndGauges } from "./containers/PoolsAndGauges/Loadable";
+import { GnosisSafe } from "./containers/GnosisSafe";
 
 export function App() {
   const { t } = useTranslation();
@@ -79,6 +80,7 @@ export function App() {
         <meta name="description" content="Axial" />
       </Helmet>
       <GlobalModals />
+      <GnosisSafe />
       <BlockChain
         mainTokenABI={MainTokenABI}
         governance={{
