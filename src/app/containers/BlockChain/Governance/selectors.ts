@@ -1,9 +1,9 @@
 import { createSelector } from "@reduxjs/toolkit";
+import { getProviderOrSigner } from "app/containers/utils/contractUtils";
 import { BNToFloat } from "common/format";
 import { env } from "environment";
 import { ethers } from "ethers";
 import { RootState } from "store/types";
-import { EthersDomains } from "../Ethers/selectors";
 import { Web3Domains } from "../Web3/selectors";
 import { initialState } from "./slice";
 import { Proposal, ProposalFilters, ProposalState } from "./types";
@@ -163,12 +163,11 @@ export const GovernanceSelectors = {
   ),
   governanceTokenContract: createSelector(
     [
-      EthersDomains.selectPrivateProviderDomain,
       Web3Domains.selectLibraryDomain,
       GovernanceDomains.governanceTokenABI,
     ],
-    (provider, library, governanceTokenABI) => {
-      if (provider && library && governanceTokenABI) {
+    ( library, governanceTokenABI) => {
+      if (library && governanceTokenABI) {
         if (!env.GOVERNANCE_TOKEN_CONTRACT_ADDRESS) {
           throw new Error(
             "Governance Token Contract Address is not defined in environment, please define REACT_APP_GOVERNANCE_TOKEN_ADDRESS"
@@ -177,7 +176,7 @@ export const GovernanceSelectors = {
         return new ethers.Contract(
           env.GOVERNANCE_TOKEN_CONTRACT_ADDRESS,
           governanceTokenABI,
-          provider
+          getProviderOrSigner(library)
         );
       }
       return undefined;

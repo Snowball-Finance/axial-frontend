@@ -11,7 +11,7 @@ import { CssVariables } from "styles/cssVariables/cssVariables";
 import { ContainedButton } from "../common/buttons/containedButton";
 import {
   AVALANCHE_MAINNET_PARAMS,
-  injected,
+  gnosisSafe,
 } from "app/containers/BlockChain/utils/wallet/connectors";
 
 if (!process.env.REACT_APP_NETWORK_NAME) {
@@ -24,7 +24,7 @@ export const WrongNetworkModalAlert: FC = () => {
   const isOpen = error instanceof UnsupportedChainIdError;
 
   const handleSwitchToAvalancheClick = () => {
-    injected.getProvider().then((provider) => {
+    gnosisSafe.getProvider().then((provider) => {
       provider
         .request({
           method: "wallet_addEthereumChain",

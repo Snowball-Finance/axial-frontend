@@ -10,7 +10,7 @@ export function* connectToWallet(action: {
   payload: ConnectorPayload;
 }) {
   const { walletName } = action.payload;
-  const connector = CONNECTORS[walletName];
+  let connector = CONNECTORS[walletName];
   if (walletName === "Coin 98") {
     //@ts-ignore ignored because of window type error on not having coin98 field
     if (!window.ethereum.isCoin98 && !window.coin98) {

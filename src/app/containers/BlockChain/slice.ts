@@ -15,9 +15,7 @@ export const initialState: ContainerState = {
     mainToken: 0,
     mainToken24hChange: 0,
   },
-  contracts: {
-    mainTokenContract: undefined,
-  },
+
   numberOfFailedRetriesForGettingMainTokenBalance: 0,
 };
 
@@ -36,16 +34,8 @@ const blockChainSlice = createSlice({
       state.includesGovernance = action.payload;
     },
     getMainTokenBalance(state, action: PayloadAction<void>) {},
-    setContracts(
-      state,
-      action: PayloadAction<{
-        mainTokenContract: any;
-      }>
-    ) {
-      state.contracts = {
-        mainTokenContract: action.payload.mainTokenContract,
-      };
-    },
+
+
 
     setIsGettingMainTokenBalance(state, action: PayloadAction<boolean>) {
       state.isGettingMainTokenBalance = action.payload;

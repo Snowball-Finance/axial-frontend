@@ -5,7 +5,6 @@ import { BigNumber, Contract } from "ethers";
 import { toast } from "react-toastify";
 import { all, call, put, select, takeLatest } from "redux-saga/effects";
 import { getMultiContractData } from "services/multicall";
-import { EthersDomains } from "../BlockChain/Ethers/selectors";
 import { Web3Domains } from "../BlockChain/Web3/selectors";
 import { getAllocations } from "./providers/gauge";
 import { selectPoolsArrayDomain } from "./selectors";
@@ -149,9 +148,10 @@ function* getAndMergeAdditionalPoolInfo({
 export function* getAndSetUserPools() {
   try {
     yield put(PoolsAndGaugesActions.setIsGettingPoolsAndGauges(true));
+    const library=yield select(Web3Domains.selectNetworkLibraryDomain);
+    const provider=getProviderOrSigner(library);
     const gaugeProxyContract: GaugeProxy = yield call(getGaugeProxyContract);
     const account = yield select(Web3Domains.selectAccountDomain);
-    const provider = yield select(EthersDomains.selectPrivateProviderDomain);
     const pools: PoolInfo[] = yield select(selectPoolsArrayDomain);
     let poolsCalls: any[] = [];
     let gaugesCalls: any[] = [];

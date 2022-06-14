@@ -6,7 +6,6 @@ import { BigNumber, Contract } from "ethers";
 import { env } from "environment";
 import { BlockChainActions } from "../../slice";
 import { toast } from "react-toastify";
-import { EthersDomains } from "../../Ethers/selectors";
 import { Web3Domains } from "../../Web3/selectors";
 import { StakingDomains } from "./selectors";
 import { GovernanceDomains } from "../selectors";
@@ -21,6 +20,7 @@ import { Token } from "app/containers/Swap/types";
 import { skipLoading } from "app/types";
 import { GlobalActions } from "store/slice";
 import { GetSAxialDataAPI } from "./providers/sAxialData";
+import { getProviderOrSigner } from "app/containers/utils/contractUtils";
 
 export function* getLatestGovernanceData() {
   yield all([
@@ -213,12 +213,12 @@ export function* getLockedGovernanceTokenInfo(action: {
   type: string;
   payload: skipLoading;
 }) {
+  const library = yield select(Web3Domains.selectLibraryDomain);
   const governanceTokenABI = yield select(GovernanceDomains.governanceTokenABI);
-  const provider = yield select(EthersDomains.selectPrivateProviderDomain);
   const governanceTokenContract: SAxial = new Contract(
     env.GOVERNANCE_TOKEN_CONTRACT_ADDRESS || "",
     governanceTokenABI,
-    provider
+    getProviderOrSigner(library)
   ) as SAxial;
   const account = yield select(Web3Domains.selectAccountDomain);
   try {

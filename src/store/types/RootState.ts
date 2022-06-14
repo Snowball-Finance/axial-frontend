@@ -2,7 +2,6 @@ import { RouterState } from "connected-react-router";
 import { HomePageState } from "app/pages/Home/types";
 import { BlockChainState } from "app/containers/BlockChain/types";
 import { Web3State } from "app/containers/BlockChain/Web3/types";
-import { EthersState } from "app/containers/BlockChain/Ethers/types";
 import { GovernanceState } from "app/containers/BlockChain/Governance/types";
 import { PoolsAndGaugesState } from "app/containers/PoolsAndGauges/types";
 import { GovernancePageState } from "app/pages/Governance/types";
@@ -28,7 +27,6 @@ export interface RootState {
   homePage?: HomePageState;
   router?: RouterState;
   web3?: Web3State;
-  ethers?: EthersState;
   blockChain?: BlockChainState;
   governance?: GovernanceState;
   poolsAndGauges?: PoolsAndGaugesState;

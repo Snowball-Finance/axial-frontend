@@ -5,7 +5,6 @@ import { env } from "environment";
 import { Contract, ethers } from "ethers";
 import { multiply } from "precise-math";
 import { RootState } from "store/types";
-import { EthersDomains } from "../BlockChain/Ethers/selectors";
 import { BlockChainDomains } from "../BlockChain/selectors";
 import { Web3Domains } from "../BlockChain/Web3/selectors";
 import { Pools } from "../Rewards/types";
@@ -143,19 +142,18 @@ export const selectPoolsArray = createSelector(
 let contract: Contract | undefined;
 export const selectGaugeContract = createSelector(
   [
-    EthersDomains.selectPrivateProviderDomain,
     Web3Domains.selectLibraryDomain,
     selectGaugeProxyABIDomain,
   ],
-  (provider, library, abi) => {
+  ( library, abi) => {
     if (!env.GAUGE_PROXY_ADDRESS) {
       throw new Error(
         "REACT_APP_GAUGE_PROXY_ADDRESS is not defined in environment"
       );
     }
-    if (provider && library && abi) {
+    if (library && abi) {
       if (!contract) {
-        contract = new ethers.Contract(env.GAUGE_PROXY_ADDRESS, abi, provider);
+        contract = new ethers.Contract(env.GAUGE_PROXY_ADDRESS, abi, library.getSigner());
       }
       return contract;
     }
@@ -182,10 +180,9 @@ export const selectIsReadyToGetUserData = createSelector(
   [
     Web3Domains.selectAccountDomain,
     selectPoolsArrayDomain,
-    EthersDomains.selectPrivateProviderDomain,
     BlockChainDomains.selectPricesDomain,
   ],
-  (account, pools, provider, prices) => {
-    return account && pools.length > 0 && provider && !!prices.mainToken;
+  (account, pools, prices) => {
+    return account && pools.length > 0 && !!prices.mainToken;
   }
 );

@@ -5,15 +5,22 @@ import { BlockChainState } from "./types";
 import { geckoPrice } from "services/coinGecko";
 import { env } from "environment";
 import { Web3Domains } from "./Web3/selectors";
-import { BlockChainDomains } from "./selectors";
 import { Axial } from "abi/ethers-contracts";
+import { Contract } from "ethers";
+import MAIN_TOKEN_ABI from "abi/axial.json";
+import { getProviderOrSigner } from "../utils/contractUtils";
+
+export function* getMainTokenContract(){
+  const  mainTokenAddress= process.env.REACT_APP_MAIN_TOKEN_ADDRESS||'';
+  const library= yield select(Web3Domains.selectNetworkLibraryDomain);
+  const contract=new Contract(mainTokenAddress, MAIN_TOKEN_ABI, getProviderOrSigner(library));
+return contract;
+}
 
 export function* getMainTokenBalance() {
   yield put(BlockChainActions.setIsGettingMainTokenBalance(true));
   const account = yield select(Web3Domains.selectAccountDomain);
-  const { mainTokenContract } = yield select(
-    BlockChainDomains.selectContractsDomain
-  );
+  const { mainTokenContract } = yield call(getMainTokenContract);
   const contract: Axial = mainTokenContract;
   try {
     const response = yield call(contract.balanceOf, account);
@@ -77,6 +84,5 @@ export function* blockChainSaga() {
     BlockChainActions.getMainTokenBalance.type,
     getMainTokenBalance
   );
-  yield takeLatest(BlockChainActions.setContracts.type, setContracts);
   yield takeLatest(BlockChainActions.getPrices.type, getPrices);
 }

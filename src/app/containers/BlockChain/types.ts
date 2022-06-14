@@ -12,9 +12,7 @@ export interface BlockChainState {
     mainToken: number;
     mainToken24hChange: number;
   };
-  contracts: {
-    mainTokenContract: Contract | undefined;
-  };
+
 }
 
 export type ContainerState = BlockChainState;

@@ -1,7 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 
 import { RootState } from "store/types";
-import { BlockChainDomains } from "../../selectors";
 import { GovernanceDomains } from "../selectors";
 import { initialState } from "./slice";
 
@@ -71,12 +70,9 @@ export const StakingSelectors = {
     (otherClaimables) => otherClaimables
   ),
   selectReadyForStaking: createSelector(
-    [
-      BlockChainDomains.selectContractsDomain,
       GovernanceDomains.governanceTokenContract,
-    ],
-    (blockChainContracts, governanceTokenContract) => {
-      return blockChainContracts.mainTokenContract && governanceTokenContract;
+    (governanceTokenContract) => {
+      return  governanceTokenContract;
     }
   ),
   selectKeepThaUnclaimedWhenExtendingLockPeriod: createSelector(

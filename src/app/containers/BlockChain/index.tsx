@@ -6,12 +6,10 @@
 
 import React, { FC, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Ethers } from "./Ethers";
 import { Web3 } from "./Web3";
 import { BlockChainActions, useBlockChainSlice } from "./slice";
 import { Governance } from "./Governance";
 import { DistributorData } from "./Governance/Staking/types";
-import { BlockChainSelectors } from "./selectors";
 import { Web3Selectors } from "./Web3/selectors";
 import { useWeb3Slice } from "./Web3/slice";
 
@@ -52,27 +50,18 @@ export const BlockChain: FC<BlockChainProps> = ({
     return () => {};
   }, []);
 
-  const { mainTokenContract } = useSelector(
-    BlockChainSelectors.selectCalculatedContracts
-  );
 
   useEffect(() => {
     if (governance) {
       dispatch(BlockChainActions.setIncludesGovernance(true));
     }
-    if (mainTokenContract) {
-      dispatch(
-        BlockChainActions.setContracts({
-          mainTokenContract: mainTokenContract,
-        })
-      );
-    }
-  }, [mainTokenContract, account]);
+ 
+
+  }, [ account]);
 
   return (
     <>
       <Web3 />
-      <Ethers />
       {governance && (
         <Governance
           tokenABI={governance.tokenABI}
