@@ -1,5 +1,7 @@
 import styled from "@emotion/styled";
 import bg from "./components/clouds3-min.png";
+import twin from './components/twinkling.png'
+import stars from './components/stars.png'
 
 export const Background = () => {
   return (
@@ -99,14 +101,14 @@ const Wrapper = styled("div")`
 
   .stars {
     background: #000
-      url(http://www.script-tutorials.com/demos/360/images/stars.png) repeat top
+      url(${stars}) repeat top
       center;
     z-index: 0;
   }
 
   .twinkling {
     background: transparent
-      url(http://www.script-tutorials.com/demos/360/images/twinkling.png) repeat
+      url(${twin}) repeat
       top center;
     z-index: 1;
 
