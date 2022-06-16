@@ -70,9 +70,9 @@ export const StakingSelectors = {
     (otherClaimables) => otherClaimables
   ),
   selectReadyForStaking: createSelector(
-      GovernanceDomains.governanceTokenContract,
+    GovernanceDomains.governanceTokenContract,
     (governanceTokenContract) => {
-      return  governanceTokenContract;
+      return governanceTokenContract;
     }
   ),
   selectKeepThaUnclaimedWhenExtendingLockPeriod: createSelector(

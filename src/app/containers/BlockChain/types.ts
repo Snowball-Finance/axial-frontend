@@ -12,7 +12,6 @@ export interface BlockChainState {
     mainToken: number;
     mainToken24hChange: number;
   };
-
 }
 
 export type ContainerState = BlockChainState;

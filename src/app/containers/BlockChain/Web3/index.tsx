@@ -76,35 +76,35 @@ const Core = () => {
   return <></>;
 };
 
-
 let networkLibrary: BaseProvider | undefined;
 
 export const Web3 = () => {
-  useGnosisSafeSlice()
-const sdk=useSelector(GnosisSafeSelectors.sdk)
-const safe=useSelector(GnosisSafeSelectors.safe)
-const connectedToGnosis=useSelector(GnosisSafeSelectors.connected)
-const getNetworkLibrary=useCallback(
-  (): BaseProvider=> {
+  useGnosisSafeSlice();
+  const sdk = useSelector(GnosisSafeSelectors.sdk);
+  const safe = useSelector(GnosisSafeSelectors.safe);
+  const connectedToGnosis = useSelector(GnosisSafeSelectors.connected);
+  const getNetworkLibrary = useCallback((): BaseProvider => {
     // @ts-ignore
-    const safeProvider=new SafeAppProvider(safe, sdk)
-    const provider =connectedToGnosis? new ethers.providers.Web3Provider(safeProvider) :new ethers.providers.StaticJsonRpcProvider(rpcUrl);
+    const safeProvider = new SafeAppProvider(safe, sdk);
+    const provider = connectedToGnosis
+      ? new ethers.providers.Web3Provider(safeProvider)
+      : new ethers.providers.StaticJsonRpcProvider(rpcUrl);
     const library = (networkLibrary = networkLibrary ?? provider);
     return library;
-  }
-  ,[connectedToGnosis])
-const getLibrary=useCallback(
-  (prvdr) => {
-    // @ts-ignore
-    const safeProvider=new SafeAppProvider(safe, sdk)
-    const provider = connectedToGnosis?new ethers.providers.Web3Provider(safeProvider):new Web3Provider(prvdr)
-    const library = provider
-    library.pollingInterval = 8000;
-    return library;
-  },
-  [connectedToGnosis],
-)
-
+  }, [connectedToGnosis]);
+  const getLibrary = useCallback(
+    (prvdr) => {
+      // @ts-ignore
+      const safeProvider = new SafeAppProvider(safe, sdk);
+      const provider = connectedToGnosis
+        ? new ethers.providers.Web3Provider(safeProvider)
+        : new Web3Provider(prvdr);
+      const library = provider;
+      library.pollingInterval = 8000;
+      return library;
+    },
+    [connectedToGnosis]
+  );
 
   return (
     <Web3ReactProvider {...{ getLibrary }}>

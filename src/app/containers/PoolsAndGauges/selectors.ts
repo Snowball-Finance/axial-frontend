@@ -141,11 +141,8 @@ export const selectPoolsArray = createSelector(
 );
 let contract: Contract | undefined;
 export const selectGaugeContract = createSelector(
-  [
-    Web3Domains.selectLibraryDomain,
-    selectGaugeProxyABIDomain,
-  ],
-  ( library, abi) => {
+  [Web3Domains.selectLibraryDomain, selectGaugeProxyABIDomain],
+  (library, abi) => {
     if (!env.GAUGE_PROXY_ADDRESS) {
       throw new Error(
         "REACT_APP_GAUGE_PROXY_ADDRESS is not defined in environment"
@@ -153,7 +150,11 @@ export const selectGaugeContract = createSelector(
     }
     if (library && abi) {
       if (!contract) {
-        contract = new ethers.Contract(env.GAUGE_PROXY_ADDRESS, abi, library.getSigner());
+        contract = new ethers.Contract(
+          env.GAUGE_PROXY_ADDRESS,
+          abi,
+          library.getSigner()
+        );
       }
       return contract;
     }

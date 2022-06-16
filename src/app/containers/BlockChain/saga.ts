@@ -10,11 +10,15 @@ import { Contract } from "ethers";
 import MAIN_TOKEN_ABI from "abi/axial.json";
 import { getProviderOrSigner } from "../utils/contractUtils";
 
-export function* getMainTokenContract(){
-  const  mainTokenAddress= process.env.REACT_APP_MAIN_TOKEN_ADDRESS||'';
-  const library= yield select(Web3Domains.selectNetworkLibraryDomain);
-  const contract=new Contract(mainTokenAddress, MAIN_TOKEN_ABI, getProviderOrSigner(library));
-return contract;
+export function* getMainTokenContract() {
+  const mainTokenAddress = process.env.REACT_APP_MAIN_TOKEN_ADDRESS || "";
+  const library = yield select(Web3Domains.selectNetworkLibraryDomain);
+  const contract = new Contract(
+    mainTokenAddress,
+    MAIN_TOKEN_ABI,
+    getProviderOrSigner(library)
+  );
+  return contract;
 }
 
 export function* getMainTokenBalance() {

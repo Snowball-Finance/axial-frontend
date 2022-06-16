@@ -8,5 +8,5 @@
 // }
 
 export function* gnosisSafeSaga() {
-// yield takeLatest(GnosisSafeActions.setGnosisData, setGnosisData);
+  // yield takeLatest(GnosisSafeActions.setGnosisData, setGnosisData);
 }

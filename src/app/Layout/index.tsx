@@ -1,15 +1,16 @@
 import React, { ReactElement } from "react";
 import { styled } from "@mui/material";
-import { isMobile } from "react-device-detect";
 
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import { mobile } from "styles/media";
 import { Background } from "./background";
+import { useDeviceSize } from "hooks/mediaQuery";
 
 export default function Layout({
   children,
 }: React.PropsWithChildren<unknown>): ReactElement {
+  const { isMobile } = useDeviceSize();
   return (
     <StyledLayout>
       <HeaderWrapper>
@@ -28,7 +29,7 @@ export default function Layout({
   );
 }
 
-const StyledLayout = styled("div")(({ theme }) => ({
+const StyledLayout = styled("div")({
   display: "flex",
   flexDirection: "column",
   minHeight: "100vh",
@@ -36,7 +37,7 @@ const StyledLayout = styled("div")(({ theme }) => ({
     width: "100%",
     overflowX: "hidden",
   },
-}));
+});
 
 const HeaderWrapper = styled("div")({
   position: "fixed",

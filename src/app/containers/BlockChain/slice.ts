@@ -35,8 +35,6 @@ const blockChainSlice = createSlice({
     },
     getMainTokenBalance(state, action: PayloadAction<void>) {},
 
-
-
     setIsGettingMainTokenBalance(state, action: PayloadAction<boolean>) {
       state.isGettingMainTokenBalance = action.payload;
     },

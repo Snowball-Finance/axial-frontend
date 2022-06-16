@@ -162,11 +162,8 @@ export const GovernanceSelectors = {
     }
   ),
   governanceTokenContract: createSelector(
-    [
-      Web3Domains.selectLibraryDomain,
-      GovernanceDomains.governanceTokenABI,
-    ],
-    ( library, governanceTokenABI) => {
+    [Web3Domains.selectLibraryDomain, GovernanceDomains.governanceTokenABI],
+    (library, governanceTokenABI) => {
       if (library && governanceTokenABI) {
         if (!env.GOVERNANCE_TOKEN_CONTRACT_ADDRESS) {
           throw new Error(

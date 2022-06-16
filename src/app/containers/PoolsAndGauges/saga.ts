@@ -148,8 +148,8 @@ function* getAndMergeAdditionalPoolInfo({
 export function* getAndSetUserPools() {
   try {
     yield put(PoolsAndGaugesActions.setIsGettingPoolsAndGauges(true));
-    const library=yield select(Web3Domains.selectNetworkLibraryDomain);
-    const provider=getProviderOrSigner(library);
+    const library = yield select(Web3Domains.selectNetworkLibraryDomain);
+    const provider = getProviderOrSigner(library);
     const gaugeProxyContract: GaugeProxy = yield call(getGaugeProxyContract);
     const account = yield select(Web3Domains.selectAccountDomain);
     const pools: PoolInfo[] = yield select(selectPoolsArrayDomain);

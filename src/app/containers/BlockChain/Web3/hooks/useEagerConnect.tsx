@@ -8,12 +8,14 @@ import { useSelector } from "react-redux";
 export function useEagerConnect(): boolean {
   const { activate, active } = useWeb3React(); // specifically using useWeb3ReactCore because of what this hook does
   const [tried, setTried] = useState(false);
-  const connectedToGnosis=useSelector(GnosisSafeSelectors.connected);
+  const connectedToGnosis = useSelector(GnosisSafeSelectors.connected);
 
   useEffect(() => {
-    const connector=connectedToGnosis?gnosisSafe:injected;
+    const connector = connectedToGnosis ? gnosisSafe : injected;
 
-    void (connectedToGnosis? gnosisSafe.isSafeApp():injected.isAuthorized()).then((isAuthorized) => {
+    void (
+      connectedToGnosis ? gnosisSafe.isSafeApp() : injected.isAuthorized()
+    ).then((isAuthorized) => {
       if (isAuthorized) {
         activate(connector, undefined, true).catch(() => {
           setTried(true);
@@ -28,7 +30,7 @@ export function useEagerConnect(): boolean {
         }
       }
     });
-  }, [activate,connectedToGnosis]); // intentionally only running on mount (make sure it's only mounted once :))
+  }, [activate, connectedToGnosis]); // intentionally only running on mount (make sure it's only mounted once :))
 
   // if the connection worked, wait until we get confirmation of that to flip the flag
   useEffect(() => {

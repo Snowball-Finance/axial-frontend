@@ -1,7 +1,7 @@
 import { InjectedConnector } from "@web3-react/injected-connector";
 import { NetworkConnector } from "@web3-react/network-connector";
 import { WalletLinkConnector } from "@web3-react/walletlink-connector";
-import { SafeAppConnector } from '@gnosis.pm/safe-apps-web3-react';
+import { SafeAppConnector } from "@gnosis.pm/safe-apps-web3-react";
 
 const NODE_ADDRESS = process.env.REACT_APP_NODE_ADDRESS;
 const CHAIN_NAME = process.env.REACT_APP_CHAIN_NAME;
@@ -40,6 +40,12 @@ const trustWallet = new InjectedConnector({
   supportedChainIds: [Number(AVALANCHE_MAINNET_PARAMS.chainId)],
 });
 
-const gnosisSafe=new SafeAppConnector()
+const gnosisSafe = new SafeAppConnector();
 
-export { injected, trustWallet, walletLink,gnosisSafe, AVALANCHE_MAINNET_PARAMS };
+export {
+  injected,
+  trustWallet,
+  walletLink,
+  gnosisSafe,
+  AVALANCHE_MAINNET_PARAMS,
+};

@@ -11,10 +11,10 @@ import { gnosisSafe, injected } from "../../utils/wallet/connectors";
  */
 export function useInactiveListener(suppress = false): void {
   const { active, error, activate } = useWeb3React(); // specifically using useWeb3React because of what this hook does
-const connectedToGnosis=useSelector(GnosisSafeSelectors.connected);
+  const connectedToGnosis = useSelector(GnosisSafeSelectors.connected);
   useEffect(() => {
     const { ethereum } = window;
-const connector=connectedToGnosis?gnosisSafe:injected;
+    const connector = connectedToGnosis ? gnosisSafe : injected;
     if (ethereum && ethereum.on && !active && !error && !suppress) {
       const handleChainChanged = (): void => {
         // eat errors
@@ -43,5 +43,5 @@ const connector=connectedToGnosis?gnosisSafe:injected;
       };
     }
     return undefined;
-  }, [active, error, suppress, activate,connectedToGnosis]);
+  }, [active, error, suppress, activate, connectedToGnosis]);
 }

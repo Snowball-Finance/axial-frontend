@@ -50,14 +50,11 @@ export const BlockChain: FC<BlockChainProps> = ({
     return () => {};
   }, []);
 
-
   useEffect(() => {
     if (governance) {
       dispatch(BlockChainActions.setIncludesGovernance(true));
     }
- 
-
-  }, [ account]);
+  }, [account]);
 
   return (
     <>
