@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next";
 import { translations } from "locales/i18n";
 import { Box } from "@mui/material";
 import { GovernanceBody } from "./body";
-import { useGovernancePageSlice } from "./slice";
+import { GovernancePageActions, useGovernancePageSlice } from "./slice";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GovernanceActions } from "app/containers/BlockChain/Governance/slice";

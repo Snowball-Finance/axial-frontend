@@ -1,4 +1,4 @@
-import { all, call, put, select, takeLatest } from "redux-saga/effects";
+import { all, call, put, select, SelectEffect, takeLatest } from "redux-saga/effects";
 import { BlockChainActions } from "./slice";
 import { toast } from "react-toastify";
 import { BlockChainState } from "./types";
@@ -9,14 +9,16 @@ import { Axial } from "abi/ethers-contracts";
 import { Contract } from "ethers";
 import MAIN_TOKEN_ABI from "abi/axial.json";
 import { getProviderOrSigner } from "../utils/contractUtils";
+import { Web3Provider } from "@ethersproject/providers";
 
-export function* getMainTokenContract() {
+export function* getMainTokenContract():Generator<SelectEffect, Contract, unknown> {
   const mainTokenAddress = process.env.REACT_APP_MAIN_TOKEN_ADDRESS || "";
-  const library = yield select(Web3Domains.selectNetworkLibraryDomain);
+  const library:any = yield select(Web3Domains.selectNetworkLibraryDomain);
+  let lib:Web3Provider=library
   const contract = new Contract(
     mainTokenAddress,
     MAIN_TOKEN_ABI,
-    getProviderOrSigner(library)
+    getProviderOrSigner(lib)
   );
   return contract;
 }
@@ -24,13 +26,16 @@ export function* getMainTokenContract() {
 export function* getMainTokenBalance() {
   yield put(BlockChainActions.setIsGettingMainTokenBalance(true));
   const account = yield select(Web3Domains.selectAccountDomain);
-  const { mainTokenContract } = yield call(getMainTokenContract);
+  const mainTokenContract  = yield call(getMainTokenContract);
   const contract: Axial = mainTokenContract;
   try {
+   if(account){
     const response = yield call(contract.balanceOf, account);
     yield put(BlockChainActions.setMainTokenBalance(response));
+   }
   } catch (error) {
     toast.error(`Error getting ${env.MAIN_TOKEN_NAME} balance`);
+    console.log(error)
     yield put(
       BlockChainActions.increaseNumberOfFailedRetriesForGettingMainTokenBalance()
     );

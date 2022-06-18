@@ -13,8 +13,8 @@ import { StakingBody } from "./body";
 interface Props {}
 export function StakingPage(props: Props) {
   useStakingPageSlice();
-
   const { t } = useTranslation();
+  
 
   return (
     <>

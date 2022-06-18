@@ -54,6 +54,9 @@ export const BlockChain: FC<BlockChainProps> = ({
     if (governance) {
       dispatch(BlockChainActions.setIncludesGovernance(true));
     }
+    if(account){
+      dispatch(BlockChainActions.getMainTokenBalance());
+    }
   }, [account]);
 
   return (

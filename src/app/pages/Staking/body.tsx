@@ -6,6 +6,7 @@ import { SAxialPage } from "./subPages/SAxial";
 import { VeAxialPage } from "./subPages/VeAxial";
 
 export function StakingBody() {
+  
   return (
     <Switch>
       <Route exact path={AppPages.StakingPage}>
