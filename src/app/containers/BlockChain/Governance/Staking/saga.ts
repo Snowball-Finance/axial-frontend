@@ -1,7 +1,7 @@
 import { parseEther } from "ethers/lib/utils";
 import { all, call, delay, put, select, takeLatest } from "redux-saga/effects";
 import { StakingActions } from "./slice";
-import { StakeGovernanceTokenModel, StakeAccruingTokenModel } from "./types";
+import { StakeGovernanceTokenModel, StakeAccruingTokenModel, LockedInfo } from "./types";
 import { BigNumber, Contract } from "ethers";
 import { env } from "environment";
 import { BlockChainActions } from "../../slice";
@@ -32,8 +32,8 @@ export function* getLatestGovernanceData() {
 }
 
 export function* periodicallyRefetchTheData() {
-  const account=yield select(Web3Domains.selectAccountDomain)
-  if(account){
+  const account = yield select(Web3Domains.selectAccountDomain)
+  if (account) {
     const numberOfFailedRetries: Number = yield select(
       BlockChainDomains.numberOfFailedRetriesForGettingMainTokenBalanceDomain
     );
@@ -224,16 +224,23 @@ export function* getLockedGovernanceTokenInfo(action: {
     getProviderOrSigner(library)
   ) as SAxial;
   const account = yield select(Web3Domains.selectAccountDomain);
-  if(account){
-      try {
-    yield put(StakingActions.setIsGettingGovernanceTokenInfo(!action.payload));
-    const info = yield call(governanceTokenContract.getLock, account);
-    yield put(StakingActions.setGovernanceTokenInfo(info));
-  } catch (error) {
-    console.log(error);
-  } finally {
-    yield put(StakingActions.setIsGettingGovernanceTokenInfo(false));
-  }
+  if (account) {
+    try {
+      yield put(StakingActions.setIsGettingGovernanceTokenInfo(!action.payload));
+      const info: LockedInfo = yield call(governanceTokenContract.getLock, account);
+      const tmp = { ...info }
+      const nowInMillisecond = new Date().getTime();
+      const endBlockTime = Number(tmp.endBlockTime) * 1000;
+      const dif = endBlockTime - nowInMillisecond;
+      if (dif < 0) {
+        tmp.endBlockTime = BigNumber.from(0);
+      }
+      yield put(StakingActions.setGovernanceTokenInfo(tmp));
+    } catch (error) {
+      console.log(error);
+    } finally {
+      yield put(StakingActions.setIsGettingGovernanceTokenInfo(false));
+    }
   }
 
 }
@@ -277,7 +284,7 @@ export function* withdrawGovernanceToken() {
 export function* getClaimableGovernanceToken() {
   const account = yield select(Web3Domains.selectAccountDomain);
 
-  if(account){
+  if (account) {
     try {
       const governanceTokenContract: SAxial = yield call(
         getGovernanceTokenContract

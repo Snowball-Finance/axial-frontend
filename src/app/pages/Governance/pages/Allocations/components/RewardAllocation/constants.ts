@@ -1,10 +1,13 @@
 import { translations } from "locales/i18n";
 
-export const tableHeader = (t) => [
+export const tableHeader = (t,isMobile) => [
+  
   {
     id: "name",
     label: t(translations.GovernancePage.VoteAllocation.AllocationTable.Name()),
   },
+ ...(!isMobile ? [
+
   {
     id: "allocation",
     label: t(
@@ -19,6 +22,8 @@ export const tableHeader = (t) => [
     ),
     numeric: true,
   },
+
+ ]:[]),
 
   {
     id: "boostedAxialAPR",
