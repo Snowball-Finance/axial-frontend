@@ -28,6 +28,9 @@ import { GlobalActions } from "store/slice";
 import { BNToFloat } from "common/format";
 import GOVERNANCE_ABI from "abi/governance.json";
 
+const reversedProposalIds = ["0", "1"];
+const finishedReversedProposalIds = ["0"];
+
 export function* getEssentialDataForGovernance() {
   const governanceContract: Governance = yield call(getGovernanceContract);
   try {
@@ -53,6 +56,17 @@ export function* getProposals(action: {
   try {
     const response = yield call(GetProposalsAPI);
     const proposals: Proposal[] = response; //response.data.ProposalList.proposals;
+    //to fix reversed votes for first 2 proposals
+    for (const proposal of proposals) {
+      if (reversedProposalIds.includes(proposal.governance_id)) {
+        if (finishedReversedProposalIds.includes(proposal.governance_id)) {
+          if (proposal.proposal_state === ProposalState.Defeated) {
+            proposal.proposal_state = ProposalState.Executed;
+          }
+        }
+      }
+    }
+    //
     yield put(GovernanceActions.setProposals(proposals));
   } catch (error) {
     console.log(error);
@@ -470,6 +484,17 @@ export function* syncProposalsWithBlockchain() {
       };
       updatedProposals.push(proposal);
     }
+    //to fix reversed votes for first 2 proposals
+    for (const proposal of updatedProposals) {
+      if (reversedProposalIds.includes(proposal.governance_id)) {
+        if (finishedReversedProposalIds.includes(proposal.governance_id)) {
+          if (proposal.proposal_state === ProposalState.Defeated) {
+            proposal.proposal_state = ProposalState.Executed;
+          }
+        }
+      }
+    }
+    //
     yield put(GovernanceActions.setSyncedProposalsWithBlockchain(true));
     yield put(GovernanceActions.setProposals([...updatedProposals]));
   } catch (error) {
