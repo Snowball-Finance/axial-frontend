@@ -17,5 +17,5 @@ export const HeaderText: FC = () => {
 
 const Text = styled(Typography)({
   color: CssVariables.white,
-  maxWidth:`calc(100vw - 65px)`
+  maxWidth: `calc(100vw - 65px)`,
 });

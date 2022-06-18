@@ -48,9 +48,9 @@ export const SubmitVoteButton: FC = () => {
   );
 };
 
-const StyledContained= styled(ContainedButton)({
-  maxWidth:`calc(100vw - 65px)`,
-  [mobile]:{
-    padding:'0'
-  }
-})
+const StyledContained = styled(ContainedButton)({
+  maxWidth: `calc(100vw - 65px)`,
+  [mobile]: {
+    padding: "0",
+  },
+});

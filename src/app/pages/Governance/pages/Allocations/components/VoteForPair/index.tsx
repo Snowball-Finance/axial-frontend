@@ -46,4 +46,4 @@ const Text = styled(Typography)({
 
 const StyledPrimaryCardWrapper = styled(PrimaryCardWrapper)({
   maxWidth: `calc(100vw - 10px)`,
-})
+});

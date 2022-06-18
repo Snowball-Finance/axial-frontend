@@ -27,7 +27,7 @@ import { mobile } from "styles/media";
 
 export const AllocationTable: FC = () => {
   const { t } = useTranslation();
-  const {isMobile}=useDeviceSize()
+  const { isMobile } = useDeviceSize();
   const gauges = useSelector(selectGauges);
   const isLoading = useSelector(selectIsLoadingUserPoolsAndGauges);
   const poolsArray = useSelector(PoolsAndGaugesSelectors.poolsArray);
@@ -76,43 +76,41 @@ export const AllocationTable: FC = () => {
     };
   });
 
-  const Tbl=isMobile?MobileElWrapper:StyledTable
-const Tr=isMobile?MobileTrWrapper:TableRow
-const Th=isMobile?MobileElWrapper:StyledTableHead
+  const Tbl = isMobile ? MobileElWrapper : StyledTable;
+  const Tr = isMobile ? MobileTrWrapper : TableRow;
+  const Th = isMobile ? MobileElWrapper : StyledTableHead;
   return (
     <Tbl aria-label="customized table">
       <Th>
         <Tr>
-          {!isMobile? tableHeader(t,isMobile).map((header) => {
-            return (
-              <StyledTableCell
-                key={header.id}
-                sortDirection={
-                  sortingData.orderBy === header.id ? sortingData.order : false
-                }
-              >
-                <TableSortLabel
-                  active={true}
-                  direction={
-                    sortingData.orderBy === header.id
-                      ? sortingData.order
-                      : "asc"
-                  }
-                  onClick={() => handleRequestSort(header.id)}
-                >
-                  {header.label}
-                </TableSortLabel>
-              </StyledTableCell>
-            );
-          }):
-          tableHeader(t,isMobile).map((header) => {
-            return (
-              <MobileElWrapper>
-                  {header.label}
-              </MobileElWrapper>
-            );
-          })
-          }
+          {!isMobile
+            ? tableHeader(t, isMobile).map((header) => {
+                return (
+                  <StyledTableCell
+                    key={header.id}
+                    sortDirection={
+                      sortingData.orderBy === header.id
+                        ? sortingData.order
+                        : false
+                    }
+                  >
+                    <TableSortLabel
+                      active={true}
+                      direction={
+                        sortingData.orderBy === header.id
+                          ? sortingData.order
+                          : "asc"
+                      }
+                      onClick={() => handleRequestSort(header.id)}
+                    >
+                      {header.label}
+                    </TableSortLabel>
+                  </StyledTableCell>
+                );
+              })
+            : tableHeader(t, isMobile).map((header) => {
+                return <MobileElWrapper>{header.label}</MobileElWrapper>;
+              })}
         </Tr>
       </Th>
       <TableBody>
@@ -125,12 +123,12 @@ const Th=isMobile?MobileElWrapper:StyledTableHead
               <StyledTableCell component="th" scope="row">
                 {pool.name}
               </StyledTableCell>
-             {!isMobile && 
-             <>
-              <StyledTableCell>{pool.allocation}</StyledTableCell>
-              <StyledTableCell>{pool.allocationPerDay}</StyledTableCell>
-             </>
-             }
+              {!isMobile && (
+                <>
+                  <StyledTableCell>{pool.allocation}</StyledTableCell>
+                  <StyledTableCell>{pool.allocationPerDay}</StyledTableCell>
+                </>
+              )}
               <StyledTableCell>{pool.axialAPR}</StyledTableCell>
               <StyledTableCell>{pool.gaugeWeight}</StyledTableCell>
               <StyledTableCell>{pool.balance}</StyledTableCell>
@@ -141,13 +139,13 @@ const Th=isMobile?MobileElWrapper:StyledTableHead
     </Tbl>
   );
 };
-const MobileElWrapper=styled('div')({
-  color:'white',
-})
-const MobileTrWrapper=styled('div')({
-  display:'flex',
-  gap:'30px'
-})
+const MobileElWrapper = styled("div")({
+  color: "white",
+});
+const MobileTrWrapper = styled("div")({
+  display: "flex",
+  gap: "30px",
+});
 const StyledTable = styled(Table)({
   minWidth: 700,
   backgroundColor: "transparent",
@@ -173,7 +171,6 @@ const StyledTableRow = styled(TableRow)({
   th: {
     fontWeight: "bold",
   },
-  
 });
 
 const StyledTableCell = styled(TableCell)({
@@ -183,9 +180,9 @@ const StyledTableCell = styled(TableCell)({
   fontFamily: FontFamilies.IBMPlexSans,
   "&:first-child": {
     borderRadius: "20px 0px 0px 0px",
-    [mobile]:{
-      paddingLeft:0
-    }
+    [mobile]: {
+      paddingLeft: 0,
+    },
   },
 
   "&:last-child": {
@@ -198,7 +195,7 @@ const StyledTableCell = styled(TableCell)({
       color: `${CssVariables.white} !important`,
     },
   },
-  'th':{
+  th: {
     maxWidth: "100px",
-  }
+  },
 });

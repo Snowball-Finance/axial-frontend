@@ -22,6 +22,6 @@ const Text = styled(Typography)({
   color: CssVariables.white,
 });
 
-const StyledCardWrapper=styled(CardWrapper)({
-  maxWidth:`calc(100vw - 65px)`
-})
+const StyledCardWrapper = styled(CardWrapper)({
+  maxWidth: `calc(100vw - 65px)`,
+});

@@ -1,7 +1,11 @@
 import { parseEther } from "ethers/lib/utils";
 import { all, call, delay, put, select, takeLatest } from "redux-saga/effects";
 import { StakingActions } from "./slice";
-import { StakeGovernanceTokenModel, StakeAccruingTokenModel, LockedInfo } from "./types";
+import {
+  StakeGovernanceTokenModel,
+  StakeAccruingTokenModel,
+  LockedInfo,
+} from "./types";
 import { BigNumber, Contract } from "ethers";
 import { env } from "environment";
 import { BlockChainActions } from "../../slice";
@@ -32,7 +36,7 @@ export function* getLatestGovernanceData() {
 }
 
 export function* periodicallyRefetchTheData() {
-  const account = yield select(Web3Domains.selectAccountDomain)
+  const account = yield select(Web3Domains.selectAccountDomain);
   if (account) {
     const numberOfFailedRetries: Number = yield select(
       BlockChainDomains.numberOfFailedRetriesForGettingMainTokenBalanceDomain
@@ -226,9 +230,14 @@ export function* getLockedGovernanceTokenInfo(action: {
   const account = yield select(Web3Domains.selectAccountDomain);
   if (account) {
     try {
-      yield put(StakingActions.setIsGettingGovernanceTokenInfo(!action.payload));
-      const info: LockedInfo = yield call(governanceTokenContract.getLock, account);
-      const tmp = { ...info }
+      yield put(
+        StakingActions.setIsGettingGovernanceTokenInfo(!action.payload)
+      );
+      const info: LockedInfo = yield call(
+        governanceTokenContract.getLock,
+        account
+      );
+      const tmp = { ...info };
       const nowInMillisecond = new Date().getTime();
       const endBlockTime = Number(tmp.endBlockTime) * 1000;
       const dif = endBlockTime - nowInMillisecond;
@@ -242,7 +251,6 @@ export function* getLockedGovernanceTokenInfo(action: {
       yield put(StakingActions.setIsGettingGovernanceTokenInfo(false));
     }
   }
-
 }
 
 export function* withdrawGovernanceToken() {

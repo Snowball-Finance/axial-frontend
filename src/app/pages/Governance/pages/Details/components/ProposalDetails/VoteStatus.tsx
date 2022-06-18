@@ -9,14 +9,14 @@ import { GovernancePageSelectors } from "app/pages/Governance/selectors";
 import { commify } from "app/containers/utils/contractUtils";
 import { Proposal } from "app/containers/BlockChain/Governance/types";
 
-interface Props{
-  proposal?:Proposal
+interface Props {
+  proposal?: Proposal;
 }
 
-export const VoteOptionsStatus: FC<Props> = ({proposal}) => {
+export const VoteOptionsStatus: FC<Props> = ({ proposal }) => {
   const { t } = useTranslation();
   let selectedProposal = useSelector(GovernancePageSelectors.selectedProposal);
-  if(proposal) selectedProposal = proposal;
+  if (proposal) selectedProposal = proposal;
   const options: { title: string; votes: string }[] = [];
   if (selectedProposal?.votes && selectedProposal.votes.length === 2) {
     options.push({
@@ -35,9 +35,8 @@ export const VoteOptionsStatus: FC<Props> = ({proposal}) => {
         votes: commify(item.value),
       });
     });
-  }
-  else{
-    return <></>
+  } else {
+    return <></>;
   }
   return (
     <Grid container>

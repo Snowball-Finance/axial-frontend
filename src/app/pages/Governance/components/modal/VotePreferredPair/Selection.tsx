@@ -110,9 +110,9 @@ export const Selection: FC = () => {
   );
 };
 
-const StyledCardWrapper=styled(CardWrapper)({
-  maxWidth:`calc(100vw - 65px)`
-})
+const StyledCardWrapper = styled(CardWrapper)({
+  maxWidth: `calc(100vw - 65px)`,
+});
 
 const Text = styled(Typography)({
   color: CssVariables.white,

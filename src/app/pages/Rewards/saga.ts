@@ -151,9 +151,8 @@ export function* claim(action: { type: string; payload: Pool }) {
       put(RewardsPageActions.setIsClaimRewardsLoading(false)),
       put(RewardsPageActions.setTokensToClaim([])),
       put(RewardsPageActions.setCheckedClaimRewards([])),
-      put(BlockChainActions.getMainTokenBalance())
-    ])
-
+      put(BlockChainActions.getMainTokenBalance()),
+    ]);
   }
 }
 
