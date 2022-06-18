@@ -12,6 +12,7 @@ import { translations } from "locales/i18n";
 import { RewardsBody } from "./body";
 import { useRewardsPageSlice } from "./slice";
 import { DataDistributor } from "./dataDistributor";
+import { ClaimConfirmationModal } from "./components/ClaimRewards/ClaimConfirmationModal";
 
 export const RewardsPage: FC = () => {
   useRewardsPageSlice();
@@ -27,6 +28,7 @@ export const RewardsPage: FC = () => {
           content={`${t(translations.RewardsPage.Description())}`}
         />
       </Helmet>
+      <ClaimConfirmationModal />
       <DataDistributor />
       <RewardsBody />
     </>

@@ -44,7 +44,7 @@ export const Selection: FC = () => {
   }
 
   return (
-    <CardWrapper>
+    <StyledCardWrapper>
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Grid container>
@@ -106,9 +106,13 @@ export const Selection: FC = () => {
           );
         })}
       </Grid>
-    </CardWrapper>
+    </StyledCardWrapper>
   );
 };
+
+const StyledCardWrapper = styled(CardWrapper)({
+  maxWidth: `calc(100vw - 65px)`,
+});
 
 const Text = styled(Typography)({
   color: CssVariables.white,

@@ -12,7 +12,7 @@ export const RewardAllocation: FC = () => {
   const { t } = useTranslation();
 
   return (
-    <PrimaryCardWrapper>
+    <StyledPrimaryCardWrapper>
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <HeaderText variant="h2">
@@ -33,7 +33,7 @@ export const RewardAllocation: FC = () => {
           <AllocationTable />
         </Grid>
       </Grid>
-    </PrimaryCardWrapper>
+    </StyledPrimaryCardWrapper>
   );
 };
 
@@ -44,4 +44,8 @@ const HeaderText = styled(Typography)({
 
 const Text = styled(Typography)({
   color: CssVariables.white,
+});
+
+const StyledPrimaryCardWrapper = styled(PrimaryCardWrapper)({
+  maxWidth: `calc(100vw - 10px)`,
 });

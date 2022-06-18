@@ -10,14 +10,18 @@ export const Message: FC = () => {
   const { t } = useTranslation();
 
   return (
-    <CardWrapper>
+    <StyledCardWrapper>
       <Text variant="body2">
         {t(translations.GovernancePage.VoteAllocation.VoteMessage())}
       </Text>
-    </CardWrapper>
+    </StyledCardWrapper>
   );
 };
 
 const Text = styled(Typography)({
   color: CssVariables.white,
+});
+
+const StyledCardWrapper = styled(CardWrapper)({
+  maxWidth: `calc(100vw - 65px)`,
 });

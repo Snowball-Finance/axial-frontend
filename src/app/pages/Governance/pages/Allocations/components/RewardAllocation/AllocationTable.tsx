@@ -22,10 +22,12 @@ import { formatNumber } from "common/format";
 import { getComparator, stableSort } from "./utils/sorting";
 import { GovernancePageActions } from "app/pages/Governance/slice";
 import { GovernancePageSelectors } from "app/pages/Governance/selectors";
+import { useDeviceSize } from "hooks/onlineStatusHook/mediaQuery";
+import { mobile } from "styles/media";
 
 export const AllocationTable: FC = () => {
   const { t } = useTranslation();
-
+  const { isMobile } = useDeviceSize();
   const gauges = useSelector(selectGauges);
   const isLoading = useSelector(selectIsLoadingUserPoolsAndGauges);
   const poolsArray = useSelector(PoolsAndGaugesSelectors.poolsArray);
@@ -74,34 +76,43 @@ export const AllocationTable: FC = () => {
     };
   });
 
+  const Tbl = isMobile ? MobileElWrapper : StyledTable;
+  const Tr = isMobile ? MobileTrWrapper : TableRow;
+  const Th = isMobile ? MobileElWrapper : StyledTableHead;
   return (
-    <StyledTable aria-label="customized table">
-      <StyledTableHead>
-        <TableRow>
-          {tableHeader(t).map((header) => {
-            return (
-              <StyledTableCell
-                key={header.id}
-                sortDirection={
-                  sortingData.orderBy === header.id ? sortingData.order : false
-                }
-              >
-                <TableSortLabel
-                  active={true}
-                  direction={
-                    sortingData.orderBy === header.id
-                      ? sortingData.order
-                      : "asc"
-                  }
-                  onClick={() => handleRequestSort(header.id)}
-                >
-                  {header.label}
-                </TableSortLabel>
-              </StyledTableCell>
-            );
-          })}
-        </TableRow>
-      </StyledTableHead>
+    <Tbl aria-label="customized table">
+      <Th>
+        <Tr>
+          {!isMobile
+            ? tableHeader(t, isMobile).map((header) => {
+                return (
+                  <StyledTableCell
+                    key={header.id}
+                    sortDirection={
+                      sortingData.orderBy === header.id
+                        ? sortingData.order
+                        : false
+                    }
+                  >
+                    <TableSortLabel
+                      active={true}
+                      direction={
+                        sortingData.orderBy === header.id
+                          ? sortingData.order
+                          : "asc"
+                      }
+                      onClick={() => handleRequestSort(header.id)}
+                    >
+                      {header.label}
+                    </TableSortLabel>
+                  </StyledTableCell>
+                );
+              })
+            : tableHeader(t, isMobile).map((header) => {
+                return <MobileElWrapper>{header.label}</MobileElWrapper>;
+              })}
+        </Tr>
+      </Th>
       <TableBody>
         {stableSort(
           rows,
@@ -112,8 +123,12 @@ export const AllocationTable: FC = () => {
               <StyledTableCell component="th" scope="row">
                 {pool.name}
               </StyledTableCell>
-              <StyledTableCell>{pool.allocation}</StyledTableCell>
-              <StyledTableCell>{pool.allocationPerDay}</StyledTableCell>
+              {!isMobile && (
+                <>
+                  <StyledTableCell>{pool.allocation}</StyledTableCell>
+                  <StyledTableCell>{pool.allocationPerDay}</StyledTableCell>
+                </>
+              )}
               <StyledTableCell>{pool.axialAPR}</StyledTableCell>
               <StyledTableCell>{pool.gaugeWeight}</StyledTableCell>
               <StyledTableCell>{pool.balance}</StyledTableCell>
@@ -121,10 +136,16 @@ export const AllocationTable: FC = () => {
           );
         })}
       </TableBody>
-    </StyledTable>
+    </Tbl>
   );
 };
-
+const MobileElWrapper = styled("div")({
+  color: "white",
+});
+const MobileTrWrapper = styled("div")({
+  display: "flex",
+  gap: "30px",
+});
 const StyledTable = styled(Table)({
   minWidth: 700,
   backgroundColor: "transparent",
@@ -157,9 +178,11 @@ const StyledTableCell = styled(TableCell)({
   color: CssVariables.white,
   fontSize: "12px",
   fontFamily: FontFamilies.IBMPlexSans,
-
   "&:first-child": {
     borderRadius: "20px 0px 0px 0px",
+    [mobile]: {
+      paddingLeft: 0,
+    },
   },
 
   "&:last-child": {
@@ -168,9 +191,11 @@ const StyledTableCell = styled(TableCell)({
 
   ".MuiTableSortLabel-root": {
     color: `${CssVariables.white} !important`,
-
     ".MuiTableSortLabel-icon": {
       color: `${CssVariables.white} !important`,
     },
+  },
+  th: {
+    maxWidth: "100px",
   },
 });

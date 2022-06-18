@@ -1,13 +1,15 @@
 import React, { ReactElement } from "react";
 import { styled } from "@mui/material";
-import { isMobile } from "react-device-detect";
 
 import LogoIcon from "../../../assets/images/logo.svg";
 import { WalletToggle } from "app/components/common/walletToggle";
 import NavigationDrawer from "./NavigationDrawer";
 import { mobile } from "styles/media";
+import { useDeviceSize } from "hooks/onlineStatusHook/mediaQuery";
 
 export default function Header(): ReactElement {
+  const { isMobile } = useDeviceSize();
+
   return (
     <StyledHeader>
       <Logo src={LogoIcon} alt="logo" />

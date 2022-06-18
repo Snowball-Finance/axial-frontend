@@ -59,7 +59,7 @@ export const ClaimRewardsModal: FC<Props> = ({ pool }) => {
 
   const handleClaimClick = () => {
     if (pool) {
-      dispatch(RewardsPageActions.claim(pool));
+      dispatch(RewardsPageActions.claim());
     }
   };
 

@@ -1,15 +1,16 @@
 import React, { ReactElement } from "react";
 import { styled } from "@mui/material";
-import { isMobile } from "react-device-detect";
 
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import backgroundImage from "../../assets/images/website-background.svg";
 import { mobile } from "styles/media";
+import { useDeviceSize } from "hooks/onlineStatusHook/mediaQuery";
 
 export default function Layout({
   children,
 }: React.PropsWithChildren<unknown>): ReactElement {
+  const { isMobile } = useDeviceSize();
   return (
     <StyledLayout>
       <HeaderWrapper>
