@@ -8,6 +8,8 @@ import { GovernancePageActions } from "app/pages/Governance/slice";
 import { GovernancePageSelectors } from "app/pages/Governance/selectors";
 import { GovernanceSelectors } from "app/containers/BlockChain/Governance/selectors";
 import { env } from "environment";
+import { styled } from "@mui/material";
+import { mobile } from "styles/media";
 
 export const SubmitVoteButton: FC = () => {
   const { t } = useTranslation();
@@ -35,13 +37,20 @@ export const SubmitVoteButton: FC = () => {
   };
 
   return (
-    <ContainedButton
+    <StyledContained
       fullWidth
       loading={isLoading}
       disabled={disabled}
       onClick={handleVoteClick}
     >
       {buttonContent}
-    </ContainedButton>
+    </StyledContained>
   );
 };
+
+const StyledContained= styled(ContainedButton)({
+  maxWidth:`calc(100vw - 65px)`,
+  [mobile]:{
+    padding:'0'
+  }
+})

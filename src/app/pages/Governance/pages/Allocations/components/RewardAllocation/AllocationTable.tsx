@@ -74,6 +74,7 @@ export const AllocationTable: FC = () => {
     };
   });
 
+
   return (
     <StyledTable aria-label="customized table">
       <StyledTableHead>
