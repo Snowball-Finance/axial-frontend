@@ -27,9 +27,11 @@ export const ActionButtons: FC<ActionButtonProps> = ({ poolKey }) => {
   const claimingSymbol = useSelector(
     RewardsPageSelectors.claimingPendingAxialPoolSymbol
   );
+
   const harvestables = useSelector(
     PoolsAndGaugesSelectors.harvestableTokensOfPool(pools[poolKey]?.key)
   );
+
   const dispatch = useDispatch();
 
   const tokenKey = pools[poolKey].lpToken.symbol;

@@ -15,7 +15,6 @@ interface Props {
 
 export const Info: FC<Props> = ({ proposal }) => {
   const { t } = useTranslation();
-
   return (
     <Grid container>
       <Grid item container justifyContent="space-between" alignItems="center">
