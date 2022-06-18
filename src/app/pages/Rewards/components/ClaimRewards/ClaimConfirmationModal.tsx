@@ -7,15 +7,10 @@ import { SnowModal } from "app/components/common/modal";
 import { ClaimRewardsModal } from "../modal/ClaimRewards";
 import { RewardsPageSelectors } from "../../selectors";
 import { RewardsPageActions } from "../../slice";
-import { Pool } from "app/containers/Rewards/types";
 
-interface Props {
-  pool?: Pool;
-}
-
-export const ClaimConfirmationModal: FC<Props> = ({ pool }) => {
+export const ClaimConfirmationModal: FC = () => {
+  const pool = useSelector(RewardsPageSelectors.selectedPoolToClaim);
   const { t } = useTranslation();
-
   const dispatch = useDispatch();
   const open = useSelector(RewardsPageSelectors.tokensToClaim).length > 0;
 

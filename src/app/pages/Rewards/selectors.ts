@@ -45,6 +45,8 @@ export const RewardsPageDomains = {
   isClaimRewardsLoading: (state: RootState) =>
     state.rewardsPage?.isClaimRewardsLoading ||
     initialState.isClaimRewardsLoading,
+  selectedPoolToClaim: (state: RootState) =>
+    state.rewardsPage?.selectedPoolToClaim || initialState.selectedPoolToClaim,
 };
 
 export const RewardsPageSelectors = {
@@ -170,5 +172,9 @@ export const RewardsPageSelectors = {
   isClaimRewardsLoading: createSelector(
     RewardsPageDomains.isClaimRewardsLoading,
     (isClaimRewardsLoading) => isClaimRewardsLoading
+  ),
+  selectedPoolToClaim: createSelector(
+    RewardsPageDomains.selectedPoolToClaim,
+    (selectedPoolToClaim) => selectedPoolToClaim
   ),
 };

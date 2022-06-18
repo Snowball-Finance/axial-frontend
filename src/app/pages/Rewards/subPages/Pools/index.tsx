@@ -10,15 +10,17 @@ export const PoolCards: FC = () => {
   const rewardsPools = useSelector(RewardsPageSelectors.rewardsPools);
 
   return (
-    <StyledPoolCards>
-      <Grid container spacing={2}>
-        {rewardsPools.map((pool) => (
-          <Grid item key={pool.key} xs={12}>
-            <PoolCardItem poolKey={pool.key} />
-          </Grid>
-        ))}
-      </Grid>
-    </StyledPoolCards>
+    <>
+      <StyledPoolCards>
+        <Grid container spacing={2}>
+          {rewardsPools.map((pool) => (
+            <Grid item key={pool.key} xs={12}>
+              <PoolCardItem poolKey={pool.key} />
+            </Grid>
+          ))}
+        </Grid>
+      </StyledPoolCards>
+    </>
   );
 };
 

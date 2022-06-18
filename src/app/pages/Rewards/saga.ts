@@ -117,13 +117,12 @@ export function* withdraw() {
   yield put(RewardsActions.withdraw(dataToSend));
 }
 
-export function* claim(action: { type: string; payload: Pool }) {
-  const pool = action.payload;
+export function* claim() {
+  const pool = yield select(RewardsPageDomains.selectedPoolToClaim);
   const claimable = yield select(RewardsPageDomains.claimingTokens);
   const library = yield select(Web3Domains.selectLibraryDomain);
   const account = yield select(Web3Domains.selectAccountDomain);
   const claimedRewards = yield select(RewardsPageDomains.checkedClaimRewards);
-
   const gaugeContract = new Contract(
     pool.gauge_address,
     GAUGE_ABI,
@@ -134,6 +133,9 @@ export function* claim(action: { type: string; payload: Pool }) {
     yield put(RewardsPageActions.setIsClaimRewardsLoading(true));
     let transaction;
     if (isClaimAll) {
+      console.log({
+        gaugeContract,
+      });
       transaction = yield call(gaugeContract.getAllRewards);
     } else {
       transaction = yield call(gaugeContract.getRewards, claimedRewards);

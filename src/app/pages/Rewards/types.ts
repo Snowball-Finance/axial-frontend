@@ -21,6 +21,7 @@ export interface RewardsPageState {
   tokensToClaim: HarvestableToken[];
   checkedClaimRewards: number[];
   isClaimRewardsLoading: boolean;
+  selectedPoolToClaim: Pool | undefined;
 }
 
 export interface PoolCardItemProps {

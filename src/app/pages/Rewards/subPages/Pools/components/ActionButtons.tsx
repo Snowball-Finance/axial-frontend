@@ -16,7 +16,6 @@ import { Pool } from "app/containers/Rewards/types";
 import { Web3Selectors } from "app/containers/BlockChain/Web3/selectors";
 import { mobile } from "styles/media";
 import { RewardsPageSelectors } from "app/pages/Rewards/selectors";
-import { ClaimConfirmationModal } from "app/pages/Rewards/components/ClaimRewards/ClaimConfirmationModal";
 import { PoolsAndGaugesSelectors } from "app/containers/PoolsAndGauges/selectors";
 
 export const ActionButtons: FC<ActionButtonProps> = ({ poolKey }) => {
@@ -46,14 +45,13 @@ export const ActionButtons: FC<ActionButtonProps> = ({ poolKey }) => {
 
   const handleClaimClick = (pool: Pool) => {
     if (!(claimingSymbol === pool.lpToken.symbol)) {
+      dispatch(RewardsPageActions.setSelectedPoolToClaim(pool));
       dispatch(RewardsPageActions.setTokensToClaim(harvestables));
     }
   };
 
   return (
     <>
-      <ClaimConfirmationModal pool={pools[poolKey]} />
-
       <StyledContainer container spacing={{ xs: 1, xl: 2 }}>
         <StyledFullChildContainer item>
           <StyledContainedButton

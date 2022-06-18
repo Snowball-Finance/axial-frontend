@@ -29,6 +29,7 @@ export const initialState: ContainerState = {
   tokensToClaim: [],
   checkedClaimRewards: [],
   isClaimRewardsLoading: false,
+  selectedPoolToClaim: undefined,
 };
 
 const rewardsPageSlice = createSlice({
@@ -59,7 +60,7 @@ const rewardsPageSlice = createSlice({
     setSymbolForClaimingPendingAxial(state, action: PayloadAction<string>) {
       state.claimingPendingAxialPoolSymbol = action.payload;
     },
-    claim(state, action: PayloadAction<Pool>) {},
+    claim() {},
     setWithdrawPercentage(
       state,
       action: PayloadAction<{ percent: number; balance: number }>
@@ -80,7 +81,9 @@ const rewardsPageSlice = createSlice({
     setIsModalOpen(state, action: PayloadAction<boolean>) {
       state.isModalOpen = action.payload;
     },
-
+    setSelectedPoolToClaim(state, action: PayloadAction<Pool | undefined>) {
+      state.selectedPoolToClaim = action.payload;
+    },
     setTokensToClaim(state, action: PayloadAction<HarvestableToken[]>) {
       state.tokensToClaim = action.payload;
       if (state.tokensToClaim.length === 1) {

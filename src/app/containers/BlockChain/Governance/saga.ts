@@ -286,7 +286,8 @@ export function* getVotingReceipt(action: {
     const proposalId = yield call(getProposalId, proposal);
     const governanceContract: Governance = yield call(getGovernanceContract);
     const account = yield select(Web3Domains.selectAccountDomain);
-    const receipt: Receipt = yield governanceContract.getReceipt(
+    const receipt: Receipt = yield call(
+      governanceContract.getReceipt,
       proposalId,
       account
     );
