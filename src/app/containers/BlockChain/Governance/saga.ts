@@ -29,7 +29,6 @@ import { BNToFloat } from "common/format";
 import GOVERNANCE_ABI from "abi/governance.json";
 
 const reversedProposalIds = ["0", "1"];
-const finishedReversedProposalIds = ["0"];
 
 export function* getEssentialDataForGovernance() {
   const governanceContract: Governance = yield call(getGovernanceContract);
@@ -58,13 +57,11 @@ export function* getProposals(action: {
     const proposals: Proposal[] = response; //response.data.ProposalList.proposals;
     //to fix reversed votes for first 2 proposals
     for (const proposal of proposals) {
-      if (reversedProposalIds.includes(proposal.governance_id)) {
-        if (finishedReversedProposalIds.includes(proposal.governance_id)) {
+        if (reversedProposalIds.includes(proposal.governance_id)) {
           if (proposal.proposal_state === ProposalState.Defeated) {
             proposal.proposal_state = ProposalState.Executed;
           }
         }
-      }
     }
     //
     yield put(GovernanceActions.setProposals(proposals));
@@ -487,11 +484,9 @@ export function* syncProposalsWithBlockchain() {
     //to fix reversed votes for first 2 proposals
     for (const proposal of updatedProposals) {
       if (reversedProposalIds.includes(proposal.governance_id)) {
-        if (finishedReversedProposalIds.includes(proposal.governance_id)) {
           if (proposal.proposal_state === ProposalState.Defeated) {
             proposal.proposal_state = ProposalState.Executed;
           }
-        }
       }
     }
     //
