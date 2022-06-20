@@ -28,6 +28,7 @@ import { GlobalActions } from "store/slice";
 import { BNToFloat } from "common/format";
 import GOVERNANCE_ABI from "abi/governance.json";
 
+// this is used, due to a mistake in ui, voting based on index of vote button, instead of 0 & 1 being against and for
 const reversedProposalIds = ["0", "1"];
 
 export function* getEssentialDataForGovernance() {
@@ -57,11 +58,12 @@ export function* getProposals(action: {
     const proposals: Proposal[] = response; //response.data.ProposalList.proposals;
     //to fix reversed votes for first 2 proposals
     for (const proposal of proposals) {
-        if (reversedProposalIds.includes(proposal.governance_id)) {
-          if (proposal.proposal_state === ProposalState.Defeated) {
-            proposal.proposal_state = ProposalState.Executed;
-          }
+      if (reversedProposalIds.includes(proposal.governance_id)) {
+        if (proposal.proposal_state === ProposalState.Defeated) {
+          proposal.proposal_state = ProposalState.Executed;
+          proposal.votes = proposal.votes.reverse();
         }
+      }
     }
     //
     yield put(GovernanceActions.setProposals(proposals));
@@ -302,9 +304,18 @@ export function* getVotingReceipt(action: {
       proposalId,
       account
     );
+    const strSupport = Number(receipt[1]).toString();
+    let support;
+    if (reversedProposalIds.includes(strSupport)) {
+      if (strSupport === "0") {
+        support = 1;
+      } else {
+        support = 0;
+      }
+    }
     const rec = {
       hasVoted: receipt[0] || false,
-      support: Number(receipt[1]),
+      support: support || Number(receipt[1]),
       votes: Number(receipt[2]),
     };
     yield put(GovernanceActions.setVotingReceipt(rec));
@@ -484,9 +495,10 @@ export function* syncProposalsWithBlockchain() {
     //to fix reversed votes for first 2 proposals
     for (const proposal of updatedProposals) {
       if (reversedProposalIds.includes(proposal.governance_id)) {
-          if (proposal.proposal_state === ProposalState.Defeated) {
-            proposal.proposal_state = ProposalState.Executed;
-          }
+        if (proposal.proposal_state === ProposalState.Defeated) {
+          proposal.proposal_state = ProposalState.Executed;
+          proposal.votes = proposal.votes.reverse();
+        }
       }
     }
     //

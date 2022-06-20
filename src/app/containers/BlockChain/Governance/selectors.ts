@@ -136,10 +136,14 @@ export const GovernanceSelectors = {
           rest.push(p);
         }
       });
-      const sortedActive = active.sort((a, b) => {
+      const sortedRest = rest.sort((a, b) => {
         return Number(b.governance_id || 0) - Number(a.governance_id || 0);
       });
-      return [...sortedActive, ...rest];
+      const sortedActive = active.sort((a, b) => {
+        console.log(b.governance_id, a.governance_id);
+        return Number(b.governance_id || 0) - Number(a.governance_id || 0);
+      });
+      return [...sortedActive, ...sortedRest];
     }
   ),
   canAddNewProposal: createSelector(
