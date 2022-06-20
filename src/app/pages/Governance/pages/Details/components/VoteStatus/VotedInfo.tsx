@@ -20,14 +20,14 @@ export const VotedInfo: FC = () => {
   const bg = !hasVoted
     ? CssVariables.secondary
     : supportingOption
-    ? CssVariables.red
-    : CssVariables.green;
+    ? CssVariables.green
+    : CssVariables.red;
   const longMessage = t(
     translations.GovernancePage.youVotedForAgainstThisProposalWithAmountGovernanceToken(),
     {
       forAgainst: supportingOption
-        ? t(translations.GovernancePage.No())
-        : t(translations.GovernancePage.Yes()),
+        ? t(translations.GovernancePage.Yes())
+        : t(translations.GovernancePage.No()),
     }
   );
   const message = hasVoted

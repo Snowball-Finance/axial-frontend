@@ -21,11 +21,11 @@ export const VoteOptionsStatus: FC<Props> = ({ proposal }) => {
   if (selectedProposal?.votes && selectedProposal.votes.length === 2) {
     options.push({
       title: t(translations.GovernancePage.For()),
-      votes: commify(selectedProposal.votes[0]),
+      votes: commify(selectedProposal.votes[1]),
     });
     options.push({
       title: t(translations.GovernancePage.Against()),
-      votes: commify(selectedProposal.votes[1]),
+      votes: commify(selectedProposal.votes[0]),
     });
   } else if (selectedProposal?.votes && selectedProposal.votes.length > 2) {
     let execContexts = selectedProposal.execution_contexts;

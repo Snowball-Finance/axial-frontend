@@ -30,14 +30,14 @@ export const VoteButtons: FC = () => {
   const handleForClick = () => {
     if (library && proposal) {
       dispatch(GovernancePageActions.setIsModalOpen(true));
-      dispatch(GovernanceActions.vote({ proposal, voteFor: 0 }));
+      dispatch(GovernanceActions.vote({ proposal, voteFor: 1 }));
     }
   };
 
   const handleAgainstClick = () => {
     if (library && proposal) {
       dispatch(GovernancePageActions.setIsModalOpen(true));
-      dispatch(GovernanceActions.vote({ proposal, voteFor: 1 }));
+      dispatch(GovernanceActions.vote({ proposal, voteFor: 0 }));
     }
   };
 
@@ -46,7 +46,7 @@ export const VoteButtons: FC = () => {
       <Grid item>
         <VoteFor
           disabled={disabled}
-          loading={isLoadingFor === 0}
+          loading={isLoadingFor === 1}
           onClick={handleForClick}
           fullWidth
         >
@@ -57,7 +57,7 @@ export const VoteButtons: FC = () => {
       <Grid item>
         <VoteAgainst
           disabled={disabled}
-          loading={isLoadingFor === 1}
+          loading={isLoadingFor === 0}
           onClick={handleAgainstClick}
           fullWidth
         >
