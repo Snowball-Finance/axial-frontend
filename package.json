@@ -60,8 +60,8 @@
     "web3": "1.6.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build  && compress-cra",
+    "start": "HTTPS=true react-app-rewired start",
+    "build": "react-app-rewired build  && compress-cra",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "start:prod": "yarn build && serve -s build",

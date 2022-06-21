@@ -1,6 +1,8 @@
 {
   "short_name": "Axial",
   "name": "Axial exchange",
+  "description": "The center for liquidity on Avalanche. Swap or provide liquidity for value-pegged assets on Axial.",
+  "iconPath": "logo.png",
   "icons": [
     {
       "src": "logo.png",
