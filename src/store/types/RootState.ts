@@ -14,6 +14,7 @@ import { GlobalState } from "store/slice";
 import { SwapPageState } from "app/pages/Swap/types";
 import { LiquidityPageState } from "app/pages/Liquidity/types";
 import { RewardsPageState } from "app/pages/Rewards/types";
+import {  GnosisSafeState} from "app/containers/GnosisSafe/types";
 // [IMPORT NEW CONTAINERSTATE ABOVE] < Needed for generating containers seamlessly
 
 /* 
@@ -39,5 +40,6 @@ export interface RootState {
   swapPage?: SwapPageState;
   rewardsPage?: RewardsPageState;
   liquidityPage?: LiquidityPageState;
+  gnosisSafe?:GnosisSafeState
   // [INSERT NEW REDUCER KEY ABOVE] < Needed for generating containers seamlessly
 }

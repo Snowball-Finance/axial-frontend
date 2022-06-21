@@ -9,7 +9,6 @@ import { useDeviceSize } from "hooks/mediaQuery";
 
 export default function Header(): ReactElement {
   const { isMobile } = useDeviceSize();
-
   return (
     <StyledHeader>
       <Logo src={LogoIcon} alt="logo" />

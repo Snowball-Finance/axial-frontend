@@ -3,8 +3,8 @@ import { styled } from "@mui/material";
 
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
-import backgroundImage from "../../assets/images/website-background.svg";
 import { mobile } from "styles/media";
+import { Background } from "./background";
 import { useDeviceSize } from "hooks/mediaQuery";
 
 export default function Layout({
@@ -24,25 +24,20 @@ export default function Layout({
       )}
 
       <MainWrapper>{children}</MainWrapper>
+      <Background />
     </StyledLayout>
   );
 }
 
-const StyledLayout = styled("div")(({ theme }) => ({
+const StyledLayout = styled("div")({
   display: "flex",
   flexDirection: "column",
   minHeight: "100vh",
-  backgroundImage: `url(${backgroundImage})`,
-  backgroundRepeat: "no-repeat",
-  backgroundSize: "cover",
-  backgroundAttachment: "fixed",
-  backgroundPosition: "center",
-
   [mobile]: {
     width: "100%",
     overflowX: "hidden",
   },
-}));
+});
 
 const HeaderWrapper = styled("div")({
   position: "fixed",
