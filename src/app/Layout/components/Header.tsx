@@ -5,7 +5,7 @@ import LogoIcon from "../../../assets/images/logo.svg";
 import { WalletToggle } from "app/components/common/walletToggle";
 import NavigationDrawer from "./NavigationDrawer";
 import { mobile } from "styles/media";
-import { useDeviceSize } from "hooks/onlineStatusHook/mediaQuery";
+import { useDeviceSize } from "hooks/mediaQuery";
 
 export default function Header(): ReactElement {
   const { isMobile } = useDeviceSize();

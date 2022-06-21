@@ -22,7 +22,7 @@ import { formatNumber } from "common/format";
 import { getComparator, stableSort } from "./utils/sorting";
 import { GovernancePageActions } from "app/pages/Governance/slice";
 import { GovernancePageSelectors } from "app/pages/Governance/selectors";
-import { useDeviceSize } from "hooks/onlineStatusHook/mediaQuery";
+import { useDeviceSize } from "hooks/mediaQuery";
 import { mobile } from "styles/media";
 
 export const AllocationTable: FC = () => {

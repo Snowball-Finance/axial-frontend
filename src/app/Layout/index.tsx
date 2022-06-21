@@ -5,7 +5,7 @@ import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import backgroundImage from "../../assets/images/website-background.svg";
 import { mobile } from "styles/media";
-import { useDeviceSize } from "hooks/onlineStatusHook/mediaQuery";
+import { useDeviceSize } from "hooks/mediaQuery";
 
 export default function Layout({
   children,
