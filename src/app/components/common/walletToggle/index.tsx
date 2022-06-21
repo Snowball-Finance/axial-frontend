@@ -23,8 +23,10 @@ export const WalletToggle: FC<WalletToggleProps> = ({ fullWidth }) => {
   const account = useSelector(Web3Selectors.selectAccount);
   const connectedToGnosis = useSelector(GnosisSafeSelectors.connected);
   
-  const walletName: ConnectorPayload["walletName"] = "MetaMask";
 
+  const walletName: ConnectorPayload["walletName"] = connectedToGnosis
+    ? "Gnosis Safe"
+    : "MetaMask";
 
   const handleButtonClick = () => {
     if (account) {
