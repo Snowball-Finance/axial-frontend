@@ -111,7 +111,6 @@ const Wrapper = styled("div")`
       url(${twin}) repeat
       top center;
     z-index: 1;
-
     -moz-animation: move-twink-back 200s linear infinite;
     -ms-animation: move-twink-back 200s linear infinite;
     -o-animation: move-twink-back 200s linear infinite;
@@ -122,11 +121,10 @@ const Wrapper = styled("div")`
   .clouds {
     background: transparent url(${bg}) repeat top center;
     z-index: 3;
-
-    -moz-animation: move-clouds-back 200s linear infinite;
-    -ms-animation: move-clouds-back 200s linear infinite;
-    -o-animation: move-clouds-back 200s linear infinite;
-    -webkit-animation: move-clouds-back 200s linear infinite;
-    animation: move-clouds-back 200s linear infinite;
+    -moz-animation: move-clouds-back 500s linear infinite;
+    -ms-animation: move-clouds-back 500s linear infinite;
+    -o-animation: move-clouds-back 500s linear infinite;
+    -webkit-animation: move-clouds-back 500s linear infinite;
+    animation: move-clouds-back 500s linear infinite;
   }
 `;
