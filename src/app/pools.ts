@@ -2,9 +2,8 @@ import { Pools, PoolTypes, RewardsState } from "./containers/Rewards/types";
 
 import SWAP_FLASH_LOAN_NO_WITHDRAW_FEE_ABI from "abi/swapFlashLoanNoWithdrawFee.json";
 import { tokens } from "./tokens";
-import { networkName } from "utils/tokenAddresses";
+import { networkName } from "utils/network";
 import { fujiPools } from "./fujiPools";
-import { poolSwapAddress } from "utils/poolAddresses";
 
 export const pools =
   networkName === "Fuji"
@@ -23,7 +22,7 @@ export const pools =
             tokens.USDC,
           ],
           lpToken: tokens.SCALES,
-          swapAddress: poolSwapAddress(Pools.SCALES),
+          swapAddress: "0xfD24d41B7C4C7C8Cd363Dd3FF6f49C99c8280430",
           gauge_address: "0x63eD1dD9827a08CE2168139f8069edE751649D6c",
         },
         HERO: {
@@ -34,7 +33,7 @@ export const pools =
           poolType: PoolTypes.USD,
           poolTokens: [tokens.USDC, tokens.USDt, tokens.MIM, tokens.YUSD],
           lpToken: tokens.HERO,
-          swapAddress: poolSwapAddress(Pools.HERO),
+          swapAddress: "0xa0f6397FEBB03021F9BeF25134DE79835a24D76e",
           gauge_address: "0x363A6fc27eD7a3dFDF94d33c37A6E8527c2014ea",
         },
         AS4D: {
@@ -50,7 +49,7 @@ export const pools =
             tokens["USDT.e"],
           ],
           lpToken: tokens.AS4D,
-          swapAddress: poolSwapAddress(Pools.AS4D),
+          swapAddress: "0x2a716c4933A20Cd8B9f9D9C39Ae7196A85c24228",
           gauge_address: "0xEE0a5Ce8C431B1253CA5545D7EfCA21fe63AD74F",
         },
         AC4D: {
@@ -61,7 +60,7 @@ export const pools =
           poolType: PoolTypes.USD,
           poolTokens: [tokens.TSD, tokens.MIM, tokens.FRAX, tokens["DAI.e"]],
           lpToken: tokens.AC4D,
-          swapAddress: poolSwapAddress(Pools.AC4D),
+          swapAddress: "0x8c3c1C6F971C01481150CA7942bD2bbB9Bc27bC7",
           gauge_address: "0xB81382a23ef5E5394cf993a5B16e0Dd7cf344D60",
         },
         AM3D: {
@@ -72,7 +71,29 @@ export const pools =
           poolType: PoolTypes.USD,
           poolTokens: [tokens.MIM, tokens["USDC.e"], tokens["DAI.e"]],
           lpToken: tokens.AM3D,
-          swapAddress: poolSwapAddress(Pools.AM3D),
+          swapAddress: "0x90c7b96AD2142166D001B27b5fbc128494CDfBc8",
           gauge_address: "0x321F5449bCf840297A027D92EA8723bc0a0388B5",
+        },
+        PERSEUS: {
+          key: Pools.PERSEUS,
+          name: "PERSEUS",
+          address: tokens.PERSEUS?.address,
+          swapABI: SWAP_FLASH_LOAN_NO_WITHDRAW_FEE_ABI,
+          poolType: PoolTypes.BTC,
+          poolTokens: [tokens["WBTC.e"], tokens["BTC.b"]],
+          lpToken: tokens.PERSEUS,
+          swapAddress: "0x001a7904FEc3eed1184FEf5cBE232CfC06fa14dE",
+          gauge_address: "0x59142fEf1ce9fC3B6218A1da182401a0bFda53C7",
+        },
+        HERCULES: {
+          key: Pools.HERCULES,
+          name: "HERCULES",
+          address: tokens.HERCULES?.address,
+          swapABI: SWAP_FLASH_LOAN_NO_WITHDRAW_FEE_ABI,
+          poolType: PoolTypes.BTC,
+          poolTokens: [tokens.renBTC, tokens["WBTC.e"]],
+          lpToken: tokens.HERCULES,
+          swapAddress: "0x21645EddC5EcB865b3909c989B8d208978CF7E16",
+          gauge_address: "0x01c0cc7AcBEc933C547de8688cD006Aed5E5abA5",
         },
       } as RewardsState["pools"]);

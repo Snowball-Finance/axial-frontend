@@ -59,6 +59,8 @@ export enum Pools {
   AS4D = "AS4D",
   AC4D = "AC4D",
   AM3D = "AM3D",
+  PERSEUS = "PERSEUS",
+  HERCULES = "HERCULES",
   //Fuji pools
   P3T = "P3T",
   PGL = "PGL",

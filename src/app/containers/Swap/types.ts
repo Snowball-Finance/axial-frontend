@@ -28,6 +28,11 @@ export enum TokenSymbols {
   AS4D = "AS4D",
   AC4D = "AC4D",
   AM3D = "AM3D",
+  WBTCe = "WBTC.e",
+  BTCb = "BTC.b",
+  PERSEUS = "PERSEUS",
+  HERCULES = "HERCULES",
+  RENBTC = "renBTC",
   //Fuji token symbols
   STABLE1 = "STABLE1",
   STABLE2 = "STABLE2",
