@@ -1,8 +1,9 @@
 import ERC20_ABI from "abi/erc20.json";
 import { Token, TokenSymbols } from "./containers/Swap/types";
 import axialLogo from "assets/icons/logo_icon.svg"; // this needs a smaller icon logo(24)
-import { networkName, tokenAddress } from "utils/tokenAddresses";
+import { networkName } from "utils/network";
 import { fujiTokens } from "./fujiTokens";
+import wrappedBTCIcon from "assets/icons/wrappedbitcoin.png";
 import { iconSrcWithAddress } from "utils/iconSrcByAddress";
 
 //symbol should be identical to key of token
@@ -12,10 +13,12 @@ export const tokens =
     : ({
         [TokenSymbols.DAI]: {
           ABI: ERC20_ABI,
-          address: tokenAddress(TokenSymbols.DAI),
+          address: "0xd586E7F844cEa2F87f50152665BCbc2C279D8d70",
           decimals: 18,
           symbol: TokenSymbols.DAI,
-          logo: iconSrcWithAddress(tokenAddress(TokenSymbols.DAI)),
+          logo: iconSrcWithAddress(
+            "0xd586E7F844cEa2F87f50152665BCbc2C279D8d70"
+          ),
           geckoId: "dai",
           name: "Dai Stablecoin",
           masterchefId: -1,
@@ -24,11 +27,13 @@ export const tokens =
         },
         [TokenSymbols.USDTe]: {
           ABI: ERC20_ABI,
-          address: tokenAddress(TokenSymbols.USDTe),
+          address: "0xc7198437980c041c805A1EDcbA50c1Ce5db95118",
           symbol: TokenSymbols.USDTe,
           name: "Tether USD",
           geckoId: "tether",
-          logo: iconSrcWithAddress(tokenAddress(TokenSymbols.USDTe)),
+          logo: iconSrcWithAddress(
+            "0xc7198437980c041c805A1EDcbA50c1Ce5db95118"
+          ),
           decimals: 6,
           masterchefId: -1,
           isSynthetic: false,
@@ -36,7 +41,7 @@ export const tokens =
         },
         [TokenSymbols.USDt]: {
           ABI: ERC20_ABI,
-          address: tokenAddress(TokenSymbols.USDt),
+          address: "0x9702230A8Ea53601f5cD2dc00fDBc13d4dF4A8c7",
           symbol: TokenSymbols.USDt,
           name: "TetherToken",
           geckoId: "tether",
@@ -48,11 +53,13 @@ export const tokens =
         },
         [TokenSymbols.USDCe]: {
           ABI: ERC20_ABI,
-          address: tokenAddress(TokenSymbols.USDCe),
+          address: "0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664",
           decimals: 6,
           symbol: TokenSymbols.USDCe,
           name: "Bridged USD Coin",
-          logo: iconSrcWithAddress(tokenAddress(TokenSymbols.USDCe)),
+          logo: iconSrcWithAddress(
+            "0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664"
+          ),
           geckoId: "usd-coin",
           isLPToken: false,
           isSynthetic: false,
@@ -60,7 +67,7 @@ export const tokens =
         },
         [TokenSymbols.USDC]: {
           ABI: ERC20_ABI,
-          address: tokenAddress(TokenSymbols.USDC),
+          address: "0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E",
           decimals: 6,
           symbol: TokenSymbols.USDC,
           name: "USD Coin",
@@ -72,11 +79,13 @@ export const tokens =
         },
         [TokenSymbols.MIM]: {
           ABI: ERC20_ABI,
-          address: tokenAddress(TokenSymbols.MIM),
+          address: "0x130966628846BFd36ff31a822705796e8cb8C18D",
           decimals: 18,
           symbol: TokenSymbols.MIM,
           name: "Magic Internet Money",
-          logo: iconSrcWithAddress(tokenAddress(TokenSymbols.MIM)),
+          logo: iconSrcWithAddress(
+            "0x130966628846BFd36ff31a822705796e8cb8C18D"
+          ),
           geckoId: "magic-internet-money",
           masterchefId: -1,
           isSynthetic: false,
@@ -84,7 +93,7 @@ export const tokens =
         },
         [TokenSymbols.YUSD]: {
           ABI: ERC20_ABI,
-          address: tokenAddress(TokenSymbols.YUSD),
+          address: "0x111111111111ed1D73f860F57b2798b683f2d325",
           decimals: 18,
           symbol: TokenSymbols.YUSD,
           name: "YUSD Stablecoin",
@@ -96,11 +105,13 @@ export const tokens =
         },
         [TokenSymbols.TUSD]: {
           ABI: ERC20_ABI,
-          address: tokenAddress(TokenSymbols.TUSD),
+          address: "0x1C20E891Bab6b1727d14Da358FAe2984Ed9B59EB",
           decimals: 18,
           symbol: TokenSymbols.TUSD,
           name: "TrueUSD",
-          logo: iconSrcWithAddress(tokenAddress(TokenSymbols.TUSD)),
+          logo: iconSrcWithAddress(
+            "0x1C20E891Bab6b1727d14Da358FAe2984Ed9B59EB"
+          ),
           geckoId: "true-usd",
           masterchefId: -1,
           isSynthetic: false,
@@ -108,11 +119,13 @@ export const tokens =
         },
         [TokenSymbols.TSD]: {
           ABI: ERC20_ABI,
-          address: tokenAddress(TokenSymbols.TSD),
+          address: "0x4fbf0429599460D327BD5F55625E30E4fC066095",
           decimals: 18,
           symbol: TokenSymbols.TSD,
           name: "TSD Stablecoin",
-          logo: iconSrcWithAddress(tokenAddress(TokenSymbols.TSD)),
+          logo: iconSrcWithAddress(
+            "0x4fbf0429599460D327BD5F55625E30E4fC066095"
+          ),
           geckoId: "teddy-dollar",
           masterchefId: -1,
           isSynthetic: false,
@@ -120,11 +133,13 @@ export const tokens =
         },
         [TokenSymbols.FRAX]: {
           ABI: ERC20_ABI,
-          address: tokenAddress(TokenSymbols.FRAX),
+          address: "0xD24C2Ad096400B6FBcd2ad8B24E7acBc21A1da64",
           decimals: 18,
           symbol: TokenSymbols.FRAX,
           name: "Frax",
-          logo: iconSrcWithAddress(tokenAddress(TokenSymbols.FRAX)),
+          logo: iconSrcWithAddress(
+            "0xD24C2Ad096400B6FBcd2ad8B24E7acBc21A1da64"
+          ),
           geckoId: "frax",
           masterchefId: -1,
           isSynthetic: false,
@@ -132,7 +147,7 @@ export const tokens =
         },
         [TokenSymbols.SCALES]: {
           ABI: ERC20_ABI,
-          address: tokenAddress(TokenSymbols.SCALES),
+          address: "0x556FB44205549c115e83A58d91522B14340Fb8d3",
           decimals: 18,
           symbol: TokenSymbols.SCALES,
           name: "Axial Dai.e+USDT.e+USDC.e+USDC",
@@ -144,7 +159,7 @@ export const tokens =
         },
         [TokenSymbols.HERO]: {
           ABI: ERC20_ABI,
-          address: tokenAddress(TokenSymbols.HERO),
+          address: "0x73fA690aE97CdE1426d144E5f7406895fEa715E4",
           decimals: 18,
           symbol: TokenSymbols.HERO,
           name: "Axial USDC+USDT+MIM+YUSD",
@@ -156,7 +171,7 @@ export const tokens =
         },
         [TokenSymbols.AS4D]: {
           ABI: ERC20_ABI,
-          address: tokenAddress(TokenSymbols.AS4D),
+          address: "0x3A7387f8BA3ebFFa4A0ECcB1733e940CE2275D3f",
           decimals: 18,
           symbol: TokenSymbols.AS4D,
           name: "Axial TUSD+USDC.e+DAI.e+USDT.e",
@@ -168,7 +183,7 @@ export const tokens =
         },
         [TokenSymbols.AC4D]: {
           ABI: ERC20_ABI,
-          address: tokenAddress(TokenSymbols.AC4D),
+          address: "0x4da067E13974A4d32D342d86fBBbE4fb0f95f382",
           decimals: 18,
           symbol: TokenSymbols.AC4D,
           name: "Axial DAI.e+MIM+TSD+FRAX",
@@ -180,7 +195,7 @@ export const tokens =
         },
         [TokenSymbols.AM3D]: {
           ABI: ERC20_ABI,
-          address: tokenAddress(TokenSymbols.AM3D),
+          address: "0xc161E4B11FaF62584EFCD2100cCB461A2DdE64D1",
           decimals: 18,
           symbol: TokenSymbols.AM3D,
           name: "Axial DAI.e+USDC.e+MIM",
@@ -192,7 +207,7 @@ export const tokens =
         },
         [TokenSymbols.AXIAL]: {
           ABI: ERC20_ABI,
-          address: tokenAddress(TokenSymbols.AXIAL),
+          address: "0xcF8419A615c57511807236751c0AF38Db4ba3351",
           decimals: 18,
           symbol: TokenSymbols.AXIAL,
           name: "Axial Token",
@@ -202,5 +217,67 @@ export const tokens =
           isSynthetic: false,
           isLPToken: false,
           blockSwap: true,
+        },
+        [TokenSymbols.WBTCe]: {
+          ABI: ERC20_ABI,
+          address: "0x50b7545627a5162F82A992c33b87aDc75187B218",
+          decimals: 8,
+          symbol: TokenSymbols.WBTCe,
+          name: "Wrapped Bitcoin",
+          logo: wrappedBTCIcon,
+          geckoId: "wrapped-bitcoin",
+          masterchefId: -1,
+          isSynthetic: false,
+          isLPToken: false,
+          blockSwap: true,
+        },
+        [TokenSymbols.BTCb]: {
+          ABI: ERC20_ABI,
+          address: "0x152b9d0FdC40C096757F570A51E494bd4b943E50",
+          decimals: 8,
+          symbol: TokenSymbols.BTCb,
+          name: "BTC.b",
+          logo: "https://assets.coingecko.com/coins/images/26115/small/btcb.png?1655921693",
+          geckoId: "wrapped-bitcoin",
+          masterchefId: -1,
+          isSynthetic: false,
+          isLPToken: false,
+          blockSwap: true,
+        },
+        [TokenSymbols.RENBTC]: {
+          ABI: ERC20_ABI,
+          address: "0xDBf31dF14B66535aF65AaC99C32e9eA844e14501",
+          decimals: 8,
+          symbol: TokenSymbols.RENBTC,
+          name: "renBTC",
+          logo: "https://cryptorank-images.s3.eu-central-1.amazonaws.com/coins/renbtc1595433339629.png",
+          geckoId: "wrapped-bitcoin",
+          masterchefId: -1,
+          isSynthetic: false,
+          isLPToken: true,
+        },
+        [TokenSymbols.PERSEUS]: {
+          ABI: ERC20_ABI,
+          address: "0x993399efcfB1E13Baf0E7a03d37d61697030633C",
+          decimals: 8,
+          symbol: TokenSymbols.PERSEUS,
+          name: "Axial WBTC.e+BTC.b",
+          logo: axialLogo,
+          geckoId: "perseus",
+          masterchefId: -1,
+          isSynthetic: false,
+          isLPToken: true,
+        },
+        [TokenSymbols.HERCULES]: {
+          ABI: ERC20_ABI,
+          address: "0x7aaFcDBF79e4434127929493324E9Ce91d80E4bB",
+          decimals: 8,
+          symbol: TokenSymbols.HERCULES,
+          name: "Axial renBTC+wBTC.e",
+          logo: axialLogo,
+          geckoId: "hercules",
+          masterchefId: -1,
+          isSynthetic: false,
+          isLPToken: true,
         },
       } as { [K in TokenSymbols]: Token });

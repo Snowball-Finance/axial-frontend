@@ -1,11 +1,10 @@
-import { tokenAddress } from "utils/tokenAddresses";
 import { Token, TokenSymbols } from "./containers/Swap/types";
 import ERC20_ABI from "abi/erc20.json";
 import axialLogo from "assets/icons/logo_icon.svg";
 
 export const fujiTokens: { [K in TokenSymbols]?: Token } = {
   [TokenSymbols.STABLE1]: {
-    address: tokenAddress(TokenSymbols.STABLE1),
+    address: "0x8Ba3e8F266D12f39d9930565B104893B307f9dd5",
     name: "Stable1",
     ABI: ERC20_ABI,
     symbol: TokenSymbols.STABLE1,
@@ -17,7 +16,7 @@ export const fujiTokens: { [K in TokenSymbols]?: Token } = {
     isLPToken: false,
   },
   [TokenSymbols.STABLE2]: {
-    address: tokenAddress(TokenSymbols.STABLE2),
+    address: "0x3D55Ee8BdF297966E0bF3172057004F9dC17D4e2",
     ABI: ERC20_ABI,
     symbol: TokenSymbols.STABLE2,
     name: "Stable2",
@@ -29,7 +28,7 @@ export const fujiTokens: { [K in TokenSymbols]?: Token } = {
     isLPToken: false,
   },
   [TokenSymbols.STABLE3]: {
-    address: tokenAddress(TokenSymbols.STABLE3),
+    address: "0x68Da82d3962ECc31599fCA43360A7D58959ff6C4",
     ABI: ERC20_ABI,
     symbol: TokenSymbols.STABLE3,
     name: "Stable3",
@@ -48,7 +47,7 @@ export const fujiTokens: { [K in TokenSymbols]?: Token } = {
     isSynthetic: false,
     isLPToken: false,
     ABI: ERC20_ABI,
-    address: tokenAddress(TokenSymbols.STABLE4),
+    address: "0xF8407410836F4CA8bf3abCdae72740F3DAE28C7E",
     symbol: "STABLE4",
     logo: axialLogo,
   },
@@ -60,7 +59,7 @@ export const fujiTokens: { [K in TokenSymbols]?: Token } = {
     isSynthetic: false,
     isLPToken: false,
     ABI: ERC20_ABI,
-    address: tokenAddress(TokenSymbols.STABLE5),
+    address: "0xFEA4d0360d9422C54330aacc4AB90ef06e9A63df",
     symbol: "STABLE5",
     logo: axialLogo,
   },
@@ -73,11 +72,11 @@ export const fujiTokens: { [K in TokenSymbols]?: Token } = {
     isSynthetic: false,
     isLPToken: true,
     ABI: ERC20_ABI,
-    address: tokenAddress(TokenSymbols.S3T),
+    address: "0x4Ed45bEad84d1f76f620Df262F88477d7D27A420",
     logo: axialLogo,
   },
   [TokenSymbols.P3T]: {
-    address: tokenAddress(TokenSymbols.P3T),
+    address: "0xD3e8706cf9547f18756FDAF7015C97C2e6dEFCC3",
     ABI: ERC20_ABI,
     symbol: TokenSymbols.P3T,
     name: "Pool 3 Tokens",
@@ -89,7 +88,7 @@ export const fujiTokens: { [K in TokenSymbols]?: Token } = {
     logo: axialLogo,
   },
   [TokenSymbols.PGL]: {
-    address: tokenAddress(TokenSymbols.PGL),
+    address: "0xdb7BC8c03c821ade48EF22F1047411FAd2A3e944",
     ABI: ERC20_ABI,
     symbol: TokenSymbols.PGL,
     name: "PGL AVAX-EXTRAT",
@@ -111,6 +110,6 @@ export const fujiTokens: { [K in TokenSymbols]?: Token } = {
     isLPToken: false,
     logo: axialLogo,
     blockSwap: true,
-    address: tokenAddress(TokenSymbols.AXIAL),
+    address: "0x0708f10f657b16abe18954361e96a641b217648b",
   },
 };
