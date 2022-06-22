@@ -22,8 +22,6 @@ import { getGaugeCalls } from "./providers/getGaugeCalls";
 import { retrieveGauge } from "./providers/retrieveGauge";
 import { RewardsActions } from "../Rewards/slice";
 import { AprData } from "../Rewards/types";
-import { pools as appPools } from "app/pools";
-
 
 export function* getLastInfo() {
   try {
@@ -167,8 +165,8 @@ export function* getAndSetUserPools() {
       call(gaugeProxyContract.totalWeight),
     ]);
     let gauges: any = pools.map((item) =>
-     appPools[item.symbol]&& retrieveGauge({ pool: item, gaugesData, totalWeight, poolsData })
-    ).filter((item)=>item!==undefined);
+      retrieveGauge({ pool: item, gaugesData, totalWeight, poolsData })
+    );
     let poolsInfoCallArray: any[] = [];
     pools.forEach((item) => {
       poolsInfoCallArray.push(
