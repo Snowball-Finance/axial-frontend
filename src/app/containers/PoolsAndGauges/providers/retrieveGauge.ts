@@ -51,8 +51,8 @@ export const retrieveGauge = ({
     harvestable,
     poolTokens,
     depositTokenName: pool.symbol,
-    poolName: initialPoolData?.name||pool.symbol,
-    poolAddress: initialPoolData?.address,
+    poolName: initialPoolData.name||pool.symbol,
+    poolAddress: initialPoolData.address,
     additionalData,
   };
 };
