@@ -195,7 +195,6 @@ export const tokens =
           logo: wrappedBTCIcon,
           geckoId: "wrapped-bitcoin",
           isLPToken: false,
-          blockSwap: true,
         },
         [TokenSymbols.BTCb]: {
           ABI: ERC20_ABI,
@@ -206,7 +205,6 @@ export const tokens =
           logo: "https://assets.coingecko.com/coins/images/26115/small/btcb.png?1655921693",
           geckoId: "wrapped-bitcoin",
           isLPToken: false,
-          blockSwap: true,
         },
         [TokenSymbols.RENBTC]: {
           ABI: ERC20_ABI,
@@ -217,7 +215,6 @@ export const tokens =
           logo: "https://cryptorank-images.s3.eu-central-1.amazonaws.com/coins/renbtc1595433339629.png",
           geckoId: "wrapped-bitcoin",
           isLPToken: false,
-          blockSwap: true,
         },
         [TokenSymbols.PERSEUS]: {
           ABI: ERC20_ABI,
