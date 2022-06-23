@@ -53,9 +53,7 @@ export interface Token {
   ABI: any;
   logo?: string;
   geckoId: string;
-  masterchefId?: number;
   isLPToken: boolean;
-  isSynthetic: boolean;
   balance?: BigNumber;
   blockSwap?: boolean;
 }
