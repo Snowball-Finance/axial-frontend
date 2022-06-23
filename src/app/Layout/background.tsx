@@ -8,7 +8,7 @@ export const Background = () => {
     <Wrapper>
       <div className="stars"></div>
       <div className="twinkling"></div>
-      <div className="clouds"></div>
+      {/* <div className="clouds"></div> */}
     </Wrapper>
   );
 };
@@ -111,11 +111,11 @@ const Wrapper = styled("div")`
       url(${twin}) repeat
       top center;
     z-index: 1;
-    -moz-animation: move-twink-back 200s linear infinite;
-    -ms-animation: move-twink-back 200s linear infinite;
-    -o-animation: move-twink-back 200s linear infinite;
-    -webkit-animation: move-twink-back 200s linear infinite;
-    animation: move-twink-back 200s linear infinite;
+    -moz-animation: move-twink-back 900s linear infinite;
+    -ms-animation: move-twink-back 900s linear infinite;
+    -o-animation: move-twink-back 900s linear infinite;
+    -webkit-animation: move-twink-back 900s linear infinite;
+    animation: move-twink-back 900s linear infinite;
   }
 
   .clouds {
