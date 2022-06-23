@@ -218,6 +218,7 @@ export const tokens =
           geckoId: "wrapped-bitcoin",
           isLPToken: false,
           blockSwap: true,
+
         },
         [TokenSymbols.PERSEUS]: {
           ABI: ERC20_ABI,
