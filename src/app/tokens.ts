@@ -259,7 +259,7 @@ export const tokens =
         [TokenSymbols.PERSEUS]: {
           ABI: ERC20_ABI,
           address: "0x993399efcfB1E13Baf0E7a03d37d61697030633C",
-          decimals: 8,
+          decimals: 18,
           symbol: TokenSymbols.PERSEUS,
           name: "Axial WBTC.e+BTC.b",
           logo: axialLogo,
@@ -271,7 +271,7 @@ export const tokens =
         [TokenSymbols.HERCULES]: {
           ABI: ERC20_ABI,
           address: "0x7aaFcDBF79e4434127929493324E9Ce91d80E4bB",
-          decimals: 8,
+          decimals: 18,
           symbol: TokenSymbols.HERCULES,
           name: "Axial renBTC+wBTC.e",
           logo: axialLogo,
