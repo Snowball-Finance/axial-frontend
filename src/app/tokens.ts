@@ -216,7 +216,8 @@ export const tokens =
           name: "renBTC",
           logo: "https://cryptorank-images.s3.eu-central-1.amazonaws.com/coins/renbtc1595433339629.png",
           geckoId: "wrapped-bitcoin",
-          isLPToken: true,
+          isLPToken: false,
+          blockSwap: true,
         },
         [TokenSymbols.PERSEUS]: {
           ABI: ERC20_ABI,
