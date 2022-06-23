@@ -21,8 +21,6 @@ export const tokens =
           ),
           geckoId: "dai",
           name: "Dai Stablecoin",
-          masterchefId: -1,
-          isSynthetic: false,
           isLPToken: false,
         },
         [TokenSymbols.USDTe]: {
@@ -35,8 +33,6 @@ export const tokens =
             "0xc7198437980c041c805A1EDcbA50c1Ce5db95118"
           ),
           decimals: 6,
-          masterchefId: -1,
-          isSynthetic: false,
           isLPToken: false,
         },
         [TokenSymbols.USDt]: {
@@ -47,8 +43,6 @@ export const tokens =
           geckoId: "tether",
           logo: "https://assets.coingecko.com/coins/images/325/small/Tether-logo.png?1598003707", //iconSrcWithAddress(tokenAddress(TokenSymbols.USDt)),
           decimals: 6,
-          masterchefId: -1,
-          isSynthetic: false,
           isLPToken: false,
         },
         [TokenSymbols.USDCe]: {
@@ -62,8 +56,6 @@ export const tokens =
           ),
           geckoId: "usd-coin",
           isLPToken: false,
-          isSynthetic: false,
-          masterchefId: -1,
         },
         [TokenSymbols.USDC]: {
           ABI: ERC20_ABI,
@@ -73,8 +65,6 @@ export const tokens =
           name: "USD Coin",
           logo: "https://assets.coingecko.com/coins/images/6319/small/USD_Coin_icon.png?1547042389", // iconSrcWithAddress(tokenAddress(TokenSymbols.USDC)),
           geckoId: "usd-coin",
-          masterchefId: -1,
-          isSynthetic: false,
           isLPToken: false,
         },
         [TokenSymbols.MIM]: {
@@ -87,8 +77,6 @@ export const tokens =
             "0x130966628846BFd36ff31a822705796e8cb8C18D"
           ),
           geckoId: "magic-internet-money",
-          masterchefId: -1,
-          isSynthetic: false,
           isLPToken: false,
         },
         [TokenSymbols.YUSD]: {
@@ -99,8 +87,6 @@ export const tokens =
           name: "YUSD Stablecoin",
           logo: "https://assets.coingecko.com/coins/images/25024/small/1_oJ0F2Zf6CuAhLP0zOboo6w.png?1649837252", // iconSrcWithAddress(tokenAddress(TokenSymbols.YUSD)),
           geckoId: "yusd-stablecoin",
-          masterchefId: -1,
-          isSynthetic: false,
           isLPToken: false,
         },
         [TokenSymbols.TUSD]: {
@@ -113,8 +99,6 @@ export const tokens =
             "0x1C20E891Bab6b1727d14Da358FAe2984Ed9B59EB"
           ),
           geckoId: "true-usd",
-          masterchefId: -1,
-          isSynthetic: false,
           isLPToken: false,
         },
         [TokenSymbols.TSD]: {
@@ -127,8 +111,6 @@ export const tokens =
             "0x4fbf0429599460D327BD5F55625E30E4fC066095"
           ),
           geckoId: "teddy-dollar",
-          masterchefId: -1,
-          isSynthetic: false,
           isLPToken: false,
         },
         [TokenSymbols.FRAX]: {
@@ -141,8 +123,6 @@ export const tokens =
             "0xD24C2Ad096400B6FBcd2ad8B24E7acBc21A1da64"
           ),
           geckoId: "frax",
-          masterchefId: -1,
-          isSynthetic: false,
           isLPToken: false,
         },
         [TokenSymbols.SCALES]: {
@@ -153,8 +133,6 @@ export const tokens =
           name: "Axial Dai.e+USDT.e+USDC.e+USDC",
           logo: axialLogo,
           geckoId: "pool4tokens",
-          masterchefId: -1,
-          isSynthetic: false,
           isLPToken: true,
         },
         [TokenSymbols.HERO]: {
@@ -165,8 +143,6 @@ export const tokens =
           name: "Axial USDC+USDT+MIM+YUSD",
           logo: axialLogo,
           geckoId: "pool4tokens",
-          masterchefId: -1,
-          isSynthetic: false,
           isLPToken: true,
         },
         [TokenSymbols.AS4D]: {
@@ -177,8 +153,6 @@ export const tokens =
           name: "Axial TUSD+USDC.e+DAI.e+USDT.e",
           logo: axialLogo,
           geckoId: "pool4tokens",
-          masterchefId: -1,
-          isSynthetic: false,
           isLPToken: true,
         },
         [TokenSymbols.AC4D]: {
@@ -189,8 +163,6 @@ export const tokens =
           name: "Axial DAI.e+MIM+TSD+FRAX",
           logo: axialLogo,
           geckoId: "pool4tokens",
-          masterchefId: -1,
-          isSynthetic: false,
           isLPToken: true,
         },
         [TokenSymbols.AM3D]: {
@@ -201,8 +173,6 @@ export const tokens =
           name: "Axial DAI.e+USDC.e+MIM",
           logo: axialLogo,
           geckoId: "pool3tokens",
-          masterchefId: -1,
-          isSynthetic: false,
           isLPToken: true,
         },
         [TokenSymbols.AXIAL]: {
@@ -213,8 +183,6 @@ export const tokens =
           name: "Axial Token",
           logo: axialLogo,
           geckoId: "axial-token",
-          masterchefId: -1,
-          isSynthetic: false,
           isLPToken: false,
           blockSwap: true,
         },
@@ -226,8 +194,6 @@ export const tokens =
           name: "Wrapped Bitcoin",
           logo: wrappedBTCIcon,
           geckoId: "wrapped-bitcoin",
-          masterchefId: -1,
-          isSynthetic: false,
           isLPToken: false,
           blockSwap: true,
         },
@@ -239,8 +205,6 @@ export const tokens =
           name: "BTC.b",
           logo: "https://assets.coingecko.com/coins/images/26115/small/btcb.png?1655921693",
           geckoId: "wrapped-bitcoin",
-          masterchefId: -1,
-          isSynthetic: false,
           isLPToken: false,
           blockSwap: true,
         },
@@ -252,8 +216,6 @@ export const tokens =
           name: "renBTC",
           logo: "https://cryptorank-images.s3.eu-central-1.amazonaws.com/coins/renbtc1595433339629.png",
           geckoId: "wrapped-bitcoin",
-          masterchefId: -1,
-          isSynthetic: false,
           isLPToken: true,
         },
         [TokenSymbols.PERSEUS]: {
@@ -264,8 +226,6 @@ export const tokens =
           name: "Axial WBTC.e+BTC.b",
           logo: axialLogo,
           geckoId: "wrapped-bitcoin",
-          masterchefId: -1,
-          isSynthetic: false,
           isLPToken: true,
         },
         [TokenSymbols.HERCULES]: {
@@ -276,8 +236,6 @@ export const tokens =
           name: "Axial renBTC+wBTC.e",
           logo: axialLogo,
           geckoId: "wrapped-bitcoin",
-          masterchefId: -1,
-          isSynthetic: false,
           isLPToken: true,
         },
       } as { [K in TokenSymbols]: Token });
