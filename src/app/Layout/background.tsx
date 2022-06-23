@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import bg from "./components/clouds3-min.png";
+// import bg from "./components/clouds3-min.png";
 import twin from './components/twinkling.png'
 import stars from './components/stars.png'
 
@@ -118,13 +118,13 @@ const Wrapper = styled("div")`
     animation: move-twink-back 900s linear infinite;
   }
 
-  .clouds {
-    background: transparent url(${bg}) repeat top center;
-    z-index: 3;
-    -moz-animation: move-clouds-back 500s linear infinite;
-    -ms-animation: move-clouds-back 500s linear infinite;
-    -o-animation: move-clouds-back 500s linear infinite;
-    -webkit-animation: move-clouds-back 500s linear infinite;
-    animation: move-clouds-back 500s linear infinite;
-  }
+  // .clouds {
+  //   background: transparent url(${bg}) repeat top center;
+  //   z-index: 3;
+  //   -moz-animation: move-clouds-back 500s linear infinite;
+  //   -ms-animation: move-clouds-back 500s linear infinite;
+  //   -o-animation: move-clouds-back 500s linear infinite;
+  //   -webkit-animation: move-clouds-back 500s linear infinite;
+  //   animation: move-clouds-back 500s linear infinite;
+  // }
 `;
