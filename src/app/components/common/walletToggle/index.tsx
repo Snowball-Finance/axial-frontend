@@ -22,7 +22,6 @@ export const WalletToggle: FC<WalletToggleProps> = ({ fullWidth }) => {
   const isConnecting = useSelector(Web3Selectors.selectIsConnectingToWallet);
   const account = useSelector(Web3Selectors.selectAccount);
   const connectedToGnosis = useSelector(GnosisSafeSelectors.connected);
-  
 
   const walletName: ConnectorPayload["walletName"] = connectedToGnosis
     ? "Gnosis Safe"

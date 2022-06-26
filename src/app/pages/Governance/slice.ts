@@ -63,7 +63,7 @@ const governancePageSlice = createSlice({
       state,
       action: PayloadAction<GaugeItem>
     ) => {
-      state.selectedGauges[action.payload.address] = action.payload;
+      state.selectedGauges[action.payload.poolAddress] = action.payload;
     },
     toggleSelectedPoolProvider: (state, action: PayloadAction<string>) => {
       const { selectedPoolProviders } = state;
@@ -78,7 +78,7 @@ const governancePageSlice = createSlice({
     toggleSelectedGauge: (state, action: PayloadAction<GaugeItem>) => {
       const { selectedGauges } = state;
       const { payload } = action;
-      const { address } = payload;
+      const { poolAddress: address } = payload;
       if (selectedGauges[address]) {
         delete selectedGauges[address];
       } else {
