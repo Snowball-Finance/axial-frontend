@@ -29,21 +29,20 @@ export default function Header(): ReactElement {
     </StyledHeader>
   );
 }
-const LogoWrapper = styled('div')({
-  display: 'flex',
-  alignItems:'center',
-})
+const LogoWrapper = styled("div")({
+  display: "flex",
+  alignItems: "center",
+});
 const StyledAnimateLogo = styled(AnimatedLogo)({
-  maxWidth:'125px',
-  minWidth:'125px',
-  marginRight:'-10px',
-  [mobile]:{
-    maxWidth:'75px',
-    minWidth:'75px',
-    marginRight:'0',
-  }
-
-})
+  maxWidth: "125px",
+  minWidth: "125px",
+  marginRight: "-10px",
+  [mobile]: {
+    maxWidth: "75px",
+    minWidth: "75px",
+    marginRight: "0",
+  },
+});
 
 const StyledHeader = styled("header")(({ theme }) => ({
   height: 88,

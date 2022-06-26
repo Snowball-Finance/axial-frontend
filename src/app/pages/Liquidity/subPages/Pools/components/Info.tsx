@@ -34,6 +34,7 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
 
   const vol = poolDataFromAPI?.last_vol || 0;
   const swapApr = poolDataFromAPI?.last_swap_apr || 0;
+  const tvl = Number(poolDataFromAPI?.last_tvl || 0).toFixed(2);
 
   const formattedData = {
     reserve: poolData?.reserve
@@ -62,7 +63,7 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
     },
     {
       title: t(translations.LiquidityPage.Info.TVL()),
-      value: `$${formattedData.reserve}`,
+      value: `$${commify(tvl)}`,
     },
     {
       title: t(translations.LiquidityPage.Info["24hVolume"]()),

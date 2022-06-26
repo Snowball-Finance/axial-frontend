@@ -13,7 +13,7 @@ interface Props {
 
 export const AllocationInput: FC<Props> = ({ data }) => {
   const gauge = useSelector(
-    GovernancePageSelectors.selectedVoteAllocationPair(data.address)
+    GovernancePageSelectors.selectedVoteAllocationPair(data.poolAddress)
   );
   const selectedGauges = useSelector(
     GovernancePageSelectors.selectedVoteAllocationGaugesObj
@@ -60,7 +60,7 @@ export const AllocationInput: FC<Props> = ({ data }) => {
         <InputField
           value={gaugeInputValue}
           onChange={handleInputChange}
-          disabled={!Object.keys(selectedGauges).includes(gauge?.address)}
+          disabled={!Object.keys(selectedGauges).includes(gauge?.poolAddress)}
         />
       </Grid>
 

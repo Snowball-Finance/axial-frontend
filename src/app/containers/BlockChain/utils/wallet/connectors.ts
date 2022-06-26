@@ -40,5 +40,10 @@ const trustWallet = new InjectedConnector({
 });
 const gnosisSafe = new SafeAppConnector();
 
-
-export { injected, gnosisSafe, trustWallet, walletLink, AVALANCHE_MAINNET_PARAMS };
+export {
+  injected,
+  gnosisSafe,
+  trustWallet,
+  walletLink,
+  AVALANCHE_MAINNET_PARAMS,
+};

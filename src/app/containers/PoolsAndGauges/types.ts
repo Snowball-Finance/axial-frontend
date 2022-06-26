@@ -15,6 +15,7 @@ export interface GaugeItem {
   totalSupply: BigNumber;
   totalWeight: number;
   allocPoint: number;
+  poolAddress: string;
   enteredAllocation: number;
   additionalData: {
     userInfo: {

@@ -77,7 +77,6 @@ export const CurrencyReserve: FC = () => {
 
                       <Grid item xs zeroMinWidth alignSelf="left">
                         <BalanceText variant="body2" noWrap align="left">
-                          $
                           {commify(
                             formatBNToString(
                               infoItem.value,

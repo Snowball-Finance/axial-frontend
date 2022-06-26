@@ -79,7 +79,7 @@ export const Selection: FC = () => {
                     <Grid item>
                       <CustomCheckbox
                         checked={Object.keys(selectedGauges).includes(
-                          gauge.address
+                          gauge.poolAddress
                         )}
                         onChange={() => {
                           handleGaugeClick(gauge);

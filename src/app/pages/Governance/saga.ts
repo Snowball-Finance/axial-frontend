@@ -63,6 +63,7 @@ export function* voteForFarms() {
         }
       }
     }
+
     if (tokenAddressList.length === 0) {
       toast.warn("please fill at least one allocation field");
       return;

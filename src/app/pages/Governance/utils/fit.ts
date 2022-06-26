@@ -26,7 +26,7 @@ export const fitGaugeWeightsProportionally = (items: {
           total
       ).toFixed(3)
     );
-    tmp[item.address] = item;
+    tmp[item.poolAddress] = item;
   });
   return tmp;
 };
@@ -39,7 +39,7 @@ export const fitGaugeWeightsEqually = (items: { [key: string]: GaugeItem }) => {
   });
   const tmp = {};
   itemsArray.forEach((item) => {
-    tmp[item.address] = item;
+    tmp[item.poolAddress] = item;
   });
   return tmp;
 };
