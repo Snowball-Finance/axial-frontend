@@ -165,9 +165,11 @@ export function* getRewardsPoolData() {
       pool,
       isRewardsPool: true,
     });
-    yield put(
-      RewardsPageActions.setRewardsPageUserShareData(poolData.userShareData)
-    );
+ if(poolData){
+  yield put(
+    RewardsPageActions.setRewardsPageUserShareData(poolData.userShareData)
+  );
+ }
   }
 }
 

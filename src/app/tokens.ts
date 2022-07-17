@@ -243,7 +243,7 @@ export const tokens =
           symbol: TokenSymbols.PGL,
           name: "Pangolin Liquidity (PGL)",
           logo: axialLogo,
-          geckoId: "pangolin",
+          geckoId: "pangolin-liquidity",
           isLPToken: true,
         },
         [TokenSymbols.WAVAX]: {

@@ -34,7 +34,6 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
   );
   const isGettingPoolsData = useSelector(RewardsSelectors.isGettingPoolsData);
   const poolsAndGaugesPools = useSelector(PoolsAndGaugesSelectors.pools);
-  console.log({key:poolKey, address:pools[poolKey]?.swapAddress||pools[poolKey]?.address,})
   const poolDataFromAPI =
     poolsAndGaugesPools[pools[poolKey]?.swapAddress] ||
     poolsAndGaugesPools[pools[poolKey]?.address];

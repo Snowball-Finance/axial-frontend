@@ -17,7 +17,6 @@ export const EquivalentInUsd = () => {
   const poolInputAmount = useSelector(RewardsPageSelectors.depositValue);
   const symbol = selectedPool?.key;
   let tokenUSDValue: number = 0;
-
   if (poolData?.lpTokenPriceUSD) {
     if (!poolData.lpTokenPriceUSD.isZero()) {
       tokenUSDValue = parseFloat(
