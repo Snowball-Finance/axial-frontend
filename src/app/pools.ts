@@ -101,7 +101,7 @@ export const pools =
           name: "PGL",
           address: tokens.PGL?.address,
           swapABI: SWAP_FLASH_LOAN_NO_WITHDRAW_FEE_ABI,
-          poolType: PoolTypes.OTHER,
+          poolType: PoolTypes.LP,
           poolTokens: [tokens.WAVAX, tokens.AXIAL],
           lpToken: tokens.PGL,
           gauge_address: "0xe2e9DA3C2CB2252a833647b6d2d58b0617908934",
