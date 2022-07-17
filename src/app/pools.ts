@@ -96,4 +96,15 @@ export const pools =
           swapAddress: "0x21645EddC5EcB865b3909c989B8d208978CF7E16",
           gauge_address: "0x01c0cc7AcBEc933C547de8688cD006Aed5E5abA5",
         },
+        PGL: {
+          key: Pools.PGL,
+          name: "PGL",
+          address: tokens.PGL?.address,
+          swapABI: SWAP_FLASH_LOAN_NO_WITHDRAW_FEE_ABI,
+          poolType: PoolTypes.OTHER,
+          poolTokens: [tokens.WAVAX, tokens.AXIAL],
+          lpToken: tokens.PGL,
+          swapAddress: "",
+          gauge_address: "0xe2e9DA3C2CB2252a833647b6d2d58b0617908934",
+        },
       } as RewardsState["pools"]);
