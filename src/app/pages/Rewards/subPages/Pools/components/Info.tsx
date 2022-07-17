@@ -11,8 +11,9 @@ import { PoolDataProps } from "app/pages/Rewards/types";
 import { PoolTypes, UserShareData } from "app/containers/Rewards/types";
 import { Zero } from "app/containers/Rewards/constants";
 import {
+  abbreviatedNumber,
   commify,
-  formatBNToShortString,
+  // formatBNToShortString,
   formatBNToString,
 } from "app/containers/utils/contractUtils";
 import { mobile } from "styles/media";
@@ -33,15 +34,17 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
   );
   const isGettingPoolsData = useSelector(RewardsSelectors.isGettingPoolsData);
   const poolsAndGaugesPools = useSelector(PoolsAndGaugesSelectors.pools);
+  console.log({key:poolKey, address:pools[poolKey]?.swapAddress||pools[poolKey]?.address,})
   const poolDataFromAPI =
     poolsAndGaugesPools[pools[poolKey]?.swapAddress] ||
     poolsAndGaugesPools[pools[poolKey]?.address];
   const totalAPR = poolDataFromAPI?.last_apr || 0;
   const lastSwapApr = poolDataFromAPI?.last_swap_apr || 0;
   const lastAPR = poolDataFromAPI?.last_apr || 0;
+  const lastTVL=poolDataFromAPI?.last_tvl||0
   const rewardsAPR = subtract(Number(lastAPR), Number(lastSwapApr));
   const formattedData = {
-    TVL: formatBNToShortString(poolData?.totalLocked || Zero, 18), //abbreviatedNumber(Number(poolDataFromAPI?.last_tvl||"0")),
+    TVL: abbreviatedNumber(Number(lastTVL||"0")),//formatBNToShortString(poolData?.totalLocked || Zero, 18), 
     axialPending: userShareData
       ? commify(
           formatBNToString(
