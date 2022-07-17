@@ -257,5 +257,6 @@ export const tokens =
           ),
           geckoId: "avax",
           blockSwap: true,
+          
         },
       } as { [K in TokenSymbols]: Token });
