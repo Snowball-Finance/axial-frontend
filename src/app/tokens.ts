@@ -252,7 +252,9 @@ export const tokens =
           decimals: 18,
           symbol: TokenSymbols.WAVAX,
           name: "Wrapped AVAX",
-          logo: axialLogo,
+          logo: iconSrcWithAddress(
+            "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7"
+          ),
           geckoId: "avax",
           blockSwap: true,
         },
