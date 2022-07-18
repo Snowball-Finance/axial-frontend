@@ -13,6 +13,7 @@ import { Zero } from "app/containers/Rewards/constants";
 import {
   abbreviatedNumber,
   commify,
+  formatBNToShortString,
   // formatBNToShortString,
   formatBNToString,
 } from "app/containers/utils/contractUtils";
@@ -43,7 +44,7 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
   const lastTVL=poolDataFromAPI?.last_tvl||0
   const rewardsAPR = subtract(Number(lastAPR), Number(lastSwapApr));
   const formattedData = {
-    TVL: abbreviatedNumber(Number(lastTVL||"0")),//formatBNToShortString(poolData?.totalLocked || Zero, 18), 
+    TVL: formatBNToShortString(poolData?.totalLocked || Zero, 18), //abbreviatedNumber(Number(lastTVL||"0")),
     axialPending: userShareData
       ? commify(
           formatBNToString(
