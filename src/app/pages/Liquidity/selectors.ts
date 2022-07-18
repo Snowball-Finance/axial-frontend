@@ -1,5 +1,8 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { Zero } from "app/containers/Rewards/constants";
+import {
+  hiddenPoolsInLiquidityPage,
+  Zero,
+} from "app/containers/Rewards/constants";
 import { RewardsDomains } from "app/containers/Rewards/selectors";
 import { Pool, PoolTypes } from "app/containers/Rewards/types";
 import { RootState } from "store/types";
@@ -60,22 +63,24 @@ export const LiquidityPageSelectors = {
       }
     }
 
-    return poolsData.sort((a, b) => {
-      if (
-        (a.userShareData?.usdBalance || Zero).gt(Zero) ||
-        (b.userShareData?.usdBalance || Zero).gt(Zero)
-      ) {
-        return (a.userShareData?.usdBalance || Zero).gt(
-          b.userShareData?.usdBalance || Zero
-        )
-          ? -1
-          : 1;
-      } else {
-        return (a.poolData?.reserve || Zero).gt(b.poolData?.reserve || Zero)
-          ? -1
-          : 1;
-      }
-    });
+    return poolsData
+      .sort((a, b) => {
+        if (
+          (a.userShareData?.usdBalance || Zero).gt(Zero) ||
+          (b.userShareData?.usdBalance || Zero).gt(Zero)
+        ) {
+          return (a.userShareData?.usdBalance || Zero).gt(
+            b.userShareData?.usdBalance || Zero
+          )
+            ? -1
+            : 1;
+        } else {
+          return (a.poolData?.reserve || Zero).gt(b.poolData?.reserve || Zero)
+            ? -1
+            : 1;
+        }
+      })
+      .filter((pool) => !hiddenPoolsInLiquidityPage.includes(pool.key));
   }),
   selectedPool: createSelector(LiquidityPageDomains.pool, (pool) => pool),
   liquidityPool: (key: string) =>

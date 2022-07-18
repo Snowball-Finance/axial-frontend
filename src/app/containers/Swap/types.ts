@@ -43,6 +43,7 @@ export enum TokenSymbols {
   S3T = "S3T",
   PGL = "PGL",
   AXIAL = "AXIAL",
+  WAVAX = "WAVAX",
 }
 
 export interface Token {

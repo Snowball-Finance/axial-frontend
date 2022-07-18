@@ -236,4 +236,26 @@ export const tokens =
           geckoId: "wrapped-bitcoin",
           isLPToken: true,
         },
+        [TokenSymbols.PGL]: {
+          ABI: ERC20_ABI,
+          address: "0x53d4bF164c53547b4278A0352C292162C154AfE5",
+          decimals: 18,
+          symbol: TokenSymbols.PGL,
+          name: "Pangolin Liquidity (PGL)",
+          logo: axialLogo,
+          geckoId: "pangolin-liquidity",
+          isLPToken: true,
+        },
+        [TokenSymbols.WAVAX]: {
+          ABI: ERC20_ABI,
+          address: "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7",
+          decimals: 18,
+          symbol: TokenSymbols.WAVAX,
+          name: "Wrapped AVAX",
+          logo: iconSrcWithAddress(
+            "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7"
+          ),
+          geckoId: "avax",
+          blockSwap: true,
+        },
       } as { [K in TokenSymbols]: Token });
