@@ -11,9 +11,10 @@ import { PoolDataProps } from "app/pages/Rewards/types";
 import { PoolTypes, UserShareData } from "app/containers/Rewards/types";
 import { Zero } from "app/containers/Rewards/constants";
 import {
+  abbreviatedNumber,
   // abbreviatedNumber,
   commify,
-  formatBNToShortString,
+  // formatBNToShortString,
   formatBNToString,
 } from "app/containers/utils/contractUtils";
 import { mobile } from "styles/media";
@@ -44,7 +45,7 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
   const lastAPR = poolDataFromAPI?.last_apr || 0;
 
   const tokenPricesUSD = useSelector(globalSelectors.tokenPricesUSD);
-  const symbol = poolKey
+  const symbol = poolKey;
   let tokenUSDValue: number = 0;
   if (poolData?.lpTokenPriceUSD) {
     if (!poolData.lpTokenPriceUSD.isZero()) {
@@ -57,13 +58,17 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
       }
     }
   }
-const userBalance= BNToFloat(userShareData?.poolBalance?.userInfo.amount || Zero)
-const equivalentUserBalance= multiply(userBalance || 0, tokenUSDValue || 0)
+  const userBalance = BNToFloat(
+    userShareData?.poolBalance?.userInfo.amount || Zero
+  );
+  const equivalentUserBalance = multiply(userBalance || 0, tokenUSDValue || 0);
 
   // const lastTVL=poolDataFromAPI?.last_tvl||0
   const rewardsAPR = subtract(Number(lastAPR), Number(lastSwapApr));
   const formattedData = {
-    TVL: formatBNToShortString(poolData?.totalLocked || Zero, 18), //abbreviatedNumber(Number(lastTVL||"0")),
+    TVL: abbreviatedNumber(
+      multiply(BNToFloat(poolData?.totalLocked || Zero) || 0, tokenUSDValue)
+    ), //abbreviatedNumber(Number(lastTVL||"0")),
     axialPending: userShareData
       ? commify(
           formatBNToString(
