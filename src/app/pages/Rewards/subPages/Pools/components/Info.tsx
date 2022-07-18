@@ -106,7 +106,7 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
     info.push(
       {
         title: t(translations.RewardsPage.Info.Balance()),
-        value: `$${formattedData.userBalanceUSD}`,
+        value: `${formattedData.userBalanceUSD}`,
       },
       {
         title: t(translations.RewardsPage.Info.Claimable()),
