@@ -19,7 +19,9 @@ import {
 import { mobile } from "styles/media";
 import { RewardsSelectors } from "app/containers/Rewards/selectors";
 import { PoolsAndGaugesSelectors } from "app/containers/PoolsAndGauges/selectors";
-import { subtract } from "precise-math";
+import { multiply, subtract } from "precise-math";
+import { globalSelectors } from "app/appSelectors";
+import { BNToFloat } from "common/format";
 
 interface InfoData {
   title: string;
@@ -40,6 +42,24 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
   const totalAPR = poolDataFromAPI?.last_apr || 0;
   const lastSwapApr = poolDataFromAPI?.last_swap_apr || 0;
   const lastAPR = poolDataFromAPI?.last_apr || 0;
+
+  const tokenPricesUSD = useSelector(globalSelectors.tokenPricesUSD);
+  const symbol = poolKey
+  let tokenUSDValue: number = 0;
+  if (poolData?.lpTokenPriceUSD) {
+    if (!poolData.lpTokenPriceUSD.isZero()) {
+      tokenUSDValue = parseFloat(
+        formatBNToString(poolData.lpTokenPriceUSD, 18, 2)
+      );
+    } else {
+      if (symbol) {
+        tokenUSDValue = tokenPricesUSD?.[symbol] || 0;
+      }
+    }
+  }
+const userBalance= BNToFloat(userShareData?.poolBalance?.userInfo.amount || Zero)
+const equivalentUserBalance= multiply(userBalance || 0, tokenUSDValue || 0)
+
   // const lastTVL=poolDataFromAPI?.last_tvl||0
   const rewardsAPR = subtract(Number(lastAPR), Number(lastSwapApr));
   const formattedData = {
@@ -72,11 +92,7 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
       ? "0%"
       : "-",
     userBalanceUSD: userShareData
-      ? formatBNToString(
-          userShareData?.poolBalance?.userInfo.amount || Zero,
-          18,
-          2
-        )
+      ? `$${commify(equivalentUserBalance.toFixed(2))}`
       : "-",
   };
 
