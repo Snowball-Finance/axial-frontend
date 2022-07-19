@@ -43,7 +43,6 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
   const totalAPR = poolDataFromAPI?.last_apr || 0;
   const lastSwapApr = poolDataFromAPI?.last_swap_apr || 0;
   const lastAPR = poolDataFromAPI?.last_apr || 0;
-
   const tokenPricesUSD = useSelector(globalSelectors.tokenPricesUSD);
   const symbol = poolKey;
   let tokenUSDValue: number = 0;
@@ -63,39 +62,43 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
   );
   const equivalentUserBalance = multiply(userBalance || 0, tokenUSDValue || 0);
 
-  // const lastTVL=poolDataFromAPI?.last_tvl||0
+  let TVL = abbreviatedNumber(
+    multiply(BNToFloat(poolData?.totalLocked || Zero) || 0, tokenUSDValue)
+  )
+
+  if (pools[poolKey].poolType === PoolTypes.LP) {
+    TVL = abbreviatedNumber(Number(poolDataFromAPI?.last_tvl || '0'))
+  }
   const rewardsAPR = subtract(Number(lastAPR), Number(lastSwapApr));
   const formattedData = {
-    TVL: abbreviatedNumber(
-      multiply(BNToFloat(poolData?.totalLocked || Zero) || 0, tokenUSDValue)
-    ), //abbreviatedNumber(Number(lastTVL||"0")),
+    TVL,
     axialPending: userShareData
       ? commify(
-          formatBNToString(
-            userShareData?.poolBalance?.pendingTokens.pendingAxial || Zero,
-            18,
-            2
-          )
+        formatBNToString(
+          userShareData?.poolBalance?.pendingTokens.pendingAxial || Zero,
+          18,
+          2
         )
+      )
       : "",
     apr: poolData?.apr
       ? `${Number(poolData?.apr).toFixed(2)}%`
       : poolData?.apr === 0
-      ? "0%"
-      : "-",
+        ? "0%"
+        : "-",
     rapr: poolData?.rapr
       ? `${Number(poolData?.rapr).toFixed(2)}%`
       : poolData?.rapr === 0
-      ? "0%"
-      : "-",
+        ? "0%"
+        : "-",
     extraapr: poolData?.extraapr
       ? `${Number(poolData.extraapr).toFixed(2)}%`
       : null,
     totalapr: totalAPR
       ? commify(Number(totalAPR).toFixed(2)) + "%"
       : poolData?.rapr === 0
-      ? "0%"
-      : "-",
+        ? "0%"
+        : "-",
     userBalanceUSD: userShareData
       ? `$${commify(equivalentUserBalance.toFixed(2))}`
       : "-",
