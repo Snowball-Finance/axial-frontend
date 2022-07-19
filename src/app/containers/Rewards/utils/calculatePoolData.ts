@@ -17,6 +17,8 @@ import { Token } from "app/containers/Swap/types";
 import { Web3Domains } from "app/containers/BlockChain/Web3/selectors";
 import { GlobalDomains } from "app/appSelectors";
 import { RewardsDomains } from "../selectors";
+import { BNToFloat, floatToBN } from "common/format";
+import {divide}from 'precise-math'
 
 export interface CalculatePoolDataProps {
   pool: Pool;
@@ -44,6 +46,7 @@ export function* calculatePoolData(props: CalculatePoolDataProps) {
       return;
     }
     if (poolKey && library) {
+    
       //@ts-ignore ignored because we will always have pool
       if (POOL.poolType !== PoolTypes.LP) {
         return;
@@ -64,11 +67,13 @@ export function* calculatePoolData(props: CalculatePoolDataProps) {
       const poolApr = poolAprData?.apr ?? 0;
       let DEXLockedBN = BigNumber.from(0);
       if (poolAprData?.tokenPoolPrice > 0 && totalLpTokenBalance.gt("0x0")) {
-        const totalLocked =
-          poolAprData?.tokenPoolPrice * (+totalLpTokenBalance / 1e18);
-        DEXLockedBN = BigNumber.from(totalLocked.toFixed(0)).mul(
-          BigNumber.from(10).pow(18)
-        );
+       DEXLockedBN = yield call(lpTokenContract.totalSupply);
+
+        // const totalLocked =
+        //   poolAprData?.tokenPoolPrice * (+totalLpTokenBalance / 1e18);
+        // DEXLockedBN = BigNumber.from(totalLocked.toFixed(0)).mul(
+        //   BigNumber.from(10).pow(18)
+        // );
       }
       let tokenPoolPriceBN = BigNumber.from(0);
       try {
@@ -101,24 +106,15 @@ export function* calculatePoolData(props: CalculatePoolDataProps) {
         return { poolData, userShareData: undefined };
       }
       const userLpTokenBalance = userPoolsBalances.userInfo.amount;
-
-      const share = userLpTokenBalance
-        ?.mul(BigNumber.from(10).pow(18))
-        .div(
-          totalLpTokenBalance.isZero()
-            ? BigNumber.from("1")
-            : totalLpTokenBalance
-        );
-      const usdBalance = DEXLockedBN.isZero()
-        ? BigNumber.from("0")
-        : DEXLockedBN.mul(share).div(BigNumber.from(10).pow(18));
-
+     const balance=BNToFloat(userLpTokenBalance)
+     const totalLocked=BNToFloat(DEXLockedBN)
+     const divided=divide(balance||0,totalLocked||0)
+      const share =floatToBN(divided)||Zero;
       const userShareData = account
         ? {
             name: poolKey,
             share: share,
             underlyingTokensAmount: userLpTokenBalance,
-            usdBalance: usdBalance,
             tokens: [],
             lpTokenBalance: userLpTokenBalance,
             poolBalance: userPoolsBalances,

@@ -13,6 +13,9 @@ import { RewardsPageSelectors } from "app/pages/Rewards/selectors";
 import { Zero } from "app/containers/Rewards/constants";
 import { CardWrapper } from "app/components/wrappers/Card";
 import { Web3Selectors } from "app/containers/BlockChain/Web3/selectors";
+import { globalSelectors } from "app/appSelectors";
+import { BNToFloat } from "common/format";
+import {multiply} from "precise-math";
 
 export const MyShare: FC = () => {
   const { t } = useTranslation();
@@ -21,6 +24,27 @@ export const MyShare: FC = () => {
   const userShareData = useSelector(
     RewardsPageSelectors.rewardsPageUserShareData
   );
+  const pool=useSelector(RewardsPageSelectors.selectedPool)
+  const tokenPricesUSD = useSelector(globalSelectors.tokenPricesUSD);
+  const symbol = pool?.key;
+  let tokenUSDValue: number = 0;
+  const poolData = useSelector(RewardsPageSelectors.rewardsPoolData(symbol||""));
+
+  if (poolData?.lpTokenPriceUSD) {
+    if (!poolData.lpTokenPriceUSD.isZero()) {
+      tokenUSDValue = parseFloat(
+        formatBNToString(poolData.lpTokenPriceUSD, 18, 2)
+      );
+    } else {
+      if (symbol) {
+        tokenUSDValue = tokenPricesUSD?.[symbol] || 0;
+      }
+    }
+  }
+  const userBalance = BNToFloat(
+    userShareData?.poolBalance?.userInfo.amount || Zero
+  );
+  const equivalentUserBalance = multiply(userBalance || 0, tokenUSDValue || 0);
 
   if (!account) {
     return <></>;
@@ -61,7 +85,7 @@ export const MyShare: FC = () => {
                   <BalanceText variant="body2">
                     $
                     {commify(
-                      formatBNToString(userShareData?.usdBalance || Zero, 18, 2)
+                      equivalentUserBalance.toFixed(2)
                     )}
                   </BalanceText>
                 </Grid>
@@ -83,13 +107,12 @@ export const MyShare: FC = () => {
 
                 <Grid item>
                   <BalanceText variant="body2">
-                    $
                     {userShareData &&
                       commify(
                         formatBNToString(
                           userShareData?.poolBalance?.userInfo.amount || Zero,
                           18
-                        )
+                        )+' '+pool?.key
                       )}
                   </BalanceText>
                 </Grid>
