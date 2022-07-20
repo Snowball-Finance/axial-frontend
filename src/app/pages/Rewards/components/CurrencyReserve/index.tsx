@@ -24,9 +24,10 @@ export const CurrencyReserve: FC = () => {
   const rewardsPoolData = useSelector(
     RewardsPageSelectors.rewardsPoolData(poolKey)
   );
-
   const formattedDecimals = pools[poolKey].poolType === PoolTypes.USD ? 2 : 4;
-
+if(rewardsPoolData?.tokens?.length===0 || !rewardsPoolData){
+  return <></>
+}
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
