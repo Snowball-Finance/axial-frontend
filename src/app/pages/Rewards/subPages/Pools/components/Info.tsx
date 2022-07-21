@@ -64,41 +64,41 @@ export const Info: FC<PoolDataProps> = ({ poolKey }) => {
 
   let TVL = abbreviatedNumber(
     multiply(BNToFloat(poolData?.totalLocked || Zero) || 0, tokenUSDValue)
-  )
+  );
 
   if (pools[poolKey].poolType === PoolTypes.LP) {
-    TVL = abbreviatedNumber(Number(poolDataFromAPI?.last_tvl || '0'))
+    TVL = abbreviatedNumber(Number(poolDataFromAPI?.last_tvl || "0"));
   }
   const rewardsAPR = subtract(Number(lastAPR), Number(lastSwapApr));
   const formattedData = {
     TVL,
     axialPending: userShareData
       ? commify(
-        formatBNToString(
-          userShareData?.poolBalance?.pendingTokens.pendingAxial || Zero,
-          18,
-          2
+          formatBNToString(
+            userShareData?.poolBalance?.pendingTokens.pendingAxial || Zero,
+            18,
+            2
+          )
         )
-      )
       : "",
     apr: poolData?.apr
       ? `${Number(poolData?.apr).toFixed(2)}%`
       : poolData?.apr === 0
-        ? "0%"
-        : "-",
+      ? "0%"
+      : "-",
     rapr: poolData?.rapr
       ? `${Number(poolData?.rapr).toFixed(2)}%`
       : poolData?.rapr === 0
-        ? "0%"
-        : "-",
+      ? "0%"
+      : "-",
     extraapr: poolData?.extraapr
       ? `${Number(poolData.extraapr).toFixed(2)}%`
       : null,
     totalapr: totalAPR
       ? commify(Number(totalAPR).toFixed(2)) + "%"
       : poolData?.rapr === 0
-        ? "0%"
-        : "-",
+      ? "0%"
+      : "-",
     userBalanceUSD: userShareData
       ? `$${commify(equivalentUserBalance.toFixed(2))}`
       : "-",

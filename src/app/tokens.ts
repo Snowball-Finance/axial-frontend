@@ -255,7 +255,7 @@ export const tokens =
           logo: iconSrcWithAddress(
             "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7"
           ),
-          geckoId: "avax",
+          geckoId: "wrapped-avax",
           blockSwap: true,
         },
       } as { [K in TokenSymbols]: Token });
