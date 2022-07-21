@@ -43,7 +43,6 @@ export const CurrencyReserve: FC = () => {
       let calculated: any = [];
       for (const tokenInfo of poolTokensData) {
         const tokenPriceInUsd = usdPrices[tokenInfo.symbol];
-        console.log({ tokenInfo, tokenPriceInUsd });
         const lockedToken = BNToFloat(tokenInfo.value, 18) || 0;
         const tokenValue = multiply(lockedToken, Number(tokenPriceInUsd));
         const percentage = divide(multiply(tokenValue, 100), lpTokenValue);
