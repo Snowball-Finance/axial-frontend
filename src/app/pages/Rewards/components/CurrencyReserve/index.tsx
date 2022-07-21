@@ -34,38 +34,42 @@ export const CurrencyReserve: FC = () => {
 
   let poolTokensData = [...(rewardsPoolData?.tokens || [])];
 
-  if (pools[poolKey].poolType === PoolTypes.LP && usdPrices.AXIAL) {
-    console.log({ rewardsPoolData });
-    const totalLPTokenReserve = BNToFloat(rewardsPoolData.totalLocked, 18) || 0;
-    const lpTokenPrice = BNToFloat(rewardsPoolData.lpTokenPriceUSD, 18) || 0;
-    const lpTokenValue = multiply(totalLPTokenReserve, lpTokenPrice);
-    let calculated: any = [];
-    for (const tokenInfo of poolTokensData) {
-      const tokenPriceInUsd = usdPrices[tokenInfo.symbol];
-      console.log({ tokenInfo, tokenPriceInUsd });
-      const lockedToken = BNToFloat(tokenInfo.value, 18) || 0;
-      const tokenValue = multiply(lockedToken, Number(tokenPriceInUsd));
-      const percentage = divide(multiply(tokenValue, 100), lpTokenValue);
-      const info = { ...tokenInfo, percent: percentage };
-      calculated.push(info);
+  if (pools[poolKey].poolType === PoolTypes.LP) {
+    if (usdPrices.AXIAL) {
+      const totalLPTokenReserve =
+        BNToFloat(rewardsPoolData.totalLocked, 18) || 0;
+      const lpTokenPrice = BNToFloat(rewardsPoolData.lpTokenPriceUSD, 18) || 0;
+      const lpTokenValue = multiply(totalLPTokenReserve, lpTokenPrice);
+      let calculated: any = [];
+      for (const tokenInfo of poolTokensData) {
+        const tokenPriceInUsd = usdPrices[tokenInfo.symbol];
+        console.log({ tokenInfo, tokenPriceInUsd });
+        const lockedToken = BNToFloat(tokenInfo.value, 18) || 0;
+        const tokenValue = multiply(lockedToken, Number(tokenPriceInUsd));
+        const percentage = divide(multiply(tokenValue, 100), lpTokenValue);
+        const info = { ...tokenInfo, percent: percentage };
+        calculated.push(info);
+      }
+      poolTokensData = calculated;
+
+      let total = 0;
+
+      calculated.forEach((item) => {
+        total = add(item.percent ? Number(item.percent) : 0, total);
+      });
+      const tmp: any = [];
+      calculated.forEach((item) => {
+        item.percent = Number(
+          divide(
+            ((item.percent ? Number(item.percent) : 0) * 100) / total
+          ).toFixed(2)
+        );
+        tmp.push(item);
+      });
+      poolTokensData = tmp;
+    } else {
+      return <></>;
     }
-    poolTokensData = calculated;
-
-    let total = 0;
-
-    calculated.forEach((item) => {
-      total = add(item.percent ? Number(item.percent) : 0, total);
-    });
-    const tmp: any = [];
-    calculated.forEach((item) => {
-      item.percent = Number(
-        divide(
-          ((item.percent ? Number(item.percent) : 0) * 100) / total
-        ).toFixed(2)
-      );
-      tmp.push(item);
-    });
-    poolTokensData = tmp;
   }
 
   return (
@@ -106,7 +110,9 @@ export const CurrencyReserve: FC = () => {
 
                   <Grid item xs={3}>
                     <BalanceText variant="body1">
-                      {infoItem.percent+''+(infoItem.percent.toString().includes('%')?"":'%')}
+                      {infoItem.percent +
+                        "" +
+                        (infoItem.percent.toString().includes("%") ? "" : "%")}
                     </BalanceText>
                   </Grid>
 
