@@ -61,7 +61,7 @@ export const CurrencyReserve: FC = () => {
       item.percent = Number(
         divide(
           ((item.percent ? Number(item.percent) : 0) * 100) / total
-        ).toFixed(3)
+        ).toFixed(2)
       );
       tmp.push(item);
     });
@@ -106,7 +106,7 @@ export const CurrencyReserve: FC = () => {
 
                   <Grid item xs={3}>
                     <BalanceText variant="body1">
-                      {infoItem.percent}
+                      {infoItem.percent+''+(infoItem.percent.toString().includes('%')?"":'%')}
                     </BalanceText>
                   </Grid>
 
