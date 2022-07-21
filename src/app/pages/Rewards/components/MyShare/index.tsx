@@ -15,7 +15,7 @@ import { CardWrapper } from "app/components/wrappers/Card";
 import { Web3Selectors } from "app/containers/BlockChain/Web3/selectors";
 import { globalSelectors } from "app/appSelectors";
 import { BNToFloat } from "common/format";
-import {multiply} from "precise-math";
+import { multiply } from "precise-math";
 
 export const MyShare: FC = () => {
   const { t } = useTranslation();
@@ -24,11 +24,13 @@ export const MyShare: FC = () => {
   const userShareData = useSelector(
     RewardsPageSelectors.rewardsPageUserShareData
   );
-  const pool=useSelector(RewardsPageSelectors.selectedPool)
+  const pool = useSelector(RewardsPageSelectors.selectedPool);
   const tokenPricesUSD = useSelector(globalSelectors.tokenPricesUSD);
   const symbol = pool?.key;
   let tokenUSDValue: number = 0;
-  const poolData = useSelector(RewardsPageSelectors.rewardsPoolData(symbol||""));
+  const poolData = useSelector(
+    RewardsPageSelectors.rewardsPoolData(symbol || "")
+  );
 
   if (poolData?.lpTokenPriceUSD) {
     if (!poolData.lpTokenPriceUSD.isZero()) {
@@ -83,10 +85,7 @@ export const MyShare: FC = () => {
 
                 <Grid item>
                   <BalanceText variant="body2">
-                    $
-                    {commify(
-                      equivalentUserBalance.toFixed(2)
-                    )}
+                    ${commify(equivalentUserBalance.toFixed(2))}
                   </BalanceText>
                 </Grid>
               </Grid>
@@ -112,7 +111,9 @@ export const MyShare: FC = () => {
                         formatBNToString(
                           userShareData?.poolBalance?.userInfo.amount || Zero,
                           18
-                        )+' '+pool?.key
+                        ) +
+                          " " +
+                          pool?.key
                       )}
                   </BalanceText>
                 </Grid>

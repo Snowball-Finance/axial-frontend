@@ -247,7 +247,6 @@ export function* deposit(action: { type: string; payload: DepositPayload }) {
         tokenAmounts[pool.lpToken.symbol]
       );
       const result = yield call(spendTransaction.wait);
-
       if (result.status) {
         yield put(
           GlobalActions.setTransactionSuccessId(result.transactionHash)
@@ -297,7 +296,6 @@ export function* withdraw(action: { type: string; payload: WithdrawPayload }) {
       pool.swapABI,
       getProviderOrSigner(library, account)
     );
-
     const gaugeContract = new Contract(
       pool.gauge_address,
       GAUGE_ABI,
@@ -310,7 +308,6 @@ export function* withdraw(action: { type: string; payload: WithdrawPayload }) {
           60 * formatDeadlineToNumber(transactionDeadline)
       );
       let spendTransaction;
-
       if (type === WithdrawType.ALL) {
         spendTransaction = yield call(
           targetContract.removeLiquidity,
@@ -359,7 +356,6 @@ export function* withdraw(action: { type: string; payload: WithdrawPayload }) {
         tokenAmounts[pool.lpToken.symbol]
       );
       const result = yield call(spendTransaction.wait);
-
       if (result.status) {
         yield put(
           GlobalActions.setTransactionSuccessId(result.transactionHash)

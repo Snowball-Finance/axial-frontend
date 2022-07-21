@@ -27,6 +27,7 @@ export type { SwapMigratorUSD } from "./SwapMigratorUSD";
 export type { SwapRouter } from "./SwapRouter";
 export type { SynthetixExchangeRate } from "./SynthetixExchangeRate";
 export type { SynthetixNetworkToken } from "./SynthetixNetworkToken";
+export type { UniswapLP } from "./UniswapLP";
 export type { VeAxial } from "./VeAxial";
 
 export { AlchemixStakingPools__factory } from "./factories/AlchemixStakingPools__factory";
@@ -55,4 +56,5 @@ export { SwapMigratorUSD__factory } from "./factories/SwapMigratorUSD__factory";
 export { SwapRouter__factory } from "./factories/SwapRouter__factory";
 export { SynthetixExchangeRate__factory } from "./factories/SynthetixExchangeRate__factory";
 export { SynthetixNetworkToken__factory } from "./factories/SynthetixNetworkToken__factory";
+export { UniswapLP__factory } from "./factories/UniswapLP__factory";
 export { VeAxial__factory } from "./factories/VeAxial__factory";
