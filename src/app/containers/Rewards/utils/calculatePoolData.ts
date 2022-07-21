@@ -18,7 +18,9 @@ import { Web3Domains } from "app/containers/BlockChain/Web3/selectors";
 import { GlobalDomains } from "app/appSelectors";
 import { RewardsDomains } from "../selectors";
 import { BNToFloat, floatToBN } from "common/format";
-import {divide}from 'precise-math'
+import { divide } from "precise-math";
+import UNISWAP_LP_ABI from "abi/uniswapLP.json";
+import { UniswapLP } from "abi/ethers-contracts";
 
 export interface CalculatePoolDataProps {
   pool: Pool;
@@ -46,7 +48,6 @@ export function* calculatePoolData(props: CalculatePoolDataProps) {
       return;
     }
     if (poolKey && library) {
-    
       //@ts-ignore ignored because we will always have pool
       if (POOL.poolType !== PoolTypes.LP) {
         return;
@@ -67,13 +68,7 @@ export function* calculatePoolData(props: CalculatePoolDataProps) {
       const poolApr = poolAprData?.apr ?? 0;
       let DEXLockedBN = BigNumber.from(0);
       if (poolAprData?.tokenPoolPrice > 0 && totalLpTokenBalance.gt("0x0")) {
-       DEXLockedBN = yield call(lpTokenContract.totalSupply);
-
-        // const totalLocked =
-        //   poolAprData?.tokenPoolPrice * (+totalLpTokenBalance / 1e18);
-        // DEXLockedBN = BigNumber.from(totalLocked.toFixed(0)).mul(
-        //   BigNumber.from(10).pow(18)
-        // );
+        DEXLockedBN = yield call(lpTokenContract.totalSupply);
       }
       let tokenPoolPriceBN = BigNumber.from(0);
       try {
@@ -83,10 +78,41 @@ export function* calculatePoolData(props: CalculatePoolDataProps) {
       } catch (error) {
         console.log("Error converting Float to BN");
       }
+      const lpContract = getContract(
+        POOL.lpToken.address,
+        UNISWAP_LP_ABI,
+        library,
+        account
+      ) as UniswapLP;
+      const [balances, lpBalance] = yield all([
+        call(lpContract.getReserves),
+        call(lpTokenContract.totalSupply),
+      ]);
+      const effectivePoolTokens = POOL.underlyingPoolTokens || POOL.poolTokens;
+      const tokenBalancesSum: BigNumber = balances.reduce((sum, b) =>
+        sum.add(b)
+      );
+
+      const poolTokens = effectivePoolTokens.map((token, i) => ({
+        symbol: token.symbol,
+        percent:
+          pool.poolType === PoolTypes.LP
+            ? 0
+            : formatBNToPercentString(
+                balances[i]
+                  .mul(10 ** 5)
+                  .div(
+                    lpBalance.isZero() ? BigNumber.from("1") : tokenBalancesSum
+                  ),
+                5
+              ),
+        value: balances[i],
+      }));
+
       const poolData = {
         name: poolKey,
         rapr: poolApr,
-        tokens: [],
+        tokens: poolTokens,
         reserve: BigNumber.from("0"),
         totalLocked: DEXLockedBN,
         virtualPrice: BigNumber.from("0"),
@@ -106,10 +132,10 @@ export function* calculatePoolData(props: CalculatePoolDataProps) {
         return { poolData, userShareData: undefined };
       }
       const userLpTokenBalance = userPoolsBalances.userInfo.amount;
-     const balance=BNToFloat(userLpTokenBalance)
-     const totalLocked=BNToFloat(DEXLockedBN)
-     const divided=divide(balance||0,totalLocked||0)
-      const share =floatToBN(divided)||Zero;
+      const balance = BNToFloat(userLpTokenBalance);
+      const totalLocked = BNToFloat(DEXLockedBN);
+      const divided = divide(balance || 0, totalLocked || 0);
+      const share = floatToBN(divided) || Zero;
       const userShareData = account
         ? {
             name: poolKey,

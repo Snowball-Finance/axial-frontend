@@ -13,21 +13,61 @@ import { pools } from "app/pools";
 import { tokens } from "app/tokens";
 import { mobile } from "styles/media";
 import { CardWrapper } from "app/components/wrappers/Card";
+import { BNToFloat } from "common/format";
+import { globalSelectors } from "app/appSelectors";
+import { add, divide, multiply } from "precise-math";
 
 type TParams = { poolIndex: string };
 
 export const CurrencyReserve: FC = () => {
   const { t } = useTranslation();
-
   const { poolIndex } = useParams<TParams>();
+  const usdPrices = useSelector(globalSelectors.tokenPricesUSD);
   const poolKey = poolIndex?.toUpperCase() || "";
   const rewardsPoolData = useSelector(
     RewardsPageSelectors.rewardsPoolData(poolKey)
   );
   const formattedDecimals = pools[poolKey].poolType === PoolTypes.USD ? 2 : 4;
-if(rewardsPoolData?.tokens?.length===0 || !rewardsPoolData){
-  return <></>
-}
+  if (rewardsPoolData?.tokens?.length === 0 || !rewardsPoolData) {
+    return <></>;
+  }
+
+  let poolTokensData = [...(rewardsPoolData?.tokens || [])];
+
+  if (pools[poolKey].poolType === PoolTypes.LP && usdPrices.AXIAL) {
+    console.log({ rewardsPoolData });
+    const totalLPTokenReserve = BNToFloat(rewardsPoolData.totalLocked, 18) || 0;
+    const lpTokenPrice = BNToFloat(rewardsPoolData.lpTokenPriceUSD, 18) || 0;
+    const lpTokenValue = multiply(totalLPTokenReserve, lpTokenPrice);
+    let calculated: any = [];
+    for (const tokenInfo of poolTokensData) {
+      const tokenPriceInUsd = usdPrices[tokenInfo.symbol];
+      console.log({ tokenInfo, tokenPriceInUsd });
+      const lockedToken = BNToFloat(tokenInfo.value, 18) || 0;
+      const tokenValue = multiply(lockedToken, Number(tokenPriceInUsd));
+      const percentage = divide(multiply(tokenValue, 100), lpTokenValue);
+      const info = { ...tokenInfo, percent: percentage };
+      calculated.push(info);
+    }
+    poolTokensData = calculated;
+
+    let total = 0;
+
+    calculated.forEach((item) => {
+      total = add(item.percent ? Number(item.percent) : 0, total);
+    });
+    const tmp: any = [];
+    calculated.forEach((item) => {
+      item.percent = Number(
+        divide(
+          ((item.percent ? Number(item.percent) : 0) * 100) / total
+        ).toFixed(3)
+      );
+      tmp.push(item);
+    });
+    poolTokensData = tmp;
+  }
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
@@ -39,7 +79,7 @@ if(rewardsPoolData?.tokens?.length===0 || !rewardsPoolData){
       <Grid item xs={12}>
         <CardWrapper>
           <Grid container spacing={4}>
-            {rewardsPoolData?.tokens.map((infoItem: TokenShareType) => (
+            {poolTokensData.map((infoItem: TokenShareType) => (
               <Grid item key={infoItem.symbol} xs={12}>
                 <Grid
                   container
