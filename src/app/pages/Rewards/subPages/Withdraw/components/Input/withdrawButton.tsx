@@ -48,6 +48,7 @@ export const RewardsWithdrawButton = () => {
     !userShareData ||
     withdrawError !== "";
 
+    
   const handleWithdrawClick = () => {
     dispatch(RewardsPageActions.withdraw());
   };

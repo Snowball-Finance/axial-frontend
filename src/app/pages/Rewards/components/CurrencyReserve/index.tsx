@@ -39,7 +39,7 @@ export const CurrencyReserve: FC = () => {
       const totalLPTokenReserve =
         BNToFloat(rewardsPoolData.totalLocked, 18) || 0;
       const lpTokenPrice = BNToFloat(rewardsPoolData.lpTokenPriceUSD, 18) || 0;
-      const lpTokenValue = multiply(totalLPTokenReserve, lpTokenPrice);
+      const lpTokenValue = multiply(totalLPTokenReserve, lpTokenPrice||1);
       let calculated: any = [];
       for (const tokenInfo of poolTokensData) {
         const tokenPriceInUsd = usdPrices[tokenInfo.symbol];
@@ -60,7 +60,7 @@ export const CurrencyReserve: FC = () => {
       calculated.forEach((item) => {
         item.percent = Number(
           divide(
-            ((item.percent ? Number(item.percent) : 0) * 100) / total
+            ((item.percent ? Number(item.percent) : 0) * 100) , total
           ).toFixed(2)
         );
         tmp.push(item);
