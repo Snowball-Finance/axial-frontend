@@ -25,7 +25,6 @@ export const RewardsWithdrawButton = () => {
   const poolsBalances = useSelector(RewardsSelectors.poolsBalances);
   
   const tokenKey = selectedPool?.lpToken.symbol;
-  // console.log({userShareData,withdrawAmount})
 
   let withdrawError = "";
   if (tokenKey && poolsBalances) {
