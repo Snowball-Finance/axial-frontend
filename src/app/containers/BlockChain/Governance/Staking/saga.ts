@@ -48,7 +48,7 @@ export function* periodicallyRefetchTheData() {
       put(StakingActions.getClaimableGovernanceToken()),
     ]);
     if (numberOfFailedRetries < 4) {
-      yield delay(5000);
+      yield delay(30000);
       yield call(periodicallyRefetchTheData);
     }
   }
