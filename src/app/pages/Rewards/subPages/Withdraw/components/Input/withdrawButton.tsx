@@ -23,7 +23,7 @@ export const RewardsWithdrawButton = () => {
   const loading = useSelector(RewardsSelectors.isWithdrawing);
   const withdrawAmount = useSelector(RewardsPageSelectors.withdrawAmount);
   const poolsBalances = useSelector(RewardsSelectors.poolsBalances);
-
+  
   const tokenKey = selectedPool?.lpToken.symbol;
 
   let withdrawError = "";
@@ -48,6 +48,7 @@ export const RewardsWithdrawButton = () => {
     !userShareData ||
     withdrawError !== "";
 
+    
   const handleWithdrawClick = () => {
     dispatch(RewardsPageActions.withdraw());
   };
